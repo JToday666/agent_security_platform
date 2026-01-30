@@ -4,4 +4,4 @@
 hello today
 
 ** this is dev branch
-*I can edit it
+and I can edit it
