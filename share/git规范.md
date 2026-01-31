@@ -21,7 +21,19 @@
 
 以下处理流依据git命令行，实际IDE可能不需要输入命令，供参考
 
-### 仓库创建
+### 准备工作
+
+#### git config
+
+设置用户名和邮箱，与github保持一致  
+该步骤在IDE中可能不需要
+
+```shell
+git config --global user.name "JToday666"
+git config --global user.email 1154362900@qq.com
+```
+
+#### 仓库创建
 
 克隆仓库到本地
 
@@ -58,4 +70,5 @@ git checkout -b <branch_name>
 
 #### step2：开发
 
-开发 - 暂存 - 提交
+开发 - 暂存 - 提交  
+至本地开发分支
