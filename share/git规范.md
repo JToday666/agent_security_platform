@@ -55,7 +55,7 @@ git clone -b dev https://github.com/JToday666/agent_security_platform.git
 
 ### 协作工作流
 
-#### step1：创建功能分支
+#### step1：创建功能分支（可选）
 
 ```shell
 git branch <branch_name>
@@ -70,5 +70,62 @@ git checkout -b <branch_name>
 
 #### step2：开发
 
-开发 - 暂存 - 提交  
-至本地开发分支
+开发
+
+#### step3：暂存
+
+将更改的内容暂存
+
+```shell
+git add ......(file)
+```
+
+#### step4：提交
+
+将暂存区的内容提交至本地仓库
+
+```shell
+git commit -m ....(message)
+```
+
+#### step5：拉取/同步dev
+
+在合并前保持本地dev与远程仓库一致
+
+```shell
+git pull origin dev
+```
+
+#### step6：合并分支
+
+本地合并feature与dev
+
+合并时要先签出到目标分支，即dev
+
+```shell
+git checkout dev
+```
+
+合并有多种方式：merge（合并）、squash（压缩）、rebase（变基）
+
+```shell
+
+```
+
+#### step7：推送/同步
+
+从本地仓库推送至远程仓库
+
+```shell
+git push origin dev
+```
+
+#### step8：解决冲突
+
+如果遇到冲突，不要强制替换
+
+若远程dev领先于本地dev，注意不要破坏最新功能
+
+### 提交信息规范
+
+## 说明
