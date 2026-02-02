@@ -1,2 +1,6 @@
 # Ignore VS Code workspace settings
 .vscode/
+# Ignore virtual environment folders
+.venv/
+# Ignore JetBrains IDE project files
+.idea/
