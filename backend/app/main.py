@@ -1,6 +1,7 @@
-print("Backend application started successfully.")
-a=1
-b=2
+from fastapi import FastAPI
 
-c=a+b
-print("The sum of a and b is:", c)
+app = FastAPI(title="VS Code FastAPI 项目")
+
+@app.get("/")
+async def read_root():
+    return {"message": "Hello from VS Code!"}

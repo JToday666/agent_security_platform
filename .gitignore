@@ -4,3 +4,9 @@
 .venv/
 # Ignore JetBrains IDE project files
 .idea/
+# Ignore environment variable files
+.env
+
+# backend
+/backend/.env/
+/backend/app/__pycache__/
