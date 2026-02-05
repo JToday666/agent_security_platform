@@ -1,5 +1,6 @@
 # Ignore VS Code workspace settings
 .vscode/
+!.vscode/extensions.json
 # Ignore virtual environment folders
 .venv/
 # Ignore JetBrains IDE project files
@@ -9,7 +10,7 @@
 
 # backend
 /backend/.env/
-/backend/app/__pycache__/
+/backend/**/__pycache__/
 
 #frontend
 # Logs
@@ -29,9 +30,6 @@ coverage
 *.local
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
 *.suo
 *.ntvs*
 *.njsproj
