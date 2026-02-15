@@ -6,7 +6,9 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     PROJECT_NAME: str = "Agent Security Platform"
-    API_V1_STR: str = "/api/v1"
+    
+    FASTAPI_PORT: int = 8000
+    FASTAPI_HOST: str = "127.0.0.1"    
 
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
