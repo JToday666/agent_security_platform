@@ -9,7 +9,7 @@
 .env
 
 # backend
-/backend/.env/
+/backend/.env
 /backend/**/__pycache__/
 
 #frontend

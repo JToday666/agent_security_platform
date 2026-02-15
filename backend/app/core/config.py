@@ -1,11 +1,10 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
-
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    PROJECT_NAME: str = "Agent Security Platform"
+    PROJECT_NAME: str = "Project Name"
     
     FASTAPI_PORT: int = 8000
     FASTAPI_HOST: str = "127.0.0.1"    
@@ -14,7 +13,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = "postgres"
     POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "123456"
+    POSTGRES_PASSWORD: str = "password"
 
     SQLALCHEMY_ECHO: bool = Field(default=False)
 
