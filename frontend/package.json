@@ -1,5 +1,5 @@
 {
-  "name": "vue-project",
+  "name": "frontend",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -14,9 +14,7 @@
     "lint:eslint": "eslint . --fix --cache"
   },
   "dependencies": {
-    "pinia": "^3.0.4",
-    "vue": "^3.5.27",
-    "vue-router": "^5.0.1"
+    "vue": "^3.5.27"
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",
