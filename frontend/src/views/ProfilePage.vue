@@ -1,83 +1,63 @@
 <template>
-  <Navbar />
-  <main class="page-container profile-page">
-    <UserSidebar />
-    <div class="content-area">
-      <div class="form-card">
-        <h1 class="page-title">修改信息</h1>
-        <p class="page-subtitle">更新您的个人资料和账户信息。</p>
+    <Navbar />
+    <main class="page-container profile-page">
+        <UserSidebar />
+        <div class="content-area">
+            <div class="form-card">
+                <h1 class="page-title">修改信息</h1>
+                <p class="page-subtitle">更新您的个人资料和账户信息。</p>
 
-        <form @submit.prevent="handleSubmit" class="profile-form">
-          <!-- 头像上传区域（模拟） -->
-          <div class="avatar-section">
-            <div class="avatar-preview">
-              <img :src="avatarPreview" alt="头像" v-if="avatarPreview" />
-              <span v-else class="avatar-placeholder">📷</span>
+                <form @submit.prevent="handleSubmit" class="profile-form">
+                    <!-- 头像上传区域 -->
+                    <div class="avatar-section">
+                        <div class="avatar-preview">
+                            <img :src="avatarPreview" alt="头像" v-if="avatarPreview" />
+                            <span v-else class="avatar-placeholder">📷</span>
+                        </div>
+                        <div class="avatar-upload">
+                            <label for="avatar" class="upload-label">选择新头像</label>
+                            <input type="file" id="avatar" accept="image/*" @change="onAvatarChange"
+                                class="hidden-input" />
+                            <p class="hint">支持 JPG、PNG，大小不超过 2MB</p>
+                        </div>
+                    </div>
+
+                    <!-- 表单字段 -->
+                    <div class="form-group">
+                        <label for="nickname">昵称</label>
+                        <input type="text" id="nickname" v-model="form.nickname" placeholder="请输入昵称" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">邮箱</label>
+                        <input type="email" id="email" v-model="form.email" placeholder="请输入邮箱" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">新密码</label>
+                        <input type="password" id="password" v-model="form.password" placeholder="留空表示不修改" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">确认新密码</label>
+                        <input type="password" id="confirmPassword" v-model="form.confirmPassword"
+                            placeholder="再次输入新密码" />
+                    </div>
+
+                    <div v-if="message" class="form-message" :class="messageType">
+                        {{ message }}
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn" :disabled="submitting">
+                            {{ submitting ? "保存中..." : "保存修改" }}
+                        </button>
+                        <button type="button" class="cancel-btn" @click="resetForm">取消</button>
+                    </div>
+                </form>
             </div>
-            <div class="avatar-upload">
-              <label for="avatar" class="upload-label">选择新头像</label>
-              <input
-                type="file"
-                id="avatar"
-                accept="image/*"
-                @change="onAvatarChange"
-                class="hidden-input"
-              />
-              <p class="hint">支持 JPG、PNG，大小不超过 2MB</p>
-            </div>
-          </div>
-
-          <!-- 表单字段 -->
-          <div class="form-group">
-            <label for="nickname">昵称</label>
-            <input
-              type="text"
-              id="nickname"
-              v-model="form.nickname"
-              placeholder="请输入昵称"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="email">邮箱</label>
-            <input type="email" id="email" v-model="form.email" placeholder="请输入邮箱" required />
-          </div>
-
-          <div class="form-group">
-            <label for="password">新密码</label>
-            <input
-              type="password"
-              id="password"
-              v-model="form.password"
-              placeholder="留空表示不修改"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="confirmPassword">确认新密码</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              v-model="form.confirmPassword"
-              placeholder="再次输入新密码"
-            />
-          </div>
-
-          <div v-if="message" class="form-message" :class="messageType">
-            {{ message }}
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="submit-btn" :disabled="submitting">
-              {{ submitting ? "保存中..." : "保存修改" }}
-            </button>
-            <button type="button" class="cancel-btn" @click="resetForm">取消</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </main>
+        </div>
+    </main>
 </template>
 
 <script setup lang="ts">
@@ -87,10 +67,10 @@ import UserSidebar from "@/components/UserSidebar.vue";
 
 // 表单数据
 const form = reactive({
-  nickname: "当前用户",
-  email: "user@example.com",
-  password: "",
-  confirmPassword: "",
+    nickname: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
 });
 
 const avatarPreview = ref<string | null>(null);
@@ -99,273 +79,326 @@ const message = ref("");
 const messageType = ref<"success" | "error">("success");
 
 const onAvatarChange = (e: Event) => {
-  const target = e.target as HTMLInputElement;
-  const file = target.files?.[0];
-  if (file) {
-    if (file.size > 2 * 1024 * 1024) {
-      message.value = "头像大小不能超过 2MB";
-      messageType.value = "error";
-      return;
+    const target = e.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+        if (file.size > 2 * 1024 * 1024) {
+            message.value = "头像大小不能超过 2MB";
+            messageType.value = "error";
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            avatarPreview.value = e.target?.result as string;
+        };
+        reader.readAsDataURL(file);
     }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      avatarPreview.value = e.target?.result as string;
-    };
-    reader.readAsDataURL(file);
-  }
 };
 
 const handleSubmit = async () => {
-  if (form.password && form.password !== form.confirmPassword) {
-    message.value = "两次输入的密码不一致";
-    messageType.value = "error";
-    return;
-  }
+    if (form.password && form.password !== form.confirmPassword) {
+        message.value = "两次输入的密码不一致";
+        messageType.value = "error";
+        return;
+    }
 
-  submitting.value = true;
-  message.value = "";
+    submitting.value = true;
+    message.value = "";
 
-  setTimeout(() => {
-    message.value = "信息更新成功！";
-    messageType.value = "success";
-    submitting.value = false;
-    form.password = "";
-    form.confirmPassword = "";
-  }, 1000);
+    setTimeout(() => {
+        message.value = "信息更新成功！";
+        messageType.value = "success";
+        submitting.value = false;
+        form.password = "";
+        form.confirmPassword = "";
+    }, 1000);
 };
 
 const resetForm = () => {
-  form.nickname = "当前用户";
-  form.email = "user@example.com";
-  form.password = "";
-  form.confirmPassword = "";
-  avatarPreview.value = null;
-  message.value = "";
+    form.nickname = "当前用户";
+    form.email = "user@example.com";
+    form.password = "";
+    form.confirmPassword = "";
+    avatarPreview.value = null;
+    message.value = "";
 };
 </script>
 
 <style scoped>
+/* 全局重置与动画 */
+* {
+    box-sizing: border-box;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .page-container {
-  min-height: 100vh;
-  padding-top: 70px;
-  background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
-  display: flex;
+    min-height: 100vh;
+    padding-top: 80px;
+    background: linear-gradient(145deg, #f8fafc 0%, #eef2f6 100%);
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 微弱的纹理背景 */
+.page-container::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.03) 0%, transparent 30%);
+    pointer-events: none;
 }
 
 .content-area {
-  flex: 1;
-  margin-left: 240px;
-  padding: 2rem;
-  transition: margin-left 0.3s ease;
+    flex: 1;
+    margin-left: 240px;
+    /* 与侧边栏宽度相同 */
+    padding: 2rem;
+    transition: margin-left 0.3s ease;
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 0.8s ease;
 }
 
-.user-sidebar.collapsed ~ .content-area {
-  margin-left: 70px;
+.user-sidebar.collapsed~.content-area {
+    margin-left: 70px;
 }
 
 .form-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border-radius: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 2.5rem;
-  color: white;
-  box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.2);
-  max-width: 600px;
-  margin: 0 auto;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 2rem;
+    padding: 2.5rem;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    color: #1e293b;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .page-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 5px 15px rgba(37, 99, 235, 0.15);
 }
 
 .page-subtitle {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-  opacity: 0.9;
+    font-size: 1.1rem;
+    color: #475569;
+    margin-bottom: 2rem;
+    line-height: 1.6;
 }
 
 /* 头像区域 */
 .avatar-section {
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  margin-bottom: 2rem;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
-  border-radius: 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1.2rem;
+    box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
 .avatar-preview {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border: 2px solid white;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
 }
 
 .avatar-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .avatar-placeholder {
-  font-size: 2rem;
-  opacity: 0.7;
+    font-size: 2rem;
+    color: #94a3b8;
 }
 
 .avatar-upload {
-  flex: 1;
+    flex: 1;
 }
 
 .upload-label {
-  display: inline-block;
-  background: white;
-  color: #667eea;
-  padding: 0.5rem 1.2rem;
-  border-radius: 30px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.2s;
-  margin-bottom: 0.5rem;
+    display: inline-block;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 8px 18px -6px #2563eb80;
+    border: none;
+    font-size: 0.95rem;
 }
 
 .upload-label:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px -8px #2563eb;
 }
 
 .hidden-input {
-  display: none;
+    display: none;
 }
 
 .hint {
-  font-size: 0.85rem;
-  opacity: 0.7;
-  margin: 0;
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0;
 }
 
 /* 表单组 */
 .form-group {
-  margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  opacity: 0.9;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #334155;
 }
 
 .form-group input {
-  width: 100%;
-  padding: 0.8rem 1.2rem;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 30px;
-  color: white;
-  font-size: 1rem;
-  transition:
-    border-color 0.2s,
-    background 0.2s;
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 30px;
+    color: #1e293b;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .form-group input:focus {
-  outline: none;
-  border-color: white;
-  background: rgba(255, 255, 255, 0.25);
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .form-group input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+    color: #94a3b8;
 }
 
 /* 提示信息 */
 .form-message {
-  padding: 0.8rem 1.2rem;
-  border-radius: 30px;
-  margin-bottom: 1.5rem;
-  text-align: center;
+    padding: 0.8rem 1.2rem;
+    border-radius: 30px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 0.95rem;
 }
 
 .form-message.success {
-  background: rgba(34, 197, 94, 0.2);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
 }
 
 .form-message.error {
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
 }
 
 /* 按钮组 */
 .form-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
 .submit-btn,
 .cancel-btn {
-  padding: 0.8rem 2rem;
-  border: none;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  flex: 1;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    flex: 1;
 }
 
 .submit-btn {
-  background: white;
-  color: #667eea;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    box-shadow: 0 8px 18px -6px #2563eb80;
 }
 
 .submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px -8px #2563eb;
 }
 
 .submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .cancel-btn {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
+    background: transparent;
+    color: #475569;
+    border: 1px solid #cbd5e1;
 }
 
 .cancel-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
+    background: #f8fafc;
+    border-color: #94a3b8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
 }
 
 /* 响应式 */
 @media (max-width: 768px) {
-  .content-area {
-    margin-left: 0;
-    padding: 1rem;
-  }
-  .form-card {
-    padding: 1.5rem;
-  }
-  .avatar-section {
-    flex-direction: column;
-    text-align: center;
-  }
+    .content-area {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .form-card {
+        padding: 1.5rem;
+    }
+
+    .avatar-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
 }
 </style>

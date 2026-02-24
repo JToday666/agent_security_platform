@@ -11,46 +11,46 @@ import ContactUs from "@/views/ContactUs.vue";
 import { useUserStore } from "@/store/user";
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes: [
-    { path: "/", component: Home },
-    { path: "/dataset", component: DataSet },
-    { path: "/dataset/:id", component: DatasetDetail },
-    { path: "/leaderboard", component: LeaderBoard },
-    { path: "/contact", component: ContactUs },
+	history: createWebHistory(),
+	routes: [
+		{ path: "/", component: Home },
+		{ path: "/dataset", component: DataSet },
+		{ path: "/dataset/:id", component: DatasetDetail },
+		{ path: "/leaderboard", component: LeaderBoard },
+		{ path: "/contact", component: ContactUs },
 
-    {
-      path: "/user",
-      component: UserCenter,
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/report/:id",
-      component: EvaluationReport,
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/submit",
-      component: SubmitAgent,
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/profile",
-      component: ProfilePage,
-      meta: { requiresAuth: true },
-    },
-  ],
+		{
+			path: "/user",
+			component: UserCenter,
+			meta: { requiresAuth: true },
+		},
+		{
+			path: "/report/:id",
+			component: EvaluationReport,
+			meta: { requiresAuth: true },
+		},
+		{
+			path: "/submit",
+			component: SubmitAgent,
+			meta: { requiresAuth: true },
+		},
+		{
+			path: "/profile",
+			component: ProfilePage,
+			meta: { requiresAuth: true },
+		},
+	],
 });
 
 router.beforeEach((to, _, next) => {
-  const userStore = useUserStore();
+	const userStore = useUserStore();
 
-  if (to.meta.requiresAuth && !userStore.isLogin) {
-    userStore.showLogin = true;
-    next(false);
-  } else {
-    next();
-  }
+	if (to.meta.requiresAuth && !userStore.isLogin) {
+		userStore.showLogin = true;
+		next(false);
+	} else {
+		next();
+	}
 });
 
 export default router;

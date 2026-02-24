@@ -1,261 +1,452 @@
 <template>
-  <Navbar />
-  <main class="home-main">
-    <div class="hero">
-      <h1 class="title">智能体安全评测平台</h1>
-      <p class="subtitle">安全、可靠、专业的智能体评估系统 —— 让每一次评测都有据可依。</p>
+    <Navbar />
+    <main class="home-main">
+        <div class="hero">
+            <!-- 标题区域 -->
+            <div class="hero-content">
+                <h1 class="title">智能体安全评测平台</h1>
+                <p class="subtitle">安全 · 可靠 · 专业的智能体评估系统</p>
+                <p class="description">让每一次评测都有据可依，助您打造更安全的智能体</p>
+            </div>
 
-      <!-- 使用说明卡片 -->
-      <div class="guide">
-        <h2>如何使用本平台？</h2>
-        <div class="steps">
-          <div class="step">
-            <div class="step-number">1</div>
-            <h3>注册/登录</h3>
-            <p>创建账号或登录，开启您的智能体评测之旅。</p>
-          </div>
-          <div class="step">
-            <div class="step-number">2</div>
-            <h3>提交智能体</h3>
-            <p>在个人中心提交您的智能体，选择测试数据集。</p>
-          </div>
-          <div class="step">
-            <div class="step-number">3</div>
-            <h3>查看评测报告</h3>
-            <p>获取详细的评测结果，优化您的智能体。</p>
-          </div>
-          <div class="step">
-            <div class="step-number">4</div>
-            <h3>登上排行榜</h3>
-            <p>公开您的智能体，与其他开发者一较高下。</p>
-          </div>
+            <!-- 使用指南卡片 -->
+            <div class="guide-card">
+                <h2 class="guide-title">三步快速上手</h2>
+                <div class="steps-grid">
+                    <div class="step-item" v-for="(step, index) in steps" :key="index">
+                        <div class="step-number">{{ index + 1 }}</div>
+                        <h3>{{ step.title }}</h3>
+                        <p>{{ step.desc }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作按钮区域（分两行） -->
+            <div class="actions">
+                <!-- 第一行：核心功能按钮 -->
+                <div class="primary-actions">
+                    <button class="btn primary" @click="goDataset">
+                        <span>📊</span> 浏览数据集
+                    </button>
+                    <button class="btn primary" @click="goLeaderboard">
+                        <span>🏆</span> 查看排行榜
+                    </button>
+                </div>
+
+                <!-- 第二行：用户相关（登录/个人中心） -->
+                <div class="user-actions">
+                    <template v-if="!isLogin">
+                        <button class="btn accent" @click="openLoginDialog">
+                            <span>✨</span> 登录 / 注册
+                        </button>
+                    </template>
+                    <template v-else>
+                        <div class="welcome-card">
+                            <span class="greeting">欢迎回来，<strong>{{ username }}</strong>！</span>
+                            <div class="action-buttons">
+                                <router-link to="/user" class="btn outline">
+                                    <span>👤</span> 个人中心
+                                </router-link>
+                                <button class="btn logout" @click="handleLogoutClick">
+                                    <span>🚪</span> 退出
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
         </div>
-      </div>
+    </main>
 
-      <!-- 操作按钮组 -->
-      <div class="action-buttons">
-        <button class="btn primary" @click="goDataset">浏览数据集</button>
-        <button class="btn secondary" @click="goLeaderboard">查看排行榜</button>
-        <!-- 登录/注册按钮（未登录时显示） -->
-        <button v-if="!isLogin" class="btn accent" @click="openLoginDialog">登录 / 注册</button>
-        <!-- 已登录时显示欢迎语和进入个人中心按钮 -->
-        <div v-else class="user-greeting">
-          欢迎回来，<strong>{{ username }}</strong> ！
-          <router-link to="/user" class="btn outline">进入个人中心</router-link>
-        </div>
-      </div>
-    </div>
-  </main>
+    <!-- 登录弹窗 -->
+    <LoginDialog />
 
-  <!-- 登录对话框组件 -->
-  <LoginDialog />
+    <!-- 退出确认弹窗 -->
+    <ConfirmDialog v-model="showLogoutConfirm" title="确认退出" message="您确定要退出登录吗？" confirm-text="退出" cancel-text="取消"
+        :danger="true" :loading="logoutLoading" @confirm="handleLogoutConfirm" @cancel="handleLogoutCancel" />
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import Navbar from "@/components/NavBar.vue";
 import LoginDialog from "@/components/LoginDialog.vue";
+import ConfirmDialog from "@/components/ConfirmDialog.vue";
 
 const router = useRouter();
 const userStore = useUserStore();
 const { isLogin, username } = storeToRefs(userStore);
 
+// 步骤数据
+const steps = [
+    { title: "注册/登录", desc: "创建账号或登录，开启评测之旅" },
+    { title: "提交智能体", desc: "在个人中心上传您的智能体，选择测试数据集" },
+    { title: "查看报告", desc: "获取详细评测结果，优化智能体性能" },
+    { title: "登上榜单", desc: "公开您的智能体，与其他开发者一较高下" },
+];
+
+// 页面跳转
 const goDataset = () => router.push("/dataset");
 const goLeaderboard = () => router.push("/leaderboard");
+const openLoginDialog = () => userStore.openLoginDialog();
 
-const openLoginDialog = () => {
-  userStore.openLoginDialog();
+// 退出确认逻辑
+const showLogoutConfirm = ref(false);
+const logoutLoading = ref(false);
+
+const handleLogoutClick = () => {
+    showLogoutConfirm.value = true;
+};
+
+const handleLogoutConfirm = () => {
+    logoutLoading.value = true;
+    // 模拟异步操作（实际可调用 userStore.logout()）
+    setTimeout(() => {
+        userStore.logout();
+        router.push("/");
+        showLogoutConfirm.value = false;
+        logoutLoading.value = false;
+    }, 100);
+};
+
+const handleLogoutCancel = () => {
+    showLogoutConfirm.value = false;
 };
 </script>
 
 <style scoped>
-/* 主体区域：顶部留出导航栏高度，背景渐变 */
+/* 全局重置与动画 */
+* {
+    box-sizing: border-box;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
 .home-main {
-  min-height: 100vh;
-  padding-top: 70px; /* 与导航栏高度一致 */
-  background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    min-height: 100vh;
+    padding-top: 80px;
+    background: linear-gradient(145deg, #f8fafc 0%, #eef2f6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 浅色背景上的微弱纹理 */
+.home-main::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.03) 0%, transparent 30%);
+    pointer-events: none;
 }
 
 .hero {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 3rem 2rem;
-  text-align: center;
-  color: white;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 2rem 3rem;
+    color: #1e293b;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .title {
-  font-size: 3.2rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  letter-spacing: -1px;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  line-height: 1.2;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    /* 添加标准属性，消除警告 */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 5px 15px rgba(37, 99, 235, 0.15);
 }
 
 .subtitle {
-  font-size: 1.3rem;
-  margin-bottom: 3rem;
-  opacity: 0.95;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    color: #475569;
 }
 
-/* 使用说明卡片区 */
-.guide {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 2rem;
-  padding: 2.5rem 2rem;
-  margin: 3rem 0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.description {
+    font-size: 1.1rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-.guide h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  font-weight: 600;
+/* 指南卡片 */
+.guide-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 3rem;
+    padding: 2.5rem;
+    margin: 3rem 0;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    transition: transform 0.3s ease;
 }
 
-.steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
+.guide-card:hover {
+    transform: scale(1.01);
 }
 
-.step {
-  text-align: center;
+.guide-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.step-item {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: default;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.step-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.15);
 }
 
 .step-number {
-  width: 50px;
-  height: 50px;
-  background: white;
-  color: #667eea;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 auto 1rem;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 auto 1rem;
+    box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
 }
 
-.step h3 {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
+.step-item h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #0f172a;
 }
 
-.step p {
-  font-size: 0.95rem;
-  opacity: 0.9;
-  line-height: 1.5;
+.step-item p {
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.5;
 }
 
-/* 按钮组 */
+/* 操作区域 */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.primary-actions {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.user-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.welcome-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: white;
+    backdrop-filter: blur(5px);
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.greeting {
+    font-size: 1.1rem;
+    color: #334155;
+}
+
+.greeting strong {
+    color: #2563eb;
+    font-weight: 600;
+}
+
 .action-buttons {
-  display: flex;
-  gap: 1.2rem;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 2rem;
+    display: flex;
+    gap: 0.8rem;
 }
 
+/* 按钮样式 */
 .btn {
-  padding: 0.9rem 2.2rem;
-  border: none;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s,
-    background 0.2s;
-  text-decoration: none;
-  display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 2.2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+}
+
+.btn span {
+    font-size: 1.2rem;
 }
 
 .btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
 }
 
 .primary {
-  background: white;
-  color: #667eea;
+    background: white;
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
 }
 
 .primary:hover {
-  background: #f8fafc;
-}
-
-.secondary {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-}
-
-.secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
+    background: #f8fafc;
+    border-color: #cbd5e1;
 }
 
 .accent {
-  background: #fbbf24;
-  color: #1e293b;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    border: none;
+    box-shadow: 0 8px 18px -6px #2563eb80;
 }
 
 .accent:hover {
-  background: #f59e0b;
+    background: linear-gradient(135deg, #1d4ed8, #6d28d9);
 }
 
 .outline {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-  padding: 0.6rem 1.8rem;
-  margin-left: 0.5rem;
+    background: transparent;
+    color: #2563eb;
+    border: 2px solid #2563eb30;
+    padding: 0.6rem 1.5rem;
 }
 
-.user-greeting {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.7rem 1.8rem;
-  border-radius: 50px;
-  backdrop-filter: blur(5px);
-  font-size: 1.1rem;
+.outline:hover {
+    background: #2563eb0c;
+    border-color: #2563eb;
 }
 
-.user-greeting strong {
-  font-weight: 700;
+.logout {
+    background: transparent;
+    color: #ef4444;
+    border: 2px solid #ef444430;
+    padding: 0.6rem 1.5rem;
 }
 
-/* 移动端适配 */
+.logout:hover {
+    background: #ef44440c;
+    border-color: #ef4444;
+}
+
+/* 响应式调整 */
 @media (max-width: 768px) {
-  .title {
-    font-size: 2.5rem;
-  }
-  .subtitle {
-    font-size: 1.1rem;
-  }
-  .steps {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  .guide h2 {
-    font-size: 1.6rem;
-  }
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .primary-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .primary-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .welcome-card {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.2rem;
+        border-radius: 30px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 </style>
