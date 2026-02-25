@@ -1,6 +1,8 @@
 # Ignore VS Code workspace settings
 .vscode/
 !.vscode/extensions.json
+# Ignore GitHub workflow files
+.github/ 
 # Ignore virtual environment folders
 .venv/
 # Ignore JetBrains IDE project files
