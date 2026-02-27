@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = "password"
 
     SQLALCHEMY_ECHO: bool = Field(default=False)
+    SECRET_KEY: str = "dev-secret-key-change-in-production"
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080
 
     @property
     def DATABASE_URL(self) -> str:
