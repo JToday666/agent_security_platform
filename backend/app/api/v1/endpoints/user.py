@@ -2,12 +2,12 @@ import uuid
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, UploadFile, status
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, get_db
 from app.api.response import fail, success
 from app.core.security import hash_password
+from app.crud import is_username_taken, save_user
 from app.models.user import User
 from app.schemas.auth import ProfileUpdateRequest, UserProfile
 
@@ -37,19 +37,14 @@ async def update_profile(
         raise fail(status.HTTP_400_BAD_REQUEST, 1000, "没有提供要修改的字段")
 
     if payload.username is not None and payload.username != current_user.username:
-        exists_username = await db.execute(
-            select(User).where(User.username == payload.username, User.id != current_user.id)
-        )
-        if exists_username.scalar_one_or_none() is not None:
+        if await is_username_taken(db, payload.username, exclude_user_id=current_user.id):
             raise fail(status.HTTP_409_CONFLICT, 1003, "用户名已被占用")
         current_user.username = payload.username
 
     if payload.password is not None:
         current_user.hashed_password = hash_password(payload.password)
 
-    db.add(current_user)
-    await db.commit()
-    await db.refresh(current_user)
+    await save_user(db, current_user)
 
     user_data = UserProfile.model_validate(current_user).model_dump(by_alias=True)
     return success(data=user_data)
@@ -83,8 +78,6 @@ async def upload_avatar(
         raise fail(status.HTTP_500_INTERNAL_SERVER_ERROR, 500, "头像上传失败，请稍后重试")
 
     current_user.avatar_url = f"/uploads/avatars/{file_name}"
-    db.add(current_user)
-    await db.commit()
-    await db.refresh(current_user)
+    await save_user(db, current_user)
 
     return success(data={"avatarUrl": current_user.avatar_url})

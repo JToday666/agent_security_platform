@@ -2,10 +2,10 @@ from typing import AsyncGenerator
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 
 from app.api.response import unauthorized
 from app.core.security import decode_access_token
+from app.crud import get_user_by_id
 from app.db.session import AsyncSessionLocal
 from app.models.user import User
 
@@ -31,8 +31,7 @@ async def get_current_user(
     except Exception:
         raise unauthorized()
 
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
+    user = await get_user_by_id(db, user_id)
     if user is None:
         raise unauthorized()
 
