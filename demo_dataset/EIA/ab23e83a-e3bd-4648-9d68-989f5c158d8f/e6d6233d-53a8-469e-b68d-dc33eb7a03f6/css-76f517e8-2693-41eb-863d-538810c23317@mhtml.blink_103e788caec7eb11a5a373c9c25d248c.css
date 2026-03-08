@@ -1,0 +1,254 @@
+@charset "utf-8";
+
+.app-components-TravelCreditToolTip-styles__btnDefault--3s9tz { text-align: center; text-decoration: none; border-radius: 2px; height: 52px; line-height: 22px; width: 100%; font-size: 16px; }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__btnDefault--3s9tz { height: 56px; width: 160px; }
+}
+
+.app-components-TravelCreditToolTip-styles__btnDefault--3s9tz:hover, .app-components-TravelCreditToolTip-styles__btnDefault--3s9tz:focus { box-shadow: none; }
+
+.app-components-TravelCreditToolTip-styles__btnDefault--3s9tz:disabled, .app-components-TravelCreditToolTip-styles__btnDefault--3s9tz[disabled] { box-shadow: none; border: none; background-color: rgb(230, 230, 230); color: rgb(102, 102, 102); }
+
+.app-components-TravelCreditToolTip-styles__primaryButton--2aX8Y { background-color: rgb(33, 114, 186); color: rgb(255, 255, 255); border: 1px solid rgb(33, 114, 186); box-shadow: rgb(102, 102, 102) -1px 1px 1px 0px; }
+
+.app-components-TravelCreditToolTip-styles__primaryButton--2aX8Y:hover, .app-components-TravelCreditToolTip-styles__primaryButton--2aX8Y:focus { border: 1px solid rgb(0, 48, 87); box-shadow: none; }
+
+.app-components-TravelCreditToolTip-styles__ancillaryButton--1ywRC, .app-components-TravelCreditToolTip-styles__primaryButton--2aX8Y.app-components-TravelCreditToolTip-styles__ancillaryButton--1ywRC, .app-components-TravelCreditToolTip-styles__btnDefault--3s9tz.app-components-TravelCreditToolTip-styles__ancillaryButton--1ywRC { height: 30px; }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__ancillaryButton--1ywRC, .app-components-TravelCreditToolTip-styles__primaryButton--2aX8Y.app-components-TravelCreditToolTip-styles__ancillaryButton--1ywRC, .app-components-TravelCreditToolTip-styles__btnDefault--3s9tz.app-components-TravelCreditToolTip-styles__ancillaryButton--1ywRC { width: 160px; }
+}
+
+.app-components-TravelCreditToolTip-styles__secondaryButton--1_Bzr { background-color: rgb(237, 183, 43); color: rgb(0, 0, 0); border: 1px solid rgb(237, 183, 43); }
+
+.app-components-TravelCreditToolTip-styles__secondaryButton--1_Bzr:hover { border: 1px solid rgb(0, 57, 100); box-shadow: none; }
+
+.app-components-TravelCreditToolTip-styles__inputFieldBorder--2mCfB { border-top: none; border-right: none; border-left: none; border-image: initial; border-bottom: 1px solid rgb(102, 102, 102); background: rgba(0, 0, 0, 0); border-radius: 0px; }
+
+.app-components-TravelCreditToolTip-styles__textLink--2eMRB { font-size: 28px; letter-spacing: 0px; line-height: 18px; }
+
+.app-components-TravelCreditToolTip-styles__textLink--2eMRB:link { color: rgb(0, 34, 68); }
+
+.app-components-TravelCreditToolTip-styles__textLink--2eMRB:hover { color: rgb(33, 114, 186); border-bottom: 1px solid rgb(33, 114, 186); }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__textLink--2eMRB { font-size: 16px; }
+}
+
+.app-components-TravelCreditToolTip-styles__textLinkCTA--3x0PM { letter-spacing: 0px; }
+
+.app-components-TravelCreditToolTip-styles__textLinkCTA--3x0PM:link { color: rgb(102, 102, 102); text-decoration: underline; }
+
+.app-components-TravelCreditToolTip-styles__textLinkCTA--3x0PM:hover { color: rgb(0, 0, 0); }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__textLinkCTA--3x0PM { line-height: 22px; }
+}
+
+.app-components-TravelCreditToolTip-styles__inverse--35Vcg { background-color: rgb(33, 114, 186); border-radius: 2px; color: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__inverse--35Vcg.app-components-TravelCreditToolTip-styles__secondary--3ceD1 { color: rgb(237, 183, 43); }
+
+.app-components-TravelCreditToolTip-styles__inverse--35Vcg input[type="text"], .app-components-TravelCreditToolTip-styles__inverse--35Vcg input[type="password"], .app-components-TravelCreditToolTip-styles__inverse--35Vcg input[type="tel"], .app-components-TravelCreditToolTip-styles__inverse--35Vcg input[type="number"] { color: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__inverse--35Vcg input[type="text"].app-components-TravelCreditToolTip-styles__secondary--3ceD1, .app-components-TravelCreditToolTip-styles__inverse--35Vcg input[type="password"].app-components-TravelCreditToolTip-styles__secondary--3ceD1, .app-components-TravelCreditToolTip-styles__inverse--35Vcg input[type="tel"].app-components-TravelCreditToolTip-styles__secondary--3ceD1, .app-components-TravelCreditToolTip-styles__inverse--35Vcg input[type="number"].app-components-TravelCreditToolTip-styles__secondary--3ceD1 { color: rgb(237, 183, 43); }
+
+.app-components-TravelCreditToolTip-styles__inverseDark--3f09y { background-color: rgb(0, 34, 68); font-size: 16px; color: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__signInInput--wcxNt { font-size: 24px; letter-spacing: -0.2px; line-height: 32px; }
+
+.app-components-TravelCreditToolTip-styles__roundedButton--2NTUq, .app-components-TravelCreditToolTip-styles__roundedButtonOn--1A9FV, .app-components-TravelCreditToolTip-styles__roundedButtonPrimary--2paam { font-size: 16px; letter-spacing: 0px; border: 1px solid; border-radius: 200px; height: 72px; width: 94px; text-align: center; }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__roundedButton--2NTUq, .app-components-TravelCreditToolTip-styles__roundedButtonOn--1A9FV, .app-components-TravelCreditToolTip-styles__roundedButtonPrimary--2paam { border-radius: 100px; height: 35px; }
+}
+
+.app-components-TravelCreditToolTip-styles__roundedButtonPrimary--2paam { color: rgb(153, 153, 153); border: 2px solid rgb(211, 211, 211); }
+
+@media (min-width: 1184px) {
+  .app-components-TravelCreditToolTip-styles__roundedButtonPrimary--2paam { border: 1px solid rgb(211, 211, 211); }
+}
+
+.app-components-TravelCreditToolTip-styles__roundedButtonPrimary--2paam:hover { color: rgb(102, 102, 102); border: 2px solid rgb(102, 102, 102); }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__roundedButtonPrimary--2paam:hover { border: 1px solid rgb(102, 102, 102); }
+}
+
+.app-components-TravelCreditToolTip-styles__roundedButtonOn--1A9FV { background-color: rgb(33, 114, 186); color: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__alert--331zt, .app-components-TravelCreditToolTip-styles__highLevelAlert--lqH0B, .app-components-TravelCreditToolTip-styles__lowLevelAlert--2Z4aj { border-radius: 3px; height: 60px; width: 100%; font-size: 16px; line-height: 18px; letter-spacing: 0px; padding-left: 55px; padding-top: 20px; }
+
+.app-components-TravelCreditToolTip-styles__lowLevelAlert--2Z4aj { background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); }
+
+.app-components-TravelCreditToolTip-styles__highLevelAlert--lqH0B { background-color: rgb(213, 0, 50); color: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__alertTriangle--nm7lz, .app-components-TravelCreditToolTip-styles__low-alert-triangle--1tngz, .app-components-TravelCreditToolTip-styles__highAlertTriangle--3LsTM { padding-left: 48px; height: 19.96px; width: 22.01px; content: "!"; }
+
+.app-components-TravelCreditToolTip-styles__highAlertTriangle--3LsTM { color: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__low-alert-triangle--1tngz { color: rgb(102, 102, 102); }
+
+.app-components-TravelCreditToolTip-styles__dropdown--S7Vr9 { width: 100%; height: 100%; border: 1px solid rgb(229, 229, 229); }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__dropdown--S7Vr9 { border-radius: 3px; border: 1px solid rgb(200, 200, 200); box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 10px 0px; }
+}
+
+.app-components-TravelCreditToolTip-styles__dropdownContent--2RrQY { font-size: 32px; line-height: 72px; letter-spacing: 0px; color: rgb(102, 102, 102); }
+
+.app-components-TravelCreditToolTip-styles__dropdownContent--2RrQY:hover { background-color: rgb(242, 249, 252); color: rgb(0, 34, 68); }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__dropdownContent--2RrQY { font-size: 10px; line-height: 40px; }
+}
+
+.app-components-TravelCreditToolTip-styles__dropdownExpand--3eeE0 { font-size: 24px; line-height: 44px; color: rgb(0, 34, 68); letter-spacing: 0px; }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__dropdownExpand--3eeE0 { font-size: 12px; line-height: 22px; }
+}
+
+.app-components-TravelCreditToolTip-styles__simpleDropdownDefault--1ggpj, .app-components-TravelCreditToolTip-styles__simpleDropdownOnBackground--3eTtA { border: 1px solid rgb(148, 148, 148); border-radius: 4px; font-size: 28px; color: rgb(51, 51, 51); letter-spacing: 0px; line-height: 24px; }
+
+@media (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__simpleDropdownDefault--1ggpj, .app-components-TravelCreditToolTip-styles__simpleDropdownOnBackground--3eTtA { font-size: 16px; color: rgb(0, 34, 68); border: none; }
+  .app-components-TravelCreditToolTip-styles__simpleDropdownDefault--1ggpj:hover, .app-components-TravelCreditToolTip-styles__simpleDropdownOnBackground--3eTtA:hover { color: rgb(33, 114, 186); }
+}
+
+.app-components-TravelCreditToolTip-styles__simpleDropdownOnBackground--3eTtA { opacity: 0.5; border: 1px solid rgb(255, 255, 255); border-radius: 6px; color: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__simpleDropdownActive--292_a { font-size: 16px; line-height: 40px; letter-spacing: 0px; color: rgb(102, 102, 102); }
+
+.app-components-TravelCreditToolTip-styles__simpleDropdownActive--292_a:hover { background-color: rgb(242, 249, 252); color: rgb(0, 34, 68); }
+
+.app-components-TravelCreditToolTip-styles__simpleDropdownActive--292_a:checked { color: rgb(0, 34, 68); }
+
+.app-components-TravelCreditToolTip-styles__checkboxWrapper--11Dmu { position: relative; }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked), .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked), .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked { position: absolute; left: 0px; top: -1px; opacity: 0; }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label { position: relative; cursor: pointer; font-size: 14px; }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label::after, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::before, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::after, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label::after, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label::after { position: absolute; left: 0px; top: -1px; }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label::before { content: ""; border: 2px solid rgb(0, 57, 100); border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px inset; }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label::after, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::after, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label::after, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label::after { content: ""; display: block; border-style: solid; border-color: rgb(255, 255, 255); border-image: initial; border-width: 0px 2px 2px 0px; transform: rotate(45deg); position: absolute; text-align: center; }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked), .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:disabled) + label::after, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked), .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:disabled) + label::after { opacity: 0; border-color: rgb(0, 34, 68); }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::after, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label::after { opacity: 1; border-color: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label::before { background: rgb(0, 34, 68); }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label::before { background: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:disabled:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:disabled:checked + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:disabled:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:disabled:checked + label::before { box-shadow: none; border-color: rgb(153, 153, 153); background-color: rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:disabled:checked + label::after, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:disabled:checked + label::after { color: rgb(153, 153, 153); }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:disabled + label, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:disabled + label { color: rgb(170, 170, 170); }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked:focus + label::before, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked):focus + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked:focus + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked):focus + label::before { outline: dotted 1px; }
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label { padding-left: 32px; line-height: 24px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label { padding-left: 26px; line-height: 18px; }
+}
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::before { width: 24px; height: 24px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::before { width: 20px; height: 20px; }
+}
+
+.app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label::after, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::after { font-size: 14px; top: 5px; left: 9px; width: 5px; height: 11px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:not(:checked) + label::after, .app-components-TravelCreditToolTip-styles__customCheckbox--3sHhI:checked + label::after { left: 8px; top: 3px; }
+}
+
+.app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label { padding-left: 25px; font-size: 12px; line-height: 15px; }
+
+.app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label::before, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label::before { width: 15px; height: 15px; }
+
+.app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label::after, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label::after { font-size: 10px; left: 6px; top: 2px; width: 4px; height: 9px; }
+
+.app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label:hover, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label:focus, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label:hover, .app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label:focus { color: rgb(0, 34, 68); }
+
+.app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:not(:checked) + label { color: rgb(137, 137, 137); }
+
+.app-components-TravelCreditToolTip-styles__customCheckboxSm--3kuRl:checked + label { color: rgb(0, 34, 68); }
+
+.app-components-TravelCreditToolTip-styles__whiteAndBlackCustomCheckBox--1Mp4a:checked + label::before { background: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); }
+
+.app-components-TravelCreditToolTip-styles__whiteAndBlackCustomCheckBox--1Mp4a:not(:checked) + label::before { background: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); }
+
+.app-components-TravelCreditToolTip-styles__whiteAndBlackCustomCheckBox--1Mp4a:checked + label::after { border-color: rgb(0, 0, 0); top: 5px; left: 10px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__whiteAndBlackCustomCheckBox--1Mp4a:checked + label::after { top: 3px; left: 8px; }
+}
+
+.app-components-TravelCreditToolTip-styles__questionMarkToolTip--hU398::before { content: "?"; display: inline-block; vertical-align: top; text-align: center; font-weight: bold; width: 24px; height: 24px; font-size: 14px; line-height: 1.4; margin-top: 0px; margin-left: 8px; border: 1px solid rgb(255, 255, 255); border-radius: 50%; color: rgb(255, 255, 255); background: rgba(0, 0, 0, 0); }
+
+@media screen and (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__questionMarkToolTip--hU398::before { line-height: 1.3; margin-top: 4px; width: 16px; height: 16px; font-size: 10px; }
+}
+
+.app-components-TravelCreditToolTip-styles__floatingLabel--3G-Gc { font-size: 12px; color: rgb(102, 102, 102); line-height: 13px; }
+
+.app-components-TravelCreditToolTip-styles__formLink--1WbKY { font-size: 16px; text-decoration: underline; }
+
+.app-components-TravelCreditToolTip-styles__formLink--1WbKY:hover { outline: rgb(33, 114, 186) dotted 1px; color: rgb(35, 82, 124); }
+
+.app-components-TravelCreditToolTip-styles__fieldErrorMessage--20tga { position: absolute; bottom: 0px; color: rgb(213, 0, 50); letter-spacing: 0px; font-size: 13px; line-height: 1.5; text-align: center; }
+
+@media screen and (min-width: 944px) {
+  .app-components-TravelCreditToolTip-styles__fieldErrorMessage--20tga { font-size: 11px; }
+}
+
+.app-components-TravelCreditToolTip-styles__homepageTextField--15X0z { line-height: 1; }
+
+.app-components-TravelCreditToolTip-styles__homepageTextField--15X0z label { color: rgb(0, 34, 68); text-transform: none; font-weight: bold; font-size: 12px; letter-spacing: 1px; margin-bottom: -1px; }
+
+.app-components-TravelCreditToolTip-styles__homepageTextField--15X0z input { transition: color 0.4s ease 0s; color: rgb(0, 34, 68); height: 46px; }
+
+.app-components-TravelCreditToolTip-styles__homepageTextField--15X0z input::-webkit-input-placeholder { text-transform: none; font-style: normal; font-weight: normal; }
+
+.app-components-TravelCreditToolTip-styles__homepageTextField--15X0z:focus { color: rgb(33, 114, 186); border-color: rgb(33, 114, 186); }
+
+.app-components-TravelCreditToolTip-styles__homepageTextField--15X0z:focus > label { color: rgb(33, 114, 186); }
+
+.app-components-TravelCreditToolTip-styles__homepageTextField--15X0z .atm-c-field-note.atm-c-textfield__note { position: absolute; margin: 0px; bottom: -24px; }
+
+.app-components-TravelCreditToolTip-styles__homepageTextField--15X0z .atm-c-field-note.atm-c-textfield__note svg { display: none; }
+
+.app-components-TravelCreditToolTip-styles__travelCreditTooltip--GLhTM { position: absolute; display: inherit; padding-right: 9.68em; border-bottom: 1px dotted rgb(0, 0, 0); }
+
+@media (min-width: 565px) and (max-width: 843px) {
+  .app-components-TravelCreditToolTip-styles__travelCreditTooltip--GLhTM { max-width: 400px; }
+}
+
+.app-components-TravelCreditToolTip-styles__travelCreditTooltip--GLhTM .app-components-TravelCreditToolTip-styles__tooltipContainer--1d9n7 { visibility: visible; width: 330px; height: auto; background-color: rgb(255, 255, 255); text-align: center; border-radius: 2px; padding: 5px 0px; position: absolute; z-index: 99999; top: 16px; right: 4.37em; opacity: 1; transition: opacity 0.3s ease 0s; box-shadow: rgb(124, 132, 138) 1px 1px 1px 1px; }
+
+.app-components-TravelCreditToolTip-styles__travelCreditTooltip--GLhTM .app-components-TravelCreditToolTip-styles__tooltipContainer--1d9n7 .app-components-TravelCreditToolTip-styles__closeButtonTT--3MUHi:focus, .app-components-TravelCreditToolTip-styles__travelCreditTooltip--GLhTM .app-components-TravelCreditToolTip-styles__tooltipContainer--1d9n7 .app-components-TravelCreditToolTip-styles__travelCreditsTTLink--FVlPd:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+.app-components-TravelCreditToolTip-styles__travelCreditTooltip--GLhTM .app-components-TravelCreditToolTip-styles__tooltipContainer--1d9n7::after { content: ""; position: absolute; top: -24px; left: 72%; border-width: 16px; border-style: solid; border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgb(255, 255, 255); }
+
+.app-components-TravelCreditToolTip-styles__closeButtonTT--3MUHi { position: absolute; right: 8px; top: 8px; }
+
+.app-components-TravelCreditToolTip-styles__mobileDisplay--2GQHq { display: none; }
+
+@media (max-width: 720px) {
+  .app-components-TravelCreditToolTip-styles__mobileDisplay--2GQHq { display: block; font-weight: bold; }
+}
+
+.app-components-TravelCreditToolTip-styles__travelCreditToolTipBox--1Xl8w { color: rgb(0, 0, 0); font-size: 1em; font-weight: 600; text-align: left; line-height: 1.5; margin: 35px 35px 20px 40px; }
+
+.app-components-TravelCreditToolTip-styles__travelCreditToolTipBox--1Xl8w .app-components-TravelCreditToolTip-styles__travelCreditsTTText--tUGjF { margin-bottom: 8px; white-space: pre-wrap; }
+
+.app-components-TravelCreditToolTip-styles__travelCreditToolTipBox--1Xl8w .app-components-TravelCreditToolTip-styles__travelCreditsTTLink--FVlPd { font-size: 1em; color: rgb(33, 114, 186); text-decoration: underline; margin-top: 8px; font-weight: 400; }

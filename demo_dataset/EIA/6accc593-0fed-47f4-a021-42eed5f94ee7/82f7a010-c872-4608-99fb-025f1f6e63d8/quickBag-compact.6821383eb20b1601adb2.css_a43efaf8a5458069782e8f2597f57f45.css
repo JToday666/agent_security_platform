@@ -1,0 +1,120 @@
+@charset "utf-8";
+
+.bag-overlay { position: absolute; top: 127px; left: -100%; right: 0px; background: rgba(0, 0, 0, 0.35); height: 0px; opacity: 0; visibility: hidden; z-index: 21; transition: opacity 0.1s ease 0.1s, visibility 10ms ease 0.2s; }
+
+#bagContainer { position: relative; width: auto; margin-right: 2px; }
+
+#bagContainer.show { z-index: 22; }
+
+#bagContainer .quickBagFlyout { opacity: 0; visibility: hidden; transition: opacity 0.1s ease 0.1s; max-height: none; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader { z-index: 3; border: none; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader:hover .quickBagFlyout { max-height: none; }
+
+#bagContainer .hide-for-screenreader { display: none; width: 24px; height: 28px; margin: 0px; padding: 0px; }
+
+#bagContainer svg { width: 24px; height: 28px; }
+
+#bagContainer #m-bag-count-anchor { display: block; }
+
+#bagContainer.quick-back-open .quickBagFlyout { opacity: 1; visibility: visible; transition: opacity 0.1s ease 0.15s; }
+
+#bagContainer.quick-back-open::before { content: ""; display: block; position: absolute; left: -14px; top: -3px; width: 47px; height: 48px; z-index: 2; }
+
+#bagContainer.quick-back-open::after { content: ""; display: block; position: absolute; left: -50px; top: 17px; width: 74px; height: 36px; transform: rotate(-40deg); z-index: 2; }
+
+#bagContainer.quick-back-open + .bag-overlay { opacity: 1; visibility: visible; height: 200vh; transition: opacity 0.1s ease 0.16s, visibility 0.1s ease 0.16s; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader { width: auto; height: auto; border: 0px; top: 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader .checkoutLink { cursor: pointer; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout { width: 32.25rem; border-radius: 0px 0px 5px 5px; border-width: 1px; border-style: solid; border-color: rgb(185, 185, 185) transparent transparent; border-image: initial; right: -7px; top: 51px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagEmpty { padding: 24px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .zeroItemCount { font-size: 14px; line-height: 20px; height: auto; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout ul.bagItems { max-width: 100%; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout ul.bagItems li + li { border-top: 1px solid silver; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem { padding: 24px; border: 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem > .grid-x > .cell.medium-2, #bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem > .grid-x > .cell.medium-9 { width: auto; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem > .grid-x > .cell.medium-9 { flex: 1 1 0%; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem > .grid-x > .cell.medium-9 .button.secondary::after { border: none; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem .productImage { margin-right: 20px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem div.pricing { font-size: 14px; line-height: 20px; text-transform: none; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem .promoDesc { color: rgb(98, 99, 105); font-size: 14px; line-height: 20px; margin-top: 12px; font-style: normal; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem div.badges { color: rgb(98, 99, 105); margin-bottom: 16px; margin-left: 95px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem div.badges div { color: inherit; font-size: 14px; line-height: 20px; font-weight: 400; padding: 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem .description { font-size: 14px; line-height: 20px; padding-left: 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem .bagItemUPC { margin-top: 8px; font-weight: 400; color: rgb(0, 0, 0); }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem .itemAction { padding: 12px 0px 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem .itemAction br { display: none; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem .itemAction .cell.medium-5 { width: auto; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem .itemAction .button-remove { border: 0px; background: transparent; padding: 0px; font-size: 14px; line-height: 20px; font-weight: 400; text-decoration: underline; margin-left: 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .bagItem .itemAction .button-remove:hover { text-decoration: none; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom { padding: 24px; background: rgb(248, 248, 248); }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom .bagPromoDesc { font-size: 14px; line-height: 20px; font-style: normal; color: rgb(0, 0, 0); border: 0px; padding: 0px 40px; margin: 0px; text-align: center; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom .promoPrice { color: rgb(0, 0, 0); }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom #quickBagYouSavedTotal { color: rgb(0, 0, 0); padding: 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom #quickBagYouSavedTotal + #quickBagSubTotal { margin-left: 7px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom #quickBagYouSavedTotal strong { color: rgb(224, 26, 43); }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom #quickBagSubTotal { padding: 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom #quickBagSubTotal a { text-decoration: none; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom .bagPromoDesc + #quickBagSubTotal, #bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom .bagPromoDesc + #quickBagYouSavedTotal, #bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom .bagPromoDesc + #quickBagYouSavedTotal + #quickBagSubTotal { padding-top: 20px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom .checkoutButton { padding: 16px 0px 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .quickBagBottom .checkoutButton .quickbagCheckoutButton { margin: 0px; font-size: 16px; line-height: 20px; font-weight: 500; padding: 11px 15px; color: rgb(255, 255, 255); }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .wallet-star-rewards-wrapper { padding: 24px; display: flex; align-items: center; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .wallet-star-rewards-wrapper .rewards-logo { width: auto; float: none; height: auto; padding: 0px 30px; margin: 0px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .wallet-star-rewards-wrapper .rewards-info-wrapper { width: auto; flex: 1 1 0%; padding: 0px 45px; text-align: center; font-size: 14px; line-height: 20px; }
+
+#bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout .wallet-star-rewards-wrapper .rewards-info-wrapper p.enroll-rewards { padding: 0px; }
+
+@media (max-width: 600px) {
+  #mb-page-wrapper { position: relative; }
+  #bagContainer #quickBagHeader.quickBagFlyoutHeader #qbFlyout.quickBagFlyout { width: 100vw; top: 7.6875rem; position: absolute !important; right: 0px !important; left: 0px !important; }
+  header[data-uri].compact.compact-redesign.responsive #mb-j-header-container #bagContainer #quickBagHeader.quickBagFlyoutHeader .quickBagFlyout { max-height: 22.5rem; right: -2.6rem !important; }
+}
+
+.checkoutButtonSkipBag { padding: 16px 0px 0px; }
+
+@media (min-width: 600px) {
+  #quickBagHeader.quickBagFlyoutHeader { position: relative; }
+}
+
+@media (max-width: 360px) {
+  header[data-uri].compact.compact-redesign.responsive #mb-j-header-container #bagContainer #quickBagHeader.quickBagFlyoutHeader .quickBagFlyout { width: 100vw; top: 7.6875rem; position: absolute !important; right: 0px !important; left: 0px !important; }
+  .bag-overlay { width: 100vw; position: absolute !important; left: 0px !important; right: 0px !important; }
+}

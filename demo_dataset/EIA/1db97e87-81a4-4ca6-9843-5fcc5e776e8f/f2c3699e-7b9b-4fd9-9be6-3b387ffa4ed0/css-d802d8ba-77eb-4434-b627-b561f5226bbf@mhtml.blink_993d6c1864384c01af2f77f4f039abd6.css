@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.pwd-validation { margin-bottom: 16px; }
+
+.pwd-validation h4 { margin-bottom: 8px; }
+
+.pwd-validation p { margin: 0px; font-size: 0.875rem; }
+
+.pwd-validation svg { width: 16px; height: 16px; font-size: 16px; margin-bottom: -3px; }
+
+.check-icon { color: rgb(41, 182, 194); }

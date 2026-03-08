@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.specialty-link-list[open] svg { transform: rotate(90deg) translateX(0.0625em); }
+
+.specialty-link-list__footer-menu-btn { cursor: pointer; }
+
+.specialty-link-list__footer-menu-btn::-webkit-details-marker { display: none; }

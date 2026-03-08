@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+[_nghost-nke-c64] { display: flex; padding: 0px 1.1875rem; position: relative; }
+
+.action-element[_ngcontent-nke-c64] { align-items: center; display: flex; margin-right: 1.1875rem; padding-right: 1.1875rem; position: relative; }
+
+.action-element[_ngcontent-nke-c64]::after { background-color: var(--light-base, #fff); content: ""; height: 1rem; position: absolute; right: 0px; top: 50%; transform: translateY(-50%); width: 0.0625rem; }
+
+.wrapper-container[_ngcontent-nke-c64] { display: block; position: relative; }

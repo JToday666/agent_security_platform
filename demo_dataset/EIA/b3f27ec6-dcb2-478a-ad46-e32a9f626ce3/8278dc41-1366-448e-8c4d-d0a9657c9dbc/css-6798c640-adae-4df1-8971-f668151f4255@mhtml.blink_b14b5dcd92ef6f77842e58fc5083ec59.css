@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.cp-input { padding: 0px 10px; background-color: rgb(255, 255, 255); box-shadow: rgba(179, 190, 206, 0.4) 0px 2px 2px 0px; border-radius: 3px; border: 1.5px solid rgb(187, 202, 218); color: rgb(86, 105, 134); font-size: 14px; }
+
+.cp-input[type="text"] { min-width: 80px; min-height: 30px; }

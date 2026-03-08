@@ -1,0 +1,111 @@
+@charset "utf-8";
+
+.pcev2-item { place-content: center space-between; background: rgb(230, 230, 230); border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; max-width: 325px; width: 100%; box-shadow: rgb(0, 0, 0) 0px 2px 18px -10px; }
+
+.pcev2-item-header { box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 6px 0px; z-index: 1; height: 204px; }
+
+.card-custom .pcev2-item-header { box-shadow: none; }
+
+.pcev2-item-header-features { display: flex; justify-content: space-between; align-items: flex-start; }
+
+.pcev2-item-header-price-append { font-size: 14px; }
+
+.park-mexico .pcev2-item-header-features-promo b, .park-mexico .pcev2-item-header-features-promo .price-integer, .park-hurricaneharborox .pcev2-item-header-features-promo b, .park-hurricaneharborox .pcev2-item-header-features-promo .price-integer { font-size: 25px; }
+
+.pcev2-item-header-features-price-placeholder { padding: 24px 0px 24px 15px; }
+
+.pcev2-item-header-features-price { display: block; font-size: 30px; font-weight: 700; }
+
+.pcev2-item-header-features-price small { font-size: 16px; }
+
+.pcev2-item-header-features-price sup { font-size: 16px; text-decoration: underline; margin-left: 3px; }
+
+.pcev2-item-header-price-crossed { position: relative; display: block; font-size: 30px; font-weight: 700; margin-bottom: 9px; }
+
+.pcev2-item-header-price-crossed::after { position: absolute; top: 50%; left: 0px; width: 100%; background: rgb(170, 0, 0); height: 3px; content: ""; transform: rotate(-5deg) translateY(-50%) scale(1.1); }
+
+.pcev2-item-header-features-promo { background-image: url("../img/product-card-ribbon-bkg.png"); background-position: left center; background-repeat: no-repeat; background-size: cover; color: rgb(255, 255, 255); max-width: 148px; padding: 4px 5px 16px 14px; width: 148px; }
+
+.pcev2-item-header-features-promo img { margin-left: 10px; }
+
+.pcev2-item-header-features-promo-ribbon-content { display: flex; font-size: 10px; font-weight: 700; justify-content: space-between; line-height: 1; text-align: right; }
+
+.pcev2-item-header-features-promo-ribbon-content .promo-ribbon-content-bigger { font-size: 15px; }
+
+.pcev2-item-header-features-promo-ribbon-content .promo-ribbon-content-price { font-size: 30px; margin-left: 8px; }
+
+.card-custom .pcev2-item-header-title-placeholder { margin: 40px 0px 0px; }
+
+.pcev2-item-header-title, .pcev2-item-header-title-slogan { display: block; line-height: 1; text-align: center; }
+
+.pcev2-item-header-title { margin-top: 20px; font-size: 36px !important; }
+
+.pcev2-item-header-title-slogan { font-size: 20px; padding: 0px 36px; }
+
+.pcev2-item-content { background: rgb(255, 255, 255); padding: 20px; transition: all 0.2s ease-in 0s; height: 225px; }
+
+.pcev2-item-content * { margin-left: 0px; }
+
+.pcev2-item-content ul { margin-left: 25px; padding: 0px; }
+
+.pcev2-item-footer-cta { width: 100%; display: flex; justify-content: space-between; align-items: center; text-decoration: none; padding: 20px 35px; font-size: 20px; font-weight: 700; }
+
+.card-custom .pcev2-item-footer-cta { color: rgb(255, 255, 255); justify-content: space-around; padding: 20px 50px; }
+
+.pcev2-item-header-features { min-height: 86px; }
+
+.pcev2-item-header-features-pretitle { font-size: 16px; font-weight: 700; }
+
+.pcev2-item-header-title, .pcev2-item-footer-cta, .pcev2-item-header-price-crossed, .pcev2-item-header-features-price, .pcev2-item-content, .pcev2-item-header-title-slogan { color: rgb(0, 0, 0); }
+
+.theme-light .pcev2-item-header-title, .theme-light .pcev2-item-header-price-crossed, .theme-light .pcev2-item-header-features-price, .theme-light .pcev2-item-footer-cta, .theme-light .pcev2-item-header-title-slogan { color: rgb(255, 255, 255); }
+
+.pcev2-item:hover .pcev2-item-content { padding-bottom: 60px; }
+
+.sf-products-card-v2-dots-wrapper { display: none; }
+
+@media only screen and (max-width: 800px) {
+  .sf-product-cards-list .elementor-row { display: flex; flex-wrap: nowrap; overflow: scroll hidden; }
+  .sf-product-cards-list .elementor-row .elementor-column { min-width: 325px; }
+  .sf-section-featuredpasses-dots-wrapper { display: block; width: 100%; text-align: center; }
+  .sf-section-featuredpasses-dots-wrapper .dot { display: inline-block; margin: 5px 2px; height: 22px; width: 22px; border-radius: 11px; border: 4px solid rgb(0, 0, 0); }
+  .sf-section-featuredpasses-dots-wrapper .dot:not(.selected) { box-shadow: none !important; }
+}
+
+.pcev2-item-header-features-promo-top, .pcev2-item-header-features-promo-bottom, .pcev2-item-header-features-promo-center { display: block; width: 100%; text-align: center; }
+
+.pcev2-item-header-features-promo-top, .pcev2-item-header-features-promo-bottom { font-size: 14px; }
+
+.pcev2-item-header-features-promo-top { font-style: italic; }
+
+.pcev2-item-header-features-promo-bottom { font-weight: 700; }
+
+.formated-price { font-size: 30px; }
+
+.price-integer { font-size: 30px; font-weight: 700; margin-right: 2px; }
+
+.price-decimals { display: inline-block; font-size: 18px; font-weight: 700; transform: translateY(2px); }
+
+.price-timerange { font-size: 14px; }
+
+.price-timerange.pull-left { display: inline-block; transform: translate(-3px, -3px); margin-left: -26px !important; }
+
+body.park-mexico .price-timerange, body.park-hurricaneharborox .price-timerange { display: none !important; }
+
+.product-card-enhace-v2 { margin: 25px 0px; }
+
+.pcev2-item-anchor-wrapper.highlighted .product-card-enhace-v2 { animation: 10s ease 0s infinite normal none running neon-effect; }
+
+@keyframes move-up-down { 
+  1% { transform: translateY(0px); }
+  3% { transform: translateY(-20px); }
+  5% { transform: translateY(20px); }
+  7% { transform: translateY(-15px); }
+  9% { transform: translateY(15px); }
+  11% { transform: translateY(0px); }
+}
+
+@keyframes neon-effect { 
+  0%, 10%, 30%, 50%, 70%, 90% { box-shadow: rgb(34, 155, 239) 0px 0px 10px, rgb(34, 155, 239) 0px 0px 20px; }
+  0%, 20%, 40%, 60%, 80%, 100% { box-shadow: rgb(0, 0, 0) 0px 2px 18px -10px; }
+}

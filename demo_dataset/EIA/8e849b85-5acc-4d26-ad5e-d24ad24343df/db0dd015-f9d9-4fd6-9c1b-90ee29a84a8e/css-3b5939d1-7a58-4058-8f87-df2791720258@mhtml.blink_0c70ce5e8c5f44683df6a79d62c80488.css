@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.form-inline > * { margin: 10px 0px !important; }
+
+.tooltips { position: relative; display: inline-block; }
+
+.RadWindow_Vista { top: 130px !important; }
+
+.RadWindow_Vista table .rwTitlebar, .RadWindow_Vista table .rwTopLeft, .RadWindow_Vista table .rwTopRight, .RadWindow_Vista table .rwFooterLeft, .RadWindow_Vista table .rwFooterRight, .RadWindow_Vista table .rwFooterCenter, .RadWindow_Vista table .rwBodyLeft, .RadWindow_Vista table .rwBodyRight { opacity: 1 !important; }
+
+.RadWindow_Vista .rwShadow table.rwShadow .rwTitlebar, .RadWindow_Vista.rwShadow table.rwShadow .rwTopLeft, .RadWindow_Vista.rwShadow table.rwShadow .rwTopRight, .RadWindow_Vista.rwShadow table.rwShadow .rwFooterLeft, .RadWindow_Vista.rwShadow table.rwShadow .rwFooterRight, .RadWindow_Vista.rwShadow table.rwShadow .rwFooterCenter, .RadWindow_Vista.rwShadow table.rwShadow .rwBodyLeft, .RadWindow_Vista.rwShadow table.rwShadow .rwBodyRight { filter: none !important; }
+
+.tooltips .tooltiptext { visibility: hidden; width: 200px; background-color: black; color: rgb(255, 255, 255); text-align: center; border-radius: 6px; padding: 5px 0px; position: absolute; z-index: 1; top: -15px; left: 110%; font-weight: normal; font-size: small; }
+
+.tooltips .tooltiptext::after { content: ""; position: absolute; top: 50%; right: 100%; margin-top: -5px; border-width: 5px; border-style: solid; border-color: transparent black transparent transparent; }
+
+.tooltips:hover .tooltiptext { visibility: visible; }
+
+.illustration img { width: 100%; display: block; }
+
+.ClsMobileNo { padding-top: 0px !important; padding-left: 4px !important; height: 25px !important; border-radius: 2px !important; border-color: rgb(118, 118, 118) !important; font-family: Arial, Helvetica, sans-serif !important; font-size: x-small !important; font-style: normal !important; font-weight: normal !important; font-variant: normal !important; text-transform: none !important; color: rgb(51, 51, 51) !important; text-align: left !important; line-height: normal !important; }

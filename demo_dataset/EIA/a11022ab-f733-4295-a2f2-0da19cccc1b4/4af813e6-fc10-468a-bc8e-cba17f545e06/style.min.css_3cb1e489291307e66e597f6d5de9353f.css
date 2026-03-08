@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.wpml-ls-legacy-dropdown { width: 15.5em; max-width: 100%; }
+
+.wpml-ls-legacy-dropdown > ul { position: relative; padding: 0px; list-style-type: none; margin: 0px !important; }
+
+.wpml-ls-legacy-dropdown .wpml-ls-current-language:focus .wpml-ls-sub-menu, .wpml-ls-legacy-dropdown .wpml-ls-current-language:hover .wpml-ls-sub-menu { visibility: visible; }
+
+.wpml-ls-legacy-dropdown .wpml-ls-item { padding: 0px; margin: 0px; list-style-type: none; }
+
+.wpml-ls-legacy-dropdown a { display: block; text-decoration: none; color: rgb(68, 68, 68); border: 1px solid rgb(205, 205, 205); background-color: rgb(255, 255, 255); padding: 5px 10px; line-height: 1; }
+
+.wpml-ls-legacy-dropdown a span { vertical-align: middle; }
+
+.wpml-ls-legacy-dropdown a.wpml-ls-item-toggle { position: relative; padding-right: calc(10px + 1.4em); }
+
+.rtl .wpml-ls-legacy-dropdown a.wpml-ls-item-toggle { padding-right: 10px; padding-left: calc(10px + 1.4em); }
+
+.wpml-ls-legacy-dropdown a.wpml-ls-item-toggle::after { content: ""; vertical-align: middle; display: inline-block; border-width: 0.5em 0.35em 0.35em; border-style: solid; border-right-color: transparent; border-bottom-color: transparent; border-left-color: transparent; border-image: initial; border-top-color: initial; position: absolute; right: 10px; top: calc(50% - 0.175em); }
+
+.rtl .wpml-ls-legacy-dropdown a.wpml-ls-item-toggle::after { right: auto; left: 10px; }
+
+.wpml-ls-legacy-dropdown .wpml-ls-current-language:hover > a, .wpml-ls-legacy-dropdown a:focus, .wpml-ls-legacy-dropdown a:hover { color: rgb(0, 0, 0); background: rgb(238, 238, 238); }
+
+.wpml-ls-legacy-dropdown .wpml-ls-sub-menu { visibility: hidden; position: absolute; top: 100%; right: 0px; left: 0px; border-top: 1px solid rgb(205, 205, 205); padding: 0px; margin: 0px; list-style-type: none; z-index: 101; }
+
+.wpml-ls-legacy-dropdown .wpml-ls-sub-menu a { border-width: 0px 1px 1px; }
+
+.wpml-ls-legacy-dropdown .wpml-ls-flag { display: inline; vertical-align: middle; }
+
+.wpml-ls-legacy-dropdown .wpml-ls-flag + span { margin-left: 0.4em; }
+
+.rtl .wpml-ls-legacy-dropdown .wpml-ls-flag + span { margin-left: 0px; margin-right: 0.4em; }

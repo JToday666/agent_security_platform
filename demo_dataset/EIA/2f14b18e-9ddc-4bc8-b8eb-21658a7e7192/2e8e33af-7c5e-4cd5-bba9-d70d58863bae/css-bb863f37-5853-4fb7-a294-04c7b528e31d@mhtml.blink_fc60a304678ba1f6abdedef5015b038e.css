@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.atm-c-icon-with-description-list { margin: 0px; padding: 0px; list-style: none; }
+
+.atm-c-icon-with-description-list__item { margin-bottom: 0.5rem; }
+
+.atm-c-icon-with-description-list__item:last-child { margin-bottom: 0px; }

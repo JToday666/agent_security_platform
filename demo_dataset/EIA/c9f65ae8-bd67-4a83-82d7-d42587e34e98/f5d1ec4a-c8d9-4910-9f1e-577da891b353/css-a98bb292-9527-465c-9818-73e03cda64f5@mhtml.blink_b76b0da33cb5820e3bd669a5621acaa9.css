@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-mjuogw { display: none; vertical-align: middle; margin-left: var(--chakra-space-6); padding-left: var(--chakra-space-6); text-align: left; border-left: 0.1rem solid rgb(83, 116, 149); }
+
+@media screen and (min-width: 64rem) {
+  .css-mjuogw { display: inline-block; }
+}

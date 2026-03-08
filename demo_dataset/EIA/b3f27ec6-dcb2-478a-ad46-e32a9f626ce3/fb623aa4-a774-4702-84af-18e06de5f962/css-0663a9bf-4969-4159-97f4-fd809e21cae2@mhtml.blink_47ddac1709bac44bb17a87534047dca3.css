@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.smb-uikit__text-input-transparent { box-sizing: border-box; font-size: 14px; max-height: 2.25rem; transition: all 0.25s ease 0s; background-color: rgba(0, 0, 0, 0); border: 0px; color: inherit; flex: 1 1 0%; padding: 0px; min-height: 1.5rem; height: 1.5rem; width: initial; min-width: initial; }
+
+.smb-uikit__text-input-transparent > * { box-sizing: border-box; }
+
+.smb-uikit__text-input-transparent > * { box-sizing: border-box; }
+
+.smb-uikit__text-input-transparent:focus { outline: none; }
+
+.smb-uikit__text-input-transparent::placeholder { color: rgb(207, 217, 225); }
+
+.smb-uikit__text-input-transparent:disabled { color: rgb(195, 204, 212); cursor: not-allowed; }

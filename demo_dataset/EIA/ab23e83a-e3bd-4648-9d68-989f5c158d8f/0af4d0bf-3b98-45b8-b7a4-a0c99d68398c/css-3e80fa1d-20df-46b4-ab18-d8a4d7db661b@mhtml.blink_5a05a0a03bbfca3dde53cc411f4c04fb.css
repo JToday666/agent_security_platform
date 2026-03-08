@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.app-components-Accordion-AccordionModal-accordionModal__accordionModal--2t3pw { width: 100%; height: 100%; }
+
+.app-components-Accordion-AccordionModal-accordionModal__accordionModal--2t3pw > dl { margin: 0px; width: 100%; height: 100%; }
+
+.app-components-Accordion-AccordionModal-accordionModal__accordionModal--2t3pw > dl > div { border-top: 1px solid rgb(215, 215, 215); }
+
+.app-components-Accordion-AccordionModal-accordionModal__accordionModal--2t3pw > dl > div > dd { margin-left: 16px; }
+
+.app-components-Accordion-AccordionModal-accordionModal__wrapper--3HwvL { height: 100%; padding: 24px; overflow: auto; }
+
+.app-components-Accordion-AccordionModal-accordionModal__heading--y7pWw { margin: 12px 0px; }
+
+.app-components-Accordion-AccordionModal-accordionModal__iconAccordion--1ey3a { position: absolute; right: 20px; top: 20px; z-index: 10; }
+
+.app-components-Accordion-AccordionModal-accordionModal__iconAccordion--1ey3a img { width: 21px; height: 21px; }
+
+.app-components-Accordion-AccordionModal-accordionModal__modalTitle--2KJsW { font-size: 24px; font-weight: 300; font-style: normal; font-stretch: normal; line-height: 1.33; letter-spacing: normal; color: rgb(0, 0, 0); margin-left: 16px; }
+
+.app-components-Accordion-AccordionModal-accordionModal__sectionModal--FpxCT { width: 100%; padding: 24px; }
+
+.app-components-Accordion-AccordionModal-accordionModal__localizationModal--NLM9w { position: absolute; top: 0px; right: 0px; width: 100%; height: 100%; background-color: rgb(255, 255, 255); }
+
+.app-components-Accordion-AccordionModal-accordionModal__overlayClass--2djoS { position: absolute; inset: 0px; height: 100vh; }

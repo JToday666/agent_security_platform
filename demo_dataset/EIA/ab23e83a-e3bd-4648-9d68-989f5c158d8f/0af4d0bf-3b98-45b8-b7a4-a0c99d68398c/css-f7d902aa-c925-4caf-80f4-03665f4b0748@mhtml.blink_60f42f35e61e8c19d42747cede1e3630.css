@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+.app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonItem--2HBuQ { height: 100px; box-shadow: rgba(0, 0, 0, 0.25) 1px 1px 4px 0px; margin: 16px 0px; padding: 10px 0px 0px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonItem--2HBuQ { padding: 10px 0px 0px 51px; }
+}
+
+.app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonItem--2HBuQ .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonLineShort--T1xJk { margin: 9px 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonItem--2HBuQ .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonLineShort--T1xJk { margin: 9px 0px; }
+}
+
+.app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonItem--2HBuQ .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonLineLong--2vEUy { margin: 9px 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonItem--2HBuQ .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonItem-styles__skeletonLineLong--2vEUy { margin: 9px 0px; }
+}

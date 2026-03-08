@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.cp-button { display: inline-block; cursor: pointer; height: 34px; font-family: "Proxima Nova"; font-weight: 600; font-size: 14px; padding: 8px 16px; color: rgb(88, 121, 159); border: 2px solid rgb(208, 217, 228); border-radius: 3px; background-color: rgb(255, 255, 255); box-shadow: rgba(71, 82, 102, 0.16) 0px 2px 2px 0px; }
+
+.cp-button i { font-weight: 600; }
+
+.cp-button:focus { outline: none; }
+
+.cp-button.cp-button_left-icon i { padding-right: 10px; }
+
+.cp-button.cp-button_right-icon i { padding-left: 10px; }
+
+.cp-button.cp-button_link { color: rgb(88, 121, 159); font-size: 12px; padding: 0px; border: none; box-shadow: none; }
+
+.cp-button.cp-button_link.cp-button_left-icon i { padding-right: 4px; }
+
+.cp-button.cp-button_link.cp-button_right-icon i { padding-left: 4px; }
+
+.cp-button.cp-button_primary { color: rgb(255, 255, 255); border: 2px solid rgb(21, 158, 244); background-color: rgb(24, 164, 252); box-shadow: rgba(179, 190, 206, 0.8) 0px 2px 2px 0px; }
+
+.cp-button.cp-button_disabled { cursor: not-allowed; background-color: rgb(255, 255, 255); border: 2px solid rgb(229, 235, 242); color: rgba(68, 104, 132, 0.4); }

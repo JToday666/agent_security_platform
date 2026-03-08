@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.newsletter-form { display: grid; gap: 0.5rem 1rem; }
+
+@media (min-width: 768px) {
+  .newsletter-form--inline { grid-template-columns: 1fr auto; }
+}
+
+.newsletter-form--error input { border: 1px solid rgb(236, 88, 91); }
+
+.newsletter-form__error-message { color: rgb(236, 88, 91); font-size: 0.875rem; }
+
+.newsletter-form a { display: inline-block; text-decoration: underline; }
+
+.newsletter-form a:focus { text-decoration: none; outline: currentcolor solid 0.125rem; outline-offset: 0.125em; }

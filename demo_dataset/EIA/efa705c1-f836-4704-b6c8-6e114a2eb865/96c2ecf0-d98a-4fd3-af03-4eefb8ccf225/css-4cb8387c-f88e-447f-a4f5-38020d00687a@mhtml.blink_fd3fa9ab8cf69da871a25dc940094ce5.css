@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.container-logo { align-items: center; display: flex; justify-content: center; }
+
+.logo-kbb { margin-right: 4px; height: 22px; width: 16px; }

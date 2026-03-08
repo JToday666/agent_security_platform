@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+.smicon[data-v-61d2d687] { font-size: 14px; }
+
+.message[data-v-61d2d687], .message-bubble-column[data-v-61d2d687] { flex: 0 0 auto; }
+
+.message[data-v-61d2d687], .message-bubble-row[data-v-61d2d687] { max-width: 80vw; }
+
+.bot-avatar[data-v-61d2d687] { border-radius: 50%; min-width: calc(2.5em + 1.5vmin); min-height: calc(2.5em + 1.5vmin); align-self: flex-start; margin-right: 4px; }
+
+.message-bubble[data-v-61d2d687] { border-radius: 24px; display: inline-flex; font-size: calc(1em + 0.25vmin); padding: 0px 12px; width: fit-content; align-self: center; }
+
+.focusable[data-v-61d2d687] { box-shadow: rgba(0, 0, 0, 0.12) 0px 0.25px 0.75px, rgba(0, 0, 0, 0.24) 0px 0.25px 0.5px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) 0s; cursor: default; }
+
+.focusable[data-v-61d2d687]:focus { box-shadow: rgba(0, 0, 0, 0.25) 0px 1.25px 3.75px, rgba(0, 0, 0, 0.22) 0px 1.25px 2.5px; outline: none; }
+
+.message-bot .message-bubble[data-v-61d2d687] { background-color: rgb(255, 235, 238); }
+
+.message-human .message-bubble[data-v-61d2d687] { background-color: rgb(232, 234, 246); }
+
+.message-feedback .message-bubble[data-v-61d2d687] { background-color: rgb(232, 234, 246); }
+
+.dialog-state[data-v-61d2d687] { display: inline-flex; }
+
+.icon.dialog-state-ok[data-v-61d2d687] { color: green; }
+
+.icon.dialog-state-fail[data-v-61d2d687] { color: red; }
+
+.play-icon[data-v-61d2d687] { font-size: 2em; }
+
+.feedback-state[data-v-61d2d687] { display: inline-flex; align-self: center; }
+
+.icon.feedback-icons-positive[data-v-61d2d687] { color: grey; padding: 0.125em; }
+
+.positiveClick[data-v-61d2d687] { color: green; padding: 0.125em; }
+
+.negativeClick[data-v-61d2d687] { color: red; padding: 0.125em; }
+
+.icon.feedback-icons-positive[data-v-61d2d687]:hover { color: green; }
+
+.icon.feedback-icons-negative[data-v-61d2d687] { color: grey; padding: 0.125em; }
+
+.icon.feedback-icons-negative[data-v-61d2d687]:hover { color: red; }
+
+.response-card[data-v-61d2d687] { justify-content: center; width: 85vw; }
+
+.no-point[data-v-61d2d687] { pointer-events: none; }

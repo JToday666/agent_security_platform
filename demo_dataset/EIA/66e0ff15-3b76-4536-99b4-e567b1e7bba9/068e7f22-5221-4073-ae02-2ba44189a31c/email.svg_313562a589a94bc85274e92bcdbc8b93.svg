@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-Email_icon-_white);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-Email_icon-_white">
+      <rect width="20" height="20"/>
+    </clipPath>
+  </defs>
+  <g id="Email_icon-_white" data-name="Email icon- white" class="cls-1">
+    <g id="Group_1" data-name="Group 1" transform="translate(-0.003 -7.002)">
+      <path id="Path_1" data-name="Path 1" class="cls-2" d="M10.152,10H0v.044l10.152,7.718L20.3,10.044V10Z" transform="translate(0 0)"/>
+      <path id="Path_2" data-name="Path 2" class="cls-2" d="M10.152,22.826l-.026.035L0,15.164v12.32H20.3V15.164l-10.125,7.7Z" transform="translate(0 -3.526)"/>
+    </g>
+  </g>
+</svg>
+

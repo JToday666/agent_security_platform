@@ -1,0 +1,161 @@
+@charset "utf-8";
+
+button.close-button { color: rgb(187, 186, 187); }
+
+button.close-button:hover { color: rgb(142, 140, 142); }
+
+button.close-button:focus { color: rgb(142, 140, 142); }
+
+.custom-links ul li a:hover .agency-icon, .custom-links ul li a:focus .agency-icon, .custom-links ul li .active .agency-icon, header .floating-header .user-navigation .menu-control-container .flyout-menu a:hover .agency-icon, header .floating-header .user-navigation .menu-control-container .flyout-menu a:focus .agency-icon, header .floating-header .user-navigation .menu-control-container .flyout-menu a.current .agency-icon { color: rgb(130, 6, 117) !important; }
+
+#menu-container .flyout-menu .flyout-menu-container .custom-links ul li:hover .agency-icon, #menu-container .flyout-menu .flyout-menu-container .custom-links ul li.current .agency-icon { color: rgb(130, 6, 117) !important; }
+
+header #title-bar.header-container #logo .brand-name .page-undertitle { color: rgb(130, 6, 117); }
+
+ul.tab-buttons li.active a::before { background-color: rgb(130, 6, 117); }
+
+.device-phone header #title-bar.header-container #logo .brand-name .page-undertitle { color: rgb(255, 255, 255); }
+
+header #title-bar.header-container { border-color: rgb(130, 6, 117); background-color: rgb(130, 6, 117); }
+
+header.fixed #title-bar.header-container li.user-name-container { border-color: rgb(91, 4, 82); }
+
+header .floating-header .agency-logo-small, .flyout.new-job-flyout .job-apply-tab .job-flyout-header a.agency-logo-small { background-color: rgb(130, 6, 117); }
+
+.device-tablet header.fixed #title-bar.header-container, .device-large-desktop header.fixed #title-bar.header-container, .device-small-desktop header.fixed #title-bar.header-container, .device-desktop header.fixed #title-bar.header-container { border-color: rgb(217, 180, 213); }
+
+header #title-bar.header-container .user-navigation > ul > li > a:hover { color: rgb(110, 39, 102); }
+
+header #title-bar.header-container .user-navigation li.user-name-container span { color: rgb(255, 255, 255); }
+
+header #title-bar.header-container .user-navigation li .flyout-menu h2, header #title-bar.header-container .user-navigation li .flyout-menu a:hover, header #title-bar.header-container .user-navigation li .flyout-menu .sign-in-link a { color: rgb(130, 6, 117); }
+
+header .floating-header .user-navigation .control-container .header-user-menu-popup-container .user-menu-popup .application-menu ul li a:hover i, header .floating-header .user-navigation .control-container .header-user-menu-popup-container .user-menu-popup .application-menu ul li a.current i { color: rgb(130, 6, 117); }
+
+header #title-bar.header-container .user-navigation li .flyout-menu h2, header #title-bar.header-container .user-navigation li .flyout-menu a:hover, header #title-bar.header-container .user-navigation li .flyout-menu .sign-in-link a:hover { color: rgb(255, 255, 255); }
+
+.flyout-signin-container .togglers a span { color: rgb(130, 6, 117) !important; }
+
+.flyout-signin-container .sign-in-content .form-signin button, .flyout-signin-container .sign-in-content .form-signin button:hover { background-color: rgb(130, 6, 117); }
+
+.flyout-signin-container .sign-in-content .form-signin button:disabled { background-color: rgb(130, 6, 117) !important; }
+
+.flyout-signin-container .sign-in-content .form-signin label input { background-color: rgb(255, 255, 255); }
+
+footer { background-color: rgb(232, 232, 232); }
+
+footer a:hover { color: rgb(130, 6, 117); }
+
+.search-results-container .search-results-listing-container .list-item .item-details-link, .search-results-container .search-results-grid-container .table .job-table-title .item-details-link, .search-results-container .search-results-grid-container .table .class-spec-table-title .item-details-link { color: rgb(130, 6, 117); }
+
+.search-results-container .search-results-listing-container .list-item .item-details-link:hover, .search-results-container .search-results-listing-container .list-item .list-meta li .ss-location:hover, .search-results-container .search-results-grid-container .table .job-table-title .item-details-link:hover, .search-results-container .search-results-grid-container .table .class-spec-table-title .item-details-link:hover { color: rgb(84, 25, 78); }
+
+.search-results-container .search-results-listing-container .list-item .item-details-link:focus, .search-results-container .search-results-listing-container .list-item .list-meta li .ss-location:focus, .search-results-container .search-results-grid-container .table .job-table-title .item-details-link:focus, .search-results-container .search-results-grid-container .table .class-spec-table-title .item-details-link:focus { color: rgb(84, 25, 78); }
+
+.search-results-container .search-results-listing-container .list-item .categories-list a { color: rgb(84, 25, 78); }
+
+.search-results-container .search-results-listing-container .list-item .categories-list a:hover { color: rgb(130, 6, 117); }
+
+.content-container > .container .jobs-container .job-search-header-container h3, .content-container > .container .jobs-container .job-search-header-container h4, .content-container > .container .jobs-container .job-search-header-container h5, .content-container > .container .jobs-container .job-search-header-container h6 { color: rgb(130, 6, 117); }
+
+.content-container > .container .jobs-container .job-search-header-container a, .content-container > .container .jobs-container .job-search-header-container a:visited { color: rgb(84, 25, 78); }
+
+.content-container > .container .jobs-container .job-search-header-container a:hover { color: rgb(130, 6, 117); }
+
+.flyout.new-job-flyout { background-color: rgb(255, 255, 255); }
+
+.flyout .flyout-header .navigation-links a, .flyout .flyout-header .header-buttons a, .entity-standalone-header .header-buttons a { color: rgb(187, 186, 187); }
+
+.flyout .flyout-header .navigation-links a:hover, .flyout .flyout-header .navigation-links a:focus, .flyout .flyout-header .header-buttons a:hover, .flyout .flyout-header .header-buttons a:focus, .entity-standalone-header .header-buttons a:hover, .entity-standalone-header .header-buttons a:focus { color: rgb(142, 140, 142); }
+
+.title, .entity-title, .onlineapp-header .entity-title { color: rgb(130, 6, 117); }
+
+.entity-info .entity-details-buttons ul li a { background-color: rgb(255, 255, 255); border-color: rgb(255, 255, 255); }
+
+.entity-info .entity-details-buttons ul li.active a::before, .entity-info .entity-details-buttons ul li.active:hover a::before { background-color: rgb(130, 6, 117); }
+
+.entity-info .entity-details-content a, .entity-info .job-details-agency-info a { color: rgb(130, 6, 117); }
+
+.entity-info .entity-details-content a:hover, .entity-info .job-details-agency-info a:hover { color: rgb(84, 25, 78); }
+
+.entity-info .entity-details-content .job-details-questions dd .question-item > div.question-index-container span.question-index, .entity-info .entity-details-content .job-details-questions dd .question-item > div.question-index-container span.question-index.required { color: rgb(130, 6, 117); }
+
+.entity-info .entity-details-content #details-info a, .entity-info .entity-details-content #details-benefits a { color: rgb(130, 6, 117) !important; }
+
+.entity-info .closing-info-and-navigation { background-color: rgb(237, 232, 237); }
+
+.entity-info .closing-info-and-share-buttons, .entity-info .closing-info-and-share-buttons { background-color: rgb(237, 232, 237); }
+
+.flyout.new-filter-flyout .filter-flyout-header span.icon { color: rgb(130, 6, 117); }
+
+.flyout.new-filter-flyout .filter-flyout-header button.close-button, .flyout.new-filter-flyout .filter-flyout-header button.back-button, .flyout.new-filter-flyout .filter-flyout-header button.reset-button { color: rgb(142, 140, 142); }
+
+.onlineapp .onlineapp-app-container ul.nav li.active { background-color: rgb(130, 6, 117); }
+
+.onlineapp button.btn.btn-app-add { border-color: rgb(167, 80, 158) !important; color: rgb(130, 6, 117) !important; }
+
+.onlineapp .question-item .span2 { color: rgb(130, 6, 117) !important; }
+
+.onlineapp .chzn-container .chzn-drop .chzn-results .highlighted { background: rgb(130, 6, 117) !important; }
+
+.onlineapp .submitted h1, .onlineapp .submitted h3, .onlineapp .already-applied h1, .onlineapp .indicator .check:not(.jic-check) { color: rgb(130, 6, 117) !important; }
+
+.onlineapp .indicator:not(.jic-indicator) { border-color: rgb(130, 6, 117) !important; }
+
+.onlineapp .device-phone .tab-pane [data-role="resume-item-add-button"] { color: rgb(84, 25, 78) !important; }
+
+.content .color-picker-container .apply-color-form .btn-primary { border-color: rgb(130, 6, 117); background-color: rgb(130, 6, 117); }
+
+#applications #application-list-container .page-container a:not(.item-remove-button) { color: rgb(130, 6, 117); }
+
+#applications #application-list-container .page-container a:not(.item-remove-button):hover { color: rgb(84, 25, 78); }
+
+.device-phone #applications #incomplete-applications-container .incomplete-applications .application-container > div:first-of-type > .row > div:first-of-type .application-location, .device-phone #applications #incomplete-applications-container .incomplete-applications .application-container > div:first-of-type > .row .incomplete-application-current-step-container { color: rgb(130, 6, 117); }
+
+#applications .app-info .ss-asterisk { color: rgb(192, 130, 186); }
+
+#applications .application-steps .view-listing { background-color: rgb(246, 243, 246); }
+
+.flyout.app-history-flyout .flyout-header h2.subtitle { color: rgb(130, 6, 117); }
+
+#account-settings .onlineapp-app-container .note a:hover { color: rgb(130, 6, 117) !important; }
+
+#schedule-exam-flyout-content .flyout-tab-header h2.subtitle { color: rgb(130, 6, 117); }
+
+#schedule-exam-flyout-content .schedule-exam-control .state-scheduling .time-slots .time-slot-link:hover { color: rgb(130, 6, 117); }
+
+#success-page .inner-content-container .success-icon { border-color: rgb(130, 6, 117); }
+
+#success-page .inner-content-container .success-icon span, #success-page h2 { color: rgb(130, 6, 117); }
+
+.nav-pills > li > a { color: initial; background-color: rgb(237, 232, 237); }
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li > a:hover { color: rgb(255, 255, 255); }
+
+.support-page .online-app-guide-container .info-section.content-container a { color: rgb(130, 6, 117); }
+
+.support-page .online-app-guide-container .info-section.content-container a:hover { color: rgb(84, 25, 78); }
+
+.standalone-entity .entity-details-tab .entity-info .entity-standalone-header .entity-title-container .entity-title { color: rgb(130, 6, 117); }
+
+.standalone-entity .entity-details-tab .entity-info .social-buttons-container a { color: rgb(142, 140, 142); }
+
+.standalone-entity .entity-details-tab .entity-info .social-buttons-container a:hover { color: rgb(187, 186, 187); }
+
+.standalone-entity .entity-details-tab .entity-info .entity-details-container #online-application-block .onlineapp-header .entity-title-container .entity-title { color: rgb(130, 6, 117); }
+
+.jic-container .jic-data-list #cards-container .card-content a { color: rgb(130, 6, 117); }
+
+.search-results-container .jobs-not-found-container .link-to-opportunities { background-color: rgb(130, 6, 117); }
+
+.search-results-container .jobs-not-found-container .link-to-opportunities:hover { background-color: rgb(117, 5, 105); }
+
+.device-phone .flyout.conviction-questionnaire-flyout .flyout-content .conviction-questions .job-header .job-header-title { color: rgb(130, 6, 117); }
+
+.device-phone #splash-screen-container .splash-screen { background-color: rgb(130, 6, 117); }
+
+.spinner .dot1, .spinner .dot2 { background-color: rgb(130, 6, 117); }
+
+header #title-bar.header-container .background-image-container { background-position: 0px 50%; }
+
+#applications #applications-container .submitted-applications .application-container .referred-candidate-form-flyout-link-container .referred-candidate-active-form .form-flyout-link { color: rgb(130, 6, 117); }

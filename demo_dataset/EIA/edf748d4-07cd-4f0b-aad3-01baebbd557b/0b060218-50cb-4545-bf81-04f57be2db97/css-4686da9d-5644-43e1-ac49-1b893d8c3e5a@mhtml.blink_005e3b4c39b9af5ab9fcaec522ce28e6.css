@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.select-credit-card-type__label[_ngcontent-iyw-c271] { display: block; }
+
+.select-credit-card-type__select[_ngcontent-iyw-c271] select[_ngcontent-iyw-c271] { background: var(--light-base, #fff); }
+
+.select-credit-card-type__select[_ngcontent-iyw-c271] icon[_ngcontent-iyw-c271] { z-index: 0; }

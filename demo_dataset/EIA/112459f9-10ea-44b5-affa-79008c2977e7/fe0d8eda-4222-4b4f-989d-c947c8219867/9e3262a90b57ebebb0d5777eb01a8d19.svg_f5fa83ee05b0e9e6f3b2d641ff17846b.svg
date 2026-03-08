@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="16px" viewBox="0 0 8 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Page 1</title>
+    <desc></desc>
+    <defs>
+        <polygon id="path-1" points="0 16 7.4352 16 7.4352 0 0 0"></polygon>
+    </defs>
+    <g id="35-Content---our-fleet-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1080.000000, -503.000000)">
+        <g id="Group" transform="translate(0.000000, -1573.000000)">
+            <g id="FOOTER" transform="translate(0.000000, 1649.000000)">
+                <g id="Bottom-part">
+                    <g transform="translate(0.000000, 2.000000)">
+                        <g id="social-icons" transform="translate(993.000000, 424.000000)">
+                            <g id="Page-1" transform="translate(87.500000, 1.000000)">
+                                <mask id="mask-2" fill="white">
+                                    <use xlink:href="#path-1"></use>
+                                </mask>
+                                <g id="Clip-2"></g>
+                                <path d="M1.58021333,16 L4.90288,16 L4.90288,8.0064 L7.14501333,8.0064 L7.43568,5.18133333 L4.90288,5.18133333 L4.90288,3.52106667 C4.90288,2.89706667 5.31674667,2.75093333 5.60741333,2.75093333 L7.39461333,2.75093333 L7.39461333,0.0106666667 L4.93328,0 C2.20101333,0 1.58021333,2.0448 1.58021333,3.35413333 L1.58021333,5.18133333 L-5.33333333e-05,5.18133333 L-5.33333333e-05,8.0064 L1.58021333,8.0064 L1.58021333,16 Z" id="Fill-1" fill="#949494" mask="url(#mask-2)"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
+

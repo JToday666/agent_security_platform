@@ -1,0 +1,59 @@
+@charset "utf-8";
+
+.ubermenu-skin-minimal { font-size: 12px; color: rgb(136, 136, 136); }
+
+.ubermenu-skin-minimal .ubermenu-target { color: rgb(51, 51, 51); }
+
+.ubermenu-skin-minimal .ubermenu-target-description { color: rgb(170, 170, 170); }
+
+.ubermenu-skin-minimal.ubermenu-responsive-toggle { background: 0px 0px; color: rgb(51, 51, 51); font-size: 12px; text-transform: none; font-weight: 400; }
+
+.ubermenu-skin-minimal.ubermenu-responsive-toggle:hover { background: 0px 0px; color: rgb(17, 17, 17); }
+
+.ubermenu-skin-minimal { border: none; background: 0px 0px; }
+
+.ubermenu-skin-minimal .ubermenu-item-level-0.ubermenu-current-menu-item > .ubermenu-target, .ubermenu-skin-minimal .ubermenu-item-level-0.ubermenu-current-menu-parent > .ubermenu-target, .ubermenu-skin-minimal .ubermenu-item-level-0.ubermenu-current-menu-ancestor > .ubermenu-target { color: rgb(17, 17, 17); background: 0px 0px; }
+
+.ubermenu-skin-minimal .ubermenu-item.ubermenu-item-level-0 > .ubermenu-highlight { color: rgb(77, 144, 254); background: 0px 0px; }
+
+.ubermenu-skin-minimal.ubermenu-vertical .ubermenu-item-level-0 > .ubermenu-target { background: 0px 0px; }
+
+.ubermenu-skin-minimal .ubermenu-item-level-0 > .ubermenu-target { font-weight: 400; color: rgb(51, 51, 51); text-transform: none; border-left: none; }
+
+body:not(.rtl) .ubermenu-skin-minimal.ubermenu-horizontal .ubermenu-item-level-0:first-child > .ubermenu-target { box-shadow: none; }
+
+.ubermenu-skin-minimal .ubermenu-item-level-0:hover > .ubermenu-target, .ubermenu-skin-minimal .ubermenu-item-level-0.ubermenu-active > .ubermenu-target { background: 0px 0px; color: rgb(17, 17, 17); }
+
+.ubermenu-skin-minimal .ubermenu-item-level-0 > .ubermenu-submenu-type-stack > .ubermenu-item > .ubermenu-target { color: rgb(51, 51, 51); }
+
+.ubermenu-skin-minimal .ubermenu-item-level-0 > .ubermenu-submenu-type-stack > .ubermenu-item > .ubermenu-target:hover { color: rgb(17, 17, 17); }
+
+.ubermenu-skin-minimal .ubermenu-submenu.ubermenu-submenu-drop { background: rgb(255, 255, 255); border: 1px solid rgb(255, 255, 255); }
+
+.ubermenu-skin-minimal.ubermenu-horizontal .ubermenu-item-level-0 > .ubermenu-submenu-drop { border-top: 1px solid rgb(255, 255, 255); }
+
+.ubermenu-skin-minimal .ubermenu-tab-content-panel { background: rgb(255, 255, 255); }
+
+.ubermenu-skin-minimal .ubermenu-submenu, .ubermenu-skin-minimal .ubermenu-submenu .ubermenu-target { color: rgb(51, 51, 51); }
+
+.ubermenu-skin-minimal .ubermenu-submenu .ubermenu-highlight { color: rgb(77, 144, 254); }
+
+.ubermenu-skin-minimal .ubermenu-submenu .ubermenu-target:hover, .ubermenu-skin-minimal .ubermenu-submenu .ubermenu-active > .ubermenu-target { color: rgb(17, 17, 17); }
+
+.ubermenu-skin-minimal .ubermenu-submenu .ubermenu-target > .ubermenu-target-description { color: rgb(170, 170, 170); }
+
+.ubermenu-skin-minimal .ubermenu-submenu .ubermenu-active > .ubermenu-target > .ubermenu-target-description { color: rgb(102, 102, 102); }
+
+.ubermenu-skin-minimal .ubermenu-submenu .ubermenu-item-header > .ubermenu-target { font-weight: 700; color: rgb(51, 51, 51); }
+
+.ubermenu-skin-minimal .ubermenu-submenu .ubermenu-item-header.ubermenu-has-submenu-stack > .ubermenu-target { border-bottom: 1px solid rgb(233, 233, 233); }
+
+.ubermenu-skin-minimal .ubermenu-submenu .ubermenu-item-header > .ubermenu-target:hover { color: rgb(34, 34, 34); }
+
+.ubermenu-skin-minimal .ubermenu-submenu .ubermenu-current-menu-item > .ubermenu-target { color: rgb(17, 17, 17); background: 0px 0px; }
+
+.ubermenu-nojs.ubermenu-skin-minimal .ubermenu-submenu .ubermenu-tabs .ubermenu-tab:hover > .ubermenu-target, .ubermenu-skin-minimal .ubermenu-submenu .ubermenu-tab.ubermenu-active > .ubermenu-target { background: rgb(238, 238, 238); color: rgb(17, 17, 17); }
+
+.ubermenu-skin-minimal .ubermenu-tabs-group, .ubermenu-skin-minimal .ubermenu-tab > .ubermenu-target, .ubermenu-skin-minimal .ubermenu-tab-content-panel { border-color: rgb(238, 238, 238); }
+
+.ubermenu-skin-minimal.ubermenu-transition-fade .ubermenu-item-level-0 > .ubermenu-submenu-drop { margin-top: 0px; }

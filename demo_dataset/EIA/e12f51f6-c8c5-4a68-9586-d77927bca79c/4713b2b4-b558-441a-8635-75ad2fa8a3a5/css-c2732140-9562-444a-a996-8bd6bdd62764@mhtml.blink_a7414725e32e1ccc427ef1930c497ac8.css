@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.sms-esign--instructions, .sms-esign--completed { align-items: center; display: flex; margin-bottom: 20px; }
+
+.sms-esign--instructions > span, .sms-esign--completed > span { margin-left: 10px; }
+
+.sms-esign--waiting { margin-bottom: 10px; }
+
+.esign-reminder { color: var(--tds-color--red10); }

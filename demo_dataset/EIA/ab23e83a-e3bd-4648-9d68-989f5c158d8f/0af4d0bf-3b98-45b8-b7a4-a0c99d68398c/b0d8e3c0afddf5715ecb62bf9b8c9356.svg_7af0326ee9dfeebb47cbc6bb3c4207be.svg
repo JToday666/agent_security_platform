@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg  width="12px" height="13px" viewBox="0 0 14 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>icon-person-filled</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M9.00009221,7.47547475 C6.89210041,7.47547475 5.17509221,5.799658 5.17509221,3.73323733 C5.17509221,1.67671677 6.89210041,0 9.00009221,0 C11.1071619,0 12.8250922,1.67671677 12.8250922,3.73323733 C12.8250922,5.799658 11.1071619,7.47547475 9.00009221,7.47547475 Z M10.4532787,8.36180362 C13.3792008,8.36180362 15.75,10.6856269 15.75,13.5404554 L15.75,17.5571956 C15.75,17.8055981 15.5498975,18 15.2953893,18 L2.70368852,18 C2.45010246,18 2.25,17.8055981 2.25,17.5571956 L2.25,13.5404554 C2.25,10.6856269 4.62079918,8.36180362 7.54672131,8.36180362 L10.4532787,8.36180362 Z" id="path-1"></path>
+    </defs>
+    <g id="Header-with-MP-info" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/3.0-24/Filled/Traveler" transform="translate(-2.000000, 0.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#FFFFFF" fill-rule="nonzero" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>
+

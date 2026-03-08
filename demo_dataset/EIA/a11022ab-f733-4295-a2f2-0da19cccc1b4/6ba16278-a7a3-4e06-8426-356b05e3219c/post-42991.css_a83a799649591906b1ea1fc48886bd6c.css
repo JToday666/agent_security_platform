@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+.elementor-42991 .elementor-element.elementor-element-6a7e8283 > .elementor-container > .elementor-row > .elementor-column > .elementor-column-wrap > .elementor-widget-wrap { align-content: flex-start; align-items: flex-start; }
+
+.elementor-42991 .elementor-element.elementor-element-6a7e8283:not(.elementor-motion-effects-element-type-background), .elementor-42991 .elementor-element.elementor-element-6a7e8283 > .elementor-motion-effects-container > .elementor-motion-effects-layer { background-color: rgb(255, 255, 255); }
+
+.elementor-42991 .elementor-element.elementor-element-6a7e8283 { transition: background 0.3s ease 0s, border 0.3s ease 0s, border-radius 0.3s ease 0s, box-shadow 0.3s ease 0s; padding: 10px 25px; }
+
+.elementor-42991 .elementor-element.elementor-element-6a7e8283 > .elementor-background-overlay { transition: background 0.3s ease 0s, border-radius 0.3s ease 0s, opacity 0.3s ease 0s; }
+
+.elementor-bc-flex-widget .elementor-42991 .elementor-element.elementor-element-7c35680a.elementor-column .elementor-column-wrap { align-items: center; }
+
+.elementor-42991 .elementor-element.elementor-element-7c35680a.elementor-column.elementor-element[data-element_type="column"] > .elementor-column-wrap.elementor-element-populated > .elementor-widget-wrap { align-content: center; align-items: center; }
+
+.elementor-42991 .elementor-element.elementor-element-7c35680a.elementor-column > .elementor-column-wrap > .elementor-widget-wrap { justify-content: flex-start; }
+
+.elementor-42991 .elementor-element.elementor-element-7c35680a > .elementor-column-wrap > .elementor-widget-wrap > .elementor-widget:not(.elementor-widget__width-auto):not(.elementor-widget__width-initial):not(:last-child):not(.elementor-absolute) { margin-bottom: 0px; }
+
+.elementor-bc-flex-widget .elementor-42991 .elementor-element.elementor-element-510a680c.elementor-column .elementor-column-wrap { align-items: center; }
+
+.elementor-42991 .elementor-element.elementor-element-510a680c.elementor-column.elementor-element[data-element_type="column"] > .elementor-column-wrap.elementor-element-populated > .elementor-widget-wrap { align-content: center; align-items: center; }
+
+.elementor-42991 .elementor-element.elementor-element-510a680c > .elementor-element-populated { transition: background 0.3s ease 0s, border 0.3s ease 0s, border-radius 0.3s ease 0s, box-shadow 0.3s ease 0s; }
+
+.elementor-42991 .elementor-element.elementor-element-510a680c > .elementor-element-populated > .elementor-background-overlay { transition: background 0.3s ease 0s, border-radius 0.3s ease 0s, opacity 0.3s ease 0s; }
+
+.elementor-42991 .elementor-element.elementor-element-10f38b41 .elementor-menu-toggle { margin-left: auto; background-color: rgb(255, 255, 255); }
+
+.elementor-42991 .elementor-element.elementor-element-10f38b41 .elementor-nav-menu--main .elementor-item { color: rgb(0, 0, 0); fill: rgb(0, 0, 0); }
+
+.elementor-42991 .elementor-element.elementor-element-10f38b41 div.elementor-menu-toggle { color: rgb(0, 0, 0); }
+
+.elementor-42991 .elementor-element.elementor-element-10f38b41 div.elementor-menu-toggle svg { fill: rgb(0, 0, 0); }
+
+@media (min-width: 1024px) {
+  .elementor-42991 .elementor-element.elementor-element-7c35680a { width: 9.241%; }
+  .elementor-42991 .elementor-element.elementor-element-510a680c { width: 90.759%; }
+}
+
+@media (max-width: 1023px) {
+  .elementor-42991 .elementor-element.elementor-element-6a7e8283 { margin-top: 0px; margin-bottom: 0px; padding: 0px 15px; }
+  .elementor-42991 .elementor-element.elementor-element-7c35680a { width: 40%; }
+  .elementor-42991 .elementor-element.elementor-element-7c35680a > .elementor-element-populated > .elementor-widget-wrap { padding: 0px; }
+  .elementor-42991 .elementor-element.elementor-element-510a680c { width: 50%; }
+  .elementor-bc-flex-widget .elementor-42991 .elementor-element.elementor-element-510a680c.elementor-column .elementor-column-wrap { align-items: center; }
+  .elementor-42991 .elementor-element.elementor-element-510a680c.elementor-column.elementor-element[data-element_type="column"] > .elementor-column-wrap.elementor-element-populated > .elementor-widget-wrap { align-content: center; align-items: center; }
+  .elementor-42991 .elementor-element.elementor-element-510a680c > .elementor-element-populated > .elementor-widget-wrap { padding: 0px; }
+  .elementor-42991 .elementor-element.elementor-element-10f38b41 .elementor-nav-menu--dropdown a { padding: 20px 30px; }
+  .elementor-42991 .elementor-element.elementor-element-10f38b41 { --nav-menu-icon-size:25px; }
+}

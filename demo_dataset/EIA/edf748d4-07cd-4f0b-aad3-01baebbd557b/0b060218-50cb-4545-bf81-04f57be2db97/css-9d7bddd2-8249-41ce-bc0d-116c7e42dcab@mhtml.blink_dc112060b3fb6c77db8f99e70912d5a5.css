@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.display-0[_ngcontent-iyw-c194] { font-size: 4.5rem; line-height: 4.5rem; }
+
+.display-1[_ngcontent-iyw-c194] { font-size: 3.25rem; line-height: 3.25rem; }
+
+.display-2[_ngcontent-iyw-c194] { font-size: 2.5rem; line-height: 2.5rem; }
+
+.display-3[_ngcontent-iyw-c194] { font-size: 2rem; }
+
+.display-4[_ngcontent-iyw-c194] { font-size: 1.25rem; line-height: 1.15rem; }
+
+.display-5[_ngcontent-iyw-c194] { font-size: 1rem; }
+
+.icon-20[_ngcontent-iyw-c194] { height: 1.25rem; width: 1.25rem; }
+
+.icon-30[_ngcontent-iyw-c194] { height: 1.875rem; width: 1.875rem; }
+
+.b0[_ngcontent-iyw-c194] { font-size: 1.125rem; line-height: 1.325rem; }
+
+.ribbon-badge[_nghost-iyw-c194] { position: relative; }
+
+.ribbon-badge__content[_ngcontent-iyw-c194] { align-items: center; display: flex; padding: 0.125rem 1.5rem 0.125rem 0.125rem; }
+
+.ribbon-badge__content--last-chance[_ngcontent-iyw-c194] { padding: 0px 1.5rem 0px 0px; }
+
+.ribbon-badge__text[_ngcontent-iyw-c194] { white-space: nowrap; }
+
+.ribbon-badge__discount-mark[_ngcontent-iyw-c194] { background: var(--light-base, #fff); border-radius: 50%; color: var(--error-red, #cf2e1d); display: inline-block; height: 20px; line-height: 1.3rem; margin-right: 0.25rem; text-align: center; width: 21px; }
+
+.ribbon-badge__picked-for-you-icon { background: var(--light-base, #fff); border: 3px solid var(--light-base, #fff); border-radius: 50%; color: var(--success-green, #2b7f27); height: 1.25rem; line-height: 1rem; margin-right: 0.4rem; vertical-align: middle; width: 1.25rem; }
+
+.ribbon-badge__stopwatch-icon { background: var(--error-red, #cf2e1d); border-radius: 50%; color: var(--light-base, #fff); margin-right: 0.2rem; vertical-align: middle; }

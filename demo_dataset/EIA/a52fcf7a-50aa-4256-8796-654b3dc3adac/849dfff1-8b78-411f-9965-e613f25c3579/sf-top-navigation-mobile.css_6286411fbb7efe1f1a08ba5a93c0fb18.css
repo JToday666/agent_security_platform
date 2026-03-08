@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+@media only screen and (max-width: 1024px) {
+  .header-mainmenu > .elementor-container > .elementor-row { justify-content: space-between; align-items: center; }
+  .header-mainmenu .elementor-menu-toggle { background-color: transparent; justify-content: flex-end; }
+  .header-mainmenu .elementor-nav-menu--dropdown .menu-link { width: 100%; padding-left: 48px; padding-right: 48px; font-size: 18px; font-weight: 700; }
+  .header-mainmenu .elementor-nav-menu--dropdown .event-item li a { color: rgb(0, 0, 0); font-weight: 600; }
+  .header-mainmenu .elementor-nav-menu--dropdown .event-item li a i { margin-left: 25px; font-size: 14px; }
+  .header-mainmenu .elementor-nav-menu--dropdown > ul > .menu-item > .menu-link { color: rgb(0, 0, 0); line-height: normal; cursor: pointer; font-size: 25px !important; }
+  .header-mainmenu .elementor-nav-menu--dropdown > ul > .menu-item.blue-label > .menu-link { color: rgb(49, 161, 224); font-size: 15px !important; }
+  .header-mainmenu .elementor-nav-menu--dropdown .menu-link.has-submenu { display: flex; justify-content: space-between; align-items: center; }
+  .header-mainmenu .elementor-nav-menu--dropdown .menu-link.has-submenu .sub-arrow { position: relative; width: 14px; height: 12px; }
+  .header-mainmenu .elementor-nav-menu--dropdown .menu-link.has-submenu .sub-arrow i { display: none; }
+  .header-mainmenu .elementor-nav-menu--dropdown .menu-link.has-submenu .sub-arrow::before, .header-mainmenu .elementor-nav-menu--dropdown .menu-link.has-submenu .sub-arrow::after { content: ""; position: absolute; border: 1px solid rgb(0, 0, 0); }
+  .header-mainmenu .elementor-nav-menu--dropdown .menu-link.has-submenu .sub-arrow::before { width: 100%; height: 1px; top: calc(50% - 1px); }
+  .header-mainmenu .elementor-nav-menu--dropdown .menu-link.has-submenu .sub-arrow::after { height: 70%; width: 1px; right: -4px; }
+  .header-mainmenu .elementor-nav-menu--dropdown .menu-link.has-submenu.highlighted .sub-arrow::after { display: none; }
+  .header-mainmenu .highlighted, .header-mainmenu .elementor-sub-item:hover, .header-mainmenu .elementor-sub-item:focus { background: 0px 0px !important; color: rgb(37, 85, 149) !important; }
+  .header-mainmenu .highlighted .sub-arrow::before { border-color: rgb(37, 85, 149) !important; }
+  .header-mainmenu .elementor-nav-menu .elementor-item:hover { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); }
+  .header-mainmenu nav.elementor-nav-menu--dropdown.elementor-nav-menu__container { bottom: 0px; position: fixed; padding-top: 35px; left: 0px !important; }
+  .header-mainmenu nav.elementor-nav-menu--dropdown.elementor-nav-menu__container > ul { overflow-y: auto; height: 100%; padding-bottom: 62px; }
+  .header-mainmenu .park_hours_calendar_container { position: fixed; border-top: 2px solid rgb(0, 0, 0); width: 100%; bottom: 0px; background: rgb(255, 255, 255); }
+  .header-mainmenu .park_hours_calendar div::after { color: rgb(0, 0, 0); content: ""; display: inline-block; font-weight: 900; position: absolute; top: 25px; font-size: 0.875rem; transition: transform 0.3s linear 0s; transform: rotate(270deg); right: 35px; font-family: six-flags !important; }
+  .header-mainmenu .park_hours_calendar a { display: flex; flex-direction: column; align-items: flex-start; padding-left: 47px; }
+  .header-mainmenu .park_hours_calendar a div { font-weight: 700; font-size: 17px; color: rgb(0, 0, 0); }
+  .header-mainmenu .park_hours_calendar a span { font-weight: 400; font-size: 16px; color: rgb(0, 0, 0); }
+  .header-logo-wrapper { order: 2; width: 50%; }
+  .header-menu-wrapper { order: 3; width: 25% !important; }
+  .header-mainmenu .elementor-container .elementor-row .buy-now-column, .header-mainmenu .elementor-container .elementor-row .header-buy-wrapper { order: 1; width: 25%; }
+  .header-mainmenu .header-menu-buynow-wrapper { right: initial; top: -20px; z-index: 10000; }
+  .header-mainmenu .header-menu-buynow-wrapper .buynow-icon { max-width: 78px; transform: translate(-12px, 1px); }
+  .header-mainmenu .header-menu-buynow-wrapper .menu-wrapper { top: -5px; left: -20px; z-index: 99; border-bottom-left-radius: 0px; }
+  .header-mainmenu .header-menu-buynow-wrapper .menu-wrapper li a { text-align: left; padding: 20px; position: relative; }
+  .header-menu-buynow-wrapper-closer-icon::after, .header-mainmenu .header-menu-buynow-wrapper .menu-wrapper li a::after { font-family: eicons; }
+  .header-menu-buynow-wrapper-closer-icon { margin-right: 10px; font-style: normal; }
+  .header-menu-buynow-wrapper-closer-icon::after { content: ""; font-size: 18px; color: rgb(255, 255, 255); }
+  .close-btn-placeholder { display: flex; justify-content: space-between; align-items: center; min-height: 60px; border-bottom: 2px solid rgb(255, 255, 255); }
+  .buynow-hidden { display: none; }
+  .buynow-icon-white { transform: translate(7px, 4px); }
+  .label-separator a { font-weight: 800; color: rgb(0, 0, 0); }
+}

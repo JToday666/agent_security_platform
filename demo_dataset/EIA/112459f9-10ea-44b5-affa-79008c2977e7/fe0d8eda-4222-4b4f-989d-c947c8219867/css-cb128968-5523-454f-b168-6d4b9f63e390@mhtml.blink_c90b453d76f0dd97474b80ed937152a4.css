@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger--2JG52 { align-items: center; background: rgb(255, 255, 255); color: rgb(0, 0, 0); display: flex; flex-direction: row; font-weight: normal; line-height: 46px; margin-top: 0px; padding: 0px 24px; font-size: 14px; width: 100%; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger__number--vS9bW { background: rgb(255, 255, 255); border-radius: 50%; border: 1px solid rgb(0, 0, 0); display: inline-block; flex-shrink: 0; height: 20px; line-height: 18px; margin-right: 10px; text-align: center; width: 20px; font-size: 14px; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger__name--370Rd { display: block; flex: 0 1 auto; min-width: 120px; overflow: hidden; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger__info--1TXcj { display: flex; flex: 0 0 auto; padding-left: 10px; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger__seat--2D1KJ { display: block; text-align: right; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger__price--2Ebp6 { display: block; margin-left: 16px; text-align: right; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger--selected--2zWW0 .app-components-Seatmap-PassengerTray-PassengerTray__passenger__number--vS9bW { background: rgb(255, 198, 88); font-weight: 600; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger__check--3UX6J { display: none; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger__close--37ibx { margin-left: auto; text-align: right; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger__modal-icon--2yd4B { display: flex; width: 24px; height: 46px; margin-left: auto; align-items: center; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__passenger__modal-icon--2yd4B svg { width: 24px; height: 24px; }
+
+.app-components-Seatmap-PassengerTray-PassengerTray__visually-hidden--3dDq3 { height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); position: absolute !important; }

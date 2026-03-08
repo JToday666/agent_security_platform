@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.app-components-Refunds-tabs-CheckStatus-styles__checkStatusMain--P99FA { padding: 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-CheckStatus-styles__checkStatusMain--P99FA { padding: 0px; }
+}

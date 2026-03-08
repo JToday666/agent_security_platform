@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.verify-sms--form .verify-sms--body { align-items: center; display: flex; margin-top: 6px; }
+
+.verify-sms--form .verify-sms--body > .tds-form-input { width: 150px; }
+
+.verify-sms--form .verify-sms--body > .verify-sms--timer { margin-left: 16px; min-width: 40%; width: 40%; }
+
+.verify-sms--form .verify-sms--body > .hidden { visibility: hidden; }
+
+.verify-sms--form .verify-sms--instructions { margin-bottom: 20px; }
+
+.verify-sms--form .verify-sms--submit-button { margin-top: 40px; width: 100%; }
+
+@media (min-width: 600px) {
+  .verify-sms--form .verify-sms--submit-button { width: 50%; }
+}

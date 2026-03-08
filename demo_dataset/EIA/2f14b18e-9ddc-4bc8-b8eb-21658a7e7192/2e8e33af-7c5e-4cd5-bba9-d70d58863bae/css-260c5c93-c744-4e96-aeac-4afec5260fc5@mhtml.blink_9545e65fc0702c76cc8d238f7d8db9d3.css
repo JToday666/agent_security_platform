@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__header--W5PO6 { display: flex; margin-bottom: 8px; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__number--3-qdv { flex: 0 0 auto; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__label--3ETrb { flex: 1 1 auto; padding-left: 8px; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__label--3ETrb:first-child { padding-left: 0px; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__price--1CsCn { flex: 0 0 auto; padding-left: 8px; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__description--35bwP { margin-bottom: 8px; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__features--25l-q { list-style: none; display: block; margin: 0px 0px 6px; padding: 0px; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__feature--utKHe { display: block; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__feature--utKHe::before { content: "—  "; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__info--1GYRJ { padding-top: 4px; font-size: 12px; margin-bottom: 8px; display: grid; grid-template-columns: 24px auto; }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__info--tooltip--2UNca { padding-top: 8px; margin-top: 16px; margin-bottom: 0px; border-top: 1px solid rgb(153, 153, 153); }
+
+.app-components-Seatmap-SeatInfo-SeatInfo__seat-info__info-icon--m70By { color: rgb(0, 34, 68); width: 16px; height: 16px; }

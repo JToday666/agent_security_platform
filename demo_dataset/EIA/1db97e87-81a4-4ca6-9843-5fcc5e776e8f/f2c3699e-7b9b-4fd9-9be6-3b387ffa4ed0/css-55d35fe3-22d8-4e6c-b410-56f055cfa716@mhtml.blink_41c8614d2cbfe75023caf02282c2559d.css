@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.account-access-modal__spinner { background: rgb(255, 255, 255); inset: 0px; position: absolute; display: flex; justify-content: center; align-items: center; z-index: 1; }
+
+.modal__account { z-index: 11111111; }
+
+.account_modal_container .form-container { padding: 0px; }
+
+.account_modal_container .form-container > .forgot-password-back { position: absolute; margin-top: -58px; margin-left: -8px; }
+
+@media screen and (min-width: 540px) {
+  .account_modal_container .form-container > .forgot-password-back { margin-top: -44px; margin-left: -60px; }
+}
+
+@media screen and (min-width: 540px) {
+  .account_modal_container { padding: 10px 60px; }
+}
+
+.icon-circle-background { border-radius: 50%; background-color: rgb(211, 251, 255); margin: 0px auto; height: 44px; width: 44px; display: block; }
+
+.icon-offset { padding-left: 16px; }
+
+.icon-color { color: rgb(9, 38, 90); }

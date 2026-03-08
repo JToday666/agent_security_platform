@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta { background: rgb(0, 0, 0); border-radius: 10px; margin: 0px 4px; transition: all 0.3s ease-out 0s; max-width: 201px; }
+
+.sf-fright-nigth--passandtickets p a { color: rgb(255, 255, 255); }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta:first-child { margin-left: 15px; }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta:last-child { margin-right: 15px; }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta .elementor-column-wrap { min-height: 262px; }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta:hover .elementor-widget-wrap { height: 105%; }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta .elementor-widget-wrap { position: relative; transition: all 0.3s ease-out 0s; box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 6px; height: 262px; width: 201px; border-radius: 10px; padding: 65px 0px 0px !important; }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-icon { position: absolute; top: 0px; left: 50%; transform: translate(-50%, -32%); background: rgb(0, 0, 0); width: 90px; height: 90px; margin-left: auto; margin-right: auto; border-radius: 55px; }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-icon i, .elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-icon svg { position: absolute; top: 39%; left: 50%; color: rgb(255, 255, 255); font-size: 34px; transform: translate(-50%, -50%) !important; }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-title .elementor-heading-title { font-size: 25px; font-weight: 700; padding: 0px 0px 22px; text-align: center; color: rgb(255, 255, 255); }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-payplan, .elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-payplan-price { text-align: center; color: rgb(0, 0, 0); }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-footer { position: absolute; bottom: 0px; left: 0px; right: 0px; cursor: pointer; }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-footer a.elementor-button-link { padding: 26px 65px; font-weight: 600; width: 100%; border-radius: 0px 0px 10px 10px; background: rgb(214, 54, 46); text-decoration: none; }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-featured .sf-hero-cta-footer a { background: rgb(214, 54, 46); color: rgb(255, 255, 255); }
+
+.elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-featured .sf-hero-cta-payplan, .elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta-featured .sf-hero-cta-payplan-price { color: rgb(255, 255, 255); font-style: italic; }
+
+@media screen and (max-width: 767px) {
+  .sf-fright-nigth--passandtickets .elementor-inner-section > .elementor-container > .elementor-row { flex-flow: row nowrap; display: flex; overflow: scroll hidden; justify-content: normal; padding-top: 65px; }
+  .elementor-top-section.sf-fright-nigth--passandtickets .sf-hero-cta:hover .elementor-widget-wrap { height: 100%; }
+  .elementor-top-section.sf-fright-nigth--passandtickets .elementor-row { column-gap: 8px; margin: 0px !important; }
+}

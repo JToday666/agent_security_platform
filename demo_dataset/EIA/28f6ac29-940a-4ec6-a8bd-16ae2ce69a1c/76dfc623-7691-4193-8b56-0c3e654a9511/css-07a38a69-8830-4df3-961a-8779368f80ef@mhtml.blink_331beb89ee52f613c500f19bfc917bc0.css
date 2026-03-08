@@ -1,0 +1,145 @@
+@charset "utf-8";
+
+.atm-c-table { border-collapse: collapse; border-spacing: 0px; width: 100%; margin-bottom: 1rem; position: relative; }
+
+.atm-c-table--condensed { margin-bottom: 0px; }
+
+.atm-c-table--stacked { display: block; }
+
+@media (min-width: 47em) {
+  .atm-c-table--stacked { display: table; }
+}
+
+.atm-c-table--lined { border-width: 1px; border-style: solid; border-color: rgb(204, 204, 204); }
+
+.atm-c-table--fixed { table-layout: fixed; }
+
+.atm-c-table--grid { border-collapse: separate; border-spacing: 0.5rem; height: 100%; }
+
+.atm-c-table__caption { font-size: 1.25rem; font-weight: 400; line-height: 1.6; text-align: left; margin-bottom: 0.5rem; }
+
+.atm-c-table--stacked .atm-c-table__header { display: none; }
+
+@media (min-width: 47em) {
+  .atm-c-table--stacked .atm-c-table__header { display: table-header-group; }
+}
+
+.atm-c-table--stacked > .atm-c-table__body { display: block; width: 100%; }
+
+@media (min-width: 47em) {
+  .atm-c-table--stacked > .atm-c-table__body { display: table-row-group; }
+}
+
+.atm-c-table__row { vertical-align: top; border-bottom: 1px solid rgb(204, 204, 204); }
+
+.atm-c-table__row:last-child { border-bottom: 0px; }
+
+.atm-c-table--stacked .atm-c-table__row { display: table-row; }
+
+@media (max-width: 47em) {
+  .atm-c-table--stacked > .atm-c-table__body > .atm-c-table__row { display: block; width: 100%; border: 1px solid rgb(204, 204, 204); border-radius: 4px; margin-bottom: 1rem; }
+}
+
+.atm-c-table__row--bare { border-bottom: none; }
+
+.atm-c-table__row--clickable { cursor: pointer; }
+
+.atm-c-table__row--clickable:hover { background: rgb(242, 242, 242); }
+
+.atm-c-table__cell { padding: 1rem 0.5rem; }
+
+.atm-c-table--condensed .atm-c-table__cell { padding: 0.5rem; }
+
+.atm-c-table__header .atm-c-table__cell { text-align: left; position: relative; padding: 1rem 0.75rem 1rem 0.5rem; font-size: 1rem; line-height: 1.5; margin-bottom: 0px; font-weight: 600; border-bottom: 4px solid rgb(124, 135, 142); background-clip: padding-box; }
+
+.atm-c-table__header .atm-c-table__cell::after { content: ""; display: block; position: absolute; top: 0px; right: 0px; height: calc(100% + 4px); width: 4px; background: rgb(255, 255, 255); }
+
+.atm-c-table__header .atm-c-table__cell:last-child { border-right-width: 0px; padding-right: 0.5rem; }
+
+.atm-c-table__header .atm-c-table__cell:last-child::after { content: none; }
+
+.atm-c-table__header .atm-c-table__cell.atm-c-table__cell--align-left { text-align: left; }
+
+.atm-c-table__header .atm-c-table__cell.atm-c-table__cell--align-right { text-align: right; }
+
+.atm-c-table__header .atm-c-table__cell.atm-c-table__cell--align-center { text-align: center; }
+
+.atm-c-table__header .atm-c-table__cell.atm-c-table__cell--valign-center { vertical-align: middle; }
+
+.atm-c-table--sticky-header .atm-c-table__header .atm-c-table__cell { background-color: rgb(255, 255, 255); position: sticky; top: 0px; z-index: 2; border-bottom: none; box-shadow: rgb(124, 135, 142) 0px -4px 0px 0px inset; }
+
+.atm-c-table--grid .atm-c-table__header .atm-c-table__cell { padding-top: 1rem; padding-bottom: 1rem; }
+
+.atm-c-table--grid .atm-c-table__header .atm-c-table__cell::after { content: none; }
+
+@media (max-width: 47em) {
+  .atm-c-table--stacked .atm-c-table__cell { padding: 1rem; }
+}
+
+@media (max-width: 47em) {
+  .atm-c-table--stacked .atm-c-table__header .atm-c-table__cell::after { content: none; }
+}
+
+.atm-c-table--stacked .atm-c-table__cell { display: block; padding-left: 1rem; padding-right: 1rem; }
+
+.atm-c-table--stacked .atm-c-table__cell::before { content: attr(data-heading); display: block; font-size: 1rem; line-height: 1.5; margin-bottom: 0px; font-weight: 600; }
+
+@media (min-width: 47em) {
+  .atm-c-table--stacked .atm-c-table__cell::before { content: none; }
+}
+
+@media (min-width: 47em) {
+  .atm-c-table--stacked .atm-c-table__cell { display: table-cell; padding: 1rem 0.5rem; }
+}
+
+.atm-c-table--lined .atm-c-table__cell { border-width: 1px; border-style: solid; border-color: rgb(148, 148, 148); }
+
+.atm-c-table--lined .atm-c-table__cell:first-child { border-left: none; }
+
+.atm-c-table--lined .atm-c-table__cell:last-child { border-right: none; }
+
+.atm-c-table--lined .atm-c-table__header .atm-c-table__cell { border-bottom-width: 4px; }
+
+.atm-c-table--lined .atm-c-table__header .atm-c-table__cell::after { content: none; }
+
+@media (max-width: 47em) {
+  .atm-c-table--stacked.atm-c-table--lined .atm-c-table__cell { border: 0px; }
+}
+
+@media (max-width: 47em) {
+  .atm-c-table--stacked-first-cell-heading > .atm-c-table__body > .atm-c-table__row > .atm-c-table__cell:first-child { font-size: 1.5rem; font-weight: 400; line-height: 1.33333; margin-bottom: 0px; }
+}
+
+.atm-c-table__row--clickable .atm-c-table__cell { color: rgb(0, 96, 128); text-decoration: underline; font-weight: normal; }
+
+.atm-c-table__row--clickable .atm-c-table__cell:hover { color: rgb(0, 51, 160); }
+
+.atm-c-table__row--clickable .atm-c-table__cell:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+.atm-c-table--grid .atm-c-table__cell { padding: 0px; }
+
+.atm-c-table__cell > ul, .atm-c-table__cell > ol { margin: 0px; padding: 0px; list-style: none; }
+
+.atm-c-table__cell > ul > li, .atm-c-table__cell > ol > li { margin-left: 1rem; text-indent: -1rem; }
+
+.atm-c-table__footer-cell { padding: 1rem; }
+
+.atm-c-table .atm-c-table { margin-bottom: 0px; }
+
+.atm-c-table--stacked .atm-c-table .atm-c-table__cell:not(th) { padding-top: 0px; }
+
+@media (min-width: 47em) {
+  .atm-c-table--stacked .atm-c-table .atm-c-table__cell:not(th) { padding-top: 1rem; }
+}
+
+.atm-c-table .atm-c-table th.atm-c-table__cell { padding-top: 0px; padding-bottom: 0px; text-align: left; font-size: 1rem; line-height: 1.5; margin-bottom: 0px; font-weight: 600; }
+
+@media (min-width: 47em) {
+  .atm-c-table .atm-c-table th.atm-c-table__cell { width: 60%; padding-top: 1rem; padding-bottom: 1rem; font-size: 1rem; font-weight: 400; line-height: 1.5; margin-bottom: 0px; }
+}
+
+.atm-c-table .atm-c-table .atm-c-table__row:first-child th.atm-c-table__cell { padding-top: 0px; }
+
+@media (min-width: 47em) {
+  .atm-c-table .atm-c-table .atm-c-table__row:first-child th.atm-c-table__cell { padding-top: 1rem; }
+}

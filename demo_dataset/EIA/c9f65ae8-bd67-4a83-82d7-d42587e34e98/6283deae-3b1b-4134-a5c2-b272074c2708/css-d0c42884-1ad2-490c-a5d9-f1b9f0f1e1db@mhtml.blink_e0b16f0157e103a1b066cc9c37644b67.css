@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-h6b2dk { width: 100%; background-color: var(--chakra-colors-gray-50); padding-inline-start: var(--chakra-space-2-5); padding-inline-end: var(--chakra-space-2-5); padding-top: var(--chakra-space-10); padding-bottom: var(--chakra-space-2-5); }
+
+@media screen and (min-width: 64rem) {
+  .css-h6b2dk { padding-top: var(--chakra-space-24); }
+}

@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+.atm-c-text-list { margin: 0px; padding: 0px; list-style: none; }
+
+.atm-c-text-list--ol { padding-left: 1.125rem; list-style-type: decimal; }
+
+.atm-c-text-list--ol .atm-c-text-list__item { padding-left: 0.5rem; }
+
+.atm-c-text-list--small { font-size: 0.875rem; font-weight: 400; line-height: 1.71429; margin-bottom: 0px; }
+
+.atm-c-text-list--tiny { font-size: 0.75rem; font-weight: 300; line-height: 1.66667; }
+
+.atm-c-text-list--inline { display: flex; flex-wrap: wrap; }
+
+.atm-c-text-list--inline .atm-c-text-list__item { display: flex; margin-left: 1rem; }
+
+.atm-c-text-list--inline .atm-c-text-list__item::before { content: ""; display: block; height: 0.5rem; width: 0.5rem; position: relative; top: 0.5rem; left: -0.5rem; background: rgb(0, 0, 0); border-radius: 50%; }
+
+.atm-c-text-list--inline .atm-c-text-list__item:first-child { margin-left: 0px; }
+
+.atm-c-text-list--inline .atm-c-text-list__item:first-child::before { content: none; }
+
+.atm-c-text-list--inverted .atm-c-text-list__item { color: rgb(255, 255, 255); }
+
+.atm-c-text-list--small.atm-c-text-list--inline .atm-c-text-list__item::before { height: 0.25rem; width: 0.25rem; top: 0.625rem; }
+
+.atm-c-text-list--inverted.atm-c-text-list--inline .atm-c-text-list__item::before { background: rgb(255, 255, 255); }
+
+.atm-c-text-list--tiny.atm-c-text-list--inline .atm-c-text-list__item::before { top: 0.5rem; height: 0.25rem; width: 0.25rem; }
+
+.atm-c-shopping-cart__flight-meta.atm-c-text-list--small.atm-c-text-list--inline .atm-c-text-list--tiny.atm-c-text-list--inline .atm-c-text-list__item { display: none; }
+
+@media (min-width: 60em) {
+  .atm-c-shopping-cart__flight-meta.atm-c-text-list--small.atm-c-text-list--inline .atm-c-text-list--tiny.atm-c-text-list--inline .atm-c-text-list__item:first-child { display: flex; }
+}
+
+.atm-c-shopping-cart__flight-meta.atm-c-text-list--small.atm-c-text-list--inline .atm-c-text-list--tiny.atm-c-text-list--inline .atm-c-text-list__item::before { top: 0.625rem; }
+
+@media (min-width: 70em) {
+  .atm-c-shopping-cart__flight-meta.atm-c-text-list--small.atm-c-text-list--inline .atm-c-text-list--tiny.atm-c-text-list--inline .atm-c-text-list__item { display: flex; }
+}

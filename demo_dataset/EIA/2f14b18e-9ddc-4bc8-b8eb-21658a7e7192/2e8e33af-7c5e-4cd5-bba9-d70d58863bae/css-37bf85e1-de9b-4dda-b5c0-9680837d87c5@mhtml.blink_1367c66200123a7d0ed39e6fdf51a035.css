@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+.app-components-VerticalShoppingCart-styles__loaderBody--2SwCo { display: flex; justify-content: center; margin: 30px; }
+
+.app-components-VerticalShoppingCart-styles__section--2dr4j, .app-components-VerticalShoppingCart-styles__totalBlock--183-O { display: inline-block; width: 100%; }
+
+.app-components-VerticalShoppingCart-styles__divLeft--YG7Kl { float: left; width: 70%; }
+
+.app-components-VerticalShoppingCart-styles__divRight--G9dbq { float: right; width: 30%; text-align: right; }
+
+.app-components-VerticalShoppingCart-styles__divLeftWithOldPrice--2LohG { float: left; width: 50%; }
+
+.app-components-VerticalShoppingCart-styles__divRightWithOldPrice--1k5bf { float: right; width: 50%; text-align: right; }
+
+.app-components-VerticalShoppingCart-styles__totalBlock--183-O { border-top: 1px solid rgb(204, 204, 204); display: flex; flex-direction: column; }
+
+@media screen and (min-width: 720px) {
+  .app-components-VerticalShoppingCart-styles__totalBlock--183-O { flex-direction: row; }
+}
+
+.app-components-VerticalShoppingCart-styles__fullWidth--1-rlL { width: 100%; }
+
+.app-components-VerticalShoppingCart-styles__couponWidth--2Bzv9 { width: 100%; }
+
+@media screen and (min-width: 720px) {
+  .app-components-VerticalShoppingCart-styles__couponWidth--2Bzv9 { width: 65%; }
+}
+
+.app-components-VerticalShoppingCart-styles__totalWidthWithCoupon--3orCW { width: 100%; }
+
+@media screen and (min-width: 720px) {
+  .app-components-VerticalShoppingCart-styles__totalWidthWithCoupon--3orCW { width: 35%; }
+}
+
+.app-components-VerticalShoppingCart-styles__alignRight--2STj8 { text-align: right; }
+
+.app-components-VerticalShoppingCart-styles__checkMark--3UUOy::before { content: "✓"; color: rgb(27, 119, 66); font-size: 20px; font-weight: 900; margin-right: 4px; }
+
+.app-components-VerticalShoppingCart-styles__strikeOut--1-QL4 { text-decoration: line-through; }
+
+.app-components-VerticalShoppingCart-styles__newLine--wnWGa { display: flex; flex-direction: column; }
+
+.app-components-VerticalShoppingCart-styles__visuallyHidden--3ykkJ { height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); position: absolute !important; }

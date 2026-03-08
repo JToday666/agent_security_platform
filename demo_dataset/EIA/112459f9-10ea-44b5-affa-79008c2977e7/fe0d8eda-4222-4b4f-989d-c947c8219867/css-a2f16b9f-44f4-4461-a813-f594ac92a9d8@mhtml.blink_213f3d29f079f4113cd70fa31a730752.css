@@ -1,0 +1,55 @@
+@charset "utf-8";
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__small--y8gws.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content--FQIUE { padding: 10px 15px 0px; }
+}
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__small--y8gws.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__info-message--2l6qE { height: 24px; }
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__small--y8gws.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__info-icon--32UU1 { width: 18px; height: 18px; }
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__small--y8gws.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__aircraft--2hCTf { padding-bottom: 12px; }
+
+@media screen and (max-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__small--y8gws.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__aircraft--2hCTf { padding: 0px 24px 8px; }
+}
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__small--y8gws.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__info-paragraph--2hSuE { font-size: 12px; font-weight: 400; }
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content--FQIUE { background: rgb(255, 255, 255); display: flex; flex-direction: column; margin: 0px auto; padding-top: 16px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content--FQIUE { padding-left: 48px; padding-right: 48px; padding-top: 24px; }
+}
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__loader--1xvsO { min-height: 240px; padding-top: 48px; text-align: center; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__loader--1xvsO { padding-right: 48px; }
+}
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__loaderTitle--1jpOE { margin-bottom: 18px; }
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__legend--3Kinv { border-bottom: 1px solid rgb(102, 102, 102); margin-bottom: 32px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__legend--3Kinv { border: 0px; flex: 1 1 0%; margin-bottom: 0px; margin-left: 16px; order: 2; }
+}
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__info-message--2l6qE { display: flex; align-items: center; }
+
+@media screen and (max-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__info-message--2l6qE { padding: 0px 24px; }
+}
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__info-icon--32UU1 { display: inline-block; width: 24px; height: 24px; fill: rgb(0, 34, 68); margin-right: 8px; }
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__info-paragraph--2hSuE { display: inline-block; color: rgb(0, 0, 0); font-size: 14px; }
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__aircraft--2hCTf { padding-bottom: 16px; }
+
+@media screen and (max-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__content__aircraft--2hCTf { padding: 0px 24px 16px; }
+}
+
+.app-components-Seatmap-SeatMapViewOnlyHorizontal-SeatMapViewOnlyHorizontal__visually-hidden--1YydA { height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); position: absolute !important; }

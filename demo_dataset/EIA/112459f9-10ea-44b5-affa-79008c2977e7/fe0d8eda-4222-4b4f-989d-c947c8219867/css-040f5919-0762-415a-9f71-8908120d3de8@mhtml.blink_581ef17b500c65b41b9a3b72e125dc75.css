@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.atm-c-inline-form { display: flex; }
+
+.atm-c-inline-form__input { -webkit-box-flex: 1; flex: 1 1 0%; }

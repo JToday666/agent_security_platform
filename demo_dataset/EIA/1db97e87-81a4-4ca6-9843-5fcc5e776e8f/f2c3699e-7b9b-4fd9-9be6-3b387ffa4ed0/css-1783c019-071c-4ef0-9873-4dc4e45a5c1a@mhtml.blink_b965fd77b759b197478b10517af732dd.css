@@ -1,0 +1,117 @@
+@charset "utf-8";
+
+.telehealth-component { display: flex; flex-direction: column; margin-top: 8px; }
+
+@media (min-width: 992px) {
+  .telehealth-component { flex-direction: row; margin-top: 12px; }
+}
+
+.telehealth-component .state-select { max-width: 340px; }
+
+@media (min-width: 992px) {
+  .telehealth-component .state-select { margin-right: 16px; }
+}
+
+.telehealth-component .state-select .search-input-group__search-input { max-width: 342px; height: 48px; }
+
+@media (min-width: 992px) {
+  .telehealth-component .state-select .search-input-group__search-input { width: 340px; }
+}
+
+.telehealth-component .state-select .autosuggester__suggestions.autosuggester__suggestions { width: 340px; }
+
+.telehealth-component .location-box-section { max-width: 340px; }
+
+.telehealth-component .warning-message { margin-bottom: 0px; padding-top: 0px; font-size: 0.75rem; }
+
+@media (min-width: 768px) {
+  .telehealth-component .warning-message { font-size: 0.875rem; }
+}
+
+.telehealth-partner-how-it-works { margin-top: 24px; }
+
+.partner-selector-with-cards { flex-grow: 1; }
+
+@media (min-width: 992px) {
+  .partner-selector-with-cards { margin-top: 0px; margin-left: 16px; }
+}
+
+.partner-selector-with-spinner { display: flex; flex-direction: column; }
+
+@media (min-width: 992px) {
+  .partner-selector-with-spinner { flex-direction: row; }
+}
+
+.telehealth-service-info-heading { display: flex; align-items: center; }
+
+@media (min-width: 992px) {
+  .telehealth-service-info-heading { align-items: flex-start; flex-shrink: 0; width: 356px; }
+}
+
+.service-info-name { margin-top: 24px; margin-right: 16px; }
+
+.service-info-name.skeleton-loading-bg { flex-grow: 1; display: block; width: 100%; max-width: 300px; }
+
+.service-info-name.skeleton-loading-bg::before { content: " "; }
+
+@media (min-width: 992px) {
+  .service-info-name { flex-grow: 1; margin-right: 24px; }
+}
+
+.service-icon-container { flex-shrink: 0; margin-top: 16px; width: 48px; }
+
+@media (min-width: 540px) {
+  .service-icon-container { margin-top: 24px; }
+}
+
+@media (min-width: 992px) {
+  .service-icon-container { margin-right: 24px; }
+}
+
+.service-info-holder { margin-top: 16px; margin-bottom: 16px; flex-grow: 1; }
+
+.service-info { display: flex; margin-bottom: 8px; }
+
+.service-info-text.skeleton-loading-bg { flex-grow: 1; }
+
+.service-info-text.skeleton-loading-bg::before { content: " "; }
+
+.service-info-tick { vertical-align: bottom; margin-right: 8px; margin-top: 4px; }
+
+.telehealth-partner-back { text-align: center; margin-top: 24px; margin-bottom: 40px; }
+
+@media (min-width: 540px) {
+  .telehealth-partner-back { margin-top: 0px; margin-bottom: 24px; }
+}
+
+.telehealth-emergency-message { display: flex; justify-content: center; align-items: center; color: rgb(9, 38, 90); padding-top: 4px; padding-bottom: 16px; font-size: 0.875rem; }
+
+@media (min-width: 540px) {
+  .telehealth-emergency-message { padding-top: 2px; padding-bottom: 8px; }
+}
+
+.telehealth-partner-subheader { padding-top: 28px; }
+
+.telehealth-partner-submessage { color: rgb(74, 74, 77); margin-bottom: 24px; margin-right: 4px; }
+
+.telehealth-select-specialties { margin-bottom: 24px; max-width: 343px; }
+
+@media (min-width: 864px) {
+  .telehealth-select-specialties { max-width: 264px; }
+}
+
+.telehealth-select-specialties label { font-size: 0.875rem; margin-top: 6px; margin-bottom: 8px; }
+
+@media (min-width: 540px) {
+  .telehealth-select-specialties label { font-size: 1rem; }
+}
+
+.telehealth-partners-related-articles { background-color: rgb(211, 251, 255); }
+
+.telehealth-partners-related-articles-heading { color: rgb(0, 0, 80); margin-bottom: 32px; }
+
+.telehealth-partners-related-articles-inner { padding-top: 32px; }
+
+@media (min-width: 992px) {
+  .telehealth-partners-related-articles-inner { padding-left: 356px; background-position: 60px 110%; background-repeat: no-repeat; background-size: 350px; background-image: url("data:image/svg+xml,%3Csvg width='294' height='240' viewBox='0 0 294 240' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M261.749 116.269C256.136 110.656 247.462 110.656 241.594 115.759L166.08 191.273C161.743 195.61 154.855 195.61 150.773 191.273C146.436 186.936 146.436 180.048 150.773 175.966L177.816 148.924V148.669L205.878 120.606C211.491 114.993 211.491 105.554 205.878 99.9415C200.266 94.329 190.826 94.329 185.214 99.9415L166.335 118.82C161.998 123.157 155.365 123.157 151.028 118.82C146.691 114.483 146.691 107.85 151.028 103.513L216.338 38.2036C221.951 32.591 221.951 23.1517 216.338 17.5392C210.725 11.9267 201.286 11.9267 195.674 17.5392L163.274 49.1735C160.468 51.9798 156.641 53.5105 153.069 53.5105C149.498 53.5105 145.926 52.2349 143.12 49.6838L112.761 19.325C86.9944 -6.44167 45.1555 -6.44167 19.3888 19.325C6.88812 31.8257 0 48.4082 0 66.0112C0 83.6141 6.88812 100.197 19.3888 112.697L141.844 235.153C141.844 235.28 141.908 235.344 141.972 235.408C142.036 235.472 142.099 235.535 142.099 235.663C144.906 238.469 148.732 240 152.559 240C156.386 240 159.957 238.469 163.019 235.663L261.493 137.188C267.361 131.321 267.361 122.137 261.749 116.269Z' fill='%23B9F9FF'/%3E%3Cpath d='M214.297 91.2668C217.103 94.0731 220.93 95.6038 224.757 95.6038C228.583 95.6038 232.155 94.0731 235.216 91.2668L287.77 38.713C293.383 33.1005 293.383 23.6612 287.77 18.0487C282.158 12.4361 272.718 12.4361 267.106 18.0487L214.552 70.6025C208.429 76.215 208.429 85.6543 214.297 91.2668Z' fill='%23B9F9FF'/%3E%3Cpath d='M293.383 95.6038C293.383 87.5728 286.873 81.0622 278.842 81.0622C270.811 81.0622 264.3 87.5728 264.3 95.6038C264.3 103.635 270.811 110.145 278.842 110.145C286.873 110.145 293.383 103.635 293.383 95.6038Z' fill='%23B9F9FF'/%3E%3C/svg%3E%0A"); }
+}

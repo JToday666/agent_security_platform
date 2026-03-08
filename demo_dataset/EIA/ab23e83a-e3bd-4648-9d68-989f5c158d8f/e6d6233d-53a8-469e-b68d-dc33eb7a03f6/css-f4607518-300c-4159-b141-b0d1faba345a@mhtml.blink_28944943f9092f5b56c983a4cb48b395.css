@@ -1,0 +1,475 @@
+@charset "utf-8";
+
+.app-components-Refunds-styles__refundsContainer--2qsYs { max-width: 1136px; margin: 0px auto; padding: 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__refundsContainer--2qsYs { padding: 40px; }
+}
+
+@media screen and (min-width: 1184px) {
+  .app-components-Refunds-styles__refundsContainer--2qsYs { padding: 24px 0px; }
+}
+
+.app-components-Refunds-styles__refundsBackground--Ql9wD { background-color: rgb(255, 255, 255); }
+
+.app-components-Refunds-styles__refundsHeader--1J4js { color: rgb(0, 0, 0); font-size: 32px; font-weight: normal; line-height: 40px; margin: 0px; padding: 0px 0px 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__refundsHeader--1J4js { font-size: 40px; line-height: 56px; }
+}
+
+.app-components-Refunds-styles__refundsTabs--33b9H a.atm-c-tabs__link { text-decoration: none; color: rgb(0, 34, 68); }
+
+.app-components-Refunds-styles__refundsAlertLink--zO4xq { font-size: 16px; color: rgb(0, 96, 128); }
+
+@media screen and (max-width: 720px) {
+  .app-components-Refunds-styles__refundsAlertLink--zO4xq { font-size: 14px; }
+}
+
+.app-components-Refunds-styles__claimNowButton--2HKyt { margin-top: 20px; }
+
+.app-components-Refunds-styles__yesIcon--3vIwQ svg { fill: rgb(27, 119, 66); }
+
+.app-components-Refunds-styles__successIcon--V__Kc { fill: rgb(27, 119, 66); }
+
+.app-components-Refunds-styles__selectText--1OWJD { font-weight: 600; }
+
+.app-components-Refunds-styles__learnMore--1wB9X { margin: 16px 0px; }
+
+.app-components-Refunds-styles__iconSize--2hGt0 { width: 24px; height: 24px; }
+
+.app-components-Refunds-styles__refundValueSection--3fhcw { background: rgba(182, 184, 220, 0.2); font-weight: 600; font-size: 24px; }
+
+.app-components-Refunds-styles__howToHeader--1JSxK { font-weight: 600; font-size: 24px; }
+
+.app-components-Refunds-styles__howToHeaderSteps--3ElHv { font-weight: 600; font-size: 16px; }
+
+.app-components-Refunds-styles__usingTC--305Tp { font-weight: 600; font-size: 24px; margin-top: 30px; }
+
+.app-components-Refunds-styles__stepSeparator--1pUn_ { margin-bottom: 16px; }
+
+.app-components-Refunds-styles__boxContents--2-k1z { }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__boxContents--2-k1z { display: grid; grid-template-columns: repeat(12, 1fr); }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .app-components-Refunds-styles__boxContents--2-k1z { display: inline-flex; }
+}
+
+.app-components-Refunds-styles__boxContents--2-k1z svg { margin-top: 10px; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__boxContents--2-k1z svg { grid-area: 1 / 1 / 2 / 3; }
+}
+
+@media (min-width: 720px) {
+  .app-components-Refunds-styles__boxContents--2-k1z svg { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__boxContents--2-k1z svg { grid-area: 1 / 1 / 2 / 2; }
+}
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .app-components-Refunds-styles__boxContents--2-k1z svg { margin-right: 20px; }
+}
+
+.app-components-Refunds-styles__boxContents--2-k1z span { }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__boxContents--2-k1z span { grid-area: 1 / 4 / 2 / 13; }
+}
+
+@media (min-width: 720px) {
+  .app-components-Refunds-styles__boxContents--2-k1z span { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__boxContents--2-k1z span { grid-area: 1 / 2 / 2 / 13; }
+}
+}
+
+.app-components-Refunds-styles__tableImage--2ZxOj svg { display: inline; }
+
+.app-components-Refunds-styles__tableImage--2ZxOj .app-components-Refunds-styles__notApplicableIcon--3k2ff { fill: rgb(213, 0, 50); width: 24px; height: 24px; }
+
+.app-components-Refunds-styles__tableImage--2ZxOj .app-components-Refunds-styles__successIcon--V__Kc { fill: rgb(27, 119, 66); width: 24px; height: 24px; }
+
+.app-components-Refunds-styles__tableContent--2hejU { font-size: 14px; }
+
+@media (pointer: coarse) {
+  .app-components-Refunds-styles__isModalFixed--3Pzp0 { position: fixed; height: 100%; width: 100%; }
+}
+
+.app-components-Refunds-styles__panel--2e5jl { padding: 24px; position: absolute; width: 100%; height: 100%; background-color: rgb(255, 255, 255); border: none; overflow-y: auto; outline: none; box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px; transform: translate(0px, 0px); }
+
+@media (min-width: 480px) {
+  .app-components-Refunds-styles__panel--2e5jl { border: 1px solid rgb(212, 212, 208); border-radius: 4px; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 670px; overflow-y: auto; }
+}
+
+.app-components-Refunds-styles__panel--2e5jl:focus { box-shadow: none; outline: 0px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__panel--2e5jl { height: auto; width: 580px; }
+}
+
+.app-components-Refunds-styles__overlay--2CbhA { position: fixed; inset: 0px; transition: opacity 0.4s ease 0s; background-color: rgba(0, 0, 0, 0.5); }
+
+@media screen and (min-width: 480px) {
+  .app-components-Refunds-styles__overlay--2CbhA { opacity: 0; }
+  .app-components-Refunds-styles__overlay--2CbhA.app-components-Refunds-styles__overlayAfterOpen--2Xnvu { opacity: 1; }
+  .app-components-Refunds-styles__overlay--2CbhA.app-components-Refunds-styles__overlayAfterClose--qVKlV { opacity: 0; }
+}
+
+.app-components-Refunds-styles__closeButton--3Fp_n { position: absolute; top: 15px; right: 15px; }
+
+.app-components-Refunds-styles__closeButton--3Fp_n img { height: 20px; width: 20px; }
+
+.app-components-Refunds-styles__headingFont--3DfPs { font-weight: 600; }
+
+.app-components-Refunds-styles__offerDetails--2nj-y { line-height: 2em; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y { display: grid; grid-template-columns: repeat(12, 1fr); }
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docIDHeader--2PNMq { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docIDHeader--2PNMq { grid-area: 1 / 1 / 2 / 13; }
+}
+
+@media screen and (min-width: 720px) and (max-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docIDHeader--2PNMq { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docIDHeader--2PNMq { grid-area: 1 / 1 / 2 / 3; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docIDHeader--2PNMq { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docIDHeader--2PNMq { grid-area: 1 / 1 / 2 / 4; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__nameHeader--1glhF { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__nameHeader--1glhF { grid-area: 3 / 1 / 4 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__nameHeader--1glhF { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__nameHeader--1glhF { grid-area: 1 / 4 / 2 / 7; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amountHeader--3Zbzo { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amountHeader--3Zbzo { grid-area: 5 / 1 / 6 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amountHeader--3Zbzo { text-align: end; }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amountHeader--3Zbzo { grid-area: 1 / 7 / 2 / 11; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amountHeader--3Zbzo { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amountHeader--3Zbzo { grid-area: 1 / 7 / 2 / 10; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__referenceNumberHeader--1Uf3a { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__referenceNumberHeader--1Uf3a { grid-area: 5 / 1 / 6 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__referenceNumberHeader--1Uf3a { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__referenceNumberHeader--1Uf3a { grid-area: 1 / 7 / 2 / 10; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docID--enikj { }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docID--enikj { grid-area: 2 / 1 / 3 / 13; }
+}
+
+@media screen and (min-width: 720px) and (max-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docID--enikj { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docID--enikj { grid-area: 1 / 1 / 2 / 3; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docID--enikj { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__docID--enikj { grid-area: 1 / 1 / 2 / 4; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__name--2VWCp { }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__name--2VWCp { grid-area: 4 / 1 / 5 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__name--2VWCp { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__name--2VWCp { grid-area: 1 / 4 / 2 / 7; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amount--kyiaX { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amount--kyiaX { grid-area: 6 / 1 / 7 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amount--kyiaX { text-align: end; }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amount--kyiaX { grid-area: 1 / 7 / 2 / 11; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amount--kyiaX { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__amount--kyiaX { grid-area: 1 / 7 / 2 / 10; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__referenceNumber--3B0FG { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__referenceNumber--3B0FG { grid-area: 6 / 1 / 7 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__referenceNumber--3B0FG { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__referenceNumber--3B0FG { grid-area: 1 / 7 / 2 / 10; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxesHeader--3Nhdm { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxesHeader--3Nhdm { grid-area: 7 / 1 / 8 / 7; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxesHeader--3Nhdm { font-weight: normal; }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxesHeader--3Nhdm { grid-area: 3 / 4 / 4 / 7; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxes--3h_gi { font-weight: 600; text-align: end; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxes--3h_gi { grid-area: 7 / 7 / 8 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxes--3h_gi { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxes--3h_gi { grid-area: 3 / 7 / 4 / 11; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxes--3h_gi { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__taxes--3h_gi { grid-area: 3 / 7 / 4 / 10; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelation--1nkkV { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelation--1nkkV { grid-area: 7 / 1 / 8 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelation--1nkkV { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelation--1nkkV { grid-area: 3 / 1 / 4 / 4; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelationAmount--3N3XA { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelationAmount--3N3XA { grid-area: 8 / 1 / 9 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelationAmount--3N3XA { text-align: end; }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelationAmount--3N3XA { grid-area: 3 / 7 / 4 / 11; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelationAmount--3N3XA { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalCancelationAmount--3N3XA { grid-area: 3 / 7 / 4 / 10; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelation--13FxD { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelation--13FxD { grid-area: 8 / 1 / 9 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelation--13FxD { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelation--13FxD { grid-area: 4 / 1 / 5 / 4; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelationAmount--3lxdV { font-weight: 600; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelationAmount--3lxdV { grid-area: 9 / 1 / 10 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelationAmount--3lxdV { text-align: end; }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelationAmount--3lxdV { grid-area: 4 / 7 / 5 / 11; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelationAmount--3lxdV { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__awardTotalCancelationAmount--3lxdV { grid-area: 4 / 7 / 5 / 10; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator--Ffdqw { border-top: 1px solid rgb(204, 204, 204); }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator--Ffdqw { grid-area: 10 / 1 / 11 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator--Ffdqw { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator--Ffdqw { grid-area: 5 / 1 / 6 / 11; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator--Ffdqw { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator--Ffdqw { grid-area: 5 / 1 / 6 / 10; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefund--rjYMI { font-weight: 600; font-size: 18px; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefund--rjYMI { grid-area: 10 / 1 / 11 / 7; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefund--rjYMI { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefund--rjYMI { grid-area: 6 / 1 / 7 / 4; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefundAmount--YvOno { font-weight: 600; font-size: 18px; text-align: end; }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefundAmount--YvOno { grid-area: 10 / 7 / 11 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefundAmount--YvOno { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefundAmount--YvOno { grid-area: 6 / 6 / 7 / 11; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefundAmount--YvOno { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__totalRefundAmount--YvOno { grid-area: 6 / 6 / 7 / 10; }
+}
+}
+
+.app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator2--T9Wew { border-top: 1px solid rgb(204, 204, 204); }
+
+@supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator2--T9Wew { grid-area: 12 / 1 / 13 / 13; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator2--T9Wew { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator2--T9Wew { grid-area: 7 / 1 / 8 / 11; }
+}
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator2--T9Wew { }
+  @supports (display: grid) {
+  .app-components-Refunds-styles__offerDetails--2nj-y .app-components-Refunds-styles__sectionSeparator2--T9Wew { grid-area: 7 / 1 / 8 / 10; }
+}
+}
+
+.app-components-Refunds-styles__required--2k1mS { font-weight: 400; color: rgb(102, 102, 102); }
+
+.app-components-Refunds-styles__mobileView--3NPkZ { font-weight: 600; font-size: 20px; }
+
+.app-components-Refunds-styles__sectionHeaderFont--CO1G2 { font-weight: 600; font-size: 24px; }
+
+.app-components-Refunds-styles__currencyWrapper--cMenZ { display: flex; flex-direction: column; }
+
+.app-components-Refunds-styles__sectionIconStyle--1FgzE svg { fill: rgb(12, 35, 64); margin-top: 3px; }
+
+.app-components-Refunds-styles__itemsSpacing--2XT4- { line-height: 2em; }
+
+.app-components-Refunds-styles__mileageContainer--c1TF6 { margin-bottom: 24px; }
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62 { position: relative; width: auto; display: block; }
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62.app-components-Refunds-styles__textAreaLabelSmall--34mjS .app-components-Refunds-styles__textAreaLabel--3PBTm { font-size: 12px; }
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62 .app-components-Refunds-styles__textAreaLabel--3PBTm { text-transform: none; padding: 9px 0px; background-color: rgb(255, 255, 255); font-size: 16px; font-weight: normal; line-height: 24px; }
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62 .app-components-Refunds-styles__textAreaLabel--3PBTm.app-components-Refunds-styles__hasError--2nYSP { color: rgb(213, 0, 50); }
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62.app-components-Refunds-styles__hasError--2nYSP .app-components-Refunds-styles__textarea--1ejhZ { border: 1px solid rgb(213, 0, 50); }
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62.app-components-Refunds-styles__hasError--2nYSP + p { color: rgb(213, 0, 50); }
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62 .app-components-Refunds-styles__charCountLabel--3tMcQ { color: rgb(102, 102, 102); font-size: 12px; }
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62 .app-components-Refunds-styles__textarea--1ejhZ { border: 1px solid rgb(102, 102, 102); border-radius: 4px; width: 100%; min-height: 150px; max-width: 560px; resize: none; padding: 18px; box-sizing: border-box; }
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62 .app-components-Refunds-styles__textarea--1ejhZ:invalid { box-shadow: none; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-styles__textAreaWrapper--x9A62 .app-components-Refunds-styles__textarea--1ejhZ { width: 560px; }
+}
+
+.app-components-Refunds-styles__textAreaWrapper--x9A62 .app-components-Refunds-styles__textarea--1ejhZ + p { font-size: 12px; color: rgb(0, 34, 68); margin-top: 7px; }

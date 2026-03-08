@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+[_nghost-iyw-c264] { margin: 0px auto; min-height: calc(100vh - 136px); padding-top: 1.5rem; }
+
+@media (min-width: 1024px) {
+  [_nghost-iyw-c264] { display: flex; justify-content: center; padding: 1rem; }
+}
+
+@media (min-width: 1280px) {
+  [_nghost-iyw-c264] { max-width: 1200px; }
+}
+
+@media (min-width: 1024px) {
+  .payment__sidebar[_ngcontent-iyw-c264] { margin-right: 1rem; max-width: 320px; min-width: 320px; }
+}
+
+@media (min-width: 1280px) {
+  .payment__sidebar[_ngcontent-iyw-c264] { margin-right: 1.5rem; }
+}
+
+@media (min-width: 1024px) {
+  .payment__booking-info[_ngcontent-iyw-c264] { position: sticky; top: 0.5rem; }
+}
+
+.payment__fieldset[_ngcontent-iyw-c264] { flex: 1 1 0px; margin-bottom: 1.5rem; }
+
+.payment__price-breakdown[_ngcontent-iyw-c264] { margin-bottom: 1.5rem; }
+
+.payment__form[_ngcontent-iyw-c264] { flex: 1 1 0px; }
+
+.payment__login-banner[_ngcontent-iyw-c264] { margin: 0.5rem 0.75rem; }
+
+@media (min-width: 1024px) {
+  .payment__login-banner[_ngcontent-iyw-c264] { margin: 0px 0px 1rem; }
+}
+
+@media (min-width: 1280px) {
+  .payment__travel-credit-and-submit[_ngcontent-iyw-c264] { align-items: flex-start; display: flex; }
+}
+
+.payment__travel-credit[_ngcontent-iyw-c264] { margin-bottom: 1rem; }
+
+@media (min-width: 1280px) {
+  .payment__travel-credit[_ngcontent-iyw-c264] { flex: 2 1 0%; margin-right: 1rem; }
+}
+
+.payment__submit[_ngcontent-iyw-c264] { margin: 0px 0.625rem 1.5rem; }
+
+@media (min-width: 1024px) {
+  .payment__submit[_ngcontent-iyw-c264] { margin: 0px 0px 1.5rem; }
+}
+
+@media (min-width: 1280px) {
+  .payment__submit[_ngcontent-iyw-c264] { flex: 1 1 0%; }
+}
+
+.payment__submit-button[_ngcontent-iyw-c264] { margin-bottom: 1.5rem; }
+
+.payment__terms-and-conditions[_ngcontent-iyw-c264] { margin: 0px 0.625rem 1rem; }
+
+@media (min-width: 1024px) {
+  .payment__terms-and-conditions[_ngcontent-iyw-c264] { margin-left: 0px; margin-right: 0px; }
+}
+
+.payment__provider-icon[_ngcontent-iyw-c264] { margin-left: 0.5rem; }

@@ -1,0 +1,253 @@
+@charset "utf-8";
+
+#INDmenu-btn, #INDquickAccess button { position: fixed; height: auto; width: auto; cursor: pointer; }
+
+#INDmenu-btn svg *, #INDmenu-btn-moveArrow :first-child { stroke: none !important; }
+
+#INDpopup, .INDhasDragTooltip #INDWrap #INDmenu-btn:focus #INDmenu-btn-moveArrow, .INDhasDragTooltip #INDWrap #INDmenu-btn:hover #INDmenu-btn-moveArrow, .INDhasDragTooltip #INDWrap #INDmenu-btn:not(.INDbtn-loading):focus::after, .INDhasDragTooltip #INDWrap #INDmenu-btn:not(.INDbtn-loading):focus::before, .INDhasDragTooltip #INDWrap #INDmenu-btn:not(.INDbtn-loading):hover::after, .INDhasDragTooltip #INDWrap #INDmenu-btn:not(.INDbtn-loading):hover::before, [data-indhasdragtooltip] #INDWrap #INDmenu-btn:focus #INDmenu-btn-moveArrow, [data-indhasdragtooltip] #INDWrap #INDmenu-btn:hover #INDmenu-btn-moveArrow, [data-indhasdragtooltip] #INDWrap #INDmenu-btn:not(.INDbtn-loading):focus::after, [data-indhasdragtooltip] #INDWrap #INDmenu-btn:not(.INDbtn-loading):focus::before, [data-indhasdragtooltip] #INDWrap #INDmenu-btn:not(.INDbtn-loading):hover::after, [data-indhasdragtooltip] #INDWrap #INDmenu-btn:not(.INDbtn-loading):hover::before { opacity: 1; }
+
+.INDMobile.INDbtn-draging, [data-indmobile].INDbtn-draging, body.INDmodalOpen, body[data-indmodalopen] { overflow: hidden; }
+
+#INDWrap { position: absolute; width: 100%; height: 0px; top: 0px; z-index: 2147483647; }
+
+@media print {
+  #INDWrap { display: none !important; }
+}
+
+#INDWrap template, #INDmenu-btn.INDbtn-loading svg:not(#INDdummy), .INDhasDragTooltip #INDWrap #INDmenu-btn.INDbtn-loading:focus #INDmenu-btn-moveArrow, .INDhasDragTooltip #INDWrap #INDmenu-btn.INDbtn-loading:hover #INDmenu-btn-moveArrow, [data-indhasdragtooltip] #INDWrap #INDmenu-btn.INDbtn-loading:focus #INDmenu-btn-moveArrow, [data-indhasdragtooltip] #INDWrap #INDmenu-btn.INDbtn-loading:hover #INDmenu-btn-moveArrow { display: none !important; }
+
+#INDerror h2, .INDloader { display: block; }
+
+#INDblindNotif { position: fixed !important; }
+
+.INDloader::after { content: " "; display: block; width: 25px; height: 25px; margin: 1px; border-radius: 50%; border-color: rgb(255, 255, 255) transparent; animation: 1.2s linear 0s infinite normal none running INDloader; }
+
+#INDmenu .INDloader::after { margin: 30px auto; border-color: var(--indmaincolor) transparent var(--indsecondcolor) transparent; }
+
+@keyframes INDloader { 
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#INDquickAccess, #INDquickAccess li, #INDquickAccess ul { height: 0px; list-style: none; }
+
+#INDquickAccess ul { margin: 0px; padding: 0px; list-style: none; }
+
+#INDquickAccess li { margin: 0px; padding: 0px; }
+
+#INDquickAccess li::after, #INDquickAccess li::before { content: "" !important; display: none !important; }
+
+#INDquickAccess button { top: -300px; margin: 0px; padding: 8px 16px; font-size: 24px; font-weight: 700; text-align: center; color: rgb(255, 255, 255); background: rgb(0, 0, 0); border-radius: 4px; border: 1px solid rgb(255, 255, 255); transition: top 0.6s ease 0s; z-index: 10; line-height: normal !important; }
+
+.INDMobile #INDquickAccess button, [data-indmobile] #INDquickAccess button { font-size: 18px; }
+
+.INDlangdirRTL #INDquickAccess button, [data-indlangdirrtl] #INDquickAccess button { font-family: Spacer, Arial, sans-serif; }
+
+.INDlangdirLTR #INDquickAccess button, [data-indlangdirltr] #INDquickAccess button { font-family: Verdana, Geneva, sans-serif; }
+
+.INDpositionLeft #INDquickAccess button, [data-indpositionleft] #INDquickAccess button { left: 180px; }
+
+.INDpositionRight #INDquickAccess button, [data-indpositionright] #INDquickAccess button { right: 180px; }
+
+#INDquickAccess button:focus { top: 0px; }
+
+:not(#INDdummy).INDtooltip, :not(#INDdummy).INDtooltip * { line-height: 24px; font-family: Alef, "Open Sans Hebrew", Arial, sans-serif; font-size: 16px; }
+
+:not(#INDdummy).INDtooltip { position: absolute; top: 2px; margin: 0px; padding: 7px 21px; width: auto; min-width: 192px; box-sizing: content-box; text-align: center; letter-spacing: 0.7px; border: none; border-radius: 8px; filter: drop-shadow(white 0px 0px 2px); opacity: 0.87; }
+
+:not(#INDdummy):not(inddummy).INDtooltip { color: rgb(255, 255, 255) !important; background: rgb(0, 0, 0) !important; }
+
+:not(#INDdummy):not(inddummy).INDtooltip * { color: rgb(255, 255, 255) !important; }
+
+.INDpositionLeft :not(#INDdummy).INDtooltip, [data-indpositionleft] :not(#INDdummy).INDtooltip { float: left; }
+
+.INDpositionRight :not(#INDdummy).INDtooltip, [data-indpositionright] :not(#INDdummy).INDtooltip { float: right; }
+
+.INDlangdirLTR #INDpopup, .INDlangdirLTR :not(#INDdummy).INDtooltip, [data-indlangdirltr] #INDpopup, [data-indlangdirltr] :not(#INDdummy).INDtooltip { direction: ltr; }
+
+.INDlangdirRTL #INDpopup, .INDlangdirRTL :not(#INDdummy).INDtooltip, [data-indlangdirrtl] #INDpopup, [data-indlangdirrtl] :not(#INDdummy).INDtooltip { direction: rtl; }
+
+:not(#INDdummy).INDtooltip::after { content: ""; position: absolute; }
+
+:not(#INDdummy).INDtooltip.INDtipLeft::after, :not(#INDdummy).INDtooltip.INDtipRight::after { top: 17px; margin-top: -8px; border-top: 8px solid transparent; border-bottom: 8px solid transparent; }
+
+:not(#INDdummy).INDtooltip.INDtipBottom::after, :not(#INDdummy).INDtooltip.INDtipTop::after { border-left: 8px solid transparent; border-right: 8px solid transparent; }
+
+.INDlangdirRTL :not(#INDdummy).INDtooltip.INDtipBottom::after, .INDlangdirRTL :not(#INDdummy).INDtooltip.INDtipTop::after, [data-indlangdirrtl] :not(#INDdummy).INDtooltip.INDtipBottom::after, [data-indlangdirrtl] :not(#INDdummy).INDtooltip.INDtipTop::after { right: 17px; margin-right: -8px; }
+
+.INDlangdirLTR :not(#INDdummy).INDtooltip.INDtipBottom::after, .INDlangdirLTR :not(#INDdummy).INDtooltip.INDtipTop::after, [data-indlangdirltr] :not(#INDdummy).INDtooltip.INDtipBottom::after, [data-indlangdirltr] :not(#INDdummy).INDtooltip.INDtipTop::after { left: 17px; margin-left: -8px; }
+
+:not(#INDdummy).INDtooltip.INDtipLeft::after { left: 100%; border-left: 8px solid rgb(0, 0, 0); }
+
+:not(#INDdummy).INDtooltip.INDtipRight::after { right: 100%; border-right: 8px solid rgb(0, 0, 0); }
+
+:not(#INDdummy).INDtooltip.INDtipTop::after { top: 100%; border-top: 8px solid rgb(0, 0, 0); }
+
+:not(#INDdummy).INDtooltip.INDtipBottom::after { bottom: 100%; border-bottom: 8px solid rgb(0, 0, 0); }
+
+:not(#INDdummy) :not(#INDdummy).INDhiddenText { display: inline-block; color: rgb(0, 0, 0); background: rgb(255, 255, 255); position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); }
+
+#INDmenu { position: fixed; top: 0px; margin: 0px; padding: 0px; width: 180px; height: 180px; z-index: 100000; visibility: visible; user-select: none; border-right: none; border-left: none; border-image: initial; border-top: 27px solid rgb(10, 125, 164); border-bottom: 13px solid rgb(10, 125, 164); background: rgb(255, 255, 255); transition: left 0.4s ease-in 0s, right 0.4s ease-in 0s, top 0.4s ease-in 0s, visibility 0.4s ease-in 0s !important; }
+
+.INDpositionLeft #INDmenu, [data-indpositionleft] #INDmenu { left: 0px; border-right: 4px solid rgb(10, 125, 164); right: initial !important; }
+
+.INDpositionRight #INDmenu, [data-indpositionright] #INDmenu { right: 0px; border-left: 4px solid rgb(10, 125, 164); left: initial !important; }
+
+#INDmenu[aria-hidden="true"] { visibility: hidden; }
+
+.INDpositionLeft #INDmenu[aria-hidden="true"], [data-indpositionleft] #INDmenu[aria-hidden="true"] { left: -400px; }
+
+.INDpositionRight #INDmenu[aria-hidden="true"], [data-indpositionright] #INDmenu[aria-hidden="true"] { right: -400px; }
+
+#INDmenu :focus { outline: rgb(77, 144, 254) auto 1px !important; }
+
+#INDerror { background: rgb(255, 255, 255); text-align: center; width: 313px; }
+
+#INDmenu-btn, #INDmenu-btn > span { background: var(--indmaincolor)  !important; }
+
+#INDerror h2 { -webkit-text-stroke: initial; }
+
+#INDmenu-btn > svg, .INDhasDragTooltip #INDWrap #INDmenu-btn[data-inddrag] #INDmenu-btn-moveArrow, [data-indhasdragtooltip] #INDWrap #INDmenu-btn[data-inddrag] #INDmenu-btn-moveArrow { display: block !important; }
+
+#INDerror h2, #INDloader img { margin: 24px 0px; width: auto; line-height: initial; letter-spacing: initial; }
+
+#INDerror * { font-family: Arial, Helvetica, sans-serif; font-weight: 500; font-size: 25px; color: rgb(68, 68, 68); }
+
+:not(#INDdummy).INDkeyboardIcon { white-space: nowrap; font-size: smaller; }
+
+:not(#INDdummy).INDkeyboardIcon kbd { display: inline-flex; justify-content: center; align-items: center; box-sizing: border-box; height: 24px; min-width: 24px; border-width: 0.2em; border-style: solid; border-image: initial; border-radius: 0.3em; border-color: rgb(221, 221, 221) rgb(187, 187, 187) rgb(119, 119, 119) rgb(153, 153, 153); background-image: linear-gradient(to left bottom, rgb(238, 238, 238), rgb(255, 255, 255), rgb(238, 238, 238)); padding: 0.1em 0.3em; font-family: monospace; font-weight: 400; vertical-align: bottom; background-color: rgb(255, 255, 255) !important; }
+
+:not(#INDdummy).INDkeyboardIcon kbd, :not(#INDdummy).INDkeyboardIcon kbd * { font-size: 12px; color: rgb(0, 0, 0) !important; }
+
+:not(#INDdummy).INDkeyboardIcon kbd * { border: none; }
+
+@media screen and (max-width: 800px) {
+  .INDhasDragTooltip #INDWrap #INDmenu-btn::after, [data-indhasdragtooltip] #INDWrap #INDmenu-btn::after { font-size: 15px; }
+  #INDWrap #INDpopup > div { width: 100% !important; height: 50% !important; top: 10% !important; right: 0px !important; left: 0px !important; border-radius: 0px !important; }
+}
+
+#INDbtnWrap { margin: 0px; padding: 0px; border: none; z-index: 9999; }
+
+#INDmenu-btn { padding: 15px; min-width: auto; top: 24px; border: none; outline: 0px; box-shadow: none; transform: scale(var(--indscale,1)); transition: transform 0.6s ease 0s; --indscale:1; --indscale-contra:calc(1 - var(--indscale)); --indscale-margin:calc( var(--indscale-contra) * 10 * -4px ); z-index: inherit; }
+
+.INDMobile #INDmenu-btn, [data-indmobile] #INDmenu-btn { top: unset; bottom: 24px; }
+
+.INDpositionRight #INDmenu-btn, [data-indpositionright] #INDmenu-btn { right: 5px !important; margin-right: var(--indscale-margin)  !important; }
+
+.INDpositionLeft #INDmenu-btn, [data-indpositionleft] #INDmenu-btn { left: 5px !important; margin-left: var(--indscale-margin)  !important; }
+
+#INDmenu-btn > svg { position: static !important; width: 50px !important; height: 50px !important; }
+
+#INDmenu-btn > svg, #INDmenu-btn > svg * { border: none; outline: 0px; }
+
+.INDpositionRight #INDmenu-btn svg, [data-indpositionright] #INDmenu-btn svg { transform: scaleX(-1); }
+
+#INDmenu-btn svg * { fill: var(--indsecondcolor)  !important; }
+
+#INDmenu-btn > span { text-align: center; font-size: 1.7rem; color: var(--indsecondcolor)  !important; }
+
+#INDmenu-btn.INDarrow-btn.INDarrow-before-btn > span { padding-right: 0px; padding-left: 20px; }
+
+#INDmenu-btn.INDarrow-btn.INDarrow-after-btn > span { padding-right: 20px; padding-left: 0px; }
+
+#INDmenu-btn.INDarrow-btn.INDarrow-after-btn > span::after, #INDmenu-btn.INDarrow-btn.INDarrow-before-btn > span::before { content: ""; }
+
+#INDmenu-btn.INDarrow-btn > span::after, #INDmenu-btn.INDarrow-btn > span::before { position: absolute; top: 26px; height: 11px; width: 11px; border-bottom-left-radius: 2px; background: 0px 0px !important; border-top: none !important; border-right: none !important; }
+
+#INDmenu-btn.INDarrow-btn > span::before { left: 15px !important; }
+
+#INDmenu-btn.INDarrow-btn > span::after { right: 15px !important; }
+
+#INDmenu-btn.INDarrow-right-btn > span::after, #INDmenu-btn.INDarrow-right-btn > span::before { transform: rotate(225deg); }
+
+#INDmenu-btn.INDarrow-left-btn > span::after, #INDmenu-btn.INDarrow-left-btn > span::before { transform: rotate(45deg); }
+
+#INDmenu-btn.INDarrow-up-btn > span::after, #INDmenu-btn.INDarrow-up-btn > span::before { transform: rotate(135deg); }
+
+#INDmenu-btn.INDarrow-down-btn > span::after, #INDmenu-btn.INDarrow-down-btn > span::before { transform: rotate(-45deg); }
+
+#INDmenu-btn.INDoutline-btn { color: var(--indmaincolor)  !important; border: 5px solid var(--indsecondcolor)  !important; }
+
+#INDmenu-btn.INDoutline-btn:hover { border: unset !important; }
+
+#INDmenu-btn.INDrounded-btn { border-radius: 15px !important; }
+
+#INDmenu-btn.INDcircle-btn { border-radius: 100px !important; }
+
+.INDpositionLeft #INDmenu-btn.INDsemicircle-btn, [data-indpositionleft] #INDmenu-btn.INDsemicircle-btn { left: 0px !important; border-radius: 0px 100px 100px 0px !important; padding-left: 12px !important; }
+
+.INDpositionRight #INDmenu-btn.INDsemicircle-btn, [data-indpositionright] #INDmenu-btn.INDsemicircle-btn { right: 0px !important; border-radius: 100px 0px 0px 100px !important; padding-right: 12px !important; }
+
+.INDpositionLeft #INDmenu-btn.INDsemicircle-btn.INDoutline-btn, [data-indpositionleft] #INDmenu-btn.INDsemicircle-btn.INDoutline-btn { border-left: 0px !important; }
+
+.INDpositionRight #INDmenu-btn.INDsemicircle-btn.INDoutline-btn, [data-indpositionright] #INDmenu-btn.INDsemicircle-btn.INDoutline-btn { border-right: 0px !important; }
+
+.INDpositionLeft #INDmenu-btn.INDcanoe-btn, [data-indpositionleft] #INDmenu-btn.INDcanoe-btn { border-radius: 0px 100px !important; }
+
+.INDpositionLeft #INDmenu-btn.INDcanoe-btn > svg, [data-indpositionleft] #INDmenu-btn.INDcanoe-btn > svg { transform: rotate(-45deg) !important; }
+
+.INDpositionRight #INDmenu-btn.INDcanoe-btn, [data-indpositionright] #INDmenu-btn.INDcanoe-btn { border-radius: 100px 0px !important; }
+
+.INDpositionRight #INDmenu-btn.INDcanoe-btn > svg, [data-indpositionright] #INDmenu-btn.INDcanoe-btn > svg { transform: rotate(45deg) !important; }
+
+.INDhasDragTooltip #INDWrap #INDmenu-btn-moveArrow, [data-indhasdragtooltip] #INDWrap #INDmenu-btn-moveArrow { opacity: 0; transition: opacity 0.3s ease-in-out 0s; display: none !important; position: absolute !important; top: -50% !important; }
+
+.INDFirefox.INDhasDragTooltip #INDWrap #INDmenu-btn[data-inddrag], body[data-indfirefox][data-indhasdragtooltip] #INDWrap #INDmenu-btn[data-inddrag] { overflow: unset !important; }
+
+.INDhasDragTooltip #INDWrap #INDmenu-btn[data-inddrag], [data-indhasdragtooltip] #INDWrap #INDmenu-btn[data-inddrag] { overflow: hidden; cursor: move !important; }
+
+.INDhasDragTooltip #INDWrap #INDmenu-btn:focus, .INDhasDragTooltip #INDWrap #INDmenu-btn:hover, [data-indhasdragtooltip] #INDWrap #INDmenu-btn:focus, [data-indhasdragtooltip] #INDWrap #INDmenu-btn:hover { overflow: unset; }
+
+.INDhasDragTooltip #INDWrap #INDmenu-btn::before, [data-indhasdragtooltip] #INDWrap #INDmenu-btn::before { content: ""; background-color: var(--indmaincolor,#122231); border: 1px solid var(--indsecondcolor,#fff); opacity: 0; transition: opacity 0.3s ease-in-out 0s; position: absolute; top: -40%; width: 100%; height: 120px; z-index: -1; }
+
+.INDhasDragTooltip #INDWrap #INDmenu-btn[data-inddrag]::before, [data-indhasdragtooltip] #INDWrap #INDmenu-btn[data-inddrag]::before { cursor: move; }
+
+.INDhasDragTooltip #INDWrap #INDmenu-btn::after, [data-indhasdragtooltip] #INDWrap #INDmenu-btn::after { content: attr(data-drag-content); background-color: var(--indmaincolor,#122231); border: 1px solid var(--indsecondcolor,#fff); cursor: pointer; color: var(--indsecondcolor,#fff); opacity: 0; transition: opacity 0.3s ease-in-out 0s; position: absolute; top: -40%; left: unset; right: unset; width: auto; height: 120px; padding: 0px 10px; font-size: 18px; word-break: normal; overflow-wrap: normal; white-space: pre-line; line-height: 1.2em; font-family: "Open Sans Hebrew", Arial, Helvetica, sans-serif; box-sizing: content-box; }
+
+.INDhasDragTooltip #INDWrap[lang="ja"] #INDmenu-btn::after, .INDhasDragTooltip #INDWrap[lang="ko"] #INDmenu-btn::after, .INDhasDragTooltip #INDWrap[lang="lt"] #INDmenu-btn::after, .INDhasDragTooltip #INDWrap[lang="zh-CN"] #INDmenu-btn::after, .INDhasDragTooltip #INDWrap[lang="zh"] #INDmenu-btn::after, [data-indhasdragtooltip] #INDWrap[lang="ja"] #INDmenu-btn::after, [data-indhasdragtooltip] #INDWrap[lang="ko"] #INDmenu-btn::after, [data-indhasdragtooltip] #INDWrap[lang="zh-CN"] #INDmenu-btn::after, [data-indhasdragtooltip] #INDWrap[lang="zh"] #INDmenu-btn::after, [data-indhasdragtooltip]#INDWrap[lang="lt"] #INDmenu-btn::after { word-break: keep-all; width: fit-content; }
+
+.INDhasDragTooltip #INDWrap[lang="lt"] #INDmenu-btn::after, [data-indhasdragtooltip] #INDWrap[lang="lt"] #INDmenu-btn::after { white-space: normal; }
+
+.INDlangdirRTL.INDhasDragTooltip #INDWrap #INDmenu-btn::after, [data-indlangdirrtl][data-indhasdragtooltip] #INDWrap #INDmenu-btn::after { width: 93px; line-height: 1.4em; }
+
+.INDpositionLeft #INDWrap #INDmenu-btn::after, [data-indpositionleft] #INDWrap #INDmenu-btn::after { border-radius: 0px 5px 5px 0px; }
+
+.INDpositionRight #INDWrap #INDmenu-btn::after, [data-indpositionright] #INDWrap #INDmenu-btn::after { border-radius: 5px 0px 0px 5px; }
+
+.INDhasDragTooltip.INDpositionRight #INDmenu-btn::before, [data-indhasdragtooltip][data-indpositionright] #INDmenu-btn::before { right: 0px !important; }
+
+.INDhasDragTooltip.INDpositionRight #INDmenu-btn::after, [data-indhasdragtooltip][data-indpositionright] #INDmenu-btn::after { right: 100% !important; }
+
+.INDhasDragTooltip.INDpositionLeft #INDmenu-btn::before, [data-indhasdragtooltip][data-indpositionleft] #INDmenu-btn::before { left: 0px !important; }
+
+.INDhasDragTooltip.INDpositionLeft #INDmenu-btn::after, [data-indhasdragtooltip][data-indpositionleft] #INDmenu-btn::after { left: 100% !important; }
+
+.INDhasDragTooltip #INDmenu-btn.INDoutline-btn:focus, [data-indhasdragtooltip] #INDmenu-btn.INDoutline-btn:hover { border: none !important; }
+
+#INDpopup { position: fixed; inset: 0px; background: rgba(0, 0, 0, 0.7); z-index: 2147483647; pointer-events: auto; transition: opacity 250ms ease-in 0s; }
+
+#INDpopup:not(.open) { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 250ms ease-in 0s, visibility 0s ease 250ms; }
+
+#INDpopup > div { display: flex; flex-direction: column; position: fixed; margin: 0px; width: 660px; height: auto; top: calc((100vh - 540px) / 2); left: calc(50% - 330px); background: rgb(18, 34, 49); border: 0px solid rgb(136, 136, 136); border-radius: 10px; padding: 12px 12px 44px; box-sizing: border-box; }
+
+#INDpopup > div:not(#INDdummy):not(.INDopenCmdLeg).flyingfocus_target_style { padding: 12px 12px 44px !important; }
+
+#INDpopup .INDpopupContent { flex-grow: 1; box-sizing: border-box; width: 100%; height: 100%; background-color: rgb(255, 255, 255); border-radius: 10px; overflow: hidden; font-family: Arial, sans-serif; font-size: 16px; text-align: center; padding: 10px; direction: ltr; color: rgb(51, 51, 51); line-height: 1.3em; }
+
+#INDpopup .INDpopupConfirm, #INDpopup > div .INDpopupClose { color: rgb(255, 255, 255); margin: 0px; padding: 0px; display: inline-block; background: 0px 0px; cursor: pointer; position: absolute; font-family: "Open Sans Hebrew", Arial, Helvetica, sans-serif; }
+
+#INDpopup .INDpopupContent #INDdictionaryPopupWrapper { width: 100%; margin: 0px auto; padding: 15px 20px; height: 100%; background-color: rgb(255, 255, 255); }
+
+.INDSafari #INDpopup .INDpopupContent, [data-indsafari] #INDpopup .INDpopupContent { overflow-y: auto !important; }
+
+#INDpopup > div .INDpopupClose { font-weight: 700; top: 6px; left: 13px; font-size: 22px; border: none; width: 17px; height: 21px; text-align: center; line-height: 1em; vertical-align: top; }
+
+#INDpopup > div #INDpopupHead { font-size: 22px; margin: 0px; padding: 10px 0px 20px; border: 0px; line-height: 1.1em; font-weight: 400; text-align: center; height: auto; width: 100%; position: static; font-family: "Open Sans Hebrew", Arial, Helvetica, sans-serif; -webkit-text-fill-color: unset; -webkit-text-stroke: unset; color: rgb(255, 255, 255) !important; }
+
+#INDpopup iframe { width: 100%; height: 450px; border: 0px solid rgb(221, 221, 221); box-sizing: border-box; border-radius: 10px; overflow: hidden; background: 0px 0px !important; }
+
+#INDpopup .INDpopupConfirm { font-size: 18px; width: auto; height: auto; border-radius: 0px; border: none; box-shadow: none; bottom: 7px; left: 8px; }
+
+#INDWrap[lang="en"] #INDpopup .INDpopupConfirm { right: 8px; left: auto; }
+
+#INDWrap[lang="en"] #INDpopup > div .INDpopupClose { right: 13px; left: auto; }

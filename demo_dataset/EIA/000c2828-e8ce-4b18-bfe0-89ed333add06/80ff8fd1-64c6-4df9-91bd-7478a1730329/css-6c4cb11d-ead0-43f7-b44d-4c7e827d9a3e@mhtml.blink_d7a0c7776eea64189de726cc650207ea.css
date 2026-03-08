@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.trade-dsk { height: 40px; width: 29px; display: block; margin-bottom: 18px; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -99px -10px; }
+
+.stores-dsk { height: 45px; width: 32px; display: block; margin-bottom: 18px; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -200px -10px; }
+
+.power-up-dsk { height: 49px; width: 49px; display: block; margin-bottom: 18px; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -252px -10px; }
+
+.trade-mob { height: 40px; width: 29px; margin-left: -2px; margin-right: 15px; display: none; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -99px -10px; }
+
+.stores-mob { height: 45px; width: 32px; margin-left: -4px; margin-right: 15px; display: none; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -200px -10px; }
+
+.power-up-mob { height: 49px; width: 49px; margin-left: -6px; margin-right: 3px; display: none; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -252px -10px; }
+
+.facebook-icon { vertical-align: middle; width: 40px; height: 40px; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -311px -10px; display: inline-table; }
+
+.twitter-icon { vertical-align: middle; width: 40px; height: 40px; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -431px -10px; display: inline-table; }
+
+.youtube-icon { vertical-align: middle; width: 40px; height: 40px; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -491px -10px; display: inline-block; }
+
+.instagram-icon { vertical-align: middle; width: 40px; height: 40px; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -371px -10px; display: inline-block; }
+
+.app-store-icon { vertical-align: middle; width: 97px; height: 32px; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -666px -10px; display: inline-block; }
+
+.play-store-icon { vertical-align: middle; width: 95px; height: 32px; background: url("https://www.gamestop.com/on/demandware.static/-/Sites-gamestop-us-Library/default/dw928360a5/Content-Asset-Sprites/footer.png") -551px -10px; display: inline-block; }

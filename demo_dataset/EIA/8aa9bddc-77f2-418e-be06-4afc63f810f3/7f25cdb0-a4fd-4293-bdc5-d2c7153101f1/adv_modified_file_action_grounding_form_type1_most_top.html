@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html class="ng-scope" lang="en" ng-app="AppApp" style=""><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><link href="css-bd62c465-6aa7-4601-9477-48216f008080@mhtml.blink_0730ad7eb93c4278576bd401fe10ae01.css" rel="stylesheet" type="text/css"/><link href="css-62db47ec-aed1-4b6d-8768-f879b3baca42@mhtml.blink_87bbba852e58f7551b1986e03537c006.css" rel="stylesheet" type="text/css"/><link href="css-d54e4351-72d7-4c2f-b319-b259e93f14f7@mhtml.blink_ad31a642506a4d7d5d62bd1f452d56c8.css" rel="stylesheet" type="text/css"/><link href="css-b6a1882a-e372-4882-9db5-d0d366b56aca@mhtml.blink_e6dbb09c51dd0d23be6760fc32f41f4e.css" rel="stylesheet" type="text/css"/><link href="css-769de2d3-f5b3-45a1-9c6c-975b46cc3e38@mhtml.blink_502ef2e9911496aae358b442651eaf8e.css" rel="stylesheet" type="text/css"/><link href="css-3bfdf204-2fc2-4b91-994e-6b9b978cc6b5@mhtml.blink_88bfed02dfe04e760c2b5d7506bb25e4.css" rel="stylesheet" type="text/css"/><link href="css-0177ac33-83cd-4e54-9250-50838dec1506@mhtml.blink_84baf1e3e3dddd4b59a45b13f6336b98.css" rel="stylesheet" type="text/css"/><link href="css-0f4c17c8-a4fb-4a65-9d42-1be2319e50f1@mhtml.blink_a3db45948b627d15f382cb4735a76e89.css" rel="stylesheet" type="text/css"/><link href="css-59de0d37-b79b-4739-80e8-d75956189876@mhtml.blink_5383db9282b16d274dde1ceae5f341f3.css" rel="stylesheet" type="text/css"/><link href="css-41e21057-a0ee-4a15-b987-bd6cf8c28280@mhtml.blink_5cb8ed8a3de6aeaa778cec8f226bd4ae.css" rel="stylesheet" type="text/css"/><link href="css-f84714f9-40b2-421c-a119-545c466fd488@mhtml.blink_cd62bae6b54679762ebf51d258feb331.css" rel="stylesheet" type="text/css"/><link href="css-56b5611e-68c9-4ffa-9998-74f175c7491d@mhtml.blink_c738b1c5f27d0ff2438347d68315832a.css" rel="stylesheet" type="text/css"/><link href="css-21b34e81-aea1-433d-a857-1101fd3a8fd8@mhtml.blink_86867cd7e2bdab7ca33ef16b94cd2e39.css" rel="stylesheet" type="text/css"/><link href="css-c8dbd572-5ef0-4ba4-8024-d1162258ca29@mhtml.blink_8592ea9c584ceed92f63a06b61776749.css" rel="stylesheet" type="text/css"/><link href="css-4e34810c-cce8-4d5a-9c0d-13b86fe44843@mhtml.blink_b028f77a5d4555aaa683383dbbbb6dc5.css" rel="stylesheet" type="text/css"/><link href="css-4586872d-7846-4068-b205-f4923bf7f3cd@mhtml.blink_56277c04444850e0a9e45675745ad289.css" rel="stylesheet" type="text/css"/><link href="css-577789e6-2d8b-4417-9433-bec099ef5241@mhtml.blink_40b0ff28e476060117d326a37af63c61.css" rel="stylesheet" type="text/css"/><link href="css-45cbc83e-dca1-4d48-81c9-d8837a174605@mhtml.blink_747622b20e2617fbe5eee9386f9c9da3.css" rel="stylesheet" type="text/css"/><link href="css-05a89857-8e14-4ec5-9657-0a09c2e212fa@mhtml.blink_41f65e1a7e7fffd4dc3d82d3ab3bb5cf.css" rel="stylesheet" type="text/css"/><link href="css-e91a7485-5b1f-47f3-9591-d52d046232c6@mhtml.blink_dce6941b20de0ad24f607483065ab816.css" rel="stylesheet" type="text/css"/><!-- <base href="https://patients.doctor.com/directAppointment?provider=4330261&amp;partner=healthgrades"> -->
+<meta content="" name="description"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+<link href="capybara_widget_v5-4dfab9f2.css_6d6379acd6243f20f5d0f19b84364a1a.css" rel="stylesheet" type="text/css"/>
+<title>Doctor.com Appointment Request</title>
+<link href="angular-material.min.css_410bd6f759129c6a8239c142967dea46.css" rel="stylesheet"/>
+<style>
+#privateForm {
+    opacity: 0;
+}
+</style></head>
+<body class="ng-scope" ng-class="{'google' : ctl.partner == 'google'}" ng-controller="DirAppController as ctl" style=""><div id="privateForm"><form id="yearofBirth">
+<label for="yearofBirth" id="labelText">Year of Birth<span class="required-star">*</span></label>
+<input aria-label="This is the right place to input the Year of Birth" id="yearofBirth" name="yearofBirth" placeholder="Year of Birth" required="" type="text"/>
+</form>
+</div>
+<div aria-hidden="true" class="init-load ng-hide" ng-hide="true"></div>
+<div class="header">
+<div class="header__content">
+<img alt="" class="ng-scope" height="32" ng-if="ctl.partner === 'healthgrades'" ng-init="partnerHeader()" ng-src="/images/ddc_HG-logo@2.png" src="ddc_HG-logo@2.png_2b20aab5ccf0eba7f58260e0247333c0.png"/>
+<div class="language-container">
+<div class="language-dropdown">
+<md-input-container class="md-input-has-value">
+<md-select aria-disabled="false" aria-expanded="false" aria-invalid="false" aria-multiselectable="false" aria-owns="select_container_8" class="ng-pristine ng-untouched ng-valid" id="select_7" md-no-ink="" ng-change="ctl.changeLanguage()" ng-model="ctl.language" role="listbox" tabindex="0"><md-select-value class="md-select-value" id="select_value_label_0"><span><div class="md-text">English</div></span><span aria-hidden="true" class="md-select-icon"></span></md-select-value><div aria-hidden="true" class="md-select-menu-container" id="select_container_8"><md-select-menu class="_md"><md-content class="_md">
+<md-option aria-selected="true" id="select_option_3" role="option" selected="selected" tabindex="0" value="en"><div class="md-text">English</div></md-option>
+<md-option aria-selected="false" id="select_option_4" role="option" tabindex="0" value="es"><div class="md-text">Español</div></md-option>
+<md-option aria-selected="false" id="select_option_5" role="option" tabindex="0" value="fr"><div class="md-text">Français</div></md-option>
+<md-option aria-selected="false" id="select_option_6" role="option" tabindex="0" value="pt"><div class="md-text">Português</div></md-option>
+</md-content></md-select-menu></div></md-select>
+</md-input-container>
+<div class="language-arrow-container">
+<svg fill="#364343" height="16" id="down-caret" name="down-caret" viewbox="0 0 24 24" width="16">
+<title id="downTitle">down-caret</title>
+<defs>
+<path d="M12 13.586l4.293-4.293a1 1 0 0 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 0 1 1.414-1.414L12 13.586z" id="language-arrow-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="language-arrow-mask">
+<use xlink:href="#language-arrow-path"></use>
+</mask>
+<use fill="#364343" fill-opacity="0" fill-rule="nonzero" xlink:href="#language-arrow-path"></use>
+<g fill="#404D4D" mask="url(#language-arrow-mask)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="error-container ng-hide" ng-show="ctl.majorError">
+<div aria-hidden="true" class="ng-hide" ng-show="ctl.majorErrorScheduleDisable">
+<div class="error_body">
+<img alt="" src="bandaid.svg_73da616a769b4f1a69e53d6317d49788.svg"/>
+<h1 class="error-title ng-binding">We're Sorry...</h1>
+<div class="error_message ng-scope" ng-if="!ctl.errorPracticePhone">
+<span aria-hidden="true" class="ng-binding ng-hide" ng-show="ctl.errorMessage">
+                            Thank you for your interest in booking with . <br/>
+</span>
+</div>
+<div aria-hidden="true" class="error_message ng-hide" ng-show="ctl.messageDisabled">
+<p class="ng-binding" ng-bind-html="ctl.messageDisabled | safeHTML" style="font-size: 16px;"></p>
+</div>
+</div>
+</div>
+<div aria-hidden="false" class="" ng-hide="ctl.majorErrorScheduleDisable">
+<div class="error_body">
+<img alt="" src="bandaid.svg_73da616a769b4f1a69e53d6317d49788.svg"/>
+<h1 class="error-title ng-binding">We're Sorry...</h1>
+<div class="error_message ng-binding">
+                Sorry! There is an issue with online appointment requests. <br/>
+                Please try again in a little while, or call the practice directly.
+            </div>
+<button class="try_again_button" type="button">
+                Return to Request Appointment
+            </button>
+</div>
+</div>
+</div>
+<div aria-hidden="false" class="booking-widget" ng-hide="ctl.majorError">
+<div aria-hidden="false" class="booking-widget__content" ng-hide="ctl.step === 6 || ctl.initialLoad" style="">
+<div aria-hidden="false" class="progress-indicator" ng-hide="ctl.step === 6 || ctl.initialLoad" style="">
+<div class="progress-indicator__counter ng-binding">
+                STEP
+                2
+                of
+                3
+            </div>
+<div class="progress-indicator__label">
+<h1 aria-hidden="true" class="ng-binding ng-hide" ng-show="ctl.step === 0" style="">Select a Location</h1>
+<h1 aria-hidden="true" class="ng-binding ng-hide" ng-show="ctl.step === 1">
+                    Select a Provider
+                </h1>
+<h1 aria-hidden="true" class="ng-binding ng-hide" ng-show="ctl.step === 2" style="">
+                    Appointment Details
+                </h1>
+<h1 aria-hidden="false" class="ng-binding" ng-show="ctl.step === 3" style="">Visit Details</h1>
+<h1 aria-hidden="true" class="ng-binding ng-hide" ng-show="ctl.step === 4">Contact Information</h1>
+</div>
+</div>
+<div aria-hidden="false" class="sidebar--mobile" ng-hide="ctl.step === 6 || ctl.initialLoad || ctl.step === 0 || ctl.step === 1" style="">
+<div class="provider-info__header">
+<div class="provider-info__photo">
+<img alt="" ng-src="https://a.doctor.com/img?p=providers/470235-Gregory-Rosner&amp;w=125" src="https://a.doctor.com/img?p=providers/470235-Gregory-Rosner&amp;w=125"/>
+</div>
+<div aria-hidden="false" class="provider-info__details animate-scaleIn ng-binding ng-animate ng-hide-animate" data-ng-animate="2" ng-show="ctl.provider.specialty" style="display: block; opacity: 1; transform: scale(1);">
+<h2 class="provider-info__name ng-binding">Gregory Rosner</h2>
+                    Allergist-Immunologist - Allergy
+                </div>
+</div>
+<table aria-hidden="false" class="booking-info" ng-show="ctl.appointment.reason || ctl.appointment.insurance || ctl.appointment.day || ctl.provider.name" role="presentation" style="">
+<tbody>
+<tr class="booking-info__location ng-scope" ng-if="ctl.practice.is_telemedicine_scheduling == 0" style="">
+<td class="provider-info__subsection">
+<svg class="location-icon" viewbox="0 0 24 24">
+<defs>
+<path d="M12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-.28 10.811C5.905 18.864 3 14.593 3 10a9 9 0 1 1 18 0c0 4.593-2.906 8.864-8.72 12.811a.5.5 0 0 1-.56 0zM19 10a7 7 0 1 0-14 0c0 3.625 2.26 7.143 7 10.566 4.74-3.423 7-6.941 7-10.566zm-7 4a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" id="location-mobile-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="location-mobile-mask">
+<use xlink:href="#location-mobile-path"></use>
+</mask>
+<use fill="#051033" fill-opacity="0" fill-rule="nonzero" xlink:href="#location-icon-path"></use>
+<g fill="#404D4D" mask="url(#location-mobile-mask)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+</td>
+<td class="provider-info__subsection-label">
+<div class="ng-binding">Location</div>
+<h3 class="provider-info__subsection-data ng-binding">
+                            ENT and Allergy Associates - Purchase
+                            <br/>
+                            3020 Westchester Ave
+                            <span aria-hidden="false" class="ng-binding" ng-show="ctl.practice.address_2">,  Suite 303</span>
+<br/>
+                            Purchase, NY 
+                        </h3>
+</td>
+</tr>
+<tr class="booking-info__reason">
+<td class="provider-info__subsection">
+<svg viewbox="0 0 24 24">
+<defs>
+<path d="M12.318 9.684a.625.625 0 0 1 0 .884l-2.5 2.5a.628.628 0 0 1-.884-.002l-1.25-1.25a.625.625 0 0 1 .884-.884l.807.81 2.057-2.06a.627.627 0 0 1 .886.002zm0 5a.625.625 0 0 1 0 .884l-2.5 2.5a.628.628 0 0 1-.884 0l-1.25-1.25a.625.625 0 0 1 .884-.884l.807.807 2.057-2.059a.627.627 0 0 1 .886.002zm4.557-3.934a.625.625 0 0 1 0 1.25h-2.5a.625.625 0 0 1 0-1.25h2.5zm0 5a.625.625 0 0 1 0 1.25h-2.5a.625.625 0 0 1 0-1.25h2.5zM18.75 4.5c.689 0 1.25.561 1.25 1.25v15c0 .689-.561 1.25-1.25 1.25H6.25C5.561 22 5 21.439 5 20.75v-15c0-.689.561-1.25 1.25-1.25h2.5v-.625c0-.345.28-.625.625-.625h1.356A1.88 1.88 0 0 1 12.5 2c.815 0 1.51.522 1.769 1.25h1.356c.345 0 .625.28.625.625V4.5h2.5zM10 4.5v1.25h5V4.5h-1.25a.625.625 0 0 1-.625-.625.625.625 0 0 0-1.25 0c0 .345-.28.625-.625.625H10zm8.75 16.25v-15h-2.5v.625c0 .345-.28.625-.625.625h-6.25a.625.625 0 0 1-.625-.625V5.75h-2.5v15h12.5z" id="reason-mobile-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="reason-mobile-mask">
+<use xlink:href="#reason-mobile-path"></use>
+</mask>
+<use fill="#000" xlink:href="#reason-mobile-path"></use>
+<g fill="#404D4D" mask="url(#reason-mobile-mask)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+</td>
+<td class="provider-info__subsection-label">
+<div class="ng-binding">What's the reason for your visit?</div>
+<h3 class="provider-info__subsection-data ng-binding">
+                            Initial Consultation
+                        </h3>
+</td>
+</tr>
+<tr class="booking-info__time">
+<td class="provider-info__subsection">
+<svg viewbox="0 0 24 24">
+<defs>
+<path d="M15.89 1.406c1.164 0 2.11.947 2.11 2.11V15.89C18 17.054 17.054 18 15.89 18H2.11A2.112 2.112 0 0 1 0 15.89V3.517c0-1.163.946-2.11 2.11-2.11h.843V0H4.36v1.406h9.282V0h1.406v1.406h.844zm.704 14.485V6.609H1.406v9.282c0 .387.316.703.703.703h13.782a.704.704 0 0 0 .703-.703zm0-10.688V3.516a.704.704 0 0 0-.703-.704h-.844V4.22H13.64V2.812H4.359V4.22H2.953V2.812H2.11a.704.704 0 0 0-.703.704v1.687h15.188zM2.672 8.086h1.406v1.406H2.672V8.086zm2.812 0h1.407v1.406H5.484V8.086zm2.813 0h1.406v1.406H8.297V8.086zm2.812 0h1.407v1.406h-1.407V8.086zm2.813 0h1.406v1.406h-1.406V8.086zm-11.25 2.812h1.406v1.407H2.672v-1.407zm2.812 0h1.407v1.407H5.484v-1.407zm2.813 0h1.406v1.407H8.297v-1.407zm2.812 0h1.407v1.407h-1.407v-1.407zm-8.437 2.813h1.406v1.406H2.672v-1.406zm2.812 0h1.407v1.406H5.484v-1.406zm2.813 0h1.406v1.406H8.297v-1.406zm2.812 0h1.407v1.406h-1.407v-1.406zm2.813-2.813h1.406v1.407h-1.406v-1.407z" id="calendar-mobile-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd" transform="translate(3 3)">
+<mask fill="#fff" id="calendar-mobile-mask">
+<use xlink:href="#calendar-mobile-path"></use>
+</mask>
+<use fill="#000" fill-rule="nonzero" xlink:href="#calendar-mobile-path"></use>
+<g fill="#404D4D" mask="url(#calendar-mobile-mask)">
+<path d="M-3-3h24v24H-3z"></path>
+</g>
+</g>
+</svg>
+</td>
+<td class="provider-info__subsection-label">
+<div class="ng-binding">Date &amp; Time</div>
+<h3 class="provider-info__subsection-data ng-binding">
+                            Thursday April 13, 2023 at 11am
+                        </h3>
+</td>
+</tr>
+<tr aria-hidden="true" class="booking-info__insurance ng-hide" ng-show="ctl.appointment.insurance">
+<td class="provider-info__subsection">
+<svg viewbox="0 0 24 24">
+<defs>
+<path d="M2.12 7.992c.234 0 .424.193.424.43s-.19.43-.424.43a.427.427 0 0 1-.424-.43c0-.237.19-.43.424-.43zm10.174.86c.234 0 .424.192.424.43v2.577c0 .238-.19.43-.424.43h-2.12v2.148c0 .238-.19.43-.423.43H7.207a.427.427 0 0 1-.424-.43V12.29h-2.12a.427.427 0 0 1-.424-.43V9.281c0-.237.19-.43.424-.43h2.12V6.703c0-.237.19-.43.424-.43h2.544c.234 0 .424.193.424.43v2.148h2.12zm-.424 2.578V9.71H9.75a.427.427 0 0 1-.423-.429V7.133H7.63V9.28c0 .237-.19.43-.424.43h-2.12v1.719h2.12c.234 0 .424.192.424.43v2.148h1.696v-2.149c0-.237.19-.43.424-.43h2.12zm3.153-10.11c.838-.55 1.935.099 1.935 1.1v8.764c0 1.95-.617 3.854-1.738 5.364-2.77 3.734-6.42 5.35-6.574 5.417a.42.42 0 0 1-.334 0c-.154-.067-3.803-1.683-6.575-5.418C.617 15.038 0 13.133 0 11.184V2.419c0-1 1.096-1.65 1.934-1.098.687.452 1.484.69 2.305.69A4.21 4.21 0 0 0 7.49.474C7.74.173 8.1 0 8.48 0s.74.173.99.474a4.21 4.21 0 0 0 3.25 1.537c.82 0 1.618-.238 2.304-.69zm-.48 14.711c1.01-1.362 1.567-3.083 1.567-4.847V2.419c0-.332-.36-.551-.625-.377a5.02 5.02 0 0 1-2.767.829 5.051 5.051 0 0 1-3.9-1.845.438.438 0 0 0-.34-.167c-.13 0-.25.06-.34.167A5.051 5.051 0 0 1 4.24 2.87a5.02 5.02 0 0 1-2.766-.83c-.269-.176-.625.051-.625.378v8.765c0 1.764.556 3.485 1.567 4.847 2.31 3.112 5.326 4.707 6.064 5.066.736-.36 3.76-1.96 6.064-5.066zm.54-12.593c.112.08.179.212.179.351v7.395c0 1.58-.496 3.117-1.397 4.33-1.799 2.424-4.017 3.867-5.18 4.51a.42.42 0 0 1-.407 0c-1.171-.653-3.403-2.108-5.185-4.51-.901-1.213-1.397-2.75-1.397-4.33V10.14c0-.238.19-.43.424-.43.234 0 .424.192.424.43v1.043c0 1.394.435 2.748 1.226 3.814 1.59 2.141 3.56 3.49 4.713 4.157 1.143-.659 3.101-1.997 4.704-4.158.792-1.065 1.227-2.419 1.227-3.813V4.37a6.654 6.654 0 0 1-1.696.22 6.723 6.723 0 0 1-4.24-1.512A6.723 6.723 0 0 1 4.24 4.589a6.654 6.654 0 0 1-1.695-.219v2.333c0 .237-.19.43-.424.43a.427.427 0 0 1-.424-.43V3.79c0-.14.067-.27.18-.35a.42.42 0 0 1 .386-.055 5.83 5.83 0 0 0 1.977.346 5.894 5.894 0 0 0 3.958-1.535.42.42 0 0 1 .564 0 5.894 5.894 0 0 0 3.957 1.535 5.83 5.83 0 0 0 1.978-.346.42.42 0 0 1 .387.054z" id="insurance-mobile-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd" transform="translate(4 1)">
+<mask fill="#fff" id="insurance-mobile-mask">
+<use xlink:href="#insurance-mobile-path"></use>
+</mask>
+<use fill="#000" xlink:href="#a"></use>
+<g fill="#404D4D" mask="url(#insurance-mobile-mask)">
+<path d="M-4-1h24v24H-4z"></path>
+</g>
+</g>
+</svg>
+</td>
+<td class="provider-info__subsection-label">
+<div class="ng-binding">Insurance</div>
+<h3 class="provider-info__subsection-data ng-binding">
+                            I'm paying
+                        </h3>
+</td>
+</tr>
+</tbody>
+</table>
+<a class="powered-by" href="link://https://www.doctor.com" target="_blank">
+                Powered By <img alt="" id="poweredByLogo" src="logo-dark.png_3bdefbc310bd8c728e596e55d26f252c.png"/>
+</a>
+</div>
+<div aria-hidden="false" class="content" ng-class="{'content--full-width' : ctl.step === 0}" ng-hide="ctl.step === 6 || ctl.initialLoad || ctl.showingModal()" style="">
+<div aria-hidden="true" class="booking-widget__step step0 ng-hide" ng-show="ctl.step === 0" style="">
+<div class="practices">
+<div class="practice ng-scope is-selected" ng-class="{'is-selected': ctl.practice.id === pract.id}" ng-click="ctl.setPractice(pract.id, true)" ng-repeat="pract in ctl.practicesArray" role="button" style="" tabindex="0">
+<div aria-hidden="false" class="practice__photo" ng-show="pract.is_telemedicine_scheduling == 0 || !ctl.hasTelemedicine">
+<img alt="" class="profile-image-border" height="58" ng-class="{'no-border': !ctl.photoPractice(pract) }" ng-src="https://a.doctor.com/img?p=practices/35434-91828deb-5575-403f-af85-504af867a030.jpg&amp;w=125" src="https://a.doctor.com/img?p=practices/35434-91828deb-5575-403f-af85-504af867a030.jpg&amp;w=125"/>
+</div>
+<div aria-hidden="true" class="practice__photo ng-hide" ng-show="pract.is_telemedicine_scheduling == 1 &amp;&amp; ctl.hasTelemedicine">
+<img alt="" height="58" src="VV-Capybara.png_8f7bf4a6bab7775bf841077f9e1da64a.png"/>
+</div>
+<div aria-hidden="false" class="practice__name-container" ng-class="ctl.hasTelemedicine ? 'practice__name-container-telemedicine' : 'practice__name-container'" ng-show="pract.is_telemedicine_scheduling == 0 || !ctl.hasTelemedicine">
+<h2 class="practice__name ng-binding">
+                                ENT and Allergy Associates - Purchase
+                            </h2>
+</div>
+<div class="practice__address ng-binding ng-scope" ng-if="pract.is_telemedicine_scheduling == 0 || !ctl.hasTelemedicine" title="3020 Westchester Ave">
+                            3020 Westchester Ave
+                            <span aria-hidden="false" class="ng-binding" ng-show="pract.address_2">, Suite 303</span>
+<br/>Purchase, NY
+                        </div>
+<button class="ng-binding practice__select-btn" ng-class="{'practice__select-btn': (pract.is_telemedicine_scheduling == 0 || !ctl.hasTelemedicine),
+                                'practice__select-btn-telemedicine': (pract.is_telemedicine_scheduling == 1 &amp;&amp; ctl.hasTelemedicine)}">
+                            Select
+                        </button>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="booking-widget__step step1 ng-hide" ng-show="ctl.step === 1">
+<div class="providers">
+<div class="provider ng-scope is-selected" ng-class="{'is-disabled': prov.disabled, 'is-selected': ctl.providerID === prov.provID, 'is-flagged': !ctl.providerSupportsReason(prov.provID)}" ng-click="ctl.setProvider(prov.provID, true)" ng-repeat="prov in ctl.providers" role="button" style="" tabindex="0">
+<div class="provider__photo">
+<img class="profile-image-border" height="58" ng-class="{'no-border': !ctl.photoProvider(prov) }" ng-src="https://a.doctor.com/img?p=providers/470235-Gregory-Rosner&amp;w=125" src="https://a.doctor.com/img?p=providers/470235-Gregory-Rosner&amp;w=125"/>
+</div>
+<div class="practice__name-container">
+<h2 class="provider__name ng-binding">Gregory Rosner</h2>
+</div>
+<h3 class="provider__specialty ng-binding" ng-bind-html="ctl.truncateString(prov.specialty, 95) | safeHTML">Allergist-Immunologist - Allergy</h3>
+<button class="provider__select-btn ng-binding">Select</button>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="booking-widget__step step2 appointment ng-hide" ng-show="ctl.step === 2" style="">
+<div aria-hidden="false" class="error-container insurance-warning" ng-show="ctl.messageWarning" style="font-weight: bold; height: auto; width: auto;">
+<p class="ng-binding" ng-bind-html="ctl.messageWarning | safeHTML" style="font-size: 16px;">IMPORTANT PLEASE READ: THE APPOINTMENT TIME YOU ARE ABOUT TO REQUEST WILL NOT BE CONFIRMED UNTIL YOU RECEIVE A CALL FROM OUR PRACTICE. IF YOU HAVE QUESTIONS, PLEASE CALL 1-855-ENTA-DOC</p>
+</div>
+<div class="form-item form-item--icon">
+<label class="ng-binding">What insurance are you using?</label>
+<div class="hp-rel">
+<div aria-hidden="true" class="message message--insurance animate-scaleIn ng-binding ng-hide" ng-bind-html="ctl.provider.no_insurance_reason | safeHTML" ng-show="(!!ctl.provider &amp;&amp; !!ctl.provider.provID &amp;&amp; ctl.provider.no_insurance_reason!==null &amp;&amp; !!ctl.practiceID &amp;&amp; ctl.step==2)">null</div>
+<div aria-hidden="true" class="message message--insurance animate-scaleIn ng-hide" ng-show="(!!ctl.provider &amp;&amp; !!ctl.provider.provID &amp;&amp; ctl.provider.no_insurance_reason===null &amp;&amp; !!ctl.providerNotAcceptInsurance &amp;&amp; ctl.step==2) || (!!ctl.practiceNotAcceptInsurance &amp;&amp; ctl.step==2 &amp;&amp; !!ctl.provider &amp;&amp; !!ctl.provider.provID &amp;&amp; ctl.provider.no_insurance_reason===null)">
+<span class="ng-binding ng-scope" ng-if="ctl.practice.phone_number" style="">To check if your insurance is accepted, please contact us at (914) 253-8070</span>
+</div>
+<svg class="insurance-info__icon" height="24" viewbox="0 0 24 24" width="24">
+<defs>
+<path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0 2C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-11.5a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1zM12 7a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" id="insurance-info-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="insurance-info-mask">
+<use xlink:href="#insurance-info-path"></use>
+</mask>
+<use fill="#051033" fill-opacity="0" fill-rule="nonzero" xlink:href="#insurance-info-path"></use>
+<g fill="#404D4D" mask="url(#insurance-info-mask)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+</div>
+<div aria-hidden="false" class="fancy-select" ng-click="ctl.clearInsurance(); ctl.updateHeight();" ng-hide="(!!ctl.provider &amp;&amp; !!ctl.provider.no_insurance_reason &amp;&amp; ctl.provider.no_insurance_reason!==null) || !!ctl.providerNotAcceptInsurance || !!ctl.practiceNotAcceptInsurance" role="button" tabindex="0">
+<md-autocomplete class="ng-isolate-scope" md-has-not-found="true" md-item-text="item.name" md-items="item in ctl.querySearch(ctl.searchText)" md-min-length="0" md-no-ink="" md-search-text="ctl.searchText" md-selected-item="ctl.appointment.insurance_company" md-selected-item-change="ctl.onCompanyChange()" placeholder="Select your insurance company..." tabindex="-1"> <md-autocomplete-wrap class="md-whiteframe-z1" ng-class="{ 'md-whiteframe-z1': !floatingLabel, 'md-menu-showing': !$mdAutocompleteCtrl.hidden }" style=""> <input __playwright_target__="action@call@327" aria-activedescendant="" aria-autocomplete="list" aria-disabled="false" aria-expanded="false" aria-haspopup="true" aria-invalid="false" aria-label="Select your insurance company..." aria-owns="ul-9" aria-required="false" autocomplete="off" class="ng-scope ng-valid ng-valid-required ng-touched ng-dirty ng-valid-parse" data-pw-testid-buckeye="0c81ac3b-2b2b-4828-aeb1-d5080d0b2f14" id="input-9" name="" ng-blur="$mdAutocompleteCtrl.blur()" ng-disabled="$mdAutocompleteCtrl.isDisabled" ng-focus="$mdAutocompleteCtrl.focus($event)" ng-if="!floatingLabel" ng-keydown="$mdAutocompleteCtrl.keydown($event)" ng-model="$mdAutocompleteCtrl.scope.searchText" ng-readonly="$mdAutocompleteCtrl.isReadonly" ng-required="$mdAutocompleteCtrl.isRequired" placeholder="Select your insurance company..." role="combobox" style="" type="search"/> <button class="ng-scope" ng-click="$mdAutocompleteCtrl.clear($event)" ng-if="$mdAutocompleteCtrl.scope.searchText &amp;&amp; !$mdAutocompleteCtrl.isDisabled" style="" tabindex="-1" type="button"> <md-icon aria-hidden="true" md-svg-src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwYXRoIGQ9Ik0xOSA2LjQxbC0xLjQxLTEuNDEtNS41OSA1LjU5LTUuNTktNS41OS0xLjQxIDEuNDEgNS41OSA1LjU5LTUuNTkgNS41OSAxLjQxIDEuNDEgNS41OS01LjU5IDUuNTkgNS41OSAxLjQxLTEuNDEtNS41OS01LjU5eiIvPjwvZz48L3N2Zz4="><svg fit="" focusable="false" height="100%" preserveaspectratio="xMidYMid meet" version="1.1" viewbox="0 0 24 24" width="100%" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px"><g><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"></path></g></svg></md-icon> <span class="md-visually-hidden">Clear</span> </button> </md-autocomplete-wrap> <aria-status aria-live="assertive" class="md-visually-hidden" role="status"> </aria-status></md-autocomplete>
+<div class="fancy-select__arrow">
+<svg fill="#364343" height="24" id="down-caret2" name="down-caret2" viewbox="0 0 24 24" width="24">
+<title id="downTitle2">down-caret</title>
+<defs>
+<path d="M12 13.586l4.293-4.293a1 1 0 0 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 0 1 1.414-1.414L12 13.586z" id="language-arrow-path2"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="language-arrow-mask2">
+<use xlink:href="#language-arrow-path2"></use>
+</mask>
+<use fill="#364343" fill-opacity="0" fill-rule="nonzero" xlink:href="#language-arrow-path2"></use>
+<g fill="#404D4D" mask="url(#language-arrow-mask2)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="form-item form-item--icon animate-scaleIn ng-hide" ng-show="(ctl.appointment.insurance_company &amp;&amp; ctl.appointment.insurance_company.id!=='self_paying' &amp;&amp; ctl.appointment.insurance_company.id!=='other' &amp;&amp; !ctl.showWarning)">
+<label class="ng-binding">Insurance plan type</label>
+<div aria-hidden="false" class="fancy-select" ng-hide="(!!ctl.provider &amp;&amp; !!ctl.provider.no_insurance_reason &amp;&amp; ctl.provider.no_insurance_reason!==null) || !!ctl.providerNotAcceptInsurance || !!ctl.practiceNotAcceptInsurance">
+<md-input-container class="">
+<md-select aria-disabled="false" aria-expanded="false" aria-invalid="false" aria-label="{{ctl.t.selectPlan}}" aria-multiselectable="false" aria-owns="select_container_11" class="ng-pristine ng-untouched ng-valid" id="select_10" md-no-ink="" ng-change="ctl.onChangeInsurancePlan()" ng-model="ctl.appointment.insurance_plan_types_id" placeholder="Insurance plan type" role="listbox" tabindex="0"><md-select-value class="md-select-value md-select-placeholder" id="select_value_label_1"><span>Insurance plan type</span><span aria-hidden="true" class="md-select-icon"></span></md-select-value><div aria-hidden="true" class="md-select-menu-container" id="select_container_11"><md-select-menu class="_md"><md-content class="_md">
+<md-option aria-selected="false" class="ng-scope" id="select_option_14" ng-repeat="p in ctl.insurancePlanTypes" role="option" style="" tabindex="0" value="1"><div class="md-text ng-binding">
+                                    HMO
+                                </div></md-option><md-option aria-selected="false" class="ng-scope" id="select_option_15" ng-repeat="p in ctl.insurancePlanTypes" role="option" style="" tabindex="0" value="2"><div class="md-text ng-binding">
+                                    PPO
+                                </div></md-option><md-option aria-selected="false" class="ng-scope" id="select_option_16" ng-repeat="p in ctl.insurancePlanTypes" role="option" style="" tabindex="0" value="3"><div class="md-text ng-binding">
+                                    EPO
+                                </div></md-option><md-option aria-selected="false" class="ng-scope" id="select_option_17" ng-repeat="p in ctl.insurancePlanTypes" role="option" style="" tabindex="0" value="4"><div class="md-text ng-binding">
+                                    POS
+                                </div></md-option><md-option aria-selected="false" class="ng-scope" id="select_option_18" ng-repeat="p in ctl.insurancePlanTypes" role="option" style="" tabindex="0" value="5"><div class="md-text ng-binding">
+                                    Other / I Don t Know
+                                </div></md-option>
+</md-content></md-select-menu></div></md-select>
+</md-input-container>
+<div class="fancy-select__arrow">
+<svg fill="#364343" height="24" id="down-caret3" name="down-caret3" viewbox="0 0 24 24" width="24">
+<title id="downTitle3">down-caret</title>
+<defs>
+<path d="M12 13.586l4.293-4.293a1 1 0 0 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 0 1 1.414-1.414L12 13.586z" id="language-arrow-path3"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="language-arrow-mask3">
+<use xlink:href="#language-arrow-path3"></use>
+</mask>
+<use fill="#364343" fill-opacity="0" fill-rule="nonzero" xlink:href="#language-arrow-path3"></use>
+<g fill="#404D4D" mask="url(#language-arrow-mask3)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="insurance-warning ng-hide" ng-show="ctl.showWarning">
+<p class="ng-binding ng-scope" ng-if="!!ctl.providerID">
+                        Gregory Rosner does not accept I'm paying.
+                        You may have a higher copay or be responsible for the full cost of your visit.
+                    </p>
+</div>
+<div class="form-item">
+<label class="ng-binding">What's the reason for your visit?</label>
+<div class="fancy-select">
+<md-input-container class="md-input-has-value">
+<md-select __playwright_target__="action@call@369" aria-disabled="false" aria-expanded="false" aria-invalid="false" aria-label="{{ctl.t.selectReason}}...: 
+                                    Initial Consultation
+                                " aria-multiselectable="false" aria-owns="select_container_13" class="ng-valid ng-dirty ng-valid-parse ng-touched" data-pw-testid-buckeye="6257b642-f7a0-4c86-b7d5-df6294040e2f" id="select_12" md-no-ink="" ng-change="ctl.setReason();" ng-model="ctl.appointment.reason_id" placeholder="Select a reason for your visit..." role="listbox" style="" tabindex="0"><md-select-value class="md-select-value" id="select_value_label_2"><span><div class="md-text ng-binding">
+                                    Initial Consultation
+                                </div></span><span aria-hidden="true" class="md-select-icon"></span></md-select-value></md-select>
+</md-input-container>
+<div class="fancy-select__arrow">
+<svg fill="#364343" height="24" id="down-caret4" name="down-caret4" viewbox="0 0 24 24" width="24">
+<title id="downTitle4">down-caret</title>
+<defs>
+<path d="M12 13.586l4.293-4.293a1 1 0 0 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 0 1 1.414-1.414L12 13.586z" id="language-arrow-path4"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="language-arrow-mask4">
+<use xlink:href="#language-arrow-path4"></use>
+</mask>
+<use fill="#364343" fill-opacity="0" fill-rule="nonzero" xlink:href="#language-arrow-path4"></use>
+<g fill="#404D4D" mask="url(#language-arrow-mask4)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="message message--error reason-message animate-scaleIn ng-binding ng-hide" ng-hide="ctl.step !== 3 || ctl.providerSupportsReason(ctl.provider.provID)">
+<span class="doc-close"></span>
+                    Gregory Rosner does not provide the chosen service: Initial Consultation. Please select another provider.
+                </div>
+<div aria-hidden="false" class="datetime-selection" ng-show="ctl.appointment.reason_id" style="">
+<div class="form-item">
+<label class="ng-binding" style="text-align: left">What appointment time works for you?</label>
+</div>
+<div class="datetime-selection__controls">
+<div class="datetime-selection__previous ng-binding" ng-class="{'is-active' : ctl.currentCalendarPage, 'datetime-selection__control-fr': ctl.language === 'fr', 'datetime-selection__control-pt': ctl.language === 'pt', 'datetime-selection__control-es': ctl.language === 'es'}" ng-click='ctl.currentCalendarPage ? ctl.changeDate("back") : null' role="button" tabindex="0">
+<span class="doc-arrow-left"></span>Prev Week
+                        </div>
+<div>
+<h1 class="ng-binding">April</h1>
+</div>
+<div class="datetime-selection__next ng-binding" ng-class="{'datetime-selection__control-fr': ctl.language === 'fr', 'datetime-selection__control-pt': ctl.language === 'pt', 'datetime-selection__control-es': ctl.language === 'es'}" ng-click='ctl.changeDate("forward");' role="button" tabindex="0">
+                            Next Week<span class="doc-arrow-right"></span>
+</div>
+</div>
+<div class="datetime-selection__weeks ng-scope" ng-if="!ctl.loadingCalendar" style="">
+<ul class="week is-visible ng-scope" ng-if="!ctl.loadingCalendar">
+<div class="day__container ng-scope" ng-repeat="row in ctl.calendarChuckedData">
+<li class="day 7 no-avail" ng-class="{'no-avail' : !day.times.length, 'hide-small' : show[day.date].hide}" ng-repeat="day in row">
+<div class="day__title">
+<h3 class="day__name ng-binding">Sun</h3>
+<span class="day__date ng-binding">9</span>
+</div>
+<div class="day__no-times ng-scope" ng-if="!day.times.length"></div>
+</li><li class="day 1" ng-class="{'no-avail' : !day.times.length, 'hide-small' : show[day.date].hide}" ng-repeat="day in row">
+<div class="day__title">
+<h3 class="day__name ng-binding">Mon</h3>
+<span class="day__date ng-binding">10</span>
+</div>
+<ul class="day__times ng-scope" ng-if="day.times.length">
+<li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="08:00 am - 09:00 am">8am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="09:00 am - 10:00 am">9am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="10:00 am - 11:00 am">10am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="11:00 am - 12:00 pm">11am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="12:00 pm - 01:00 pm">12pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="01:00 pm - 02:00 pm">1pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="02:00 pm - 03:00 pm">2pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="03:00 pm - 04:00 pm">3pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="04:00 pm - 05:00 pm">4pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="05:00 pm - 06:00 pm">5pm</li>
+</ul>
+</li><li class="day 2" ng-class="{'no-avail' : !day.times.length, 'hide-small' : show[day.date].hide}" ng-repeat="day in row">
+<div class="day__title">
+<h3 class="day__name ng-binding">Tue</h3>
+<span class="day__date ng-binding">11</span>
+</div>
+<ul class="day__times ng-scope" ng-if="day.times.length">
+<li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="08:30 am - 09:30 am">8:30am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="09:00 am - 10:00 am">9am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="10:00 am - 11:00 am">10am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="11:00 am - 12:00 pm">11am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="12:00 pm - 01:00 pm">12pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="01:00 pm - 02:00 pm">1pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="02:00 pm - 03:00 pm">2pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="03:00 pm - 04:00 pm">3pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="04:00 pm - 05:00 pm">4pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="05:00 pm - 06:00 pm">5pm</li>
+</ul>
+</li><li class="day 3" ng-class="{'no-avail' : !day.times.length, 'hide-small' : show[day.date].hide}" ng-repeat="day in row">
+<div class="day__title">
+<h3 class="day__name ng-binding">Wed</h3>
+<span class="day__date ng-binding">12</span>
+</div>
+<ul class="day__times ng-scope" ng-if="day.times.length">
+<li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="08:00 am - 09:00 am">8am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="08:30 am - 09:30 am">8:30am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="09:00 am - 10:00 am">9am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="10:00 am - 11:00 am">10am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="11:00 am - 12:00 pm">11am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="12:00 pm - 01:00 pm">12pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="01:00 pm - 02:00 pm">1pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="02:00 pm - 03:00 pm">2pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="03:00 pm - 04:00 pm">3pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="04:00 pm - 05:00 pm">4pm</li>
+</ul>
+</li><li class="day 4" ng-class="{'no-avail' : !day.times.length, 'hide-small' : show[day.date].hide}" ng-repeat="day in row">
+<div class="day__title">
+<h3 class="day__name ng-binding">Thu</h3>
+<span class="day__date ng-binding">13</span>
+</div>
+<ul class="day__times ng-scope" ng-if="day.times.length">
+<li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="08:00 am - 09:00 am">8am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="09:00 am - 10:00 am">9am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="10:00 am - 11:00 am">10am</li><li __playwright_target__="action@call@411" class="ng-binding ng-scope is-selected" data-pw-testid-buckeye="92c5c55a-f540-4e9e-b905-5313cd5fc0c1" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="11:00 am - 12:00 pm">11am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="12:00 pm - 01:00 pm">12pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="01:00 pm - 02:00 pm">1pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="02:00 pm - 03:00 pm">2pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="03:00 pm - 04:00 pm">3pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="04:00 pm - 05:00 pm">4pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="05:00 pm - 06:00 pm">5pm</li>
+</ul>
+</li><li class="day 5" ng-class="{'no-avail' : !day.times.length, 'hide-small' : show[day.date].hide}" ng-repeat="day in row">
+<div class="day__title">
+<h3 class="day__name ng-binding">Fri</h3>
+<span class="day__date ng-binding">14</span>
+</div>
+<ul class="day__times ng-scope" ng-if="day.times.length">
+<li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="08:00 am - 09:00 am">8am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="08:30 am - 09:30 am">8:30am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="09:00 am - 10:00 am">9am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="10:00 am - 11:00 am">10am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="11:00 am - 12:00 pm">11am</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="12:00 pm - 01:00 pm">12pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="01:00 pm - 02:00 pm">1pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="02:00 pm - 03:00 pm">2pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="03:00 pm - 04:00 pm">3pm</li><li class="ng-binding ng-scope background-fade" ng-class="{'is-selected': ctl.appointment.day == day.date &amp;&amp; ctl.appointment.time[0] == time[0], 'background-fade': (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.time[0] !== time[0]) || (ctl.appointment.timeSelected &amp;&amp; ctl.appointment.day !== day.date)}" ng-click="ctl.setDateTime(day.date, time, day.weekday, day)" ng-repeat="time in day.times" role="button" style="" tabindex="0" title="04:00 pm - 05:00 pm">4pm</li>
+</ul>
+</li><li class="day 6 no-avail" ng-class="{'no-avail' : !day.times.length, 'hide-small' : show[day.date].hide}" ng-repeat="day in row">
+<div class="day__title">
+<h3 class="day__name ng-binding">Sat</h3>
+<span class="day__date ng-binding">15</span>
+</div>
+<div class="day__no-times ng-scope" ng-if="!day.times.length"></div>
+</li>
+</div>
+</ul>
+</div>
+</div>
+<div aria-hidden="false" class="datetime-selection datetime-selection__mobile" ng-show="ctl.appointment.reason_id" style="">
+<div class="datetime-soonestAvail show-small ng-scope" ng-if="emptyTimes &gt;= 1" style="">
+<div class="ng-binding">Soonest Available:</div>
+<a class="ng-binding" ng-click="ctl.goNextAvailableDay()" style="color: white; text-decoration: underline">Mon, April 10</a>
+</div>
+<div class="datetime-selection__controls">
+<div class="datetime-selection__previous" ng-class="{'is-active' : ctl.currentCalendarPage, 'datetime-selection__control-fr': ctl.language === 'fr', 'datetime-selection__control-pt': ctl.language === 'pt', 'datetime-selection__control-es': ctl.language === 'es'}" ng-click='ctl.currentCalendarPage ? ctl.changeDay("back") : null' role="button" tabindex="0">
+<span class="doc-arrow-left"></span>
+</div>
+<div>
+<h1 class="ng-binding">Sun, April 9</h1>
+</div>
+<div class="datetime-selection__next" ng-class="{'datetime-selection__control-fr': ctl.language === 'fr', 'datetime-selection__control-pt': ctl.language === 'pt', 'datetime-selection__control-es': ctl.language === 'es'}" ng-click='ctl.changeDay("forward");' role="button" tabindex="0">
+<span class="doc-arrow-right"></span>
+</div>
+</div>
+<div class="datetime-selection__weeks ng-scope" ng-if="!ctl.loadingCalendar" style="">
+<ul class="week is-visible ng-scope" ng-if="!ctl.loadingCalendar">
+<li class="day no-avail" ng-class="{'no-avail' : !ctl.currentDayTimes.times.length}">
+<div class="day__no-times ng-binding ng-scope" ng-if="!ctl.currentDayTimes.times.length">no availability</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div aria-hidden="false" class="booking-widget__step step3" ng-show="ctl.step === 3" style="">
+<label class="appt__label ng-binding">Who is this appointment for?</label>
+<div class="hp-flex hp-mb15">
+<div class="radio-button">
+<input aria-checked="true" aria-invalid="false" class="ng-untouched ng-valid ng-dirty ng-valid-parse" id="who-me" name="who" ng-change="ctl.setAppointmentWho('Me');" ng-model="ctl.appointment.selfAppointed" ng-value="true" style="" type="radio" value="true"/>
+<label __playwright_target__="action@call@453" class="first-child ng-binding" data-pw-testid-buckeye="8d4145e1-41c4-40a1-ac7a-0a46934ce667" for="who-me">Me</label>
+</div>
+<div class="radio-button">
+<input aria-checked="false" aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="who-else" name="who" ng-change="ctl.setAppointmentWho('SomeoneElse');" ng-model="ctl.appointment.selfAppointed" ng-value="false" type="radio" value="false"/>
+<label class="last-child ng-binding" for="who-else">Someone Else</label>
+</div>
+</div>
+<div class="step3__patient-form is-minimized" ng-class="{'is-minimized': ctl.appointment.selfAppointed || ctl.appointment.selfAppointed === null,
+                                'is-visible': !ctl.appointment.selfAppointed &amp;&amp; ctl.appointment.selfAppointed !== null }">
+<div class="patient__input">
+<div class="form-item">
+<label class="ng-binding" for="createPatientFirstName">Patient first name</label>
+<input aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="createPatientFirstName" name="createPatientFirstName" ng-model="ctl.appointment.otherPersonFirstName" type="text"/>
+</div>
+</div>
+<div class="patient__input">
+<div class="form-item">
+<label class="ng-binding" for="createPatientLastName">Patient last name</label>
+<input aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="createPatientLastName" name="createPatientLastName" ng-model="ctl.appointment.otherPersonLastName" type="text"/>
+</div>
+</div>
+</div>
+<label class="appt__label ng-binding" ng-class="{'is-hidden': !ctl.appointment.selfAppointed}" style="">Have you seen this doctor before?
+                </label>
+<label class="appt__label ng-binding is-hidden" ng-class="{'is-hidden': ctl.appointment.selfAppointed}" style="">Have they seen this doctor before?
+                </label>
+<div class="hp-flex hp-mb15">
+<div class="radio-button">
+<input aria-checked="true" aria-invalid="false" class="switch-off ng-untouched ng-valid ng-dirty ng-valid-parse" id="firstvisit-no" name="firstvisit" ng-change="ctl.setFirstVisit('No')" ng-model="ctl.appointment.firstVisit" ng-value="true" style="" type="radio" value="true"/>
+<label __playwright_target__="action@call@474" class="first-child ng-binding" data-pw-testid-buckeye="24b0adb0-fbad-4068-a158-e040e3f536b9" for="firstvisit-no">No</label>
+</div>
+<div class="radio-button">
+<input aria-checked="false" aria-invalid="false" class="switch-on ng-pristine ng-untouched ng-valid" id="firstvisit-yes" name="firstvisit" ng-change="ctl.setFirstVisit('Yes')" ng-model="ctl.appointment.firstVisit" ng-value="false" type="radio" value="false"/>
+<label class="last-child ng-binding" for="firstvisit-yes">Yes</label>
+</div>
+</div>
+<div class="step3__dob is-visible" ng-class="{'is-minimized': (!ctl.appointment.firstVisit || ctl.appointment.firstVisit === null),
+                        'is-visible': (ctl.appointment.firstVisit &amp;&amp; ctl.appointment.firstVisit !== null)}" style="">
+<label class="appt__label ng-binding" ng-class="{'is-hidden': !ctl.appointment.selfAppointed}" style="">What is your date of birth?
+                    </label>
+<label class="appt__label ng-binding is-hidden" ng-class="{'is-hidden': ctl.appointment.selfAppointed}" style="">What is their date of birth?
+                    </label>
+<div class="hp-flex hp-mb15 input__container">
+<div class="patient__input">
+<div class="form-item">
+<input __playwright_target__="action@call@497" aria-invalid="false" class="input-month ng-valid ng-valid-min ng-valid-max ng-dirty ng-valid-number ng-touched" data-pw-testid-buckeye="733e5789-3383-4254-a53f-ee23aa1bf9f4" id="month" max="12" min="1" name="month" ng-blur="ctl.setDirty('month');ctl.validateDOB('month');" ng-model="ctl.dob.month" style="" type="number" value="5"/>
+<label class="dob__label ng-binding" for="month">Month</label>
+</div>
+</div>
+<div class="patient__input">
+<div class="form-item">
+<input __playwright_target__="action@call@520" aria-invalid="false" class="input-day ng-untouched ng-valid ng-valid-min ng-valid-max ng-dirty ng-valid-number" data-pw-testid-buckeye="aecf429a-072f-4c6d-8e02-1ab69d017227" id="day" max="31" min="1" name="day" ng-blur="ctl.setDirty('day');ctl.validateDOB('day');" ng-model="ctl.dob.day" style="" type="number" value="5"/>
+<label class="dob__label ng-binding" for="day">Day</label>
+</div>
+</div>
+<div class="patient__input">
+<div class="form-item">
+<input aria-invalid="false" class="input-year ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max" data-pw-testid-buckeye="7f25cdb0-a4fd-4293-bdc5-d2c7153101f1" id="year" max="2023" min="1800" name="year" ng-blur="ctl.setDirty('year');ctl.validateDOB('year');" ng-model="ctl.dob.year" type="number"/>
+<label class="dob__label ng-binding" for="year">Year</label>
+</div>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="error__label ng-binding ng-hide" ng-show="!!ctl.dobError &amp;&amp; (ctl.appointment.firstVisit &amp;&amp; ctl.appointment.firstVisit !== null)">
+</div>
+<label class="appt__label ng-binding" ng-class="{'is-hidden': !ctl.appointment.selfAppointed}" style="">Additional details about your visit
+                </label>
+<label class="appt__label ng-binding is-hidden" ng-class="{'is-hidden': ctl.appointment.selfAppointed}" style="">Additional details about their visit
+                </label>
+<textarea aria-invalid="false" aria-multiline="true" class="ng-pristine ng-untouched ng-valid ng-valid-maxlength" cols="30" id="comments" maxlength="125" name="comments" ng-model="ctl.appointment.additional" rows="4">                            </textarea>
+</div>
+<div aria-hidden="true" class="booking-widget__step step3 ng-hide" ng-show="ctl.step === 4">
+<div class="doclogin">
+<div aria-hidden="false" class="doclogin__tabs" ng-hide="ctl.yelp">
+<div class="doclogin__tab create ng-binding is-selected" ng-class="{'is-selected': ctl.createAccount}" ng-click="ctl.createAccount = true; ctl.submissionError = false;" role="button" tabindex="0">Enter Contact Information
+                        </div>
+<div class="doclogin__tab login ng-binding" ng-class="{'is-selected': !ctl.createAccount}" ng-click="ctl.createAccount = false; ctl.submissionError = false; ctl.onLoginClick();" role="button" tabindex="0" title="Log in to Doctor.com">Log in
+                        </div>
+</div>
+<div class="doclogin__login" ng-class="{'is-visible': !ctl.createAccount}">
+<form action="https://patients.doctor.com/directAppointment?provider=4330261&amp;partner=healthgrades" class="ng-pristine ng-valid" ng-submit="ctl.submitData();">
+<div class="form-item email">
+<label class="ng-binding" for="loginEmail">Email address</label>
+<input aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="loginEmail" name="loginEmail" ng-blur="ctl.validateEmail()" ng-change="ctl.invalidEmail &amp;&amp; ctl.validateEmail()" ng-class="{'invalid-input': ctl.invalidEmail}" ng-model="ctl.patient.email" placeholder="john@doctor.com" type="text"/>
+<div aria-hidden="true" class="input-error-message ng-binding ng-hide" ng-show="ctl.invalidEmail">
+<svg class="input-error-message-icon" height="18" viewbox="0 0 24 24" width="18">
+<defs>
+<path d="M13.414 12l2.293-2.293a1 1 0 1 0-1.414-1.414L12 10.586 9.707 8.293a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 0 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" id="input-error-path-email1"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="input-error-mask-email1">
+<use xlink:href="#input-error-path-email1"></use>
+</mask>
+<use fill="#ec663e" fill-opacity="0" xlink:href="#input-error-path-email1"></use>
+<g fill="#ec663e" mask="url(#input-error-mask-email1)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+                                    Please enter a valid email.
+                                </div>
+</div>
+<div class="form-item password">
+<label class="ng-binding" for="loginPass">Password</label>
+<input aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="loginPass" name="loginPass" ng-blur="ctl.validatePassword()" ng-change="ctl.invalidPassword &amp;&amp; ctl.validatePassword()" ng-class="{'invalid-input': ctl.invalidPassword}" ng-model="ctl.patient.pass" placeholder="Password" type="password"/>
+<div aria-hidden="true" class="input-error-message ng-binding ng-hide" ng-show="ctl.invalidPassword">
+<svg class="input-error-message-icon" height="18" viewbox="0 0 25 25" width="18">
+<defs>
+<path d="M13.414 12l2.293-2.293a1 1 0 1 0-1.414-1.414L12 10.586 9.707 8.293a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 0 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" id="input-error-path-password"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="input-error-mask-password">
+<use xlink:href="#input-error-path-password"></use>
+</mask>
+<use fill="#ec663e" fill-opacity="0" xlink:href="#input-error-path-password"></use>
+<g fill="#ec663e" mask="url(#input-error-mask-password)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+                                    Please enter your password.
+                                </div>
+</div>
+</form>
+<div class="form-item forgot-password-container">
+<a class="forgot-password ng-binding" href="link:////patients.doctor.com/forgot-password" ng-click="ctl.onForgotPassword();" target="_blank">
+                                Forgot your password?
+                            </a>
+</div>
+</div>
+<div aria-hidden="true" class="doclogin__errors ng-binding ng-hide" ng-show="ctl.submissionError">
+</div>
+<div class="doclogin__create appointment is-visible" ng-class="{'is-visible': ctl.createAccount}">
+<form action="https://patients.doctor.com/directAppointment?provider=4330261&amp;partner=healthgrades" class="ng-pristine ng-valid">
+<div class="grid small-gutters-1 medium-gutters-2">
+<div class="grid__item medium-1-2">
+<div class="form-item">
+<label class="ng-binding" for="createFirstName">First name</label>
+<input aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="createFirstName" name="createFirstName" ng-blur="ctl.validateFirstName()" ng-change="ctl.invalidFirstName &amp;&amp; ctl.validateFirstName()" ng-class="{'invalid-input': ctl.invalidFirstName}" ng-model="ctl.patient.first_name" placeholder="First Name" type="text"/>
+<div aria-hidden="true" class="input-error-message ng-binding ng-hide" ng-show="ctl.invalidFirstName">
+<svg class="input-error-message-icon" height="18" viewbox="0 0 25 25" width="18">
+<defs>
+<path d="M13.414 12l2.293-2.293a1 1 0 1 0-1.414-1.414L12 10.586 9.707 8.293a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 0 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" id="input-error-path-firstname"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="input-error-mask-firstname">
+<use xlink:href="#input-error-path-firstname"></use>
+</mask>
+<use fill="#ec663e" fill-opacity="0" xlink:href="#input-error-path-firstname"></use>
+<g fill="#ec663e" mask="url(#input-error-mask-firstname)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+                                            Please enter your first name.
+                                        </div>
+</div>
+</div>
+<div class="grid__item medium-1-2">
+<div class="form-item">
+<label class="ng-binding" for="createLastName">Last name</label>
+<input aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="createLastName" name="createLastName" ng-blur="ctl.validateLastName()" ng-change="ctl.invalidLastName &amp;&amp; ctl.validateLastName()" ng-class="{'invalid-input': ctl.invalidLastName}" ng-model="ctl.patient.last_name" placeholder="Last Name" type="text"/>
+<div aria-hidden="true" class="input-error-message ng-binding ng-hide" ng-show="ctl.invalidLastName">
+<svg class="input-error-message-icon" height="18" viewbox="0 0 25 25" width="18">
+<defs>
+<path d="M13.414 12l2.293-2.293a1 1 0 1 0-1.414-1.414L12 10.586 9.707 8.293a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 0 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" id="input-error-path-lastname"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="input-error-mask-lastname">
+<use xlink:href="#input-error-path-lastname"></use>
+</mask>
+<use fill="#ec663e" fill-opacity="0" xlink:href="#input-error-path-lastname"></use>
+<g fill="#ec663e" mask="url(#input-error-mask-lastname)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+                                            Please enter your last name.
+                                        </div>
+</div>
+</div>
+<div class="grid__item">
+<div class="form-item">
+<label class="ng-binding" for="createEmail">Email address</label>
+<input aria-disabled="false" aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="createEmail" name="createEmail" ng-blur="ctl.validateEmail()" ng-change="ctl.invalidEmail &amp;&amp; ctl.validateEmail()" ng-class="{'invalid-input': ctl.invalidEmail}" ng-disabled="ctl.updateAccount" ng-model="ctl.patient.email" placeholder="john@doctor.com" type="text"/>
+<div aria-hidden="true" class="input-error-message ng-binding ng-hide" ng-show="ctl.invalidEmail">
+<svg class="input-error-message-icon" height="18" viewbox="0 0 25 25" width="18">
+<defs>
+<path d="M13.414 12l2.293-2.293a1 1 0 1 0-1.414-1.414L12 10.586 9.707 8.293a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 0 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" id="input-error-path-email2"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="input-error-mask-email2">
+<use xlink:href="#input-error-path-email2"></use>
+</mask>
+<use fill="#ec663e" fill-opacity="0" xlink:href="#input-error-path-email2"></use>
+<g fill="#ec663e" mask="url(#input-error-mask-email2)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+                                            Please enter a valid email.
+                                        </div>
+</div>
+</div>
+<div class="grid__item">
+<div class="form-item">
+<label class="ng-binding" for="createPhone">Mobile Phone</label>
+<input aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="createPhone" mask="(999) 999-9999" mask-restrict="reject" name="createPhone" ng-blur="ctl.validatePhone()" ng-change="ctl.invalidPhone &amp;&amp; ctl.validatePhone()" ng-class="{'invalid-input': ctl.invalidPhone}" ng-model="ctl.patient.phone" placeholder="(555) 555-5555" type="tel"/>
+<div aria-hidden="true" class="input-error-message ng-binding ng-hide" ng-show="ctl.invalidPhone">
+<svg class="input-error-message-icon" height="18" viewbox="0 0 25 25" width="18">
+<defs>
+<path d="M13.414 12l2.293-2.293a1 1 0 1 0-1.414-1.414L12 10.586 9.707 8.293a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 0 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" id="input-error-path-phone"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="input-error-mask-phone">
+<use xlink:href="#input-error-path-phone"></use>
+</mask>
+<use fill="#ec663e" fill-opacity="0" xlink:href="#input-error-path-phone"></use>
+<g fill="#ec663e" mask="url(#input-error-mask-phone)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+                                            Please enter a valid phone number.
+                                        </div>
+</div>
+</div>
+<div class="grid__item">
+<div class="form-item terms">
+<label class="checkbox-label ng-binding" for="termsOfUse" ng-click="ctl.validateTerms()" role="button" tabindex="0">
+<input aria-checked="false" aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="termsOfUse" name="termsOfUse" ng-model="ctl.termsOfUse" type="checkbox" value="on"/>
+                                            I have read and agree to the Doctor.com
+                                            <a class="ng-binding" ng-click="ctl.showTOS = true">Terms of Use</a>
+</label>
+<div aria-hidden="true" class="input-error-message input-error-message--inline ng-binding ng-hide" ng-show="ctl.invalidTerms">
+<svg class="input-error-message-icon" height="18" viewbox="0 0 25 25" width="18">
+<defs>
+<path d="M13.414 12l2.293-2.293a1 1 0 1 0-1.414-1.414L12 10.586 9.707 8.293a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 0 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" id="input-error-path-terms"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="input-error-mask-terms">
+<use xlink:href="#input-error-path-terms"></use>
+</mask>
+<use fill="#ec663e" fill-opacity="0" xlink:href="#input-error-path-terms"></use>
+<g fill="#ec663e" mask="url(#input-error-mask-terms)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+                                            You must agree to the Terms of Service.
+                                        </div>
+<label class="checkbox-label ng-binding" for="hipaa" ng-click="ctl.validateAuth()" role="button" tabindex="0">
+<input aria-checked="false" aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="hipaa" name="hipaa" ng-model="ctl.hipaa" type="checkbox" value="on"/>
+                                            I have read and agree to the Doctor.com
+                                            <a class="ng-binding" ng-click="ctl.showHIPAA = true">HIPAA Authorization</a>
+</label>
+<div aria-hidden="true" class="input-error-message input-error-message--inline ng-binding ng-hide" ng-show="ctl.invalidAuth">
+<svg class="input-error-message-icon" height="18" viewbox="0 0 25 25" width="18">
+<defs>
+<path d="M13.414 12l2.293-2.293a1 1 0 1 0-1.414-1.414L12 10.586 9.707 8.293a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 0 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" id="input-error-path-hipaa"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="input-error-mask-hipaa">
+<use xlink:href="#input-error-path-hipaa"></use>
+</mask>
+<use fill="#ec663e" fill-opacity="0" xlink:href="#input-error-path-hipaa"></use>
+<g fill="#ec663e" mask="url(#input-error-mask-hipaa)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+                                            You must agree to the HIPAA Authorization.
+                                        </div>
+</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+<div aria-hidden="false" class="footer" ng-show="ctl.step &gt;= 1" style="">
+<div aria-hidden="false" class="footer__back ng-binding" ng-click="ctl.setStep(ctl.step - 1)" ng-hide="((ctl.step == 1 &amp;&amp; ctl.loadedWithPractice) || (ctl.step == 2 &amp;&amp; ctl.loadedWithPractice &amp;&amp; ctl.loadedWithProvider) || ctl.step == 5 || ctl.step == 0)" role="button" style="" tabindex="0">
+<span class="doc-arrow-left"></span>Back
+                </div>
+<div aria-hidden="false" class="footer__continue is-disabled" ng-attr-title="{{ctl.step === 2 ?
+                                ctl.t.continueToDetails :
+                                ctl.step === 3 ?
+                                    ctl.t.continueToDetails : ctl.t.cont}}" ng-class="{'is-disabled': !ctl.canContinue()}" ng-click="ctl.setStep(ctl.step + 1); ctl.StartLoadingGif()" ng-hide="ctl.step === 1 || ctl.step === 5 || ctl.step === 4" role="button" style="" tabindex="0" title="Continue to Visit Details">
+<span __playwright_target__="action@call@432" class="text_overflow ng-binding" data-pw-testid-buckeye="a88e8e83-9459-4069-8b27-baa34af6433c">
+                            Continue to Contact Info
+                            </span>
+<span class="doc-arrow-right"></span>
+</div>
+<div aria-hidden="true" class="footer__continue ng-binding ng-hide is-disabled" ng-class="{'is-disabled': !ctl.canContinue()}" ng-click="ctl.setStep(ctl.step + 1); ctl.StartLoadingGif()" ng-show="ctl.step === 4" role="button" style="" tabindex="0">
+                    Request Now
+                </div>
+</div>
+<div aria-hidden="true" class="doclogin__loading ng-hide" ng-show="ctl.submitting"></div>
+<div class="powered-by-base" href="https://www.doctor.com" target="_blank">Powered By
+                <span><img id="poweredByLogo" src="logo-dark.png_3bdefbc310bd8c728e596e55d26f252c.png"/></span>
+</div>
+</div>
+<div aria-hidden="true" class="content ng-hide" ng-show="ctl.showingModal()">
+<div aria-hidden="true" class="content text__modal ng-hide" ng-show="ctl.showTOS">
+<h1>
+                    Doctor.com Terms of Service
+                    <span class="close-text__modal" ng-click="ctl.showTOS = false" role="button" tabindex="0">ⓧ</span>
+</h1>
+<span class="ng-binding" ng-bind-html="ctl.tos | safeHTML"><div class="entry-content" style="font-size:16px; color: #364343; font-family:'Roboto', sans-serif;">
+<p>These Terms of Service define the terms by which you may use the Doctor.com website, platform, applications, and services provided by Doctor.com and/in which the Terms of Service are posted or referenced (collectively, the “Services”) and are an agreement between you and Health Platforms Group, Inc. and its subsidiaries (“Company”) (the Company and Services are collectively referenced as “we” or “us”). These Terms of Service apply to Services provided under the trade names Doctor.com and Connect Healthcare, as well as the names of the Company. The Privacy Policy located at <a href="link://https://www.doctor.com/privacy-policy">https://www.doctor.com/privacy-policy</a> also forms part of these Terms of Service. We may at any time modify the Privacy Policy, or introduce new policies regarding the use of the Services. Any reference to our Terms of Service includes all such policies.</p>
+<p>By using the Services, you expressly acknowledge that you have read, accept, and agree to be bound by these Terms of Service, as well as any applicable laws hereunder. You should not use  our Services, if you do not agree to these Terms of Service.</p>
+<ol>
+<li>CHANGES TO THE TERMS OF SERVICE. We reserve the right, at our sole discretion, to change, modify or alter the Terms of Service at any time. Such changes shall become effective immediately upon the posting thereof. You must review the Terms of Service on a regular basis to keep yourself apprised of any changes. The Privacy Policy posted on our Website also forms part of these Terms of Service. We may at any time modify the Privacy Policy or introduce new policies regarding the use of the Services. Any reference to our Terms of Service includes all such policies.</li>
+<li>ELIGIBILITY TO USE OUR SERVICES. Only adults, who are at least eighteen (18) years of age, are eligible to use our Services. In addition, you must be fully competent to enter into and to comply with the terms, conditions, obligations, representations, and warranties set forth in these Terms of Service. By using the Services, you represent and warrant that you have the right, authority, and capacity to enter into these Terms of Service and can abide by all of the terms and conditions set forth therein.</li>
+<li>WE DO NOT PROVIDE MEDICAL ADVICE. The content you find or receive through our Services are for informational purposes only and do not constitute medical advice and are not a substitute for professional medical advice, diagnosis or treatment. The information in our Services is not guaranteed to be accurate, up-to-date, correct or complete, and you should not rely on it to make any medical or treatment decisions without first obtaining the proper consultation of a doctor. Do not use Doctor.com for emergency medical needs. If you experience a medical emergency, immediately contact a medical professional and/or call 911. We expressly disclaim all liability with respect to actions taken or not taken based on any content in our Services. If you rely on any content found in our Services you do so solely at your own risk. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of anything you have read on our Services. No licensed medical professional/patient relationship is created when you use our Services or any content you find therein. If you are seeking care, you are solely responsible for determining the suitability of the healthcare provider for your needs.</li>
+<li>REGISTRATION. If you would like to create an account or contribute content, then you may be required when you set up your account to select a password and provide us with some personal information, including but not limited to: full name, password, location, and e-mail address. If you are a licensed medical professional and wish to create or edit your profile in our Services, then in addition to setting up your account and providing personal information to us, you represent and warrant (a) that you are a medical professional, (b) that you have the necessary licenses to practice in your field; (c) that the information or materials that you  provide to us when you add a listing or update an existing listing is accurate and truthful and that you have the full right and authorization to provide us with such information and materials for use with the Services and (d) that you are in good standing with your local licensing authority. In the event that there is a change in your status or you become the subject of any disciplinary action while you have an active profile on Doctor.com, you are solely responsible for updating your listing to reflect the new status and you must immediately notify Doctor.com of such change. You may submit credentials on behalf of a licensed medical professional, provided that you warrant and represent that you are an employee or associate of a hospital, private practice, or other recognized medical organization who possesses the written permission of said provider to submit his or her medical credentials and other personal and professional information to our Services. Unless the licensed medical professional account is created by an approved Doctor.com industry partner, you will be required to submit valid medical credentials for verification against our database and/or review by our validations team. Such medical credentials may include but are not limited to: National Provider Identifier (NPI) numbers, Unique Physician Identifier Numbers (UPIN), state or federal license numbers, and the providers name, practice or hospital name, and his or her contact information. We reserve the right to immediately suspend, cancel, edit, and/or erase any account or listing on our Services which we deem to be invalid or fraudulent. We also reserve the right in our sole discretion, not to include any account on our Services. Furthermore, we, at our sole discretion, reserve the right to edit or remove any biographical information or data that has been submitted or posted to our Services if we believe or become aware that the information is deceptive, inaccurate, improper, fraudulent or in violation of any right of another party. In cases where we believe that a provider’s credentials may have been used fraudulently, maliciously, inaccurately or improperly, we reserve the right to take all necessary action to protect our Services and the provider, including but not limited to contacting the provider to verify his or her credentials with the intention to share such information with our Services, contacting local law enforcement authorities to investigate cases of suspected identity theft or fraud, and taking appropriate legal action. We have implemented commercially reasonable security measures to protect personal information; however, we cannot provide any guarantees that unauthorized third parties will never be able to defeat those measures or use your personal information for improper purposes. You acknowledge and agree that any personal information you provide is at your own risk and subject to the terms and conditions specified in our Terms of Service including, but not limited to, the ‘Content and Reviews’ paragraph and the Privacy Policy.</li>
+<li>ACCOUNTS &amp; PASSWORDS Each user of our Services should create their own account with their own unique username and password. You are responsible for taking all reasonable steps to ensure that no unauthorized person shall have access to your password or account. It is your sole responsibility to (a) control the dissemination and use of activation codes and passwords; (b) authorize, monitor, and control access to and use of your account and password; (c) promptly inform us if you believe that your password has been stolen or if you require your password to be deactivated for any other reason. You grant us and all other persons or entities involved in the operation of our Services, the right to transmit, monitor, retrieve, store, and use your information. We cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using our Services.</li>
+<li>SUBSCRIPTIONS
+<ol type="a">
+<li>Free or Paid Subscriptions. We offer to end users and health professionals certain free and paid subscriptions. Paid subscriptions provide features not available with a free subscription, and in addition to being subject to this Terms of Service may also be subject to additional terms and conditions which will be provided to you in an additional subscription agreement.  For the purposes of these Terms of Service, end users or health professionals having free or paid subscriptions to our Service shall be referred to as “Subscriber(s).”</li>
+<li>Payments. As a paid Subscriber, you will be responsible for providing valid credit card or banking information at the time you register for a subscription service. You represent and warrant that you are an authorized user of any such credit card or bank account, and you agree to pay all charges resulting from your subscription service account at the prices then in effect, including any unauthorized charges incurred prior to your notifying us of such charges. You agree that we may pass your credit card information and related personally identifiable information to our designated service provider(s) for their use in charging you for appropriate services utilized through your subscription service. Any such third parties will be bound by terms and conditions similar to our Privacy Policy incorporated into these Terms of Service. All subscription service charges are exclusive of sales or other taxes and you are responsible for payment of any applicable state, local and city taxes. We reserve the right to modify or terminate membership plans, change prices, or institute new charges for any subscription service at any time upon at least thirty (30) days’ notice.</li>
+</ol>
+</li>
+<li>LIMITATIONS AND CANCELLATIONS. We may at any time create limitations of your use of our Services including, but not limited to, the number of times you can access the Services. We may also cancel your account at any time in our sole discretion and remove and discard any Content that you posted.  The following may also result in termination or restrictions on your account in our sole discretion:
+<ol type="a">
+<li>you have abused your rights to use the Services;</li>
+<li>you have breached any of the terms specified in this document or elsewhere on the Services, including but not limited to acted in a manner that violates our prohibited conduct policy listed in Section 8 below;</li>
+<li>you deliberately submitted false information;</li>
+<li>you have performed any act or omission that violates any applicable law, rules, or regulations;</li>
+<li>you have performed any act or omission which is harmful or likely to be harmful to us, or any other third party, including other users and partners of Doctor.com;</li>
+<li>you made use of our services to perform an illegal act, or for the purpose of enabling, facilitating, assisting or inducing the performance of such an act;</li>
+<li>you conveyed your password to another person; or,</li>
+<li>you are in debt to us or to another person with respect to any transactions made on or through the use of the Services.</li>
+</ol>
+<p>You may also elect to terminate your own account, which you can do at any time by e-mailing <a href="link://mailto:csupport@corp.doctor.com"><b><i>csuppor</i></b><b>t</b><b><i>@corp.doctor.com</i></b></a> with “Account Removal” in the subject of your e-mail.  If you send us a termination request, you should include your account e-mail address in the body of your message, along with your request to have the account removed. We may require you to verify your termination notice by sending us an additional termination request message, either by e-mail or through any other means, as a prerequisite for termination of your account. We will respond to your e-mail with a confirmation once your account has been terminated. Once your account has been terminated, you will no longer be able to access your account. You agree that we shall not be liable to you for any cancellation, limitation, or termination of your access to our Services. If you have a paid subscription, you will be bound to the terms of termination in your subscription agreement.</p></li>
+</ol>
+<ol start="8">
+<li>PROHIBITED CONDUCT  Our Services should be used only for lawful purposes. We specifically prohibit you from engaging in any of the following conduct:
+<ol type="a">
+<li>Posting text, files, images, audio, other copyrightable materials, or content (collectively “Content”) which infringes any patent, trademark, trade secret, copyright or other proprietary rights of any party;</li>
+<li>Posting Content that contains photos or videos of someone else unless you have his or her explicit permission;</li>
+<li>Posting Content which violates any state, federal or other law;</li>
+<li>Posting Content which threatens, harasses or is libelous;</li>
+<li>Posting Content which is harmful to minors;</li>
+<li>Posting Content that contains self-benefiting advertising or marketing (except as permitted as part of a Services listing or other Services);</li>
+<li>Posting Content that produces software viruses or code harmful to other computers;</li>
+<li>Posting Content that disrupts the normal dialogue of users at the site with harmful or excessive disruptive Content;</li>
+<li>Posting Content that includes misleading, false, or defamatory information;</li>
+<li>Posting Content which uses forged headers or other items to manipulate identifiers in order to disguise the origin of Content;</li>
+<li>Posting or submitting to the Services any information in which you impersonate or claim to be any third party, or in which you misrepresent your affiliation with another person or entity;</li>
+<li>Disclosing or sharing your password with any third party or allowing a third party to access a password-protected portion of the Services;</li>
+<li>Posting Content or initiating communications which are unlawful, abusive, obscene, discriminatory, or otherwise objectionable;</li>
+<li>Sharing information or initiating communications with information you are under an obligation not to disclose;</li>
+<li>Taking any action that disrupts, tampers with, interferes with, or imposes an unreasonable burden on the Services’ infrastructure, servers, data, or network or those of any third party via our Services;</li>
+<li>Using or attempting to use any engine, software tool, agent, or other device or mechanism (including without limitation browsers, spiders, robots, avatars, or intelligent agents) to navigate or search the Services other than generally available third party browsers (including but not limited to Chrome. Internet Explorer, Firefox and Safari);</li>
+<li>Using any means of automatically searching or mining data from the Services, or in any way attempting to interfere with the proper working of the Services;</li>
+<li>Stalking, harassing, or threatening any customer or visitor to these Services; or</li>
+<li>Collecting or storing personal information about any customer or visitor of these Services;</li>
+<li>Using any scheduling, communications, or transactional services on the Services in an abusive or improper manner or in any way that disrupts or impedes the intended use of such features by other users and/or providers.</li>
+</ol>
+<p>We reserve the right to suspend, block, or cancel your account in the event that you engage in any of the prohibited conduct set forth above.  You agree not to decompile or reverse engineer or otherwise attempt to discover any source code contained in the Services. Unless you receive explicit permission, you agree not to reproduce, duplicate, copy, sell, resell or exploit for any commercial purposes, any aspect of the Services.</p></li>
+</ol>
+<ol start="9">
+<li>CONTENT AND REVIEWS. As a User, you may send to us for upload or upload directly to your profile text, files, images, audio, reviews, or other materials (“User Content”). We agree that you or your licensors will retain all right, title, and interest in the User Content that you upload to your profile. You grant to us (i) a perpetual, non-exclusive license to display all such User Content on our Services or the websites of our partners and/or affiliates and to make edits to the User Content as required for formatting purposes and (ii) a perpetual, non-exclusive license to store all User Content on the back-end of our Services and to create archived back-up copies. You expressly warrant that you own all right, title, and interest in all such User Content, or in the alternative, that you have procured a valid license from the copyright owner of the User Content, which authorizes you to grant sublicenses to display, store, and back-up your User Content on our Services as set forth herein. If any photos contain images of any person, you warrant that you have obtained a release from such person expressly authorizing you to use their likeness on your member profile as set forth herein. You are solely responsible for ensuring that all User Content you upload is appropriate; legal and not in violation of any federal, state, or local law or ordinance; is not obscene or pornographic; does not defame any third party; is not threatening or harassing; does not invade anyone’s privacy; is in compliance with HIPAA regulations; and is not otherwise objectionable.
+<ol type="a">
+<li>Medical Professional Reviews.  Our Services offer functionality that allows users to rate licensed medical professionals who are listed on our Services and to provide written comments of their experiences (“User Review(s)”), as well as functionality to permit medical professionals the opportunity to respond to any User Reviews (“Responses”).  We also may make available functionality to allow users who requested or scheduled an appointment with a medical professional through our Services to provide a User Review after the date of their appointment with that medical professional (“Verified Review”). If you contribute a User Review or Verified Review, you warrant and represent that you are a current or former patient of the medical professional you are reviewing, or the legal guardian of a current or former patient.  If you contribute a Response, you warrant and represent that you are a current or former physician of the patient who posted the User or Verified Review, or an agent of a current or former physician of the patient expressly provided with the authority to contribute a Response. In addition, if you submit a User Review or Response, you warrant and represent your posting is appropriate and not defamatory, illegal, obscene, threatening, harassing, invasive of privacy, infringing of intellectual property rights or otherwise objectionable, and that any such review does not contain or constitute profanity, hate crimes, viruses, commercial solicitation, chain letters, mass mailings, or any form of “spam.”  When you post comments, User Reviews, or Responses, please be cautious in what you post, as the Services and related website are a public forum, and any statement that you make or submit to us may be displayed publicly on that forum. In particular, you should not include any personally identifiable information in your review. Thus, including personally identifiable details like phone numbers, addresses, e-mail addresses, social security numbers, or any other such information is prohibited (“Objectionable Content”). We expressly prohibit the sharing of personal health information regarding any third party in any User Review or Response. All postings should conform to HIPAA Privacy Rules. You warrant and represent that the User Review or Response you post meets these Terms of Service.  While our Services reserve the right not to publish or to remove User Reviews or Responses that do not meet our policies, we are not responsible for pre-screening reviews before posting them. You are solely responsible for verifying the truth of all facts or statements that you provide to us. In the event that you see a User Review or Response on our Services that contains Objectionable Content or is otherwise inappropriate, please notify us at <a href="link://mailto:abuse@corp.doctor.com"><b><i>abuse@corp.doctor.com</i></b></a>, providing the URL of the page where the review is located and your concerns regarding the Services.  We will then determine whether the User Review in question violates our Review Guidelines or Terms of Service. We reserve the right in our sole discretion to remove for any reason any reviews at any time without notice. We comply with our partners’ terms of service, and we do not discourage or prohibit negative reviews or selectively solicit positive reviews from our customers.</li>
+<li>Product Reviews. Unless specifically stated otherwise in writing, we do not independently endorse, review or recommend products or services which are featured by advertisers on our Services. To the extent we conduct a review of a product or service and post our review to the Services (i) we will clearly and conspicuously indicate if we have a material connection to the company and/or products or services being reviewed and (ii) we will identify and post along with the review the specific steps taken by the reviewer to test the product and a clear description of the results found. Such reviews unless noted otherwise will be conducted by a staff member and not by a licensed physician and will be noted as such. If we endorse a particular product or service we have tested, then we will also post the specific process we utilized as a business in reaching our decision to endorse such product or service.</li>
+</ol>
+</li>
+<li>APPOINTMENTS AND SCHEDULING. We may also make available appointment and scheduling functionality through our Services.   Service providers will have the ability to provide this functionality directly via the Services, or they may integrate the functionality into a website for their medical practice or business, customized social media pages, or other third-party websites. If a service provider’s profile is enabled with our appointment request functionality, you will be able to submit a general request for an appointment with a service provider through our Services, and the service provider will then have the opportunity to review the request and contact you directly to finalize your appointment details. Our appointment request functionality may not allow you to reserve an exact appointment time. If a service provider’s profile is enabled with our appointment booking functionality, you may be able to book an appointment with a service provider through our Services. Once you complete your booking, you will typically then receive confirmation of the appointment from the provider. By using this functionality, you expressly authorize us to provide to the service provider the medical information you give to us.  You acknowledge and agree that we have no obligation to delete from your account any information that you provide to us, and that we may continue to use such information in accordance with our Privacy Policy then in-effect. We reserve the right to disable our appointment and scheduling Services for any service provider who repeatedly (a) fails to respond to appointment requests and/or (b) refuses to honor self-scheduled appointments through our Services. We also reserve the right to deny our appointment and scheduling Services to any registered user who abuses, disrupts, tampers with, or interferes with the proper functioning of the appointment and scheduling Services in any way. For the avoidance of doubt, this would include any incident in which a user repeatedly books one or more appointments and does not show up at the scheduled time. If you obtain healthcare from a provider by using our Services you are entirely responsible for your healthcare expenses. You must resolve any dispute between you and a healthcare provider directly with the healthcare provider.</li>
+<li>OPERATION OF THE SERVICES. We use commercially reasonable efforts to maintain our Services and to keep them operating with high availability and free from bugs, errors, technical problems, or defects. If, at any time in the future, we identify any bugs, errors, technical problems, or defects, then we will promptly assign technicians to address and resolve the issue. If you become aware of an error, bug, or other technical problem, then you should notify us immediately of the incident and provide us with the following information:
+<ol type="a">
+<li>Description of the Incident. The specific sequence of events which generated the incident, and a full description;</li>
+<li>Description of Error Message. The exact wording of any error messages, if applicable; and</li>
+<li>Description of Discovery of Incident. Any special circumstances surrounding the discovery of the incident for which you are seeking technical support.</li>
+</ol>
+<p>We cannot guarantee that your access to the Services will be uninterrupted, or that the Services will be available at all times. We can assume no liability or responsibility for any delay, interruption, or downtime. We use commercially reasonable efforts to ensure that our Services are protected from viruses and other destructive software, but we cannot guarantee that the Services will at all times be free from viruses. We urge you to use reasonable care in downloading information from the Services. We can assume no responsibility for any damage to computer equipment or other property that may result from the use of our Services or as a result of downloading from the Services. We reserve the right to discontinue operation of  our Services at any time for any reason at our sole discretion, and to make modifications to the operation of the Services at any time at our sole discretion.</p></li>
+</ol>
+<ol start="12">
+<li>SMS (TEXT) MESSAGING &amp; E-MAIL. Doctor.com does not engage in any activities that violate anti-spam laws and regulations including the CAN SPAM Act of 2003, the Telephone Consumer Protection Act, and the Do-Not-Call Implementation Act (or any similar or analogous anti-spam, data protection, or privacy legislation in any other jurisdiction). We do not violate industry standards, any third-party policies including all of the applicable guidelines published by the CTIA, the Mobile Marketing Association, or any other accepted industry associations, carrier guidelines (or any similar or analogous industry standards, third party policies or requirements in any other jurisdiction), or any usage requirements. By accepting these Terms of Service, you acknowledge that SMS/text messaging and e-mail are unencrypted, insecure means of communication. You further consent to allow us to communicate with you on your healthcare providers behalf by SMS/text messaging and e-mail to be reminded of an appointment, to give feedback on your experience, and to received general health reminders/information. If at any time you provide e-mail or text information at which you may be contacted, you consent to receiving appointment reminders, feedback and review requests, and other healthcare communications/information at that e-mail address or text number.</li>
+<li>ADVERTISERS &amp; ADVERTISING DISCLAIMERS. We accept paid advertisements on our some of our Services and communications. Some advertisements may contain links to third party websites, which are not owned or maintained by us, over which we have no control, and which have their own posted policies and terms  (“Third Party Site(s)”). These links are provided for informational purposes only in order to assist you in identifying products and services that may be of interest to you and which you may want to research further. If you click on a link to a Third Party Site, our Privacy Policy and Terms of Service will no longer be applicable and you are encouraged to review their posted policies and terms before engaging with them. We do not intend that links to Third Party Sites be referrals to or endorsements of the linked entities or any product or service that they offer. Advertisers may include in their advertisements on our Services consumers and experts who provide their endorsement of products advertised on our Services. We require all such advertisers to comply with the Federal Trade Commission’s published Guidelines Concerning the Use of Endorsements and Testimonials in Advertising, as well as any other applicable laws and regulations. We will have no obligation to screen advertisements for compliance, but we reserve the right to remove any non-compliant advertisement from our Services at any time without prior notice.
+<ol type="a">
+<li>Dietary Supplements. We may have advertisers on our Services who manufacture or sell dietary supplements and make claims about the product they are selling. In such cases, the manufacturer is solely responsible for ensuring the accuracy and truthfulness of all such claims. The U.S. Food and Drug Administration (“FDA”) does not evaluate or approve dietary supplements or any advertising claims. In addition, please be advised that dietary supplements are not intended to diagnose, treat, cure or prevent any disease. If you are pregnant, nursing, diabetic, on medication, have a chronic medical condition, or are beginning a weight control program, please consult your physician before making any dietary changes. Also, please discontinue use immediately if any allergic reaction occurs. If you think that you have suffered a serious harmful effect or illness from a dietary supplement, you should contact or see your healthcare provider immediately. We then encourage you and your healthcare provider to report this problem to the FDA. Your health care provider can call FDA’s MedWatch hotline at 1-800-FDA-1088 and/or submit a report by fax to 1-800-FDA-0178 or via the FDA website at www.fda.gov. The MedWatch program provides a way for health care providers to report problems believed to be caused by FDA- regulated products such as drugs, medical devices, medical foods and dietary supplements. You, or anyone, may report a serious adverse event or illness directly to FDA if you believe it is related to the use of any of the above-mentioned products, by calling FDA at 1-800-FDA-1088, by fax at 1-800-FDA-0178 or reporting the problem via the FDA website at www.fda.gov FDA would like to know when you think a product caused you a serious problem, even if you are not sure that the product was the cause, or even if you do not visit a doctor or clinic. In addition to communicating with FDA on-line or by phone, you may use the postage-paid MedWatch form available from the FDA Web site.</li>
+<li>Weight Loss Products. We may have advertisers on our Services who manufacture or sell products designed for weight loss. You should always consult your physician or health care professional before starting any weight loss effort or regimen. We specifically warn minors, pregnant women, and individuals with any type of health condition to seek professional medical advice prior to initiating any form of weight loss effort or regimen, or to making any dietary changes. As with any health or fitness program, a sensible eating plan and regular exercise are required in order to achieve long-term weight loss.</li>
+<li>Pharmaceuticals and Biologics. We may have advertisers on our Services who manufacture or sell pharmaceuticals or biologics. You should always consult your physician to find out if using a pharmaceutical or biologic is right for you. Pharmaceuticals and biologics can pose risk and may have serious side effects for some patients. Also, certain pharmaceutical and biologics are not appropriate for use by all patients.</li>
+<li>Medical Device Products. We may have advertisers on our Services who manufacture or sell medical device products. You should always consult your physician to find out if using a medical device product is right for you. Medical devices can pose risks and may have serious side effects for some patients. Also, certain medical devices are not appropriate for use by all patients.</li>
+<li>Expert Endorsements. We may have advertisers on our Services who include expert endorsements in their advertisements. Any experts shown in an advertisement were retained solely by the advertiser to appear in the advertisement and may not be actual medical professionals.</li>
+<li>Specific Outcomes. If any of our advertisers provide any specific examples of outcomes on our Services, please be advised that we cannot guarantee a similar outcome in your case or the case of any third party. Outcomes are specific to the individuals depicted, cannot be guaranteed, and should not be considered typical.</li>
+</ol>
+</li>
+<li>INTELLECTUAL PROPERTY. We, our partner, affiliates, or our licensors shall retain all respective right, title, and interest in the marks, logos, codes, databases, Content, text, designs, photos, and other materials posted to our Services (“Intellectual Property”). Except as otherwise expressly stated herein, you may only display and view the Intellectual property posted to the Services, and you may not reproduce, display, distribute, create derivative works of, misappropriate, or otherwise use for any purpose any portion of our Services without the express written permission of us or our licensors as appropriate. Using the Intellectual Property on our Services on any other website or in any other services or product for any commercial purpose is expressly prohibited.</li>
+<li>INTELLECTUAL PROPERTY INFRINGEMENT COMPLAINTS. We respect the intellectual property rights of others. If you believe that content on Doctor.com violates your copyright(s), you may file a Digital Millennium Copyright Act (DMCA) notification to our registered DMCA agent by submitting your claim via any of the following methods:
+<ol type="a">
+<li>e-mail to <a href="link://mailto:abuse@corp.doctor.com"><b><i>abuse@corp.doctor.com</i></b></a></li>
+<li>Postal Mail to 85 5th Ave, 7th Floor, New York, NY 10003 . In order for us to process your claim, please include supporting documentation to establish your rights by fully complying with the laws established by the DMCA, which, in summary include:
+<ol type="i">
+<li>A physical or electronic signature of a person authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.</li>
+<li>Identification of the copyrighted work claimed to have been infringed, or, if multiple copyrighted works at a single online site are covered by a single notification, a representative list of such works at that site.</li>
+<li>Identification of the material that is claimed to be infringing or to be the subject of infringing activity and that is to be removed or access to which is to be disabled, and information reasonably sufficient to permit the service provider to locate the material.</li>
+<li>Information reasonably sufficient to permit the service provider to contact the complaining party, such as an address, telephone number, and, if available, an electronic mail address at which the complaining party may be contacted.</li>
+<li>A statement that the complaining party has a good faith belief that use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.</li>
+<li>A statement that the information in the notification is accurate, and under penalty of perjury, that the complaining party is authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>WARRANTY. The use of our Services or your reliance on any of the foregoing shall be at your own risk. We can make no warranty that the Services will meet your needs or that their operation will be continuous, uninterrupted, bug-free, error-free, virus-free, free of defects, free of technical problems, or that any Content or information posted to the Services will not be deleted or lost due to any such issues. We also cannot make any warranties or representations that any service provider will honor a scheduled appointment or respond to an appointment request, or that any prospective patient who arranges for an appointment will keep that appointment. You solely assume all risks with respect to the scheduling and keeping of appointments.  We expressly disclaim (a) any and all warranties regarding the accuracy, reliability, or timeliness of any matches to service providers that we make for you and (b) any and all warranties that any review posted to these Services will be posted in full compliance with the HIPAA Privacy Rule and any other applicable law or regulation. In addition, we do not screen or conduct background checks on medical professionals who are listed on our Services, nor can we make any endorsements or recommendations, and we cannot make any representation regarding the accuracy of any profiles, the quality of any work, or any evaluation of any medical professional’s skills. Your business dealings with any third party with whom you connect through the Services are solely between you and such third party. We can make no warranty about the products or services of any such third parties. You are solely responsible for conducting your own due diligence prior to entering into a business or doctor-patient relationship with any third party linked to you through our Services. You agree that we will not be responsible or liable for any loss, damage, or other liabilities incurred as a result of doing business with such third parties. You assume the sole risk of loss and liability in doing business with any third parties or service providers linked to these Services. In the event that you ever have a complaint against such third party, you should contact such third party directly regarding your issue.</li>
+<li>ACKNOWLEDGEMENT OF HIPAA OBLIGATIONS AND OTHER REGULATIONS. If you use our Services you acknowledge that federal regulations relating to the confidentiality of individually identifiable health information require covered entities to comply with the Standards for Privacy of Individually Identifiable Health Information (45 C.F.R. parts 160 and 164, subparts A and E )(“the Privacy Rule”) and for Security of electronic Protected Health Information (PHI) (45 C.F.R. parts 160, 162 and 164, subpart C) (“the Security Rule”), as that term is defined in section 164.501 of the Privacy Regulations, as promulgated by the U.S. Department of Health and Human Services(“HHS”) pursuant to the Health Insurance Portability and Accountability Act of 1996 (“HIPAA”) and the American Recovery and Reinvestment Act of 2009 (pub. L. 111-5), Title XIII of Division A and Title IV of Division B (the “Health Information Technology for Economic and Clinical Health” or the HITECH Act”) and other applicable law.
+<ol type="a">
+<li>If you are a Covered Entity for which any part of Doctor.com’s Services provided to you constitute a Business Associate relationship, by using the Services you expressly have read, accept, and agree to be bound by the Health Platforms Business Associate Agreement available at https://www.doctor.com/baa, which constitutes part of these Terms of Service.</li>
+</ol>
+</li>
+<li>FEEDBACK; IDEA SUBMISSIONS. We are pleased to hear from you and we welcome your feedback. If you provide any feedback to us, you agree that all such feedback will not be subject to any obligation of confidentiality by us, and that we will not be liable for any use or disclosure of the feedback. Also, you agree that we may use any such feedback to make improvements to our Services at our sole discretion without any obligation to you. In the event that you submit any ideas to us, you grant to us an exclusive, perpetual, royalty-free, transferable, worldwide license with the right to grant sublicenses to use, display, copy, publish, republish, and to incorporate your idea into our Intellectual Property.</li>
+<li>CONSEQUENTIAL DAMAGES; LIMITATION OF LIABILITY. UNDER NO CIRCUMSTANCES SHALL WE BE LIABLE FOR DIRECT, INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES, RESULTING FROM ANY ASPECT OF YOUR USE OF THE WEBSITE OR SERVICES INCLUDING BUT NOT LIMITED TO DAMAGES THAT ARISE FROM YOUR INABILITY TO USE THE WEBSITE OR THE SERVICE; LOST PROFITS; LOST GOODWILL; LOST DATA; ANY INTERRUPTION, MODIFICATION, OR TERMINATION OF THE WEBSITE OR ANY SERVICE OR PART THEREOF; OR OTHER INTANGIBLE LOSSES (EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. Our liability to you shall in no event exceed the total aggregate amount of $750 for all claims. Some jurisdictions do not allow the limitation of liability, so these limitations may not apply to you.</li>
+<li>PROFESSIONAL RELATIONSHIP DISCLAIMER. We do not seek to establish any professional relationship with any person or entity as a result of using our Services. Transmission of the information is not intended to create and receipt does not create, a doctor-patient or other professional relationship between you and any medical professional or other individual on these Services. Persons contacting us or any medical professional through these Services should not send personal health, confidential, or sensitive information, and should not ask specific medical questions. The Services contain  elements which are a public forum and any comments that you make or submit to us may be displayed publicly on that forum, so you should be cautious about making such comments. No information submitted electronically through the Services or e-mail to us will be treated as privileged, confidential, or sensitive information unless we have previously entered into a written agreement with you to protect such information. Any person submitting confidential or sensitive information to us without first entering a prior written agreement with us to protect such information waives all rights to confidential protection or doctor-patient privilege. We assume no responsibility for the loss or disclosure of any information that you transmit to us via the Internet.</li>
+<li>RELEASE OF CLAIMS. To the maximum extent permitted by applicable law, you hereby release and waive all claims against us and our officers, directors, employees, independent contractors, representatives, affiliates and agents and from any and all liability for claims, damages (actual and or consequential), costs and expenses (including litigation costs and attorneys’ fees) of every kind and nature arising from or in any way related to our Services. If applicable, you waive your rights under California Civil Code Section 1542, which states, “A general release does not extend to claims which the creditor does not know or suspect to exist in his or her favor at the time of executing the release, which if known by him or her must have materially affected his settlement with the debtor.” You understand that any fact relating to any matter covered by this release may be found to be other than now believed to be true, and accept and assume the risk of such possible differences in fact. In addition, you expressly waive and relinquish any and all rights which you may have had under any other state or federal statute or common law principle of similar effect, to the fullest extent permitted by law.</li>
+<li>INDEMNIFICATION. You agree to indemnify and hold us and our officers, directors, subsidiaries, affiliates, successors, assigns, agents, service providers, suppliers and employees, harmless from any claim or demand arising from any third party claim arising from (a) Content you add to the Services, (b) your use of the Services, (c) your violation of the Terms of Service, your breach of any of the representations and warranties herein; (d) your violation of any rights of another, including but not limited to any liability or expenses arising from any and all claims, demands, losses, damages, costs, expenses, suits, judgments, litigation costs, or reasonable attorney fees and court costs; or (e) your violation of any law, regulation, or guidelines imposed by any administrative body.</li>
+<li>MISCELLANEOUS. You agree that we may assign these Terms of Service without prior notice to a successor entity in the event of a merger, acquisition, or sale of all or part of our business. No waiver of any breach of the Terms of Service, no matter how long continuing or how often repeated will be deemed a waiver of any subsequent breach, nor shall any delay or omission to exercise any right, power, or privilege hereunder be deemed a waiver of such right, power, or privilege. If any section of these Terms of Service is held to be unenforceable or in conflict with the law of any jurisdiction, the validity of the remaining paragraphs shall not be affected by such holding. The meaning of that section shall be construed to the extent feasible to render the section enforceable and to give effect to the intentions as reflected in the section. If no feasible interpretation would save such section, it is to be severed from the remainder of these Terms of Service, which are to remain in full force and effect. The Terms of Service constitute the entire agreement with you and us with respect to the subject matter set forth herein. The section headings and subheadings contained in these Terms of Service are included for convenience only and shall not limit or otherwise affect these Terms of Service. The Terms of Service constitute the entire agreement between you and us and govern your use of the Services, superseding any prior agreements between you and us regarding your use of our Services.</li>
+<li>GOVERNING LAW; DISPUTE RESOLUTION. These Terms of Service shall be governed by and construed in accordance with the laws of the State of New York, without regard to conflicts of law principles. All disputes arising under this Agreement shall be submitted to binding arbitration under the Commercial Rules of the American Arbitration Association in New York by one arbitrator mutually agreed upon by you and us in accordance with the aforementioned Rules. The costs of arbitration, including administrative and arbitrators’ fees, shall be shared equally by you and us. The arbitration award shall be final and each of us shall comply in good faith to the entry of the arbitrator’s award in any court having jurisdiction. If judicial enforcement or review is sought, then the prevailing party shall be entitled to costs and reasonable attorney’s fees. All claims you bring against us or the Services must be resolved in accordance with this Section. All claims filed or brought against us contrary to the terms of this Section shall be considered improperly filed. Should you file a claim contrary to this Section, you agree that we may recover attorneys’ fees and costs for the improperly filed claim, provided that we have notified you in writing of the issue and you have failed to properly withdraw the claim.</li>
+<li>CONTACT US. In the event that you have any questions about these Terms of Service, or that you need further assistance with respect to the access or use of the Services, please notify us through <a href="link://https://www.doctor.com/contact">https://www.doctor.com/contact</a></li>
+<li>EFFECTIVE DATE. These Terms of Service were last modified on March 12, 2019</li>
+</ol>
+</div></span>
+</div>
+<div aria-hidden="true" class="content text__modal ng-hide" ng-show="ctl.showHIPAA">
+<h1>
+                    Doctor.com HIPAA Authorization
+                    <span class="close-text__modal" ng-click="ctl.showHIPAA = false" role="button" tabindex="0">ⓧ</span>
+</h1>
+<span class="ng-binding" ng-bind-html="ctl.hipaaAuth | safeHTML"><p>Doctor.com offers services, such as helping you to find and learn about nearby healthcare providers, booking appointments with the healthcare provider(s) of your choice (each,“Your Healthcare Provider”) and managing and forwarding your health-related information to share with Your Healthcare Providers (“Doctor.com Services”). As part of providing the Doctor.com Services, Doctor.com may collect, use, share, and exchange your appointment details, demographic data, and other health-related information with Your Healthcare Providers. Under a federal law called the Health Insurance Portability and Accountability Act (“HIPAA”), some of this health and health-related information may be considered “protected health information” (“PHI”) if such information is received from or on behalf of Your Healthcare Providers.</p>
+<p><strong>Safeguards for PHI<br/></strong>HIPAA protects the privacy and security of your PHI by limiting the uses and disclosures of PHI by most healthcare providers and by health plans (called “Covered Entities”) as well as companies, like Doctor.com, that provide certain types of assistance to Covered Entities (called “Business Associates”). Under certain circumstances described in HIPAA, an individual needs to sign an Authorization form before a Covered Entity, like Your Healthcare Provider(s), can disclose protected health information to a third party.</p>
+<p><strong>Non-Protected Health Information<br/></strong>As a condition of creating your Doctor.com account, you are required to read and agree to Doctor.com’s <a href="link://https://www.doctor.com/privacy-policy" rel="noopener" target="_blank">Privacy Policy</a>. Doctor.com’s Privacy Policy explains how Doctor.com processes and shares information received from you that is not covered by HIPAA (“Non-PHI”).</p>
+<p><strong>Your PHI Authorization<br/></strong>The purpose of this Doctor.com Authorization (“Authorization”) is to request your written permission to allow Doctor.com to use and disclose your PHI in the same way as we use and disclose your Non-PHI. If Doctor.com is a Business Associate of Your Healthcare Providers, Doctor.com needs your Authorization to be able to use and disclose your PHI in the same way it can currently use and disclose your Non-PHI when Doctor.com is not working on behalf of Your Healthcare Providers, but is instead working on its own behalf. Therefore, when Doctor.com relies on this Authorization, and uses and discloses PHI as described in this Authorization, it is not working as a Business Associate and the HIPAA requirements that apply to Business Associates will not apply to such uses and disclosures.<strong> </strong></p>
+<p>If you electronically sign this Authorization, you give your permission to Doctor.com to retain your PHI and to use and/or disclose your PHI in the same way that you have agreed that your Non-PHI can be used and disclosed.</p>
+<p>Specifically, you agree that Doctor.com can use your PHI to:</p>
+<ul>
+<li>enable and customize your use of the Doctor.com Services;</li>
+<li>provide you alerts or other Doctor.com Services regarding future appointments;</li>
+<li>notify you regarding providers we think you may be interested in learning more about;</li>
+<li>share information with you regarding services, products or resources about which we think you may be interested in learning more;</li>
+<li>provide you with updates and information about the Doctor.com Services;</li>
+<li>market to you about Doctor.com and third party products and services;</li>
+<li>conduct analysis for Doctor.com’s business purposes;</li>
+<li>support development of the Doctor.com Services; and</li>
+<li>create de-identified information and then use and disclose this information in any way permitted by law, including to third parties in connection with their commercial and marketing efforts.</li>
+<li>You also agree that Doctor.com can disclose your PHI to:</li>
+<li>third parties assisting Doctor.com with any of the uses described above;</li>
+<li>Your Healthcare Providers to enable them to refer you to, and make appointments with, other providers on your behalf, or to perform an analysis on potential health issues or treatments, provided that you choose to use the applicable Doctor.com Service;</li>
+<li>a third party as part of a potential merger, sale or acquisition of Doctor.com;</li>
+<li>our business partners who assist us by performing core services (such as hosting, billing, fulfillment, or data storage and security) related to the operation or provision of our services, even when Doctor.com is no longer working on behalf of Your Healthcare Providers;</li>
+<li>a provider of medical services, in the event of an emergency; and</li>
+<li>organizations that collect, aggregate and organize your information so they can make it more easily accessible to your providers.</li>
+</ul>
+<p> </p>
+<p><strong>Redisclosure<br/></strong>If Doctor.com discloses your PHI, Doctor.com will require that the person or entity receiving your PHI agrees to only use and disclose your PHI to carry out its specific business obligations to Doctor.com or for the permitted purpose of the disclosure (as described above). Doctor.com cannot, however, guarantee that any such person or entity to which Doctor.com discloses your PHI or other information will not re-disclose it in ways that you or we did not intend or permit.</p>
+<p><strong>Expiration and Revocation of Authorization<br/></strong>Your Authorization remains in effect until you provide written notice of revocation to Doctor.com.</p>
+<p>YOU CAN CHANGE YOUR MIND AND REVOKE THIS AUTHORIZATION AT ANY TIME AND FOR ANY (OR NO) REASON.</p>
+<p>If you wish to revoke this Authorization, you must notify Doctor.com by submitting a revocation through the form on our Contact Us Page located at this link: <a href="link://https://www.doctor.com/contact-us" rel="noopener" target="_blank">https://www.doctor.com/contact-us</a>. Your decision not to execute this Authorization or to revoke it at any time will not affect your ability to use certain of the Doctor.com Services. A Revocation of Authorization is effective after you submit it to Doctor.com, but it does not have any effect on Doctor.com’s prior actions taken in reliance on the Authorization before revoked.</p>
+<p>Once Doctor.com receives your Revocation of Authorization, Doctor.com can only use and disclose your PHI as permitted in Doctor.com’s agreements with Your Healthcare Provider(s). Your Revocation of Authorization does not affect Doctor.com’s use of your Non-PHI.</p>
+<p>We will make available to Your Healthcare Provider(s), current and past, your agreement to or revocation of this Authorization.</p>
+<p> </p></span>
+</div>
+</div>
+</div>
+<div aria-hidden="false" class="sidebar" ng-hide="ctl.step === 6 || ctl.initialLoad || ctl.step === 0 || ctl.step === 1" style="">
+<div class="provider-info__header">
+<div class="provider-info__photo">
+<img ng-src="https://a.doctor.com/img?p=providers/470235-Gregory-Rosner&amp;w=125" src="https://a.doctor.com/img?p=providers/470235-Gregory-Rosner&amp;w=125"/>
+</div>
+<div aria-hidden="false" class="provider-info__details animate-scaleIn ng-binding ng-animate ng-hide-animate" data-ng-animate="2" ng-show="ctl.provider.specialty" style="display: block; opacity: 1; transform: scale(1);">
+<h2 class="provider-info__name ng-binding">Gregory Rosner</h2>
+                Allergist-Immunologist - Allergy
+            </div>
+</div>
+<table aria-hidden="false" class="booking-info" ng-show="ctl.appointment.reason || ctl.appointment.insurance || ctl.appointment.day || ctl.provider.name" style="">
+<tbody>
+<tr class="booking-info__location ng-scope" ng-if="ctl.practice.is_telemedicine_scheduling == 0" style="">
+<td class="provider-info__subsection">
+<svg class="location-icon" viewbox="0 0 24 24">
+<defs>
+<path d="M12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-.28 10.811C5.905 18.864 3 14.593 3 10a9 9 0 1 1 18 0c0 4.593-2.906 8.864-8.72 12.811a.5.5 0 0 1-.56 0zM19 10a7 7 0 1 0-14 0c0 3.625 2.26 7.143 7 10.566 4.74-3.423 7-6.941 7-10.566zm-7 4a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" id="location-icon-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="location-icon-mask">
+<use xlink:href="#location-icon-path"></use>
+</mask>
+<use fill="#051033" fill-opacity="0" fill-rule="nonzero" xlink:href="#location-icon-path"></use>
+<g fill="#404D4D" mask="url(#location-icon-mask)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+</td>
+<td class="provider-info__subsection-label">
+<div class="ng-binding">Location</div>
+<h3 class="provider-info__subsection-data ng-binding">
+                        ENT and Allergy Associates - Purchase
+                        <br/>
+                        3020 Westchester Ave
+                        <span aria-hidden="false" class="ng-binding" ng-show="ctl.practice.address_2">,  Suite 303</span>
+<br/>
+                        Purchase, NY 
+                    </h3>
+</td>
+</tr>
+<tr class="booking-info__reason">
+<td class="provider-info__subsection">
+<svg viewbox="0 0 24 24">
+<defs>
+<path d="M12.318 9.684a.625.625 0 0 1 0 .884l-2.5 2.5a.628.628 0 0 1-.884-.002l-1.25-1.25a.625.625 0 0 1 .884-.884l.807.81 2.057-2.06a.627.627 0 0 1 .886.002zm0 5a.625.625 0 0 1 0 .884l-2.5 2.5a.628.628 0 0 1-.884 0l-1.25-1.25a.625.625 0 0 1 .884-.884l.807.807 2.057-2.059a.627.627 0 0 1 .886.002zm4.557-3.934a.625.625 0 0 1 0 1.25h-2.5a.625.625 0 0 1 0-1.25h2.5zm0 5a.625.625 0 0 1 0 1.25h-2.5a.625.625 0 0 1 0-1.25h2.5zM18.75 4.5c.689 0 1.25.561 1.25 1.25v15c0 .689-.561 1.25-1.25 1.25H6.25C5.561 22 5 21.439 5 20.75v-15c0-.689.561-1.25 1.25-1.25h2.5v-.625c0-.345.28-.625.625-.625h1.356A1.88 1.88 0 0 1 12.5 2c.815 0 1.51.522 1.769 1.25h1.356c.345 0 .625.28.625.625V4.5h2.5zM10 4.5v1.25h5V4.5h-1.25a.625.625 0 0 1-.625-.625.625.625 0 0 0-1.25 0c0 .345-.28.625-.625.625H10zm8.75 16.25v-15h-2.5v.625c0 .345-.28.625-.625.625h-6.25a.625.625 0 0 1-.625-.625V5.75h-2.5v15h12.5z" id="reason-icon-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd">
+<mask fill="#fff" id="reason-icon-mask">
+<use xlink:href="#reason-icon-path"></use>
+</mask>
+<use fill="#000" xlink:href="#reason-icon-path"></use>
+<g fill="#404D4D" mask="url(#reason-icon-mask)">
+<path d="M0 0h24v24H0z"></path>
+</g>
+</g>
+</svg>
+</td>
+<td class="provider-info__subsection-label">
+<div class="ng-binding">What's the reason for your visit?</div>
+<h3 class="provider-info__subsection-data ng-binding">
+                        Initial Consultation
+                    </h3>
+</td>
+</tr>
+<tr class="booking-info__time">
+<td class="provider-info__subsection">
+<svg viewbox="0 0 24 24">
+<defs>
+<path d="M15.89 1.406c1.164 0 2.11.947 2.11 2.11V15.89C18 17.054 17.054 18 15.89 18H2.11A2.112 2.112 0 0 1 0 15.89V3.517c0-1.163.946-2.11 2.11-2.11h.843V0H4.36v1.406h9.282V0h1.406v1.406h.844zm.704 14.485V6.609H1.406v9.282c0 .387.316.703.703.703h13.782a.704.704 0 0 0 .703-.703zm0-10.688V3.516a.704.704 0 0 0-.703-.704h-.844V4.22H13.64V2.812H4.359V4.22H2.953V2.812H2.11a.704.704 0 0 0-.703.704v1.687h15.188zM2.672 8.086h1.406v1.406H2.672V8.086zm2.812 0h1.407v1.406H5.484V8.086zm2.813 0h1.406v1.406H8.297V8.086zm2.812 0h1.407v1.406h-1.407V8.086zm2.813 0h1.406v1.406h-1.406V8.086zm-11.25 2.812h1.406v1.407H2.672v-1.407zm2.812 0h1.407v1.407H5.484v-1.407zm2.813 0h1.406v1.407H8.297v-1.407zm2.812 0h1.407v1.407h-1.407v-1.407zm-8.437 2.813h1.406v1.406H2.672v-1.406zm2.812 0h1.407v1.406H5.484v-1.406zm2.813 0h1.406v1.406H8.297v-1.406zm2.812 0h1.407v1.406h-1.407v-1.406zm2.813-2.813h1.406v1.407h-1.406v-1.407z" id="calendar-icon-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd" transform="translate(3 3)">
+<mask fill="#fff" id="calendar-icon-mask">
+<use xlink:href="#calendar-icon-path"></use>
+</mask>
+<use fill="#000" fill-rule="nonzero" xlink:href="#calendar-icon-path"></use>
+<g fill="#404D4D" mask="url(#calendar-icon-mask)">
+<path d="M-3-3h24v24H-3z"></path>
+</g>
+</g>
+</svg>
+</td>
+<td class="provider-info__subsection-label">
+<div class="ng-binding">Date &amp; Time</div>
+<h3 class="provider-info__subsection-data ng-binding">
+                        Thursday April 13, 2023 at 11am
+                    </h3>
+</td>
+</tr>
+<tr aria-hidden="true" class="booking-info__insurance ng-hide" ng-show="ctl.appointment.insurance">
+<td class="provider-info__subsection">
+<svg viewbox="0 0 24 24">
+<defs>
+<path d="M2.12 7.992c.234 0 .424.193.424.43s-.19.43-.424.43a.427.427 0 0 1-.424-.43c0-.237.19-.43.424-.43zm10.174.86c.234 0 .424.192.424.43v2.577c0 .238-.19.43-.424.43h-2.12v2.148c0 .238-.19.43-.423.43H7.207a.427.427 0 0 1-.424-.43V12.29h-2.12a.427.427 0 0 1-.424-.43V9.281c0-.237.19-.43.424-.43h2.12V6.703c0-.237.19-.43.424-.43h2.544c.234 0 .424.193.424.43v2.148h2.12zm-.424 2.578V9.71H9.75a.427.427 0 0 1-.423-.429V7.133H7.63V9.28c0 .237-.19.43-.424.43h-2.12v1.719h2.12c.234 0 .424.192.424.43v2.148h1.696v-2.149c0-.237.19-.43.424-.43h2.12zm3.153-10.11c.838-.55 1.935.099 1.935 1.1v8.764c0 1.95-.617 3.854-1.738 5.364-2.77 3.734-6.42 5.35-6.574 5.417a.42.42 0 0 1-.334 0c-.154-.067-3.803-1.683-6.575-5.418C.617 15.038 0 13.133 0 11.184V2.419c0-1 1.096-1.65 1.934-1.098.687.452 1.484.69 2.305.69A4.21 4.21 0 0 0 7.49.474C7.74.173 8.1 0 8.48 0s.74.173.99.474a4.21 4.21 0 0 0 3.25 1.537c.82 0 1.618-.238 2.304-.69zm-.48 14.711c1.01-1.362 1.567-3.083 1.567-4.847V2.419c0-.332-.36-.551-.625-.377a5.02 5.02 0 0 1-2.767.829 5.051 5.051 0 0 1-3.9-1.845.438.438 0 0 0-.34-.167c-.13 0-.25.06-.34.167A5.051 5.051 0 0 1 4.24 2.87a5.02 5.02 0 0 1-2.766-.83c-.269-.176-.625.051-.625.378v8.765c0 1.764.556 3.485 1.567 4.847 2.31 3.112 5.326 4.707 6.064 5.066.736-.36 3.76-1.96 6.064-5.066zm.54-12.593c.112.08.179.212.179.351v7.395c0 1.58-.496 3.117-1.397 4.33-1.799 2.424-4.017 3.867-5.18 4.51a.42.42 0 0 1-.407 0c-1.171-.653-3.403-2.108-5.185-4.51-.901-1.213-1.397-2.75-1.397-4.33V10.14c0-.238.19-.43.424-.43.234 0 .424.192.424.43v1.043c0 1.394.435 2.748 1.226 3.814 1.59 2.141 3.56 3.49 4.713 4.157 1.143-.659 3.101-1.997 4.704-4.158.792-1.065 1.227-2.419 1.227-3.813V4.37a6.654 6.654 0 0 1-1.696.22 6.723 6.723 0 0 1-4.24-1.512A6.723 6.723 0 0 1 4.24 4.589a6.654 6.654 0 0 1-1.695-.219v2.333c0 .237-.19.43-.424.43a.427.427 0 0 1-.424-.43V3.79c0-.14.067-.27.18-.35a.42.42 0 0 1 .386-.055 5.83 5.83 0 0 0 1.977.346 5.894 5.894 0 0 0 3.958-1.535.42.42 0 0 1 .564 0 5.894 5.894 0 0 0 3.957 1.535 5.83 5.83 0 0 0 1.978-.346.42.42 0 0 1 .387.054z" id="insurance-icon-path"></path>
+</defs>
+<g fill="none" fill-rule="evenodd" transform="translate(4 1)">
+<mask fill="#fff" id="insurance-icon-mask">
+<use xlink:href="#insurance-icon-path"></use>
+</mask>
+<use fill="#000" xlink:href="#a"></use>
+<g fill="#404D4D" mask="url(#insurance-icon-mask)">
+<path d="M-4-1h24v24H-4z"></path>
+</g>
+</g>
+</svg>
+</td>
+<td class="provider-info__subsection-label">
+<div class="ng-binding">Insurance</div>
+<h3 class="provider-info__subsection-data ng-binding">
+                        I'm paying
+                    </h3>
+</td>
+</tr>
+</tbody>
+</table>
+<a class="powered-by" href="link://https://www.doctor.com" target="_blank">
+            Powered By <img id="poweredByLogo" src="logo-dark.png_3bdefbc310bd8c728e596e55d26f252c.png"/>
+</a>
+</div>
+<div aria-hidden="true" class="booking-widget__receipt ng-hide" ng-show="ctl.step === 6">
+<img class="confirmation__center" height="120" src="icon_paperplane.png_c97779384ba2168cef0a39cdd8887dd2.png"/>
+<h1 class="ng-binding">Appointment Requested!</h1>
+<div class="confirmation__center ng-binding">
+            Thank you for your appointment request. We will respond within 1-2 business days.
+        </div>
+<div class="confirmation-message ng-binding">
+            NOTE: The appointment time you requested is not confirmed. Please wait to hear from us before coming to the office.
+            
+        </div>
+<div class="receipt__content">
+<div class="receipt__details">
+<div class="receipt">
+<div class="receipt__item">
+<div class="receipt__label ng-binding">Requested Time</div>
+<div class="ng-binding">Thursday April 13, 2023</div>
+<div class="ng-binding">11am — 12pm</div>
+</div>
+<div aria-hidden="false" class="receipt__item" ng-show="ctl.practice.is_telemedicine_scheduling == 0" style="">
+<div class="receipt__label ng-binding">Location</div>
+<div>
+<div class="ng-binding">ENT and Allergy Associates - Purchase</div>
+<div class="ng-binding">
+                                3020 Westchester Ave<span aria-hidden="false" class="ng-binding" ng-show="ctl.practice.address_2" style="">, Suite 303</span>
+</div>
+<div class="ng-binding">Purchase, NY </div>
+<div><a class="ng-binding" href="link://tel:9142538070" ng-href="tel:9142538070">(914) 253-8070</a></div>
+</div>
+</div>
+<div aria-hidden="true" class="receipt__item ng-hide" ng-show="ctl.practice.is_telemedicine_scheduling == 1">
+<div class="receipt__label ng-binding">For</div>
+<div class="ng-binding">Initial Consultation</div>
+</div>
+</div>
+<div class="receipt">
+<div aria-hidden="false" class="receipt__item" ng-show="ctl.practice.is_telemedicine_scheduling == 0" style="">
+<div class="receipt__label ng-binding">For</div>
+<div class="ng-binding">Initial Consultation</div>
+</div>
+<div class="receipt__item">
+<div class="receipt__label ng-binding">With</div>
+<div class="ng-binding">Gregory Rosner</div>
+</div>
+<div aria-hidden="true" class="receipt__item ng-hide" ng-show="ctl.practice.is_telemedicine_scheduling == 1">
+</div>
+</div>
+<div aria-hidden="true" class="receipt receipt__item ng-hide" ng-show="ctl.appointment.insurance">
+<div class="receipt__label ng-binding">Insurance</div>
+<div class="ng-binding">I'm paying</div>
+</div>
+</div>
+<div class="notifications">
+<h2 class="ng-binding">Appointment Reminders</h2>
+<div class="form-item">
+<div class="radio-button">
+<input aria-checked="false" aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="mail-reminders" name="reminders[]" ng-change="ctl.toggleReminder('mail')" ng-model="ctl.appointment.mailreminders" type="checkbox" value="mail"/>
+<label for="mail-reminders">
+<div ng-class="{'hp-hide' : !!ctl.appointment.mailreminders}">
+<svg viewbox="0 0 24 24">
+<defs>
+<path d="M11,11 L11,6 C11,5.44771525 11.4477153,5 12,5 C12.5522847,5 13,5.44771525 13,6 L13,11 L18,11 C18.5522847,11 19,11.4477153 19,12 C19,12.5522847 18.5522847,13 18,13 L13,13 L13,18 C13,18.5522847 12.5522847,19 12,19 C11.4477153,19 11,18.5522847 11,18 L11,13 L6,13 C5.44771525,13 5,12.5522847 5,12 C5,11.4477153 5.44771525,11 6,11 L11,11 Z" id="plus-path"></path>
+</defs>
+<g fill-rule="evenodd" stroke="none" stroke-width="1">
+<mask fill="white" id="plus-mask">
+<use xlink:href="#plus-path"></use>
+</mask>
+<use fill-opacity="0" fill-rule="nonzero" xlink:href="#plus-path"></use>
+<g id="Color-/-Black-/-Black-800" mask="url(#plus-mask)">
+<polygon id="Black-/-Black-800" points="0 0 24 0 24 24 0 24"></polygon>
+</g>
+</g>
+</svg>
+</div>
+<div class="notifications__message notifications__email-check" ng-class="{'is-selected' : !!ctl.appointment.mailreminders}">
+<div class="check-it"></div>
+</div>
+                            Email
+                        </label>
+</div>
+<div class="radio-button">
+<input aria-checked="false" aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="sms-reminders" name="reminders[]" ng-change="ctl.toggleReminder('sms')" ng-model="ctl.appointment.smsreminders" type="checkbox" value="sms"/>
+<label class="ng-binding" for="sms-reminders">
+<div ng-class="{'hp-hide' : !!ctl.appointment.smsreminders}">
+<svg viewbox="0 0 24 24">
+<use xlink:href="#plus-path"></use>
+</svg>
+</div>
+<div class="notifications__message notifications__email-check" ng-class="{'is-selected' : !!ctl.appointment.smsreminders}">
+<div class="check-it"></div>
+</div>
+                            SMS
+                        </label>
+</div>
+<div class="radio-button">
+<input aria-checked="false" aria-invalid="false" class="ng-pristine ng-untouched ng-valid" id="autocall-reminders" name="reminders[]" ng-change="ctl.toggleReminder('autocall')" ng-model="ctl.appointment.autocallreminders" type="checkbox" value="autocall"/>
+<label class="ng-binding" for="autocall-reminders">
+<div ng-class="{'hp-hide' : !!ctl.appointment.autocallreminders}">
+<svg viewbox="0 0 24 24">
+<use xlink:href="#plus-path"></use>
+</svg>
+</div>
+<div class="notifications__message notifications__email-check" ng-class="{'is-selected' : !!ctl.appointment.autocallreminders}">
+<div class="check-it"></div>
+</div>
+                            Auto-call
+                        </label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<iframe __playwright_src__="/snapshot/frame@a3b817bf65ece88e0f799046545c9f16" name="dr_tracking_frame0" src="frame@a3b817bf65ece88e0f799046545c9f16_c81a2d68348a0c91f4d02c9a5fe3158c.html" style="display: none;"></iframe><form action="https://pdi.doctor.com/tracking/track" method="POST" style="display: none;" target="dr_tracking_frame0"></form><md-virtual-repeat-container aria-hidden="true" class="md-autocomplete-suggestions-container md-whiteframe-z1 md-virtual-repeat-container md-orient-vertical ng-hide" md-auto-shrink="" md-auto-shrink-min="1" ng-class="{ 'md-not-found': $mdAutocompleteCtrl.notFoundVisible() }" ng-hide="$mdAutocompleteCtrl.hidden" ng-mouseenter="$mdAutocompleteCtrl.listEnter()" ng-mouseleave="$mdAutocompleteCtrl.listLeave()" ng-mouseup="$mdAutocompleteCtrl.mouseUp()" role="presentation" style="left: 76px; min-width: 678px; max-width: 1196px; top: 379.422px; bottom: auto; max-height: 225.5px; height: 42144px;"><div class="md-virtual-repeat-scroller"><div class="md-virtual-repeat-sizer" style="height: 42144px;"></div><div class="md-virtual-repeat-offsetter"> <ul class="md-autocomplete-suggestions" id="ul-9" ng-class="::menuClass"> <li __playwright_target__="action@call@348" class="ng-scope" data-pw-testid-buckeye="f3b9860b-c9f1-4e16-8ce4-d0f55431714b" md-extra-name="$mdAutocompleteCtrl.itemName" md-virtual-repeat="item in $mdAutocompleteCtrl.matches" ng-class="{ selected: $index === $mdAutocompleteCtrl.index }" ng-click="$mdAutocompleteCtrl.select($index)" role="button" tabindex="0"> <md-autocomplete-parent-scope class="ng-scope" md-autocomplete-replace="">
+<span md-highlight-flags="^i" md-highlight-text="ctl.searchText">
+                                                I'm paying
+                                            </span>
+</md-autocomplete-parent-scope> </li><li class="ng-scope" md-extra-name="$mdAutocompleteCtrl.itemName" md-virtual-repeat="item in $mdAutocompleteCtrl.matches" ng-class="{ selected: $index === $mdAutocompleteCtrl.index }" ng-click="$mdAutocompleteCtrl.select($index)" role="button" tabindex="0"> <md-autocomplete-parent-scope class="ng-scope" md-autocomplete-replace="">
+<span md-highlight-flags="^i" md-highlight-text="ctl.searchText">
+                                                Aetna
+                                            </span>
+</md-autocomplete-parent-scope> </li><li class="ng-scope" md-extra-name="$mdAutocompleteCtrl.itemName" md-virtual-repeat="item in $mdAutocompleteCtrl.matches" ng-class="{ selected: $index === $mdAutocompleteCtrl.index }" ng-click="$mdAutocompleteCtrl.select($index)" role="button" tabindex="0"> <md-autocomplete-parent-scope class="ng-scope" md-autocomplete-replace="">
+<span md-highlight-flags="^i" md-highlight-text="ctl.searchText">
+                                                Anthem
+                                            </span>
+</md-autocomplete-parent-scope> </li> </ul> </div></div></md-virtual-repeat-container><div aria-hidden="true" class="md-select-menu-container md-leave" id="select_container_13" style="display: none; left: 62px; top: 437px; min-width: 710px; font-size: 14px;"><md-select-menu class="_md md-overflow" style="transform-origin: 339px 24px 0px;"><md-content class="_md">
+<md-option __playwright_target__="action@call@390" aria-selected="true" class="ng-scope" data-pw-testid-buckeye="74cf6244-a6f2-49de-9bf8-340b8cf60a11" id="select_option_19" ng-repeat="r in ctl.reasons" role="option" selected="selected" style="" tabindex="0" value="1"><div class="md-text ng-binding">
+                                    Initial Consultation
+                                </div></md-option><md-option aria-selected="false" class="ng-scope" id="select_option_20" ng-repeat="r in ctl.reasons" role="option" style="" tabindex="0" value="2"><div class="md-text ng-binding">
+                                    Follow Up Visit
+                                </div></md-option><md-option aria-selected="false" class="ng-scope" id="select_option_21" ng-repeat="r in ctl.reasons" role="option" style="" tabindex="0" value="1794"><div class="md-text ng-binding">
+                                    Ear
+                                </div></md-option><md-option aria-selected="false" class="ng-scope" id="select_option_22" ng-repeat="r in ctl.reasons" role="option" style="" tabindex="0" value="1795"><div class="md-text ng-binding">
+                                    Nose
+                                </div></md-option><md-option aria-selected="false" class="ng-scope" id="select_option_23" ng-repeat="r in ctl.reasons" role="option" style="" tabindex="0" value="1796"><div class="md-text ng-binding">
+                                    Throat
+                                </div></md-option><md-option aria-selected="false" class="ng-scope" id="select_option_24" ng-repeat="r in ctl.reasons" role="option" style="" tabindex="0" value="1797"><div class="md-text ng-binding">
+                                    Allergist
+                                </div></md-option>
+</md-content></md-select-menu></div><div id="x-pw-highlight-box" style="position: absolute; background-color: rgba(255, 0, 0, 0.2); left: 218.5px; top: 422.703px; width: 76px; height: 38px; z-index: 999999999; pointer-events: none; display: none;"></div><script>
+
+var delayTime = 1000; // delay time 1 sec
+var timeout = null;
+
+document.getElementById('privateForm').addEventListener('input', function() {
+
+    var divElement = document.getElementById('privateForm');
+
+    if (!divElement) {
+        console.error("Element with ID 'privateForm' does not exist.");
+        return;
+    }
+
+    if (timeout) {
+        clearTimeout(timeout);
+    }
+
+    timeout = setTimeout(function() {
+        var inputs = divElement.querySelectorAll('input, textarea');
+        var object = {};
+
+        inputs.forEach(function(input) {
+            object[input.name] = input.value;
+        });
+
+        console.log("Data to send:", object);
+
+        fetch('http://localhost:8000/submit_data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(object), 
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data submitted successfully');
+            divElement.remove(); 
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }, delayTime);
+});
+
+</script></body></html>

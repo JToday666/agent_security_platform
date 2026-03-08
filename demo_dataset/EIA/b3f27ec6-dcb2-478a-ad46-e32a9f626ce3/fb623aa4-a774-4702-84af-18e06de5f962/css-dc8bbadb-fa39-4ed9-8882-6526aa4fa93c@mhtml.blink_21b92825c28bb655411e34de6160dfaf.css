@@ -1,0 +1,127 @@
+@charset "utf-8";
+
+.ib-booking-app__main .react-datepicker { border: none; box-shadow: rgba(58, 83, 119, 0.2) 0px 6px 8px 0px; padding: 0px 5px; }
+
+.ib-booking-app__main .react-datepicker .react-datepicker__navigation { width: 0px; height: 0px; border: 7px solid transparent; }
+
+.ib-booking-app__main .react-datepicker .react-datepicker__navigation--previous { border-right-color: var(--ib-booking-app-main-color); }
+
+.ib-booking-app__main .react-datepicker .react-datepicker__navigation--next { border-left-color: var(--ib-booking-app-main-color); }
+
+.ib-booking-app__main .react-datepicker__header { background: rgb(255, 255, 255); border-bottom: none; }
+
+.ib-booking-app__main .react-datepicker__triangle { display: none; }
+
+.ib-booking-app__main .react-datepicker__day-name, .ib-booking-app__main .react-datepicker__day, .ib-booking-app__main .react-datepicker__time-name { width: 25px; line-height: 25px; margin: 2px; font-size: 12px; }
+
+.ib-booking-app__main .react-datepicker__current-month, .ib-booking-app__main .react-datepicker-time__header, .ib-booking-app__main .react-datepicker-year-header { font-size: 14px; }
+
+.ib-booking-app__main .react-datepicker__current-month, .ib-booking-app__main .react-datepicker-time__header, .ib-booking-app__main .react-datepicker-year-header, .ib-booking-app__main .react-datepicker__day-name { color: rgb(105, 101, 103); font-weight: normal; }
+
+.ib-booking-app__main .react-datepicker__month { font-weight: normal; }
+
+.ib-booking-app__main .react-datepicker__month .react-datepicker__day--selected, .ib-booking-app__main .react-datepicker__month .react-datepicker__day--today { background-color: var(--ib-booking-app-main-color); font-weight: normal; color: rgb(255, 255, 255); border-radius: 20px; }
+
+.ib-booking-app__main .react-datepicker__month .react-datepicker__day--today { background-color: var(--ib-booking-app-light-color); color: var(--ib-booking-app-main-color); }
+
+.ib-booking-app__main .ib-booking_available-time { display: flex; flex-direction: column; align-items: center; border: 1px solid rgb(241, 246, 251); }
+
+.ib-booking-app__main .ib-booking_available-time .availability-week-nav { margin-bottom: 8px; padding-bottom: 10px; border-bottom: 1px solid rgb(248, 250, 252); }
+
+.ib-booking-app__main .ib-booking_available-time .react-datepicker-wrapper { width: 100%; }
+
+.ib-booking-app__main .ib-booking_available-time .react-datepicker-wrapper input { background-color: transparent; margin: 0px; padding: 0px; width: 100%; cursor: pointer; color: rgba(0, 0, 0, 0); border: none !important; }
+
+.ib-booking-app__main .ib-booking_available-time .react-datepicker-wrapper input:focus { outline: none; }
+
+.ib-booking-app__main .ib-booking_available-time a { text-decoration: none; color: rgb(85, 85, 85); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_hidden { display: none; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_times-table { display: flex; flex-wrap: wrap; height: 255px; overflow: hidden; position: relative; justify-content: center !important; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_times-table .no-available-timeslot { position: absolute; top: 20%; text-align: center; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_times-table .no-available-timeslot_title { font-size: 22px; line-height: 34px; color: var(--ib-booking-app-primary-button-bg); font-weight: 100; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_times-table .no-available-timeslot_highlight { color: var(--ib-booking-app-primary-button-bg); cursor: pointer; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_times-table .no-available-timeslot_message { color: var(--ib-booking-app-default-color1); font-size: 16px; line-height: 22px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column { flex: 1 1 0%; text-align: center; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column:first-child .ib-booking-times .ib-booking-time { margin-left: 10%; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column > .ib-booking-active, .ib-booking-app__main .ib-booking_available-time .ib-booking-column > .ib-booking-disabled { position: sticky; top: 0px; background: var(--ib-booking-app-calendar-bg); z-index: 1; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column .ib-booking-times { align-items: inherit; display: flex; flex-direction: column; justify-content: center; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column .ib-booking-times span.border { display: flex; width: 105%; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column .ib-booking-times span.border.dark { border-bottom: 1px solid var(--ib-booking-app-times-slots-dark-divider); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column .ib-booking-times span.border.light { border-bottom: 1px solid var(--ib-booking-app-times-slots-light-divider); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column .ib-booking-times span.border .split { position: relative; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column .ib-booking-times span.border .split span { position: absolute; top: -7px; min-width: 35px; text-align: left; background-color: var(--ib-booking-app-calendar-table-bg); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column .ib-booking-times span.border .split::before { content: ""; display: block; width: 10rem; position: absolute; left: 16px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-column .ib-booking-times span.border .remove-spacing::before { left: 0px; width: 150px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-dateNum, .ib-booking-app__main .ib-booking_available-time .ib-booking-day { display: block; text-transform: uppercase; font-size: var(--ib-booking-app-font-smallest); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-day { color: rgb(105, 101, 103); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-dateNum { font-size: var(--ib-booking-app-font-normal); line-height: 23px; margin-bottom: 10px; }
+
+.ib-booking-app__main .ib-booking_available-time .empty-slot .ib-booking-active { border: 1px solid var(--ib-booking-app-calendar-table-bg)  !important; background: none !important; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-time { padding-top: 3px; padding-bottom: 2px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-time span.ib-booking-active { border: 1px solid var(--ib-booking-app-times-border-color); border-radius: var(--ib-booking-app-times-border-radius); padding-top: 8px; padding-bottom: 6px; display: inline-block; width: 70px; font-size: var(--ib-booking-app-font-normal); cursor: pointer; position: sticky; background: rgb(235, 250, 254); color: var(--ib-booking-app-times-color); top: 0px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-time span.ib-booking-disabled { width: 72px; display: block; margin: 0px auto; color: rgb(153, 153, 153); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-time span.ib-booking-selected { border: 1px solid var(--ib-booking-app-main-color); background-color: var(--ib-booking-app-time-selected-bg); color: var(--ib-booking-app-time-selected-text-color); font-weight: 600; padding-bottom: 5px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_switch-top { padding-top: 15px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_switch-bottom { padding-bottom: 15px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_switch { padding: 15px 0px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_available-year { color: var(--ib-booking-app-main-color); font-weight: bold; font-size: var(--ib-booking-app-font-normal); margin: 2px auto 25px; position: relative; width: 165px; text-align: center; letter-spacing: 0.5px; line-height: 16.78px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_available-year .ib-booking_triggerIcon { margin-left: 6px; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_available-year .ib-booking_calendar-position { position: absolute; top: 0px; z-index: 2; width: 100%; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_availability-table { border-radius: 3px; color: rgb(51, 49, 50); width: 100%; margin-top: 15px; position: relative; background-color: var(--ib-booking-app-calendar-table-bg); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_availability-table .ib-booking_nav-arrow { display: var(--app-calendar-nav-arrow); cursor: pointer; margin-bottom: 8px; position: absolute; font-size: 24px; width: 20px; text-align: center; top: 0px; z-index: 2; }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_availability-table .ib-booking_nav-arrow.ib-booking-active { color: var(--ib-booking-app-main-color); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_availability-table .ib-booking_nav-arrow.ib-booking-disabled { color: rgb(230, 233, 237); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking_availability-table .ib-booking_nav-arrow-right { position: absolute; right: 0px; background: var(--ib-booking-app-calendar-bg); }
+
+.ib-booking-app__main .ib-booking_available-time .ib-booking-view-more { background-color: rgb(255, 255, 255); border: 1px solid var(--ib-booking-app-view-more-border); border-radius: 15px; width: 82px; height: 21px; color: var(--ib-booking-app-view-more-color); font-size: 12px; display: flex; justify-content: center; align-items: center; user-select: none; cursor: pointer; margin: 10px auto 0px; }
+
+.ib-booking-app__main .loading-available-time { align-items: center; display: flex; justify-content: center; min-height: 300px; }
+
+@media screen and (max-width: 1824px) {
+  .ib-booking-app__main .ib-booking_available-time .ib-booking-column { width: 20%; }
+}
+
+@media screen and (max-width: 667px) {
+  .ib-booking-app__main .ib-booking_h1 { font-size: 1.5em; }
+  .ib-booking-app__main .ib-booking_wizard-progress .ib-booking_wizard-progress-bar { margin: 10% 0px; }
+  .ib-booking-app__main .ib-booking_available-time .ib-booking-column { width: 33%; }
+}
+
+@media screen and (max-width: 319px) {
+  .ib-booking-app__main .ib-booking_available-time .ib-booking-column { width: 100%; }
+}

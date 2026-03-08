@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+.copy-text-input .appear { animation-duration: 300ms; animation-fill-mode: forwards; animation-name: fadein; }
+
+@keyframes fadein { 
+  0% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+.copy-text-input[dir="ltr"] input { order: 1; text-align: right; }

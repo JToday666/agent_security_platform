@@ -1,0 +1,286 @@
+@charset "utf-8";
+
+.swiper { user-select: none; }
+
+.swiper .swiper-slide { min-width: 100%; }
+
+#gift-product-detail-overlay .amt, #gift-product-detail-overlay .egc-sender { margin: 0.9375rem 0px; font-size: 100%; }
+
+#gift-product-detail-overlay .main-img { display: block; }
+
+#gift-product-detail-overlay .card-img-gap { height: 16rem; overflow: hidden; display: block; }
+
+#gift-product-detail-overlay .card-img-gap .card-img { height: 18.75rem; margin: -2.8125rem auto; display: block; }
+
+#gift-product-detail-overlay .btn-sec { margin: 1.875rem 0px 0px; }
+
+#gift-product-detail-overlay .btn-sec button { margin: 0px; opacity: 1; }
+
+.pdp.giftcard-product [data-auto="product-title"] { border-bottom: none; padding-bottom: 0px; }
+
+.pdp.giftcard-product .p-name { font-weight: 700; margin: 0.625rem 0px 0.9375rem; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm { font-size: 0.875rem; display: block; }
+
+@media only screen and (max-width: 63.9375rem) {
+  .pdp.giftcard-product .egift-card-pdp #giftCardForm { margin: 0px 0.625rem 0px 0px; }
+}
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm small.error_msg { margin-top: 0px; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm input, .pdp.giftcard-product .egift-card-pdp #giftCardForm textarea { padding: 0.75rem; width: 100%; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm .egift-pr-btn { margin: 0px 0.75rem 1rem 0px; width: 4.5rem; }
+
+@media print, screen and (min-width: 37.5em) {
+  .pdp.giftcard-product .egift-card-pdp #giftCardForm .egift-pr-btn { width: 5.1875rem; }
+}
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm .egift-pr-btn:last-child { margin-right: 0px; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm textarea { min-height: 90px; resize: none; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm .card-notification { margin: 1em 0px 0px; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm .card-notification .message.notification-error { margin-bottom: 0px; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm .gift-msg-help-txt { display: block; padding: 0.3125rem 0px; font-weight: 400; line-height: 1.5; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm .error .gift-msg-help-txt { display: none; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm .giftQuantity { padding-left: 0.625rem; min-width: 5rem; }
+
+.pdp.giftcard-product .egift-card-pdp #giftCardForm [data-el="cta-notification"] .notification, .pdp.giftcard-product .egift-card-pdp #giftCardForm [data-el="cta-notification"] .notification-error, .pdp.giftcard-product .egift-card-pdp #giftCardForm [data-el="cta-notification"] .notification-valid { margin-bottom: 1rem; }
+
+.pdp.giftcard-product #giftCardForm .helper-text { margin: 0px; float: left; }
+
+.pdp.giftcard-product .breadcrumbs-container { margin-bottom: 1.5rem; }
+
+@media print, screen and (min-width: 64em) {
+  .pdp.giftcard-product .breadcrumbs-container { margin-bottom: 0.75rem; }
+}
+
+.pdp.giftcard-product .stylitics-cta-container.hidden { display: none; }
+
+.pdp.giftcard-product .wear-it-with-button { font-weight: 400; font-size: 0.5625rem; line-height: 0.75rem; }
+
+.pdp.giftcard-product .image-cta-container { position: absolute; top: 0px; left: 0px; z-index: 10; padding: 1.5rem 0px 0px 1.5rem; }
+
+.pdp.giftcard-product .image-grid-cta-container { display: flex; flex-direction: column; }
+
+.pdp.giftcard-product .image-cta-button { display: flex; justify-content: center; align-items: center; margin: 0px 0px 0.75rem; padding: 0px; width: 4.375rem; height: 4.375rem; color: rgb(255, 255, 255); font-weight: 700; font-size: 0.5625rem; line-height: 0.75rem; letter-spacing: 0.05em; background-color: rgb(0, 0, 0); border-radius: 50%; border: none; text-align: center; text-transform: uppercase; text-decoration: none; cursor: pointer; }
+
+.pdp.giftcard-product .image-cta-button.f-small { font-size: 8px; line-height: 0.8125rem; }
+
+.pdp.giftcard-product .image-cta-button.f-big { font-size: 10px; line-height: 0.875rem; padding: 0px 0.75rem; }
+
+.pdp.giftcard-product .add-to-list-container { position: absolute; top: 0.8125rem; right: 0.8125rem; z-index: 10; }
+
+.pdp.giftcard-product .add-to-list-container .add-to-list-icon { padding: 0.0625rem 0.125rem 0px; }
+
+.pdp.giftcard-product .icon-gen-heart-red-large { width: 24px; height: 24px; background-repeat: no-repeat; background-size: 24px 24px; display: inline-block; }
+
+.pdp.giftcard-product .atwl-notification-message { position: absolute; top: 3rem; right: 0.8125rem; z-index: 10; padding: 0.75rem; background: rgb(0, 0, 0); color: rgb(255, 255, 255); border-radius: 0.3125rem; width: 9.6875rem; min-height: 2.75rem; transition: opacity 0.4s ease-in-out 0s; opacity: 0.9; }
+
+.pdp.giftcard-product .atwl-notification-message a { color: rgb(255, 255, 255); }
+
+.pdp.giftcard-product .atwl-notification-message.fade-out { opacity: 0; }
+
+@media print, screen and (max-width: 37.49875em) {
+  .pdp.giftcard-product .atwl-notification-message { bottom: 6.25rem; top: unset; right: unset; left: 50%; transform: translateX(-50%); }
+}
+
+.pdp.giftcard-product [data-el="media"] { transform: translateZ(0px); }
+
+.pdp.giftcard-product [data-el="media"] .product-engagement-pill-container { position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%); padding: 0.75rem; background-color: rgba(0, 0, 0, 0.85); color: rgb(255, 255, 255); opacity: 0; transition: opacity 0.3s ease-in-out 0s; border-radius: 0.3125rem; }
+
+.pdp.giftcard-product [data-el="media"] .product-engagement-pill-container.fade-in { opacity: 1; }
+
+.pdp.giftcard-product [data-el="media"] .product-engagement-pill { white-space: nowrap; font-size: 0.875rem; text-align: center; }
+
+.pdp.giftcard-product [data-el="media"] .product-engagement-pill-experience .main-img { vertical-align: bottom; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__inline { border-radius: 0px; z-index: 10; }
+
+@supports (clip-path:polygon(0 0)) or (-webkit-clip-path:polygon(0 0)) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__inline { clip-path: polygon(0px 0px, 100% 50%, 0px 100%, 0px 100%, 0px 50%, 0px 0px); border-radius: 0px; }
+}
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__ico { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; background-color: rgb(255, 255, 255); }
+
+@supports (clip-path:polygon(0 0)) or (-webkit-clip-path:polygon(0 0)) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video { clip-path: polygon(0px 0px, 100% 50%, 0px 100%, 0px 100%, 0px 50%, 0px 0px); }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__ico { display: none; }
+}
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img { width: 0.5rem; height: 0.5rem; border-radius: 0.5rem; cursor: pointer; margin: 0px 0.75rem 0.75rem 0px; background-color: rgb(214, 214, 214); flex: 0 0 auto; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img.selected { background-color: rgb(98, 99, 105); }
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img img { display: none; }
+
+@media only screen and (max-width: 37.4375rem) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img { margin-bottom: 0px; }
+}
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img--1 { order: 1; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img--2 { order: 2; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img--fixed-pos { order: 4; }
+
+@media print, screen and (max-width: 37.49875em) {
+  @supports (clip-path:polygon(0 0)) or (-webkit-clip-path:polygon(0 0)) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__inline { clip-path: unset; border-radius: 0px; }
+}
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .sorted-alternated { border-radius: 0.125rem; background-color: rgb(214, 214, 214); overflow: hidden; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img { width: 100%; height: 0.1875rem; cursor: pointer; margin: 0px; transition: all 0.5s ease 0s; flex: 1 1 auto; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img.selected { background-color: rgb(98, 99, 105); border-radius: 0.125rem; }
+}
+
+@media print, screen and (min-width: 64em) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .sorted-alternated { margin-right: 0.75rem; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img { margin-right: 0px; }
+}
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .scroller-wrp { overflow-x: auto; width: 100%; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .chevron-down-wrap, .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .chevron-up-wrap { width: 3.75rem; margin-bottom: 0.625rem; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .chevron-down-wrap .chevron-large-down-black, .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .chevron-down-wrap .chevron-large-up-black, .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .chevron-up-wrap .chevron-large-down-black, .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .chevron-up-wrap .chevron-large-up-black { margin: 0px auto; display: flex; justify-content: center; align-items: center; }
+
+@media only screen and (min-width: 37.5rem) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img { width: 3.75rem; height: 4.75rem; border-radius: 0px; background-color: rgb(255, 255, 255); overflow: hidden; flex: 0 0 auto; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img.selected { background-color: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img img { display: inline-block; max-width: none; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img--1 { order: 1; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img--2 { order: 2; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img--fixed-pos { order: 4; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__inline { z-index: 10; position: relative; }
+  @supports (clip-path:polygon(0 0)) or (-webkit-clip-path:polygon(0 0)) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__inline { clip-path: none; }
+}
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__ico { display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; }
+}
+
+@media only screen and (min-width: 64rem) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img { width: 3.8125rem; height: 4.6875rem; border-left: 1px solid rgb(255, 255, 255); overflow-x: hidden; background-color: rgb(255, 255, 255); }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img.selected { border: 1px solid rgb(0, 0, 0); background-color: rgb(255, 255, 255); }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img--1 { order: 1; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img--2 { order: 2; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-img--fixed-pos { order: 4; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__inline { position: relative; z-index: 1; }
+  @supports (clip-path:polygon(0 0)) or (-webkit-clip-path:polygon(0 0)) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__inline { clip-path: none; }
+}
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .alt-video__ico { display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; }
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] .scroller-wrp { max-height: 21.75rem; overflow-x: hidden; }
+}
+
+@media only screen and (max-width: 37.4375rem) {
+  .pdp.giftcard-product [data-el="media"] [data-el="alternate-images"] { margin-bottom: 0.625rem; }
+}
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] { margin-bottom: 1rem; }
+
+@media print, screen and (min-width: 37.5em) and (max-width: 63.99875em) {
+  .pdp.giftcard-product [data-el="media"] [data-el="main-image"] { margin-bottom: 0px; }
+}
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .main-img { width: 100%; position: relative; text-align: center; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .main-img .zoomer-image { position: absolute; top: 0px; left: 0px; max-width: none; width: auto; cursor: zoom-in; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .main-video { width: 100%; height: 0px; padding-bottom: 122%; position: relative; text-align: center; vertical-align: middle; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .main-video__video-player { height: 100%; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .main-video__video-player { position: absolute; top: 0px; left: 0px; width: 100%; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .video-js { height: 100%; width: 100%; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .swatch-img { height: 4.6875rem; width: 4.6875rem; position: absolute; bottom: 0.75rem; right: 0.75rem; border: 1px solid rgb(149, 148, 153); display: inline-block; box-sizing: border-box; border-radius: 50%; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .img-not-found { text-align: center; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .img-not-found > img { width: auto; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .v-hidden { visibility: hidden; }
+
+@media only screen and (max-width: 37.5rem) {
+  .pdp.giftcard-product [data-el="media"] [data-el="main-image"] { min-width: 100%; }
+}
+
+@media only screen and (min-width: 64rem) {
+  .pdp.giftcard-product [data-el="media"] [data-el="main-image"] .swatch-img { right: 0.875rem; }
+}
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .main-img-container { position: relative; width: 100%; padding-bottom: 122%; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .main-image-viewport { position: absolute; top: 0px; left: 0px; width: 100%; cursor: zoom-in; }
+
+.pdp.giftcard-product [data-el="media"] [data-el="main-image"] .loader-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+.pdp.giftcard-product [data-el="media"] .sorted-alternated { width: 100%; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; flex-direction: row; }
+
+@media print, screen and (min-width: 64em) {
+  .pdp.giftcard-product [data-el="media"] .modiface-button-wrap { padding-left: 4.375rem; }
+}
+
+@media only screen and (min-width: 64rem) {
+  .pdp.giftcard-product [data-el="media"] .main-img-cntr { margin-left: 4.375rem; }
+  .pdp.giftcard-product [data-el="media"] .media-sidebar { position: absolute; top: 0px; width: 4.375rem; }
+  .pdp.giftcard-product [data-el="media"] .sorted-alternated { width: 100%; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; flex-direction: column; }
+}
+
+@media only screen and (max-width: 37.4375rem) {
+  .pdp.giftcard-product [data-el="media"] { padding-top: 0.125rem; }
+  .pdp.giftcard-product [data-el="media"] .media-cntr { display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; flex-direction: column; }
+  .pdp.giftcard-product [data-el="media"] .media-cntr .image-video-wrapper { display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; flex-direction: column; }
+  .pdp.giftcard-product [data-el="media"] .media-cntr .image-video-wrapper .main-img-cntr { order: 2; }
+  .pdp.giftcard-product [data-el="media"] .media-cntr .media-sidebar { order: 2; }
+  .pdp.giftcard-product [data-el="media"] .media-sidebar { text-align: center; }
+  .pdp.giftcard-product [data-el="media"] .sorted-alternated { width: 100%; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; flex-direction: row; align-items: baseline; justify-content: center; }
+  .pdp.giftcard-product [data-el="media"] .mobile-fix-many-alt-imags { overflow-x: scroll; }
+}
+
+@media print, screen and (min-width: 37.5em) {
+  .pdp.giftcard-product .sticky-media { position: relative; }
+  @supports (position:sticky) {
+  .pdp.giftcard-product .sticky-media { position: sticky; top: 0.625rem; }
+}
+}
+
+@media print, screen and (min-width: 64em) {
+  .pdp.giftcard-product .main-image-and-alts-container { display: flex; }
+  .pdp.giftcard-product .main-image-and-alts-container .image-video-wrapper { position: relative; flex: 1 1 100%; order: 2; }
+  .pdp.giftcard-product .main-image-and-alts-container .main-img-cntr { margin: 0px; }
+  .pdp.giftcard-product .main-image-and-alts-container .media-sidebar { position: relative; }
+}
+
+@media print, screen and (min-width: 37.5em) and (max-width: 63.99875em) {
+  .pdp.giftcard-product .main-image-and-alts-container .media-sidebar { margin-top: 1rem; }
+}
+
+@media print, screen and (max-width: 37.49875em) {
+  .pdp.giftcard-product .main-image-and-alts-container { margin-bottom: 3rem; }
+  .pdp.giftcard-product .main-image-and-alts-container.mobile-resequense { margin-bottom: 1rem; }
+}
+
+.pdp.giftcard-product .button-list-container { display: flex; position: absolute; bottom: 0.75rem; left: 0.75rem; z-index: 1; }
+
+.pdp.giftcard-product .button-list-container .main-image-button { margin: 0px; padding: 0px; text-transform: none; text-decoration: none; background: none; border-radius: 0px; color: inherit; font-weight: inherit; transition: inherit; line-height: normal; display: flex; justify-content: center; align-items: center; width: 1.5625rem; height: 1.5625rem; border: none; cursor: pointer; }
+
+.pdp.giftcard-product .button-list-container .icon-container { display: flex; justify-content: center; align-items: center; width: 100%; }
+
+@media only screen and (max-width: 64rem) {
+  .pdp.giftcard-product [data-el="bottom"] .pop-search { display: none; }
+}
+
+.pdp.giftcard-product [data-el="bottom"] .sponsoredLabel::after { content: "Sponsored"; display: block; text-align: right; font-size: 0.625rem; font-weight: 700; color: rgb(149, 148, 153); }
+
+.rvi { margin-bottom: 3rem; }
+
+@media print, screen and (min-width: 64em) {
+  .rvi { margin-bottom: 4rem; }
+}

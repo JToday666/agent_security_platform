@@ -1,0 +1,79 @@
+@charset "utf-8";
+
+.btn.btn-primary { background-color: rgb(0, 97, 197); border-color: rgb(0, 82, 167); color: rgb(255, 255, 255) !important; }
+
+.btn.btn-primary:hover { background-color: rgb(0, 82, 167); border-color: rgb(0, 82, 167); color: rgb(255, 255, 255) !important; }
+
+.btn.btn-primary:active, .btn.btn-primary:focus, .btn.btn-primary.active { background-color: rgb(0, 82, 167); border-color: rgb(0, 82, 167); }
+
+.btn.btn-primary:active:focus, .btn.btn-primary.active:focus { background-color: rgb(0, 82, 167); border-color: rgb(0, 82, 167); color: rgb(255, 255, 255) !important; }
+
+.btn.btn-success { background-color: rgb(73, 169, 66); border-color: rgb(62, 144, 56); color: rgb(255, 255, 255) !important; }
+
+.btn.btn-success:hover { background-color: rgb(62, 144, 56); border-color: rgb(62, 144, 56); color: rgb(255, 255, 255) !important; }
+
+.btn.btn-success:active, .btn.btn-success:focus, .btn.btn-success.active { background-color: rgb(62, 144, 56); border-color: rgb(62, 144, 56); }
+
+.btn.btn-success:active:focus, .btn.btn-success.active:focus { background-color: rgb(62, 144, 56); border-color: rgb(62, 144, 56); color: rgb(255, 255, 255) !important; }
+
+.panel-heading .package-heading { color: rgb(0, 97, 197) !important; }
+
+.package-item-price .buy-btn { background-color: rgb(73, 169, 66); }
+
+.fix-navigation { background-color: rgb(255, 255, 255); }
+
+.desktop-navigation .top-bar-block { color: rgb(0, 0, 0); }
+
+.top-bar-branding .branding .branding-title { color: rgb(255, 255, 255) !important; }
+
+.panel-heading .package-subheading { color: rgb(0, 0, 0) !important; }
+
+.package-item-price { background-color: rgb(0, 97, 197); }
+
+.package-item-price .price-tag { color: rgb(255, 255, 255); }
+
+.package-item-price .buy-btn::before { border-color: rgb(62, 144, 56) transparent transparent !important; }
+
+.package-item-price .buy-btn::after { border-color: rgb(0, 97, 197) transparent transparent !important; }
+
+.package-item-price .buy-btn { color: rgb(255, 255, 255); }
+
+.matrix-container .matrixColumn0 .matrix-header { background-color: rgb(255, 255, 255) !important; }
+
+.matrix-container .matrixColumn0 .matrix-header { color: rgb(255, 255, 255) !important; }
+
+.matrix-container .matrixColumn0Selected .matrix-row.selected { background-color: rgb(0, 97, 200) !important; }
+
+.matrix-container .matrixColumn0 .total-price { background-color: rgb(187, 187, 187) !important; }
+
+.matrix-container .matrixColumn0 .total-price { color: rgb(0, 0, 0) !important; }
+
+.matrix-container .matrixColumn1 .matrix-header { background-color: rgb(34, 34, 34) !important; }
+
+.matrix-container .matrixColumn1 .matrix-header { color: rgb(255, 255, 255) !important; }
+
+.matrix-container .matrixColumn1Selected .matrix-row.selected { background-color: rgb(0, 97, 200) !important; }
+
+.matrix-container .matrixColumn1 .total-price { background-color: rgb(187, 187, 187) !important; }
+
+.matrix-container .matrixColumn1 .total-price { color: rgb(0, 0, 0) !important; }
+
+.matrix-container .matrixColumn2 .matrix-header { background-color: rgb(34, 34, 34) !important; }
+
+.matrix-container .matrixColumn2 .matrix-header { color: rgb(255, 255, 255) !important; }
+
+.matrix-container .matrixColumn2Selected .matrix-row.selected { background-color: rgb(0, 97, 200) !important; }
+
+.matrix-container .matrixColumn2 .total-price { background-color: rgb(187, 187, 187) !important; }
+
+.matrix-container .matrixColumn2 .total-price { color: rgb(0, 0, 0) !important; }
+
+.icon-cart .cart-count { background-color: rgb(73, 169, 66); }
+
+.navigation-menu .list-group-item .menu-item [class*="icon-"], .navigation-menu .list-group-item a [class*="icon-"] { color: rgb(235, 112, 0) !important; }
+
+.ac-spinner::before { color: rgb(0, 165, 223) !important; }
+
+.ac-spinner { color: rgb(255, 129, 0) !important; }
+
+.ac-spinner::after { color: rgb(147, 211, 0) !important; }

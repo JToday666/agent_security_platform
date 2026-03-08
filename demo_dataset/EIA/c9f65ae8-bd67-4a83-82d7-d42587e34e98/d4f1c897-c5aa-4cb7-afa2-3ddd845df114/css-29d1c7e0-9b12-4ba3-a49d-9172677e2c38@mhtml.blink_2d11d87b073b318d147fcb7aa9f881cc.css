@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-1g3ecz1 { display: grid; grid-gap: var(--chakra-space-4); grid-template-columns: repeat(12, 1fr); }
+
+@media screen and (min-width: 48rem) {
+  .css-1g3ecz1 { grid-gap: var(--chakra-space-8); }
+}

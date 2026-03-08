@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.atm-c-breadcrumbs { margin-bottom: 1rem; font-size: 0.75rem; line-height: 1.66667; font-weight: 600; }
+
+.atm-c-breadcrumbs__list { margin: 0px; padding: 0px; list-style: none; display: flex; flex-wrap: wrap; }
+
+.atm-c-breadcrumbs__item { display: flex; flex-wrap: nowrap; -webkit-box-align: center; align-items: center; }
+
+.atm-c-breadcrumbs__link { color: rgb(0, 96, 128); text-decoration: underline; font-weight: normal; }
+
+.atm-c-breadcrumbs__link:hover { color: rgb(0, 51, 160); }
+
+.atm-c-breadcrumbs__link:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+.atm-c-breadcrumbs__icon.atm-c-breadcrumbs__icon { height: 6px; width: 6px; fill: rgb(0, 0, 0); margin-left: 0.5rem; margin-right: 0.5rem; }

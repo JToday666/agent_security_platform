@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.css-1oxyvbk { position: fixed; left: 0px; top: 0px; width: 100%; height: 52px; z-index: var(--chakra-zIndices-layer4); text-align: center; transition: left 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s; background-color: var(--chakra-colors-primary-default); padding-right: 0px; box-sizing: border-box; }
+
+@media screen and (min-width: 48rem) {
+  .css-1oxyvbk { height: 64px; padding-right: 20px; }
+}
+
+@media screen and (min-width: 64rem) {
+  .css-1oxyvbk { position: relative; left: unset; top: unset; z-index: var(--chakra-zIndices-layer3); }
+}

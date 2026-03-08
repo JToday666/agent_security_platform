@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.pickerText_f111a418 { display: flex; flex-wrap: wrap; -webkit-box-align: center; align-items: center; box-sizing: border-box; border: 1px solid rgb(161, 159, 157); min-width: 180px; min-height: 30px; }
+
+.pickerText_f111a418:hover { border-color: rgb(50, 49, 48); }
+
+.pickerText_f111a418.inputFocused_f111a418 { position: relative; border-color: rgb(0, 120, 212); }
+
+.pickerText_f111a418.inputFocused_f111a418::after { pointer-events: none; content: ""; position: absolute; inset: -1px; border: 2px solid rgb(0, 120, 212); }
+
+.pickerInput_f111a418 { height: 34px; border: none; -webkit-box-flex: 1; flex-grow: 1; outline: 0px; padding: 0px 6px; align-self: flex-end; }
+
+.pickerItems_f111a418 { display: flex; flex-wrap: wrap; max-width: 100%; }
+
+.screenReaderOnly_f111a418 { position: absolute; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); border: 0px; }

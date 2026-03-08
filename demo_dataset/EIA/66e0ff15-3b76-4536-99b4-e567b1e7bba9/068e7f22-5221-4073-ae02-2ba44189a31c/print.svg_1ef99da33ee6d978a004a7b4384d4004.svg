@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-Print_icon-_white_);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-Print_icon-_white_">
+      <rect width="20" height="20"/>
+    </clipPath>
+  </defs>
+  <g id="Print_icon-_white_" data-name="Print icon- white " class="cls-1">
+    <g id="Group_1" data-name="Group 1" transform="translate(-0.013 -0.012)">
+      <path id="Path_1" data-name="Path 1" class="cls-2" d="M17.955,5.378H15.54V0H3.586V5.378H1.171A1.171,1.171,0,0,0,0,6.549v6.024a1.171,1.171,0,0,0,1.171,1.171h1.22V10.755H16.736v2.988h1.22a1.171,1.171,0,0,0,1.171-1.171V6.549A1.171,1.171,0,0,0,17.955,5.378Zm-3.312,0H4.483V.9H14.644ZM17.353,7.8a.585.585,0,1,1,.586-.586A.585.585,0,0,1,17.353,7.8Z"/>
+      <path id="Path_2" data-name="Path 2" class="cls-2" d="M12.6,40H12v7.178H23.948V40H12.6Zm9.559,5.683H13.494v-.6h8.663Zm0-1.795H13.494v-.6h8.663Zm0-1.795H13.494v-.6h8.663Z" transform="translate(-8.411 -28.052)"/>
+    </g>
+  </g>
+</svg>
+

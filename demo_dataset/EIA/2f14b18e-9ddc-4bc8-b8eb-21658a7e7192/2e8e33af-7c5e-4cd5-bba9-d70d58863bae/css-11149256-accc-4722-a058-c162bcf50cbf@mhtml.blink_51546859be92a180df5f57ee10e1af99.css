@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.atm-c-date-of-birth { display: block; margin: 0px; padding: 0px; border: none; }
+
+.atm-c-date-of-birth__body { display: flex; }
+
+.atm-c-date-of-birth__month { margin-right: 0.5rem; }
+
+.atm-c-date-of-birth__day { margin-right: 0.5rem; max-width: 5rem; }
+
+.atm-c-date-of-birth__year { margin-right: 0.5rem; max-width: 5rem; }
+
+.atm-is-error .atm-c-date-of-birth__note { display: flex; }
+
+.atm-is-error .atm-c-date-of-birth__note-icon { margin-right: 0.5rem; fill: rgb(213, 0, 50); }

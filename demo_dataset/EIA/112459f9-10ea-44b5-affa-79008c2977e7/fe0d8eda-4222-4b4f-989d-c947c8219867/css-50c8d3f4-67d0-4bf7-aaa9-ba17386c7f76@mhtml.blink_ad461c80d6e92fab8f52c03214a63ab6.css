@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+.app-components-HomeTopRightPanel-homeTopRightPanel__gridParent--1Dqqt { }
+
+@supports (display: grid) {
+  .app-components-HomeTopRightPanel-homeTopRightPanel__gridParent--1Dqqt { display: grid; grid-template-columns: repeat(12, 1fr); }
+}
+
+.app-components-HomeTopRightPanel-homeTopRightPanel__panelModal--3-wcD { width: 100%; overflow-y: auto; height: 100%; background: rgb(33, 114, 186); }
+
+.app-components-HomeTopRightPanel-homeTopRightPanel__rightPanelContainer--2sHti { }
+
+@supports (display: grid) {
+  .app-components-HomeTopRightPanel-homeTopRightPanel__rightPanelContainer--2sHti { grid-area: 1 / 1 / 2 / 13; }
+}
+
+@media (min-width: 944px) {
+  .app-components-HomeTopRightPanel-homeTopRightPanel__rightPanelContainer--2sHti { margin-right: 8px; }
+  @supports (display: grid) {
+  .app-components-HomeTopRightPanel-homeTopRightPanel__rightPanelContainer--2sHti { grid-area: 1 / 1 / 1 / 13; }
+}
+}
+
+@media (min-width: 1184px) {
+  .app-components-HomeTopRightPanel-homeTopRightPanel__rightPanelContainer--2sHti { }
+  @supports (display: grid) {
+  .app-components-HomeTopRightPanel-homeTopRightPanel__rightPanelContainer--2sHti { grid-area: 1 / 1 / 1 / 13; }
+}
+}
+
+.app-components-HomeTopRightPanel-homeTopRightPanel__passengerContainer--3MQLa { margin-bottom: 8px; border-top: 1px solid rgba(255, 255, 255, 0.5); }
+
+@media (min-width: 944px) {
+  .app-components-HomeTopRightPanel-homeTopRightPanel__passengerContainer--3MQLa { border-top: 1px solid rgba(255, 255, 255, 0.25); }
+}
+
+@media (min-width: 720px) and (max-width: 944px) {
+  .app-components-HomeTopRightPanel-homeTopRightPanel__passengerContainer--3MQLa { margin-bottom: -32px; }
+}
+
+.app-components-HomeTopRightPanel-homeTopRightPanel__passengerHeader--11n7c { font-size: 12px; color: rgb(255, 255, 255); letter-spacing: 1.08px; line-height: 24px; text-transform: uppercase; text-align: left; margin-top: 4px; }
+
+.app-components-HomeTopRightPanel-homeTopRightPanel__passengerNames--I1J7V { font-size: 16px; color: rgb(255, 255, 255); line-height: 24px; text-align: left; margin-top: 4px; }
+
+.app-components-HomeTopRightPanel-homeTopRightPanel__viewSeatsLink--1nL8C { float: right; font-size: 16px; color: rgb(255, 255, 255); margin-top: 8px; line-height: 16px; text-decoration: underline; }
+
+.app-components-HomeTopRightPanel-homeTopRightPanel__srOnly--1EPVv { width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); text-transform: none; font-size: 0.5px; line-height: 0; height: 0px; position: absolute !important; }

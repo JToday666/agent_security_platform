@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.css-1046frd { line-height: 1.5; font-weight: 600; font-size: 1.5rem; text-align: center; margin-bottom: var(--chakra-space-6); }
+
+@media screen and (min-width: 48rem) {
+  .css-1046frd { margin-bottom: var(--chakra-space-8); }
+}
+
+@media screen and (min-width: 64rem) {
+  .css-1046frd { font-size: 2rem; }
+}

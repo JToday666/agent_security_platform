@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__prepaidBagsContainer--3TnNh { margin: 0px 0px 40px; }
+
+@media screen and (min-width: 720px) {
+  .app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__prepaidBagsContainer--3TnNh { margin: 40px 0px; }
+  .app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__prepaidBagsContainer--3TnNh .app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__offerContainer--VBYNq { flex-direction: row; }
+  .app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__prepaidBagsContainer--3TnNh .app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__offerContent--8e7tM { padding-right: 20px; padding-bottom: 0px; }
+}
+
+.app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__offerContainer--VBYNq { display: flex; flex-direction: column; align-items: center; justify-content: space-between; border: 1px solid rgb(204, 204, 204); border-radius: 4px; padding: 24px; }
+
+.app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__offer--3fwAV { display: flex; flex-direction: row; }
+
+.app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__breathe--2CnO- { margin-bottom: 40px; }
+
+.app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__offerTitle--1isUv { margin-top: 0px; }
+
+.app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__offerContent--8e7tM { padding-bottom: 20px; }
+
+.app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__offerAction--1Yied { display: flex; flex: 1 1 auto; justify-content: flex-end; }
+
+.app-containers-BaggageCalculator-Sections-PrepaidBagsInformation-styles__offerAction--1Yied > a { text-decoration: none; text-align: center; }

@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.atm-c-inline-checkbox { font-size: 0.875rem; font-weight: 400; line-height: 1.71429; margin-bottom: 0px; color: rgb(0, 0, 0); display: flex; }
+
+.atm-c-inline-checkbox__control { display: block; margin-right: 0.5rem; position: relative; top: 2px; -webkit-box-flex: 0; flex: 0 0 auto; }
+
+.atm-c-inline-checkbox__text { letter-spacing: normal; text-transform: none; }
+
+.atm-c-inline-checkbox__label-after { display: inline; position: relative; top: 3px; margin-left: 0.5rem; }

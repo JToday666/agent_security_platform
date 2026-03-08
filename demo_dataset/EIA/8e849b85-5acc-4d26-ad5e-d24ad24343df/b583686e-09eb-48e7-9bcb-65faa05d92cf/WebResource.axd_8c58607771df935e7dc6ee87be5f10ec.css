@@ -1,0 +1,53 @@
+@charset "utf-8";
+
+.RadWindow_Default { font-family: "Segoe UI", Arial, Helvetica, sans-serif; font-size: 12px; }
+
+.RadWindow_Default .rwTopLeft, .RadWindow_Default .rwTopRight, .RadWindow_Default .rwTitlebar, .RadWindow_Default .rwFooterLeft, .RadWindow_Default .rwFooterRight, .RadWindow_Default .rwFooterCenter, .RadWindow_Default .rwTopResize, .RadWindow_Default .rwStatusbar div, .RadWindow_Default .rwStatusbar, .RadWindow_Default .rwPopupButton, .RadWindow_Default .rwPopupButton span, .RadWindow_Default.rwMinimizedWindow .rwCorner { background-image: url("WebResource.axd?d=je579lx_3S7xRu6ZzCggesGraLl5nybzBC_ER0zdOKp2GYJt5QZWrUzqqIQ4gDX_cFCtHM3sXc6YUaU0U7SC6_BBnBU7jPq5VZ1_fPxZBZhY8Egyh7v3ElptYXoaXLxeZyjQVZinBS202dXddSjH6a2oaHa4IKCsnSK0vQmId9g1&t=638060755930251704"); }
+
+.RadWindow_Default .rwBodyLeft, .RadWindow_Default .rwBodyRight, .RadWindow_Default .rwStatusbarRow .rwCorner { background-image: url("WebResource.axd?d=XNzc6g17cDyarkU9s7DoNOr63tP5eS2vQ2pHiosCuUZy9-5zay63oZ-azQ7iR9MIsTfpbydYH21Oqc4cDT7QbeZsPLWVdB7GW_i2JBBDFmn-oFi0nhJyAVLB-VYwah0Z2qL40o0Bb2emCEIpCF-WfuCgV6Eaw2h5l_cyE-92ktE1&t=638060755930251704"); }
+
+.RadWindow_Default .rwShadow .rwTopLeft, .RadWindow_Default .rwShadow .rwTopRight, .RadWindow_Default .rwShadow .rwTitlebar, .RadWindow_Default .rwShadow .rwFooterLeft, .RadWindow_Default .rwShadow .rwFooterRight, .RadWindow_Default .rwShadow .rwFooterCenter, .RadWindow_Default .rwShadow .rwTopResize, .RadWindow_Default .rwShadow .rwStatusbar div, .RadWindow_Default .rwShadow .rwStatusbar, .RadWindow_Default .rwShadow .rwPopupButton, .RadWindow_Default .rwShadow .rwPopupButton span, .RadWindow_Default .rwShadow .rwBodyLeft, .RadWindow_Default .rwShadow .rwBodyRight, .RadWindow_Default .rwShadow .rwStatusbarRow .rwBodyLeft, .RadWindow_Default .rwShadow .rwStatusbarRow .rwBodyRight { background-image: url("WebResource.axd?d=m6c_mXDQnIOS81VCo02pW4BYKlWIpmlIpVEw_GMPqoBIdM6qeHXZcvsDr2VMEULTLbXQjd7pKGzw0WFwcv0CCnDZWa8v-Z0ODYJzzIm7yPZc-FRtf7V5zFSnyIea_fodRKgyhvBIaix4YIB5Uo0PD934H227kdHRayB2xyA5sek1&t=638060755930251704"); }
+
+.RadWindow_Default .rwShadow .rwBodyLeft, .RadWindow_Default .rwShadow .rwBodyRight, .RadWindow_Default .rwShadow .rwStatusbarRow .rwBodyLeft, .RadWindow_Default .rwShadow .rwStatusbarRow .rwBodyRight { background-image: url("WebResource.axd?d=ZWu0s1ep9XCYQyUN-sanFJ7E0q7CKwOP1cuKeLLv5C6dQjeBv7EM3s1RQW8Z4y80N98Q7m8ALJM4HweVq6Mnoffp3AUjZiNNV_AbtRBHLezt7ueS3V-boj1cMHG-A0xJdSm1XvQFQ-T1R3XBws4ZDwgHq-_IAAnJ8flTdeZC1kI1&t=638060755930251704"); }
+
+.RadWindow_Default .rwStatusbar input { background-color: rgb(255, 255, 255); }
+
+.RadWindow_Default .rwControlButtons a { background-image: url("WebResource.axd?d=OiNSvVnP1uWJe-cpAwr8Yy-ETEW8X_hKwrshyCRVaAIt4vf7kLcsapk_eT74f8CvhP8C70PEPe2pqOoVVp1AnUszrk_5--AC2ijVFXhi8s-kd3K-pnliE2JaqAYWzv6yPJVdoLECic3pgbnLxdfZogN4wYCFvz7NIBOW4FXIpwI1&t=638060755930251704"); }
+
+.RadWindow_Default a.rwIcon { background-image: url("WebResource.axd?d=je579lx_3S7xRu6ZzCggesGraLl5nybzBC_ER0zdOKp2GYJt5QZWrUzqqIQ4gDX_cFCtHM3sXc6YUaU0U7SC6_BBnBU7jPq5VZ1_fPxZBZhY8Egyh7v3ElptYXoaXLxeZyjQVZinBS202dXddSjH6a2oaHa4IKCsnSK0vQmId9g1&t=638060755930251704"); }
+
+.RadWindow_Default .rwTable .rwTitlebarControls em { color: rgb(51, 51, 51); }
+
+.RadWindow_Default .rwTable .rwDialogInput { border-color: rgb(179, 179, 179); color: rgb(51, 51, 51); background-color: rgb(255, 255, 255); }
+
+.RadWindow_Default .rwTable .rwDialogInput:hover { border-color: darkgray; color: rgb(51, 51, 51); background-color: rgb(255, 255, 255); }
+
+.RadWindow_Default td.rwWindowContent { background-color: rgb(255, 255, 255); }
+
+.RadWindow_Default .rwTable tr td.rwLoading { background-color: rgb(255, 255, 255); }
+
+.RadWindow_Default td.rwWindowContent.rwLoading, .RadWindow_Default .rwIframeWrapperIOS.rwLoading { background-image: url("WebResource.axd?d=ll2Mw9hd_3QYtrEtWhEj6tSJ9w0xlmDIxP7f-GS_wVOcBsJew4pVC_ZVTDUQtzXcX7gqjOvm1S4y6wwwRiRK72oiFASm3TwQ6nH9DH5XeLE-Is8oKmNvOrU4wPHKVr5xYJEBNHdwvcuc8tUvMB112A2&t=638060755930251704"); }
+
+.RadWindow_Default input.rwLoading { background-image: url("WebResource.axd?d=V-CoJY47pGVtceO5fXa6jr4px9FxalxiT3FWtxihW82UF4ZxTOCsjSbRP2Au0en_V7A9WSUdLL_L_i81dw1jLEwYkD_cBZ9hf0R0sFfOH4tM6XdVverSFD9lnrPMsv7-PtOFvRZOAPk8o7aQ9gGEuEoq--w76q3jbLBTPWCLZqw1&t=638060755930251704"); }
+
+.RadWindow_Default .rwTable a.rwCancel, .RadWindow_Default .rwTable a.rwCancel span { background: 0px center; cursor: pointer; }
+
+.RadWindow_Default .rwTable a.rwCancel span span { color: rgb(51, 51, 51); text-decoration: underline; }
+
+.RadWindow_Default .rwShadow .rwControlButtons { margin: 5px -2px 0px 0px; }
+
+.RadWindow_Default .rwShadow .rwControlButtons { }
+
+.RadWindow_Default.rwMinimizedWindowShadow .rwShadow .rwControlButtons { margin: 7px -8px 0px 0px; }
+
+.RadWindow_Default.rwMinimizedWindowShadow .rwShadow .rwIcon { margin: 9px 6px 0px 0px; }
+
+.RadWindow_Default.rwMinimizedWindowShadow .rwShadow em { margin: 4px 0px 0px -1px; }
+
+.RadWindow_Default .rwShadow .rwControlButtons li { float: left; padding: 0px; }
+
+.RadWindow_Default .rwShadow .rwControlButtons a { width: 26px; }
+
+.RadWindow_Default .rwInactiveWindow .rwShadow .rwTopLeft, .RadWindow_Default .rwInactiveWindow .rwShadow .rwTopRight, .RadWindow_Default .rwInactiveWindow .rwShadow .rwTitlebar, .RadWindow_Default .rwInactiveWindow .rwShadow .rwFooterLeft, .RadWindow_Default .rwInactiveWindow .rwShadow .rwFooterRight, .RadWindow_Default .rwInactiveWindow .rwShadow .rwFooterCenter, .RadWindow_Default .rwInactiveWindow .rwShadow .rwTopResize, .RadWindow_Default .rwInactiveWindow .rwShadow .rwStatusbar div, .RadWindow_Default .rwInactiveWindow .rwShadow .rwStatusbar, .RadWindow_Default .rwInactiveWindow .rwShadow .rwPopupButton, .RadWindow_Default .rwInactiveWindow .rwShadow .rwPopupButton span, .RadWindow_Default .rwInactiveWindow .rwShadow.rwMinimizedWindow .rwCorner, .RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwTopLeft, .RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwTitlebar, .RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwTopRight, .RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwFooterLeft, .RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwFooterCenter, .RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwFooterRight { background-image: url("WebResource.axd?d=je579lx_3S7xRu6ZzCggesGraLl5nybzBC_ER0zdOKp2GYJt5QZWrUzqqIQ4gDX_cFCtHM3sXc6YUaU0U7SC6_BBnBU7jPq5VZ1_fPxZBZhY8Egyh7v3ElptYXoaXLxeZyjQVZinBS202dXddSjH6a2oaHa4IKCsnSK0vQmId9g1&t=638060755930251704") !important; }
+
+.RadWindow_Default .rwInactiveWindow .rwShadow .rwBodyLeft, .RadWindow_Default .rwInactiveWindow .rwShadow .rwBodyRight, .RadWindow_Default .rwInactiveWindow .rwShadow .rwStatusbarRow .rwCorner, .RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwBodyLeft, .RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwBodyRight { background-image: url("WebResource.axd?d=XNzc6g17cDyarkU9s7DoNOr63tP5eS2vQ2pHiosCuUZy9-5zay63oZ-azQ7iR9MIsTfpbydYH21Oqc4cDT7QbeZsPLWVdB7GW_i2JBBDFmn-oFi0nhJyAVLB-VYwah0Z2qL40o0Bb2emCEIpCF-WfuCgV6Eaw2h5l_cyE-92ktE1&t=638060755930251704") !important; }

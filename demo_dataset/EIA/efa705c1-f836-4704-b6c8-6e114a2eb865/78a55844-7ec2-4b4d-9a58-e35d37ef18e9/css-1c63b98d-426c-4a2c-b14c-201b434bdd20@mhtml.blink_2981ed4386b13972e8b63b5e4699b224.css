@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-jzxesf { box-sizing: border-box; display: flex; flex-direction: column; width: 100%; padding: 16px 16px 0px; max-width: 1280px; }
+
+@media (min-width: 564px) {
+  .css-jzxesf { padding: 16px 24px 0px; }
+}

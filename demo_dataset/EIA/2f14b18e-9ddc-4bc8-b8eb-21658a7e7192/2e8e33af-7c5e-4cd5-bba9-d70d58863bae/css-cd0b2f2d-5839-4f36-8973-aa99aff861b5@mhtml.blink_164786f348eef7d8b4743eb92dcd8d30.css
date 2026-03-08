@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.atm-c-phone-number { display: block; margin: 0px; padding: 0px; border: none; }
+
+.atm-is-error .atm-c-phone-number__note { display: inline-flex; }
+
+.atm-is-error .atm-c-phone-number__note-icon { margin-right: 0.5rem; fill: rgb(213, 0, 50); }

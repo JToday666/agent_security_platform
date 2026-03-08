@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.atm-c-header { background: rgb(0, 34, 68); color: rgb(255, 255, 255); padding: 1rem; display: flex; -webkit-box-align: center; align-items: center; -webkit-box-pack: center; justify-content: center; margin-bottom: 3rem; height: 78px; }
+
+@media (min-width: 1180px) {
+  .atm-c-header { height: 107px; }
+}
+
+.atm-c-header--fade { background: linear-gradient(rgba(0, 0, 0, 0.6) 0px, rgba(0, 0, 0, 0.4) 50%, transparent); color: rgb(255, 255, 255); }
+
+.atm-c-header--absolute { position: absolute; top: 0px; left: 0px; }
+
+.atm-c-header--slim { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+
+.atm-c-header__skip-link { position: absolute; overflow: hidden; width: 1px; height: 1px; padding: 0px; border: 0px; clip: rect(1px, 1px, 1px, 1px); color: rgb(255, 255, 255); background: rgb(0, 34, 68); }
+
+.atm-c-header__skip-link:focus { display: block; top: 0px; left: 0px; padding: 1rem; height: auto; width: auto; clip: auto; z-index: 10; outline: rgb(179, 165, 223) solid 4px; }

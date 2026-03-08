@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-1vaydm8 { font-family: Montserrat, sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 0.5px; color: rgb(0, 0, 0); line-height: 16px; }
+
+@media (max-width: 564px) {
+  .css-1vaydm8 { font-family: Montserrat, sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; color: rgb(0, 0, 0); line-height: 16px; }
+}

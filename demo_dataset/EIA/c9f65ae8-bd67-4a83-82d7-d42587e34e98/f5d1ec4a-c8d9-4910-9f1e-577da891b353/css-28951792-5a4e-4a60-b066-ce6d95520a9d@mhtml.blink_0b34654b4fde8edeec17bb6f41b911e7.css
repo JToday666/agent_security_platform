@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.css-1ind3v2 { display: inline-flex; }
+
+.css-1ind3v2 > :not(style) ~ :not(style) { margin-inline-start: 0.5rem; }

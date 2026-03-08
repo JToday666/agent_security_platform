@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.d9b34 { display: none; }
+
+@media only screen and (min-width: 990px) {
+  .d9b34 { background-color: rgb(221, 221, 221); height: 290px; margin-bottom: 10px; display: block; }
+}
+
+._404f4 { width: 100%; display: none; height: 290px; padding-bottom: 10px; }
+
+@media only screen and (min-width: 901px) {
+  ._404f4 { display: block; }
+}
+
+._40844 { border: 1px solid rgb(194, 194, 194); overflow: hidden auto; background: rgb(238, 238, 238); }
+
+.lw-global-theme ._8ca9f { margin: 7px 0px 0px; color: rgb(250, 100, 1); cursor: pointer; font-size: 16px; font-weight: 700; font-family: "Open Sans", "Segoe UI", Tahoma, sans-serif; }
+
+.laf-global-theme ._8ca9f { margin: 7px 0px 0px; font: 600 16px / 24px Poppins, sans-serif; cursor: pointer; color: rgb(211, 174, 72); -webkit-text-stroke: 0px; }
+
+.laf-global-theme ._8ca9f:active, .laf-global-theme ._8ca9f:hover { color: rgb(185, 152, 63); border-bottom: none; }

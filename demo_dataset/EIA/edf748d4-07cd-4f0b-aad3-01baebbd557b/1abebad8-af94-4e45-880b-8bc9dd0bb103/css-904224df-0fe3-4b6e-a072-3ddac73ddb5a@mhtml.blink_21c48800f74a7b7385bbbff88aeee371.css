@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+[_nghost-iyw-c303] { display: none; height: 100%; left: 0px; position: fixed; top: 0px; width: 100%; z-index: 9999; }
+
+.psd2__container--visible[_nghost-iyw-c303] { align-items: center; display: flex; justify-content: center; }
+
+[_nghost-iyw-c303] > iframe[_ngcontent-iyw-c303] { background: rgb(232, 244, 253); border: 0px; height: 350px; left: 20px; top: 20px; width: calc(100vw - 40px); }
+
+@media (min-width: 1024px) {
+  [_nghost-iyw-c303] > iframe[_ngcontent-iyw-c303] { width: 450px; }
+}

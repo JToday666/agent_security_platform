@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.app-components-ContinuousImprovement-AddItems-Item-styles__item--20JJK { background: rgb(242, 242, 242); padding: 24px 16px; margin-bottom: 32px; width: 100%; }
+
+@media (min-width: 720px) {
+  .app-components-ContinuousImprovement-AddItems-Item-styles__item--20JJK { width: 70%; }
+}
+
+@media (min-width: 720px) and (min-width: 1184px) {
+  .app-components-ContinuousImprovement-AddItems-Item-styles__item--20JJK { width: 100%; }
+}
+
+.app-components-ContinuousImprovement-AddItems-Item-styles__headerContainer--qLMiG { display: flex; justify-content: space-between; padding-right: 10px; margin-bottom: 32px; }
+
+.app-components-ContinuousImprovement-AddItems-Item-styles__header--1BJeN { font-weight: 600; font-size: 16px; display: inline; margin: 0px 16px 0px 0px; }
+
+.app-components-ContinuousImprovement-AddItems-Item-styles__removeButton--Fo1BN { text-decoration: none; color: rgb(33, 114, 186); }

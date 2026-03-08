@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+#k-lia-iframe-container { height: 100%; width: 100%; display: block; position: fixed; inset: 0px; z-index: 9999999; margin: 0px; padding: 0px; box-sizing: border-box; }
+
+#k-lia-iframe-container #lia-iframe { height: 100%; width: 100%; display: block; position: fixed; inset: 0px; margin: 0px; padding: 0px; border: none; }
+
+#lia-iframe { border: none; min-width: 280px; width: 100%; }
+
+.fso-open { position: fixed; inset: 0px; z-index: 2147483647; width: 100% !important; height: 100% !important; }

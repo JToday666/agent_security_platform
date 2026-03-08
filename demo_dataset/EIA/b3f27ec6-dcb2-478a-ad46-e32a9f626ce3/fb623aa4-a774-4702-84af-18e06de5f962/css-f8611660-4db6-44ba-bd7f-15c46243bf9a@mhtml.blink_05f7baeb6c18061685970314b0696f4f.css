@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.smb-uikit__dropdown { box-sizing: border-box; display: inline-flex; flex-direction: column; margin: 1rem 0px; width: 100%; flex: 1 1 0%; position: relative; }
+
+.smb-uikit__dropdown > * { box-sizing: border-box; }
+
+.smb-uikit__dropdown__error-message { color: rgb(244, 88, 76); display: flex; font-size: 0.8rem; }

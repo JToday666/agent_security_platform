@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.css-1c99d15 { margin: -8px; display: flex; flex-direction: row; -webkit-box-pack: justify; justify-content: space-between; }
+
+.css-1c99d15 > * { margin: 8px; }
+
+.css-1c99d15 > :nth-of-type(1) { flex: 0 1 calc(25% - 16px); }
+
+.css-1c99d15 > :nth-of-type(2) { flex: 0 1 calc(10% - 16px); }

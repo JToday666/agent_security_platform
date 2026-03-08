@@ -1,0 +1,253 @@
+@charset "utf-8";
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__btnDefault--380Sc { text-align: center; text-decoration: none; border-radius: 2px; height: 52px; line-height: 22px; width: 100%; font-size: 16px; }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__btnDefault--380Sc { height: 56px; width: 160px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__btnDefault--380Sc:hover, .app-components-ContinuousImprovement-Information-form-Name-styles__btnDefault--380Sc:focus { box-shadow: none; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__btnDefault--380Sc:disabled, .app-components-ContinuousImprovement-Information-form-Name-styles__btnDefault--380Sc[disabled] { box-shadow: none; border: none; background-color: rgb(230, 230, 230); color: rgb(102, 102, 102); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__primaryButton--2govU { background-color: rgb(33, 114, 186); color: rgb(255, 255, 255); border: 1px solid rgb(33, 114, 186); box-shadow: rgb(102, 102, 102) -1px 1px 1px 0px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__primaryButton--2govU:hover, .app-components-ContinuousImprovement-Information-form-Name-styles__primaryButton--2govU:focus { border: 1px solid rgb(0, 48, 87); box-shadow: none; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__ancillaryButton--3BXE3, .app-components-ContinuousImprovement-Information-form-Name-styles__primaryButton--2govU.app-components-ContinuousImprovement-Information-form-Name-styles__ancillaryButton--3BXE3, .app-components-ContinuousImprovement-Information-form-Name-styles__btnDefault--380Sc.app-components-ContinuousImprovement-Information-form-Name-styles__ancillaryButton--3BXE3 { height: 30px; }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__ancillaryButton--3BXE3, .app-components-ContinuousImprovement-Information-form-Name-styles__primaryButton--2govU.app-components-ContinuousImprovement-Information-form-Name-styles__ancillaryButton--3BXE3, .app-components-ContinuousImprovement-Information-form-Name-styles__btnDefault--380Sc.app-components-ContinuousImprovement-Information-form-Name-styles__ancillaryButton--3BXE3 { width: 160px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__secondaryButton--1RqyD { background-color: rgb(237, 183, 43); color: rgb(0, 0, 0); border: 1px solid rgb(237, 183, 43); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__secondaryButton--1RqyD:hover { border: 1px solid rgb(0, 57, 100); box-shadow: none; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__inputFieldBorder--3u9lV { border-top: none; border-right: none; border-left: none; border-image: initial; border-bottom: 1px solid rgb(102, 102, 102); background: rgba(0, 0, 0, 0); border-radius: 0px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__textLink--1cQzF { font-size: 28px; letter-spacing: 0px; line-height: 18px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__textLink--1cQzF:link { color: rgb(0, 34, 68); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__textLink--1cQzF:hover { color: rgb(33, 114, 186); border-bottom: 1px solid rgb(33, 114, 186); }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__textLink--1cQzF { font-size: 16px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__textLinkCTA--3fcEM { letter-spacing: 0px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__textLinkCTA--3fcEM:link { color: rgb(102, 102, 102); text-decoration: underline; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__textLinkCTA--3fcEM:hover { color: rgb(0, 0, 0); }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__textLinkCTA--3fcEM { line-height: 22px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh { background-color: rgb(33, 114, 186); border-radius: 2px; color: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh.app-components-ContinuousImprovement-Information-form-Name-styles__secondary--2fCz5 { color: rgb(237, 183, 43); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh input[type="text"], .app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh input[type="password"], .app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh input[type="tel"], .app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh input[type="number"] { color: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh input[type="text"].app-components-ContinuousImprovement-Information-form-Name-styles__secondary--2fCz5, .app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh input[type="password"].app-components-ContinuousImprovement-Information-form-Name-styles__secondary--2fCz5, .app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh input[type="tel"].app-components-ContinuousImprovement-Information-form-Name-styles__secondary--2fCz5, .app-components-ContinuousImprovement-Information-form-Name-styles__inverse--2QbJh input[type="number"].app-components-ContinuousImprovement-Information-form-Name-styles__secondary--2fCz5 { color: rgb(237, 183, 43); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__inverseDark--3N6mW { background-color: rgb(0, 34, 68); font-size: 16px; color: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__signInInput--1Ryaf { font-size: 24px; letter-spacing: -0.2px; line-height: 32px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__roundedButton--qgBbv, .app-components-ContinuousImprovement-Information-form-Name-styles__roundedButtonOn--1N6Z4, .app-components-ContinuousImprovement-Information-form-Name-styles__roundedButtonPrimary--2EplY { font-size: 16px; letter-spacing: 0px; border: 1px solid; border-radius: 200px; height: 72px; width: 94px; text-align: center; }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__roundedButton--qgBbv, .app-components-ContinuousImprovement-Information-form-Name-styles__roundedButtonOn--1N6Z4, .app-components-ContinuousImprovement-Information-form-Name-styles__roundedButtonPrimary--2EplY { border-radius: 100px; height: 35px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__roundedButtonPrimary--2EplY { color: rgb(153, 153, 153); border: 2px solid rgb(211, 211, 211); }
+
+@media (min-width: 1184px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__roundedButtonPrimary--2EplY { border: 1px solid rgb(211, 211, 211); }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__roundedButtonPrimary--2EplY:hover { color: rgb(102, 102, 102); border: 2px solid rgb(102, 102, 102); }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__roundedButtonPrimary--2EplY:hover { border: 1px solid rgb(102, 102, 102); }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__roundedButtonOn--1N6Z4 { background-color: rgb(33, 114, 186); color: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__alert--xJQll, .app-components-ContinuousImprovement-Information-form-Name-styles__highLevelAlert--cvJFV, .app-components-ContinuousImprovement-Information-form-Name-styles__lowLevelAlert--3UIwr { border-radius: 3px; height: 60px; width: 100%; font-size: 16px; line-height: 18px; letter-spacing: 0px; padding-left: 55px; padding-top: 20px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__lowLevelAlert--3UIwr { background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__highLevelAlert--cvJFV { background-color: rgb(213, 0, 50); color: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__alertTriangle--1X8Io, .app-components-ContinuousImprovement-Information-form-Name-styles__low-alert-triangle--1O8ot, .app-components-ContinuousImprovement-Information-form-Name-styles__highAlertTriangle--h0z_o { padding-left: 48px; height: 19.96px; width: 22.01px; content: "!"; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__highAlertTriangle--h0z_o { color: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__low-alert-triangle--1O8ot { color: rgb(102, 102, 102); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__dropdown--gYpdS { width: 100%; height: 100%; border: 1px solid rgb(229, 229, 229); }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__dropdown--gYpdS { border-radius: 3px; border: 1px solid rgb(200, 200, 200); box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 10px 0px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__dropdownContent--3akGM { font-size: 32px; line-height: 72px; letter-spacing: 0px; color: rgb(102, 102, 102); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__dropdownContent--3akGM:hover { background-color: rgb(242, 249, 252); color: rgb(0, 34, 68); }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__dropdownContent--3akGM { font-size: 10px; line-height: 40px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__dropdownExpand--5g4pi { font-size: 24px; line-height: 44px; color: rgb(0, 34, 68); letter-spacing: 0px; }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__dropdownExpand--5g4pi { font-size: 12px; line-height: 22px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownDefault--2BwOI, .app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownOnBackground--3u69G { border: 1px solid rgb(148, 148, 148); border-radius: 4px; font-size: 28px; color: rgb(51, 51, 51); letter-spacing: 0px; line-height: 24px; }
+
+@media (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownDefault--2BwOI, .app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownOnBackground--3u69G { font-size: 16px; color: rgb(0, 34, 68); border: none; }
+  .app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownDefault--2BwOI:hover, .app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownOnBackground--3u69G:hover { color: rgb(33, 114, 186); }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownOnBackground--3u69G { opacity: 0.5; border: 1px solid rgb(255, 255, 255); border-radius: 6px; color: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownActive--1b0ob { font-size: 16px; line-height: 40px; letter-spacing: 0px; color: rgb(102, 102, 102); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownActive--1b0ob:hover { background-color: rgb(242, 249, 252); color: rgb(0, 34, 68); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__simpleDropdownActive--1b0ob:checked { color: rgb(0, 34, 68); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__checkboxWrapper--1hm9v { position: relative; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked), .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked), .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked { position: absolute; left: 0px; top: -1px; opacity: 0; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label { position: relative; cursor: pointer; font-size: 14px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label::after { position: absolute; left: 0px; top: -1px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label::before { content: ""; border: 2px solid rgb(0, 57, 100); border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px inset; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label::after { content: ""; display: block; border-style: solid; border-color: rgb(255, 255, 255); border-image: initial; border-width: 0px 2px 2px 0px; transform: rotate(45deg); position: absolute; text-align: center; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked), .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:disabled) + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked), .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:disabled) + label::after { opacity: 0; border-color: rgb(0, 34, 68); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label::after { opacity: 1; border-color: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label::before { background: rgb(0, 34, 68); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label::before { background: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:disabled:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:disabled:checked + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:disabled:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:disabled:checked + label::before { box-shadow: none; border-color: rgb(153, 153, 153); background-color: rgb(255, 255, 255); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:disabled:checked + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:disabled:checked + label::after { color: rgb(153, 153, 153); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:disabled + label, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:disabled + label { color: rgb(170, 170, 170); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked:focus + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked):focus + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked:focus + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked):focus + label::before { outline: dotted 1px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label { padding-left: 32px; line-height: 24px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label { padding-left: 26px; line-height: 18px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::before { width: 24px; height: 24px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::before { width: 20px; height: 20px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::after { font-size: 14px; top: 5px; left: 9px; width: 5px; height: 11px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:not(:checked) + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckbox--I2tqP:checked + label::after { left: 8px; top: 3px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label { padding-left: 25px; font-size: 12px; line-height: 15px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label::before, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label::before { width: 15px; height: 15px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label::after, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label::after { font-size: 10px; left: 6px; top: 2px; width: 4px; height: 9px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label:hover, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label:focus, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label:hover, .app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label:focus { color: rgb(0, 34, 68); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:not(:checked) + label { color: rgb(137, 137, 137); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__customCheckboxSm--2NJS2:checked + label { color: rgb(0, 34, 68); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__whiteAndBlackCustomCheckBox--3RwlO:checked + label::before { background: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__whiteAndBlackCustomCheckBox--3RwlO:not(:checked) + label::before { background: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__whiteAndBlackCustomCheckBox--3RwlO:checked + label::after { border-color: rgb(0, 0, 0); top: 5px; left: 10px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__whiteAndBlackCustomCheckBox--3RwlO:checked + label::after { top: 3px; left: 8px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__questionMarkToolTip--1LtZT::before { content: "?"; display: inline-block; vertical-align: top; text-align: center; font-weight: bold; width: 24px; height: 24px; font-size: 14px; line-height: 1.4; margin-top: 0px; margin-left: 8px; border: 1px solid rgb(255, 255, 255); border-radius: 50%; color: rgb(255, 255, 255); background: rgba(0, 0, 0, 0); }
+
+@media screen and (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__questionMarkToolTip--1LtZT::before { line-height: 1.3; margin-top: 4px; width: 16px; height: 16px; font-size: 10px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__floatingLabel--1rfGy { font-size: 12px; color: rgb(102, 102, 102); line-height: 13px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__formLink--3XIlP { font-size: 16px; text-decoration: underline; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__formLink--3XIlP:hover { outline: rgb(33, 114, 186) dotted 1px; color: rgb(35, 82, 124); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__fieldErrorMessage--IslnD { position: absolute; bottom: 0px; color: rgb(213, 0, 50); letter-spacing: 0px; font-size: 13px; line-height: 1.5; text-align: center; }
+
+@media screen and (min-width: 944px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__fieldErrorMessage--IslnD { font-size: 11px; }
+}
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__homepageTextField--3E1iu { line-height: 1; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__homepageTextField--3E1iu label { color: rgb(0, 34, 68); text-transform: none; font-weight: bold; font-size: 12px; letter-spacing: 1px; margin-bottom: -1px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__homepageTextField--3E1iu input { transition: color 0.4s ease 0s; color: rgb(0, 34, 68); height: 46px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__homepageTextField--3E1iu input::-webkit-input-placeholder { text-transform: none; font-style: normal; font-weight: normal; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__homepageTextField--3E1iu:focus { color: rgb(33, 114, 186); border-color: rgb(33, 114, 186); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__homepageTextField--3E1iu:focus > label { color: rgb(33, 114, 186); }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__homepageTextField--3E1iu .atm-c-field-note.atm-c-textfield__note { position: absolute; margin: 0px; bottom: -24px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__homepageTextField--3E1iu .atm-c-field-note.atm-c-textfield__note svg { display: none; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__row--1jqU_ { display: block; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__row--1jqU_ .app-components-ContinuousImprovement-Information-form-Name-styles__selectField--3UreH { flex: 4 1 0%; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__row--1jqU_ .app-components-ContinuousImprovement-Information-form-Name-styles__name--A6sLh { flex: 8 1 0%; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__row--1jqU_ .app-components-ContinuousImprovement-Information-form-Name-styles__small--vuv08 { flex: 2 1 0%; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__datePicker--1juWb { width: 100%; padding-top: 24px; }
+
+.app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__datePicker--1juWb fieldset > div { display: block; }
+
+@media screen and (min-width: 720px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__row--1jqU_ { display: flex; align-items: flex-start; gap: 14px; }
+  .app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__row--1jqU_ .app-components-ContinuousImprovement-Information-form-Name-styles__selectField--3UreH { flex: 4 1 0%; }
+  .app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__row--1jqU_ .app-components-ContinuousImprovement-Information-form-Name-styles__name--A6sLh { flex: 4 1 0%; }
+  .app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__row--1jqU_ .app-components-ContinuousImprovement-Information-form-Name-styles__small--vuv08 { flex: 3 1 0%; }
+  .app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__datePicker--1juWb { width: 50%; padding-top: 0px; }
+  .app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__datePicker--1juWb fieldset > div { display: flex; }
+}
+
+@media screen and (min-width: 1184px) {
+  .app-components-ContinuousImprovement-Information-form-Name-styles__wrapper--3S1An .app-components-ContinuousImprovement-Information-form-Name-styles__datePicker--1juWb { width: 40%; padding-top: 0px; }
+}

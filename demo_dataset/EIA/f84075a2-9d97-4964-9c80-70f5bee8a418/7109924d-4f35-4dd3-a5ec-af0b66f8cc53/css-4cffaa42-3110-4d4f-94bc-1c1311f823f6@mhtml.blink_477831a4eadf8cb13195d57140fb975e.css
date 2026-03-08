@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+@-webkit-keyframes bounce { 
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes bounce { 
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.bounceIn { animation: 1s ease 0s 1 normal none running bounce; }
+
+.newTooltip { pointer-events: auto; }
+
+.newTooltip .homepageTooltip { width: 289px; visibility: hidden; background: rgb(255, 255, 255); color: rgb(11, 31, 102); text-align: left; padding: 10px 43px 10px 24px; position: absolute; z-index: 1; top: 150%; right: 0%; font-size: 13px; line-height: 17px; font-family: Whitney-Medium; box-shadow: rgba(192, 192, 192, 0.5) 0px 1px 10px; }
+
+.newTooltip .homepageTooltip::after { content: ""; position: absolute; bottom: 100%; left: 50%; margin-left: 110px; border-width: 8px; border-style: solid; border-color: transparent transparent white; }
+
+.animated { animation-duration: 0.25s; animation-fill-mode: both; animation-timing-function: linear; }
+
+.ttClose { margin-top: 0.5rem; height: 15px; width: 15px; border: none; position: absolute; right: 2.59%; top: 10.56%; background: url("https://www.delta.com/content/dam/delta-applications/flight-search-2/assets/images/Upsell_PopUp_Cross_icon.png") center center no-repeat; cursor: pointer; }
+
+@media screen and (max-width: 992px) {
+  .newTooltip .homepageTooltip { width: 289px; visibility: hidden; background: rgb(255, 255, 255); color: rgb(11, 31, 102); text-align: left; padding: 10px 43px 10px 24px; position: absolute; z-index: 1; top: 35px; right: -105px; font-size: 13px; line-height: 17px; font-family: Whitney-Medium; box-shadow: rgba(192, 192, 192, 0.5) 0px 1px 10px; }
+  .newTooltip .homepageTooltip::after { content: ""; position: absolute; bottom: 52px; left: 150px; border-width: 8px; margin-left: 0px; border-style: solid; border-color: transparent transparent white; }
+}

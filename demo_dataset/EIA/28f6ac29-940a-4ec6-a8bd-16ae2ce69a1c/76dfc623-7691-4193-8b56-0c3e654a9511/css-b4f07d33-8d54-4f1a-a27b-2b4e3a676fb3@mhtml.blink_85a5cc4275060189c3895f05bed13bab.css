@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.app-components-CommonShoppingCart-styles__fullHeight--2M0to { height: 100%; }
+
+.app-components-CommonShoppingCart-styles__emptyCartContent--vSGUk { padding: 50px 16px; }
+
+.app-components-CommonShoppingCart-styles__cartContent--37EMI { overflow-y: auto; }
+
+.app-components-CommonShoppingCart-styles__divLoading--1H5wz { text-align: center; position: relative; top: 30%; }
+
+.app-components-CommonShoppingCart-styles__divLoading--1H5wz .app-components-CommonShoppingCart-styles__loading--2X_xC { display: inline-block; }
+
+.app-components-CommonShoppingCart-styles__noBorder--1UgW0 { border: none; }
+
+.app-components-CommonShoppingCart-styles__boxMaxHeight--3yB9e { height: auto; max-height: 728px; }

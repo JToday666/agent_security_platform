@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.atm-c-counter__body { display: flex; position: relative; max-width: 10rem; }
+
+.atm-c-text-input.atm-c-counter__input { position: relative; -webkit-box-flex: 1; flex: 1 1 0%; z-index: 1; min-width: 0px; padding-left: 0px; padding-right: 0px; text-align: center; border-radius: 0px; border: 1px solid gray; }
+
+.atm-c-text-input.atm-c-counter__input:hover, .atm-c-text-input.atm-c-counter__input:focus { z-index: 2; }
+
+.atm-c-counter__btn { border: 1px solid gray; padding: 0.5rem 0.75rem; position: relative; margin-left: 0px; margin-right: 0px; }
+
+.atm-c-counter__btn:hover, .atm-c-counter__btn:focus { z-index: 2; }
+
+.atm-c-counter__btn:disabled { border: 1px solid gray; }
+
+.atm-c-counter__btn:disabled:hover, .atm-c-counter__btn:disabled:focus { background: rgb(204, 204, 204); }
+
+.atm-c-counter__btn:first-of-type { right: -1px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; }
+
+.atm-c-counter__btn:nth-of-type(2) { left: -1px; border-top-left-radius: 0px; border-bottom-left-radius: 0px; }
+
+.atm-is-error .atm-c-counter__note { display: inline-flex; }
+
+.atm-is-error .atm-c-counter__note-icon { margin-right: 0.5rem; fill: rgb(213, 0, 50); }

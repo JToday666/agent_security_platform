@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+#sf-widget-companion-wrapper { position: absolute; bottom: 0px; left: 0px; z-index: 999999; }
+
+body.sf-widget-hide-all #sf-widget-companion-wrapper, body.sf-widget-hide-all #sf-footer-companion-wrapper { display: none !important; }

@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+html { }
+
+html, form, body, p, h1, h2, h3, h4, h5 { margin: 0px; padding: 0px; }
+
+body, td, th, input, button, select, textarea, .TxtMore { font-family: din-web-jetblue2, Arial, Helvetica, sans-serif; font-size: 14px; color: rgb(0, 73, 144); }
+
+textarea, input, select, label { font-size: 12px; font-family: din-web-jetblue2, Arial, Helvetica, sans-serif; color: rgb(69, 69, 69); }
+
+label { font-size: 14px; }
+
+a:hover { color: rgb(0, 73, 144); text-decoration: underline !important; }
+
+a, a:active, a:visited { font-family: din-web-jetblue2, Arial, Helvetica, sans-serif; color: rgb(48, 111, 170); text-decoration: none; }
+
+ul { margin: 12px 0px; }
+
+ul li ul { margin-left: 8px; }
+
+ol { margin: 12px 0px 0px 25px; }
+
+ol > li { list-style: outside decimal; margin-bottom: 10px; }
+
+.ie6 ol li { list-style: outside decimal; }
+
+ol li ol { margin: 2px 0px 2px 15px; }
+
+hr { border: 0px; color: rgb(202, 213, 224); background-color: rgb(202, 213, 224); height: 1px; }
+
+@font-face { font-family: din-web-jetblue2; src: url("../fonts/DINRg.ttf") format("truetype"); }
+
+@font-face { font-family: din-web-jetblue-med2; src: url("../fonts/DINMd.ttf") format("truetype"); }

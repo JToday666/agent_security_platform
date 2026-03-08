@@ -1,0 +1,1032 @@
+@charset "utf-8";
+
+p, li { color: rgb(89, 89, 89); font-size: 14px; }
+
+.label-other { margin-bottom: 7px; font-size: 1.2em; display: block; position: relative; }
+
+.grad { background: rgb(255, 255, 255); }
+
+.confTotalFee { text-align: left; margin-left: -98px; }
+
+.reviewCost { text-align: center; margin-left: -56px; }
+
+.srchBttn { margin: 40px 0px 0px !important; }
+
+.form-control[readonly] { background-color: rgb(255, 255, 255) !important; }
+
+.headerP { font-family: HelveticaNeueW02-55Roma, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 16px; line-height: 20px; color: rgb(89, 89, 89); margin: 0px; }
+
+table th { border-width: 1px 0px; padding: 10px; border-top-style: solid; border-top-color: rgb(255, 255, 255); background: rgb(255, 255, 255); color: rgb(0, 0, 0); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-size: 1.4em; text-align: center; }
+
+table td { padding: 8px 15px 8px 10px; font-size: 11px; text-align: center; }
+
+#ippServiceDescription { padding-top: 20px; }
+
+.ippList { margin-top: 10px; margin-bottom: 10px; margin-left: 40px; }
+
+.modal { display: none; }
+
+.textfield input, .datefield input { text-indent: 5px; background: none !important; }
+
+.header .links-block-wrapper { margin-left: 0px; margin-bottom: 50px; }
+
+li.icon, li.icon2, li.icon3 { margin-left: 35px; }
+
+li.icon::before, li.icon2::before { content: ""; display: inline-block; background-repeat: no-repeat; background-position: 0px 1px; height: 28px; width: 27px; margin-left: -39px; margin-bottom: -18px; margin-right: 11px; }
+
+li.icon3::before { content: ""; display: inline-block; background-repeat: no-repeat; background-position: 0px 0px; height: 33px; width: 30px; margin-left: -40px; margin-bottom: -20px; margin-right: 9px; }
+
+li.icon::before { background-image: url("/media/images/holdmail/usps_hold_mail_faqs_icon.png"); }
+
+li.icon2::before { background-image: url("/media/images/holdmail/usps_hold_mail_edit_request_icon.png"); }
+
+li.icon3::before { background-image: url("/media/images/holdmail/usps_hold_mail_signup_icon.png"); }
+
+li.icon::after, li.icon2::after, li.icon3::after { content: ""; display: inline-block; background-image: url("/media/images/holdmail/usps_l_nav_red_arrow.svg"); background-repeat: no-repeat; background-position: 2px -4px; height: 11px; width: 22px; background-size: 20px 20px; float: right; margin-top: -4px; transform: rotate(-90deg); margin-right: 11px; }
+
+.header .links-block { border: 1px solid rgb(153, 153, 153); border-radius: 4px; width: 280px !important; }
+
+.links-block { background: none; }
+
+.grad { margin-bottom: 50px; background: none !important; }
+
+.textfield.name-middle { margin-top: 3px; }
+
+.section, .textarea_TL { background: none; }
+
+.composite-field.field-block { width: 346px; }
+
+.scroll-text .textarea_BL { background: none; height: 77px; border-bottom: 1px solid rgb(153, 153, 153); }
+
+.scroll-text .desc { height: 66px; }
+
+.section { margin-top: -5px; }
+
+.submitButton .ui-button, .button .ui-button { background: rgb(51, 53, 102); color: rgb(255, 255, 255); height: 40px; font-weight: bold; text-align: center; margin-right: 3px; padding-left: 0px; border: 2px solid rgb(51, 53, 102); border-radius: 3px; font-size: 14px !important; }
+
+textarea { border-right: none; }
+
+.textarea_BL { background: none; height: 76px; }
+
+.textarea_TL { background: none; border-radius: 4px; border: 1px solid rgb(153, 153, 153); }
+
+div#privacy-policy-text .textarea_TL { border: none; }
+
+input::-webkit-input-placeholder { color: rgb(153, 153, 153); }
+
+.composite-field .state { width: 199px; }
+
+.inline-link { text-decoration: none; color: rgb(51, 53, 102); font-weight: bold; }
+
+.inline-link:hover { color: rgb(153, 153, 153); }
+
+span.ui-selectmenu-icon.ui-icon.ui-icon-triangle-1-s::before { content: ""; display: inline-block; background-color: rgb(51, 53, 102); position: absolute; color: rgb(51, 53, 102); width: 11px; height: 12px; top: 0px; left: -10px; }
+
+.page-wrapper { background: none !important; max-width: 1240px !important; width: 100% !important; margin: 0px auto !important; box-sizing: content-box !important; padding-left: 0px !important; }
+
+.pageShadow { margin: 0px auto; width: 970px; background: none !important; }
+
+.page { margin: 0px !important; }
+
+.section > div { margin-left: 5px; margin-right: 5px; }
+
+h1.title { color: rgb(51, 53, 102); padding-bottom: 17px !important; }
+
+.header .title { font-size: 30px !important; }
+
+h4 { padding-bottom: 17px !important; line-height: 23px !important; }
+
+div.col-sm-8.vcenter > h4 { padding-bottom: 1px !important; }
+
+#selectedLocationResult > h4 { padding-bottom: 8px !important; }
+
+.header .links-block-wrapper { margin-left: 0px; margin-bottom: 45px; margin-top: 2px !important; }
+
+.header .desc { font-size: 14px !important; line-height: 19px !important; color: rgb(0, 0, 0) !important; padding-bottom: 42px !important; }
+
+.section .body { margin-left: 33px !important; }
+
+.section .section-head { text-align: left; }
+
+.section .section-info { width: 478px !important; }
+
+.addressSection { margin-top: 7px !important; }
+
+.column-1 { padding-bottom: 29px !important; width: 278px !important; }
+
+.static-text { font-size: 14px; width: 490px; padding-bottom: 34px !important; }
+
+.name-middle, .name-last { margin-left: 8px !important; }
+
+.section .section-head .title { margin-bottom: 18px; text-align: left; font-size: 26px !important; line-height: 32px !important; }
+
+.section-head .desc { color: rgb(0, 0, 0); font-size: 13px !important; line-height: 18px !important; padding-right: 0px !important; }
+
+.section-info .desc { color: rgb(0, 0, 0); font-size: 13px !important; line-height: 18px !important; padding-right: 0px !important; }
+
+.textfield label { color: rgb(0, 0, 0); font-size: 11px !important; }
+
+.name-last input { width: 122px !important; }
+
+.field-block { margin-top: 10px !important; }
+
+.inputLeft { margin-right: 0px !important; }
+
+.state label { font-size: 10px; }
+
+.zip input { text-indent: 3px !important; }
+
+#peopleCountChange { color: rgb(231, 25, 33) !important; }
+
+#timeCountChange { color: rgb(231, 25, 33) !important; }
+
+.borderColorTime { border: 2px solid rgb(231, 25, 33) !important; }
+
+.fontStyle18, .error, .error-icon { color: rgb(231, 25, 33); }
+
+.error { background: none !important; padding-left: 0px !important; }
+
+.error_code.active { display: inline-block !important; }
+
+.error_code { margin-top: 20px; color: rgb(231, 25, 33); font-size: 13px; font-weight: bold; }
+
+.textfield.name-first.field_error div.inputLeft, .textfield.name-last.field_error div.inputLeft { border: 2px solid rgb(231, 25, 33) !important; width: 115px !important; }
+
+.textfield.field_error div.inputLeft, .textfield.field-block.field_error div.inputLeft { border: 2px solid rgb(231, 25, 33) !important; }
+
+label.error { margin-top: 10px; color: rgb(231, 25, 33); font-weight: bold; display: inline-block !important; font-size: 13px !important; margin-bottom: 0px !important; }
+
+.warning { margin-top: 20px; font-size: 13px; }
+
+.column-1 .static-text { margin-top: 3px; }
+
+.smallButton .ui-button { border-radius: 3px; font-weight: bold; font-size: 16px; min-width: 170px; border: 2px solid rgb(51, 53, 102); text-align: center; margin: 3px 0px 0px; background: rgb(51, 53, 102) !important; padding: 0px !important; height: 42px !important; box-sizing: border-box !important; line-height: 42px !important; }
+
+.smallButton .ui-button.ui-state-hover { background-color: rgb(255, 255, 255); }
+
+.smallButton .ui-button.ui-state-hover span { color: rgb(51, 53, 102); }
+
+.smallButton .ui-button:hover.ui-button-disabled { background: rgb(51, 53, 102) !important; }
+
+.button right .submitButton .ui-button:hover, .button .ui-button:hover { background: rgb(255, 255, 255) !important; }
+
+.submitButton .ui-button:hover, .button .ui-button:hover { background-color: rgb(255, 255, 255); color: rgb(51, 53, 102); }
+
+.submitButton .ui-button:hover span, .button .ui-button:hover span { color: rgb(51, 53, 102); }
+
+.ui-button-disabled:hover span { color: rgb(255, 255, 255) !important; }
+
+.ui-button-disabled:hover { background: rgb(51, 53, 102) !important; }
+
+.ui-state-hover a, .ui-state-hover a:hover { border: 1px solid rgb(237, 237, 237); color: rgb(51, 53, 102) !important; background: rgb(237, 237, 237) !important; }
+
+.ui-selectmenu-menu li { background: rgb(255, 255, 255); padding: 0px; margin: 0px; display: block; border-top: 1px solid rgb(255, 255, 255); border-right: 1px solid rgb(255, 255, 255); border-bottom: 1px solid rgb(237, 237, 237); border-image: initial; font-weight: normal !important; border-left: 1px solid rgb(216, 216, 216) !important; }
+
+ul .ui-state-hover, ul.ui-widget-content .ui-state-hover, ul.ui-widget-header .ui-state-hover, ul .ui-state-focus, ul.ui-widget-content .ui-state-focus, ul.ui-widget-header .ui-state-focus { border: 1px solid rgb(237, 237, 237); background: rgb(237, 237, 237); font-weight: normal; color: rgb(51, 53, 102); }
+
+.ui-selectmenu { color: rgb(51, 53, 102) !important; }
+
+.custom-checkbox label { background-repeat: no-repeat; background-position: 0px 6px; background-size: 13px; background-image: url("/media/images/holdmail/usps_checkbox_checkmark.png") !important; }
+
+.textfield input, .datefield input, #holdmailform .selectLeft { text-indent: 5px; border: 1px solid rgb(153, 153, 153); background: none !important; border-radius: 4px !important; padding-left: 0px !important; }
+
+.name-first .inputRight { width: 113px; }
+
+.name-last .inputRight { width: 122px; }
+
+.inputRight, .selectRight { padding-right: 3px; min-height: 27px; }
+
+p.sub-header { color: rgb(51, 53, 102) !important; font-size: 19px !important; padding-bottom: 17px !important; line-height: 23px !important; }
+
+.required.error { border: 2px solid rgb(231, 25, 33); }
+
+#state-select label.error { position: absolute; padding-top: 38px; }
+
+.zip.textfield label.error { position: relative; top: 15px; display: block !important; }
+
+.form-group-contact label { color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 12px; line-height: 100%; }
+
+.schedule_appt .hidden { display: none; }
+
+.schedule_appt .redelivery-success-title { margin: 15px 0px; font-size: 16px; }
+
+.schedule_appt .text-updates-success { padding-bottom: 10px; }
+
+.schedule_appt .redelivery-success-number { padding-bottom: 10px; border-bottom: 1px solid rgb(149, 149, 200); }
+
+.schedule_appt .redelivery-success-date, .schedule_appt .redelivery-success-address, .schedule_appt .redelivery-success-instructions, .schedule_appt .delivery-instructions-success { padding: 15px 0px; border-bottom: 1px solid rgb(149, 149, 200); }
+
+.schedule_appt .redelivery-success-date--date { font-weight: bold; padding-bottom: 10px; }
+
+.schedule_appt .redelivery-success span { display: block; line-height: 16px; word-break: break-all; }
+
+.schedule_appt .redelivery-success-number--num { font-size: 24px; margin: 10px 0px; }
+
+.schedule_appt .schedule-redelivery-user-details { line-height: 20px; font-weight: bold; font-size: 12px; color: rgb(51, 53, 102); }
+
+.schedule_appt .redelivery-success-address-verbiage { padding: 10px 0px; }
+
+.schedule_appt .redelivery-success-phone, .schedule_appt .redelivery-success-mailtype, .schedule_appt .redelivery-success-additional-information { font-weight: bold; padding-bottom: 10px; }
+
+.schedule_appt .response-ok { color: rgb(33, 135, 72); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 15px; }
+
+.schedule_appt .response-error { color: rgb(255, 0, 0); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 15px; width: 100%; }
+
+.schedule_appt .response-data { font-weight: bold; padding-bottom: 10px; }
+
+.schedule_appt .response-text { padding: 15px 0px; }
+
+.schedule_appt .actions_format_address div.schedule_appt .disabled { }
+
+.schedule_appt .adpEnabled { padding-bottom: 25px; }
+
+.schedule_appt .udBottom { margin-bottom: 40px; }
+
+.schedule_appt div.row.calendar-modal-link > div > input { background-color: rgb(255, 255, 255); }
+
+.ui-datepicker-next, .ui-datepicker-prev { display: none; }
+
+.ui-datepicker { margin-top: 32px; width: 100% !important; }
+
+.ui-datepicker-group { display: inline-block; margin: 10px; padding: 5px; border: 1px solid rgb(153, 153, 153); }
+
+.ui-datepicker-title { padding: 10px; text-align: center !important; font-size: 11pt !important; }
+
+.ui-datepicker-year { display: none !important; }
+
+.ui-datepicker-current-day { color: rgb(255, 255, 255); background-color: rgb(51, 53, 102) !important; }
+
+.availableDatesT { height: 30px; font-size: 12px; }
+
+.ui-datepicker-current-day > .ui-state-default { color: rgb(255, 255, 255) !important; }
+
+.ui-datepicker-other-month { background-color: transparent !important; border: 0px !important; }
+
+#selectedPostOfficeInfo { padding: 10px; }
+
+.availableDatesT:not(.ui-datepicker-unselectable) { border: 1px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); }
+
+.ui-datepicker-unselectable { border: 1px solid rgb(153, 153, 153); background-color: rgb(216, 216, 216); }
+
+.availableDatesT > span { color: rgb(51, 53, 102) !important; }
+
+#zipCodeTable tbody { max-height: 300px; overflow-y: auto; }
+
+#zipCodeTable thead { min-width: 200px; }
+
+.ui-datepicker-header { font-size: 16pt; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; color: rgb(51, 53, 102); font-weight: bold; }
+
+.progress { height: 30px; }
+
+.progress-bar { line-height: 30px; }
+
+.progress-bar-usps { background-color: rgb(51, 53, 102); background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); }
+
+.tooltip-arrow { left: 50%; border-right-color: transparent; border-left-color: transparent; bottom: -9px !important; margin-left: -12px !important; border-width: 15px 15px 0px !important; border-top-color: rgb(255, 255, 255) !important; }
+
+.tooltip-arrow::after { content: " "; position: absolute; z-index: -1; width: 0px; height: 0px; border-right: 16px solid transparent; border-left: 16px solid transparent; border-top: 16px solid rgb(51, 53, 102); top: -15px; left: -16px; }
+
+.disabledSection { pointer-events: none; opacity: 0.99; background-color: rgb(255, 255, 255) !important; }
+
+.disabledButton { pointer-events: none; opacity: 0.5; transition-delay: 0s; }
+
+.spacedTooltip { margin-bottom: 5px; }
+
+.grayLeftTitle { text-align: left !important; }
+
+.modal-body { border: 0px; }
+
+.centerAvail { vertical-align: middle !important; }
+
+#availablePostOffices tbody { display: block; height: 350px; overflow: auto; }
+
+#availablePostOffices thead, #availablePostOffices tbody tr { display: table; width: 100%; table-layout: fixed; }
+
+#availablePostOffices thead { width: calc(100% - 1em); }
+
+.appts { color: rgb(33, 135, 72); font-weight: bold; font-size: 2em; }
+
+.noappts { color: rgb(216, 216, 216); font-size: 2em; }
+
+.loadingSpinner { border-width: 16px; border-style: solid; border-color: rgb(51, 53, 102) rgb(247, 247, 247) rgb(247, 247, 247); border-image: initial; border-radius: 50%; width: 150px; height: 150px; animation: 1.5s linear 0s infinite normal none running spin; margin: 0px auto; }
+
+.processing { font-size: 16pt; color: rgb(247, 247, 247); font-weight: bold; margin: 0px auto; width: 200px; text-align: center; }
+
+.modal-blocked { padding: 27px 32px 19px !important; }
+
+.enabledSort { color: rgb(51, 53, 102); }
+
+.disabledSort { color: rgb(215, 215, 215); }
+
+.calendarLegend { margin-top: 10px; font-size: 14px; color: rgb(0, 0, 0); }
+
+.calendarLegendModal { margin-right: -200px; }
+
+.calendarLegend p { font-size: 14px; margin-top: 15px; }
+
+.calendarKey { padding-right: 25px; margin-left: 15px; }
+
+#selectDateFromModal { margin-top: 30px; width: 240px; }
+
+#notAvailableCal { width: 30px; height: 30px; background-color: rgb(153, 153, 153); border: 1px solid rgb(221, 221, 221); display: inline-block; margin-right: 5px; margin-left: 0px; padding-top: 5px; opacity: 0.8; margin-bottom: 20px; }
+
+#availableCal { width: 30px; height: 30px; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); display: inline-block; margin-right: 5px; margin-left: 0px; padding-top: 5px; margin-bottom: 20px; }
+
+#selectedCal { width: 30px; height: 30px; background-color: rgb(51, 53, 102); border: 1px solid rgb(221, 221, 221); display: inline-block; margin-right: 5px; margin-left: 0px; padding-top: 5px; opacity: 0.8; margin-bottom: 20px; }
+
+#selectedDatePicker { width: 30px; height: 30px; color: rgb(255, 255, 255); background-color: rgb(51, 53, 102); border: 1px solid rgb(216, 216, 216); display: inline-block; margin-right: 5px; margin-left: 0px; padding-top: 5px; text-align: center; font-weight: bold; margin-top: 10px; }
+
+#availableDatePicker { width: 30px; height: 30px; background-color: rgb(255, 255, 255); border: 1px solid rgb(51, 53, 102); margin-right: 5px; display: inline-block; color: rgb(51, 53, 102); margin-left: 0px; padding-top: 5px; font-weight: bold; text-align: center; margin-top: 10px; }
+
+#notAvailableDatePicker { width: 30px; height: 30px; border: 1px solid rgb(51, 53, 102); display: inline-block; margin-right: 5px; color: rgb(51, 53, 102); background-color: rgb(216, 216, 216); margin-left: 0px; padding-top: 5px; font-weight: bold; text-align: center; margin-top: 10px; }
+
+.alert-usps { margin-bottom: 20px; padding-bottom: 0px; color: rgb(255, 255, 255); background-color: rgb(237, 237, 237); font-weight: bold; border-radius: 3px; }
+
+.alert-usps p { display: flex; align-items: center; justify-content: center; color: rgb(231, 25, 33); font-weight: bold; text-align: center !important; }
+
+.alert-info { margin-bottom: 20px; padding-bottom: 0px; color: rgb(51, 53, 102); background-color: rgb(255, 255, 255); font-size: 14px; border-radius: 3px; }
+
+.alert-info-red { margin-bottom: 20px; padding-bottom: 0px; color: rgb(231, 25, 33); background-color: rgb(255, 255, 255); font-weight: 600; font-size: 1.2em; border-radius: 3px; }
+
+.passport-info-icon { align-content: center; width: 20px; height: 13px; padding-left: 7px; }
+
+.usps-locations-header { color: rgb(89, 89, 89); font-size: 16px; }
+
+.usps-hours-tooltip { width: 900px; }
+
+.tooltip.in { opacity: 1 !important; }
+
+.tooltip-inner { min-width: 950px; padding-top: 20px; padding-bottom: 20px; margin-left: 250px; padding-left: 10px; background-color: rgb(255, 255, 255); border: 1px solid rgb(153, 153, 153); }
+
+.tooltip-inner p { text-align: left; }
+
+.terms-conditions-small { color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 12px !important; }
+
+.button { min-width: 190px; height: 44px; padding-left: 20px; padding-right: 20px; }
+
+.buttonspace { margin: 0px 15px; }
+
+.locationbutton { margin-left: -20px; }
+
+.passportcaratfix { top: 30px !important; }
+
+.redArrow { font-size: 16pt; color: rgb(231, 25, 33); }
+
+.init-hide { display: none; }
+
+.errorbox { border: 1px solid rgb(231, 25, 33) !important; }
+
+.modal-dialog { overflow-y: initial !important; }
+
+.modal-review { min-width: calc(60vw); }
+
+.modal-body { min-height: 300px; overflow-y: auto; background-color: rgb(255, 255, 255); padding: 40px 40px 40px 55px !important; }
+
+.closeicon { color: rgb(51, 53, 102); font-size: 32px; padding-right: 20px !important; padding-top: 20px !important; opacity: 1 !important; }
+
+.variable-width { width: calc(80vw - 20px); }
+
+.variable-width .desc { color: rgb(0, 0, 0); font-size: 13px !important; line-height: 18px !important; padding-right: 0px !important; }
+
+.uspsQtip { background-color: rgb(255, 255, 255); border-color: rgb(51, 53, 102); border-radius: 4px; }
+
+.uspsQtip .qtip-content { font-size: 14px; font-weight: bolder; word-spacing: 2px; line-height: 150%; }
+
+.errorreqlist { text-align: left; font-size: 10pt; }
+
+.locationInformation { text-align: left !important; }
+
+.clickdisable { pointer-events: none; }
+
+.graySection { background-color: rgb(247, 247, 247); padding: 40px; margin-bottom: 80px; }
+
+.graySectionHeader { font-weight: normal; font-size: 12px; color: rgb(89, 89, 89); padding-bottom: 8px; }
+
+.feeGap { margin-bottom: 20px; display: block; }
+
+.rcasHR { margin-top: 30px; margin-bottom: 8px; }
+
+.appConfirmSpacing { margin-top: 10px; margin-bottom: 40px; }
+
+.graySectionBoldHeader { font-family: HelveticaNeueW02-75Bold, "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: bold; font-size: 12px; color: rgb(89, 89, 73); padding-bottom: 8px; padding-top: 8px; }
+
+.graySectionText { font-size: 14px; color: rgb(0, 0, 0); }
+
+.makeHeaderGray { color: rgb(89, 89, 73) !important; }
+
+.makeTextRed { color: rgb(231, 25, 33) !important; }
+
+.makeTextUnbold { font-weight: normal !important; }
+
+.removeBottomSpace { margin-bottom: 5px !important; padding-bottom: 0px !important; }
+
+.editpencil { transform: rotateY(180deg); display: inline-block; }
+
+.fortyTop { margin-top: 40px; }
+
+.section-title { width: 100%; margin-top: 40px; margin-bottom: 30px; text-align: left !important; font-size: 22px !important; font-weight: normal !important; }
+
+.section-description { font-size: 14px; }
+
+div.checkbox input[type="checkbox"] ~ span { border: 1px solid rgb(153, 153, 153); margin-top: 15px; }
+
+.checkboxText { color: rgb(51, 53, 102); margin-top: 18px; font-size: 13px !important; }
+
+.blueHeader { color: rgb(51, 53, 102); }
+
+.dropHeightTerms { min-height: 40px; margin-top: -25px; margin-left: 30px; }
+
+.form-control { text-overflow: ellipsis; color: rgb(0, 0, 0) !important; }
+
+.selectedTime { color: rgb(255, 255, 255); margin-top: 10px; margin-left: 10px; text-align: left; font-size: 14px; font-family: HelveticaNeueW02-75Bold, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.availableAppointment { color: rgb(51, 53, 102); margin-top: 15px; margin-left: 10px; font-size: 14px; text-align: left; font-family: HelveticaNeueW02-75Bold, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.fc-center h2 { font-size: 16px; }
+
+.fc-time { font-size: 14px; color: rgb(89, 89, 89); margin: 20px 20px 20px 30px; }
+
+.fc-time-available { font-size: 14px; color: rgb(51, 53, 102); margin: 20px 20px 20px 30px; font-weight: bold; }
+
+.nobold { font-weight: normal !important; }
+
+.uspsBlue { color: rgb(51, 53, 102); }
+
+.smallheader { margin-bottom: 20px; }
+
+.schdAppt { width: auto; min-width: auto; }
+
+.updateAppt { width: 280px; }
+
+.editAppt { width: 280px; margin-left: 32px; }
+
+.editBtn { width: 240px; margin-left: 32px; }
+
+.printBtn { width: 240px; }
+
+.usps-checkbox { display: block; position: relative; padding-left: 35px; margin-bottom: 12px; cursor: pointer; font-size: 12px; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: normal; user-select: none; }
+
+.subheader_links a { font-weight: bold !important; }
+
+.timeContainer { margin-top: 30px; }
+
+.cancelLabel { margin-left: -14px; }
+
+.canceledNewAppt { margin-left: 375px; }
+
+.checkboxTextTxt { margin-bottom: 30px; }
+
+.checkboxTextTerms { margin-top: -30px; }
+
+.boxTerms { margin-top: -30px !important; }
+
+.privactAct { margin-top: -12px; }
+
+.smallTC { margin-top: 8px; }
+
+.reviewBtn { margin-top: 40px; margin-bottom: 80px !important; }
+
+.cancelApptBtn { margin-top: 15px; width: 23%; margin-left: -15px; margin-bottom: 15px !important; }
+
+.preferredDate { margin-top: 20px; margin-bottom: 17px; }
+
+.labelFormat { color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 12px; line-height: 100%; }
+
+.searchLocations { margin-top: 14px; }
+
+.test11 { margin-bottom: 6px; }
+
+.spacingMargin { margin-top: 40px; margin-bottom: 40px !important; }
+
+.headerMargin { margin-bottom: 30px !important; }
+
+.section-margin { margin-bottom: 40px !important; }
+
+.cancelLabelSpacing { margin-top: 8px; margin-bottom: 24px; }
+
+.modifyTextBox { width: 180% !important; }
+
+.section-title-margin { margin-top: 20px; }
+
+.labelSpacing { margin-top: 6px; }
+
+.labelAfterSpacing { margin-bottom: 10px; }
+
+.manageAppointmentBtn { width: 260px; margin-left: 84px; }
+
+.centerApptModal { top: 150px; }
+
+.selectReason { margin-left: 18px; margin-top: 0px !important; }
+
+.confirmArrow::after { content: ""; display: inline-block; background-image: url("../media/zipcode-lookup/nav-red-chevron.svg"); background-repeat: no-repeat; background-position: -1px -5px; height: 15px; width: 21px; background-size: 86%; margin-top: -5px; transform: rotate(-90deg); }
+
+.selectedDateModal { margin-top: 16px; margin-left: 10px; }
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  .wideModal { max-width: calc(68vw); min-width: calc(64vw) !important; }
+  .modalWidth { width: auto !important; }
+  .tooltip-inner { margin-left: 94px; }
+  .tooltip-arrow { margin-left: auto; }
+}
+
+@media only screen and (min-width: 768px) {
+  .header-faqs::after { content: ""; display: inline-block; background-image: url("../media/zipcode-lookup/nav-red-chevron.svg"); background-repeat: no-repeat; background-position: -1px -5px; height: 15px; width: 21px; background-size: 80%; margin-top: -5px; transform: rotate(-90deg); }
+  .noLeftPadding { padding-left: 0px; }
+  .vcenter { display: inline-block; vertical-align: middle; float: none; height: auto; }
+}
+
+.distanceSelected { margin-top: auto; margin-left: -2px; }
+
+.loaderBar { background-color: rgb(51, 53, 102); position: relative; margin: 200px auto auto; padding: 20px; border: 1px solid rgb(51, 53, 102); width: 40%; min-height: 150px; }
+
+.loaderBar p { padding-top: 40px; }
+
+.loader { animation: 2s linear 0s infinite normal none running spin; }
+
+.centerModal { top: 300px; }
+
+.renewal { top: 300px; }
+
+.btnRenewal { margin-left: 25%; width: 50%; margin-top: 32px; }
+
+.renewalp { margin-top: 20px; }
+
+.cancelcaratfix { margin-top: 116px; margin-right: 78px; }
+
+.cancelBtn { margin-top: 25px; }
+
+.btnCancel { width: 100%; margin-left: 30px; }
+
+.labelCancel { margin-top: 25px; }
+
+select.widthControl { width: 90%; }
+
+.blueHeaderBold { color: rgb(51, 53, 102); font-weight: 700; }
+
+.btnNewAppointment { margin-left: 110px; margin-top: 20px; }
+
+.centerSelect { text-align: left; margin-left: 32px; }
+
+.greyParagraph { padding-top: 20px; color: rgb(89, 89, 89); font-size: 14px; font-weight: 400; margin-bottom: 32px; margin-left: 32px; }
+
+.wideModal { max-width: calc(68vw); min-width: calc(50vw); }
+
+#datepickerSection { width: auto; }
+
+.labels { font-size: 12px; color: rgb(89, 89, 89); font-family: HelveticaNeue-Light, "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; }
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) {
+  .wideModal { width: calc(108vw - 50px); min-width: calc(95vw); overflow-x: hidden; }
+  .addCalendar { width: 314px; margin-left: 10px !important; }
+  .wideModal .modal-body { overflow-x: hidden !important; }
+  .centerSelect { font-size: 18px; font-weight: 700; }
+  .calendarLegend { margin-top: 20px; }
+  #scheduleDatePicker { margin-top: 20px; margin-left: -55px; }
+  .footerApptModal { margin-top: 20px; }
+  .calendarP { margin-left: 36px; margin-top: -32px; width: 217px; }
+  .calendarKey { margin-bottom: 35px; margin-left: -168px; }
+  .ui-datepicker-group-first { width: 106%; }
+  .ui-datepicker-group-last { width: 110%; }
+  .calendarNumbers { padding-left: 0px; }
+  #dialog1Title { font-size: 20px; }
+  .loaderBar { width: calc(108vw - 50px) !important; }
+  .apptLoader { height: 190px !important; }
+  .dialog3Title { font-size: 15px; }
+  .tooltip-inner { padding-top: 20px; padding-bottom: 20px; padding-left: 10px; background-color: rgb(255, 255, 255); border: 1px solid rgb(153, 153, 153); min-width: 300px !important; margin-left: -25px !important; }
+  .modalHeader { margin-left: 0px; }
+  #scheduleAppointment { margin-left: -15px; margin-top: 30px; width: 301px; }
+  #selectedTimeDisplay { margin-left: -29px; font-size: 18px !important; }
+  #DisplaySelectedTime { margin-left: -15px; }
+  .labelResponsive { margin-left: -16px; }
+  .staticMobile { margin-left: -16px; width: 110% !important; }
+  .errorResp { margin-left: -16px; }
+  .checkboxText { width: 110%; }
+  .termsText { margin-left: -16px; }
+  .smallTC { width: 106%; }
+  .timeMobile { margin-left: 10px; }
+  .feeTextMobile { width: 333px; margin-left: -10px; }
+  #editInformation { margin-left: 38px; width: 214px; }
+  .editResponsive { margin-left: 55px !important; }
+  .editModifyResponsive { width: auto; }
+  #printConfirmation { margin-left: 10px; width: 314px; }
+  .feeTextConfirm { padding-top: 26px; }
+  select.widthControl { margin-left: -42px; font-size: 14px; width: 320px !important; }
+  .labelCancel { margin-left: -42px; }
+  .cancelcaratfix { margin-top: 112px; margin-right: -6px !important; }
+  .btnCancel1 { margin-top: 55px; margin-left: -95px !important; }
+  #cancelFinalize { width: 235px; }
+  #timeCountChange { margin-left: 0px !important; }
+  .centerModal { top: 100px; }
+  .modalLoading { top: 0px !important; }
+  .cancelLoader { height: 190px !important; }
+  .near-location-responsive { width: 336px !important; }
+  .available-appt-responsive { margin: 12px !important; }
+  .available-container-responsive { width: 350px !important; }
+  .select option { font-size: 8px; color: chocolate; }
+  .btnRenewal { margin-left: auto; }
+  select.responsiveControl { width: 123% !important; margin-left: -34px !important; }
+  .responsiveLabel { margin-left: -32px; }
+  .responsiveCaratFix { margin-right: -34px !important; }
+  .responsiveAlertInfo { margin-left: -30px; }
+  .btnCancel { margin-left: -2px; }
+  #returnModify { margin-left: -141px !important; width: 235px !important; }
+  #updateAppointment { margin-left: 0px; width: 280px; }
+  .cancelModalBody { width: 100%; }
+  .newApptResponsive { margin-left: -13px; width: 265px; }
+  .editAppt { width: 280px !important; margin-left: 0px !important; }
+  .reviewBtn { margin-left: 23px; width: 84% !important; }
+  .cancelApptBtn { margin-left: -16px; width: auto; }
+  .noPadding { padding-bottom: 0px !important; }
+  .reviewEdit { margin-left: -25px !important; }
+  .cancelModalTitle { width: 268px; margin-left: -5px; margin-top: -26px; }
+  .cancelModalP { margin-left: -5px; }
+  .graySection { padding: 20px 20px 20px 40px; }
+  .reviewApptDetails { margin-left: -26px !important; }
+  .reviewServices { margin-left: -24px; }
+  .chargesStyle { margin-left: -39px; }
+  .priceReviewdiv { margin-left: -22px; }
+  .reviewCost { margin-left: -48px; }
+  .confTotalFee { margin-left: -63px; }
+  .centerApptModal { top: 60px; overflow-x: hidden !important; }
+  .section-title-margin { margin-left: -1px; width: 221px; }
+  .labelsResp { margin-left: -42px; }
+  .modifyTextBox { margin-left: -42px; width: 280px !important; }
+  .manageLabel { width: 295px; margin-left: -42px; }
+  .manageAppointmentBtn { margin-left: -35px; }
+  .labelSpacing { margin-top: -19px; }
+  .mobileTimes { margin-left: -29px; width: 362px; }
+  .responsiveBox { width: 108% !important; margin-left: -15px !important; }
+  .searchLabel { margin-left: -16px; }
+  .photoRow { padding-left: 0px; }
+  .tests2 { margin-left: 140px; margin-top: -17px; }
+  .mobilePenicl { margin-left: 0px !important; }
+  .detailText { padding-left: 18px; }
+  #cancelOverReschedulePeriod { margin-bottom: -44px; }
+  #makeNewApptNinety { margin-bottom: -8px; }
+  .textChange { margin-left: -10px; }
+  #retentionModal { top: 68px; }
+}
+
+@media only screen and (min-device-width: 414px) and (max-device-width: 736px) {
+  .footerApptModal { margin-top: 20px; }
+  .ui-datepicker-group-first { width: auto; }
+  .btnCancel1 { margin-top: 55px; margin-left: -114px !important; }
+  .centerModal { top: 150px; }
+  .btnCancel { width: 180% !important; margin-left: 23px !important; }
+  #returnModify { margin-left: -136px !important; width: 180% !important; }
+  select.widthControl { width: 350px !important; }
+  .cancelcaratfix { margin-top: 110px !important; margin-right: 2px !important; }
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .subheader_links { margin-top: 40px; }
+  #radius { width: 125%; }
+  .ipadCaratFix { margin-right: -30px; }
+  .checkbox { margin-left: 20px; width: 118%; }
+  .ui-datepicker-group-first { width: auto !important; }
+  .ui-datepicker-inline { margin-left: 36px; }
+  .calendarP { margin-top: -2px !important; margin-left: -12px !important; }
+  .loaderBar { width: calc(90vw - 35px) !important; }
+  .whiteResponsive { margin-left: -21px; margin-top: -42px; }
+  .vcenter2 { padding-left: 55px; }
+  .vcenterResponsive { margin-left: -25px; }
+  .tooltip-inner { padding-top: 20px; padding-bottom: 20px; padding-left: 10px; background-color: rgb(255, 255, 255); border: 1px solid rgb(153, 153, 153); min-width: 600px !important; margin-left: 20px !important; }
+  .tooltip-arrow { margin-left: -82px !important; }
+  .modalHeader { margin-left: -14px !important; }
+  .usps-hours-tooltip { width: 623px !important; }
+  .tests1 { width: 124px; }
+  .tests2 { width: auto; }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2.5), (-o-min-device-pixel-ratio: 5/2), (min--moz-device-pixel-ratio: 2.5), (min-device-pixel-ratio: 2.5) {
+  .loaderBar { width: calc(108vw - 50px) !important; }
+  .wideModal { width: calc(108vw - 50px); min-width: calc(95vw); overflow-x: hidden; }
+  .wideModal .modal-body { overflow-x: hidden !important; }
+  .calendarLegend { margin-top: 20px; }
+  #scheduleDatePicker { margin-top: 20px; margin-left: -55px; }
+  .reviewEdit { margin-left: -26px !important; }
+  .footerApptModal { margin-top: 20px; }
+  .calendarP { margin-left: 36px; margin-top: -32px; width: 217px; }
+  .calendarKey { margin-bottom: 35px; }
+  .ui-datepicker-group-first { width: 110%; }
+  .calendarNumbers { padding-left: 0px; }
+  .centerSelect { font-size: 18px; font-weight: 700; }
+  .centerModal { top: 100px; }
+  .labelCancel { margin-left: -52px; }
+  .cancelcaratfix { margin-right: -20px; margin-top: 177px; }
+  .btnCancel1 { margin-top: 55px; margin-left: -88px; }
+  #dialog3Title { font-size: 20px; }
+  .androidLoader { height: 125px; }
+  .tooltip-inner { min-width: 300px; padding-top: 20px; padding-bottom: 20px; margin-left: -25px; padding-left: 10px; background-color: rgb(255, 255, 255); border: 1px solid rgb(153, 153, 153); }
+  .modalHeader { margin-left: -100px; }
+  .near-location-responsive { width: 360px !important; margin-left: 18px !important; }
+  .available-appt-responsive { margin: 14px !important; }
+  .available-container-responsive { width: 330px; }
+  select.responsiveControl { width: 123% !important; margin-left: -34px !important; }
+  .responsiveLabel { margin-left: -32px; }
+  .responsiveCaratFix { margin-right: -34px !important; }
+  .responsiveAlertInfo { margin-left: -30px; }
+  #scheduleAppointment { margin-left: 0px; }
+  #editInformation { margin-left: 38px; width: 203px; }
+  #printConfirmation { margin-left: 4px; width: 314px; }
+  .addCalendar { width: 314px; margin-left: 4px !important; }
+  .editResponsive { margin-left: 55px !important; }
+  #updateAppointment { margin-left: 0px; width: 280px; }
+  .editAppt { width: 280px !important; margin-left: 0px !important; }
+  .reviewBtn { margin-left: 48px; }
+  .cancelApptBtn { margin-left: 48px; margin-top: -64px !important; }
+  .centerApptModal { top: 60px; overflow-x: hidden !important; }
+  .section-title-margin { margin-left: -1px; width: 300px; }
+  .labelsResp { margin-left: -42px; }
+  .modifyTextBox { margin-left: -42px; width: 275px !important; }
+  .manageLabel { width: 305px; margin-left: -42px; }
+  .manageAppointmentBtn { margin-left: -35px; width: 240px; }
+  .labelSpacing { margin-top: -19px; }
+  .cancelApptBtn { margin-left: -16px; width: auto; margin-top: 24px !important; }
+  .cancelModalTitle { width: 268px; margin-left: -12px; margin-top: -26px; }
+  select.widthControl { width: 300px; margin-left: -42px; font-size: 14px; }
+  .labelCancel { margin-left: -42px; }
+  .cancelModalP { margin-left: -12px; width: 300px !important; }
+  .cancelcaratfix { margin-right: -8px; margin-top: 112px; }
+  #cancelFinalize { width: 210px; margin-left: 8px; }
+  #returnModify { width: 210px; margin-left: -124px; }
+  .cancelModalBody { width: 100%; }
+  .calendarKey { margin-bottom: 35px; margin-left: -120px !important; }
+  .reviewApptDetails { margin-left: -26px !important; }
+  #editInformation { width: 214px; }
+  .detailText { padding-left: 18px; }
+  .reviewServices { margin-left: -24px; }
+  .chargesStyle { margin-left: -39px; }
+  .feeTextMobile { width: 323px; margin-left: -23px; }
+  #scheduleAppointment { margin-left: -15px; margin-top: 30px; width: 301px; }
+  .mobilePenicl { margin-left: 0px !important; }
+  .responsiveBox { width: 108% !important; margin-left: -15px !important; }
+  .searchLabel { margin-left: -16px; }
+  .photoRow { padding-left: 0px; }
+  .modalHeader { margin-left: 0px; }
+  .mobileTimes { margin-left: -29px; width: 348px; }
+  #DisplaySelectedTime { margin-left: -15px; }
+  .timeMobile { margin-left: 10px; }
+  #selectedTimeDisplay { margin-left: -10px; font-size: 18px !important; }
+}
+
+.usps-checkbox input { position: absolute; opacity: 0; cursor: pointer; }
+
+.checkmark-usps { position: absolute; top: 0px; left: 0px; height: 16px; width: 16px; background-color: rgb(255, 255, 255); border-radius: 50%; border: 1px solid rgb(51, 53, 102); }
+
+.usps-checkbox:hover input ~ .checkmark-usps { background-color: rgb(204, 204, 204); }
+
+.usps-checkbox input:checked ~ .checkmark-usps { background-color: rgb(255, 255, 255); }
+
+.checkmark-usps::after { content: ""; position: absolute; display: none; }
+
+.usps-checkbox input:checked ~ .checkmark-usps::after { display: block; }
+
+.usps-checkbox .checkmark-usps::after { top: 2px; left: 2px; width: 10px; height: 10px; border-radius: 50%; background: rgb(51, 53, 102); }
+
+.poSearchBox { position: relative; width: 100%; margin-bottom: 5px; }
+
+.poSearchBox input { padding-right: 40px; box-sizing: border-box; }
+
+.poSearchBox img { top: 10px; position: absolute; right: 15px; cursor: pointer; }
+
+.poSelection { border: 1px solid rgb(215, 215, 215); padding: 15px 30px 15px 15px; }
+
+.poLocationAddress { margin-top: -5px; font-weight: normal; font-size: 14px; }
+
+.scrollshow { overflow-x: hidden; }
+
+.smallmedia { height: 24px; }
+
+.addCalendar { margin-left: 32px; }
+
+.searchBlockinfo { padding-left: 2px; margin-left: -8px; height: 40px; }
+
+.initDatePicker { background-color: transparent !important; color: rgb(51, 53, 102) !important; }
+
+@media (max-width: 760px) {
+  .iosPadding { padding-left: 15px; }
+  .graySectionHeader { padding-bottom: 10px; }
+  .graySectionBoldHeader { padding-bottom: 10px; }
+  .graySectionText { padding-bottom: 10px; }
+}
+
+.dateButton { background: rgb(255, 255, 255); border: 1px solid rgb(246, 246, 246); border-radius: 4px; font-size: 19px; padding: 5px 25px; color: rgb(51, 53, 102); font-family: HelveticaNeueW01, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+@media (max-width: 1100px) {
+  .dateButton { background: rgb(255, 255, 255); border: 1px solid rgb(246, 246, 246); border-radius: 4px; font-size: 19px; padding: 5px 15px; color: rgb(51, 53, 102); font-family: HelveticaNeueW01, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+}
+
+.dateButtonMonth { font-size: 12px; }
+
+.dateButtonDay { font-size: 18px; font-weight: 700; }
+
+.dateUnavailable { pointer-events: none; color: rgb(89, 89, 89); background-color: rgb(246, 246, 246); margin-bottom: 4px; }
+
+.dateUnavailableText { color: rgb(89, 89, 89); font-size: 9px; font-weight: bold; white-space: nowrap; }
+
+.dateButton:hover { background: rgb(231, 231, 231); border: 0px; }
+
+.button { margin-bottom: 20px; }
+
+.vcenter .button { margin-bottom: 0px; }
+
+.costs { width: 60px; text-align: right; }
+
+.esriPopup { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif !important; }
+
+.esriPopup .titlePane { background-color: white !important; padding-left: 20px !important; padding-top: 15px !important; }
+
+.esriPopup .contentPane { background-color: white !important; padding-left: 20px !important; }
+
+.esriPopup .action.zoomTo { display: none !important; }
+
+@media (max-width: 900px) {
+  .usps-hours-tooltip { width: 400px; }
+  .tooltip.in { opacity: 1 !important; }
+}
+
+.loaderBar h1 { color: rgb(255, 255, 255); text-align: center; font-family: HelveticaNeueW02-75Bold, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.loaderBar p { color: rgb(255, 255, 255); text-align: center; font-family: HelveticaNeueW02-75Bold, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.loaderBar ul { height: 10px; inset: 0px; list-style: none; padding: 0px; margin-left: 10px; text-align: center; }
+
+.loaderBar li { width: 14%; height: 14px; transform: skew(-40deg); display: inline-block; position: relative; margin-right: 10px; }
+
+@media (max-width: 1300px) {
+  .loaderBar li { width: 10%; height: 14px; transform: skew(-40deg); display: inline-block; position: relative; margin-right: 10px; }
+}
+
+@media (max-width: 610px) {
+  .loaderBar li { width: 5%; height: 14px; transform: skew(-40deg); display: inline-block; position: relative; margin-right: 10px; }
+}
+
+.loaderBar li { background: rgba(255, 255, 255, 0); box-shadow: rgba(117, 182, 255, 0.5) 0px 0px 10px 2px inset, rgba(105, 135, 255, 0.3) 0px 0px 30px 2px; }
+
+.loaderBar li:nth-child(1) { animation-name: pulse; animation-timing-function: ease; animation-duration: 3s; animation-delay: 0.5s; animation-direction: normal; animation-iteration-count: infinite; }
+
+.loaderBar li:nth-child(2) { animation-name: pulse; animation-timing-function: ease; animation-duration: 3s; animation-delay: 1s; animation-direction: normal; animation-iteration-count: infinite; }
+
+.loaderBar li:nth-child(3) { animation-name: pulse; animation-timing-function: ease; animation-duration: 3s; animation-delay: 1.5s; animation-direction: normal; animation-iteration-count: infinite; }
+
+.loaderBar li:nth-child(4) { animation-name: pulse; animation-timing-function: ease; animation-duration: 3s; animation-delay: 2s; animation-direction: normal; animation-iteration-count: infinite; }
+
+.loaderBar li:nth-child(5) { animation-name: pulse; animation-timing-function: ease; animation-duration: 3s; animation-delay: 2.5s; animation-direction: normal; animation-iteration-count: infinite; }
+
+.loaderBar li:nth-child(6) { animation-name: pulse; animation-timing-function: ease; animation-duration: 3s; animation-delay: 3s; animation-direction: normal; animation-iteration-count: infinite; }
+
+@keyframes pulse { 
+  0% { background: rgba(255, 255, 255, 0); box-shadow: rgba(117, 182, 255, 0.5) 0px 0px 10px 2px inset, rgba(105, 135, 255, 0.3) 0px 0px 40px 2px; }
+  25% { background: rgba(255, 255, 255, 0); box-shadow: rgba(117, 182, 255, 0.5) 0px 0px 10px 2px inset, rgba(105, 135, 255, 0.3) 0px 0px 40px 2px; }
+  50% { background: rgb(255, 255, 255); box-shadow: rgba(117, 182, 255, 0.5) 0px 0px 10px 2px inset, rgb(105, 135, 255) 0px 0px 30px 2px; }
+  75% { background: rgba(255, 255, 255, 0); box-shadow: rgba(117, 182, 255, 0.5) 0px 0px 10px 2px inset, rgba(105, 135, 255, 0.3) 0px 0px 40px 2px; }
+  100% { background: rgba(255, 255, 255, 0); box-shadow: rgba(117, 182, 255, 0.5) 0px 0px 10px 2px inset, rgba(105, 135, 255, 0.3) 0px 0px 30px 2px; }
+}
+
+.modalLoading { display: none; position: fixed; z-index: 1; padding-top: 100px; left: 0px; top: 0px; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4); }
+
+.initLoader { display: block; }
+
+.loaderBar { background-color: rgb(51, 53, 102); position: relative; margin: 200px auto auto; padding: 20px; border: 1px solid rgb(51, 53, 102); width: 40%; min-height: 150px; }
+
+.loaderBar p { padding-top: 40px; }
+
+.loader { animation: 2s linear 0s infinite normal none running spin; }
+
+.renewal { top: 300px; }
+
+.btnRenewal { width: 50%; }
+
+.tightenSpacing { margin-bottom: 0px; }
+
+.renewalp { margin-top: 20px; }
+
+.titleButton.close { margin: 5px; background-color: rgb(51, 53, 102) !important; opacity: 1 !important; }
+
+.titleButton.close:hover { opacity: 0.8 !important; }
+
+.smallPassportPhoto { max-width: 100%; }
+
+.manage-appointment { padding: 30px 0px; }
+
+@media print {
+  * { font-size: 0.98em !important; line-height: 1 !important; }
+  html, body { height: auto; }
+  .global-footer, .global-footer--wrap, .global-header, .printhide, .subheader_links, #printConfirmation { display: none; visibility: hidden; width: 0px !important; height: 0px !important; }
+  #largePrint { float: left; font-size: 26pt !important; }
+  a[href]::after { content: none !important; }
+  .col-sm-1 { width: 8%; float: left; }
+  .col-sm-2 { width: 16%; float: left; }
+  .col-sm-3 { width: 25%; float: left; }
+  .col-sm-4 { width: 33%; float: left; }
+  .col-sm-5 { width: 42%; float: left; }
+  .col-sm-6 { width: 50%; float: left; }
+  .col-sm-7 { width: 58%; float: left; }
+  .col-sm-8 { width: 66%; float: left; }
+  .col-sm-9 { width: 75%; float: left; }
+  .col-sm-10 { width: 83%; float: left; }
+  .col-sm-11 { width: 92%; float: left; }
+  .col-sm-12 { width: 100%; float: left; }
+}
+
+.gray-overlay { color: white; background-color: rgb(3, 21, 51); position: fixed; inset: 0px; opacity: 0.5; }
+
+.spinner-content h5 { font-size: 18px; font-family: HelveticaNeueW02-75Bold, "Helvetica Neue", Helvetica, Arial, sans-serif; margin-top: 0px; color: rgb(255, 255, 255); }
+
+.white-spinner-container { position: fixed; top: 41%; text-align: center; z-index: 999; }
+
+.white-spinner-container p { color: rgb(255, 255, 255); padding-top: 5px; }
+
+.spinner-content { display: block; position: relative; background: rgb(51, 51, 102); opacity: 1; z-index: 1000; padding: 30px; }
+
+.spinnerWhite, .spinnerBlue { width: 200px; height: 9px; display: inline-block; position: relative; }
+
+.white-spinner-wrapper { margin: 36px auto; }
+
+@media only screen and (max-width: 767px) {
+  .white-spinner-wrapper { width: 262px; }
+}
+
+@media only screen and (min-width: 768px) {
+  .white-spinner-wrapper { width: 240px; }
+}
+
+.visible { opacity: 1 !important; }
+
+.j-spinner img { width: 200px; height: 100%; position: absolute; z-index: -1; top: 0px; left: 0px; opacity: 0; }
+
+.j-spinner2 img { width: 200px; height: 100%; position: absolute; z-index: -1; top: 0px; left: 0px; opacity: 0; }
+
+.reviewConfirmMessage { padding-bottom: 36px; }
+
+.statusBar.text div { padding-top: 30px; width: 26.3%; }
+
+.customer-shipping-information-step, .billing-step, .review-step, .confirmation-step { display: inline-block; width: 24%; text-align: center; }
+
+.customer-shipping-information-step p, .billing-step p, .review-step p, .confirmation-step p { font-family: HelveticaNeueW02-75Bold, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; }
+
+.statusBar .box.active { background: rgb(51, 51, 102); }
+
+.statusBar .box { display: inline-block; width: 26.3%; height: 20px; transform: skewX(-20deg); background: rgb(216, 216, 216); margin-right: 0px; margin-top: 6px; }
+
+.progress-bar-wrapper { text-align: center; }
+
+@media only screen and (min-width: 768px) and (max-width: 899px) {
+  .statusBar.text div { width: 27.3%; }
+  .statusBar .box { width: 27.3%; }
+}
+
+.pencilIcon { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-size: 18px; line-height: 100%; font-weight: 700; color: rgb(51, 51, 102); margin: 0px; padding: 0px; }
+
+.dateHeader { margin-left: -29px; margin-right: -65px; }
+
+.uspsFee { font-weight: 700; font-size: 14px; }
+
+.graySectionCost { font-weight: 700; font-size: 14px; color: rgb(89, 89, 89); padding-bottom: 8px; }
+
+.paddingStyle { padding-bottom: 10px; }
+
+.detailsAppt { padding-top: 40px; padding-left: 0px; padding-bottom: 0px; }
+
+.confrimInstruct { padding-top: 30px; padding-bottom: 30px; padding-left: 0px; }
+
+.servicesFee { padding-left: 10px; }
+
+.listServices { padding-bottom: 10px; }
+
+.mobileChevron { width: 26px; margin-left: 120px; transform: rotate(180deg); margin-bottom: 10px; }
+
+.mobileDownChevron { width: 26px; margin-left: 120px; transform: rotate(0deg); margin-top: 10px; }
+
+.cancelP { padding-top: 22px; padding-left: 38px; word-break: break-all; }
+
+.bodyChanges { padding-left: 33px !important; }
+
+.btnRetentionCancel { width: 100%; }
+
+.retentionBtn { padding-top: 60px; padding-left: 22px; }
+
+.arriveEarly { padding-top: 10px; padding-bottom: 18px; }
+
+.grayHead { color: rgb(89, 89, 89); font-weight: 700; }
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .checkboxTextTerms { margin-top: -30px !important; display: table !important; }
+}
+
+.renewalModal { list-style-type: disc; list-style-position: inside; text-indent: -20px; padding-left: 1.5em; }
+
+.info-icon-img { display: inline; height: 35px; margin-left: -10px; }
+
+.tooltip-modal .modal-dialog { width: 400px; }
+
+.po-hours-header { padding-bottom: 10px; padding-top: 20px; }
+
+.business-hours .col-sm-12 { padding-left: 0px; padding-bottom: 10px; }
+
+.business-hours .modalHeader { margin-bottom: 5px; }
+
+.business-hours .tests1 { width: 50% !important; }
+
+.business-hours .tests2 { padding-right: 0px; width: 139px !important; }

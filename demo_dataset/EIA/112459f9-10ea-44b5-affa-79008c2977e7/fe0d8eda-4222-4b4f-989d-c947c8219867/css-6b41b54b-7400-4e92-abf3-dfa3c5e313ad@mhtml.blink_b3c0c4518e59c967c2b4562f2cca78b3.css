@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.app-components-CommonShoppingCart-Footer-styles__container--18Z61 { padding: 16px; background-color: rgb(255, 255, 255); }
+
+.app-components-CommonShoppingCart-Footer-styles__container--18Z61 h1, .app-components-CommonShoppingCart-Footer-styles__container--18Z61 h3 { margin: 0px; font-size: 16px; font-weight: 400; }
+
+.app-components-CommonShoppingCart-Footer-styles__buttonContainer--1DdkB { padding-top: 16px; text-align: center; }
+
+.app-components-CommonShoppingCart-Footer-styles__buttonContainer--1DdkB .app-components-CommonShoppingCart-Footer-styles__button--2iWO3 { width: 100%; }
+
+.app-components-CommonShoppingCart-Footer-styles__icon--2VfpC svg { height: 24px; width: 24px; margin-right: 5px; }
+
+.app-components-CommonShoppingCart-Footer-styles__fareAlert--3vBLs { margin: 16px 0px; font-size: 12px; float: left; width: 100%; }
+
+.app-components-CommonShoppingCart-Footer-styles__fareAlert--3vBLs > div { margin-top: 3px; }
+
+.app-components-CommonShoppingCart-Footer-styles__fareAlert--3vBLs svg { margin-right: 8px; }
+
+.app-components-CommonShoppingCart-Footer-styles__upliftMonthlyPricing--1XGrV { margin-bottom: 20px; float: right; }
+
+.app-components-CommonShoppingCart-Footer-styles__corporateMessage--PDWi0 { width: 100%; padding-top: 12px; }
+
+.app-components-CommonShoppingCart-Footer-styles__corporateMessage--PDWi0 svg { margin-right: 8px; fill: rgb(27, 119, 66); }

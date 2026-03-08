@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.app-containers-LocalizationContent-components-RegionSelector-regionSelector__blockDisplay--2X-SU { padding: 0px; display: block !important; }
+
+.app-containers-LocalizationContent-components-RegionSelector-regionSelector__regionSelector--12OXZ { display: flex; flex-flow: row nowrap; justify-content: space-between; padding-right: 0.5em; white-space: normal; }
+
+.app-containers-LocalizationContent-components-RegionSelector-regionSelector__regionSelectorRegion--1JlMu { width: 70%; }
+
+.app-containers-LocalizationContent-components-RegionSelector-regionSelector__valueTxt--Ve28H { width: 90%; }
+
+.app-containers-LocalizationContent-components-RegionSelector-regionSelector__languageWrapperStyle--31eMx { display: none; }
+
+@media screen and (min-width: 944px) {
+  .app-containers-LocalizationContent-components-RegionSelector-regionSelector__languageWrapperStyle--31eMx { display: inline; }
+}

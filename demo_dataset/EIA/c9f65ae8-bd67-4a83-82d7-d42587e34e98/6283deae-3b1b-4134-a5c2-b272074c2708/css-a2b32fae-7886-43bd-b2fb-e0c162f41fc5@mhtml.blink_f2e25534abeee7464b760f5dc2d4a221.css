@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-162tve5 { line-height: 1.5; font-weight: 600; font-size: 2rem; margin-top: 0px; margin-right: 0px; margin-left: 0px; color: var(--chakra-colors-white); margin-bottom: var(--chakra-space-6); }
+
+@media screen and (min-width: 64rem) {
+  .css-162tve5 { font-size: 2.5rem; }
+}

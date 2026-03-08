@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-1xa55ag { display: flex; flex-wrap: wrap; margin: 0px -8px; }
+
+@media (min-width: 564px) {
+  .css-1xa55ag { margin: 0px -12px; }
+}

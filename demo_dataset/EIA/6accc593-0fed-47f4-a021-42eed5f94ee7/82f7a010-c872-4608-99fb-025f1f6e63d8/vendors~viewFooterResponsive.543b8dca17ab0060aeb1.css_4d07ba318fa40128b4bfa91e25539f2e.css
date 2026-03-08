@@ -1,0 +1,254 @@
+@charset "utf-8";
+
+.footer-column-last .social .icon-email-o-bk-large { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIyIDE4YzAgLjYtLjQgMS0xIDFIM2ExIDEgMCAwMS0xLTFWNS42bDkuNyA3LjhhLjUuNSAwIDAwLjYgMEwyMiA1LjZsLjEuNHYxMnpNMjEgNWguMUwxMiAxMi40IDIuOSA1SDIxem0wLTFIM2EyIDIgMCAwMC0yIDJ2MTJjMCAxLjEuOSAyIDIgMmgxOGEyIDIgMCAwMDItMlY2YTIgMiAwIDAwLTItMnoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") 0% 0% / 1.5rem 1.5rem no-repeat; height: 1.5rem; width: 1.5rem; }
+
+.footer-column-last .social .icon-star-o-bk-large { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEyIDQuNGwxLjggNkgyMGwtNSAzLjggMiA2LjEtNS0zLjgtNC45IDMuOCAxLjktNi01LTRoNi4ybDEuOS02SDEyek0xMiAxTDkuNCA5LjRIMWw2LjggNS4yTDUuMiAyM2w2LjgtNS4yIDYuOCA1LjItMi42LTguNEwyMyA5LjRoLTguNEwxMiAxeiIvPjwvc3ZnPg==") 0% 0% / 1.5rem 1.5rem no-repeat; height: 1.5rem; width: 1.5rem; }
+
+.footer-column-last .social .icon-credit-card-o-bk-large { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE0LjUgMTRMMTIgMTIuMSA5LjUgMTRsMS0zTDggOWgzbDEtMyAxIDNoM2wtMi41IDJ6Ii8+PHBhdGggZD0iTTIxLjkgNEgyLjFDMS41IDQgMSA0LjUgMSA1LjF2MTMuOGMwIC42LjUgMS4xIDEuMSAxLjFoMTkuOGMuNiAwIDEuMS0uNSAxLjEtMS4xVjUuMWMwLS42LS41LTEuMS0xLjEtMS4xem0uMSAxNC45bC0uMS4xSDIuMWwtLjEtLjFWMTdoMjB2MS45ek0yIDE2VjUuMWwuMS0uMWgxOS44bC4xLjFWMTZIMnoiLz48L3N2Zz4=") 0% 0% / 1.5rem 1.5rem no-repeat; height: 1.5rem; width: 1.5rem; }
+
+.footer-column-last .social.icon-social-facebook { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEzLjMgMjF2LTguMkgxNmwuNC0zLjJoLTN2LTJjMC0xIC4yLTEuNiAxLjUtMS42aDEuNlYzLjFMMTQuMSAzYy0yLjMgMC00IDEuNS00IDQuMnYyLjRINy41djMuMmgyLjdWMjFoMy4xeiIvPjwvc3ZnPg==") 0% 0% / 1.5rem 1.5rem no-repeat; height: 1.5rem; width: 1.5rem; }
+
+.footer-column-last .social.icon-social-instagram { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMjAgOC4zaDBjMC0uOC0uMi0xLjMtLjQtMS44cy0uNC0uOS0uOC0xLjMtLjgtLjYtMS4zLS44YTc3LjggNzcuOCAwIDAwLTExIDAgMy40IDMuNCAwIDAwLTIgMmMtLjMuNi0uNCAxLjItLjQgMmE3OCA3OCAwIDAwLjMgOS4xYy4yLjUuNCAxIC44IDEuMy40LjQuOC42IDEuMy44YTY2LjUgNjYuNSAwIDAwMTEgMCAzLjQgMy40IDAgMDAyLTJjLjMtLjYuNC0xLjEuNC0yYTc4IDc4IDAgMDAwLTcuM3oiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTE2LjUgOC41YTEgMSAwIDExMC0yIDEgMSAwIDAxMCAyTTEyIDhhNCA0IDAgMTEwIDggNCA0IDAgMDEwLTh6bTAgNmEyIDIgMCAxMDAtNCAyIDIgMCAwMDAgNHoiIGZpbGw9IiMwMDAiLz48L2c+PC9zdmc+") 0% 0% / 1.5rem 1.5rem no-repeat; height: 1.5rem; width: 1.5rem; }
+
+.footer-column-last .social.icon-social-twitter { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIxIDYuM2wtMi4xLjZjLjgtLjUgMS4zLTEuMyAxLjYtMi4xLS43LjQtMS41LjctMi4zLjlhMy43IDMuNyAwIDAwLTIuNy0xLjIgMy43IDMuNyAwIDAwLTMuNyAzLjhWOWMtMy0uMS01LjctMS42LTcuNi00YTQgNCAwIDAwLS41IDJjMCAxLjIuNyAyLjQgMS43IDMuMS0uNiAwLTEuMi0uMS0xLjctLjQgMCAxLjggMS4zIDMuMyAzIDMuN2wtMSAuMUg1YTMuNyAzLjcgMCAwMDMuNSAyLjZBNy4zIDcuMyAwIDAxMyAxNy44YzEuNyAxLjEgMy42IDEuNyA1LjcgMS43IDYuOCAwIDEwLjUtNS44IDEwLjUtMTAuOHYtLjVjLjctLjUgMS4zLTEuMiAxLjgtMnoiLz48L3N2Zz4=") 0% 0% / 1.5rem 1.5rem no-repeat; height: 1.5rem; width: 1.5rem; }
+
+.footer-column-last .social.icon-social-pinterest { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTExLjkgMTUuOGwtLjIuNi0uNiAyLjFjLS4zIDEuMS0uOCAyLjEtMS41IDNsLS4zLjQtLjIuMXYtLjJMOC44IDIwYzAtMS4yLjItMi41LjUtMy43YTU1MCA1NTAgMCAwMDEtNC4yYy0uNC0xLS40LTIuMSAwLTMgLjMtLjcgMS0xLjIgMS42LTEuMmExLjMgMS4zIDAgMDExLjQgMS4yYzAgLjYgMCAxLjItLjIgMS44bC0uNiAyLjFhMS43IDEuNyAwIDAwMiAyLjFjLjgtLjIgMS40LS42IDEuNy0xLjIuNi0uOSAxLTEuOSAxLTIuOVY5YTMuNiAzLjYgMCAwMC0yLjctM2MtMS41LS41LTMtLjMtNC4zLjUtMS4yLjgtMiAyLjEtMi4yIDMuNiAwIC43IDAgMS41LjMgMi4xbC40LjZjLjEuMS4yLjMuMS41bC0uMi44YzAgLjMtLjMuNC0uNS4zYTMgMyAwIDAxLTEuNy0xLjhjLS43LTEuOS0uNC00IC44LTUuNmE2LjggNi44IDAgMDE0LjctMi45YzEuNC0uMiAyLjktLjEgNC4yLjRhNS45IDUuOSAwIDAxMy44IDYuOCA3LjcgNy43IDAgMDEtMS4zIDMuNUE1IDUgMCAwMTE1IDE3YTMuNCAzLjQgMCAwMS0zLjEtMWwtLjItLjIiLz48L3N2Zz4=") 0% 0% / 1.5rem 1.5rem no-repeat; height: 1.5rem; width: 1.5rem; }
+
+.footer-column-last .social.icon-social-youtube { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTkgNGg3LjRjMS4yIDAgMi40IDAgMy42LjIuNSAwIDEgLjMgMS41LjZzMSAxIDEgMS42Yy4zLjcuNCAxLjUuNCAyLjN2MmEyOS43IDI5LjcgMCAwMS0uMyA1LjZjLS4zIDEtMS4xIDEuOC0yLjEgMmwtMi4yLjJIMTZsLTMuMi4xaC01QTEyMy4yIDEyMy4yIDAgMDEzIDE4Yy0uOC0uNC0xLjQtMS0xLjYtMi0uMi0uNy0uMy0xLjQtLjMtMi4ybC0uMS0yYTI5LjcgMjkuNyAwIDAxLjUtNS42Yy4yLTEgMS0xLjcgMi0yQTEzIDEzIDAgMDE1LjcgNEg5bS45IDQuMXY2LjJsNS43LTMuMS01LjctMy4xIi8+PC9zdmc+") 0% 0% / 1.5rem 1.5rem no-repeat; height: 1.5rem; width: 1.5rem; }
+
+footer[data-uri].responsive { text-align: unset; display: flex; flex-direction: column; width: 100%; font-family: "Macys Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; margin-top: 0.9375rem; min-width: 20rem; margin-bottom: 0px; background-color: rgb(248, 248, 248); }
+
+footer[data-uri].responsive [class*="icon-social"] { height: 2rem; width: 2rem; }
+
+footer[data-uri].responsive ul li .social { margin-right: 0px; }
+
+footer[data-uri].responsive label.connect { display: inline-block; line-height: 1.25rem !important; color: rgb(255, 255, 255) !important; }
+
+footer[data-uri].responsive .social.card, footer[data-uri].responsive .social.email, footer[data-uri].responsive .social.mobileapps, footer[data-uri].responsive .social.starrewards { float: unset; height: unset; width: unset; padding: 0px; margin: 0px; }
+
+footer[data-uri].responsive .social a { position: relative; }
+
+footer[data-uri].responsive .social a span.text { font-size: 0.875rem; position: relative; }
+
+footer[data-uri].responsive .social a span.text { font-weight: 400; }
+
+footer[data-uri].responsive .social a span.learn-more { display: block; font-weight: 400; font-size: 0.75rem; position: relative; top: 0.625rem; }
+
+footer[data-uri].responsive .social a div.social-description { position: relative; float: left; left: 0.5rem; }
+
+footer[data-uri].responsive #stayconnected [class*="icon-credit-card-"], footer[data-uri].responsive #stayconnected [class*="icon-email-"], footer[data-uri].responsive #stayconnected [class*="icon-mobile-"], footer[data-uri].responsive #stayconnected [class*="icon-star-"], footer[data-uri].responsive #stayconnectedIntl [class*="icon-credit-card-"], footer[data-uri].responsive #stayconnectedIntl [class*="icon-email-"], footer[data-uri].responsive #stayconnectedIntl [class*="icon-mobile-"], footer[data-uri].responsive #stayconnectedIntl [class*="icon-star-"] { float: left; }
+
+footer[data-uri].responsive .googleplay { padding-left: 0.625rem; }
+
+footer[data-uri].responsive .googleplay svg { height: 2.5rem; width: 8.4375rem; }
+
+footer[data-uri].responsive #social-icons-list { display: flex; flex-direction: row; margin-bottom: 0px; }
+
+footer[data-uri].responsive #social-icons-list li { margin-right: 0.75rem; }
+
+footer[data-uri].responsive #social-icons-list li a { font-size: 0px; display: inline-grid; }
+
+footer[data-uri].responsive ul li a { font-size: 0.75rem; }
+
+footer[data-uri].responsive .copyright { padding: 0px; margin: 0px auto; line-height: 1.125rem; }
+
+footer[data-uri].responsive .copyright p { font-size: 0.75rem; }
+
+footer[data-uri].responsive .legal { display: flex; justify-content: center; flex-wrap: wrap; }
+
+footer[data-uri].responsive .legal a { font-size: 12px; line-height: 18px; display: block; margin-bottom: 16px; }
+
+footer[data-uri].responsive label ul li a { font-weight: 400; }
+
+footer[data-uri].responsive label.checkbox-label:focus { outline: none; }
+
+footer[data-uri].responsive ul[class^="SITE_FOOTER_COLUMN_"] input[type="checkbox"] { display: none; }
+
+footer[data-uri].responsive #footer-redesign-row-1 { box-sizing: border-box; background-color: rgba(0, 0, 0, 0.88); padding-bottom: 42px; }
+
+footer[data-uri].responsive #footer-redesign-row-1 ul li a:hover { text-decoration: underline; }
+
+footer[data-uri].responsive #footer-redesign-row-2 { background-color: rgb(0, 0, 0); box-sizing: border-box; height: 8.5625rem; display: flex; flex-direction: column; padding: 2rem 2.5rem; width: 100%; max-width: inherit; margin: 0px auto; }
+
+footer[data-uri].responsive #footer-redesign-row-2 .legal { text-align: center; }
+
+footer[data-uri].responsive #footer-redesign-row-2 .legal a#ot-sdk-btn { font-size: 12px !important; color: rgb(255, 255, 255) !important; line-height: 18px !important; margin: 0px 0px 16px !important; padding: 0px 16px 0px 17px !important; }
+
+footer[data-uri].responsive #footer-redesign-row-2 .legal a#ot-sdk-btn + span { display: none; }
+
+footer[data-uri].responsive #footer-redesign-row-2 .legal svg { height: 1rem; width: 3rem; display: inline-block; vertical-align: middle; }
+
+footer[data-uri].responsive #footer-redesign-row-1-panels-container { margin: 0px auto; }
+
+@media only screen and (max-width: 599px) {
+  footer[data-uri].responsive #social-icons-list { padding-top: 1.1875rem; }
+  footer[data-uri].responsive #footer-redesign-row-1 { max-width: 37.4375rem; width: 100%; }
+  footer[data-uri].responsive #footer-redesign-row-1 .social-card .card-section .card-icon svg { width: 62px; }
+  footer[data-uri].responsive #footer-redesign-row-1 .social-card .card-section .card-icon #credit-card-image { max-width: 62px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container { width: 100%; position: relative; justify-content: center; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #creditCard ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerServiceIntl ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerService ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysincIntl ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysinc ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #storesIntl ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #stores ul { margin-bottom: 0px; min-height: 2.75rem; padding: 1.625rem 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerService, footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerServiceIntl { display: flex; margin-left: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #creditCard { display: flex; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #stores, footer[data-uri].responsive #footer-redesign-row-1-panels-container #storesIntl { display: flex; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysinc, footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysincIntl { display: flex; margin-left: 0px; padding-left: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnected .social.email, footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnected .social.mobileapps, footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnectedIntl .social.email, footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnectedIntl .social.mobileapps { display: inline; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnected-social-panel { display: flex; flex-direction: column; height: 100%; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnected-social-panel .title { margin-bottom: 0.625rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #social-icons-list { margin-bottom: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.email { padding-top: 0px; position: relative; top: 10px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.mobileapps { position: relative; top: 2.5rem; padding-top: 0px; margin-bottom: 2.1875rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.card { padding-top: 1.25rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.starrewards { padding-top: 0.625rem; }
+  footer[data-uri].responsive #footer-redesign-row-2 { height: 17.75rem; width: 100%; display: flex; flex-direction: column; justify-content: space-between; margin: 0px; padding: 2rem 0.625rem; }
+  footer[data-uri].responsive #footer-redesign-row-2 .copyright { width: 20.9375rem; }
+  footer[data-uri].responsive #footer-redesign-row-2 div#easyBrowsingSVG { width: 13.75rem; }
+}
+
+@media only screen and (max-width: 400px) {
+  footer[data-uri].responsive #footer-redesign-row-2 { height: 100%; }
+}
+
+@media only screen and (max-width: 350px) {
+  footer[data-uri].responsive { min-width: 22.5rem; }
+}
+
+@media only screen and (max-width: 1023px) {
+  footer[data-uri].responsive label.checkbox-label { width: 100%; }
+  footer[data-uri].responsive label.checkbox-label ul li a { text-decoration: none; }
+  footer[data-uri].responsive label.checkbox-label:hover { cursor: pointer; }
+  footer[data-uri].responsive ul li { font-size: 0.875rem; }
+  footer[data-uri].responsive .changeCountry { background: transparent; border: none; padding: 0px; }
+  footer[data-uri].responsive .credit-card-checkbox, footer[data-uri].responsive .customer-service-checkbox, footer[data-uri].responsive .macys-inc-checkbox, footer[data-uri].responsive .our-stores-checkbox { flex-direction: column; width: 100%; }
+  footer[data-uri].responsive .credit-card-checkbox input[type="checkbox"], footer[data-uri].responsive .customer-service-checkbox input[type="checkbox"], footer[data-uri].responsive .macys-inc-checkbox input[type="checkbox"], footer[data-uri].responsive .our-stores-checkbox input[type="checkbox"] { display: none; }
+  footer[data-uri].responsive .credit-card-checkbox input[type="checkbox"] + span.plusminus-icon, footer[data-uri].responsive .customer-service-checkbox input[type="checkbox"] + span.plusminus-icon, footer[data-uri].responsive .macys-inc-checkbox input[type="checkbox"] + span.plusminus-icon, footer[data-uri].responsive .our-stores-checkbox input[type="checkbox"] + span.plusminus-icon, footer[data-uri].responsive ul[class^="SITE_FOOTER_COLUMN_"] input[type="checkbox"] + span.plusminus-icon { background-repeat: no-repeat; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMzcuNSAxOC4wNTZIMjEuOTQ0VjIuNWgtMy44ODh2MTUuNTU2SDIuNXYzLjg4OGgxNS41NTZWMzcuNWgzLjg4OFYyMS45NDRIMzcuNXoiLz48L3N2Zz4="); height: 0.9375rem; width: 0.9375rem; background-size: 0.9375rem 0.9375rem; position: absolute; right: 0px; transform: translateY(-17px); }
+  footer[data-uri].responsive .credit-card-checkbox input[type="checkbox"]:checked + span.plusminus-icon, footer[data-uri].responsive .customer-service-checkbox input[type="checkbox"]:checked + span.plusminus-icon, footer[data-uri].responsive .macys-inc-checkbox input[type="checkbox"]:checked + span.plusminus-icon, footer[data-uri].responsive .our-stores-checkbox input[type="checkbox"]:checked + span.plusminus-icon, footer[data-uri].responsive ul[class^="SITE_FOOTER_COLUMN_"] input[type="checkbox"]:checked + span.plusminus-icon { background-repeat: no-repeat; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMi41IDE4LjA1NmgzNXYzLjg4OWgtMzV6Ii8+PHBhdGggZD0iTTIuNSAxOC4wNTZoMzV2My44ODloLTM1eiIvPjwvc3ZnPg=="); height: 0.9375rem; width: 0.9375rem; background-size: 0.9375rem 0.9375rem; position: absolute; right: 0px; transform: translateY(-17px); }
+  footer[data-uri].responsive li.credit-card-checkbox-item, footer[data-uri].responsive li.customer-service-checkbox-item, footer[data-uri].responsive li.footer-checkbox-item, footer[data-uri].responsive li.macys-inc-checkbox-item, footer[data-uri].responsive li.our-stores-checkbox-item { display: none; }
+  footer[data-uri].responsive .credit-card-checkbox input[type="checkbox"]:checked ~ li, footer[data-uri].responsive .customer-service-checkbox input[type="checkbox"]:checked ~ li, footer[data-uri].responsive .footer-column input[type="checkbox"]:checked ~ li, footer[data-uri].responsive .macys-inc-checkbox input[type="checkbox"]:checked ~ li, footer[data-uri].responsive .our-stores-checkbox input[type="checkbox"]:checked ~ li { display: list-item; }
+  footer[data-uri].responsive #footer-redesign-ads-row { display: none; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container { display: flex; flex-direction: column; }
+  footer[data-uri].responsive .googleplay { padding-left: 1.25rem; }
+  footer[data-uri].responsive #stayconnected, footer[data-uri].responsive #stayconnectedIntl { order: 7; }
+  footer[data-uri].responsive #customerService, footer[data-uri].responsive #customerServiceIntl { width: 100%; border-top: rgb(98, 99, 105); border-bottom: rgb(98, 99, 105); order: 2; }
+  footer[data-uri].responsive #creditCard { width: 100%; border-bottom: rgb(98, 99, 105); order: 3; }
+  footer[data-uri].responsive #stores, footer[data-uri].responsive #storesIntl { width: 100%; border-bottom: rgb(98, 99, 105); order: 4; }
+  footer[data-uri].responsive #macysinc, footer[data-uri].responsive #macysincIntl { width: 100%; border-bottom: rgb(98, 99, 105); order: 5; margin-bottom: 1.875rem; }
+  footer[data-uri].responsive div.footer-column { order: 2; border-bottom: rgb(98, 99, 105); }
+  footer[data-uri].responsive div.footer-column:nth-last-child(2) { margin-bottom: 1.875rem; border-bottom: none; }
+  footer[data-uri].responsive ul[class^="SITE_FOOTER_COLUMN_"] { margin-bottom: 0px; min-height: 2.75rem; padding: 1.625rem 0px; }
+  footer[data-uri].responsive .footer-checkbox-item { margin-top: 1.5rem; }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1023px) {
+  footer[data-uri].responsive #footer-redesign-row-1 { max-width: 63.9375rem; width: 100%; }
+  footer[data-uri].responsive #footer-redesign-row-1 .appdownloads { padding-top: 1.25rem; }
+  footer[data-uri].responsive #footer-redesign-row-1 .social-card .card-section .card-icon svg { width: 96px; }
+  footer[data-uri].responsive #footer-redesign-row-1 .social-card .card-section .card-icon #credit-card-image { max-width: 96px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container { width: 100%; position: relative; justify-content: center; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #creditCard ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerServiceIntl ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerService ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysincIntl ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysinc ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #storesIntl ul, footer[data-uri].responsive #footer-redesign-row-1-panels-container #stores ul { margin-bottom: 0px; min-height: 2.75rem; padding: 1.625rem 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerService, footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerServiceIntl { display: flex; margin-left: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #creditCard { display: flex; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #stores, footer[data-uri].responsive #footer-redesign-row-1-panels-container #storesIntl { display: flex; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysinc, footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysincIntl { display: flex; margin-left: 0px; padding-left: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnected .social.email, footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnected .social.mobileapps, footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnectedIntl .social.email, footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnectedIntl .social.mobileapps { display: inline; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #stayconnected-social-panel { display: flex; flex-direction: column; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #social-icons-list { padding-top: 1.1875rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.email { padding-top: 0px; position: relative; top: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.mobileapps { align-self: flex-end; justify-content: center; padding-top: 0px; position: relative; right: 4.375rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.card, footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.starrewards { padding-top: 0.625rem; }
+  footer[data-uri].responsive #footer-redesign-row-2 { height: 12.1875rem; max-width: 63.9375rem; width: 100%; display: flex; flex-direction: column; justify-content: space-between; margin: 0px; padding: 2rem 1.25rem; }
+  footer[data-uri].responsive #footer-redesign-row-2 .copyright { width: 34.375rem; }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1023px) and (max-width: 1023px) {
+  footer[data-uri].responsive #footer-redesign-row-2 { padding: 1.5rem 1.25rem 2rem; }
+}
+
+@media only screen and (min-width: 1024px) {
+  footer[data-uri].responsive .credit-card-checkbox input[type="checkbox"], footer[data-uri].responsive .customer-service-checkbox input[type="checkbox"], footer[data-uri].responsive .macys-inc-checkbox input[type="checkbox"], footer[data-uri].responsive .our-stores-checkbox input[type="checkbox"] { display: none; }
+  footer[data-uri].responsive #footer-redesign-ads-row { display: block; margin: 0px auto; text-align: center; }
+  footer[data-uri].responsive #footer-redesign-ads-row #globalBodyFooterBannerContent { position: relative; padding-top: 1.25rem; padding-bottom: 1.25rem; height: 8.125rem; }
+  footer[data-uri].responsive #footer-redesign-ads-row #globalBodyFooterBannerContent img { max-width: 100%; height: auto; }
+  footer[data-uri].responsive #footer-redesign-row-1 { display: flex; height: max-content; max-width: inherit; width: 100%; margin: 0px auto; padding-left: 20px; padding-right: 20px; }
+  footer[data-uri].responsive #footer-redesign-row-1 .appdownloads { padding-top: 0.3125rem; }
+  footer[data-uri].responsive #footer-redesign-row-1 .overall-social-list { padding-bottom: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1 .social-card .card-section .card-icon { margin-right: 0.5rem; }
+  footer[data-uri].responsive #footer-redesign-row-1 .social-card .card-section .card-icon svg { width: 83px; }
+  footer[data-uri].responsive #footer-redesign-row-1 .social-card .card-section .card-icon #credit-card-image { max-width: 83px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container { position: relative; width: 100%; display: flex; flex-direction: row; justify-content: space-between; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .footer-checkbox-item { margin-top: 1rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .footer-checkbox-item a { cursor: pointer; text-decoration: none; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .footer-checkbox-item a:hover { text-decoration: underline; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .changeCountry { background: transparent; border: none; padding: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .SITE_FOOTER_COLUMN_4 { width: 8.75rem; word-break: break-word; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerService { width: 7.8125rem; flex-grow: 1.55; margin-left: 0px; margin-right: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #customerServiceIntl { width: 9.6875rem; flex-grow: 1; margin-left: 0px; margin-right: 2.5rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #creditCard { float: unset; width: 9.6875rem; flex-grow: 2; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #stores { width: 10rem; flex-grow: 1.55; padding: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #stores .our-stores-checkbox { width: 10rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #storesIntl { width: 10rem; margin-left: 0px; margin-right: 2.5rem; flex-grow: 1; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #storesIntl .our-stores-checkbox { width: 10rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysinc { flex-grow: 1; margin: 0px 0px 0px -1.25rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #macysincIntl { flex-grow: 1; margin-left: 0px; padding-left: 0px; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container #social-icons-list { width: 15rem; display: flex; flex-direction: row; justify-content: space-between; padding-top: 1rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.email { padding-top: 1.25rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.card { padding-top: 0.625rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.starrewards { padding-top: 0.625rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .social.mobileapps { padding-top: 0.9375rem; }
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container .footer-column { display: flex; flex: 1 1 auto; }
+  footer[data-uri].responsive #footer-redesign-row-2 { height: 100%; padding: 2rem 2.5rem; }
+  footer[data-uri].responsive #footer-redesign-row-2 .copyright { display: flex; justify-content: center; }
+  footer[data-uri].responsive #footer-redesign-row-2 .legal { width: 960px; height: max-content; margin: 0px auto; }
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1023px) {
+  footer[data-uri].responsive #footer-redesign-row-2 { padding-left: 0px; padding-right: 0px; }
+}
+
+@media only screen and (max-width: 370px) {
+  footer[data-uri].responsive .responsive { min-width: 100%; }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 605px) {
+  footer[data-uri].responsive #footer-redesign-row-2 #webAccessibilitySVG { padding-left: 12.5rem; }
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+  footer[data-uri].responsive .SITE_FOOTER_COLUMN_2 .footer-checkbox-item, footer[data-uri].responsive .SITE_FOOTER_COLUMN_3 .footer-checkbox-item { width: 6.875rem; word-break: break-word; }
+  footer[data-uri].responsive .SITE_FOOTER_COLUMN_2 li:nth-child(2n) { width: 8.75rem; }
+}
+
+@media only screen and (min-width: 1280px) {
+  footer[data-uri].responsive .SITE_FOOTER_COLUMN_4 .footer-checkbox-item { width: 8.125rem; }
+  footer[data-uri].responsive #footer-redesign-row-1 { padding-left: 80px; padding-right: 80px; }
+}
+
+@media only screen and (min-width: 1440px) {
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container { max-width: 1280px; }
+  footer[data-uri].responsive .SITE_FOOTER_COLUMN_2 .footer-checkbox-item, footer[data-uri].responsive .SITE_FOOTER_COLUMN_3 .footer-checkbox-item { width: 9.375rem; }
+}
+
+@media only screen and (min-width: 1600px) {
+  footer[data-uri].responsive #footer-redesign-row-1-panels-container { max-width: 1440px; }
+}
+
+@media only screen and (max-width: 1280px) {
+  footer[data-uri].responsive .footer-column-last { width: 356px; }
+}
+
+@media only screen and (max-width: 1160px) {
+  footer[data-uri].responsive .footer-column-last { width: 317px; }
+}
+
+@media only screen and (max-width: 1023px) {
+  footer[data-uri].responsive #footer-redesign-row-1 .footer-column-last { width: 100%; }
+  footer[data-uri].responsive #footer-redesign-row-1 .sign-up-form { flex-direction: column; }
+  footer[data-uri].responsive #footer-redesign-row-1 .sign-up-input { margin-right: 0px; margin-bottom: 16px; }
+  footer[data-uri].responsive #footer-redesign-row-1 .appdownloads-section { display: block; }
+  footer[data-uri].responsive #footer-redesign-row-1 .overall-social-list { width: 100%; }
+  footer[data-uri].responsive .appdownloads-section, footer[data-uri].responsive .footer-sign-up, footer[data-uri].responsive .overall-social-list, footer[data-uri].responsive .social-card, footer[data-uri].responsive ul.resp-pad { padding-left: 1.25rem; padding-right: 1.25rem; }
+  footer[data-uri].responsive span.plusminus-icon { margin-right: 2rem; }
+  footer[data-uri].responsive .appdownloads-section { display: block; }
+  footer[data-uri].responsive .overall-social-list { width: 100%; }
+  footer[data-uri].responsive ul[class^="SITE_FOOTER_COLUMN_"] { margin-left: 20px; margin-right: 20px; padding-left: 0px; padding-right: 0px; border-bottom: 1px solid silver; }
+  footer[data-uri].responsive .SITE_FOOTER_COLUMN_4 { border-bottom-width: 0px !important; }
+}

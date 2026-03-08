@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.app-components-CommonShoppingCart-NotificationPopup-styles__container--2kxhY { padding: 16px; margin-top: 10px; right: 50px; z-index: 9999; color: rgb(0, 0, 0); text-align: left; width: 272px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-CommonShoppingCart-NotificationPopup-styles__container--2kxhY { margin-right: 50px; width: 320px; }
+}
+
+.app-components-CommonShoppingCart-NotificationPopup-styles__itemStatus--22JEX { margin-top: -28px; }
+
+.app-components-CommonShoppingCart-NotificationPopup-styles__itemStatus--22JEX svg { width: 24px; height: 24px; margin-right: 8px; fill: rgb(27, 119, 66) !important; }
+
+.app-components-CommonShoppingCart-NotificationPopup-styles__itemStatus--22JEX > div { margin-top: 3px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-CommonShoppingCart-NotificationPopup-styles__itemStatus--22JEX { margin-top: 0px; margin-bottom: 16px; }
+}
+
+.app-components-CommonShoppingCart-NotificationPopup-styles__totals--2Uace { display: none; }
+
+@media screen and (min-width: 720px) {
+  .app-components-CommonShoppingCart-NotificationPopup-styles__totals--2Uace { display: block; }
+}
+
+.app-components-CommonShoppingCart-NotificationPopup-styles__btnCart--3o3bd { display: block; }

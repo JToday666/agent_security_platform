@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.atm-c-checkbox { position: relative; display: block; width: 1.25rem; height: 1.25rem; -webkit-box-flex: 0; flex: 0 0 auto; }
+
+.atm-c-checkbox__input { position: absolute; inset: 0px; z-index: 4; display: block; width: 100%; height: 100%; cursor: pointer; opacity: 0; margin: 0px; }
+
+.atm-c-checkbox__input:disabled { cursor: not-allowed; }
+
+.atm-c-checkbox__custom-check { position: absolute; inset: 0px; z-index: 1; }
+
+.atm-c-checkbox__custom-check::before { content: ""; position: absolute; inset: 0px; z-index: 1; display: block; border: 2px solid rgb(0, 34, 68); border-radius: 4px; background: rgb(255, 255, 255); }
+
+.atm-c-checkbox__input:focus + .atm-c-checkbox__custom-check::before { box-shadow: rgb(98, 68, 187) 0px 0px 0px 4px; outline: transparent solid 4px; }
+
+.atm-c-checkbox__input:disabled + .atm-c-checkbox__custom-check::before { border-color: rgb(204, 204, 204); cursor: not-allowed; }
+
+.atm-c-checkbox__input:checked + .atm-c-checkbox__custom-check::before { background: rgb(0, 34, 68); }
+
+.atm-c-checkbox--inverted .atm-c-checkbox__custom-check::before { background-color: transparent; border-color: rgb(255, 255, 255); }
+
+.atm-c-checkbox__custom-check::after { content: ""; position: absolute; top: 6px; left: 5px; z-index: 2; display: block; width: 9px; height: 3px; border-style: solid; border-image: initial; border-width: 0px 0px 2px 2px; border-color: transparent rgb(255, 255, 255) rgb(255, 255, 255); box-sizing: content-box; transform: rotate(-45deg); opacity: 0; }
+
+.atm-c-checkbox__input:checked + .atm-c-checkbox__custom-check::after { opacity: 1; }
+
+.atm-c-checkbox--inverted .atm-c-checkbox__input:focus + .atm-c-checkbox__custom-check::before { box-shadow: rgb(179, 165, 223) 0px 0px 0px 4px; }

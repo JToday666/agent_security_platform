@@ -1,0 +1,250 @@
+@charset "utf-8";
+
+.station-search-box[_ngcontent-noc-c221] { background-color: rgb(255, 255, 255); border-radius: 0.4rem; height: 7.4rem; margin-top: 5px; padding: 4px 8px !important; }
+
+@media (min-width: 576px) {
+  .station-search-box[_ngcontent-noc-c221] { height: 5.5rem; }
+}
+
+.same-station-error[_ngcontent-noc-c221] { font-size: 12px; }
+
+.departed-picker[_ngcontent-noc-c221] { margin-left: 2rem; text-align: start !important; }
+
+.station-search-box.scerror[_ngcontent-noc-c221] { margin-bottom: 15px; }
+
+.station-search-box.smerror[_ngcontent-noc-c221] { margin-bottom: 15px; }
+
+.pass-travel-button[_ngcontent-noc-c221] { padding: 0.9rem 4rem; white-space: nowrap; }
+
+.ff-top-navbar__button[_ngcontent-noc-c221] { flex: 1 1 150px; color: rgb(255, 255, 255); background-color: rgb(0, 36, 54); border-radius: 0px; min-height: 4.6rem; white-space: nowrap; }
+
+.ff-top-navbar__button[_ngcontent-noc-c221] img[_ngcontent-noc-c221] { width: 10px; height: auto; }
+
+.ff-top-navbar__button[_ngcontent-noc-c221]:hover, .ff-top-navbar__button[_ngcontent-noc-c221]:focus, .ff-top-navbar__button.active[_ngcontent-noc-c221] { background-color: rgb(22, 127, 166); }
+
+@media (min-width: 992px) {
+  .ff-top-navbar__button[_ngcontent-noc-c221] { flex: 0 1 11rem; max-width: 11rem; }
+}
+
+@media (min-width: 576px) {
+  .amtrak-ff-body[_ngcontent-noc-c221] { max-width: 80rem; }
+}
+
+@media (min-width: 992px) {
+  .amtrak-ff-body[_ngcontent-noc-c221] { max-width: 120rem; }
+}
+
+.search-btn[_ngcontent-noc-c221] { width: 30rem; letter-spacing: 1.2px; line-height: 19px; }
+
+.advanced-options-button[_ngcontent-noc-c221] { background-color: transparent; padding: 0.5rem 0.2rem; }
+
+@media (min-width: 768px) {
+  .advanced-options-button[_ngcontent-noc-c221] { padding: 0.9rem 0px 0.9rem 4rem; }
+}
+
+.advanced-options-button[_ngcontent-noc-c221] img[_ngcontent-noc-c221] { width: 1.2rem; margin-left: 0.5rem; }
+
+.advanced-options-dropdown[_ngcontent-noc-c221] { min-width: 30rem; }
+
+@media (min-width: 992px) {
+  .station-search-box[_ngcontent-noc-c221] { margin-top: 0px; }
+  .station-search-box.scerror[_ngcontent-noc-c221], .station-search-box.smerror[_ngcontent-noc-c221] { margin-bottom: 0px; }
+  .search-btn[_ngcontent-noc-c221] { width: 100%; height: 5rem; }
+}
+
+.to-station[_ngcontent-noc-c221], .from-station[_ngcontent-noc-c221] { align-self: flex-start; max-width: 42.5%; }
+
+.departs-container[_ngcontent-noc-c221] { border-radius: 4px; }
+
+station-search mat-form-field .mat-form-field-wrapper .mat-form-field-subscript-wrapper .ng-trigger mat-error { font-size: 1.2rem; }
+
+station-search mat-form-field .mat-form-field-wrapper .mat-form-field-subscript-wrapper { width: 14rem; top: 6.8rem !important; }
+
+@media (min-width: 576px) {
+  station-search mat-form-field .mat-form-field-wrapper .mat-form-field-subscript-wrapper { width: 100%; top: 5rem !important; }
+}
+
+.remove-trip-segment__button[_ngcontent-noc-c221] { border: 1px solid rgb(0, 36, 54); border-radius: 3rem; width: 2.4rem; height: 2.4rem; padding: 0px; background-color: transparent; }
+
+.remove-trip-segment__button[_ngcontent-noc-c221] img[_ngcontent-noc-c221] { width: 1rem; vertical-align: baseline; }
+
+.traveler-and-advanced-search[_ngcontent-noc-c221] { width: 100%; }
+
+@media (min-width: 992px) {
+  .traveler-and-advanced-search[_ngcontent-noc-c221] { max-width: 84.7%; }
+}
+
+.traveler-search[_ngcontent-noc-c221] { width: 50%; }
+
+@media (min-width: 768px) {
+  .traveler-search[_ngcontent-noc-c221] { width: 60%; }
+}
+
+.multi-city-trip-controls[_ngcontent-noc-c221] { width: 100%; justify-content: space-between; }
+
+.multi-city-trip-controls[_ngcontent-noc-c221] > button[_ngcontent-noc-c221] { height: 4rem; min-width: 8rem; flex-grow: 1; }
+
+@media (min-width: 768px) {
+  .multi-city-trip-controls[_ngcontent-noc-c221] { width: 22rem; justify-content: flex-end; }
+  .multi-city-trip-controls[_ngcontent-noc-c221] > button[_ngcontent-noc-c221] { flex-grow: 0; }
+  .multi-city-trip-controls[_ngcontent-noc-c221] .mc-clear-all[_ngcontent-noc-c221] { min-width: unset; margin: 0px 0px 0px 1rem; padding: 0px 2rem; }
+}
+
+@media (max-width: 993px) {
+  .multi-city-trip-controls[_ngcontent-noc-c221] > button[_ngcontent-noc-c221] { padding-left: 0px; padding-right: 0px; }
+}
+
+.mc-clear-all[_ngcontent-noc-c221] { text-align: right; }
+
+am-spinner[_ngcontent-noc-c221] { position: absolute; }
+
+.tab-nav-container[_ngcontent-noc-c221] { background-color: rgb(0, 77, 110); padding: 15px; }
+
+.search-trip__round-trip[_ngcontent-noc-c221] { padding: 0px; }
+
+.search-trip-types__list_item_icon[_ngcontent-noc-c221] { margin-right: auto; margin-left: auto; }
+
+.down-triangle-after[_ngcontent-noc-c221]::after { content: ""; border-width: 5px; border-style: solid; border-bottom-color: transparent; border-image: initial; border-left-color: transparent; border-right-color: transparent; border-top-color: initial; position: relative; top: 12px; left: 6px; }
+
+label.down-triangle-after[_ngcontent-noc-c221]::after { pointer-events: none; margin-left: -10px; left: 2px; }
+
+label.mat-checkbox-layout[_ngcontent-noc-c221] { padding-top: 1.9em; }
+
+.farefinder-multi-city[_ngcontent-noc-c221] .f-icon__remove[_ngcontent-noc-c221] { content: ""; }
+
+.multi-ride-title[_ngcontent-noc-c221] { word-break: break-word; font-family: OpenSans, Helvetica, Arial, "sans-serif"; font-weight: 300; font-size: 20px; }
+
+.multi-ride-desc[_ngcontent-noc-c221] { font-weight: 300; font-size: 1.2rem; padding-bottom: 10px; }
+
+.multi-ride-anchor[_ngcontent-noc-c221] { color: rgb(22, 127, 166); text-decoration: none; }
+
+.trip-round[_ngcontent-noc-c221] { margin-bottom: 35px; }
+
+.col-sm-2[_ngcontent-noc-c221] .align-self-center[_ngcontent-noc-c221] .direction-icon[_ngcontent-noc-c221] { margin-top: 0px; margin-bottom: 35px; height: 45px; }
+
+.amtrak-material-ff[_ngcontent-noc-c221] button.mat-button[_ngcontent-noc-c221] { height: auto; width: 80px; margin-left: auto; margin-right: auto; opacity: 0.75; color: rgb(115, 117, 117); font-family: OpenSans, Helvetica, Arial, "sans-serif"; font-weight: 300; font-size: 18px; letter-spacing: 0.14px; line-height: 24px; }
+
+.instructionText[_ngcontent-noc-c221] { background-color: rgb(255, 255, 255); border-width: 2px 1px 1px; border-style: solid; border-color: rgb(0, 38, 72) rgb(212, 216, 217) rgb(212, 216, 217); border-image: initial; margin-left: -0.5em; margin-top: -2.25em; padding: 1em; position: absolute; width: calc(100% - 1.25em); z-index: 10; }
+
+.farefinder-datepickers[_ngcontent-noc-c221] { background-color: rgb(255, 255, 255); border-radius: 4px; height: 4rem; }
+
+.farefinder-datepickers[_ngcontent-noc-c221] .mat-placeholder-required { display: none !important; }
+
+.farefinder-datepickers[_ngcontent-noc-c221] .mat-form-field-wrapper .mat-form-field-subscript-wrapper, .farefinder-datepickers[_ngcontent-noc-c221] .mat-form-field-wrapper .mat-form-field-underline { display: none !important; }
+
+.farefinder-datepickers[_ngcontent-noc-c221] .mat-form-field-label-wrapper { font-family: OpenSans, Helvetica, Arial, "sans-serif"; font-size: 1.4rem; color: rgb(0, 36, 54); font-weight: 300; letter-spacing: -0.14px; text-align: left; top: -0.65rem; }
+
+.farefinder-datepickers[_ngcontent-noc-c221] .mat-form-field-label-wrapper .mat-form-field-label { padding-left: 1rem; color: rgb(115, 117, 117) !important; }
+
+.farefinder-datepickers[_ngcontent-noc-c221] .mat-form-field-appearance-legacy .mat-form-field-wrapper { padding: 0px; }
+
+.farefinder-datepickers[_ngcontent-noc-c221] .mat-form-field-appearance-legacy .mat-form-field-infix { height: 4rem; width: 100%; }
+
+.departed-picker[_ngcontent-noc-c221], .return-picker[_ngcontent-noc-c221], .return-picker-label[_ngcontent-noc-c221] button[_ngcontent-noc-c221] { font-size: 1.4rem; height: 4rem; font-family: OpenSans, Helvetica, Arial, "sans-serif"; color: rgb(0, 36, 54); font-weight: 300; letter-spacing: -0.14px; text-align: left; outline-offset: 0px; padding-left: 1rem; }
+
+.return-container[_ngcontent-noc-c221], .return-picker-label[_ngcontent-noc-c221] { padding-left: 0.5rem; }
+
+.return-picker-label[_ngcontent-noc-c221] button[_ngcontent-noc-c221] { color: rgb(115, 117, 117); padding-left: 1.04rem; }
+
+.farefinder-dash-container[_ngcontent-noc-c221] { flex: 0 0 16.6667%; max-width: 16.6667%; }
+
+.farefinder-dash-container[_ngcontent-noc-c221] .farefinder-dash[_ngcontent-noc-c221] { background-color: rgb(151, 151, 151); width: 1.4rem; height: 1px; }
+
+.redeem-points[_ngcontent-noc-c221] { font-size: 1.4rem; margin-top: 5px; display: block; }
+
+.redeem-points[_ngcontent-noc-c221] .redeemlabel[_ngcontent-noc-c221] { padding-left: 0px !important; padding-right: 0px !important; }
+
+@media (min-width: 992px) {
+  .redeem-points[_ngcontent-noc-c221] { max-width: 84.9%; margin: 0px; }
+}
+
+@media (min-width: 992px) {
+  .points[_ngcontent-noc-c221] { padding-right: 20px; }
+}
+
+.redeem-points[_ngcontent-noc-c221] > div[_ngcontent-noc-c221] > label[_ngcontent-noc-c221] { color: rgb(0, 36, 54); font-size: 14px; line-height: 19px; }
+
+farefinder-ecoupon[_ngcontent-noc-c221] { display: block; }
+
+.apply-points-container[_ngcontent-noc-c221] { text-align: right; }
+
+.apply-points-container[_ngcontent-noc-c221] button[_ngcontent-noc-c221] { font-size: 1.4rem; line-height: 2.04rem; font-weight: 600; }
+
+.nav-inactive[_ngcontent-noc-c221] { background-color: rgb(255, 255, 255); color: rgb(0, 52, 77); }
+
+.nav-inactive[_ngcontent-noc-c221]:hover { background-color: rgb(0, 83, 126) !important; }
+
+.farefinder-nav-container[_ngcontent-noc-c221] { box-shadow: rgba(0, 0, 0, 0.16) 0px 2px 5px, rgba(0, 0, 0, 0.12) 0px 2px 10px; color: rgb(255, 255, 255); height: 46px; background-color: rgb(0, 36, 54) !important; }
+
+.refine-nav-container[_ngcontent-noc-c221] { color: rgb(0, 36, 54) !important; background-color: rgb(255, 255, 255) !important; }
+
+.refine-nav-container[_ngcontent-noc-c221] .container.nav[_ngcontent-noc-c221] { background-color: rgb(255, 255, 255) !important; }
+
+.refine-nav-container[_ngcontent-noc-c221] .ff-top-navbar[_ngcontent-noc-c221] .ff-top-navbar__button[_ngcontent-noc-c221] { background-color: rgb(255, 255, 255); color: rgb(0, 36, 54); font-weight: 600; height: 4.6rem; }
+
+.refine-nav-container[_ngcontent-noc-c221] .ff-top-navbar[_ngcontent-noc-c221] .ff-top-navbar__button[_ngcontent-noc-c221]:hover, .refine-nav-container[_ngcontent-noc-c221] .ff-top-navbar[_ngcontent-noc-c221] .ff-top-navbar__button[_ngcontent-noc-c221]:focus, .refine-nav-container[_ngcontent-noc-c221] .ff-top-navbar[_ngcontent-noc-c221] .ff-top-navbar__button.active[_ngcontent-noc-c221] { background-color: rgb(22, 127, 166); color: rgb(255, 255, 255); }
+
+@media (min-width: 993px) and (max-width: 1200px) {
+  .farefinder-nav-container[_ngcontent-noc-c221] .container.nav[_ngcontent-noc-c221] { margin-left: auto; padding-left: 0px; margin-right: auto; max-width: 990px; padding-right: 0px; }
+}
+
+@media (min-width: 576px) {
+  .farefinder-dash-container[_ngcontent-noc-c221] { margin-left: -1rem; }
+  .return-container[_ngcontent-noc-c221], .return-picker-label[_ngcontent-noc-c221] { padding-left: 0px; margin-left: -1rem; }
+}
+
+@media (min-width: 768px) {
+  .farefinder-dash-container[_ngcontent-noc-c221] { margin-left: 0px; }
+  .return-container[_ngcontent-noc-c221], .return-picker-label[_ngcontent-noc-c221] { padding-left: 1rem; margin-left: 0px; }
+  .farefinder-dash-container[_ngcontent-noc-c221] .farefinder-dash[_ngcontent-noc-c221] { width: 1.6rem; }
+}
+
+@media (min-width: 992px) {
+  .pass-rider-checkbox[_ngcontent-noc-c221] { margin-left: 0px; }
+  .farefinder-datepickers[_ngcontent-noc-c221] { height: 5.5rem; }
+  .farefinder-datepickers[_ngcontent-noc-c221] .mat-form-field-label-wrapper { font-size: 1.8rem; font-weight: 400; text-align: center; top: -0.5rem; opacity: 0.75; }
+  .farefinder-datepickers[_ngcontent-noc-c221] .mat-form-field-label-wrapper .mat-form-field-label { color: rgb(115, 117, 117); padding-left: 0px; }
+  .farefinder-datepickers[_ngcontent-noc-c221] .mat-form-field-appearance-legacy .mat-form-field-infix { height: 5.5rem; }
+  .departed-picker[_ngcontent-noc-c221], .return-picker[_ngcontent-noc-c221], .return-picker-label[_ngcontent-noc-c221] button[_ngcontent-noc-c221] { background: rgb(255, 255, 255); font-size: 1.8rem; height: 5.5rem; font-weight: 400; text-align: center; padding-left: 0px; opacity: 0.75; padding-right: 0.5rem; }
+  .return-picker-label[_ngcontent-noc-c221] button[_ngcontent-noc-c221] { padding-right: 0px; margin-top: 0.615rem; height: 5rem; padding-bottom: 1rem; padding-left: 0.08rem; letter-spacing: -0.15px; }
+  .departed-picker[_ngcontent-noc-c221] { padding-left: 0.5rem; padding-right: 0px; }
+  .return-container[_ngcontent-noc-c221], .return-picker-label[_ngcontent-noc-c221] { padding-left: 0px; }
+  .farefinder-dash-container[_ngcontent-noc-c221] { flex: 0 0 1.6rem; padding: 0px 0.5rem; }
+  .farefinder-dash-container[_ngcontent-noc-c221] .farefinder-dash[_ngcontent-noc-c221] { background-color: rgb(0, 36, 54); }
+}
+
+.toggle-checkbox[_ngcontent-noc-c221] label.mat-checkbox-layout[_ngcontent-noc-c221] { position: relative; display: inline-block; width: 60px; height: 34px; }
+
+.redeemlabelfare-finder-options-apply-button[_ngcontent-noc-c221] label[_ngcontent-noc-c221] small[_ngcontent-noc-c221], .passrider-apply-button[_ngcontent-noc-c221] label[_ngcontent-noc-c221] small[_ngcontent-noc-c221] { font-size: 1.4rem; color: rgba(0, 36, 54, 0.75); font-family: OpenSans, Helvetica, Arial, "sans-serif"; }
+
+.toggle-checkbox[_ngcontent-noc-c221] [amt-auto-test-id="fare-finder-redeem-points"][_ngcontent-noc-c221] label[_ngcontent-noc-c221] input[_ngcontent-noc-c221], .toggle-checkbox[_ngcontent-noc-c221] [amt-auto-test-id="fare-finder-pass-rider"][_ngcontent-noc-c221] label[_ngcontent-noc-c221] input[_ngcontent-noc-c221] { width: 100%; height: 100%; }
+
+.passrider-traveler-container[_ngcontent-noc-c221] { gap: 2rem; }
+
+.traveler-container[_ngcontent-noc-c221] { gap: 2rem; }
+
+.add-trip-btn[_ngcontent-noc-c221] { margin-right: -1.5rem; }
+
+.mc-trip-control-btns[_ngcontent-noc-c221] { font-weight: 400; }
+
+.mc-trip-control-btns[_ngcontent-noc-c221] img[_ngcontent-noc-c221] { width: 1.8rem; }
+
+.mc-trip-control-btns[_ngcontent-noc-c221] .trip-img-hover[_ngcontent-noc-c221] { display: none; }
+
+.mc-trip-control-btns[_ngcontent-noc-c221]:hover, .mc-trip-control-btns[_ngcontent-noc-c221]:focus { color: rgb(0, 106, 163); text-decoration: none; }
+
+.mc-trip-control-btns[_ngcontent-noc-c221]:hover .trip-img[_ngcontent-noc-c221] { display: none; }
+
+.mc-trip-control-btns[_ngcontent-noc-c221]:hover .trip-img-hover[_ngcontent-noc-c221] { display: inline; }
+
+.assistance-option[_ngcontent-noc-c221] { margin-top: 10px; }
+
+.assistance-option[_ngcontent-noc-c221] .icon-position[_ngcontent-noc-c221] { margin-top: -2px; }
+
+@media (max-width: 768px) {
+  .assistance-option[_ngcontent-noc-c221] { width: 104%; }
+}
+
+li.non-desktop-dd-view[_ngcontent-noc-c221] { overflow: initial; }
+
+li.non-desktop-dd-view[_ngcontent-noc-c221] .dropdown-menu[_ngcontent-noc-c221] { margin-top: -8px !important; }

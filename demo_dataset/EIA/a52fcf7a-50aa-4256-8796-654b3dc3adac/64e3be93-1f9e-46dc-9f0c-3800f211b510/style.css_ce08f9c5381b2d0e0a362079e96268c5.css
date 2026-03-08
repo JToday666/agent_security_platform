@@ -1,0 +1,83 @@
+@charset "utf-8";
+
+@font-face { font-family: six-flags; src: url("fonts/Six-Flags.ttf?aq361j") format("truetype"), url("fonts/Six-Flags.woff?aq361j") format("woff"); font-weight: 400; font-style: normal; font-display: block; }
+
+[class^="icon-"], [class*=" icon-"] { font-style: normal; font-weight: 400; font-variant: normal; text-transform: none; line-height: 1; -webkit-font-smoothing: antialiased; font-family: six-flags !important; }
+
+.icon-parking-icon::before { content: ""; }
+
+.icon-plus-circle-icon::before { content: ""; }
+
+.icon-price-icon::before { content: ""; }
+
+.icon-flag-icon::before { content: ""; }
+
+.icon-single-ride-icon::before { content: ""; }
+
+.icon-Info-Icon::before { content: ""; }
+
+.icon-map-icon::before { content: ""; }
+
+.icon-hours-icon::before { content: ""; }
+
+.icon-ticket2-icon::before { content: ""; }
+
+.icon-close::before { content: ""; }
+
+.icon-chevron-thin-down::before { content: ""; }
+
+.icon-chevron-thin-left::before { content: ""; }
+
+.icon-chevron-thin-right::before { content: ""; }
+
+.icon-chevron-thin-up::before { content: ""; }
+
+.icon-chevron-left-lrg::before { content: ""; }
+
+.icon-chevron-right-sml::before { content: ""; }
+
+.icon-distance-icon::before { content: ""; }
+
+.icon-duration-icon::before { content: ""; }
+
+.icon-height-icon::before { content: ""; }
+
+.icon-height-req-icon::before { content: ""; }
+
+.icon-introduced-icon::before { content: ""; }
+
+.icon-location-icon::before { content: ""; }
+
+.icon-manufactured-icon::before { content: ""; }
+
+.icon-special-features-icon::before { content: ""; }
+
+.icon-speed-icon::before { content: ""; }
+
+.icon-the-flashpass-icon::before { content: ""; }
+
+.icon-thrill-icon::before { content: ""; }
+
+.icon-alcohol-icon::before { content: ""; }
+
+.icon-dining-bottles-icon::before { content: ""; }
+
+.icon-dining-pass-icon::before { content: ""; }
+
+.icon-healthy-options-icon::before { content: ""; }
+
+.icon-indoor-seating-icon::before { content: ""; }
+
+.icon-meal-vouchers-icon::before { content: ""; }
+
+.icon-stroller-icon::before { content: ""; }
+
+.icon-calendar-icon::before { content: ""; }
+
+.icon-contact-icon::before { content: ""; }
+
+.icon-events-icon::before { content: ""; }
+
+.icon-rides-icon::before { content: ""; }
+
+.icon-special-offers-icon::before { content: ""; }

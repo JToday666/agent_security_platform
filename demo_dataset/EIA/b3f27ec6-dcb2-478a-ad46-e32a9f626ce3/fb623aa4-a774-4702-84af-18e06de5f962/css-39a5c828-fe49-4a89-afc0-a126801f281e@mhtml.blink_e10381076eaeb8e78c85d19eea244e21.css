@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.ib-booking-app-v2__main .ib-booking-option .ib-booking-any-one { width: 60px; }
+
+.ib-booking-app-v2__main .ib-booking-option .ib-booking-any-one img, .ib-booking-app-v2__main .ib-booking-option .ib-booking-any-one .ib-booking-circle-plus { border-radius: 15px; width: 28px; height: 28px; }
+
+.ib-booking-app-v2__main .ib-booking-option .ib-booking-any-one .ib-booking-circle-plus { background: var(--ib-booking-app-main-color); color: rgb(255, 255, 255); text-align: center; line-height: 28px; font-size: var(--ib-booking-app-font-normal); display: inline-block; vertical-align: top; }

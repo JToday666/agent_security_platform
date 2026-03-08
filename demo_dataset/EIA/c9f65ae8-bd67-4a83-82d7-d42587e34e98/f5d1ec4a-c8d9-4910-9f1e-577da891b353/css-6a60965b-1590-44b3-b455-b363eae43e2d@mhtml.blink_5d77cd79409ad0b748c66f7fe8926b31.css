@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-e93vai { position: fixed; width: 100%; height: var(--chakra-sizes-14); background-color: var(--chakra-colors-primary-default); z-index: var(--chakra-zIndices-layer10); }
+
+@media screen and (min-width: 48rem) {
+  .css-e93vai { position: relative; height: var(--chakra-sizes-16); z-index: 0; }
+}

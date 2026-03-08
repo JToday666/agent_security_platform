@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+.aplus-v2 .premium-aplus-module-2 .premium-background-wrapper { position: relative; }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-wrapper { position: absolute; width: 50%; height: 100%; top: 0px; }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-wrapper.right { left: 50%; }
+
+html[dir="rtl"] .aplus-v2 .premium-aplus-module-2 .premium-intro-wrapper.right { left: auto; right: 50%; }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-wrapper.secondary-color { color: rgb(255, 255, 255); }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-background { padding: 20px; }
+
+.aplus-v2 .premium-aplus-module-2 .aplus-module-2-topic { padding-bottom: 10px; }
+
+.aplus-v2 .premium-aplus-module-2 .aplus-module-2-heading { padding-bottom: 20px; }
+
+.aplus-v2 .premium-aplus-module-2 .aplus-module-2-description { line-height: 1.5em; }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-background.white-background { background: rgba(255, 255, 255, 0.5); }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-background.black-background { background: rgba(0, 0, 0, 0.5); }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-background.black-background, .aplus-v2 .premium-aplus-module-2 .premium-intro-background.black-background h1, .aplus-v2 .premium-aplus-module-2 .premium-intro-background.black-background h5, .aplus-v2 .premium-aplus-module-2 .premium-intro-background.black-background ol, .aplus-v2 .premium-aplus-module-2 .premium-intro-background.black-background ul, .aplus-v2 .premium-aplus-module-2 .premium-intro-background.black-background ol .a-list-item, .aplus-v2 .premium-aplus-module-2 .premium-intro-background.black-background ul .a-list-item { color: rgb(255, 255, 255); }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-content-container { display: table; height: 100%; }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-wrapper.left .premium-intro-content-container { padding-left: 40px; }
+
+html[dir="rtl"] .aplus-v2 .premium-aplus-module-2 .premium-intro-wrapper.left .premium-intro-content-container { padding-left: 0px; padding-right: 40px; }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-wrapper.right .premium-intro-content-container { padding-right: 40px; }
+
+html[dir="rtl"] .aplus-v2 .premium-aplus-module-2 .premium-intro-wrapper.right .premium-intro-content-container { padding-right: 0px; padding-left: 40px; }
+
+.aplus-v2 .premium-aplus-module-2 .premium-intro-content-column { display: table-cell; vertical-align: middle; }

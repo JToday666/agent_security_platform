@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.description-toggle { transition: all 500ms ease 0s; margin-left: 10px; margin-bottom: -5px; }
+
+.is-active > .description-toggle { transform: rotate(180deg); }
+
+.description-button { color: inherit; font-weight: 400; padding-bottom: 16px; }
+
+.description-button:hover, .description-button:focus { color: inherit; }
+
+.description-drawer { max-height: 0px; overflow: hidden; transition: all 250ms ease 0s; }
+
+.description-drawer.is-active { max-height: 440px; transition: all 500ms ease 0s; }
+
+.telehealth-steps { padding-left: 0px; list-style-position: inside; }

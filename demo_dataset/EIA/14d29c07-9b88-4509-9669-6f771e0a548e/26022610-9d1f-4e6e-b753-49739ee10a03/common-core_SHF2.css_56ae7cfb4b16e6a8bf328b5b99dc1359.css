@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+div#container * { box-sizing: unset !important; }
+
+.wfcl .fdx-simplified-global-header { display: none !important; }
+
+div#container #fx-global-header { width: 100%; z-index: 2; background: rgb(77, 20, 140); max-height: 75px; transition: all 0.25s ease 0s; }
+
+div#container #main-logo { max-width: 990px !important; margin: 0px auto !important; }
+
+div#container #fx-global-header #resources a:link, div#container #fx-global-header #resources a:visited { float: right; padding: 1px 10px; margin-top: 7px; border-left: 1px solid rgb(204, 204, 204); text-decoration: none; color: rgb(255, 255, 255) !important; }
+
+div#container #fx-global-header #resources { position: absolute; font: 75% "Arial Narrow", Arial, sans-serif; z-index: 50; right: 20%; top: 20px; border-left: 0px; }
+
+div#container .fxg-header__logo { height: 26px; width: 88px; margin: 24px 55px 25px 0px; transition: margin 0.25s ease 0s; vertical-align: baseline; border: 0px; }
+
+@media (max-width: 992px) {
+  div#container .fxg-header__logo { padding-left: 20px; vertical-align: middle; margin: 17px 15px 17px 0px !important; }
+}
+
+.wfcl div#content { margin: 0px auto !important; }

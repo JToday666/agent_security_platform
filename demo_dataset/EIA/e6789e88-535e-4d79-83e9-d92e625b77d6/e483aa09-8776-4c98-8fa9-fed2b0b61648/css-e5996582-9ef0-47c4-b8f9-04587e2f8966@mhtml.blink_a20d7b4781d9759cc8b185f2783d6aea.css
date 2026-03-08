@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+.tooltip-popup-text-group[_ngcontent-noc-c139] { color: rgb(22, 127, 166); font-family: OpenSans, Helvetica, Arial, "sans-serif"; font-size: 13px; line-height: 17px; }
+
+.tooltip-popup-text-group[_ngcontent-noc-c139] .close-button[_ngcontent-noc-c139] { color: rgb(255, 255, 255); width: 15px; float: right; margin-top: 4px; }
+
+.tooltip-popup-text-group[_ngcontent-noc-c139] .small-text[_ngcontent-noc-c139] { margin-left: 2px; font-size: 12px; line-height: 17px; letter-spacing: 0.26px; font-family: OpenSans, Helvetica, Arial, "sans-serif"; color: rgb(22, 127, 166); }
+
+.tooltip-popup-text-group[_ngcontent-noc-c139]:hover { color: rgb(22, 127, 166); text-decoration: underline rgb(22, 127, 166); }
+
+.popup-modal-content[_ngcontent-noc-c139] { height: 500px; }
+
+.info-tooltip-icon[_ngcontent-noc-c139] { height: 15px; padding-left: 5px; }
+
+.amenity-tooltip-icon[_ngcontent-noc-c139] { width: 2.5rem; height: 3rem; }
+
+.tooltip-icon-button[_ngcontent-noc-c139] { background-color: transparent; padding: 0px; }
+
+.tooltip-open-button[_ngcontent-noc-c139] { background-color: transparent; }
+
+.icon-tooltip[_ngcontent-noc-c139] { height: 17px; width: auto; color: rgb(0, 36, 54); font-family: OpenSans, Helvetica, Arial, "sans-serif"; font-weight: 600; font-size: 16px; letter-spacing: 0.3px; line-height: 17px; align-items: center; display: inline-flex; }
+
+.amenity-tooltip[_ngcontent-noc-c139] { height: auto; width: auto; color: rgb(0, 36, 54); font-family: OpenSans, Helvetica, Arial, "sans-serif"; font-weight: 400; font-size: 11px; letter-spacing: 0.3px; line-height: 17px; align-items: center; display: inline-flex; }
+
+.tooltip-modal-body[_ngcontent-noc-c139] { height: 545px; }
+
+.tooltip-modal-embed[_ngcontent-noc-c139] { height: 545px; }
+
+.tooltip-content-container[_ngcontent-noc-c139] { padding: 0px !important; }
+
+.details-text[_ngcontent-noc-c139] { margin-right: 10px; font-weight: 600; }
+
+.details-position[_ngcontent-noc-c139] { text-align: end; }
+
+[_nghost-noc-c139] .flex-row[_ngcontent-noc-c139] { text-align: left; }

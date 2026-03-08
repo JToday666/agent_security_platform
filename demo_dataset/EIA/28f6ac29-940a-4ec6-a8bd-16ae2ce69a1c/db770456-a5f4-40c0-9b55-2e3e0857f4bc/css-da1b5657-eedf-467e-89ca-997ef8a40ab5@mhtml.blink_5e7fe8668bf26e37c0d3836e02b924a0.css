@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.app-components-Receipts-Header-styles__receiptsPageContainer--2zvc- { background: rgb(255, 255, 255); }
+
+.app-components-Receipts-Header-styles__receiptsPage--3PAA7 { width: 100%; max-width: 1366px; padding: 24px; }
+
+@media (min-width: 1184px) {
+  .app-components-Receipts-Header-styles__receiptsPage--3PAA7 { max-width: 1136px; margin: 0px auto; padding: 24px 0px; }
+}
+
+.app-components-Receipts-Header-styles__receiptsPage--3PAA7 .app-components-Receipts-Header-styles__visuallyHidden--3O_vW { height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); position: absolute !important; }
+
+.app-components-Receipts-Header-styles__headerContainer--18_B2 { margin-top: 18px; }
+
+.app-components-Receipts-Header-styles__headerDescription--2kAko a { color: rgb(0, 96, 128); text-decoration: underline; cursor: pointer; font-size: 16px; }
+
+.app-components-Receipts-Header-styles__headerDescription--2kAko a:focus { outline: rgb(98, 68, 187) solid 4px; }

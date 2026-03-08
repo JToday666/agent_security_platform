@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.css-12ib9zn { height: var(--chakra-sizes-14); position: relative; width: 100%; background-color: var(--chakra-colors-primary-default); z-index: var(--chakra-zIndices-layer10); margin: 0px auto; }
+
+@media screen and (min-width: 48rem) {
+  .css-12ib9zn { max-width: 82rem; }
+}
+
+@media screen and (min-width: 64rem) {
+  .css-12ib9zn { height: var(--chakra-sizes-16); }
+}

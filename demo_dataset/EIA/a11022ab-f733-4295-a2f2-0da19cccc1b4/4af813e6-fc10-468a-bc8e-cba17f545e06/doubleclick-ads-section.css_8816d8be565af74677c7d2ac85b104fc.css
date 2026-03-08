@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.banner-ad-wrapper { background: rgb(255, 255, 255); padding: 15px; margin: 0px; text-align: center; }
+
+.banner-ad-wrapper .banner-ad-area { margin: 0px auto; }
+
+@media (max-width: 768px) {
+  .banner-ad-wrapper.banner-ad-desktop { display: none; }
+}
+
+@media (min-width: 768px) {
+  .banner-ad-wrapper.banner-ad-mobile { display: none; }
+}

@@ -1,0 +1,179 @@
+@charset "utf-8";
+
+:root { --ib-booking-app-header-bg: rgba(248,250,252,0.8); --ib-booking-app-header-text-color: #333132; --ib-booking-app-header-font-weight: 400; --ib-booking-app-header-subtitle-text-color: #999; --ib-booking-app-footer-bg: none; --ib-booking-app-left-select-box-bg: #fff; --ib-booking-app-main-color: #329FC1; --ib-booking-app-main-color2: #329FC1; --ib-booking-app-light-color: #D4ECFC; --ib-booking-app-link-color: #18a4fc; --ib-booking-app-default-color1: #696567; --ib-booking-app-nonselected-color1: #000; --ib-booking-app-selected-color1: #000; --ib-booking-app-nav-color: #838991; --ib-booking-app-nav-font-weight: 900; --ib-booking-app-font: Proxima Nova,Helvetica Neue,Helvetica,Arial,sans-serif; --ib-booking-app-font-title: 32px; --ib-booking-app-font-subtitle: 16px; --ib-booking-app-font-smallest: 10px; --ib-booking-app-font-smaller: 12px; --ib-booking-app-font-small: 13px; --ib-booking-app-font-normal: 14px; --ib-booking-app-font-medium: 15px; --ib-booking-app-font-big: 16px; --ib-booking-app-font-bigger: 28px; --ib-booking-app-celandar-available-year: #329FC1; --ib-booking-app-calendar-bg: #F8FAFC; --ib-booking-app-calendar-table-bg: #FCFCFC; --ib-booking-app-time-selected-bg: #D4ECFC; --ib-booking-app-time-selected-text-color: #329FC1; --ib-booking-app-time-selected-border-color: #329FC1; --ib-booking-app-times-border-color: #E6E9ED; --ib-booking-app-times-border-radius: 4px; --ib-booking-app-times-color: #333132; --ib-booking-app-times-slots-dark-divider: #E1E7EE; --ib-booking-app-times-slots-light-divider: #F3F9FF; --ib-booking-app-view-more-border: #329FC1; --ib-booking-app-view-more-color: #329FC1; --ib-border-progress-wrapper: 0; --ib-booking-app-border-radius-select-box: 5px; --ib-booking-app-primary-button-bg: #329FC1; --ib-booking-app-border-radius-primary-button: 5px; --ib-booking-app-primary-button-shadow: 0; --ib-booking-app-primary-button-hover-bg: #329FC1; --ib-booking-app-primary-button-disabled-bg: #329FC1; }
+
+[theme="webMd-1"] { --ib-booking-app-header-bg: #d6eced; --ib-booking-app-header-text-color: #0E355A; --ib-booking-app-header-font-weight: 700; --ib-booking-app-header-subtitle-text-color: #0E355A; --ib-booking-app-mini-widget-header-text-color: #0e355a; --ib-booking-app-left-select-box-bg: #fff; --ib-booking-app-main-color: #0E355A; --ib-booking-app-main-color2: #497BAB; --ib-booking-app-light-color: #F1F6FB; --ib-booking-app-link-color: #497BAB; --ib-booking-app-default-color1: #0E355A; --ib-booking-app-nonselected-color1: #979797; --ib-booking-app-selected-color1: #0E355A; --ib-booking-app-nav-color: #497BAB; --ib-booking-app-nav-font-weight: 500; --ib-booking-app-min-widget-question-title-color: #0E355A; --ib-booking-app-font: Roboto,BlinkMacSystemFont,Arial,Helvetica,sans-serif; --ib-booking-app-font-title: 38px; --ib-booking-app-font-subtitle: 28px; --ib-booking-app-font-smallest: 15px; --ib-booking-app-font-smaller: 12px; --ib-booking-app-font-small: 13px; --ib-booking-app-font-normal: 14px; --ib-booking-app-font-medium: 15px; --ib-booking-app-font-big: 16px; --ib-booking-app-font-bigger: 28px; --ib-booking-app-celandar-available-year: #0E355A; --ib-booking-app-calendar-bg: #f3f9f9; --ib-booking-app-calendar-table-bg: #FCFCFC; --ib-booking-app-time-selected-bg: #0E355A; --ib-booking-app-time-selected-text-color: #fff; --ib-booking-app-time-selected-border-color: #0E355A; --ib-booking-app-times-border-color: #497BAB; --ib-booking-app-times-border-radius: 4px; --ib-booking-app-times-color: #497BAB; --ib-booking-app-times-slots-dark-divider: #E1E7EE; --ib-booking-app-times-slots-light-divider: #F3F9FF; --ib-booking-app-view-more-border: #329FC1; --ib-booking-app-view-more-color: #329FC1; --ib-border-progress-wrapper: 0; --ib-booking-app-border-radius-select-box: 5px; --ib-booking-app-primary-button-bg: #497BAB; --ib-booking-app-border-radius-primary-button: 20px; --ib-booking-app-primary-button-shadow: 0; --ib-booking-app-primary-button-hover-bg: #497BAB; --ib-booking-app-primary-button-disabled-bg: #497BAB; --ib-booing-app-mini-widget-btn-color-bg: #0078BF; --ib-booing-app-mini-widget-btn-text-color: #fff; --ib-booking-app-mini-widget-view-more-link-color: #1F97DC; }
+
+[theme="vitals-1"] { --ib-booking-app-header-bg: #321B8D; --ib-booking-app-header-text-color: #fff; --ib-booking-app-header-font-weight: 700; --ib-booking-app-header-subtitle-text-color: #fff; --ib-booking-app-mini-widget-header-text-color: #5e35b1; --ib-booking-app-footer-bg: #fff; --ib-booking-app-left-select-box-bg: #fff; --ib-booking-app-main-color: #5e35b1; --ib-booking-app-main-color2: #00BCD4; --ib-booking-app-light-color: #faf1fe; --ib-booking-app-link-color: #00bcd4; --ib-booking-app-default-color1: #0E355A; --ib-booking-app-nonselected-color1: #979797; --ib-booking-app-selected-color1: #0E355A; --ib-booking-app-nav-color: #00BCD4; --ib-booking-app-nav-font-weight: 500; --ib-booking-app-min-widget-question-title-color: #696567; --ib-booking-app-font: Roboto,BlinkMacSystemFont,Arial,Helvetica,sans-serif; --ib-booking-app-font-title: 38px; --ib-booking-app-font-subtitle: 28px; --ib-booking-app-font-smallest: 15px; --ib-booking-app-font-smaller: 12px; --ib-booking-app-font-small: 13px; --ib-booking-app-font-normal: 14px; --ib-booking-app-font-medium: 15px; --ib-booking-app-font-big: 16px; --ib-booking-app-font-bigger: 28px; --ib-booking-app-celandar-available-year: #5e35b1; --ib-booking-app-calendar-bg: #faf9ff; --ib-booking-app-calendar-table-bg: #FCFCFC; --ib-booking-app-time-selected-bg: #321B8E; --ib-booking-app-time-selected-text-color: #fff; --ib-booking-app-time-selected-border-color: #E6E9EE; --ib-booking-app-times-border-color: #00BCD4; --ib-booking-app-times-border-radius: 4px; --ib-booking-app-times-color: #00BCD4; --ib-booking-app-times-slots-dark-divider: #E1E7EE; --ib-booking-app-times-slots-light-divider: #F3F9FF; --ib-booking-app-view-more-border: #329FC1; --ib-booking-app-view-more-color: #329FC1; --ib-border-progress-wrapper: 0; --ib-booking-app-border-radius-select-box: 5px; --ib-booking-app-primary-button-bg: #00bcd4; --ib-booking-app-primary-button-shadow: 0; --ib-booking-app-border-radius-primary-button: 5px; --ib-booking-app-primary-button-hover-bg: #00bcd4; --ib-booking-app-primary-button-disabled-bg: #00bcd4; --ib-booing-app-mini-widget-btn-color-bg: #FE9E00; --ib-booing-app-mini-widget-btn-text-color: #fff; --ib-booking-app-mini-widget-view-more-link-color: #1F97DC; }
+
+[theme="patientPortal-1"] { --ib-booking-app-header-bg: auto; --ib-booking-app-header-text-color: #566986; --ib-booking-app-header-font-weight: bold; --ib-booking-app-header-subtitle-text-color: #626972; --ib-booking-app-footer-bg: #F9FBFE; --ib-booking-app-left-select-box-bg: #fff; --ib-booking-app-main-color: #5679C4; --ib-booking-app-main-color2: #5679C4; --ib-booking-app-light-color: #F1F6FB; --ib-booking-app-link-color: #18a4fc; --ib-booking-app-default-color1: #696567; --ib-booking-app-nonselected-color1: #000; --ib-booking-app-selected-color1: #000; --ib-booking-app-nav-color: #838991; --ib-booking-app-nav-font-weight: 900; --ib-booking-app-font: Proxima Nova,Helvetica Neue,Helvetica,Arial,sans-serif; --ib-booking-app-font-title: 20px; --ib-booking-app-font-subtitle: 14px; --ib-booking-app-font-smallest: 10px; --ib-booking-app-font-smaller: 12px; --ib-booking-app-font-small: 13px; --ib-booking-app-font-normal: 14px; --ib-booking-app-font-medium: 15px; --ib-booking-app-font-big: 16px; --ib-booking-app-font-bigger: 28px; --ib-booking-app-celandar-available-year: #5679C4; --ib-booking-app-calendar-bg: #f6fafe; --ib-booking-app-calendar-table-bg: #FCFCFC; --ib-booking-app-time-selected-bg: #5679C5; --ib-booking-app-time-selected-text-color: #fff; --ib-booking-app-time-selected-border-color: #5679C4; --ib-booking-app-times-border-color: #7EAEF4; --ib-booking-app-times-border-radius: 4px; --ib-booking-app-times-color: #5679C5; --ib-booking-app-times-slots-dark-divider: #E1E7EE; --ib-booking-app-times-slots-light-divider: #F3F9FF; --ib-booking-app-view-more-border: #329FC1; --ib-booking-app-view-more-color: #329FC1; --ib-border-progress-wrapper: 4px; --ib-booking-app-border-radius-select-box: 5px; --ib-booking-app-primary-button-bg: linear-gradient(159.56deg, #0089FF 0%, #2E34E4 100%); --ib-booking-app-border-radius-primary-button: 0; --ib-booking-app-primary-button-shadow: 0 2px 1px 0 rgba(58,83,119,0.07); --ib-booking-app-primary-button-hover-bg: linear-gradient(159.56deg, #2E34E4 0%, #0089FF 100%); --ib-booking-app-primary-button-disabled-bg: linear-gradient(159.56deg, #2E34E4 0%, #0089FF 100%); }
+
+[theme="petPortal-1"] { --ib-booking-app-header-bg: #fff; --ib-booking-app-header-text-color: #1D1004; --ib-booking-app-header-font-weight: bold; --ib-booking-app-header-subtitle-text-color: #696567; --ib-booking-app-footer-bg: #F9FBFE; --ib-booking-app-left-select-box-bg: #fff; --ib-booking-app-main-color: #2B63FE; --ib-booking-app-main-color2: #5679C4; --ib-booking-app-light-color: #F1F6FB; --ib-booking-app-link-color: #18a4fc; --ib-booking-app-default-color1: #696567; --ib-booking-app-nonselected-color1: #000; --ib-booking-app-selected-color1: #000; --ib-booking-app-nav-color: #2B63FE; --ib-booking-app-nav-font-weight: 900; --ib-booking-app-booked-text: #2B63FE; --ib-booking-app-font: Proxima Nova,Helvetica Neue,Helvetica,Arial,sans-serif; --ib-booking-app-font-title: 32px; --ib-booking-app-font-subtitle: 18px; --ib-booking-app-font-smallest: 10px; --ib-booking-app-font-smaller: 12px; --ib-booking-app-font-small: 13px; --ib-booking-app-font-normal: 14px; --ib-booking-app-font-medium: 15px; --ib-booking-app-font-big: 16px; --ib-booking-app-font-bigger: 28px; --ib-booking-app-celandar-available-year: #1D1004; --ib-booking-app-calendar-bg: #F8FAFC; --ib-booking-app-calendar-table-bg: #fff; --ib-booking-app-time-selected-bg: #2B63FE; --ib-booking-app-time-selected-text-color: #fff; --ib-booking-app-time-selected-border-color: #fff; --ib-booking-app-times-border-color: #fff; --ib-booking-app-times-border-radius: 4px; --ib-booking-app-times-color: #1D1004; --ib-booking-app-times-bg: #F3F6FF; --ib-booking-app-times-slots-dark-divider: #E1E7EE; --ib-booking-app-times-slots-light-divider: #F3F6FF; --ib-booking-app-view-more-border: #2B63FE; --ib-booking-app-view-more-color: #2B63FE; --ib-border-progress-wrapper: 1px; --ib-booking-app-border-radius-select-box: 5px; --ib-booking-app-primary-button-bg: #F57F17; --ib-booking-app-border-radius-primary-button: 5px; --ib-booking-app-primary-button-shadow: 0 2px 2px 0 rgba(71,82,102,0.15); --ib-booking-app-primary-button-hover-bg: #F57F17; --ib-booking-app-primary-button-disabled-bg: #696567; }
+
+.ib-booking-app__main { border-radius: 8px; font-family: var(--ib-booking-app-font); margin-bottom: 4rem; }
+
+.ib-booking-app__main * { box-sizing: border-box; }
+
+.ib-booking-app__main textarea { resize: none; }
+
+.ib-booking-app__main .react-add-to-calendar { width: 200px; margin: 30px auto 40px; position: relative; -webkit-font-smoothing: initial; display: block; }
+
+.ib-booking-app__main .react-add-to-calendar .react-add-to-calendar__wrapper { background-color: var(--ib-booking-app-main-color); border: 2px solid var(--ib-booking-app-main-color); border-radius: 3px; box-shadow: rgba(71, 82, 102, 0.16) 0px 2px 2px 0px; width: 200px; height: 34px; cursor: pointer; box-sizing: unset; }
+
+.ib-booking-app__main .react-add-to-calendar .react-add-to-calendar__wrapper .react-add-to-calendar__button { color: rgb(255, 255, 255); line-height: 34px; font-size: 14px; display: block; padding: 0px; background-color: transparent; border: none; }
+
+.ib-booking-app__main .react-add-to-calendar .react-add-to-calendar__wrapper .react-add-to-calendar__button i { margin: 0px 5px 0px 20px; font-size: 16px; }
+
+.ib-booking-app__main .react-add-to-calendar .react-add-to-calendar__wrapper .react-add-to-calendar__button--light { background-color: transparent; }
+
+.ib-booking-app__main .react-add-to-calendar .react-add-to-calendar__dropdown { border-right-color: ; border-right-style: ; border-right-width: ; border-bottom-color: ; border-bottom-style: ; border-bottom-width: ; border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 0px 0px 2px 2px; box-shadow: rgba(71, 82, 102, 0.16) 0px 2px 2px 0px; border-top: none; position: absolute; left: 1px; top: 39px; width: 96%; background: rgb(255, 255, 255); }
+
+.ib-booking-app__main .react-add-to-calendar .react-add-to-calendar__dropdown ul { margin: 0px; padding: 0px 8px 8px; }
+
+.ib-booking-app__main .react-add-to-calendar .react-add-to-calendar__dropdown li { margin: 0px; list-style: none; }
+
+.ib-booking-app__main .react-add-to-calendar .react-add-to-calendar__dropdown li a { font-size: 13px; line-height: 16px; color: var(--ib-booking-app-main-color); text-decoration: none; }
+
+.ib-booking-app__main .react-add-to-calendar .react-add-to-calendar__dropdown li a i { margin-right: 5px; }
+
+.ib-booking-app__main .react-datepicker-popper { z-index: 4; }
+
+.ib-booking-app__main .react-datepicker__header__dropdown { margin: 8px 3px; }
+
+.ib-booking-app__main .ib-booking_link { text-decoration: none; color: var(--ib-booking-app-link-color); }
+
+.ib-booking-app__main .ib-booking-bold { font-weight: bold; }
+
+.ib-booking-app__main .ib-booking_textDecoration { text-decoration: underline; }
+
+.ib-booking-app__main .ib-booking_app-title { font-size: var(--ib-booking-app-font-big); margin-bottom: 10px; color: var(--ib-booking-app-default-color1); font-weight: bold; }
+
+.ib-booking-app__main .ib-booking_app-title.location { margin-top: 40px; }
+
+.ib-booking-app__main .ib-booking-box-location.dropdown-container { box-sizing: border-box; position: absolute; width: 100%; z-index: 50; background-color: white; border-top: none; display: flex; flex-direction: column; height: unset; align-items: flex-start; }
+
+.ib-booking-app__main .ib-booking-box-location.dropdown-container .dropdown { border: none; width: 100%; cursor: pointer; }
+
+.ib-booking-app__main .ib-booking-box-location.dropdown-container .dropdown:hover { background-color: rgb(230, 233, 237); }
+
+.ib-booking-app__main .ib-booking_avatar { background: var(--ib-booking-app-main-color); border-radius: 30px; width: 60px; height: 62px; color: rgb(255, 255, 255); font-weight: 600; line-height: 60px; text-align: center; display: block; font-size: var(--ib-booking-app-font-bigger); }
+
+.ib-booking-app__main .ib-booking_avatar.ib-booking_avatar-small { width: 30px; height: 30px; line-height: 32px; font-size: var(--ib-booking-app-font-normal); }
+
+.ib-booking-app__main .ib-booking_avatar.ib-booking_avatar-gray { width: 36px; height: 36px; line-height: 36px; background: rgb(196, 204, 225); font-size: 18px; }
+
+.ib-booking-app__main .ib-booking_right-area { z-index: 2; position: relative; font-size: var(--ib-booking-app-font-smaller); padding: 25px 25px 15px; background-color: var(--ib-booking-app-calendar-bg); border-radius: 4px; }
+
+.ib-booking-app__main .ib-booking_right-area .ib-booking_app-title { font-weight: normal; }
+
+.ib-booking-app__main .ib-booking_center { position: relative; width: 50%; margin: 0px auto; }
+
+.ib-booking-app__main .ib-booking_center .ib-booking-box .ib-booking_r-border { width: 100%; padding: 2%; }
+
+.ib-booking-app__main .ib-booking_center .ib-booking-box .ib-booking-edit { width: 100%; }
+
+.ib-booking-app__main .ib-booking_center .ib-booking_content-right { max-width: 100%; }
+
+.ib-booking-app__main .ib-booking_center-footer { width: 50%; text-align: right; margin: 0px auto; }
+
+.ib-booking-app__main .ib-booking_center-footer.ib-booking_form-footer { width: 100%; }
+
+@media screen and (max-width: 767px) {
+  .ib-booking-app__main .ib-booking_center-footer.ib-booking_form-footer { display: flex; }
+}
+
+.ib-booking-app__main .ib-booking_center-footer a { display: inline-block; margin: 15% 0px 10%; }
+
+.ib-booking-app__main .ib-booking_content { padding-bottom: 20px; display: flex; align-items: stretch; justify-content: space-between; min-height: 400px; margin: 0px auto; width: 90%; }
+
+.ib-booking-app__main .ib-booking_content .ib-booking_normal-text { line-height: 20px; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border { display: flex; border: 1px solid rgb(230, 233, 237); border-radius: 5px; padding: 6px 8px; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border.ib-booking_width-center { width: 96%; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border.location { align-items: center; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border img { width: 36px; height: 36px; border-radius: 20px; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border .ib-booking_location-wrapper { display: flex; flex-direction: column; margin-left: 10px; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border .ib-booking_location-wrapper .ib-booking_booked-text { margin: 0px; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border .ib-booking_location-wrapper .ib-booking_address-text { color: rgb(131, 137, 145); font-size: 13px; line-height: 16px; margin: 0px; padding-bottom: 5px; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border .ib-booking_booked-text { padding: 7px 0px; line-height: 20px; margin-left: 10px; word-break: break-word; color: var(--ib-booking-app-booked-text); }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border .ib-booking_booked-text.ib-booking_normal-text { line-height: 26px; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_r-border .ib-booking_booked-text.ib-booking_normal-text a { color: rgb(31, 151, 220); }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking_titleOutsideBox { margin-bottom: 30px; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking-box { width: 90%; margin: 20px auto 0px; }
+
+.ib-booking-app__main .ib-booking_app-selected .ib-booking-box .ib-booking_app-title { font-weight: normal; }
+
+.ib-booking-app__main .ib-booking_content-right { flex-grow: 1; box-sizing: content-box; max-width: 55%; }
+
+.ib-booking-app__main .ib-booking_content-center { width: 50%; margin: 0px auto; }
+
+.ib-booking-app__main .ib-booking_content-left { width: 39.5%; margin-right: 5%; }
+
+.ib-booking-app__main .ib-booking_content-left.ib-booking_text-info { margin: 0px auto; width: 70%; }
+
+.ib-booking-app__main .ib-booking_content-left .ib-booking-box { margin-bottom: 30px; width: 100%; }
+
+.ib-booking-app__main .ib-booking_radio-wrapper { display: flex; justify-content: space-between; }
+
+.ib-booking-app__main .ib-booking_radio-wrapper .ib-booking_select-box { border: 1px solid rgb(230, 233, 237); border-radius: var(--ib-booking-app-border-radius-select-box); background: var(--ib-booking-app-left-select-box-bg); color: var(--ib-booking-app-nonselected-color1); display: flex; padding: 6px 0px 5px 20px; width: 42%; cursor: pointer; align-items: center; }
+
+.ib-booking-app__main .ib-booking_radio-wrapper .ib-booking_select-box.ib-booking_checked { border: 2px solid var(--ib-booking-app-main-color2); box-shadow: rgb(230, 233, 237) 0px 0px 3px inset; color: var(--ib-booking-app-selected-color1); }
+
+.ib-booking-app__main .ib-booking_radio-wrapper .ib-booking_select-box .smb-uikit__radio-component .smb-uikit__radio-input:checked ~ .smb-uikit__checkmark { background: var(--ib-booking-app-main-color2); }
+
+.ib-booking-app__main .ib-booking_radio-wrapper .ib-booking_select-box .ib-booking_select-box-text { display: inline-block; padding: 10px; font-weight: bold; line-height: 13px; font-size: var(--ib-booking-app-font-normal); }
+
+.ib-booking-app_size-medium .ib-booking-app__main .ib-booking_content { min-width: 100%; display: contents; }
+
+.ib-booking-app_size-medium .ib-booking-app__main .ib-booking_content-left { width: 100%; margin-right: 0px !important; }
+
+.ib-booking-app_size-medium .ib-booking-app__main .ib-booking_content-left.ib-booking_text-info { width: 100%; }
+
+.ib-booking-app_size-medium .ib-booking-app__main .ib-booking_content-right { max-width: 100% !important; }
+
+.ib-booking-app_size-medium .ib-booking-app__main .ib-booking_center-footer { width: 100%; }
+
+.ib-booking-app_size-medium .ib-booking-app__main .ib-booking_center { width: 100%; }
+
+.ib-booking-app_size-medium .ib-booking-app__main .ib-booking_wizard-progress-bar { margin: 3.5% 10%; }
+
+.ib-booking-app_size-medium.widget-padding { padding: 10px; }
+
+@media screen and (max-width: 1024px) {
+  .ib-booking-app__main .ib-booking_content { width: 90%; flex-direction: column; }
+  .ib-booking-app__main .ib-booking_content-left { width: 100%; margin-right: 0px !important; }
+  .ib-booking-app__main .ib-booking_content-left.ib-booking_text-info { width: 100%; }
+  .ib-booking-app__main .ib-booking_content-right { max-width: 100% !important; }
+  .ib-booking-app__main .ib-booking_content-right .ib-booking_right-area.ib-booking_form { display: flex; flex-direction: column; }
+  .ib-booking-app__main .ib-booking_content-right .ib-booking_right-area.ib-booking_form > div { width: 100%; margin-right: 0px; }
+  .ib-booking-app__main .ib-booking_wizard-progress-bar { margin: 3.5% 10%; }
+  .ib-booking-app__main .ib-booking_radio-wrapper { flex-direction: column; align-items: center; }
+  .ib-booking-app__main .ib-booking_radio-wrapper div.ib-booking_select-box { width: 100%; margin: 5px 0px; }
+}
+
+@media screen and (max-width: 667px) {
+  .ib-booking-app__main .ib-booking_center, .ib-booking-app__main .ib-booking_center-footer { width: 80%; }
+  .ib-booking-app__main .ib-booking_content-center { width: 90%; }
+}
+
+@media screen and (max-width: 500px) {
+  .ib-booking-app__main .ib-booking_center-footer a { width: 100%; }
+  .ib-booking-app__main .ib-booking_app-selected .ib-booking-box { width: 100%; }
+}
+
+div.datepicker-modal { position: fixed; background-color: rgba(0, 0, 0, 0.1); }
+
+.react-datepicker__month-select, .react-datepicker__year-select { padding: initial; width: initial; background: initial; color: initial; border: 1px solid; outline: initial; text-rendering: auto; display: inline-block; appearance: menulist; cursor: default; margin: 0em; font: 400 13.3333px Arial; border-radius: 0px; -webkit-writing-mode: horizontal-tb !important; }
+
+.react-datepicker__navigation:focus { outline: none; }

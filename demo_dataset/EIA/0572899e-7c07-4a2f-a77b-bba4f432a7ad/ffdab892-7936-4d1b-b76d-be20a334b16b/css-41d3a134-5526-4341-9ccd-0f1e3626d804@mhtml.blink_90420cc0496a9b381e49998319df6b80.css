@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+@media only screen and (min-width: 992px) {
+  .brand-head-home { font-size: 3.2rem !important; line-height: 3.2rem !important; width: 30rem !important; }
+  .brand-subhead-home { width: 26rem !important; }
+  .hero-home-text-container { margin-bottom: 3rem !important; }
+  .btn-primary-cta { padding-top: 12px !important; padding-bottom: 12px !important; }
+  .btn-block { width: 45% !important; }
+}
+
+@media only screen and (max-width: 991px) and (min-width: 768px) {
+  .brand-head-home { position: absolute; left: 60px; bottom: 180px; font-size: 2.2rem !important; line-height: 2.2rem !important; text-align: left !important; }
+  .brand-subhead-home { position: absolute; left: 60px; bottom: 20px; text-align: left !important; width: 30rem !important; }
+  .btn-primary-cta { font-size: 0.8rem; padding-top: 8px !important; padding-bottom: 8px !important; }
+  .btn-block { width: 55% !important; }
+}
+
+@media only screen and (max-width: 767px) {
+  .hero-home-text-container { margin-bottom: 2rem !important; }
+  .brand-head-home { font-size: 2rem !important; line-height: 2rem !important; }
+  .brand-subhead-home { font-size: 1.5rem !important; line-height: 1.5rem !important; }
+  .btn-primary-cta { font-size: 0.8rem; padding-top: 8px !important; padding-bottom: 8px !important; }
+  .btn-block { display: inline-block !important; width: 55% !important; }
+}

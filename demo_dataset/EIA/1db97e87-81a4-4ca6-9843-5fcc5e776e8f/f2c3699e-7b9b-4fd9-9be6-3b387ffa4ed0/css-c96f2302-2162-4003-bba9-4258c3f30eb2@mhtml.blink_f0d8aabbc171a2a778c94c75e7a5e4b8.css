@@ -1,0 +1,51 @@
+@charset "utf-8";
+
+.telehealth-error { padding-left: 0px; margin-top: 24px; }
+
+@media (min-width: 540px) {
+  .telehealth-error { margin-right: auto; margin-left: auto; padding-right: 18px; margin-top: 32px; text-align: center; padding-left: 18px; }
+}
+
+.telehealth-error-partner { text-align: left; padding-right: 24px; }
+
+@media (min-width: 540px) {
+  .telehealth-error-partner { margin-top: 0px; }
+}
+
+.telehealth-error-retry { color: rgb(74, 74, 77); margin-bottom: 96px; margin-top: 24px; }
+
+.telehealth-error-partner-retry { color: rgb(74, 74, 77); margin-bottom: 24px; }
+
+@media (min-width: 540px) {
+  .telehealth-error-partner-retry { margin-top: 24px; margin-bottom: 32px; }
+}
+
+.telehealth-error-right-icon { margin-bottom: -6px; }
+
+.telehealth-location-tooltip-holder { display: inline; position: relative; z-index: 100; top: 6px; left: 4px; }
+
+@media (max-width: 540px) {
+  .location-title-message { font-size: 0.875rem; }
+}
+
+.spinner { padding-top: 8px; padding-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+
+.loading-min-height { min-height: 100vh; }
+
+.telehealth-partner-skeleton { min-height: 100vh; }
+
+.telehealth-partner-skeleton > .telehealth-service-info-container { min-height: 424px; }
+
+@media (min-width: 540px) {
+  .telehealth-partner-skeleton > .telehealth-service-info-container { min-height: 357px; }
+}
+
+@media (min-width: 992px) {
+  .telehealth-partner-skeleton > .telehealth-service-info-container { min-height: 239px; }
+}
+
+.telehealth-service-info-container { background: rgb(247, 247, 247); padding: 16px 0px; min-height: 0px; transition: min-height 100ms ease-in-out 0s; }
+
+@media (min-width: 992px) {
+  .telehealth-service-info { display: flex; }
+}

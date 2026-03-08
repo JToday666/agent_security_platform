@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+.aplus-v2.desktop { max-width: 1464px; min-width: 800px; margin-left: auto; margin-right: auto; overflow-wrap: break-word; word-break: break-word; }
+
+.aplus-v2.desktop .premium-aplus .aplus-tech-spec-table { word-break: initial; }
+
+.aplus-v2 .premium-aplus, .aplus-v2 .premium-aplus .aplus-h1, .aplus-v2 .premium-aplus .aplus-h2, .aplus-v2 .premium-aplus .aplus-p1, .aplus-v2 .premium-aplus .aplus-p2, .aplus-v2 .premium-aplus .aplus-p3, .aplus-v2 .premium-aplus .aplus-accent1, .aplus-v2 .premium-aplus .aplus-accent2 { font-family: Arial, sans-serif; }
+
+.aplus-v2 .premium-aplus, .aplus-v2 .premium-aplus .aplus-h1, .aplus-v2 .premium-aplus .aplus-h2, .aplus-v2 .premium-aplus .aplus-p1, .aplus-v2 .premium-aplus .aplus-p2, .aplus-v2 .premium-aplus .aplus-p3, .aplus-v2 .premium-aplus .aplus-accent1, .aplus-v2 .premium-aplus .aplus-accent2 { font-family: inherit; }
+
+.aplus-v2 .premium-aplus .aplus-h1 { font-size: 32px; line-height: 1.2em; font-weight: 500; }
+
+.aplus-v2 .premium-aplus .aplus-h2 { font-size: 26px; line-height: 1.25em; font-weight: 500; }
+
+.aplus-v2 .premium-aplus .aplus-h3 { font-size: 18px; line-height: 1.25em; font-weight: 500; }
+
+.aplus-v2 .premium-aplus .aplus-p1 { font-size: 20px; line-height: 1.3em; font-weight: 300; }
+
+.aplus-v2 .premium-aplus .aplus-p2 { font-size: 16px; line-height: 1.4em; font-weight: 300; }
+
+.aplus-v2 .premium-aplus .aplus-p3 { font-size: 14px; line-height: 1.4em; font-weight: 300; }
+
+.aplus-v2 .premium-aplus .aplus-accent1 { font-size: 16px; line-height: 1.4em; font-weight: 600; }
+
+.aplus-v2 .premium-aplus .aplus-accent2 { font-size: 14px; line-height: 1.4em; font-weight: 600; }
+
+.aplus-v2 .aplus-container-1 { padding: 40px; }
+
+.aplus-v2 .aplus-container-1-2 { padding: 40px 80px; }
+
+.aplus-v2 .aplus-container-2 { padding: 80px; }
+
+.aplus-v2 .aplus-container-3 { padding: 40px 0px; }
+
+.aplus-v2 .premium-aplus .aplus-display-table { display: table; }
+
+.aplus-v2 .premium-aplus .aplus-display-table-cell { display: table-cell; }
+
+.aplus-v2 .premium-aplus .aplus-display-inline-block { display: inline-block; }
+
+.aplus-v2.desktop .premium-aplus .aplus-display-table-width { min-width: 1000px; width: 100%; }

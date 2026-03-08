@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.atm-c-textarea { font-size: 1rem; font-weight: 400; line-height: 1.5; font-family: inherit; appearance: none; width: 100%; border: 1px solid gray; border-radius: 4px; outline: none; padding: 0.5rem; margin: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); transition: box-shadow 0.15s ease-out 0s, border-color 0.15s ease-out 0s; resize: none; }
+
+.atm-c-textarea:hover, .atm-c-textarea:focus { border-color: rgb(102, 102, 102); border-width: 1px; }
+
+.atm-c-textarea:focus { border-color: transparent; box-shadow: rgb(98, 68, 187) 0px 0px 0px 2px inset; color: rgb(0, 0, 0); }
+
+.atm-c-textarea:focus-visible { border-color: transparent; box-shadow: rgb(98, 68, 187) 0px 0px 0px 2px inset; color: rgb(0, 0, 0); }
+
+.atm-c-textarea::-webkit-input-placeholder { font-style: italic; color: rgb(148, 148, 148); }

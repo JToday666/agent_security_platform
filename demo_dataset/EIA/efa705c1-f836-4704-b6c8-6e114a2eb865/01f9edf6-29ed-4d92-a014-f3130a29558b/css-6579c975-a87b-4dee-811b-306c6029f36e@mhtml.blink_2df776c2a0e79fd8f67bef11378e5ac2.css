@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+body { box-sizing: border-box; margin: 0px; padding: 0px; }
+
+.widget-dealer-rating { box-sizing: border-box; color: rgb(17, 17, 17); font-family: "Open Sans", sans-serif, Tahoma, Arial; font-size: 12px; }
+
+.widget-dealer-rating a { color: rgb(54, 102, 189); text-decoration: none; cursor: pointer; }
+
+.widget-dealer-rating a:hover { text-decoration: underline; }
+
+.dealer-rating-stars { -webkit-box-align: center; align-items: center; display: flex; }
+
+.rating-value { margin-left: 4px; font-family: Montserrat; font-size: 14px; font-weight: 600; letter-spacing: 0.5px; }
+
+.inline-text-container { font-family: Montserrat; font-weight: 700; }
+
+.stars-large .rating-value { font-size: 24px; }
+
+.count { font-size: 12px; font-family: Montserrat; font-weight: 400; margin-left: 4px; letter-spacing: 0.5px; }
+
+.container-review { align-items: center; display: flex; margin-bottom: 8px; }
+
+.container-rating-kbb { display: flex; }
+
+.pointer { cursor: pointer; }

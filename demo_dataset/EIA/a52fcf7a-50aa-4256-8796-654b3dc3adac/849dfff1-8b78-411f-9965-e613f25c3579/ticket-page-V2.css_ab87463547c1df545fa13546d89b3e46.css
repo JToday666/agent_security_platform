@@ -1,0 +1,82 @@
+@charset "utf-8";
+
+.faq-hidden { display: none; }
+
+.ticket-card-placeholder .elementor-column > .elementor-element-populated > .elementor-widget-wrap { padding: 5px !important; }
+
+.sf-ticket-faq-section .elementor-column { min-height: 0px; }
+
+.ticket-page-pass-card-btn .elementor-button-link { width: 100%; margin-bottom: 0px; margin-top: 0px; min-height: 64px; display: flex; justify-content: center; align-items: center; transition: margin-top 0.2s ease-in 0s; border-radius: 0px 0px 10px 10px !important; font-size: 24px !important; }
+
+.ticket-page-pass-card-btn .elementor-button-link .btn-yellow { background-color: rgb(246, 197, 68); }
+
+.ticket-page-pass-card-btn .elementor-button-link .btn-red { background-color: rgb(214, 54, 46); }
+
+.shadowing { box-shadow: rgb(0, 0, 0) 0px 4px 18px -6px; overflow: visible; border-radius: 10px; max-width: 468px; margin: 20px; }
+
+.ticket-active-grid { border-top: 1px solid rgb(216, 216, 216); border-right: 1px solid rgb(216, 216, 216); }
+
+.ticket-active-grid.ticket-active-grid-end { border-bottom: 1px solid rgb(216, 216, 216); }
+
+.shadowing:hover { cursor: pointer; }
+
+.shadowing .elementor-column-wrap .elementor-widget-wrap { justify-content: flex-start !important; flex-direction: column !important; }
+
+#sf_show_faq .fas { transform: rotate(0deg); transition: transform 0.2s ease 0s; }
+
+#sf_show_faq .fas.rotate-arrow { transform: rotate(180deg); }
+
+.sf-ticket-table-row .elementor-column { width: 18% !important; max-width: 18% !important; }
+
+.sf-ticket-table-row .elementor-column:first-child { width: 46% !important; max-width: 46% !important; }
+
+body:not(.elementor-editor-active) .sf-perks-showroom { opacity: 0; }
+
+.elementor .elementor-inner .elementor-section-wrap section.sf-perks-showroom > .elementor-container > .elementor-row { margin: 0px; }
+
+.sf-showroom-bkg { min-height: 780px; width: 100%; background: rgb(0, 0, 0); position: absolute; top: 0px; }
+
+.tickets-make-flex > .elementor-container > .elementor-row { justify-content: center; }
+
+.shadowing-card-placeholder { max-width: 468px; }
+
+.shadowing .elementor-column-wrap .elementor-widget-wrap .showing-card-title { padding: 0px 120px; }
+
+@media only screen and (max-width: 767px) {
+  .sf-section-offer { max-width: 96% !important; }
+  .shadowing { max-width: 160px; margin: 5px; }
+  .sf-ticket-table-row .elementor-column .elementor-widget-wrap { padding: 3px !important; }
+  .sf-ticket-table-row .elementor-column .elementor-widget-wrap :not(.elementor-icon) { font-size: 10px; line-height: 1.2; }
+  .sf-ticket-table-responsive-btns .elementor-button { min-width: 100%; padding: 14px 2px !important; }
+  .sf-ticket-side-icon-column .elementor-widget-wrap { flex-direction: column; }
+  .tickets-make-flex > .elementor-container > .elementor-row { justify-content: space-between; margin: 0px 5px !important; }
+  .ticket-page-pass-card-btn .elementor-button-link { font-size: 12px !important; }
+  #sf-sticky-tableprice-header { background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.5) 0px 9px 22px -15px; }
+  #sf-sticky-tableprice-header .sf-tickets-passes-highlights-heading .elementor-widget-wrap { padding-bottom: 0px; }
+  #sf-sticky-tableprice-header h2 { font-size: 40px; margin-bottom: 10px; }
+  #sf-sticky-tableprice-header #sf-compare-header { padding: 0px 30px; }
+  #sf-sticky-tableprice-header #sf-compare-header .elementor-image img { width: 100%; height: auto; }
+}
+
+@media only screen and (max-width: 1024px) {
+  .tickets-make-flex .elementor-column-wrap.elementor-element-populated { margin: 0px !important; }
+  .shadowing .elementor-column-wrap .elementor-widget-wrap .showing-card-title { padding: 0px; }
+}
+
+@media only screen and (min-width: 767px) and (max-width: 1024px) {
+  .sf-section-offer { max-width: 98% !important; }
+  .sf-section-offer .elementor-row > .elementor-column { margin-bottom: 20px; }
+  .sf-section-offer-cta .elementor-row { align-items: center; }
+  .sf-section-offer-cta .elementor-column { margin-top: 10px; width: 33% !important; margin-bottom: 25px !important; }
+  .shadowing { margin: 5px; max-width: 320px; }
+  .tickets-make-flex > .elementor-container { max-width: 90% !important; }
+  .tickets-make-flex > .elementor-container > .elementor-row { justify-content: space-between; }
+  .sf-ticket-side-icon-column .elementor-widget-wrap { flex-direction: column; padding-left: 0px !important; }
+  .ticket-page-pass-card-btn .elementor-button-link { font-size: 20px !important; }
+}
+
+@media only screen and (min-width: 1024px) {
+  .shadowing { padding-bottom: 64px; }
+  .shadowing .ticket-page-pass-card-btn { position: absolute; bottom: -64px; box-shadow: rgba(0, 0, 0, 0.39) 0px 12px 25px -10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; transition: bottom 0.2s ease-out 0s; }
+  .shadowing:hover .ticket-page-pass-card-btn { bottom: -74px; }
+}

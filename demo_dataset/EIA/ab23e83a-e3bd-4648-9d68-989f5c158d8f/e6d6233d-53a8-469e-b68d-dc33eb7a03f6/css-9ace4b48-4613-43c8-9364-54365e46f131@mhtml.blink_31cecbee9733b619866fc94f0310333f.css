@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+.app-components-Refunds-tabs-RequestARefund-styles__requestRefundWrapper--3ONLe header { padding: 0px 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-styles__requestRefundWrapper--3ONLe header { padding: 0px; }
+}
+
+.app-components-Refunds-tabs-RequestARefund-styles__refundHelperText--1A9Nn { margin-bottom: 24px; padding-right: 24px; padding-left: 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-styles__refundHelperText--1A9Nn { padding-right: 0px; padding-left: 0px; }
+}
+
+.app-components-Refunds-tabs-RequestARefund-styles__saveButtonContainer--1ad2N { margin-top: 40px; padding-bottom: 25px; }
+
+.app-components-Refunds-tabs-RequestARefund-styles__saveButtonContainer--1ad2N .app-components-Refunds-tabs-RequestARefund-styles__submitButton--2LJj- { margin-left: 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-styles__saveButtonContainer--1ad2N .app-components-Refunds-tabs-RequestARefund-styles__submitButton--2LJj- { margin-left: 0px; }
+}
+
+.app-components-Refunds-tabs-RequestARefund-styles__useBelowForm--d5iIs { font-weight: 600; }
+
+.app-components-Refunds-tabs-RequestARefund-styles__errorWrapper--1nmzS .app-components-Refunds-tabs-RequestARefund-styles__errorMsg--2k9U5 { color: rgb(213, 0, 50); }
+
+.app-components-Refunds-tabs-RequestARefund-styles__errorWrapper--1nmzS .app-components-Refunds-tabs-RequestARefund-styles__errorMsg--2k9U5 svg { fill: rgb(213, 0, 50); top: 1px; margin-right: 5px; }

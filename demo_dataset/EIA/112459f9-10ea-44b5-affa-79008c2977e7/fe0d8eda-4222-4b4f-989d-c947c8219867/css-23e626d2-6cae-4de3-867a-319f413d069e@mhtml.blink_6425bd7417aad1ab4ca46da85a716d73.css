@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.atm-c-definition-list { margin: 0px; padding: 0px; }
+
+.atm-c-definition-list--small { font-size: 0.75rem; font-weight: 300; line-height: 1.66667; }
+
+.atm-c-definition-list__item { display: flex; margin-bottom: 1rem; }
+
+.atm-c-definition-list--small .atm-c-definition-list__item { margin-bottom: 0px; }
+
+.atm-c-definition-list--vertical .atm-c-definition-list__item { display: block; }
+
+.atm-c-definition-list__item:last-child { margin-bottom: 0px; }
+
+.atm-c-definition-list__term { font-size: 1rem; line-height: 1.5; margin-bottom: 0px; font-weight: 600; width: 176px; margin-right: 1rem; }
+
+.atm-c-definition-list--small .atm-c-definition-list__term { font-size: 0.75rem; line-height: 1.66667; font-weight: 600; width: 88px; }
+
+.atm-c-definition-list--vertical .atm-c-definition-list__term { width: auto; }
+
+.atm-c-definition-list__description { margin-left: 0px; }

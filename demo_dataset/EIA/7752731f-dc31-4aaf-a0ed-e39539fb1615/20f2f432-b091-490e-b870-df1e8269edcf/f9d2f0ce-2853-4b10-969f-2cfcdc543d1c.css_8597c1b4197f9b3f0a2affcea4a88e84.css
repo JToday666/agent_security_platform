@@ -1,0 +1,430 @@
+@charset "utf-8";
+
+body { text-align: center; line-height: 30px; font-size: 1.5625em; margin: 0px; background-repeat: no-repeat; background-attachment: fixed; background-position: center center; font-family: Arial, sans-serif; height: 100%; min-height: 100vh; }
+
+footer { position: relative; bottom: 0px; clear: both; width: 100%; }
+
+.skip-link { display: none; }
+
+.step-form-inner { min-height: 360px; }
+
+.step-control-container.CustomPagination { margin-bottom: 0px; margin-top: 10px; }
+
+.step-control-content.CustomPagination.ListItemModel.CustomListDataControl { display: flex; width: 65%; margin: auto; justify-content: space-between; }
+
+.pagination-button { width: auto; height: 2em; line-height: 2em; border-radius: 5px; background-color: rgb(51, 51, 51); color: rgb(255, 255, 255); cursor: pointer; padding-left: 0.5em; padding-right: 0.5em; margin: 5px; }
+
+.PageNumber { display: none; }
+
+.DateTimeGrid-Column { width: inherit !important; }
+
+.td-title { width: auto; }
+
+.datetime-grid { display: flex; width: 100%; justify-content: center; flex-wrap: nowrap; }
+
+.DateValidator { display: none; }
+
+.DateTimeGrid-Day { color: rgb(255, 255, 255); background-color: rgb(51, 51, 51); font-size: 0.8em; padding: 5px; }
+
+.ServiceAppointmentTypeDateTimeNone { width: 100%; padding-top: 5px; padding-bottom: 5px; color: rgb(255, 255, 255); background-color: rgb(51, 51, 51); }
+
+.step-control-container.SetRange { margin-bottom: 0px; }
+
+.step-control-container.DateRange { margin-bottom: 10px; }
+
+.button-SetRange { width: auto; height: 2em; line-height: 2em; border-radius: 5px; background-color: rgb(51, 51, 51); color: rgb(255, 255, 255); cursor: pointer; padding-left: 1em; padding-right: 1em; }
+
+.DateTimeGrid-Column { border: 1px solid rgb(204, 204, 204); }
+
+.step-control-content.SetRange.ListItemModel.CustomListDataControl { display: flex; justify-content: space-between; }
+
+.step-control-container.orLabel { margin-bottom: 10px; }
+
+.ServiceAppointmentDateTime.form-control.ui-selectable { border: 1px solid rgb(204, 204, 204); margin: 0px; color: rgb(36, 85, 133); padding: 10px 0px; border-radius: 0px; font-size: 0.8em; cursor: pointer; display: block; }
+
+.ServiceAppointmentDateTime.form-control.ui-selectable.valid.form-control-selected { background-color: rgb(36, 85, 133); color: rgb(255, 255, 255); }
+
+.img-confirmation { width: 100%; height: auto; max-width: 500px; }
+
+.Content { position: relative; padding-bottom: 1px; height: 80%; }
+
+.alert.alert-danger.alert-dismissible.show { color: red; background-color: rgb(250, 235, 204); width: 70%; margin: auto auto 15px; }
+
+.close { display: none; }
+
+.Confirmation-title { text-align: center; font-weight: bold; }
+
+.Confirmation-Image { text-align: center; width: 300px; height: auto; margin: auto; display: flex; }
+
+.Confirmation-Subtitle { font-size: 1.5em; }
+
+.AppointmentDateTime2 { width: 100%; }
+
+.step-control-container.CaptchaVal { width: 70%; display: flex; justify-content: flex-end; }
+
+.body-padding { width: 65%; margin-left: auto; margin-right: auto; }
+
+.disclaimer-text { color: rgb(0, 0, 0); width: 70%; margin: auto; font-size: 0.8em; border-radius: 0.5em; font-weight: bold; border: 2px solid rgb(36, 85, 133); }
+
+.disclaimer-textError { color: rgb(160, 3, 3); width: 70%; margin: auto; font-size: 0.7em; border-radius: 0.5em; font-weight: bold; border: 2px solid rgb(160, 3, 3); }
+
+.footerPage { background-color: rgb(51, 51, 51); position: static; color: rgb(255, 255, 255); padding: 1em; font-size: 0.7em; line-height: 27px; }
+
+input[type="checkbox"] { transform: scale(2); margin-right: 12px; }
+
+.unit-Address { font-size: 0.7em; word-break: break-word; }
+
+.step-control-container.Booker { width: 70%; }
+
+.step-control-content.CustomOptionId.ListItemModel.CustomListDataControl { display: flex; flex-wrap: wrap; margin: auto; width: 70%; justify-content: center; }
+
+.step-control-content.AppointmentTypeId.QFlowObjectModel.AppointmentTypeId { display: flex; flex-wrap: wrap; margin: auto; width: 70%; justify-content: center; }
+
+.step-control-content.AppointmentTypeCollectionId.QFlowObjectModel.AppointmentTypeCollectionId { display: flex; flex-wrap: wrap; margin: auto; width: 70%; justify-content: center; }
+
+.step-control-content.ServiceTypeId.QFlowObjectModel.ServiceTypeDataControl { display: flex; flex-wrap: wrap; margin: auto; width: 70%; justify-content: center; }
+
+.step-control-content.UnitId.QFlowObjectModel.UnitDataControl { display: flex; width: 100%; flex-wrap: wrap; justify-content: center; margin: auto; }
+
+.step-control-content.ResourceId.QFlowObjectModel.ResourceDataControl { display: flex; flex-wrap: wrap; margin: auto; width: 100%; justify-content: center; }
+
+.center-textDiv { margin: auto; width: 100%; }
+
+.control-label { text-align: left; color: rgb(36, 85, 133); font-weight: bold; }
+
+#DateAndTimeContainer { display: flex; width: 100%; }
+
+.displaydata-text { width: 25em; height: 80px; cursor: pointer; background-color: rgb(36, 85, 133); color: rgb(0, 0, 0); border-radius: 10px; margin: 0.5em; display: flex; justify-content: center; align-items: center; }
+
+.displaydata-text:hover { filter: opacity(0.9); }
+
+.displaydata-item { width: min-content; margin: auto; }
+
+.DisplayDataDataControl { display: flex; width: 80%; flex-wrap: wrap; margin: auto; }
+
+.label-center { text-align: center !important; }
+
+.step-control-container.AppointmentDate { margin: 2%; width: 96%; border: 1px solid rgb(84, 84, 84); }
+
+.CalendarDateModel.hasDatepicker { width: 98%; margin: 1%; }
+
+.step-control-container.AppointmentTime { margin: 2%; width: 96%; border: 1px solid rgb(84, 84, 84); }
+
+.step-control-content.AppointmentTime.TimeSlotModel.TimeSlotDataControl { margin-top: auto; margin-bottom: auto; padding-top: 0%; padding-bottom: 10%; }
+
+.div-containerbutton { width: 100%; display: flex; margin-top: 1em; margin-bottom: 0.5em; text-align: left; justify-content: center; }
+
+.logo-principal { width: 100%; height: auto; }
+
+.border-menu { width: 100%; border-bottom: 2px solid rgb(0, 0, 0); border-top: 2px solid rgb(0, 0, 0); margin-top: -7px; }
+
+.button-Main { background-color: rgb(36, 85, 133); padding: 10px; border-radius: 0.5em; color: rgb(255, 255, 255); width: 15em; margin-right: 1em; height: 3em; font-size: 1em; border: none; cursor: pointer; }
+
+.button-Main:focus { outline: 0px !important; }
+
+.border-bottom { margin-bottom: 2em; }
+
+.row { display: flex; text-align: left; font-size: 0.8em; width: 75%; margin: auto; }
+
+.card { border: 1px solid rgb(169, 169, 169); margin-left: 1em; margin-right: 1em; width: 50%; }
+
+.card-header { border-bottom: 1px solid rgb(169, 169, 169); text-align: center; background-color: rgb(36, 85, 133); width: auto; margin: 0px; padding: 0.5em; color: rgb(255, 255, 255); font-weight: 600; }
+
+dd { margin: auto; }
+
+.card-body { font-size: 0.78em; word-break: break-word; padding: 0.5em; }
+
+.lblConfirm { font-weight: bold; color: rgb(36, 85, 133); }
+
+.headerbar { background-color: rgb(160, 3, 3); height: 50px; }
+
+.headerMenu { font-size: 1.8em; height: 100px; color: rgb(3, 81, 124); position: relative; display: inline-flex; width: 100%; line-height: 50px; border-bottom: 20px solid rgb(3, 81, 124); }
+
+.your-Logo { text-align: center; width: auto; display: inline; }
+
+.slotsStyle { font-size: 0.8em; width: 90%; height: 45px; margin: auto; }
+
+select { width: 90%; height: 45px; font-size: 0.9em !important; }
+
+.tinyLogo { width: 45px; height: 45px; margin-left: 60px; float: left; color: rgb(255, 255, 255); margin-top: 3px; }
+
+.hideMobile { display: block; }
+
+.text-header { margin: auto; }
+
+.logo { width: 150px; height: 150px; margin-left: 100px; margin-top: 25px; }
+
+.step-controls { margin: auto; width: 90%; color: rgb(0, 0, 0); }
+
+.step-controlsMenu { width: 70%; margin: auto; }
+
+.step-controlsdate { display: block; width: 75%; }
+
+.SingleDateTime { width: 25em; height: 80px; display: inline-block; cursor: pointer; background-color: rgb(36, 85, 133); color: rgb(255, 255, 255); border-radius: 10px; line-height: 80px; margin-top: 10px; }
+
+.DataControlBtn { width: 100%; min-height: 80px; display: flex; cursor: pointer; background-color: rgb(36, 85, 133); color: rgb(255, 255, 255); border-radius: 10px; margin: 0.5em; justify-content: left; flex-flow: row wrap; align-items: center; padding-left: 1em; padding-right: 1em; text-align: left; }
+
+.DataControlBtn:hover { filter: opacity(0.9); }
+
+.DataControlBtnUnit { width: 20em; height: 100px; display: flex; cursor: pointer; background-color: rgb(36, 85, 133); color: rgb(255, 255, 255); border-radius: 10px; margin: 0.5em; justify-content: center; flex-flow: row wrap; align-items: center; padding-left: 1em; padding-right: 1em; }
+
+.disabled-unit { width: 20em; height: 100px; display: flex; pointer-events: none; background-color: rgb(115, 115, 115); color: rgb(255, 255, 255); border-radius: 10px; margin: 0.5em; justify-content: center; flex-flow: row wrap; align-items: center; padding-left: 1em; padding-right: 1em; }
+
+.DataControlBtnUnit:hover { filter: opacity(0.9); }
+
+.field-validation-error { display: inline-block; color: red; }
+
+.Confirmation-container { width: 70%; margin: auto; border-radius: 0.3em; }
+
+.body-confirmation { text-align: left; margin-left: 0.7em; margin-right: 0.7em; font-size: 0.7em; }
+
+input[type="button"], input[type="submit"], input[type="reset"] { border: none; color: rgb(255, 255, 255); padding: 16px 32px; text-decoration: none; cursor: pointer; font-size: 0.8em; }
+
+.NotificationConsent { display: flex; flex-direction: row-reverse; justify-content: flex-end; }
+
+#BackButton { border-radius: 10px; color: rgb(255, 255, 255); padding: 10px 30px; border: 0px; cursor: pointer; float: left; background-color: rgb(36, 85, 133); text-decoration: none; font-size: 0.8em; margin: 4px 2px; }
+
+.serviceprofilebutton.appointment { background-color: rgb(255, 137, 115); border-radius: 25px; }
+
+.step-control-container.CustomerLocation { margin-top: -40px; }
+
+.step-control-content.ServiceProfileExtRef.ListItemModel.CustomListDataControl { margin: auto; position: relative; }
+
+.step-control-label { text-align: left; width: 100%; display: block; margin: 0.4em; font-size: 0.85em; }
+
+.step-control-container { margin-bottom: 20px; margin-left: auto; margin-right: auto; }
+
+.DateValidator { height: 0px; margin: 0px; }
+
+.form-group { margin-top: 10px; margin-bottom: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 0.8em; }
+
+.serviceprofilebutton.form-control-selected { border: 0px; }
+
+.step-title { color: rgb(0, 0, 0); padding: 20px; text-align: center; font-size: 1.3em; margin-top: 30px; margin-bottom: 30px; }
+
+.serviceprofilebutton { margin: auto; background-size: contain; background-repeat: no-repeat; background-position: center center; position: relative; }
+
+.next-button { background-color: rgb(36, 85, 133); appearance: button; }
+
+.back-button { background-color: rgb(191, 191, 191); }
+
+.step-control-container .ErrorLabelCustomer { width: 70%; color: red; margin: auto; }
+
+@media only screen and (min-width: 728px) {
+  .serviceprofilebutton { width: 26vw; height: 4em; display: inline-block; cursor: pointer; }
+  .step-control-content.ServiceProfileExtRef.ListItemModel.CustomListDataControl { width: 80%; }
+  .step-controlsMenu { width: 60%; }
+  input.next-button, .back-button { border-radius: 10px; color: rgb(255, 255, 255); padding: 10px 30px; border: 0px; cursor: pointer; line-height: 30px; }
+  .next-button { float: right; }
+  .next-button:focus { outline: 0px !important; }
+  .back-button { float: left; }
+  .progress-buttons { width: 65%; margin: auto; }
+  .form-group.CustomerCustomProperty.T_C { width: 50%; float: right; }
+}
+
+@media only screen and (max-width: 727px) {
+  .alert.alert-danger.alert-dismissible.show { width: 100%; }
+  .td-title { width: 50%; }
+  .DateTimeGrid-Column { cursor: pointer; }
+  .datetime-grid { flex-wrap: wrap; }
+  .ServiceAppointmentDateTime.form-control.ui-selectable { display: none; }
+  .step-control-content.CustomOptionId.ListItemModel.CustomListDataControl { width: 100%; }
+  .step-control-content.AppointmentTypeId.QFlowObjectModel.AppointmentTypeId { width: 100%; }
+  .step-control-content.AppointmentTypeCollectionId.QFlowObjectModel.AppointmentTypeCollectionId { width: 100%; }
+  .step-control-content.ServiceTypeId.QFlowObjectModel.ServiceTypeDataControl { width: 100%; }
+  .step-control-content.UnitId.QFlowObjectModel.UnitDataControl { flex-wrap: wrap; }
+  .step-control-container.CaptchaVal { width: 100%; display: flex; justify-content: center; }
+  .body-padding { width: 100%; }
+  .Confirmation-container { width: 90%; word-break: break-word; }
+  .button-Main { width: 100%; margin-top: 0.5em; }
+  .div-containerbutton { width: 100%; display: block; }
+  .AppointmentDate { margin-right: 0px; }
+  .ui-datepicker { width: 100%; }
+  .row { display: block; width: 90%; }
+  .card { margin-bottom: 1em; margin-left: 0px; width: 100%; }
+  .step-controlsMenu { width: 100%; }
+  .NotificationConsent { display: flex; flex-direction: row-reverse; }
+  #BackButton { border-radius: 10px; color: rgb(255, 255, 255); padding: 10px 0px; border: 0px; width: 91%; height: 36px; line-height: 36px; margin-top: 0.2em; margin-right: 0.2em; margin-bottom: 0.2em; margin-left: 4.5% !important; }
+  .next-button { border-radius: 10px; color: rgb(255, 255, 255); padding: 10px 30px; border: 0px; width: 91%; margin: 0.2em; float: none; }
+  .form-group.CustomerCustomProperty.T_C { width: 100%; margin-bottom: 70px; }
+  .DataControlBtn { width: 100%; height: auto; min-height: 80px; margin: 10px 0px 0px; padding: 8px; }
+  .DataControlBtnUnit { width: 100%; height: auto; min-height: 100px; margin: 10px 0px 0px; }
+  .disabled-unit { width: 100%; height: auto; min-height: 100px; margin: 10px 0px 0px; }
+  .step-controls { width: 90%; }
+  .step-controlsdate { display: block; width: 90%; }
+  .serviceprofilebutton { width: 80vw; height: 5em; display: block; margin-top: 20px; margin-bottom: 20px; }
+  .step-control-content.ServiceProfileExtRef.ListItemModel.CustomListDataControl { width: 100%; }
+  .serviceprofilebutton.queue { float: none; }
+  .serviceprofilebutton.appointment { float: none; }
+  .progress-buttons { width: 100%; }
+  .step-control-container.Booker { width: 90%; }
+  .DisplayDataDataControl { display: block; width: 100%; margin: auto; }
+  .displaydata-item { width: auto; }
+  .displaydata-text { width: 100%; margin: 10px 0px 0px; }
+  .SingleDateTime { width: 100%; }
+  #DateAndTimeContainer { display: block; }
+  .logo { width: 70px; height: 70px; margin-left: 40px; margin-top: 25px; }
+  header { color: rgb(25, 92, 144); }
+}
+
+.step-control-content.Details { text-align: center; }
+
+#getLocation { cursor: pointer; }
+
+.serviceprofilebutton:hover { filter: opacity(0.9); }
+
+.serviceprofilebutton.queue { background-color: rgb(36, 85, 133); border-radius: 25px; }
+
+.serviceprofilebutton.appointment { background-color: rgb(36, 85, 133); border-radius: 25px; }
+
+.CustomerCustomProperty.T_C label { width: 60%; display: inline-block; float: right; }
+
+.CustomerCustomProperty.T_C .form-control-input { float: left; width: 40%; }
+
+.form-control { padding: 12px 0px 12px 6px; width: 100%; border-radius: 5px; border: 1px solid rgb(0, 0, 0); font-size: 1em; }
+
+.serviceprofilelabelbox { filter: grayscale(0%); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: auto; width: 100%; }
+
+.serviceprofilelabel { vertical-align: middle; text-align: center; padding: 20px; border-radius: 15px; color: rgb(255, 255, 255); }
+
+.serviceprofilebutton.queue .serviceprofilelabel { background-color: rgb(36, 85, 133); }
+
+.serviceprofilebutton.appointment .serviceprofilelabel { background-color: rgb(36, 85, 133); }
+
+div#step.queue-or-appointment .step-controls { width: 90%; margin: auto; }
+
+div#step.queue-or-appointment .progress-buttons { width: 90%; }
+
+.progress-buttons { clear: both; margin: auto; padding-bottom: 220px; }
+
+.flexer, .progress-indicator { display: flex; }
+
+.no-flexer, .progress-indicator.stacked { display: block; }
+
+.no-flexer-element { flex: 0 1 0%; }
+
+.flexer-element, .progress-indicator > li { flex: 1 1 0%; }
+
+.progress-indicator { margin: 0px 0px 1em; padding: 0px; font-size: 70%; }
+
+.progress-indicator > li { list-style: none; text-align: center; width: auto; padding: 0px; margin: 0px; position: relative; text-overflow: ellipsis; color: rgb(0, 0, 0); display: block; }
+
+.progress-indicator > li:hover { color: rgb(0, 0, 0); }
+
+.progress-indicator > li.completed, .progress-indicator > li.completed .bubble { color: rgb(37, 79, 131); }
+
+.progress-indicator > li .bubble { border-radius: 1000px; width: 55px; height: 55px; display: block; margin: 0px auto 0.5em; border: 1px solid rgb(0, 0, 0); color: rgb(0, 0, 0); font-size: 1.1em; text-align: center; line-height: 55px; font-weight: bold; }
+
+.progress-indicator > li .bubble::after, .progress-indicator > li .bubble::before { display: block; position: absolute; top: 20px; width: 100%; content: ""; z-index: -1; }
+
+.progress-indicator > li.completed .bubble, .progress-indicator > li.completed .bubble::after, .progress-indicator > li.completed .bubble::before { background-color: rgb(119, 184, 40); border-color: rgb(119, 184, 40); color: rgb(255, 255, 255); }
+
+.progress-indicator > li .bubble::before { left: 0px; }
+
+.progress-indicator > li .bubble::after { right: 0px; }
+
+.progress-indicator > li:first-child .bubble::after, .progress-indicator > li:first-child .bubble::before { width: 50%; margin-left: 50%; }
+
+.progress-indicator > li:last-child .bubble::after, .progress-indicator > li:last-child .bubble::before { width: 50%; margin-right: 50%; }
+
+.progress-indicator > li.active, .progress-indicator > li.active .bubble { color: rgb(0, 0, 0); }
+
+.progress-indicator > li.active .bubble, .progress-indicator > li.active .bubble::after, .progress-indicator > li.active .bubble::before { background-color: rgb(36, 85, 133); border-color: rgb(36, 85, 133); color: rgb(255, 255, 255); }
+
+.progress-indicator > li a:hover .bubble, .progress-indicator > li a:hover .bubble::after, .progress-indicator > li a:hover .bubble::before { background-color: rgb(86, 113, 208); border-color: rgb(31, 48, 110); }
+
+.progress-indicator > li a:hover .bubble { color: rgb(86, 113, 208); }
+
+.progress-indicator > li.danger .bubble, .progress-indicator > li.danger .bubble::after, .progress-indicator > li.danger .bubble::before { background-color: rgb(211, 20, 15); border-color: rgb(68, 6, 5); }
+
+.progress-indicator > li.danger .bubble { color: rgb(211, 20, 15); }
+
+.progress-indicator > li.warning .bubble, .progress-indicator > li.warning .bubble::after, .progress-indicator > li.warning .bubble::before { background-color: rgb(237, 177, 10); border-color: rgb(90, 67, 4); }
+
+.progress-indicator > li.warning .bubble { color: rgb(237, 177, 10); }
+
+.progress-indicator > li.info .bubble, .progress-indicator > li.info .bubble::after, .progress-indicator > li.info .bubble::before { background-color: rgb(91, 50, 214); border-color: rgb(37, 19, 93); }
+
+.progress-indicator > li.info .bubble { color: rgb(91, 50, 214); }
+
+.progress-indicator.stacked > li { text-indent: -10px; text-align: center; display: block; }
+
+.progress-indicator.stacked > li .bubble::after, .progress-indicator.stacked > li .bubble::before { left: 50%; margin-left: -1.5px; width: 3px; height: 100%; }
+
+.progress-indicator.stacked .stacked-text { position: relative; z-index: 10; top: 0px; display: inline-block; text-align: left; line-height: 1.2em; margin-left: 60% !important; width: 45% !important; }
+
+.progress-indicator.stacked > li a { border: none; }
+
+.progress-indicator.stacked.nocenter > li .bubble { margin-left: 0px; margin-right: 0px; }
+
+.progress-indicator.stacked.nocenter > li .bubble::after, .progress-indicator.stacked.nocenter > li .bubble::before { left: 10px; }
+
+.progress-indicator.stacked.nocenter .stacked-text { display: block; width: auto !important; margin-left: 40px !important; }
+
+@media handheld, screen and (max-width: 400px) {
+  .progress-indicator { font-size: 60%; }
+  .DataControlBtn { padding: 10px; }
+}
+
+@media handheld, screen and (max-width: 760px) {
+  .stepText { display: none; }
+}
+
+.topnav { overflow: hidden; background-color: rgb(255, 255, 255); margin-right: 70px; display: flex; width: 100%; font-weight: bold; }
+
+.topnav a { float: right; display: block; color: rgb(0, 0, 0); text-align: center; padding: 14px 0px; font-size: 0.8em; width: 100%; }
+
+.topnav a:hover { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); }
+
+.topnav a.active { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); }
+
+.topnav .icon { display: none; }
+
+@media screen and (max-width: 888px) {
+  .topnav a { display: none; text-decoration: none; }
+  .topnav a.icon { float: right; display: block; width: auto; padding-right: 10px; font-size: 2em !important; }
+  .topnav { margin-right: 10px; margin-top: 0px; display: block; }
+  .topnav.responsive { position: relative; display: block; }
+  .topnav.responsive .icon { text-align: right; padding-right: 10px; }
+  .topnav.responsive a { display: block; }
+  .your-Logo { position: relative; top: 0px; width: 70%; }
+  .row { width: 100%; }
+}
+
+.moveButton { position: relative; top: 130px; }
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover { border: 1px solid rgb(0, 62, 255); background: rgb(36, 85, 133); font-weight: normal; color: rgb(255, 255, 255); text-align: center; }
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, .ui-button.ui-state-disabled:hover, .ui-button.ui-state-disabled:active { text-align: center; }
+
+.ui-datepicker { width: 100%; padding: 0px; }
+
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -17px; top: 50%; margin-top: -13px; }
+
+.ui-datepicker .ui-datepicker-prev-hover { left: 1px; background-color: rgb(36, 85, 133); border: 0px; }
+
+.ui-datepicker .ui-datepicker-next-hover { right: 1px; background-color: rgb(36, 85, 133); border: 0px; }
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position: absolute; top: 0px; width: 1.8em; height: 1.8em; }
+
+.ui-widget-header { background: rgb(36, 85, 133); color: rgb(255, 255, 255); }
+
+.ui-icon { width: 32px; height: 32px; }
+
+.ui-widget-header .ui-icon { background-image: url("/OABS/tempscriptcompile/qflowweb/OABSEngine/AdditionalAssemblies/Images/arrows.png"); background-size: cover; }
+
+.ui-icon-circle-triangle-e { background-position: -32px 0px; }
+
+.ui-icon-circle-triangle-w { background-position: 0px 0px; }
+
+.message-attn { font-size: 1.125rem; background-color: rgb(255, 251, 240); border-radius: 11px; margin: auto; padding: 15px; max-width: 720px; border: 1px solid rgb(223, 218, 203); }
+
+.message-office { font-size: 1.125rem; background-color: rgb(255, 251, 240); border-radius: 11px; margin: auto; padding: 15px; max-width: 720px; border: 1px solid rgb(223, 218, 203); }
+
+.form-subtitle { font-size: 1.25rem; text-align: center; }
+
+#ConfirmationText .button-Main { width: 90%; max-width: 300px; display: block; margin: 0.5rem; min-width: 200px; }
+
+@media only screen and (max-width: 727px) {
+  #ConfirmationText .button-Main { margin: 0.5rem auto; }
+}

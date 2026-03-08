@@ -1,0 +1,57 @@
+@charset "utf-8";
+
+.css-t93518 { font-family: "Source Sans Pro", Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px; letter-spacing: 0em; text-align: left; vertical-align: middle; cursor: pointer; color: rgb(99, 99, 99) !important; }
+
+.css-t93518:hover { text-decoration: underline !important; }
+
+.css-1liwnrs { margin-left: 8px; }
+
+.css-j0u2yh { font-family: "Source Sans Pro", Arial, sans-serif; font-size: 14px; line-height: 18px; letter-spacing: 0em; text-align: left; vertical-align: middle; cursor: pointer; font-weight: 600; color: rgb(31, 31, 31) !important; }
+
+.css-j0u2yh:hover { text-decoration: underline !important; }
+
+.css-5t0p0h { }
+
+.css-15r6qtu { max-width: 1440px; }
+
+.css-vg50an { position: relative; padding-left: 64px; padding-right: 64px; }
+
+@media (max-width: 1023.95px) {
+  .css-vg50an { padding-left: 32px; padding-right: 32px; }
+}
+
+@media (max-width: 599.95px) {
+  .css-vg50an { padding-left: 24px; padding-right: 24px; }
+}
+
+.css-1v4gwaa { line-height: 150%; letter-spacing: -0.03em; font-weight: 600; text-transform: uppercase; margin-bottom: 24px; font-size: 20px !important; }
+
+@media (max-width: 599.95px) {
+  .css-1v4gwaa { font-size: 14px !important; }
+}
+
+.css-7xr98b { font-style: normal; letter-spacing: -0.03em; margin-bottom: 24px; font-size: 48px !important; font-weight: 600 !important; line-height: 100% !important; }
+
+@media (max-width: 599.95px) {
+  .css-7xr98b { font-size: 40px !important; }
+}
+
+.css-252s25 p { letter-spacing: -0.02em; font-size: 20px !important; line-height: 150% !important; }
+
+@media (max-width: 599.95px) {
+  .css-252s25 p { letter-spacing: -0.03em; font-size: 16px !important; }
+}
+
+.css-252s25 .rc-Markdown.styled li { font-size: 20px !important; }
+
+.css-1w0toct { position: relative; }
+
+.css-70kohs { position: relative; padding-left: 64px; padding-right: 64px; text-align: right; }
+
+@media (max-width: 1023.95px) {
+  .css-70kohs { padding-left: 32px; padding-right: 32px; }
+}
+
+@media (max-width: 599.95px) {
+  .css-70kohs { padding-left: 24px; padding-right: 24px; }
+}

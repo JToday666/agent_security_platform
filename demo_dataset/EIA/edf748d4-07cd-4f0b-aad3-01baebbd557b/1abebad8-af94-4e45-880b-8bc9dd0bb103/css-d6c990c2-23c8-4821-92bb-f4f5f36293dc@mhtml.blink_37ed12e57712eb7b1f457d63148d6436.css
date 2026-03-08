@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+[_nghost-iyw-c170] { display: flex; flex-direction: column; justify-content: center; }
+
+.provider-logo--smaller[_ngcontent-iyw-c170] { background-image: url("https://assets.ryanair.com/resources/ui/rooms/v2/vendors_logos/providers-logo-small-202001.png"); background-repeat: no-repeat; background-size: 495px; height: 20px; }
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (min--moz-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .provider-logo--smaller[_ngcontent-iyw-c170] { background-image: url("https://assets.ryanair.com/resources/ui/rooms/v2/vendors_logos/providers-logo-small-202001@2x.png"); }
+}
+
+.provider-logo--htc-smaller[_ngcontent-iyw-c170] { width: 98px; }
+
+.provider-logo--hte-smaller[_ngcontent-iyw-c170] { width: 98px; }
+
+.provider-logo--hrs-smaller[_ngcontent-iyw-c170] { background-position-x: -103px; width: 75px; }
+
+.provider-logo--hoc-smaller[_ngcontent-iyw-c170] { background-position-x: -183px; width: 82px; }
+
+.provider-logo--hev-smaller[_ngcontent-iyw-c170] { background-position-x: -269px; width: 50px; }
+
+.provider-logo--hcl-smaller[_ngcontent-iyw-c170] { background-position-x: -327px; width: 106px; }
+
+.provider-logo--hfr-smaller[_ngcontent-iyw-c170] { background-position-x: -434px; width: 65px; }
+
+.provider-logo--normal[_ngcontent-iyw-c170] { background-image: url("https://assets.ryanair.com/resources/ui/rooms/v2/vendors_logos/providers_logo-large-202001.png"); background-repeat: no-repeat; background-size: 629px; height: 24px; }
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (min--moz-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .provider-logo--normal[_ngcontent-iyw-c170] { background-image: url("https://assets.ryanair.com/resources/ui/rooms/v2/vendors_logos/providers_logo-large-202001@2x.png"); }
+}
+
+.provider-logo--htc-normal[_ngcontent-iyw-c170] { width: 126px; }
+
+.provider-logo--hte-normal[_ngcontent-iyw-c170] { width: 126px; }
+
+.provider-logo--hrs-normal[_ngcontent-iyw-c170] { background-position-x: -134px; width: 88px; }
+
+.provider-logo--hoc-normal[_ngcontent-iyw-c170] { background-position-x: -233px; width: 102px; }
+
+.provider-logo--hev-normal[_ngcontent-iyw-c170] { background-position-x: -344px; width: 64px; }
+
+.provider-logo--hcl-normal[_ngcontent-iyw-c170] { background-position-x: -421px; width: 124px; }
+
+.provider-logo--hfr-normal[_ngcontent-iyw-c170] { background-position-x: -554px; width: 76px; }

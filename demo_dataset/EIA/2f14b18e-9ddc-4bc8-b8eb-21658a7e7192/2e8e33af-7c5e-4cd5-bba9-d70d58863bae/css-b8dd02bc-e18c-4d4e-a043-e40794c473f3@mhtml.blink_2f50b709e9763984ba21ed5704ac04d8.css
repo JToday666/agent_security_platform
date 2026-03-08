@@ -1,0 +1,462 @@
+@charset "utf-8";
+
+.app-components-RightPanel-panel__btnDefault--1PldS { text-align: center; text-decoration: none; border-radius: 2px; height: 52px; line-height: 22px; width: 100%; font-size: 16px; }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__btnDefault--1PldS { height: 56px; width: 160px; }
+}
+
+.app-components-RightPanel-panel__btnDefault--1PldS:hover, .app-components-RightPanel-panel__btnDefault--1PldS:focus { box-shadow: none; }
+
+.app-components-RightPanel-panel__btnDefault--1PldS:disabled, .app-components-RightPanel-panel__btnDefault--1PldS[disabled] { box-shadow: none; border: none; background-color: rgb(230, 230, 230); color: rgb(102, 102, 102); }
+
+.app-components-RightPanel-panel__primaryButton--1aOu_ { background-color: rgb(33, 114, 186); color: rgb(255, 255, 255); border: 1px solid rgb(33, 114, 186); box-shadow: rgb(102, 102, 102) -1px 1px 1px 0px; }
+
+.app-components-RightPanel-panel__primaryButton--1aOu_:hover, .app-components-RightPanel-panel__primaryButton--1aOu_:focus { border: 1px solid rgb(0, 48, 87); box-shadow: none; }
+
+.app-components-RightPanel-panel__ancillaryButton--2Lj-6, .app-components-RightPanel-panel__primaryButton--1aOu_.app-components-RightPanel-panel__ancillaryButton--2Lj-6, .app-components-RightPanel-panel__btnDefault--1PldS.app-components-RightPanel-panel__ancillaryButton--2Lj-6 { height: 30px; }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__ancillaryButton--2Lj-6, .app-components-RightPanel-panel__primaryButton--1aOu_.app-components-RightPanel-panel__ancillaryButton--2Lj-6, .app-components-RightPanel-panel__btnDefault--1PldS.app-components-RightPanel-panel__ancillaryButton--2Lj-6 { width: 160px; }
+}
+
+.app-components-RightPanel-panel__secondaryButton--17ia5 { background-color: rgb(237, 183, 43); color: rgb(0, 0, 0); border: 1px solid rgb(237, 183, 43); }
+
+.app-components-RightPanel-panel__secondaryButton--17ia5:hover { border: 1px solid rgb(0, 57, 100); box-shadow: none; }
+
+.app-components-RightPanel-panel__inputFieldBorder--3ZgnR { border-top: none; border-right: none; border-left: none; border-image: initial; border-bottom: 1px solid rgb(102, 102, 102); background: rgba(0, 0, 0, 0); border-radius: 0px; }
+
+.app-components-RightPanel-panel__textLink--22Hon { font-size: 28px; letter-spacing: 0px; line-height: 18px; }
+
+.app-components-RightPanel-panel__textLink--22Hon:link { color: rgb(0, 34, 68); }
+
+.app-components-RightPanel-panel__textLink--22Hon:hover { color: rgb(33, 114, 186); border-bottom: 1px solid rgb(33, 114, 186); }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__textLink--22Hon { font-size: 16px; }
+}
+
+.app-components-RightPanel-panel__textLinkCTA--kyv_v { letter-spacing: 0px; }
+
+.app-components-RightPanel-panel__textLinkCTA--kyv_v:link { color: rgb(102, 102, 102); text-decoration: underline; }
+
+.app-components-RightPanel-panel__textLinkCTA--kyv_v:hover { color: rgb(0, 0, 0); }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__textLinkCTA--kyv_v { line-height: 22px; }
+}
+
+.app-components-RightPanel-panel__inverse--3R7c3 { background-color: rgb(33, 114, 186); border-radius: 2px; color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__inverse--3R7c3.app-components-RightPanel-panel__secondary--eEj2p { color: rgb(237, 183, 43); }
+
+.app-components-RightPanel-panel__inverse--3R7c3 input[type="text"], .app-components-RightPanel-panel__inverse--3R7c3 input[type="password"], .app-components-RightPanel-panel__inverse--3R7c3 input[type="tel"], .app-components-RightPanel-panel__inverse--3R7c3 input[type="number"] { color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__inverse--3R7c3 input[type="text"].app-components-RightPanel-panel__secondary--eEj2p, .app-components-RightPanel-panel__inverse--3R7c3 input[type="password"].app-components-RightPanel-panel__secondary--eEj2p, .app-components-RightPanel-panel__inverse--3R7c3 input[type="tel"].app-components-RightPanel-panel__secondary--eEj2p, .app-components-RightPanel-panel__inverse--3R7c3 input[type="number"].app-components-RightPanel-panel__secondary--eEj2p { color: rgb(237, 183, 43); }
+
+.app-components-RightPanel-panel__inverseDark--4ENCV { background-color: rgb(0, 34, 68); font-size: 16px; color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__signInInput--30B-z { font-size: 24px; letter-spacing: -0.2px; line-height: 32px; }
+
+.app-components-RightPanel-panel__roundedButton--1-6W0, .app-components-RightPanel-panel__roundedButtonOn--1ewCN, .app-components-RightPanel-panel__roundedButtonPrimary--13I1h { font-size: 16px; letter-spacing: 0px; border: 1px solid; border-radius: 200px; height: 72px; width: 94px; text-align: center; }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__roundedButton--1-6W0, .app-components-RightPanel-panel__roundedButtonOn--1ewCN, .app-components-RightPanel-panel__roundedButtonPrimary--13I1h { border-radius: 100px; height: 35px; }
+}
+
+.app-components-RightPanel-panel__roundedButtonPrimary--13I1h { color: rgb(153, 153, 153); border: 2px solid rgb(211, 211, 211); }
+
+@media (min-width: 1184px) {
+  .app-components-RightPanel-panel__roundedButtonPrimary--13I1h { border: 1px solid rgb(211, 211, 211); }
+}
+
+.app-components-RightPanel-panel__roundedButtonPrimary--13I1h:hover { color: rgb(102, 102, 102); border: 2px solid rgb(102, 102, 102); }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__roundedButtonPrimary--13I1h:hover { border: 1px solid rgb(102, 102, 102); }
+}
+
+.app-components-RightPanel-panel__roundedButtonOn--1ewCN { background-color: rgb(33, 114, 186); color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__alert--3XpOA, .app-components-RightPanel-panel__highLevelAlert--33iUH, .app-components-RightPanel-panel__lowLevelAlert--3LIB5 { border-radius: 3px; height: 60px; width: 100%; font-size: 16px; line-height: 18px; letter-spacing: 0px; padding-left: 55px; padding-top: 20px; }
+
+.app-components-RightPanel-panel__lowLevelAlert--3LIB5 { background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); }
+
+.app-components-RightPanel-panel__highLevelAlert--33iUH { background-color: rgb(213, 0, 50); color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__alertTriangle--25zrh, .app-components-RightPanel-panel__low-alert-triangle--2JxPI, .app-components-RightPanel-panel__highAlertTriangle--pRdHH { padding-left: 48px; height: 19.96px; width: 22.01px; content: "!"; }
+
+.app-components-RightPanel-panel__highAlertTriangle--pRdHH { color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__low-alert-triangle--2JxPI { color: rgb(102, 102, 102); }
+
+.app-components-RightPanel-panel__dropdown--2Unvd { width: 100%; height: 100%; border: 1px solid rgb(229, 229, 229); }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__dropdown--2Unvd { border-radius: 3px; border: 1px solid rgb(200, 200, 200); box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 10px 0px; }
+}
+
+.app-components-RightPanel-panel__dropdownContent--rEAVG { font-size: 32px; line-height: 72px; letter-spacing: 0px; color: rgb(102, 102, 102); }
+
+.app-components-RightPanel-panel__dropdownContent--rEAVG:hover { background-color: rgb(242, 249, 252); color: rgb(0, 34, 68); }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__dropdownContent--rEAVG { font-size: 10px; line-height: 40px; }
+}
+
+.app-components-RightPanel-panel__dropdownExpand--3fAfU { font-size: 24px; line-height: 44px; color: rgb(0, 34, 68); letter-spacing: 0px; }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__dropdownExpand--3fAfU { font-size: 12px; line-height: 22px; }
+}
+
+.app-components-RightPanel-panel__simpleDropdownDefault--23Z8n, .app-components-RightPanel-panel__simpleDropdownOnBackground--11xV8 { border: 1px solid rgb(148, 148, 148); border-radius: 4px; font-size: 28px; color: rgb(51, 51, 51); letter-spacing: 0px; line-height: 24px; }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__simpleDropdownDefault--23Z8n, .app-components-RightPanel-panel__simpleDropdownOnBackground--11xV8 { font-size: 16px; color: rgb(0, 34, 68); border: none; }
+  .app-components-RightPanel-panel__simpleDropdownDefault--23Z8n:hover, .app-components-RightPanel-panel__simpleDropdownOnBackground--11xV8:hover { color: rgb(33, 114, 186); }
+}
+
+.app-components-RightPanel-panel__simpleDropdownOnBackground--11xV8 { opacity: 0.5; border: 1px solid rgb(255, 255, 255); border-radius: 6px; color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__simpleDropdownActive--ZbKnv { font-size: 16px; line-height: 40px; letter-spacing: 0px; color: rgb(102, 102, 102); }
+
+.app-components-RightPanel-panel__simpleDropdownActive--ZbKnv:hover { background-color: rgb(242, 249, 252); color: rgb(0, 34, 68); }
+
+.app-components-RightPanel-panel__simpleDropdownActive--ZbKnv:checked { color: rgb(0, 34, 68); }
+
+.app-components-RightPanel-panel__checkboxWrapper--2IgdA { position: relative; }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked), .app-components-RightPanel-panel__customCheckbox--3DFLE:checked, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked), .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked { position: absolute; left: 0px; top: -1px; opacity: 0; }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label { position: relative; cursor: pointer; font-size: 14px; }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label::after, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::before, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::after, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label::after, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label::after { position: absolute; left: 0px; top: -1px; }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label::before { content: ""; border: 2px solid rgb(0, 57, 100); border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px inset; }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label::after, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::after, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label::after, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label::after { content: ""; display: block; border-style: solid; border-color: rgb(255, 255, 255); border-image: initial; border-width: 0px 2px 2px 0px; transform: rotate(45deg); position: absolute; text-align: center; }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked), .app-components-RightPanel-panel__customCheckbox--3DFLE:not(:disabled) + label::after, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked), .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:disabled) + label::after { opacity: 0; border-color: rgb(0, 34, 68); }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::after, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label::after { opacity: 1; border-color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label::before { background: rgb(0, 34, 68); }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label::before { background: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:disabled:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckbox--3DFLE:disabled:checked + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:disabled:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:disabled:checked + label::before { box-shadow: none; border-color: rgb(153, 153, 153); background-color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:disabled:checked + label::after, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:disabled:checked + label::after { color: rgb(153, 153, 153); }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:disabled + label, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:disabled + label { color: rgb(170, 170, 170); }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:checked:focus + label::before, .app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked):focus + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked:focus + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked):focus + label::before { outline: dotted 1px; }
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label { padding-left: 32px; line-height: 24px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label { padding-left: 26px; line-height: 18px; }
+}
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::before { width: 24px; height: 24px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::before { width: 20px; height: 20px; }
+}
+
+.app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label::after, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::after { font-size: 14px; top: 5px; left: 9px; width: 5px; height: 11px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-RightPanel-panel__customCheckbox--3DFLE:not(:checked) + label::after, .app-components-RightPanel-panel__customCheckbox--3DFLE:checked + label::after { left: 8px; top: 3px; }
+}
+
+.app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label { padding-left: 25px; font-size: 12px; line-height: 15px; }
+
+.app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label::before, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label::before { width: 15px; height: 15px; }
+
+.app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label::after, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label::after { font-size: 10px; left: 6px; top: 2px; width: 4px; height: 9px; }
+
+.app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label:hover, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label:focus, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label:hover, .app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label:focus { color: rgb(0, 34, 68); }
+
+.app-components-RightPanel-panel__customCheckboxSm--3hRtj:not(:checked) + label { color: rgb(137, 137, 137); }
+
+.app-components-RightPanel-panel__customCheckboxSm--3hRtj:checked + label { color: rgb(0, 34, 68); }
+
+.app-components-RightPanel-panel__whiteAndBlackCustomCheckBox--1G2Wj:checked + label::before { background: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); }
+
+.app-components-RightPanel-panel__whiteAndBlackCustomCheckBox--1G2Wj:not(:checked) + label::before { background: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); }
+
+.app-components-RightPanel-panel__whiteAndBlackCustomCheckBox--1G2Wj:checked + label::after { border-color: rgb(0, 0, 0); top: 5px; left: 10px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-RightPanel-panel__whiteAndBlackCustomCheckBox--1G2Wj:checked + label::after { top: 3px; left: 8px; }
+}
+
+.app-components-RightPanel-panel__questionMarkToolTip--Uaa8y::before { content: "?"; display: inline-block; vertical-align: top; text-align: center; font-weight: bold; width: 24px; height: 24px; font-size: 14px; line-height: 1.4; margin-top: 0px; margin-left: 8px; border: 1px solid rgb(255, 255, 255); border-radius: 50%; color: rgb(255, 255, 255); background: rgba(0, 0, 0, 0); }
+
+@media screen and (min-width: 944px) {
+  .app-components-RightPanel-panel__questionMarkToolTip--Uaa8y::before { line-height: 1.3; margin-top: 4px; width: 16px; height: 16px; font-size: 10px; }
+}
+
+.app-components-RightPanel-panel__floatingLabel--2pOs5 { font-size: 12px; color: rgb(102, 102, 102); line-height: 13px; }
+
+.app-components-RightPanel-panel__formLink--1M6DR { font-size: 16px; text-decoration: underline; }
+
+.app-components-RightPanel-panel__formLink--1M6DR:hover { outline: rgb(33, 114, 186) dotted 1px; color: rgb(35, 82, 124); }
+
+.app-components-RightPanel-panel__fieldErrorMessage--2e3EZ { position: absolute; bottom: 0px; color: rgb(213, 0, 50); letter-spacing: 0px; font-size: 13px; line-height: 1.5; text-align: center; }
+
+@media screen and (min-width: 944px) {
+  .app-components-RightPanel-panel__fieldErrorMessage--2e3EZ { font-size: 11px; }
+}
+
+.app-components-RightPanel-panel__homepageTextField--3KQoT { line-height: 1; }
+
+.app-components-RightPanel-panel__homepageTextField--3KQoT label { color: rgb(0, 34, 68); text-transform: none; font-weight: bold; font-size: 12px; letter-spacing: 1px; margin-bottom: -1px; }
+
+.app-components-RightPanel-panel__homepageTextField--3KQoT input { transition: color 0.4s ease 0s; color: rgb(0, 34, 68); height: 46px; }
+
+.app-components-RightPanel-panel__homepageTextField--3KQoT input::-webkit-input-placeholder { text-transform: none; font-style: normal; font-weight: normal; }
+
+.app-components-RightPanel-panel__homepageTextField--3KQoT:focus { color: rgb(33, 114, 186); border-color: rgb(33, 114, 186); }
+
+.app-components-RightPanel-panel__homepageTextField--3KQoT:focus > label { color: rgb(33, 114, 186); }
+
+.app-components-RightPanel-panel__homepageTextField--3KQoT .atm-c-field-note.atm-c-textfield__note { position: absolute; margin: 0px; bottom: -24px; }
+
+.app-components-RightPanel-panel__homepageTextField--3KQoT .atm-c-field-note.atm-c-textfield__note svg { display: none; }
+
+.app-components-RightPanel-panel__main--1ifFV { display: flex; position: relative; flex-direction: column; color: rgb(255, 255, 255); font-size: 14px; flex: 1 1 auto; padding: 16px; }
+
+@media (min-width: 720px) {
+  .app-components-RightPanel-panel__main--1ifFV { padding: 72px 72px 0px; }
+}
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__main--1ifFV { padding: 0px; }
+}
+
+@media (min-width: 1184px) {
+  .app-components-RightPanel-panel__main--1ifFV { display: block; }
+}
+
+.app-components-RightPanel-panel__main--1ifFV p { margin: 0px 0px 4px; }
+
+.app-components-RightPanel-panel__main--1ifFV a { color: rgb(255, 255, 255); }
+
+.app-components-RightPanel-panel__main--1ifFV a.app-components-RightPanel-panel__link--33_TC { text-decoration: none; position: relative; }
+
+.app-components-RightPanel-panel__main--1ifFV a.app-components-RightPanel-panel__link--33_TC:hover { color: rgb(255, 255, 255); text-decoration: underline; cursor: pointer; }
+
+.app-components-RightPanel-panel__main--1ifFV a.app-components-RightPanel-panel__link--33_TC::after { content: ""; display: inline-block; border-style: solid; border-image: initial; border-width: 0px 2px 2px 0px; transform: rotate(315deg); width: 8px; height: 8px; transition: border-color 0.4s ease 0s; border-color: rgb(255, 255, 255); margin-left: 8px; position: absolute; top: calc(50% - 3px); }
+
+@supports (-ms-ime-align: auto) {
+  .app-components-RightPanel-panel__main--1ifFV a.app-components-RightPanel-panel__link--33_TC::after { top: calc(50% - 6px); }
+}
+
+.app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 { }
+
+@supports (display: grid) {
+  .app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 { display: grid; grid-template-columns: repeat(12, 1fr); }
+}
+
+.app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 > .app-components-RightPanel-panel__messageTruncated--3e7tl { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display: block; line-height: 16px; max-width: 100%; }
+
+@supports (display: grid) {
+  .app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 > .app-components-RightPanel-panel__messageTruncated--3e7tl { grid-area: 1 / 1 / 1 / 11; }
+}
+
+@media (max-width: 1184px) and (min-width: 320px) {
+  .app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 > .app-components-RightPanel-panel__messageTruncated--3e7tl { }
+  @supports (display: grid) {
+  .app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 > .app-components-RightPanel-panel__messageTruncated--3e7tl { grid-area: 1 / 1 / 1 / 10; }
+}
+}
+
+.app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 > .app-components-RightPanel-panel__externalDescription--1KA6h { display: block; line-height: 16px; color: rgb(255, 255, 255); text-decoration: underline; justify-self: center; }
+
+@supports (display: grid) {
+  .app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 > .app-components-RightPanel-panel__externalDescription--1KA6h { grid-area: 1 / 11 / 1 / 13; }
+}
+
+@media (max-width: 1184px) and (min-width: 320px) {
+  .app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 > .app-components-RightPanel-panel__externalDescription--1KA6h { }
+  @supports (display: grid) {
+  .app-components-RightPanel-panel__main--1ifFV .app-components-RightPanel-panel__containerTruncated--2pcZ4 > .app-components-RightPanel-panel__externalDescription--1KA6h { grid-area: 1 / 10 / 1 / 13; }
+}
+}
+
+.app-components-RightPanel-panel__mainHeader--2Rn9B { margin: 44px 0px; font-size: 28px; line-height: 30px; font-weight: normal; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__mainHeader--2Rn9B { margin: 16px 0px; }
+}
+
+@media (min-width: 1184px) {
+  .app-components-RightPanel-panel__mainHeader--2Rn9B { padding: 16px 0px; margin: 0px; }
+}
+
+.app-components-RightPanel-panel__smallHeader--1MWVx { font-size: 12px; letter-spacing: 1.08px; line-height: 20px; text-transform: uppercase; margin: 0px 0px 8px; }
+
+.app-components-RightPanel-panel__mobileHeader--1jcrc { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; font-weight: normal; margin: 0px 0px 8px; }
+
+.app-components-RightPanel-panel__mobileHeaderBig--2h480 { font-size: 24px; letter-spacing: 0px; }
+
+.app-components-RightPanel-panel__mobileHeaderSmall--3q48_ { font-size: 12px; letter-spacing: 0px; font-weight: 400; }
+
+.app-components-RightPanel-panel__mobileHeaderSmall--3q48_.app-components-RightPanel-panel__scheduled--1a-30 { opacity: 0.7; }
+
+.app-components-RightPanel-panel__expand--1_Kok { flex: 1 1 0%; }
+
+.app-components-RightPanel-panel__mr8--2eRj9 { margin-right: 8px; }
+
+.app-components-RightPanel-panel__mr16--1W1xp { margin-right: 8px; }
+
+.app-components-RightPanel-panel__taRight--292RZ { text-align: right; }
+
+.app-components-RightPanel-panel__statusMessage--1w9kP { font-size: 12px; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__statusMessage--1w9kP { font-size: 14px; }
+}
+
+.app-components-RightPanel-panel__descriptionMessage--2bzuX { font-size: 10px; text-transform: uppercase; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__descriptionMessage--2bzuX { font-size: inherit; letter-spacing: inherit; text-transform: inherit; }
+}
+
+.app-components-RightPanel-panel__header--2_6Jk { border-bottom: 1px solid rgba(255, 255, 255, 0.25); padding-bottom: 48px; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__header--2_6Jk { padding-bottom: 8px; }
+}
+
+.app-components-RightPanel-panel__details--VWu9- { display: flex; flex: 1 1 0%; text-align: center; align-items: stretch; justify-content: space-between; position: relative; padding: 8px 0px 0px; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__details--VWu9- { min-height: 327px; }
+}
+
+.app-components-RightPanel-panel__flightDuration--2BVki { position: absolute; top: 8px; left: calc(50% - 28px); width: 60px; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__flightDuration--2BVki { top: calc(50% - 83px); left: calc(50% - 53px); width: auto; }
+}
+
+.app-components-RightPanel-panel__flight--1fnQ1 { display: none; flex-direction: column; flex: 1 1 0%; border-bottom: 1px solid rgba(255, 255, 255, 0.25); margin-bottom: 8px; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__flight--1fnQ1 { display: flex; }
+}
+
+.app-components-RightPanel-panel__flight--1fnQ1.app-components-RightPanel-panel__departure--3PpUN { text-align: left; }
+
+.app-components-RightPanel-panel__flight--1fnQ1.app-components-RightPanel-panel__departure--3PpUN .app-components-RightPanel-panel__airportAndWeather--3fxtH { justify-content: flex-start; }
+
+.app-components-RightPanel-panel__flight--1fnQ1.app-components-RightPanel-panel__departure--3PpUN .app-components-RightPanel-panel__gate--3jNB7 { margin-right: 25px; }
+
+.app-components-RightPanel-panel__flight--1fnQ1.app-components-RightPanel-panel__departure--3PpUN .app-components-RightPanel-panel__terminalAndGate--2km8q { border-right: 1px solid rgba(255, 255, 255, 0.25); }
+
+.app-components-RightPanel-panel__flight--1fnQ1.app-components-RightPanel-panel__arrival--2_b06 { text-align: right; }
+
+.app-components-RightPanel-panel__flight--1fnQ1.app-components-RightPanel-panel__arrival--2_b06 .app-components-RightPanel-panel__airportAndWeather--3fxtH { justify-content: flex-end; }
+
+.app-components-RightPanel-panel__flight--1fnQ1.app-components-RightPanel-panel__arrival--2_b06 .app-components-RightPanel-panel__terminal--2MNmY { margin-left: 25px; }
+
+.app-components-RightPanel-panel__flight--1fnQ1 .app-components-RightPanel-panel__airportAndWeather--3fxtH { display: flex; padding: 6px 0px 4px; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.25); min-height: 120px; }
+
+.app-components-RightPanel-panel__flight--1fnQ1 .app-components-RightPanel-panel__airportAndWeather--3fxtH .app-components-RightPanel-panel__airport--fUN1X { margin-right: 24px; }
+
+.app-components-RightPanel-panel__flight--1fnQ1 .app-components-RightPanel-panel__time--lA_nI { font-size: 12px; }
+
+.app-components-RightPanel-panel__flight--1fnQ1 .app-components-RightPanel-panel__time--lA_nI .app-components-RightPanel-panel__official--3Cye7 { font-size: 24px; }
+
+.app-components-RightPanel-panel__flight--1fnQ1 .app-components-RightPanel-panel__time--lA_nI .app-components-RightPanel-panel__official--3Cye7 .app-components-RightPanel-panel__meridiem--qnr4k { font-size: 14px; }
+
+.app-components-RightPanel-panel__flight--1fnQ1 .app-components-RightPanel-panel__airportCode--1_xsT { font-size: 32px; }
+
+.app-components-RightPanel-panel__flight--1fnQ1 .app-components-RightPanel-panel__terminalAndGate--2km8q { margin: 8px 0px; display: flex; font-size: 12px; justify-content: space-between; min-height: 65px; }
+
+.app-components-RightPanel-panel__flight--1fnQ1 .app-components-RightPanel-panel__terminalAndGate--2km8q .app-components-RightPanel-panel__gate--3jNB7 { font-size: 24px; }
+
+.app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__links--1Gdoh { display: flex; list-style: none; margin: 24px 0px; padding: 0px; justify-content: space-around; flex-flow: row wrap; align-items: center; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__links--1Gdoh { margin: 0px; }
+}
+
+.app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__links--1Gdoh li { flex-basis: 45%; text-align: left; padding: 10px 0px; }
+
+@media (max-width: 480px) {
+  .app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__links--1Gdoh li { flex-basis: 50%; }
+}
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__links--1Gdoh li { padding: 0px 0px 0px 10px; }
+}
+
+.app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__links--1Gdoh li.app-components-RightPanel-panel__nonUnitedDisclaimer--10ldG { font-size: 16px; flex: 1 1 0%; text-align: left; }
+
+.app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__advertisement--1U2Lr { display: none; padding: 10px 10px 10px 0px; }
+
+.app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__advertisement--1U2Lr img { padding-right: 25px; }
+
+.app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__advertisement--1U2Lr .app-components-RightPanel-panel__advertisementContent--1vUBi { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; width: 100%; }
+
+.app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__advertisement--1U2Lr .app-components-RightPanel-panel__advertisementContent--1vUBi .app-components-RightPanel-panel__advertisementText--17hm1 { margin-bottom: 10px; width: 100%; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__addendum--4LTzx .app-components-RightPanel-panel__advertisement--1U2Lr { display: flex; }
+}
+
+@media (min-width: 720px) {
+  .app-components-RightPanel-panel__actionButton--3Pd9v { position: absolute; top: 55px; right: 72px; width: 200px; }
+}
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__actionButton--3Pd9v { position: absolute; top: 0px; right: 0px; }
+}
+
+.app-components-RightPanel-panel__closeButton--2iyA8 { position: absolute; top: 24px; right: 24px; }
+
+@media (min-width: 944px) {
+  .app-components-RightPanel-panel__closeButton--2iyA8 { display: none; }
+}
+
+.app-components-RightPanel-panel__smallFont--2BXaD { font-size: 14px; }
+
+.app-components-RightPanel-panel__terminalInformation--3I4W8 { display: flex; border-bottom: 1px solid rgba(255, 255, 255, 0.25); margin-top: 8px; padding-bottom: 8px; justify-content: space-between; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__terminalInformation--3I4W8 { display: none; }
+}
+
+.app-components-RightPanel-panel__flightMobile--omNMk { display: flex; flex-direction: column; flex: 1 1 0%; border-bottom: 1px solid rgba(255, 255, 255, 0.25); margin-bottom: 8px; padding-bottom: 16px; }
+
+@media (min-width: 480px) {
+  .app-components-RightPanel-panel__flightMobile--omNMk { display: none; }
+}
+
+.app-components-RightPanel-panel__flightMobile--omNMk .app-components-RightPanel-panel__flightDate--jahWt { font-size: 12px; letter-spacing: 0px; }
+
+.app-components-RightPanel-panel__flightMobile--omNMk.app-components-RightPanel-panel__departure--3PpUN { text-align: left; }
+
+.app-components-RightPanel-panel__flightMobile--omNMk.app-components-RightPanel-panel__departure--3PpUN .app-components-RightPanel-panel__airportAndWeather--3fxtH { align-items: flex-start; }
+
+.app-components-RightPanel-panel__flightMobile--omNMk.app-components-RightPanel-panel__arrival--2_b06 { text-align: right; }
+
+.app-components-RightPanel-panel__flightMobile--omNMk.app-components-RightPanel-panel__arrival--2_b06 .app-components-RightPanel-panel__airportAndWeather--3fxtH { align-items: flex-end; }
+
+.app-components-RightPanel-panel__flightMobile--omNMk .app-components-RightPanel-panel__airportAndWeather--3fxtH { display: flex; flex-direction: column; padding: 0px 0px 4px; align-items: center; flex: 1 1 0%; }
+
+.app-components-RightPanel-panel__flightMobile--omNMk .app-components-RightPanel-panel__airportAndWeather--3fxtH .app-components-RightPanel-panel__airport--fUN1X { flex: 1 1 0%; margin-bottom: 8px; }
+
+.app-components-RightPanel-panel__flightMobile--omNMk .app-components-RightPanel-panel__airportAndWeather--3fxtH .app-components-RightPanel-panel__weatherText--ORkno { font-size: 16px; }
+
+.app-components-RightPanel-panel__flightMobile--omNMk .app-components-RightPanel-panel__airportCode--1_xsT { font-size: 24px; letter-spacing: 0px; }
+
+.app-components-RightPanel-panel__flightMobile--omNMk .app-components-RightPanel-panel__airportName--3xc3k { font-size: 12px; letter-spacing: 0px; font-weight: 400; }
+
+.app-components-RightPanel-panel__canceled--Jj1-9 { text-decoration: line-through; }

@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.app-containers-BaggageCalculator-UECardOffer-styles__offerContainer--3NpZY { display: flex; flex-direction: row; align-items: center; justify-content: space-between; border: 1px solid rgb(204, 204, 204); border-radius: 4px; padding: 16px; }
+
+.app-containers-BaggageCalculator-UECardOffer-styles__offer--3Pa90 { display: flex; flex-direction: row; }
+
+.app-containers-BaggageCalculator-UECardOffer-styles__offerContent--17VXE { padding: 0px 20px; }
+
+.app-containers-BaggageCalculator-UECardOffer-styles__offerTitle--2bl-O { margin-top: 0px; }
+
+.app-containers-BaggageCalculator-UECardOffer-styles__offerImage--3qsC8 { flex: 1 0 auto; width: 80px; }
+
+.app-containers-BaggageCalculator-UECardOffer-styles__offerAction--2kyYy { flex: 1 0 auto; }
+
+.app-containers-BaggageCalculator-UECardOffer-styles__offerAction--2kyYy a { text-decoration: none; }

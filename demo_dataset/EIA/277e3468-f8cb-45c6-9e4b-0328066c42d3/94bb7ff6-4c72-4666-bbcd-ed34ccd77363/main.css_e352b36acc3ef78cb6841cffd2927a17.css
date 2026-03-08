@@ -1,0 +1,1271 @@
+@charset "utf-8";
+
+@import url("https://fast.fonts.net/t/1.css?apiType=css&projectid=ee38900c-6459-4e0c-95d6-896c0208d3d0");
+
+html { -webkit-font-smoothing: antialiased; }
+
+@font-face { font-family: HelveticaNeueW02-65Medi; src: url("https://www.usps.com/assets/fonts/5b4a262e-3342-44e2-8ad7-719998a68134.woff") format("woff"), url("https://www.usps.com/assets/fonts/4a3ef5d8-cfd9-4b96-bd67-90215512f1e5.ttf") format("truetype"); }
+
+@font-face { font-family: "HelveticaNeueW01-77BdCn 692722"; src: url("https://www.usps.com/assets/fonts/102ab74c-0e84-4fe5-a17a-b20fb643591a.woff") format("woff"), url("https://www.usps.com/assets/fonts/1d146b29-55e2-485b-96aa-5cb628e7e9eb.ttf") format("truetype"); }
+
+@font-face { font-family: "HelveticaNeueW02-77BdCn 694069"; src: url("https://www.usps.com/assets/fonts/0a4f4fc6-0a6f-48c8-b2ca-d0be41181c3e.woff") format("woff"), url("https://www.usps.com/assets/fonts/b1fc01ad-5910-4abe-b74b-64b80fc93e9d.ttf") format("truetype"); }
+
+@font-face { font-family: HelveticaNeueW02-45Ligh; src: url("https://www.usps.com/assets/fonts/9a2e4855-380f-477f-950e-d98e8db54eac.woff") format("woff"), url("https://www.usps.com/assets/fonts/fa82d0ee-4fbd-4cc9-bf9f-226ad1fcbae2.ttf") format("truetype"); }
+
+@font-face { font-family: HelveticaNeueW02-55Roma; src: url("https://www.usps.com/assets/fonts/d5af76d8-a90b-4527-b3a3-182207cc3250.woff") format("woff"), url("https://www.usps.com/assets/fonts/1d238354-d156-4dde-89ea-4770ef04b9f9.ttf") format("truetype"); }
+
+@font-face { font-family: HelveticaNeueW02-75Bold; src: url("https://www.usps.com/assets/fonts/4a9c62ab-b359-4081-8383-a0d1cdebd111.woff") format("woff"), url("https://www.usps.com/assets/fonts/db5f9ba6-05a4-433a-9461-0a6f257a0c3a.ttf") format("truetype"); }
+
+.hel-light { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 100; font-style: normal; }
+
+.hel-reg { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; }
+
+.hel-med { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 600; font-style: normal; }
+
+.hel-bold { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.hel-black { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 900; font-style: normal; }
+
+@font-face { font-family: fontello; src: url("../fonts/fontello.woff2?25542004") format("woff2"), url("../fonts/fontello.woff?25542004") format("woff"), url("../fonts/fontello.ttf?25542004") format("truetype"); font-weight: normal; font-style: normal; }
+
+[class^="icon-"]::before, [class*=" icon-"]::before, .product_summary.delivery_delivered .delivery_status h2 strong::before, .product_summary.delivery_delivered_to_agent .delivery_status h2 strong::before { font-family: fontello; font-style: normal; font-weight: normal; speak: none; display: inline-block; text-decoration: inherit; width: 1em; margin-right: 0.2em; text-align: center; font-variant: normal; text-transform: none; line-height: 1em; margin-left: 0.2em; -webkit-font-smoothing: antialiased; }
+
+.icon-cancel::before { content: ""; }
+
+.icon-carat_down::before { content: ""; }
+
+.icon-tooltip::before { content: ""; }
+
+.icon-carat_up::before { content: ""; }
+
+.icon-nav_free_supplies::before { content: ""; }
+
+.icon-nav_location::before { content: ""; }
+
+.icon-nav_schedule::before { content: ""; }
+
+.icon-nav_stamps::before { content: ""; }
+
+.icon-nav_print::before { content: ""; }
+
+.icon-nav_findazip::before { content: ""; }
+
+.icon-currentlocation::before { content: ""; }
+
+.icon-check::before { content: ""; }
+
+.icon-pobox-icon::before { content: ""; }
+
+.icon-activity-icon::before { content: ""; }
+
+.icon-search::before { content: ""; }
+
+.icon-carat_right::before { content: ""; }
+
+.icon-usps_green_checkmark::before, .product_summary.delivery_delivered .delivery_status h2 strong::before, .product_summary.delivery_delivered_to_agent .delivery_status h2 strong::before { content: ""; }
+
+.icon-usps_calendar_icon_25x25_new-01::before { content: ""; }
+
+.icon-angle-double-right::before { content: ""; }
+
+.usps-logo { background-color: rgb(255, 255, 255) !important; }
+
+h1 { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 30px; line-height: 110%; color: rgb(51, 51, 102); margin: 0px; padding: 0px; }
+
+@media only screen and (max-width: 767px) {
+  h1 { font-size: 25px; }
+}
+
+h2 { margin: 0px 0px 30px; padding: 0px; color: rgb(51, 51, 102); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 24px; line-height: 1; }
+
+@media only screen and (max-width: 767px) {
+  h2 { font-size: 20px; }
+}
+
+h3, h4 { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-size: 18px; line-height: 100%; font-weight: 700; color: rgb(51, 51, 102); margin: 0px; padding: 0px; }
+
+@media only screen and (max-width: 767px) {
+  h3, h4 { font-size: 20px; line-height: 120%; }
+}
+
+h5 { margin: 0px; padding: 0px; color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 14px; line-height: 135%; }
+
+@media only screen and (max-width: 767px) {
+  h5 { font-size: 15px; }
+}
+
+h6 { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.mobileOnly { display: none; }
+
+@media only screen and (max-width: 767px) {
+  .mobileOnly { display: block; }
+}
+
+.desktopOnly { display: none; }
+
+@media only screen and (min-width: 768px) {
+  .desktopOnly { display: block; }
+}
+
+a { cursor: pointer; color: rgb(51, 51, 102); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; text-decoration: none; }
+
+a:hover, a:active { color: rgb(51, 51, 102); text-decoration: none; }
+
+a:visited, a:focus { text-decoration: none; }
+
+p, li { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 125%; font-weight: 400; color: rgb(89, 89, 89); margin: 0px; padding: 0px; }
+
+@media only screen and (max-width: 767px) {
+  p, li { font-size: 15px; }
+}
+
+ul, ol { margin: 0px; padding-left: 15px; }
+
+ul li, ol li { margin-top: 20px; }
+
+p.fourteen { font-size: 14px; line-height: 18px; }
+
+p.legal { font-size: 12px; line-height: 14px; }
+
+@media only screen and (max-width: 767px) {
+  p.legal { font-size: 11px; line-height: 32px; }
+}
+
+.button { background: rgb(51, 51, 102); color: rgb(255, 255, 255); font-weight: 700; display: inline-block; text-align: center; min-width: 168px; height: 44px; line-height: 44px; font-size: 16px; border-radius: 3px; padding: 0px 20px; text-decoration: none; vertical-align: middle; cursor: pointer; border: none; }
+
+.button[disabled], .button.inactive, .button.disabled { background: rgb(216, 216, 216); color: rgb(255, 255, 255); }
+
+.button:focus, .button:active { color: rgb(255, 255, 255); background: rgb(51, 51, 102); }
+
+.button.white { background: rgb(255, 255, 255); color: rgb(51, 51, 102); border: 1px solid rgb(51, 51, 102); line-height: 42px; }
+
+.button.white:focus, .button.white:active { background: rgb(255, 255, 255); color: rgb(51, 51, 102); }
+
+.button.white:hover { border-color: rgb(216, 216, 216) !important; }
+
+.button.green { background: rgb(33, 135, 72); }
+
+.button:hover, .button.white:hover { background: rgb(216, 216, 216); color: rgb(51, 51, 102); text-decoration: none !important; }
+
+@media only screen and (max-width: 767px) {
+  .button { min-width: 115px; }
+}
+
+html.can-touch .button:hover { color: rgb(255, 255, 255); background: rgb(51, 51, 102); }
+
+html.can-touch .button.white:hover { color: rgb(51, 51, 102); background: rgb(255, 255, 255); border: 1px solid rgb(51, 51, 102); }
+
+select.form-control { width: 100%; height: 44px; border: 1px solid rgb(51, 51, 102); border-radius: 3px; appearance: none; color: rgb(51, 51, 102); }
+
+select.form-control option { color: rgb(89, 89, 89); }
+
+input.form-control { color: rgb(0, 0, 0); }
+
+.form-control:focus { border-color: rgb(51, 51, 102); box-shadow: rgba(216, 216, 216, 0.9) 0px 1px 1px inset, rgba(216, 216, 216, 0.9) 0px 0px 8px; }
+
+.has-error .form-control { border-color: rgb(231, 25, 33); }
+
+.has-error .form-control:focus { box-shadow: none; border-color: rgb(231, 25, 33); }
+
+select.form-control ~ span[class^="icon"], input.form-control ~ span[class^="icon"] { position: absolute; right: 38px; top: 38px; font-size: 12px; color: rgb(51, 51, 102); pointer-events: none; }
+
+input.form-control ~ span[class^="icon-calendar"] { right: 35px; top: 26px; font-size: 24px; background: rgb(255, 255, 255); }
+
+input[type="text"], input[type="tel"], input[type="number"], input[type="email"] { appearance: none; width: 100%; height: 44px; padding: 5px 10px; border: 1px solid rgb(51, 51, 102); position: relative; color: rgb(0, 0, 0); border-radius: 3px !important; }
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { appearance: none; margin: 0px; }
+
+textarea.form-control { border: 1px solid rgb(51, 51, 102); }
+
+input[placeholder] { text-overflow: ellipsis; }
+
+.radio { padding-left: 25px; }
+
+.radio label { padding-left: 0px; }
+
+.radio input[type="radio"] { line-height: 0; height: 15px; margin-left: -25px; margin-top: 3px; }
+
+div.checkbox { padding-left: 30px; }
+
+div.checkbox label { padding-left: 0px; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; line-height: 1; color: rgb(89, 89, 89) !important; }
+
+div.checkbox input[type="checkbox"] { position: absolute; opacity: 0; }
+
+div.checkbox input[type="checkbox"] ~ span { position: absolute; left: 0px; top: 0px; font-size: 16px; width: 20px; height: 20px; line-height: 20px; border: 1px solid rgb(89, 89, 89); color: rgb(51, 51, 102); margin: 0px 5px 0px 0px; padding: 0px; vertical-align: top; text-align: center; background: rgb(255, 255, 255); }
+
+div.checkbox input[type="checkbox"][disabled] ~ span { cursor: not-allowed; background: rgb(237, 237, 237); }
+
+label.checkbox { display: inline-block; text-align: left; cursor: pointer; font-size: 16px; line-height: 24px; vertical-align: top; font-weight: 400; }
+
+input[type="radio"]:focus ~ label, input[type="checkbox"]:focus ~ span { box-shadow: rgb(81, 203, 238) 0px 0px 5px; }
+
+input[type="checkbox"]:checked ~ span::after { content: ""; font-family: fontello; font-size: 11px; line-height: 20px; display: block; }
+
+input ~ label.error { display: none; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; font-weight: 400; text-align: left; padding: 10px 0px; color: rgb(231, 25, 33); position: absolute; width: 100%; left: 0px; top: 100%; margin: 0px auto; }
+
+.has-error .help-block { margin-bottom: 0px; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-size: 12px; color: rgb(231, 25, 33); width: calc(100% - 15px); }
+
+.has-error .help-block li { margin-top: 5px; font-size: 12px; color: rgb(231, 25, 33); }
+
+.has-error .form-control { border-color: rgb(231, 25, 33); }
+
+.form-group { margin-bottom: 0px; }
+
+input.Error { border-color: rgb(231, 25, 33); }
+
+input.Error ~ label.error { display: block; }
+
+.transform180 { transform: scaleX(-1); display: inline-block; }
+
+span.bold { font-weight: bold; }
+
+span.italic { font-style: italic; }
+
+.popover { border: 1px solid rgb(153, 153, 153); border-radius: 10px; box-shadow: none; }
+
+.popover.down > .arrow { border-right-color: rgb(153, 153, 153); border-left-color: rgb(153, 153, 153); }
+
+a:focus, input:focus, textarea:focus, button:focus, select:focus, .button:focus { }
+
+a.mouse-focus:focus, input.mouse-focus:focus, textarea.mouse-focus:focus, button.mouse-focus:focus, select.mouse-focus:focus, .button.mouse-focus:focus { outline: none; box-shadow: none; }
+
+input[type="radio"].mouse-focus:focus ~ label, input[type="checkbox"].mouse-focus:focus ~ span { box-shadow: none; }
+
+::-webkit-input-placeholder { color: rgb(89, 89, 89); }
+
+@media only screen and (max-width: 767px) {
+  .form-control { font-size: 16px; }
+}
+
+.modal .modal-header { border: 0px; padding: 0px; }
+
+.modal .modal-content { border-radius: 3px; --webkit-box-shadow: none; box-shadow: none; position: relative; }
+
+.modal .modal-body { padding: 50px 20px 20px; }
+
+.modal .closeX { position: absolute; padding: 12px; top: 6px; right: 9px; }
+
+.modal .closeX span { position: absolute; z-index: 999; right: 15px; color: rgb(51, 51, 102); font-size: 16px; }
+
+.topm-bar { float: right; }
+
+.tracking-faqs { float: right; }
+
+.product_additional_information { display: none; }
+
+.track-bar-container:first-child .product_additional_information { display: block; }
+
+.tracking-number-collapse { margin-bottom: 0px; width: 100%; padding-bottom: 30px; }
+
+.tracking-number-collapse .panel-title { font-size: 20px; }
+
+.tracking-number-collapse a:hover { text-decoration: none; }
+
+.tracking-number-collapse .mouse-focus { text-decoration: none; }
+
+.tracking-number-collapse .panel-header:hover { text-decoration: none; }
+
+.tracking-number-collapse .panel-default { box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px; border-color: rgb(255, 255, 255); }
+
+.tracking-number-collapse .panel { margin: -10px 0px 0px; box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px; }
+
+.tracking-number-collapse .panel + .panel { margin-top: 0px; }
+
+.tracking-number-collapse .panel-heading { position: relative; color: rgb(51, 51, 102); padding-left: 0px; padding-right: 0px; border-color: rgb(255, 255, 255); background-color: rgb(255, 255, 255); cursor: pointer; }
+
+.tracking-number-collapse .panel-default > .panel-heading + .panel-collapse > .panel-body { border-top: none; }
+
+.tracking-number-collapse .panel-word.red-underline { padding-bottom: 5px; border-bottom: 4px solid rgb(231, 25, 33); }
+
+.down-arr, .up-arr { margin-left: 30px; }
+
+.down-arr { display: none; clear: both; }
+
+.icon-carat_down { font-size: 15px; }
+
+.icon-carat_up { font-size: 15px; }
+
+.collapsed .down-arr { display: inline-block; }
+
+.collapsed .up-arr { display: none; }
+
+.mini_faq { padding: 0px 20px 10px; }
+
+.mini_faq div[class*="col"] { padding-left: 0px; }
+
+.mini_faq h5 { margin-top: 30px; margin-bottom: 20px; }
+
+.mini_faq p, .mini_faq li { margin: 0px 0px 10px; }
+
+.mini_faq p span, .mini_faq li span { display: block; }
+
+.mini_faq.sample-number-panel h5 { text-transform: uppercase; }
+
+@media only screen and (min-width: 768px) {
+  .mini_faq { padding: 0px; }
+  .mini_faq p, .mini_faq li { font-size: 14px; }
+}
+
+@media only screen and (min-width: 1170px) {
+  .mini_faq.sample-number-panel p, .mini_faq.sample-number-panel h5 { display: table; width: 100%; }
+  .mini_faq.sample-number-panel p span, .mini_faq.sample-number-panel h5 span { display: table-cell; width: 50%; }
+  .mini_faq.sample-number-panel i.tabletOnly { display: none; }
+}
+
+.find-FAQs { margin-bottom: 60px; text-align: center; }
+
+.find-FAQs h2 { margin-bottom: 20px; }
+
+.find-FAQs .button { margin-top: 30px; }
+
+@media only screen and (max-width: 767px) {
+  .find-FAQs { margin-bottom: 40px; }
+}
+
+@media only screen and (max-width: 767px) {
+  .desktop-only { display: none; }
+  .mobile-only-subhead { display: block; background-color: rgb(247, 247, 247); padding-left: 15px; padding-right: 15px; }
+  .mobile-only-subhead #red-arr { font-size: 22px; color: red; }
+  .tracking-number-collapse .panel-heading { position: relative; background-color: rgb(245, 245, 245); padding: 20px 70px 20px 20px; }
+  .sign-up-btn { display: block; margin-bottom: 20px; }
+  .accord-container { padding-left: 0px; padding-right: 0px; overflow: hidden; }
+  .accord-container .row .accord-column .panel { margin: 0px; border-top: none; border-right: none; border-left: none; border-image: initial; border-bottom: 2px solid rgb(51, 51, 102); border-radius: 0px; }
+  .accord-container .row .accord-column .panel.panel-first { border-top: 2px solid rgb(51, 51, 102); }
+  .accord-container .down-arr, .accord-container .up-arr { position: absolute; right: 20px; top: 33%; }
+  .accord-container .down-arr span[class^="icon-"]::before, .accord-container .up-arr span[class^="icon-"]::before, .accord-container .down-arr span.product_summary.delivery_delivered .delivery_status h2 strong::before, .accord-container .up-arr span.product_summary.delivery_delivered .delivery_status h2 strong::before, .accord-container .down-arr span.product_summary.delivery_delivered_to_agent .delivery_status h2 strong::before, .accord-container .up-arr span.product_summary.delivery_delivered_to_agent .delivery_status h2 strong::before { width: auto; }
+  .desktop-space { display: none; }
+  .tracking-number-collapse .panel-word.red-underline { border-bottom: none; }
+}
+
+.container-fluid { position: relative; max-width: 1170px; }
+
+.full-subheader { margin-bottom: 40px; padding-top: 20px; padding-bottom: 20px; background: rgb(247, 247, 247); }
+
+.full-subheader h1 { float: left; }
+
+.full-subheader h1 sup { font-size: 40%; vertical-align: top; top: auto; line-height: 1; }
+
+.full-subheader .subheader_links { text-align: right; line-height: 2; }
+
+.full-subheader .subheader_links a { display: inline-block; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; line-height: 100%; white-space: nowrap; color: rgb(51, 51, 102) !important; font-weight: 700 !important; }
+
+.full-subheader .subheader_links a.active { display: none; }
+
+.full-subheader .subheader_links a i { font-size: 80%; color: rgb(231, 25, 33); }
+
+@media only screen and (min-width: 768px) {
+  .full-subheader { margin-top: 70px; padding-top: 0px; padding-bottom: 0px; background: none; }
+  .full-subheader .subheader_links a { padding-bottom: 8px; color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; }
+  .full-subheader .subheader_links a:hover { color: rgb(51, 51, 102); }
+  .full-subheader .subheader_links a.active { display: inline-block; color: rgb(51, 51, 102); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; border-bottom: 4px solid rgb(231, 25, 33); }
+  .full-subheader .subheader_links a i { display: none; }
+  .full-subheader .subheader_links a + a { position: relative; margin-left: 80px; }
+  .full-subheader .subheader_links a + a::before { content: ""; position: absolute; left: -40px; height: 100%; width: 2px; background: rgb(216, 216, 216); transform: rotate(12.5deg); pointer-events: none; }
+}
+
+.tracking_form_container { margin-bottom: 20px; }
+
+.tracking_form_container .track-another-package-close { display: none; }
+
+.tracking_form_container h3 { text-align: center; margin-bottom: 20px; }
+
+.tracking_form_container h3 a { position: relative; display: inline-block; color: inherit; text-decoration: none; padding-right: 25px; }
+
+.tracking_form_container h3 a i { position: absolute; top: -2px; right: 0px; display: block; width: 15px; height: 100%; color: rgb(231, 25, 33); font-size: 27px; transform-origin: center center; transition: color 0.2s ease 0s, transform 0.2s ease 0s; }
+
+.tracking_form_container h3.open a i { display: block; color: rgb(51, 51, 102); transform: rotate(45deg); }
+
+.tracking_form_container .cancel { display: none; }
+
+.tracking_form_container .cancel a { color: rgb(89, 89, 89); text-decoration: none; }
+
+.tracking_form_container .cancel a i { color: rgb(51, 51, 102); font-size: 80%; vertical-align: middle; }
+
+.tracking_form_container #tracking-input { display: block; height: auto; padding: 20px; font-size: 16px; border: 1px solid rgb(51, 51, 102); border-radius: 3px; }
+
+.tracking_form_container .tracking-btn { display: block; margin: 40px auto 20px; width: 45%; min-width: 0px; height: 44px; color: rgb(255, 255, 255); font-size: 18px; font-weight: bold; background: rgb(51, 51, 102); border-color: rgb(51, 51, 102); }
+
+@media only screen and (max-width: 767px) {
+  .tracking_form_container ::-webkit-input-placeholder { color: transparent !important; }
+  .tracking_form_container #tracking-input { height: 44px; padding: 10px; }
+}
+
+@media only screen and (min-width: 768px) {
+  .tracking_form_container h3 { float: left; font-size: 20px; }
+  .tracking_form_container h3.open a i { display: none; }
+  .tracking_form_container .cancel { display: block; float: right; }
+  .tracking_form_container #tracking-input { height: 44px; padding: 10px 15px; }
+  .tracking_form_container .tracking-btn { width: 100%; margin: 0px; }
+  .tracking_form_container .tracking-group { margin-bottom: 20px; }
+}
+
+.track-bar-container { position: relative; background-color: rgb(247, 247, 247); padding-top: 40px; padding-bottom: 30px; margin-bottom: 60px; }
+
+.track-bar-container .see-all { text-align: center; display: block; margin: 0px auto; color: rgb(51, 51, 102); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 16px; line-height: 1; }
+
+.track-bar-container .see-all i { display: inline-block; margin-bottom: 2px; font-size: 11px; vertical-align: middle; line-height: 1; }
+
+.track-bar-container .remove-span { position: absolute; z-index: 99; top: -5px; right: 15px; }
+
+.track-bar-container h3 { margin-bottom: 20px; }
+
+@media only screen and (max-width: 767px) {
+  .track-bar-container h3 .tracking-number { display: block; }
+  .track-bar-container .see-all { text-indent: -9999em; }
+  .track-bar-container .see-all i { display: block; text-indent: 0px; font-size: 16px; }
+}
+
+.remove-span { cursor: pointer; color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 15px; line-height: 0; }
+
+.remove-span i { display: inline-block; margin-bottom: 3px; color: rgb(51, 51, 102); font-size: 11px; vertical-align: middle; }
+
+.delivery-status-text { display: inline-block; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; color: rgb(51, 51, 102); font-size: 30px; line-height: 1; vertical-align: middle; margin-left: 4%; }
+
+.delivery-status-text.status-green { color: rgb(33, 135, 72); }
+
+.delivery-status-text.status-red { color: rgb(231, 25, 33); }
+
+@media only screen and (min-width: 768px) {
+  .delivery-status-text { width: 20%; }
+}
+
+.hint { position: relative; font-size: 16px; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; color: rgb(51, 51, 102); display: inline-block !important; }
+
+.hint .speech_bubble { text-transform: none; box-sizing: border-box; display: none; position: absolute; z-index: 999; bottom: calc(100% + 10px); right: -40px; padding: 20px; width: 300px; color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.2; white-space: normal; background: rgb(255, 255, 255); border: 1px solid rgb(153, 153, 153); border-radius: 10px; }
+
+.hint .speech_bubble span { display: block; font-size: 14px; }
+
+.hint .speech_bubble > a { float: right; margin: 0px 0px 10px 10px; }
+
+.hint .speech_bubble::before, .hint .speech_bubble::after { content: ""; position: absolute; z-index: 100; bottom: -20px; right: 40px; border-width: 10px; border-style: solid; border-color: rgb(153, 153, 153) transparent transparent; border-image: initial; }
+
+.hint .speech_bubble::after { z-index: 101; bottom: -18px; border-top-color: rgb(255, 255, 255); }
+
+.hint .speech_bubble.left { right: auto; left: -40px; }
+
+.hint .speech_bubble.left::before, .hint .speech_bubble.left::after { right: auto; left: 40px; }
+
+.tool_tip_text li { font-size: 14px; margin-top: 5px; }
+
+.tool_tip_text ul + strong { display: block; margin-top: 10px; font-size: 14px; }
+
+.tool_tip_text strong.header { display: block; margin-bottom: 20px; color: rgb(51, 51, 102); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 16px; line-height: 1.1; }
+
+.tool_tip_text span { display: block; margin-bottom: 20px; }
+
+.tool_tip_text span:last-child { margin-bottom: 0px; }
+
+.product_summary { display: flex; flex-wrap: wrap; }
+
+.product_summary .colon { display: none; }
+
+.product_summary .tracking_number { display: block; width: 100%; order: 1; margin-bottom: 30px; }
+
+.product_summary .tracking_number .tracking-number { color: rgb(89, 89, 89); font-weight: normal; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-size: 19px; }
+
+.product_summary .expected_delivery { display: block; width: 100%; order: 2; }
+
+.product_summary .expected_delivery p { margin-bottom: 25px; }
+
+.product_summary .expected_delivery h2 { display: block; margin-bottom: 10px; }
+
+.product_summary .expected_delivery h2 em { display: block; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; color: rgb(89, 89, 89); font-size: 24px; text-transform: uppercase; }
+
+.product_summary .expected_delivery h2 em::before, .product_summary .expected_delivery h2 em::after { content: " "; display: table; }
+
+.product_summary .expected_delivery h2 em::after { clear: both; }
+
+.product_summary .expected_delivery h2 em::after { content: ""; display: block; height: 10px; }
+
+.product_summary .expected_delivery h2 .eta_wrap { display: table; }
+
+.product_summary .expected_delivery h2 .eta_snip { display: table-cell; vertical-align: bottom; white-space: nowrap; padding-right: 10px; line-height: 1; }
+
+.product_summary .expected_delivery h2 .eta_snip::before, .product_summary .expected_delivery h2 .eta_snip::after { content: " "; display: table; }
+
+.product_summary .expected_delivery h2 .eta_snip::after { clear: both; }
+
+.product_summary .expected_delivery h2 .eta_snip:nth-of-type(2) { white-space: normal; padding-left: 10px; border-left: 1px solid rgb(216, 216, 216); }
+
+.product_summary .expected_delivery h2 .date { display: inline-block; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 60px; line-height: 0.8; }
+
+.product_summary .expected_delivery h2 .month_year { display: inline-block; padding-left: 5px; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 14px; text-transform: uppercase; color: rgb(89, 89, 89); }
+
+.product_summary .expected_delivery h2 .month_year span:not(.speech_bubble) { display: block; }
+
+.product_summary .expected_delivery h2 .descriptor { display: block; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 18px; }
+
+.product_summary .expected_delivery h2 .time { display: inline-block; white-space: normal; margin-top: 5px; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 24px; line-height: 1; }
+
+.product_summary .delivery_status { display: block; order: 4; margin-bottom: 20px; }
+
+.product_summary .delivery_status h3 { display: none; }
+
+.product_summary .delivery_status h2 { margin-bottom: 10px; }
+
+.product_summary .delivery_status h2 strong { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 24px; line-height: 1.2; }
+
+.product_summary .delivery_status .status_feed p { font-size: 14px; }
+
+.product_summary .delivery_status .status_feed p.important { }
+
+.product_summary .delivery_status .status_feed .action_jump { display: inline-block; margin-top: 10px; }
+
+.product_summary .delivery_status .status_feed .action_jump i { color: rgb(231, 25, 33); font-size: 10px; }
+
+.product_summary .delivery_status .status_feed a.action_jump { font-size: 14px; }
+
+.product_summary .status_bar { display: block; order: 3; width: 100%; margin-bottom: 20px; text-align: right; }
+
+@media only screen and (max-width: 767px) {
+  .product_summary .status_bar { margin-top: 15px; }
+}
+
+.product_summary .status_bar .text_explanation { display: none; margin-top: 10px; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 16px; color: rgb(51, 51, 102); }
+
+.product_summary .status_bar .bar_third { position: relative; float: left; width: calc(33.33% - 5px); height: 15px; margin-right: 5px; transform: skew(-20deg); transform-origin: left bottom; background: rgb(216, 216, 216); }
+
+.product_summary .status_bar .bar_third:first-child::before { content: ""; position: absolute; top: 0px; left: 0px; width: 15px; height: 100%; transform: skew(20deg); transform-origin: left bottom; background: rgb(51, 51, 102); }
+
+.product_summary .status_bar .bar_third.bar_third_3 { margin-right: 0px; width: 33.33%; }
+
+.product_summary .status_bar .bar_third > span { display: block; position: absolute; width: 0px; height: 100%; background: rgb(51, 51, 102); }
+
+.product_summary .status_bar.status_0 { text-align: left; }
+
+.product_summary .status_bar.status_0 .bar_third:first-child::before { background: rgb(216, 216, 216); }
+
+.product_summary .status_bar.status_1 { text-align: left; }
+
+.product_summary .status_bar.status_1 .bar_third_1 span { width: 50%; }
+
+.product_summary .status_bar.status_2 .bar_third_1 span { width: 100%; }
+
+.product_summary .status_bar.status_2 .text_explanation { margin-right: 66.66%; }
+
+.product_summary .status_bar.status_3 .bar_third_1 span { width: 100%; }
+
+.product_summary .status_bar.status_3 .bar_third_2 span { width: 50%; }
+
+.product_summary .status_bar.status_3 .text_explanation { margin-right: 50%; }
+
+.product_summary .status_bar.status_4 .bar_third_1 span { width: 100%; }
+
+.product_summary .status_bar.status_4 .bar_third_2 span { width: 100%; }
+
+.product_summary .status_bar.status_4 .text_explanation { margin-right: 33.33%; }
+
+.product_summary .status_bar.status_5 .bar_third span { width: 100%; }
+
+.product_summary .status_bar.status_5 .bar_third_3 span { width: 50%; }
+
+.product_summary .status_bar.status_5 .text_explanation { margin-right: 16.66%; }
+
+.product_summary .status_bar.status_6 .bar_third span { width: 100%; background: rgb(33, 135, 72); }
+
+.product_summary .status_bar.status_6 .bar_third:first-child::before { background: rgb(33, 135, 72); }
+
+.product_summary.delivery_na .delivery_status { width: 100%; }
+
+.product_summary.delivery_na .delivery_status h2 { color: rgb(231, 25, 33); }
+
+.product_summary.delivery_na .text_explanation { color: rgb(231, 25, 33); }
+
+.product_summary.delivery_attempted .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_attempted .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_attempted .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_delivered .delivery_status h2 { color: rgb(33, 135, 72); }
+
+.product_summary.delivery_delivered .delivery_status h2 strong::before { margin-right: 10px; }
+
+.product_summary.delivery_delivered .text_explanation { color: rgb(33, 135, 72); }
+
+.product_summary.delivery_delivered_to_agent .delivery_status h2 { color: rgb(33, 135, 72); }
+
+.product_summary.delivery_delivered_to_agent .delivery_status h2 strong::before { margin-right: 10px; }
+
+.product_summary.delivery_delivered_to_agent .text_explanation { color: rgb(33, 135, 72); }
+
+.product_summary.delivery_preshipment .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_preshipment .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_preshipment .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_onitsway .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_onitsway .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_onitsway .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_accepted .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_accepted .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_accepted .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_transit .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_transit .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_transit .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_transit_delayed .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_transit_delayed .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_transit_delayed .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_alert .delivery_status h2 { color: rgb(231, 25, 33); }
+
+.product_summary.delivery_alert .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_alert .text_explanation { color: rgb(231, 25, 33); }
+
+.product_summary.delivery_archived .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_archived .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_archived .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_duplicate .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_duplicate .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_duplicate .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_seized .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_seized .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_seized .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_exception .delivery_status { width: 100%; }
+
+.product_summary.delivery_exception .delivery_status h2 { color: rgb(231, 25, 33); }
+
+.product_summary.delivery_exception .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_exception .text_explanation { color: rgb(231, 25, 33); }
+
+.product_summary.delivery_pickup .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_pickup .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_pickup .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_out_for_delivery .delivery_status h2 { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_out_for_delivery .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_out_for_delivery .text_explanation { color: rgb(51, 51, 102); }
+
+.product_summary.delivery_attempted_action .delivery_status h2 { color: rgb(231, 25, 33); }
+
+.product_summary.delivery_attempted_action .delivery_status h2 strong { font-size: 22px; }
+
+.product_summary.delivery_attempted_action .text_explanation { color: rgb(231, 25, 33); }
+
+@media only screen and (min-width: 768px) {
+  .product_summary .expected_delivery { width: 45%; margin-right: 5%; margin-bottom: 25px; }
+  .product_summary .expected_delivery p { margin-top: 50px; }
+  .product_summary .delivery_status { width: 50%; }
+  .product_summary .delivery_status h3 { display: block; }
+  .product_summary .status_bar { order: 4; }
+  .product_summary .status_bar .text_explanation { display: inline-block; }
+}
+
+.house_ad { display: block; background: rgb(247, 247, 247); overflow: hidden; }
+
+.house_ad h3 { text-align: center; margin: 30px 0px; line-height: 130%; }
+
+.house_ad .photo_area { height: 40vw; min-height: 150px; background-repeat: no-repeat; background-size: cover; background-position: center top; }
+
+.house_ad .house_ad_text { margin: 0px 5px; }
+
+.house_ad .house_ad_text h1 { text-align: center; }
+
+.house_ad .house_ad_text p { margin-bottom: 10px; }
+
+.house_ad .button { display: block; margin: 40px auto; width: 45%; }
+
+.house_ad small { display: block; margin-bottom: 20px; text-indent: -0.5em; }
+
+@media only screen and (min-width: 768px) {
+  .house_ad { margin-bottom: 40px; }
+  .house_ad h3 { margin: 40px 0px 30px; font-size: 28px; text-align: left; }
+  .house_ad.left_person .photo_area { background-position: left center; }
+}
+
+@media only screen and (min-width: 992px) {
+  .house_ad .row { position: relative; }
+  .house_ad .photo_area { position: absolute; height: 100%; overflow: hidden; background-position: center center; }
+  .house_ad .photo_area::before { content: ""; position: absolute; z-index: 2; left: -500px; bottom: 0px; width: 1px; background: rgb(255, 255, 255); height: 100%; border-left: 500px solid rgb(247, 247, 247); border-right: 40px solid rgb(255, 255, 255); transform: skew(-12.5deg); transform-origin: left bottom; }
+}
+
+.temp_notes { border: 1px solid red; }
+
+.temp_notes .temp_notes_text { color: red; }
+
+@media only screen and (max-width: 767px) {
+  .landing_container { margin-bottom: 60px; }
+}
+
+.actions_contain { margin-top: 20px; margin-bottom: 30px; background-color: rgb(247, 247, 247); }
+
+.actions_contain .icon-carat_down { font-size: 11px; }
+
+.actions_contain .icon-carat_down::before { width: auto; }
+
+.actions_contain .icon-carat_up { font-size: 11px; }
+
+.actions_contain .icon-carat_up::before { width: auto; }
+
+.actions_contain .panel-group { margin-bottom: 0px; background-color: inherit; border-radius: 0px; color: rgb(51, 51, 102); margin-top: 0px; }
+
+.actions_contain .panel-group .panel + .panel { margin-top: 0px; }
+
+.actions_contain .panel-default { border-top: none; border-right: none; border-left: none; border-image: initial; box-shadow: none; border-bottom: 2px solid rgb(51, 51, 102); border-radius: 0px; }
+
+.actions_contain .panel-default:first-of-type { border-top: 2px solid rgb(51, 51, 102); }
+
+.actions_contain .panel-default .panel-heading { position: relative; padding: 20px 60px 20px 20px; color: rgb(51, 51, 102); background: rgb(247, 247, 247); cursor: pointer; }
+
+@media only screen and (min-width: 768px) {
+  .actions_contain .panel-default .panel-heading { padding-right: 20px; }
+}
+
+.actions_contain .panel-default .panel-title a:hover { text-decoration: none; }
+
+.actions_contain .panel-default .panel-body { padding: 0px 15px; }
+
+.actions_contain .panel-default .btn-continue { display: block; margin: 30px auto 20px; border-radius: 3px; font-size: 16px; font-weight: bold; width: 170px; height: 44px; }
+
+.actions_contain .panel-default > .panel-heading + .panel-collapse > .panel-body { border-top: none; }
+
+.actions_contain .panel-actions-content { background-color: rgb(255, 255, 255); padding: 20px; }
+
+@media only screen and (max-width: 767px) {
+  .actions_contain { margin-left: -15px; margin-right: -15px; }
+  .actions_contain h2 { display: none; }
+  .actions_contain .panel-title { font-size: 20px; }
+}
+
+.carat-group { position: absolute; right: 20px; top: calc(50% - 15px); }
+
+@media only screen and (min-width: 768px) {
+  .carat-group { position: static; float: right; }
+}
+
+.privacy_policy { font-size: 12px; }
+
+.bold { font-weight: bold; }
+
+.step-1 { display: none; }
+
+.step-2 { display: none; }
+
+.step-3 { display: none; }
+
+.step-4 { display: none; }
+
+.authorized-address { color: rgb(33, 135, 72); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 15px; }
+
+.radio-package { margin-top: 20px; margin-bottom: 40px; }
+
+.radio-package .radio { margin-top: 30px; margin-bottom: 0px; }
+
+.radio-package .form-group .radio label, .radio-package .form-group label { line-height: normal; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 15px; }
+
+.radio-package .form-group label { font-weight: bold; }
+
+.radio-package .form-group > label { margin-bottom: 0px; }
+
+.radio-package .form-group .form-group label { font-size: 12px; font-weight: 400; }
+
+.radio-package .delivery-change-radio-content { padding-top: 20px; margin-bottom: -20px; }
+
+.radio-package .delivery-change-radio-content button { margin-top: 0px; }
+
+.radio-package .other-domestic-address { padding-bottom: 10px; }
+
+.radio-package .other-domestic-address p { margin-bottom: 10px; }
+
+.radio-package .zip-code-lookup-results { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid rgb(216, 216, 216); }
+
+.radio-package .zip-code-lookup-results .actions_subsection { margin-top: 20px; padding-top: 20px; }
+
+.radio-package .zip-code-lookup-results .actions_subsection label { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; }
+
+.radio-package .zip-code-lookup-results .actions_subsection label strong { display: block; }
+
+.actions_form { color: rgb(89, 89, 89); }
+
+.actions_form p { margin-bottom: 20px; }
+
+.actions_form .form-group { margin-bottom: 9px; padding-bottom: 1px; }
+
+.actions_form .form-group input + label { margin-top: 20px; }
+
+.actions_form .form-group label { color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 12px; line-height: 100%; }
+
+.actions_form p > label { margin-bottom: 0px; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 12px; }
+
+.actions_form p.changed_city { margin-bottom: 30px; }
+
+.actions_form .button { display: block; margin: 40px auto 20px; }
+
+.actions_form .button_container { margin-top: -20px; text-align: center; }
+
+.actions_form .button_container .button { display: inline-block; margin-left: 15px; margin-right: 15px; }
+
+.actions_form .icon_add { font-size: 14px; line-height: 100%; text-transform: capitalize; }
+
+.actions_form .icon_add i { color: rgb(231, 25, 33); font-size: 22px; }
+
+.actions_form div.checkbox label { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; }
+
+.actions_form div.checkbox label.label-choice.check-label { font-weight: bold; font-size: 14px; }
+
+.actions_form .readMore { position: absolute; left: calc(50% - 1em); bottom: 0px; color: rgb(51, 51, 102); text-decoration: none; }
+
+.actions_form .readMore span { display: block; text-indent: -9999em; overflow: hidden; }
+
+.actions_form .checkbox_group { margin-top: 40px; }
+
+.actions_form .checkbox_group .checkbox { margin-bottom: 30px; }
+
+.actions_form .checkbox_group .checkbox:last-of-type { margin-bottom: 0px; }
+
+.actions_form .checkbox_group .checkbox label { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.actions_form .checkbox_group .checkbox label.specific-check-label { font-size: 16px; color: red; }
+
+.actions_form .solo_checkbox { margin-bottom: 30px; }
+
+.actions_form .hold_at_post_office label { display: block; }
+
+.actions_form .hold_at_post_office .form-group { display: inline-block; vertical-align: top; width: 115px; }
+
+.actions_form .hold_at_post_office button { display: inline-block; margin-left: 5px; }
+
+@media only screen and (min-width: 768px) {
+  .actions_form .hold_at_post_office .form-group { width: 135px; }
+  .actions_form .hold_at_post_office button { margin-left: 15px; }
+}
+
+@media only screen and (min-width: 768px) {
+  .actions_form p { font-size: 12px; }
+  .actions_form .float_out_row::after { display: inline; }
+  .actions_form .float_out_row .float_out_col { float: right; }
+  .actions_form .redelivery_checkbox .form-group { margin-top: 20px; margin-bottom: -20px; }
+  .actions_form .checkbox_group { margin-top: 25px; }
+}
+
+.actions_section p { margin-bottom: 20px; }
+
+.actions_section p.center { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; text-align: center; }
+
+.actions_section p.center a { display: inline-block; }
+
+.actions_section p.center a i { color: rgb(231, 25, 33); }
+
+.actions_section .ptag { margin-bottom: 20px; line-height: 0; }
+
+.actions_section .ptag p { display: inline; margin-bottom: 0px; }
+
+.actions_section .checkbox label { font-size: 15px; }
+
+.actions_section .button_container { margin-top: 0px; }
+
+.actions_section .button_container button { margin-top: 10px; }
+
+@media only screen and (min-width: 768px) {
+  .actions_section p { font-size: 14px; }
+}
+
+#emailUpdate.actions_form h4, #textUpdate.actions_form h4 { font-size: 14px; margin: 20px 0px; }
+
+#emailUpdate.actions_form .checkbox, #textUpdate.actions_form .checkbox { margin-top: 0px; margin-bottom: 0px; }
+
+#emailUpdate.actions_form .checkbox.terms, #textUpdate.actions_form .checkbox.terms { margin-top: 20px; }
+
+#emailUpdate.actions_form .specific-activities-options div:first-child .checkbox, #textUpdate.actions_form .specific-activities-options div:first-child .checkbox { margin-top: 15px; }
+
+#emailUpdate.actions_form .form-group, #textUpdate.actions_form .form-group { margin-bottom: 0px; }
+
+.actions_subsection { margin-top: 30px; padding-top: 30px; color: rgb(89, 89, 89); font-size: 15px; border-top: 1px solid rgb(216, 216, 216); }
+
+.actions_subsection:first-child { margin-top: 0px; padding-top: 0px; border-top: none; }
+
+.actions_subsection h6 { display: block; margin: 0px 0px 20px; color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; font-size: 15px; }
+
+.actions_subsection > p + p { margin-top: 20px; }
+
+.actions_subsection label { font-size: inherit; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.actions_subsection .button { display: block; margin: 40px auto 20px; }
+
+.actions_subsection .sub_action::before, .actions_subsection .sub_action::after { content: " "; display: table; }
+
+.actions_subsection .sub_action::after { clear: both; }
+
+.actions_subsection .sub_action h6 { float: left; }
+
+.actions_subsection .sub_action a { float: left; margin-left: 15px; color: rgb(51, 51, 102); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; line-height: 1.1; }
+
+.actions_subsection .actions_priced { display: table; width: 100%; margin-top: 30px; }
+
+.actions_subsection .actions_priced .specific-activities-options .specific-check-label { font-size: 14px; }
+
+.actions_subsection .actions_priced > div { display: table-cell; vertical-align: top; }
+
+.actions_subsection .actions_priced > div.price { padding-left: 25px; text-align: right; }
+
+.actions_subsection .actions_priced:first-child { margin-top: 0px; }
+
+.actions_subsection .radio { margin: 0px; padding-left: 25px; }
+
+.actions_subsection .radio p { margin: 20px 0px 0px; }
+
+.actions_subsection div.checkbox { margin-top: 20px; }
+
+.actions_subsection div.checkbox p { margin: 20px 0px 10px; }
+
+.actions_subsection div.checkbox label { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.actions_subsection .insurance_form_content::before, .actions_subsection .insurance_form_content::after { content: " "; display: table; }
+
+.actions_subsection .insurance_form_content::after { clear: both; }
+
+.actions_subsection .insurance_form_content .button { float: left; min-width: 0px; margin: 0px; padding: 0px 15px; }
+
+.actions_subsection .insurance_form_content .form-control { float: left; width: 80px; margin-right: 10px; }
+
+.actions_subsection .insurance_form_content p { font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.actions_subsection.actions_priced_slim .actions_priced { margin-top: 10px; }
+
+.actions_subsection.actions_text_updates { padding-top: 0px; border: none; }
+
+.actions_subsection.actions_text_updates .radio p { margin: 0px; }
+
+.actions_subsection.actions_text_updates .form-group label { color: rgb(89, 89, 89); font-size: 12px; }
+
+.actions_subsection.actions_text_updates .actions_priced { width: auto; }
+
+@media only screen and (min-width: 768px) {
+  .actions_subsection .actions_priced { width: 70%; }
+  .actions_subsection button { width: 170px; }
+}
+
+@media only screen and (min-width: 768px) {
+  .actions_subsection { font-size: 14px; }
+  .actions_subsection p { font-size: 14px; }
+}
+
+.tracking_history { position: relative; }
+
+.tracking_history ol { display: block; list-style: none; padding-left: 5px; padding-right: 5px; padding-bottom: 15px; }
+
+.tracking_history ol li { display: block; margin-top: 20px; padding-top: 20px; border-top: 2px solid rgb(216, 216, 216); }
+
+.tracking_history ol li:first-child { padding-top: 0px; border-top: none; }
+
+.tracking_history ol li strong { display: block; margin-bottom: 5px; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.tracking_history ol li > p { display: block; margin-bottom: 5px; }
+
+.tracking_history .more_rows { position: absolute; bottom: 0px; right: 0px; display: block; padding: 15px 5px; text-align: right; }
+
+.tracking_history .more_rows a { color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; size: 14px; }
+
+.tracking_history .more_rows a i { color: rgb(51, 51, 102); font-size: 11px; vertical-align: baseline; }
+
+.tracking_history .more_rows a i::before { width: auto; }
+
+@media only screen and (min-width: 768px) {
+  .tracking_history ol li { padding-right: 150px; }
+}
+
+@media only screen and (max-width: 767px) {
+  .tracking_history .more_rows { position: relative; text-align: center; padding: 30px 20px 35px; }
+  .tracking_history .more_rows a { font-weight: 700; display: inline-block; text-align: center; min-width: 168px; height: 44px; font-size: 16px; border-radius: 3px; padding: 0px 20px; text-decoration: none; vertical-align: middle; cursor: pointer; background: rgb(255, 255, 255); color: rgb(51, 51, 102); border: 1px solid rgb(51, 51, 102); line-height: 42px; }
+  .tracking_history .more_rows a[disabled], .tracking_history .more_rows a.inactive, .tracking_history .more_rows a.disabled { background: rgb(216, 216, 216); color: rgb(255, 255, 255); }
+  .tracking_history .more_rows a:focus, .tracking_history .more_rows a:active { color: rgb(255, 255, 255); background: rgb(51, 51, 102); }
+  .tracking_history .more_rows a.white { background: rgb(255, 255, 255); color: rgb(51, 51, 102); border: 1px solid rgb(51, 51, 102); line-height: 42px; }
+  .tracking_history .more_rows a.white:focus, .tracking_history .more_rows a.white:active { background: rgb(255, 255, 255); color: rgb(51, 51, 102); }
+  .tracking_history .more_rows a.white:hover { border-color: rgb(216, 216, 216) !important; }
+  .tracking_history .more_rows a.green { background: rgb(33, 135, 72); }
+  .tracking_history .more_rows a:hover, .tracking_history .more_rows a.white:hover { background: rgb(216, 216, 216); color: rgb(51, 51, 102); text-decoration: none !important; }
+  .tracking_history .more_rows a:focus, .tracking_history .more_rows a:active { background: rgb(255, 255, 255); color: rgb(51, 51, 102); }
+  .tracking_history .more_rows a:hover { border-color: rgb(216, 216, 216) !important; }
+  .tracking_history .more_rows a i { display: none; }
+}
+
+@media not all {
+  .tracking_history .more_rows a { min-width: 115px; }
+}
+
+.product_info { display: flex; justify-content: space-between; list-style-type: none; margin: 0px; padding: 20px 5px; }
+
+.product_info li { display: inline-block; vertical-align: top; margin: 0px 20px 0px 0px; color: rgb(89, 89, 89); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal; font-size: 14px; line-height: 135%; }
+
+.product_info li:last-child { margin: 0px; }
+
+.product_info li dl { margin: 0px; }
+
+.product_info li dd, .product_info li dt { line-height: 1.35; white-space: nowrap; }
+
+.product_info li dt { display: block; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.product_info li strong { display: block; font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.product_info li p { display: block; font-size: inherit; line-height: inherit; margin-bottom: 10px; }
+
+.product_info li strong + p { margin-top: 10px; }
+
+@media only screen and (max-width: 767px) {
+  .product_info { flex-wrap: wrap; }
+  .product_info li { width: 100%; margin-bottom: 15px; }
+}
+
+.readMore { float: right; font-size: 11px; margin-top: 5px; text-decoration: none; }
+
+.readMore:hover { text-decoration: none; }
+
+.readMore.closed::after { content: ""; font-family: fontello; width: 1em; margin-right: 0.2em; text-align: center; margin-left: 5px; }
+
+.readMore::after { content: ""; font-family: fontello; width: 1em; margin-right: 0.2em; text-align: center; margin-left: 5px; }
+
+p.legal { font-size: 11px; line-height: 15px; }
+
+p.legal.collapsed { display: -webkit-box; height: 60px; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
+
+.change-options-content { display: none; }
+
+.more_insurance { display: none; }
+
+.datepicker td { border: 1px solid red; }
+
+.datepicker { border-radius: 4px; direction: ltr; }
+
+.datepicker-inline { width: 220px; }
+
+.datepicker.datepicker-rtl { direction: rtl; }
+
+.datepicker.datepicker-rtl table tr td span { float: right; }
+
+.datepicker-dropdown { top: 0px; left: 0px; padding: 4px; }
+
+.datepicker-dropdown::before { content: ""; display: inline-block; border-width: 0px 7px 7px; border-left-style: solid; border-left-color: transparent; border-right-style: solid; border-right-color: transparent; border-bottom-style: solid; border-top-style: initial; border-top-color: initial; border-bottom-color: rgba(0, 0, 0, 0.2); position: absolute; }
+
+.datepicker-dropdown::after { content: ""; display: inline-block; border-width: 0px 6px 6px; border-left-style: solid; border-left-color: transparent; border-right-style: solid; border-right-color: transparent; border-bottom-style: solid; border-bottom-color: rgb(255, 255, 255); border-top-style: initial; border-top-color: initial; position: absolute; }
+
+.datepicker-dropdown.datepicker-orient-left::before { left: 6px; }
+
+.datepicker-dropdown.datepicker-orient-left::after { left: 7px; }
+
+.datepicker-dropdown.datepicker-orient-right::before { right: 6px; }
+
+.datepicker-dropdown.datepicker-orient-right::after { right: 7px; }
+
+.datepicker-dropdown.datepicker-orient-bottom::before { top: -7px; }
+
+.datepicker-dropdown.datepicker-orient-bottom::after { top: -6px; }
+
+.datepicker-dropdown.datepicker-orient-top::before { bottom: -7px; border-bottom: 0px; border-top: 7px solid rgba(0, 0, 0, 0.15); }
+
+.datepicker-dropdown.datepicker-orient-top::after { bottom: -6px; border-bottom: 0px; border-top: 6px solid rgb(255, 255, 255); }
+
+.datepicker > div { display: none; }
+
+.datepicker table { margin: 0px; user-select: none; }
+
+.datepicker table tr td, .datepicker table tr th { text-align: center; width: 30px; height: 30px; border-radius: 4px; border: none; }
+
+.table-striped .datepicker table tr td, .table-striped .datepicker table tr th { background-color: transparent; }
+
+.datepicker table tr td.new, .datepicker table tr td.old { color: rgb(119, 119, 119); }
+
+.datepicker table tr td.day:hover, .datepicker table tr td.focused { background: rgb(238, 238, 238); cursor: pointer; }
+
+.datepicker table tr td.disabled, .datepicker table tr td.disabled:hover { background: 0px 0px; color: rgb(119, 119, 119); cursor: default; }
+
+.datepicker table tr td.highlighted { color: rgb(0, 0, 0); background-color: rgb(217, 237, 247); border-color: rgb(133, 197, 229); border-radius: 0px; }
+
+.datepicker table tr td.highlighted.focus, .datepicker table tr td.highlighted:focus { color: rgb(0, 0, 0); background-color: rgb(175, 217, 238); border-color: rgb(41, 143, 194); }
+
+.datepicker table tr td.highlighted:hover { color: rgb(0, 0, 0); background-color: rgb(175, 217, 238); border-color: rgb(82, 173, 219); }
+
+.datepicker table tr td.highlighted.active, .datepicker table tr td.highlighted:active { color: rgb(0, 0, 0); background-color: rgb(175, 217, 238); border-color: rgb(82, 173, 219); }
+
+.datepicker table tr td.highlighted.active.focus, .datepicker table tr td.highlighted.active:focus, .datepicker table tr td.highlighted.active:hover, .datepicker table tr td.highlighted:active.focus, .datepicker table tr td.highlighted:active:focus, .datepicker table tr td.highlighted:active:hover { color: rgb(0, 0, 0); background-color: rgb(145, 203, 232); border-color: rgb(41, 143, 194); }
+
+.datepicker table tr td.highlighted.disabled.focus, .datepicker table tr td.highlighted.disabled:focus, .datepicker table tr td.highlighted.disabled:hover, .datepicker table tr td.highlighted[disabled].focus, .datepicker table tr td.highlighted[disabled]:focus, .datepicker table tr td.highlighted[disabled]:hover, fieldset[disabled] .datepicker table tr td.highlighted.focus, fieldset[disabled] .datepicker table tr td.highlighted:focus, fieldset[disabled] .datepicker table tr td.highlighted:hover { background-color: rgb(217, 237, 247); border-color: rgb(133, 197, 229); }
+
+.datepicker table tr td.highlighted.focused { background: rgb(175, 217, 238); }
+
+.datepicker table tr td.highlighted.disabled, .datepicker table tr td.highlighted.disabled:active { background: rgb(217, 237, 247); color: rgb(119, 119, 119); }
+
+.datepicker table tr td.today { color: rgb(0, 0, 0); background-color: rgb(255, 219, 153); border-color: rgb(255, 183, 51); }
+
+.datepicker table tr td.today.focus, .datepicker table tr td.today:focus { color: rgb(0, 0, 0); background-color: rgb(255, 201, 102); border-color: rgb(179, 116, 0); }
+
+.datepicker table tr td.today:hover { color: rgb(0, 0, 0); background-color: rgb(255, 201, 102); border-color: rgb(245, 158, 0); }
+
+.datepicker table tr td.today.active, .datepicker table tr td.today:active { color: rgb(0, 0, 0); background-color: rgb(255, 201, 102); border-color: rgb(245, 158, 0); }
+
+.datepicker table tr td.today.active.focus, .datepicker table tr td.today.active:focus, .datepicker table tr td.today.active:hover, .datepicker table tr td.today:active.focus, .datepicker table tr td.today:active:focus, .datepicker table tr td.today:active:hover { color: rgb(0, 0, 0); background-color: rgb(255, 188, 66); border-color: rgb(179, 116, 0); }
+
+.datepicker table tr td.today.disabled.focus, .datepicker table tr td.today.disabled:focus, .datepicker table tr td.today.disabled:hover, .datepicker table tr td.today[disabled].focus, .datepicker table tr td.today[disabled]:focus, .datepicker table tr td.today[disabled]:hover, fieldset[disabled] .datepicker table tr td.today.focus, fieldset[disabled] .datepicker table tr td.today:focus, fieldset[disabled] .datepicker table tr td.today:hover { background-color: rgb(255, 219, 153); border-color: rgb(255, 183, 51); }
+
+.datepicker table tr td.today.focused { background: rgb(255, 201, 102); }
+
+.datepicker table tr td.today.disabled, .datepicker table tr td.today.disabled:active { background: rgb(255, 219, 153); color: rgb(119, 119, 119); }
+
+.datepicker table tr td.range { color: rgb(0, 0, 0); background-color: rgb(238, 238, 238); border-color: rgb(187, 187, 187); border-radius: 0px; }
+
+.datepicker table tr td.range.focus, .datepicker table tr td.range:focus { color: rgb(0, 0, 0); background-color: rgb(213, 213, 213); border-color: rgb(124, 124, 124); }
+
+.datepicker table tr td.range:hover { color: rgb(0, 0, 0); background-color: rgb(213, 213, 213); border-color: rgb(157, 157, 157); }
+
+.datepicker table tr td.range.active, .datepicker table tr td.range:active { color: rgb(0, 0, 0); background-color: rgb(213, 213, 213); border-color: rgb(157, 157, 157); }
+
+.datepicker table tr td.range.active.focus, .datepicker table tr td.range.active:focus, .datepicker table tr td.range.active:hover, .datepicker table tr td.range:active.focus, .datepicker table tr td.range:active:focus, .datepicker table tr td.range:active:hover { color: rgb(0, 0, 0); background-color: rgb(195, 195, 195); border-color: rgb(124, 124, 124); }
+
+.datepicker table tr td.range.disabled.focus, .datepicker table tr td.range.disabled:focus, .datepicker table tr td.range.disabled:hover, .datepicker table tr td.range[disabled].focus, .datepicker table tr td.range[disabled]:focus, .datepicker table tr td.range[disabled]:hover, fieldset[disabled] .datepicker table tr td.range.focus, fieldset[disabled] .datepicker table tr td.range:focus, fieldset[disabled] .datepicker table tr td.range:hover { background-color: rgb(238, 238, 238); border-color: rgb(187, 187, 187); }
+
+.datepicker table tr td.range.focused { background: rgb(213, 213, 213); }
+
+.datepicker table tr td.range.disabled, .datepicker table tr td.range.disabled:active { background: rgb(238, 238, 238); color: rgb(119, 119, 119); }
+
+.datepicker table tr td.range.highlighted { color: rgb(0, 0, 0); background-color: rgb(228, 238, 243); border-color: rgb(157, 193, 211); }
+
+.datepicker table tr td.range.highlighted.focus, .datepicker table tr td.range.highlighted:focus { color: rgb(0, 0, 0); background-color: rgb(193, 215, 227); border-color: rgb(75, 136, 166); }
+
+.datepicker table tr td.range.highlighted:hover { color: rgb(0, 0, 0); background-color: rgb(193, 215, 227); border-color: rgb(115, 166, 192); }
+
+.datepicker table tr td.range.highlighted.active, .datepicker table tr td.range.highlighted:active { color: rgb(0, 0, 0); background-color: rgb(193, 215, 227); border-color: rgb(115, 166, 192); }
+
+.datepicker table tr td.range.highlighted.active.focus, .datepicker table tr td.range.highlighted.active:focus, .datepicker table tr td.range.highlighted.active:hover, .datepicker table tr td.range.highlighted:active.focus, .datepicker table tr td.range.highlighted:active:focus, .datepicker table tr td.range.highlighted:active:hover { color: rgb(0, 0, 0); background-color: rgb(168, 200, 216); border-color: rgb(75, 136, 166); }
+
+.datepicker table tr td.range.highlighted.disabled.focus, .datepicker table tr td.range.highlighted.disabled:focus, .datepicker table tr td.range.highlighted.disabled:hover, .datepicker table tr td.range.highlighted[disabled].focus, .datepicker table tr td.range.highlighted[disabled]:focus, .datepicker table tr td.range.highlighted[disabled]:hover, fieldset[disabled] .datepicker table tr td.range.highlighted.focus, fieldset[disabled] .datepicker table tr td.range.highlighted:focus, fieldset[disabled] .datepicker table tr td.range.highlighted:hover { background-color: rgb(228, 238, 243); border-color: rgb(157, 193, 211); }
+
+.datepicker table tr td.range.highlighted.focused { background: rgb(193, 215, 227); }
+
+.datepicker table tr td.range.highlighted.disabled, .datepicker table tr td.range.highlighted.disabled:active { background: rgb(228, 238, 243); color: rgb(119, 119, 119); }
+
+.datepicker table tr td.range.today { color: rgb(0, 0, 0); background-color: rgb(247, 202, 119); border-color: rgb(241, 164, 23); }
+
+.datepicker table tr td.range.today.focus, .datepicker table tr td.range.today:focus { color: rgb(0, 0, 0); background-color: rgb(244, 183, 71); border-color: rgb(129, 86, 8); }
+
+.datepicker table tr td.range.today:hover { color: rgb(0, 0, 0); background-color: rgb(244, 183, 71); border-color: rgb(191, 128, 12); }
+
+.datepicker table tr td.range.today.active, .datepicker table tr td.range.today:active { color: rgb(0, 0, 0); background-color: rgb(244, 183, 71); border-color: rgb(191, 128, 12); }
+
+.datepicker table tr td.range.today.active.focus, .datepicker table tr td.range.today.active:focus, .datepicker table tr td.range.today.active:hover, .datepicker table tr td.range.today:active.focus, .datepicker table tr td.range.today:active:focus, .datepicker table tr td.range.today:active:hover { color: rgb(0, 0, 0); background-color: rgb(242, 170, 37); border-color: rgb(129, 86, 8); }
+
+.datepicker table tr td.range.today.disabled.focus, .datepicker table tr td.range.today.disabled:focus, .datepicker table tr td.range.today.disabled:hover, .datepicker table tr td.range.today[disabled].focus, .datepicker table tr td.range.today[disabled]:focus, .datepicker table tr td.range.today[disabled]:hover, fieldset[disabled] .datepicker table tr td.range.today.focus, fieldset[disabled] .datepicker table tr td.range.today:focus, fieldset[disabled] .datepicker table tr td.range.today:hover { background-color: rgb(247, 202, 119); border-color: rgb(241, 164, 23); }
+
+.datepicker table tr td.range.today.disabled, .datepicker table tr td.range.today.disabled:active { background: rgb(247, 202, 119); color: rgb(119, 119, 119); }
+
+.datepicker table tr td.selected, .datepicker table tr td.selected.highlighted { color: rgb(255, 255, 255); background-color: rgb(119, 119, 119); border-color: rgb(85, 85, 85); text-shadow: rgba(0, 0, 0, 0.25) 0px -1px 0px; }
+
+.datepicker table tr td.selected.focus, .datepicker table tr td.selected.highlighted.focus, .datepicker table tr td.selected.highlighted:focus, .datepicker table tr td.selected:focus { color: rgb(255, 255, 255); background-color: rgb(94, 94, 94); border-color: rgb(22, 22, 22); }
+
+.datepicker table tr td.selected.highlighted:hover, .datepicker table tr td.selected:hover { color: rgb(255, 255, 255); background-color: rgb(94, 94, 94); border-color: rgb(55, 55, 55); }
+
+.datepicker table tr td.selected.active, .datepicker table tr td.selected.highlighted.active, .datepicker table tr td.selected.highlighted:active, .datepicker table tr td.selected:active { color: rgb(255, 255, 255); background-color: rgb(94, 94, 94); border-color: rgb(55, 55, 55); }
+
+.datepicker table tr td.selected.active.focus, .datepicker table tr td.selected.active:focus, .datepicker table tr td.selected.active:hover, .datepicker table tr td.selected.highlighted.active.focus, .datepicker table tr td.selected.highlighted.active:focus, .datepicker table tr td.selected.highlighted.active:hover, .datepicker table tr td.selected.highlighted:active.focus, .datepicker table tr td.selected.highlighted:active:focus, .datepicker table tr td.selected.highlighted:active:hover, .datepicker table tr td.selected:active.focus, .datepicker table tr td.selected:active:focus, .datepicker table tr td.selected:active:hover { color: rgb(255, 255, 255); background-color: rgb(76, 76, 76); border-color: rgb(22, 22, 22); }
+
+.datepicker table tr td.selected.disabled.focus, .datepicker table tr td.selected.disabled:focus, .datepicker table tr td.selected.disabled:hover, .datepicker table tr td.selected.highlighted.disabled.focus, .datepicker table tr td.selected.highlighted.disabled:focus, .datepicker table tr td.selected.highlighted.disabled:hover, .datepicker table tr td.selected.highlighted[disabled].focus, .datepicker table tr td.selected.highlighted[disabled]:focus, .datepicker table tr td.selected.highlighted[disabled]:hover, .datepicker table tr td.selected[disabled].focus, .datepicker table tr td.selected[disabled]:focus, .datepicker table tr td.selected[disabled]:hover, fieldset[disabled] .datepicker table tr td.selected.focus, fieldset[disabled] .datepicker table tr td.selected.highlighted.focus, fieldset[disabled] .datepicker table tr td.selected.highlighted:focus, fieldset[disabled] .datepicker table tr td.selected.highlighted:hover, fieldset[disabled] .datepicker table tr td.selected:focus, fieldset[disabled] .datepicker table tr td.selected:hover { background-color: rgb(119, 119, 119); border-color: rgb(85, 85, 85); }
+
+.datepicker table tr td.active, .datepicker table tr td.active.highlighted { color: rgb(255, 255, 255); background-color: rgb(51, 122, 183); border-color: rgb(46, 109, 164); text-shadow: rgba(0, 0, 0, 0.25) 0px -1px 0px; }
+
+.datepicker table tr td.active.focus, .datepicker table tr td.active.highlighted.focus, .datepicker table tr td.active.highlighted:focus, .datepicker table tr td.active:focus { color: rgb(255, 255, 255); background-color: rgb(40, 96, 144); border-color: rgb(18, 43, 64); }
+
+.datepicker table tr td.active.highlighted:hover, .datepicker table tr td.active:hover { color: rgb(255, 255, 255); background-color: rgb(40, 96, 144); border-color: rgb(32, 77, 116); }
+
+.datepicker table tr td.active.active, .datepicker table tr td.active.highlighted.active, .datepicker table tr td.active.highlighted:active, .datepicker table tr td.active:active { color: rgb(255, 255, 255); background-color: rgb(40, 96, 144); border-color: rgb(32, 77, 116); }
+
+.datepicker table tr td.active.active.focus, .datepicker table tr td.active.active:focus, .datepicker table tr td.active.active:hover, .datepicker table tr td.active.highlighted.active.focus, .datepicker table tr td.active.highlighted.active:focus, .datepicker table tr td.active.highlighted.active:hover, .datepicker table tr td.active.highlighted:active.focus, .datepicker table tr td.active.highlighted:active:focus, .datepicker table tr td.active.highlighted:active:hover, .datepicker table tr td.active:active.focus, .datepicker table tr td.active:active:focus, .datepicker table tr td.active:active:hover { color: rgb(255, 255, 255); background-color: rgb(32, 77, 116); border-color: rgb(18, 43, 64); }
+
+.datepicker table tr td.active.disabled.focus, .datepicker table tr td.active.disabled:focus, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active.highlighted.disabled.focus, .datepicker table tr td.active.highlighted.disabled:focus, .datepicker table tr td.active.highlighted.disabled:hover, .datepicker table tr td.active.highlighted[disabled].focus, .datepicker table tr td.active.highlighted[disabled]:focus, .datepicker table tr td.active.highlighted[disabled]:hover, .datepicker table tr td.active[disabled].focus, .datepicker table tr td.active[disabled]:focus, .datepicker table tr td.active[disabled]:hover, fieldset[disabled] .datepicker table tr td.active.focus, fieldset[disabled] .datepicker table tr td.active.highlighted.focus, fieldset[disabled] .datepicker table tr td.active.highlighted:focus, fieldset[disabled] .datepicker table tr td.active.highlighted:hover, fieldset[disabled] .datepicker table tr td.active:focus, fieldset[disabled] .datepicker table tr td.active:hover { background-color: rgb(51, 122, 183); border-color: rgb(46, 109, 164); }
+
+.datepicker table tr td span { display: block; width: 23%; height: 54px; line-height: 54px; float: left; margin: 1%; cursor: pointer; border-radius: 4px; }
+
+.datepicker table tr td span.focused, .datepicker table tr td span:hover { background: rgb(238, 238, 238); }
+
+.datepicker table tr td span.disabled, .datepicker table tr td span.disabled:hover { background: 0px 0px; color: rgb(119, 119, 119); cursor: default; }
+
+.datepicker table tr td span.active, .datepicker table tr td span.active.disabled, .datepicker table tr td span.active.disabled:hover, .datepicker table tr td span.active:hover { color: rgb(255, 255, 255); background-color: rgb(51, 122, 183); border-color: rgb(46, 109, 164); text-shadow: rgba(0, 0, 0, 0.25) 0px -1px 0px; }
+
+.datepicker table tr td span.active.disabled.focus, .datepicker table tr td span.active.disabled:focus, .datepicker table tr td span.active.disabled:hover.focus, .datepicker table tr td span.active.disabled:hover:focus, .datepicker table tr td span.active.focus, .datepicker table tr td span.active:focus, .datepicker table tr td span.active:hover.focus, .datepicker table tr td span.active:hover:focus { color: rgb(255, 255, 255); background-color: rgb(40, 96, 144); border-color: rgb(18, 43, 64); }
+
+.datepicker table tr td span.active.disabled:hover, .datepicker table tr td span.active.disabled:hover:hover, .datepicker table tr td span.active:hover, .datepicker table tr td span.active:hover:hover { color: rgb(255, 255, 255); background-color: rgb(40, 96, 144); border-color: rgb(32, 77, 116); }
+
+.datepicker table tr td span.active.active, .datepicker table tr td span.active.disabled.active, .datepicker table tr td span.active.disabled:active, .datepicker table tr td span.active.disabled:hover.active, .datepicker table tr td span.active.disabled:hover:active, .datepicker table tr td span.active:active, .datepicker table tr td span.active:hover.active, .datepicker table tr td span.active:hover:active { color: rgb(255, 255, 255); background-color: rgb(40, 96, 144); border-color: rgb(32, 77, 116); }
+
+.datepicker table tr td span.active.active.focus, .datepicker table tr td span.active.active:focus, .datepicker table tr td span.active.active:hover, .datepicker table tr td span.active.disabled.active.focus, .datepicker table tr td span.active.disabled.active:focus, .datepicker table tr td span.active.disabled.active:hover, .datepicker table tr td span.active.disabled:active.focus, .datepicker table tr td span.active.disabled:active:focus, .datepicker table tr td span.active.disabled:active:hover, .datepicker table tr td span.active.disabled:hover.active.focus, .datepicker table tr td span.active.disabled:hover.active:focus, .datepicker table tr td span.active.disabled:hover.active:hover, .datepicker table tr td span.active.disabled:hover:active.focus, .datepicker table tr td span.active.disabled:hover:active:focus, .datepicker table tr td span.active.disabled:hover:active:hover, .datepicker table tr td span.active:active.focus, .datepicker table tr td span.active:active:focus, .datepicker table tr td span.active:active:hover, .datepicker table tr td span.active:hover.active.focus, .datepicker table tr td span.active:hover.active:focus, .datepicker table tr td span.active:hover.active:hover, .datepicker table tr td span.active:hover:active.focus, .datepicker table tr td span.active:hover:active:focus, .datepicker table tr td span.active:hover:active:hover { color: rgb(255, 255, 255); background-color: rgb(32, 77, 116); border-color: rgb(18, 43, 64); }
+
+.datepicker table tr td span.active.disabled.disabled.focus, .datepicker table tr td span.active.disabled.disabled:focus, .datepicker table tr td span.active.disabled.disabled:hover, .datepicker table tr td span.active.disabled.focus, .datepicker table tr td span.active.disabled:focus, .datepicker table tr td span.active.disabled:hover, .datepicker table tr td span.active.disabled:hover.disabled.focus, .datepicker table tr td span.active.disabled:hover.disabled:focus, .datepicker table tr td span.active.disabled:hover.disabled:hover, .datepicker table tr td span.active.disabled:hover[disabled].focus, .datepicker table tr td span.active.disabled:hover[disabled]:focus, .datepicker table tr td span.active.disabled:hover[disabled]:hover, .datepicker table tr td span.active.disabled[disabled].focus, .datepicker table tr td span.active.disabled[disabled]:focus, .datepicker table tr td span.active.disabled[disabled]:hover, .datepicker table tr td span.active:hover.disabled.focus, .datepicker table tr td span.active:hover.disabled:focus, .datepicker table tr td span.active:hover.disabled:hover, .datepicker table tr td span.active:hover[disabled].focus, .datepicker table tr td span.active:hover[disabled]:focus, .datepicker table tr td span.active:hover[disabled]:hover, .datepicker table tr td span.active[disabled].focus, .datepicker table tr td span.active[disabled]:focus, .datepicker table tr td span.active[disabled]:hover, fieldset[disabled] .datepicker table tr td span.active.disabled.focus, fieldset[disabled] .datepicker table tr td span.active.disabled:focus, fieldset[disabled] .datepicker table tr td span.active.disabled:hover, fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus, fieldset[disabled] .datepicker table tr td span.active.disabled:hover:focus, fieldset[disabled] .datepicker table tr td span.active.disabled:hover:hover, fieldset[disabled] .datepicker table tr td span.active.focus, fieldset[disabled] .datepicker table tr td span.active:focus, fieldset[disabled] .datepicker table tr td span.active:hover, fieldset[disabled] .datepicker table tr td span.active:hover.focus, fieldset[disabled] .datepicker table tr td span.active:hover:focus, fieldset[disabled] .datepicker table tr td span.active:hover:hover { background-color: rgb(51, 122, 183); border-color: rgb(46, 109, 164); }
+
+.datepicker table tr td span.new, .datepicker table tr td span.old { color: rgb(119, 119, 119); }
+
+.datepicker .datepicker-switch { width: 145px; }
+
+.datepicker .datepicker-switch, .datepicker .next, .datepicker .prev, .datepicker tfoot tr th { cursor: pointer; }
+
+.datepicker .datepicker-switch:hover, .datepicker .next:hover, .datepicker .prev:hover, .datepicker tfoot tr th:hover { background: rgb(238, 238, 238); }
+
+.datepicker .cw { font-size: 10px; width: 12px; padding: 0px 2px 0px 5px; vertical-align: middle; }
+
+.input-group.date .input-group-addon { cursor: pointer; }
+
+.input-daterange { width: 100%; }
+
+.input-daterange input { text-align: center; }
+
+.input-daterange input:first-child { border-radius: 3px 0px 0px 3px; }
+
+.input-daterange input:last-child { border-radius: 0px 3px 3px 0px; }
+
+.input-daterange .input-group-addon { width: auto; min-width: 16px; padding: 4px 5px; line-height: 1.42857; text-shadow: rgb(255, 255, 255) 0px 1px 0px; border-width: 1px 0px; margin-left: -5px; margin-right: -5px; }
+
+.icon-textlinkcarat_red, .icon-textlinkcarat_red_left { color: rgb(231, 25, 33); }
+
+.icon-textlinkcarat_red_left::before { content: ""; transform: scaleX(-1); }
+
+.datepicker-dropdown.datepicker-orient-top::before { border-top: 7px solid rgb(51, 51, 102); }
+
+.datepicker-dropdown.datepicker-orient-bottom::before { border-bottom: 7px solid rgb(51, 51, 102); }
+
+.datepicker .datepicker-switch { color: rgb(51, 51, 102); font-family: HelveticaNeueW01, Helvetica, Arial, sans-serif; font-weight: 700; font-style: normal; }
+
+.datepicker .datepicker-switch:hover { background: transparent; cursor: auto; }
+
+.datepicker .datepicker-dropdown.datepicker-orient-top::before { border-top: 7px solid rgb(51, 51, 102); }
+
+.datepicker.dropdown-menu { box-shadow: none; border-radius: 0px; border: 1px solid rgb(51, 51, 102); }
+
+.datepicker .disabled-date { color: rgb(231, 25, 33) !important; }
+
+.datepicker .original-delivery-date { color: rgb(255, 255, 255); background-color: rgb(216, 216, 216) !important; }
+
+.datepicker .day { border-radius: 0px; border: 1px solid rgb(51, 51, 102); }
+
+.datepicker .day.disabled { border: none; }
+
+.datepicker .day.active { background-color: rgb(51, 51, 102) !important; color: rgb(255, 255, 255) !important; }
+
+.datepicker .day.today { background-color: rgb(216, 216, 216) !important; }
+
+.track-bar-container .adpEnabled { margin-top: 15px; margin-bottom: 30px; }
+
+.track-bar-container .adpPhone { color: rgb(57, 128, 195); font-weight: bold; }

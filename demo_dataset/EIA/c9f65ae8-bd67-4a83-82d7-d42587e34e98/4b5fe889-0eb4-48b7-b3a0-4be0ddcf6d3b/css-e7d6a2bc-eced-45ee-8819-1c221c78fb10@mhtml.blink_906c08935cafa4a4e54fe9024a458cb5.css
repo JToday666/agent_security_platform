@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-1cs0ttl { grid-column: span 12 / auto; margin-bottom: var(--chakra-space-6); }
+
+@media screen and (min-width: 48rem) {
+  .css-1cs0ttl { grid-column: span 4 / auto; margin-bottom: var(--chakra-space-8); }
+}

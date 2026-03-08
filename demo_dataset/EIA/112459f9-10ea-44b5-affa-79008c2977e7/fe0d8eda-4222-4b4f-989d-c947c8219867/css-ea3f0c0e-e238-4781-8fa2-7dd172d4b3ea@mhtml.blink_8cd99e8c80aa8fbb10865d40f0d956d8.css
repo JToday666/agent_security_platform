@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.app-components-OpinionLabFeedback-opinionLabFeedback__oo_inline--3Y4hS { padding: 0px; }
+
+.app-components-OpinionLabFeedback-opinionLabFeedback__oo_inline_icon--1YHPn { background-size: 100%; background-repeat: no-repeat; display: block; float: left; height: 9px; width: 9px; top: 26px; position: absolute; }
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5) {
+  .app-components-OpinionLabFeedback-opinionLabFeedback__oo_inline_icon--1YHPn { background-size: 100%; }
+}
+
+.app-components-OpinionLabFeedback-opinionLabFeedback__feedbackTxt--251cM { font-size: 14px; color: rgb(102, 102, 102); }

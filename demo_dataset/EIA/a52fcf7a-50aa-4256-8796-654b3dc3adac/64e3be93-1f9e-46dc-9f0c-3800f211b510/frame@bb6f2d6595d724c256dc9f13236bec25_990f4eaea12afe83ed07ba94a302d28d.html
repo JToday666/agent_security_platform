@@ -1,0 +1,581 @@
+<!DOCTYPE html><html xmlns:ng="http://angularjs.org" id="ng-app" lang="en" class="accesso- accesso- desktop accesso-chrome accesso-webkit accesso-modern contrast-off" data-ng-class="{'bg-white': whiteBackground, 'spinner':(!state.loaded || forceShowSpinner), 'navigation-enabled':state.showMainMenu,'modal-enabled':modal.show, 'bg-enabled': bgImageUrl, 'full-height': bgImageUrl &amp;&amp; stretchBG, 'application-no-scroll': applicationNoScroll}" data-ng-style="bgImageUrl" data-ng-app="app"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="css-42d1f023-29e5-496c-9134-947a9dc217f3@mhtml.blink_934fcabd7ecf955193ffb7fb14b34c44.css" /><link rel="stylesheet" type="text/css" href="css-eddd0492-27a1-4bab-b049-8d43a8513430@mhtml.blink_f656218164f638c00055485f26d1dab0.css" /><link rel="stylesheet" type="text/css" href="css-4452b840-794b-42b9-b476-af70cecf09d7@mhtml.blink_f0e98e798e2a4648b919a0c989a4fce6.css" /><link rel="stylesheet" type="text/css" href="css-42936138-e113-4df0-aa86-9b8c33edfd2d@mhtml.blink_ffbabc522cb53a61ef0b03dd0aadfd44.css" /><link rel="stylesheet" type="text/css" href="css-579da4b8-569d-4515-b11d-64d28a273566@mhtml.blink_3ec0a76e4306c508816c0c32f7cd04ef.css" /><link rel="stylesheet" type="text/css" href="css-025a233f-e734-4239-942e-787888b762da@mhtml.blink_513ca1b66f0136d4bba706380d984d7a.css" /><link rel="stylesheet" type="text/css" href="css-ffbd6a31-0a0b-409b-8aac-e62f8cbd33a2@mhtml.blink_cebc64087bccbad1526748708578b2f5.css" /><link rel="stylesheet" type="text/css" href="css-0ff9b215-2a5c-4ad1-9247-7be178c14184@mhtml.blink_12b96170828338679578da4289215e44.css" /><link rel="stylesheet" type="text/css" href="css-d72afb65-d474-497d-8b30-b987eea72e81@mhtml.blink_d36ab57138308f28f9f57cc7bad0048b.css" /><link rel="stylesheet" type="text/css" href="css-c98d3069-38c4-40a1-853e-f6f618553157@mhtml.blink_7d88f50fc2f7b1e2d66ff65fd4bb9716.css" /><link rel="stylesheet" type="text/css" href="css-555f049e-d553-4484-b101-0d931e829b78@mhtml.blink_1aec83ba044e0c71d1cbbdbf71b4a57c.css" /><base href="https://sf-lg.store.sixflags.com/">
+<base href="https://sf-lg.store.sixflags.com/">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="HandheldFriendly" content="true">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-title" content="The Great Escape, Lake George, New York">
+<meta name="robots" content="noindex">
+<title data-ng-bind-html="state.parkNameTitleTag + state.pageTitle" data-idle-disabled="true" class="ng-binding">The Great Escape, Lake George, New York</title>
+
+
+
+
+
+<link rel="stylesheet" href="styles-ed60f40a88.css_8e9541a130434686f97ba06c6798c08b.css" id="accesso-styles-main">
+
+
+<link data-ng-if="determineCssOverrides &amp;&amp; cssOverridesCacheBuster" rel="stylesheet" type="text/css" data-ng-href="/embed/css/loader.php?m=SF-LG&amp;cb=2" class="ng-scope" href="https://sf-lg.store.sixflags.com/embed/css/loader.php?m=SF-LG&amp;cb=2">
+
+
+
+<link rel="apple-touch-icon" sizes="57x57" href="https://sf-lg.store.sixflags.com/images/favicon-57.png">
+<link rel="apple-touch-icon" sizes="76x76" href="https://sf-lg.store.sixflags.com/images/favicon-76.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://sf-lg.store.sixflags.com/images/favicon-120.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://sf-lg.store.sixflags.com/images/favicon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="https://sf-lg.store.sixflags.com/images/favicon-167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://sf-lg.store.sixflags.com/images/favicon-180.png">
+<link rel="icon" sizes="32x32" href="https://sf-lg.store.sixflags.com/images/favicon-32.png">
+<link rel="icon" sizes="57x57" href="https://sf-lg.store.sixflags.com/images/favicon-57.png">
+<link rel="icon" sizes="76x76" href="https://sf-lg.store.sixflags.com/images/favicon-76.png">
+<link rel="icon" sizes="96x96" href="https://sf-lg.store.sixflags.com/images/favicon-96.png">
+<link rel="icon" sizes="120x120" href="https://sf-lg.store.sixflags.com/images/favicon-120.png">
+<link rel="icon" sizes="128x128" href="https://sf-lg.store.sixflags.com/images/favicon-128.png">
+<link rel="icon" sizes="144x144" href="https://sf-lg.store.sixflags.com/images/favicon-144.png">
+<link rel="icon" sizes="152x152" href="https://sf-lg.store.sixflags.com/images/favicon-152.png">
+<link rel="icon" sizes="167x167" href="https://sf-lg.store.sixflags.com/images/favicon-167.png">
+<link rel="icon" sizes="180x180" href="https://sf-lg.store.sixflags.com/images/favicon-180.png">
+<link rel="icon" sizes="192x192" href="https://sf-lg.store.sixflags.com/images/favicon-192.png">
+<link rel="icon" sizes="195x195" href="https://sf-lg.store.sixflags.com/images/favicon-195.png">
+<link rel="icon" sizes="196x196" href="https://sf-lg.store.sixflags.com/images/favicon-196.png">
+<link rel="icon" sizes="228x228" href="https://sf-lg.store.sixflags.com/images/favicon-228.png">
+<link rel="icon" href="https://sf-lg.store.sixflags.com/images/favicon.png">
+<meta http-equiv="origin-trial" content="A727AcAeLCei/ZogJHBlJUS63SxP6AeIROo7qXrkjrxkoxBu0eSSmypAHmGYwk4HjBMQp5nxCFODzfVnUIe31AQAAAB7eyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGV0YWdtYW5hZ2VyLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="Az9xQo/imzWWuauBg0JngENQMoxulJzGzdGQ0VfUZDk7et2DJfmfUxfOWnHlwQiZRFG+Grc8bH8xWgOPW2ltjQQAAAB+eyJvcmlnaW4iOiJodHRwczovL3RlYWRzLnR2OjQ0MyIsImZlYXR1cmUiOiJQcml2YWN5U2FuZGJveEFkc0FQSXMiLCJleHBpcnkiOjE2ODA2NTI3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"></head><body focus-content="" class="desktop accesso-chrome accesso-webkit" data-ng-class="{'bg-white': whiteBackground, 'modal-enabled':modal.show, 'application-no-scroll': applicationNoScroll }"><img width="0" height="0" alt="" src="https://t.teads.tv/track?action=pageView&amp;env=js-web&amp;tag_version=6.13.0_5eadee0&amp;provider=tag&amp;buyer_pixel_id=5251&amp;referer=https%3A%2F%2Fsf-lg.store.sixflags.com%2FpackageList%2Fkeyword%2FDiamondSP%3F_cid%3D598966888.1680780572%26sfCustomerID%3DWPTXT-BASE%26queueittoken%3De_sixflagsgreatescape~q_0401a23f-cf23-4265-839c-523ef97ab386~ts_1680782948~ce_true~rt_safetynet~h_5382f64d8407b6a5deded6e55f1006a5daa2b131691f8fa569e8e03a45d44e5f&amp;user_session_id=f697dab3-8f09-4c3c-a4e9-57531ec2922c&amp;browser_topics=W10=" style="position: absolute;"><link type="text/css" rel="stylesheet" href="package-details-new.css_9a256a5c3e541cefd8ef3001dd010dab.css"><link type="text/css" rel="stylesheet" href="package-card-component.css_3f04c55b4f16e00649a1f8ed7ca1ea34.css"><link type="text/css" rel="stylesheet" href="video-player-component.css_74fde6403d94225501393411fec8bcae.css"><img width="0" height="0" alt="" src="https://cm.teads.tv/v3/conversion?action=pageView&amp;env=js-web&amp;tag_version=6.13.0_5eadee0&amp;provider=tag&amp;buyer_pixel_id=5251&amp;referer=https%3A%2F%2Fsf-lg.store.sixflags.com%2FpackageList%2Fkeyword%2FDiamondSP%3F_cid%3D598966888.1680780572%26sfCustomerID%3DWPTXT-BASE%26queueittoken%3De_sixflagsgreatescape~q_0401a23f-cf23-4265-839c-523ef97ab386~ts_1680782948~ce_true~rt_safetynet~h_5382f64d8407b6a5deded6e55f1006a5daa2b131691f8fa569e8e03a45d44e5f&amp;user_session_id=f697dab3-8f09-4c3c-a4e9-57531ec2922c&amp;browser_topics=W10=" style="position: absolute;"><link type="text/css" rel="stylesheet" href="sp-photo-guide.css_7702fd0ae5916c5b3c3149d39f516ea3.css">
+
+
+
+
+<div id="mainAppCntr" data-ng-include="'views/main.html'" class="ng-scope"><div class="inner-body ng-scope" id="inner-body" data-ng-controller="MainMenuCtrl">
+<div data-ng-include="" src="'views/loader.html'" class="ng-scope"><div data-ng-hide="state.loaded &amp;&amp; !forceShowSpinner" class="ng-scope ng-hide" aria-hidden="true">
+<div id="loading"></div>
+<div class="spinner-container-box">
+<div class="spin-box ng-scope" ng-if="!offline" ui-spinner=""><div class="ac-spinner" ng-class="classes"></div></div>
+<div class="loading-message ng-binding" data-ng-bind-html="state.loadingMessage"></div>
+</div>
+</div>
+</div>
+<div id="fix-navigation" ng-if="!toolbarOverride || !toolbarOverride.hide_toolbar" class="fix-navigation ng-scope" data-ng-class="{'disable-nav': disableNav}" data-ng-include="" src="'views/top-bar.html'" data-ng-show="state.showApplicationView" aria-hidden="false"><div id="navigation-backdrop" aria-hidden="true" data-ng-click="menuButtonHandler('menuView')" class="ng-scope" role="button" tabindex="0"></div>
+<div class="inner-body ng-scope" role="navigation">
+<div data-cy="tb_menuIcon" id="accessibilityFocus" class="menu-btn nav-block" data-ng-click="menuButtonHandler('menuView')" aria-expanded="false" role="button" tabindex="0">
+<span title="Menu" aria-label="Menu" class="icon-menuIcon"></span>
+</div>
+<button id="skipNav" data-ng-click="targetMainContent()" data-ng-bind-html="i18n.ApplicationLabels.skipToMainContent" class="ng-binding">Skip to main content</button>
+<div class="nav-block top-bar-branding" data-ng-class="{'override-element-display' :toolbarOverride &amp;&amp; toolbarOverride.show_client_icon_or_name}">
+<div class="branding">
+<div title="The Great Escape, Lake George, New York" id="parkLogo" class="branding-image ng-valid" alt="The Great Escape, Lake George, New York" data-verify-image-src="coasterlogo.png_2e2504194bd3d4dd0b98df5bda1c4e1f.png" style=""><img src="coasterlogo.png_2e2504194bd3d4dd0b98df5bda1c4e1f.png" alt="The Great Escape, Lake George, New York"></div>
+<span data-ng-bind-html="state.parkName" class="branding-title ng-binding">The Great Escape, Lake George, New York</span>
+</div>
+</div>
+<div id="desktop-navigation" class="desktop-navigation nav-block ng-scope device-desktop desktop-navigation-complete" data-desktop-navigation="" data-ng-if="!toolbarOverride" role="menubar">
+<div data-cy="tb_keyword-Daily Tickets" class="top-bar-block ng-scope no-promo" data-ng-repeat="deskMenu in desktopMenuItems" ng-if="deskMenu.isactive" data-ng-class="{'active':deskMenu.selected,'no-promo':!disablePromotionalCode, 'disabled': disableNav, 'open-submenu': state.showSubMenuTopBar &amp;&amp; parentOfSubMenu.indexOf(deskMenu.label) > -1}" data-ng-click="menuParentClick($event,deskMenu)" role="menuitem" aria-haspopup="false" aria-label="Daily Tickets" tabindex="0">
+<span data-ng-bind="deskMenu.label" class="ng-binding">Daily Tickets</span>
+<span data-cy="tb_downarrow" class="icon-downarrow ng-hide" data-ng-show="deskMenu.MENUITEM" aria-label="Expand Daily Tickets" role="button" tabindex="0" data-ng-click="menuParentArrowClick($event)" aria-expanded="false" aria-hidden="true"></span>
+<ul class="sub-navigation nostyle ng-hide" data-ng-show="deskMenu.MENUITEM" role="menu" aria-hidden="true">
+
+</ul>
+</div><div data-cy="tb_keyword-Season Passes" class="top-bar-block ng-scope no-promo" data-ng-repeat="deskMenu in desktopMenuItems" ng-if="deskMenu.isactive" data-ng-class="{'active':deskMenu.selected,'no-promo':!disablePromotionalCode, 'disabled': disableNav, 'open-submenu': state.showSubMenuTopBar &amp;&amp; parentOfSubMenu.indexOf(deskMenu.label) > -1}" data-ng-click="menuParentClick($event,deskMenu)" role="menuitem" aria-haspopup="false" aria-label="Season Passes" tabindex="0">
+<span data-ng-bind="deskMenu.label" class="ng-binding">Season Passes</span>
+<span data-cy="tb_downarrow" class="icon-downarrow ng-hide" data-ng-show="deskMenu.MENUITEM" aria-label="Expand Season Passes" role="button" tabindex="0" data-ng-click="menuParentArrowClick($event)" aria-expanded="false" aria-hidden="true"></span>
+<ul class="sub-navigation nostyle ng-hide" data-ng-show="deskMenu.MENUITEM" role="menu" aria-hidden="true">
+
+</ul>
+</div><div data-cy="tb_keyword-Group Tickets" class="top-bar-block ng-scope no-promo" data-ng-repeat="deskMenu in desktopMenuItems" ng-if="deskMenu.isactive" data-ng-class="{'active':deskMenu.selected,'no-promo':!disablePromotionalCode, 'disabled': disableNav, 'open-submenu': state.showSubMenuTopBar &amp;&amp; parentOfSubMenu.indexOf(deskMenu.label) > -1}" data-ng-click="menuParentClick($event,deskMenu)" role="menuitem" aria-haspopup="false" aria-label="Group Tickets" tabindex="0">
+<span data-ng-bind="deskMenu.label" class="ng-binding">Group Tickets</span>
+<span data-cy="tb_downarrow" class="icon-downarrow ng-hide" data-ng-show="deskMenu.MENUITEM" aria-label="Expand Group Tickets" role="button" tabindex="0" data-ng-click="menuParentArrowClick($event)" aria-expanded="false" aria-hidden="true"></span>
+<ul class="sub-navigation nostyle ng-hide" data-ng-show="deskMenu.MENUITEM" role="menu" aria-hidden="true">
+
+</ul>
+</div><div data-cy="tb_keyword-All Season Dining" class="top-bar-block ng-scope no-promo" data-ng-repeat="deskMenu in desktopMenuItems" ng-if="deskMenu.isactive" data-ng-class="{'active':deskMenu.selected,'no-promo':!disablePromotionalCode, 'disabled': disableNav, 'open-submenu': state.showSubMenuTopBar &amp;&amp; parentOfSubMenu.indexOf(deskMenu.label) > -1}" data-ng-click="menuParentClick($event,deskMenu)" role="menuitem" aria-haspopup="false" aria-label="All Season Dining" tabindex="0">
+<span data-ng-bind="deskMenu.label" class="ng-binding">All Season Dining</span>
+<span data-cy="tb_downarrow" class="icon-downarrow ng-hide" data-ng-show="deskMenu.MENUITEM" aria-label="Expand All Season Dining" role="button" tabindex="0" data-ng-click="menuParentArrowClick($event)" aria-expanded="false" aria-hidden="true"></span>
+<ul class="sub-navigation nostyle ng-hide" data-ng-show="deskMenu.MENUITEM" role="menu" aria-hidden="true">
+
+</ul>
+</div>
+<promo data-cy="tb_Promo" class="top-bar-block top-bar-promo desktop-promo-button" id="topBarPromo" data-ng-class="{'disabled': disableNav}" data-ng-click="triggerPromoBox()" data-ng-show="i18n.getLocale('Menu', 'promoButton')" data-ng-hide="disablePromotionalCode" role="button" tabindex="0" aria-hidden="false">
+<span data-ng-bind-html="i18n.getLocale('Menu', 'promoButton')" class="ng-binding">Promo</span>
+</promo>
+</div>
+
+<div class="nav-block pull-right knl-cart">
+
+<span data-cy="tb_faq" data-ng-if="!toolbarOverride || (toolbarOverride &amp;&amp; !toolbarOverride.hide_faq_icon)" data-ng-class="{'cart-btn': configuredForLogin, 'help-btn': !configuredForLogin}" class="nav-block ng-scope help-btn" data-ng-click="showFAQModal()" id="navigation-faq-btn" role="button" tabindex="0">
+<span class="icon-help" aria-label="Help"></span>
+</span>
+<span data-cy="tb_cartCount" title="Cart" data-ng-if="!toolbarOverride || (toolbarOverride &amp;&amp; !toolbarOverride.hide_cart_icon)" class="cart-btn nav-block ng-scope" data-ng-class="{'help-btn': configuredForLogin}" data-ng-click="menuButtonHandler('cartView')" aria-label="0 Cart Items" role="button" tabindex="0">
+<span data-cy="tb_cart" class="icon-cart" aria-label="Cart">
+<p class="hidden ng-binding">Cart</p>
+
+</span>
+</span>
+</div>
+</div>
+</div>
+<div id="application-backdrop" aria-hidden="true" data-ng-click="menuButtonHandler('menuView')" role="button" tabindex="0"></div>
+<div ng-show="state.loaded &amp;&amp; state.showApplicationView" id="applicationWrap" data-ng-class="{'hide-visibility': forceShowSpinner}" aria-hidden="false" class="">
+<nav ng-show="state.showMainMenu" id="navigation-view" class="navigation ng-scope ng-hide" data-ng-include="" src="'views/navigation.html'" aria-hidden="true"><div class="nav-content app-content ng-scope" role="navigation">
+<div class="nav-header-content ng-scope" data-ng-if="!toolbarOverride &amp;&amp; !disablePromotionalCode">
+<form data-cy="nav_promo" name="promoForm" id="sidenav-pr" ng-submit="submitPromo()" novalidate="" role="form" class="ng-pristine ng-invalid ng-invalid-required">
+<div class="focusable-element-workaround"></div>
+<div class="promotion">
+<div class="input-wrapper"><input id="promobox-nav" clear-input-field="" type="text" title="Enter Promotional Code" promotion-box="" class="form-control change ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" placeholder="Enter Promotional Code" data-ng-model="promoCode.code" data-ng-disabled="!state.showMainMenu" required="" disabled="disabled" aria-invalid="true"><span class="icon-caution icon-medium text-handle hide"></span></div>
+</div>
+<button class="btn btn-xs" data-ng-click="submitPromo()" aria-label="Submit Promo and Close">
+<span class="icon-promobox"></span>
+</button>
+</form>
+</div>
+
+<ul class="list-group navigation-menu nostyle ng-scope" data-ng-if="!toolbarOverride" role="menu">
+<li data-ng-class="{'active': menuItem.selected, 'active-parent': menuItem.parentActive}" data-ng-show="menuItem.isactive" data-ng-repeat="menuItem in menuItems" class="list-group-item ng-scope" role="menuitem" data-cy="sbn_keyword-Daily Tickets" aria-hidden="false">
+<div class="menu-item" data-custom-icon="" data-ng-click="onMenuItemClick($event, this)" role="button" tabindex="0">
+<div class="icon-tickets icon-wizard"></div>
+<div class="package-name truncate ng-binding" data-ng-bind="menuItem.label" role="button">Daily Tickets</div>
+<span data-cy="nav_arrowDown-Daily Tickets" data-ng-click="onArrowClick($event, this); $event.stopPropagation();" class="icon-rightarrow pull-right ng-hide" data-ng-show="menuItem.MENUITEM" aria-label="Expand Daily Tickets" aria-expanded="false" role="button" tabindex="0" aria-hidden="true"></span>
+</div>
+
+<ul data-ng-show="menuItem.MENUITEM.length > 0" class="list-group navigation-menu nostyle sub-menu ng-hide" role="menu" aria-hidden="true">
+
+</ul>
+
+</li><li data-ng-class="{'active': menuItem.selected, 'active-parent': menuItem.parentActive}" data-ng-show="menuItem.isactive" data-ng-repeat="menuItem in menuItems" class="list-group-item ng-scope" role="menuitem" data-cy="sbn_keyword-Season Passes" aria-hidden="false">
+<div class="menu-item" data-custom-icon="" data-ng-click="onMenuItemClick($event, this)" role="button" tabindex="0">
+<div class="icon-tickets icon-2023seasonpasses"></div>
+<div class="package-name truncate ng-binding" data-ng-bind="menuItem.label" role="button">Season Passes</div>
+<span data-cy="nav_arrowDown-Season Passes" data-ng-click="onArrowClick($event, this); $event.stopPropagation();" class="icon-rightarrow pull-right ng-hide" data-ng-show="menuItem.MENUITEM" aria-label="Expand Season Passes" aria-expanded="false" role="button" tabindex="0" aria-hidden="true"></span>
+</div>
+
+<ul data-ng-show="menuItem.MENUITEM.length > 0" class="list-group navigation-menu nostyle sub-menu ng-hide" role="menu" aria-hidden="true">
+
+</ul>
+
+</li><li data-ng-class="{'active': menuItem.selected, 'active-parent': menuItem.parentActive}" data-ng-show="menuItem.isactive" data-ng-repeat="menuItem in menuItems" class="list-group-item ng-scope" role="menuitem" data-cy="sbn_keyword-Group Tickets" aria-hidden="false">
+<div class="menu-item" data-custom-icon="" data-ng-click="onMenuItemClick($event, this)" role="button" tabindex="0">
+<div class="icon-tickets icon-wizardgroup"></div>
+<div class="package-name truncate ng-binding" data-ng-bind="menuItem.label" role="button">Group Tickets</div>
+<span data-cy="nav_arrowDown-Group Tickets" data-ng-click="onArrowClick($event, this); $event.stopPropagation();" class="icon-rightarrow pull-right ng-hide" data-ng-show="menuItem.MENUITEM" aria-label="Expand Group Tickets" aria-expanded="false" role="button" tabindex="0" aria-hidden="true"></span>
+</div>
+
+<ul data-ng-show="menuItem.MENUITEM.length > 0" class="list-group navigation-menu nostyle sub-menu ng-hide" role="menu" aria-hidden="true">
+
+</ul>
+
+</li><li data-ng-class="{'active': menuItem.selected, 'active-parent': menuItem.parentActive}" data-ng-show="menuItem.isactive" data-ng-repeat="menuItem in menuItems" class="list-group-item ng-scope" role="menuitem" data-cy="sbn_keyword-All Season Dining" aria-hidden="false">
+<div class="menu-item" data-custom-icon="" data-ng-click="onMenuItemClick($event, this)" role="button" tabindex="0">
+<div class="icon-tickets icon-23asdp"></div>
+<div class="package-name truncate ng-binding" data-ng-bind="menuItem.label" role="button">All Season Dining</div>
+<span data-cy="nav_arrowDown-All Season Dining" data-ng-click="onArrowClick($event, this); $event.stopPropagation();" class="icon-rightarrow pull-right ng-hide" data-ng-show="menuItem.MENUITEM" aria-label="Expand All Season Dining" aria-expanded="false" role="button" tabindex="0" aria-hidden="true"></span>
+</div>
+
+<ul data-ng-show="menuItem.MENUITEM.length > 0" class="list-group navigation-menu nostyle sub-menu ng-hide" role="menu" aria-hidden="true">
+
+</ul>
+
+</li>
+<li class="list-group-item ng-hide" data-ng-click="showCartRecoveryModal()" data-ng-show="cartAbandonment" role="button" tabindex="0" aria-hidden="true">
+<div class="menu-item">
+<div class="icon-cart" aria-label="Cart"></div>
+<div class="package-name ng-binding" data-ng-bind-html="i18n.Menu.cartRecovery" role="button"></div>
+<div></div>
+</div>
+</li>
+<li class="list-group-item ng-hide" data-ng-click="routeToProfile()" data-ng-show="configuredForLogin" role="button" tabindex="0" aria-hidden="true">
+<div class="menu-item">
+<div class="icon-user-login" aria-label=""></div>
+<div class="package-name ng-binding ng-scope" data-ng-if="!isLoggedIn()" data-ng-bind-html="i18n.getLocale('ProfileLogin', 'signInBtn')" role="button"></div>
+
+<div></div>
+</div>
+</li>
+<li ng-if="!myOrdersLink" class="list-group-item ng-scope" data-ng-click="routeTo('orderLookup', true, 'reset')" role="button" tabindex="0">
+<div class="menu-item">
+<div data-cy="nav_orderLookup" class="icon-orderlookup" aria-label="Search"></div>
+<div class="package-name ng-binding" data-ng-bind-html="i18n.Menu.orderLookup" role="button">Order Lookup</div>
+<div></div>
+</div>
+</li>
+
+<li class="list-group-item last-list-group-item" data-ng-click="showFAQModal()" data-ng-class="{'last-list-group-item': !showSecurityProvider &amp;&amp; !appStoreURL}" role="button" tabindex="0">
+<div class="menu-item">
+<div class="icon-faq" aria-label=""></div>
+<div class="package-name truncate ng-binding" data-ng-bind-html="i18n.Menu.help" role="button">FAQs</div>
+<div></div>
+</div>
+</li>
+<li class="list-group-item ng-hide last-list-group-item" data-ng-show="appStoreURL" data-ng-click="openAppStore()" data-ng-class="{'last-list-group-item': !showSecurityProvider}" role="button" tabindex="0" aria-hidden="true">
+<div class="menu-item">
+<div class="icon-faq" aria-label=""></div>
+<div class="package-name truncate ng-binding" data-ng-bind-html="i18n.ButtonLabels.appStoreLink">Visit App Store</div>
+<div></div>
+</div>
+</li>
+
+</ul>
+<div data-ng-show="false" aria-hidden="true" class="ng-hide">
+<div class="app-header navigation-list-header">
+<span class="header-desc ng-binding" data-ng-bind-html="i18n.Menu.languageHeading">Languages</span>
+</div>
+<ul class="list-group navigation-menu nostyle">
+<li class="list-group-item no-icon ng-scope" data-ng-repeat="language in languages" data-ng-class="{'last-list-group-item': $index == ( languages.length - 1)}" data-ng-click="routeTo('reset/true/de',true)" role="button" tabindex="0">
+<div class="menu-item">
+<div class="package-name truncate ng-binding" data-ng-bind="language.value">Deutsch</div>
+</div>
+</li><li class="list-group-item no-icon ng-scope" data-ng-repeat="language in languages" data-ng-class="{'last-list-group-item': $index == ( languages.length - 1)}" data-ng-click="routeTo('reset/true/en',true)" role="button" tabindex="0">
+<div class="menu-item">
+<div class="package-name truncate ng-binding" data-ng-bind="language.value">English</div>
+</div>
+</li><li class="list-group-item no-icon ng-scope" data-ng-repeat="language in languages" data-ng-class="{'last-list-group-item': $index == ( languages.length - 1)}" data-ng-click="routeTo('reset/true/fr',true)" role="button" tabindex="0">
+<div class="menu-item">
+<div class="package-name truncate ng-binding" data-ng-bind="language.value">Français</div>
+</div>
+</li><li class="list-group-item no-icon ng-scope last-list-group-item" data-ng-repeat="language in languages" data-ng-class="{'last-list-group-item': $index == ( languages.length - 1)}" data-ng-click="routeTo('reset/true/nl',true)" role="button" tabindex="0">
+<div class="menu-item">
+<div class="package-name truncate ng-binding" data-ng-bind="language.value">Nederlands</div>
+</div>
+</li>
+</ul>
+</div>
+<div data-ng-show="menuLinks.length >= 1" aria-hidden="false">
+<div class="app-header navigation-list-header">
+<span class="header-desc ng-binding" data-ng-bind-html="i18n.Menu.linkHeading">Links</span>
+</div>
+<ul class="list-group navigation-menu nostyle" role="menu">
+<li class="list-group-item last-list-group-item ng-scope" role="menuitem" data-ng-repeat="menuLink in menuLinks" data-ng-class="{'last-list-group-item': $index == ( menuLinks.length - 1)}" data-ng-click="routeURL(menuLink)" tabindex="0">
+<div class="menu-item">
+<div class="icon-linkIcon"></div>
+<div class="package-name truncate socialMenuLinks ng-binding" data-ng-bind="menuLink.label" role="button">Website</div>
+</div>
+</li><li class="list-group-item last-list-group-item ng-scope" role="menuitem" data-ng-repeat="menuLink in menuLinks" data-ng-class="{'last-list-group-item': $index == ( menuLinks.length - 1)}" data-ng-click="routeURL(menuLink)" tabindex="0">
+<div class="menu-item">
+<div class="icon-facebook"></div>
+<div class="package-name truncate socialMenuLinks ng-binding" data-ng-bind="menuLink.label" role="button">Facebook</div>
+</div>
+</li><li class="list-group-item last-list-group-item ng-scope" role="menuitem" data-ng-repeat="menuLink in menuLinks" data-ng-class="{'last-list-group-item': $index == ( menuLinks.length - 1)}" data-ng-click="routeURL(menuLink)" tabindex="0">
+<div class="menu-item">
+<div class="icon-twitter"></div>
+<div class="package-name truncate socialMenuLinks ng-binding" data-ng-bind="menuLink.label" role="button">Twitter</div>
+</div>
+</li><li class="list-group-item last-list-group-item ng-scope" role="menuitem" data-ng-repeat="menuLink in menuLinks" data-ng-class="{'last-list-group-item': $index == ( menuLinks.length - 1)}" data-ng-click="routeURL(menuLink)" tabindex="0">
+<div class="menu-item">
+<div class="icon-instagram"></div>
+<div class="package-name truncate socialMenuLinks ng-binding" data-ng-bind="menuLink.label" role="button">Instagram</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="footer" data-footer="">
+<i data-ng-hide="replaceLogo" class="icon-passport" aria-label="Accesso Passport Icon" aria-hidden="false"></i>
+<img alt="Alternate Navigation Logo" title="Alternate Navigation Logo" data-ng-show="replaceLogo" class="grayscale ng-hide" data-ng-src="false" src="https://sf-lg.store.sixflags.com/false" aria-hidden="true">
+<div class="copy">
+<div data-ng-bind-html="copyrightInfo" class="ng-binding">© 2023 accesso Technology Group, plc</div>
+<a class="text-underline ng-binding" data-ng-href="https://www.sixflags.com/national/privacy-policy" target="_blank" data-ng-bind-html="i18n.ApplicationLabels.privacyStatement" href="link://https://www.sixflags.com/national/privacy-policy">Privacy Statement</a>
+</div>
+<span data-ng-show="appVersion" class="select-enabled ng-binding" aria-hidden="false">Build: 5.140.0-a</span><br>
+<span data-ng-show="sessionID" class="select-enabled ng-binding ng-hide" aria-hidden="true">
+Session ID: 
+</span>
+</div>
+</div>
+</nav>
+<div id="application-view" class="no-focus-style focus--mouse" tabindex="-1" aria-live="polite">
+<div class="app-content ng-scope" data-ui-view="" role="main" ng-class="{'no-top-nav': toolbarOverride &amp;&amp; toolbarOverride.hide_toolbar }"><div ui-view="" class="ng-scope"> <ng-form name="seasonPassSelectForm" novalidate="" data-ng-class="{submitted: submitted}" class="ng-pristine ng-scope ng-valid-sensitive ng-invalid ng-invalid-required ng-valid-maxlength ng-invalid-pattern">
+	<div class="sp-addl-exflow-container ng-scope" data-ng-if="inPassFlow()">
+		<div class="desktop-container allow-overflow">
+			
+			<div class="row"></div>
+			
+			<div class="row view-heading">
+				<div class="col-xs-12 no-padding">
+					
+					
+					<div class="panel panel-default panel-flush ng-scope" ng-if="!labels.instruction">
+						<div class="panel-body expand">
+							<span data-ng-bind-html="packageHeader" class="ng-binding">2023 Diamond Pass</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row no-margin-bottom-desktop">
+				<div id="sp-left-container" class="col-sm-3 no-padding only-tablet-landscape">
+					<div data-ng-repeat="pass in passCollection" class="panel panel-default ticket-name-entries season-pass-panels ng-scope active" data-ng-class="{'active':pass.active,'valid':pass.isValid()}">
+						<div class="panel-heading large" tabindex="-1" data-ng-click="toggleForm( $index )" role="button">
+							<div data-cy="sps_icon-0" class="panel-icon icon-notice-stroke caution-yellow" data-ng-class="{true:'icon-checkmark',false:'icon-notice-stroke caution-yellow'}[pass.isValid()]"></div>
+							<div class="panel-description">
+								<div class="limit ng-binding" data-ng-hide="pass.ph_first_name.length > 0 || pass.ph_last_name.length > 0" data-ng-bind-html="i18n.getLocale(localeSection,'guestName')" aria-hidden="false">Guest Name</div>
+								<div data-ng-show="pass.ph_first_name.length > 0 || pass.ph_last_name.length > 0" class="truncate ng-hide" aria-hidden="true">
+									<span data-cy="sps_guestFN-0" class="limit ng-binding" data-ng-bind="pass.ph_first_name | maxChar"></span>&nbsp;<span data-cy="sps_guestLN-0" class="limit ng-binding" data-ng-bind="pass.ph_last_name | maxChar"></span>
+								</div>
+								<div data-cy="sps_guestPN-0" class="plus2 ng-binding" data-ng-bind-html="pass.package_info.package_name">2023 Diamond Pass</div>
+								<div data-cy="sps_guestCT-0" class="plus2 ng-binding" data-ng-show="pass.registration_info.selected_customer_type" data-ng-bind-html="pass.registration_info.selected_customer_type.name" aria-hidden="false">Season Pass</div>
+							</div>
+							<div data-cy="sps_deleteIcon-0" class="panel-icon icon-error subtle bolder" data-ng-click="delete($index);$event.stopPropagation();" data-ng-hide="isEditing" aria-label="" role="button" tabindex="0" aria-hidden="false"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-9 no-padding template-container">
+					<ui-view class="ng-scope"><div id="pass-type-selection-container" data-ng-form="" name="seasonPassV3DemoForm" class="panel no-margin-bottom panel-default ticket-name-entries panel-forms active ng-pristine ng-scope ng-valid-sensitive ng-invalid ng-invalid-required ng-valid-maxlength ng-invalid-pattern" data-sp-height="" style="min-height: 62px;">
+<div class="panel-heading large hide-table-landscape">
+<div class="limit panel-icon icon-notice" data-ng-class="{true:'icon-checkmark',false:'icon-notice'}[activePass.valid]"></div>
+<div class="panel-description">
+<div class="truncate">
+<span class="limit ng-binding" data-ng-bind="activePass.ph_first_name | maxChar"></span>&nbsp;<span class="limit ng-binding" data-ng-bind="activePass.ph_last_name | maxChar"></span>
+</div>
+<div class="truncate customer-type-display ng-scope" ng-if="!labels.pillLabel &amp;&amp; activePass.registration_info.selected_customer_type">
+<span data-ng-bind-html="activePass.registration_info.selected_customer_type.name" class="ng-binding">Season Pass</span>
+</div>
+<div ng-if="!labels.pillLabel" class="ng-scope">
+<dynamic-locale search-string="@@current" exclude-after="@@total" locale-target="passIndexInfo" locale-section="SeasonPassSelect" suffix="" class="ng-isolate-scope"><span data-ng-show="firstPart &amp;&amp; !hideFirstPart" data-ng-bind-html="firstPart" class="ng-binding" aria-hidden="false">Pass </span><span data-ng-hide="hideTranscludeData" class="" ng-transclude="" aria-hidden="false">1</span><span data-ng-show="secondPart &amp;&amp; !hideSecondPart" data-ng-bind-html="secondPart" class="ng-binding" aria-hidden="false"> of </span></dynamic-locale>
+<dynamic-locale search-string="@@total" hide-first-part="true" locale-target="passIndexInfo" locale-section="SeasonPassSelect" suffix="" class="ng-isolate-scope"><span data-ng-show="firstPart &amp;&amp; !hideFirstPart" data-ng-bind-html="firstPart" class="ng-binding ng-hide" aria-hidden="true">Pass @@current of </span><span data-ng-hide="hideTranscludeData" class="" ng-transclude="" aria-hidden="false">1</span><span data-ng-show="secondPart &amp;&amp; !hideSecondPart" data-ng-bind-html="secondPart" class="ng-binding ng-hide" aria-hidden="true"></span></dynamic-locale>
+</div>
+
+</div>
+</div>
+
+<div class="panel-body expand">
+
+<div class="row no-margin">
+<div class="col-xs-12 no-padding" data-ng-class="{'col-sm-8': includesImageCapture || activePass.includeConfigurableFields}">
+
+
+<div class="row sp-margin-adjust">
+
+<div class="col-xs-12 no-padding tablet-form-padding col-sm-8" data-ng-class="{'col-sm-8': !includesImageCapture &amp;&amp; !activePass.includeConfigurableFields, 'col-sm-6': includesImageCapture || activePass.includeConfigurableFields}">
+
+
+
+<div class="col-xs-12 form-section-label ng-binding ng-scope" data-ng-if="i18n.getLocaleWithSuffixAndFallback('FormLabels','personalInfoSection', suffix)" data-ng-bind-html="i18n.getLocaleWithSuffixAndFallback('FormLabels','personalInfoSection', suffix)">Personal Information</div>
+<div class="row no-margin">
+<div data-ng-class="{'col-sm-6 no-padding': !includesImageCapture &amp;&amp; !activePass.includeConfigurableFields}" class="col-sm-6 no-padding">
+
+
+
+
+
+
+
+
+<div data-cy="pd_firstName" class="col-xs-12 no-padding ng-scope tablet-form-padding" data-ng-class="{'tablet-form-padding': !includesImageCapture &amp;&amp; !activePass.includeConfigurableFields}" data-ng-if="!isRemovedField('firstName')">
+<div class="form-group abs-validation">
+<label for="firstName" data-ng-bind-html="i18n.FormLabels.firstName" data-ng-show="activePass.ph_first_name" class="ng-binding ng-hide" aria-hidden="true">First Name</label>
+<div class="input-wrapper"><input id="firstName" clear-input-field="" class="form-control ng-pristine ng-untouched ng-isolate-scope ng-valid-sensitive ng-empty ng-invalid ng-invalid-required ng-valid-maxlength focus ng-invalid-pattern" type="text" name="firstName" data-ng-model="activePass.ph_first_name" maxlength="32" form-validation="" validation-type="name" data-ng-disabled="fieldLocked('first_name', activePass.ph_first_name)" data-ng-class="{'focus':seasonPassV3DemoForm.firstName.$error.required, 'submitted':submitted}" placeholder="First Name" data-ng-required="!isOptionalField('firstName')" autocomplete="given-name" required="required" aria-invalid="true" data-pw-testid-buckeye="64e3be93-1f9e-46dc-9f0c-3800f211b510"><span class="icon-caution icon-medium text-handle hide"></span></div>
+
+</div>
+</div>
+
+<div data-cy="pd_lastName" class="col-xs-12 no-padding ng-scope tablet-form-padding" data-ng-class="{'tablet-form-padding': !includesImageCapture &amp;&amp; !activePass.includeConfigurableFields}" data-ng-if="!isRemovedField('lastName')">
+<div class="form-group abs-validation">
+<label for="lastName" data-ng-bind-html="i18n.FormLabels.lastName" data-ng-show="activePass.ph_last_name" class="ng-binding ng-hide" aria-hidden="true">Last Name</label>
+<div class="input-wrapper"><input id="lastName" clear-input-field="" class="form-control ng-pristine ng-untouched ng-isolate-scope ng-valid-sensitive ng-empty ng-invalid ng-invalid-required ng-valid-maxlength focus ng-invalid-pattern" type="text" name="lastName" data-ng-model="activePass.ph_last_name" maxlength="32" form-validation="" validation-type="name" data-ng-disabled="fieldLocked('last_name', activePass.ph_last_name)" data-ng-class="{'focus':seasonPassV3DemoForm.lastName.$error.required, 'submitted':submitted}" placeholder="Last Name" data-ng-required="!isOptionalField('lastName')" autocomplete="family-name" required="required" aria-invalid="true"><span class="icon-caution icon-medium text-handle hide"></span></div>
+
+</div>
+</div>
+
+
+
+
+
+<div class="col-xs-12 no-padding ng-scope tablet-form-padding" data-ng-class="{'tablet-form-padding': !includesImageCapture &amp;&amp; !activePass.includeConfigurableFields}" data-ng-if="showAgeField &amp;&amp; !useProfilesOnSeasonPass">
+<div class="form-group abs-validation">
+<label for="age" data-ng-bind-html="i18n.FormLabels.age" data-ng-show="activePass.ph_age" class="ng-binding ng-hide" aria-hidden="true">Age</label>
+<div class="input-wrapper"><input id="age" clear-input-field="" class="form-control ng-pristine ng-untouched ng-isolate-scope ng-valid-pattern ng-valid-sensitive ng-empty ng-invalid ng-invalid-required ng-valid-maxlength focus" type="text" name="age" data-ng-model="activePass.ph_age" maxlength="2" ng-disabled="fieldLocked('age', activePass.ph_age)" form-validation="" validation-type="positivenumbers" data-ng-class="{'focus':seasonPassV3DemoForm.age.$error.required, 'submitted':submitted}" placeholder="Age" data-ng-required="::!isOptionalField('age')" required="required" aria-invalid="true"><span class="icon-caution icon-medium text-handle hide"></span></div>
+
+</div>
+</div>
+</div>
+<div data-ng-class="{'col-sm-6 no-padding': !includesImageCapture &amp;&amp; !activePass.includeConfigurableFields}" class="col-sm-6 no-padding">
+
+
+
+<div data-cy="pd_email" class="col-xs-12 no-padding ng-scope" data-ng-if="! useProfilesOnSeasonPass &amp;&amp; !isRemovedField('email')">
+<email email-type="'text'" email="activePass.ph_email" options="emailOptions" form="seasonPassV3DemoForm" submitted="submitted" trigger-email-verification="copyEmail" is-required="!shouldDisableEmailGivenDate() &amp;&amp; !isOptionalField('email')" is-disabled="shouldDisableEmailGivenDate() || fieldLocked('email', activePass.ph_email)" class="ng-isolate-scope"><div data-cy="pd_email" class="form-group abs-validation smart-label email">
+<label for="email" ng-bind-html="::vm.options.label" ng-show="vm.email" class="ng-binding ng-hide" aria-hidden="true">Email Address</label>
+
+<div class="input-wrapper"><input id="email" class="form-control email--input ng-pristine ng-untouched ng-isolate-scope ng-valid-sensitive ng-empty ng-invalid ng-invalid-required ng-valid-maxlength ng-invalid-pattern" clear-input-field="" type="text" name="email" ng-model="vm.email" ng-change="vm.onChange()" ng-blur="vm.onBlur()" form-validation="" validation-type="email" placeholder="Email Address" ng-class="{'submitted':vm.form.submitted || vm.submitted, 'emailVerified': vm.options.enableEmailVerification &amp;&amp; vm.emailVerified, 'emailVerifying': vm.options.enableEmailVerification &amp;&amp; vm.emailVerifying}" autocapitalize="off" maxlength="50" aria-describedby="email-error" ng-required="vm.isRequired" ng-disabled="vm.isDisabled" required="required" aria-invalid="true"><span class="icon-caution icon-medium text-handle hide"></span></div>
+
+
+</div>
+</email>
+
+</div>
+
+
+
+
+
+
+</div>
+</div>
+<div class="col-xs-12">
+
+
+</div>
+</div>
+
+<div class="col-xs-12 no-padding ng-scope col-sm-4" data-ng-class="{'col-sm-6': includesImageCapture || activePass.includeConfigurableFields, 'col-sm-4': !includesImageCapture &amp;&amp; !activePass.includeConfigurableFields}" data-ng-if="!isRemovedField('addressFields')">
+
+<div class="col-xs-12 form-section-label ng-binding ng-scope" data-ng-if="i18n.getLocale('FormLabels','addressSection')" data-ng-bind-html="i18n.getLocale('FormLabels','addressSection')">Address</div>
+<div class="">
+
+
+
+<div data-cy="pd_country" class="col-xs-12 no-padding ng-hide" data-ng-show="!isRemovedField('country')" aria-hidden="true">
+<div class="form-group bottom-padding">
+<div class="dropdown-item">
+<select class="form-control expand ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-required" name="country" title="Country" ng-disabled="fieldLocked('country', activePass.ph_country_code)" data-ng-change="handleCountryChanged(activePass.ph_country_code)" data-ng-model="activePass.ph_country_code" data-ng-options="country.code as country.name for country in countries" data-ng-class="{'focus':seasonPassV3DemoForm.country.$error.required,'submitted':submitted,'error':submitted &amp;&amp; seasonPassV3DemoForm.country.$invalid}" data-ng-required="!isOptionalField('country')" aria-invalid="false"><option value="" data-ng-bind-html="i18n.FormLabels.country" class="ng-binding">Country</option><option label="United States" value="string:US" selected="selected">United States</option><option label="Afghanistan" value="string:AF">Afghanistan</option><option label="Albania" value="string:AL">Albania</option><option label="Algeria" value="string:DZ">Algeria</option><option label="Andorra" value="string:AD">Andorra</option><option label="Angola" value="string:AO">Angola</option><option label="Anguilla" value="string:AI">Anguilla</option><option label="Antigua and Barbuda" value="string:AG">Antigua and Barbuda</option><option label="Argentina" value="string:AR">Argentina</option><option label="Armenia" value="string:AM">Armenia</option><option label="Aruba" value="string:AW">Aruba</option><option label="Australia" value="string:AU">Australia</option><option label="Austria" value="string:AT">Austria</option><option label="Azerbaijan" value="string:AZ">Azerbaijan</option><option label="Bahamas" value="string:BS">Bahamas</option><option label="Bahrain" value="string:BH">Bahrain</option><option label="Bangladesh" value="string:BD">Bangladesh</option><option label="Barbados" value="string:BB">Barbados</option><option label="Belarus" value="string:BY">Belarus</option><option label="Belgium" value="string:BE">Belgium</option><option label="Belize" value="string:BZ">Belize</option><option label="Benin" value="string:BJ">Benin</option><option label="Bermuda" value="string:BM">Bermuda</option><option label="Bhutan" value="string:BT">Bhutan</option><option label="Bolivia" value="string:BO">Bolivia</option><option label="Bonaire, Sint Eustatius, and Saba" value="string:BQ">Bonaire, Sint Eustatius, and Saba</option><option label="Bosnia and Herzegovina" value="string:BA">Bosnia and Herzegovina</option><option label="Botswana" value="string:BW">Botswana</option><option label="Bouvet Island" value="string:BV">Bouvet Island</option><option label="Brazil" value="string:BR">Brazil</option><option label="British Indian Ocean Territory" value="string:IO">British Indian Ocean Territory</option><option label="British Virgin Islands" value="string:VG">British Virgin Islands</option><option label="Brunei" value="string:BN">Brunei</option><option label="Bulgaria" value="string:BG">Bulgaria</option><option label="Burkina Faso" value="string:BF">Burkina Faso</option><option label="Burundi" value="string:BI">Burundi</option><option label="Cambodia" value="string:KH">Cambodia</option><option label="Cameroon" value="string:CM">Cameroon</option><option label="Canada" value="string:CA">Canada</option><option label="Cape Verde" value="string:CV">Cape Verde</option><option label="Cayman Islands" value="string:KY">Cayman Islands</option><option label="Central African Republic" value="string:CF">Central African Republic</option><option label="Chad" value="string:TD">Chad</option><option label="Chile" value="string:CL">Chile</option><option label="China" value="string:CN">China</option><option label="Christmas Island" value="string:CX">Christmas Island</option><option label="Cocos (Keeling) Islands" value="string:CC">Cocos (Keeling) Islands</option><option label="Colombia" value="string:CO">Colombia</option><option label="Comoros" value="string:KM">Comoros</option><option label="Congo, Democratic Republic of the" value="string:CD">Congo, Democratic Republic of the</option><option label="Congo, Republic of the" value="string:CG">Congo, Republic of the</option><option label="Cook Islands" value="string:CK">Cook Islands</option><option label="Costa Rica" value="string:CR">Costa Rica</option><option label="Cote d'Ivoire (Ivory Coast)" value="string:CI">Cote d'Ivoire (Ivory Coast)</option><option label="Croatia" value="string:HR">Croatia</option><option label="Cuba" value="string:CU">Cuba</option><option label="Cyprus" value="string:CY">Cyprus</option><option label="Czech Republic" value="string:CZ">Czech Republic</option><option label="Denmark" value="string:DK">Denmark</option><option label="Djibouti" value="string:DJ">Djibouti</option><option label="Dominica" value="string:DM">Dominica</option><option label="Dominican Republic" value="string:DO">Dominican Republic</option><option label="Ecuador" value="string:EC">Ecuador</option><option label="Egypt" value="string:EG">Egypt</option><option label="El Salvador" value="string:SV">El Salvador</option><option label="Equatorial Guinea" value="string:GQ">Equatorial Guinea</option><option label="Eritrea" value="string:ER">Eritrea</option><option label="Estonia" value="string:EE">Estonia</option><option label="Ethiopia" value="string:ET">Ethiopia</option><option label="Falkland Islands" value="string:FK">Falkland Islands</option><option label="Faroe Islands" value="string:FO">Faroe Islands</option><option label="Federated States of Micronesia" value="string:FM">Federated States of Micronesia</option><option label="Fiji" value="string:FJ">Fiji</option><option label="Finland" value="string:FI">Finland</option><option label="France" value="string:FR">France</option><option label="French Guiana" value="string:GF">French Guiana</option><option label="French Polynesia" value="string:PF">French Polynesia</option><option label="French Southern Territories" value="string:TF">French Southern Territories</option><option label="Gabon" value="string:GA">Gabon</option><option label="Gambia" value="string:GM">Gambia</option><option label="Georgia" value="string:GE">Georgia</option><option label="Germany" value="string:DE">Germany</option><option label="Ghana" value="string:GH">Ghana</option><option label="Gibraltar" value="string:GI">Gibraltar</option><option label="Greece" value="string:GR">Greece</option><option label="Greenland" value="string:GL">Greenland</option><option label="Grenada" value="string:GD">Grenada</option><option label="Guadeloupe" value="string:GP">Guadeloupe</option><option label="Guatemala" value="string:GT">Guatemala</option><option label="Guinea" value="string:GN">Guinea</option><option label="Guinea-Bissau" value="string:GW">Guinea-Bissau</option><option label="Guyana" value="string:GY">Guyana</option><option label="Haiti" value="string:HT">Haiti</option><option label="Heard Island and McDonald Islands" value="string:HM">Heard Island and McDonald Islands</option><option label="Honduras" value="string:HN">Honduras</option><option label="Hong Kong SAR" value="string:HK">Hong Kong SAR</option><option label="Hungary" value="string:HU">Hungary</option><option label="Iceland" value="string:IS">Iceland</option><option label="India" value="string:IN">India</option><option label="Indonesia" value="string:ID">Indonesia</option><option label="Iran" value="string:IR">Iran</option><option label="Iraq" value="string:IQ">Iraq</option><option label="Ireland" value="string:IE">Ireland</option><option label="Israel" value="string:IL">Israel</option><option label="Italy" value="string:IT">Italy</option><option label="Jamaica" value="string:JM">Jamaica</option><option label="Japan" value="string:JP">Japan</option><option label="Jordan" value="string:JO">Jordan</option><option label="Kazakhstan" value="string:KZ">Kazakhstan</option><option label="Kenya" value="string:KE">Kenya</option><option label="Kiribati" value="string:KI">Kiribati</option><option label="Kuwait" value="string:KW">Kuwait</option><option label="Kyrgyzstan" value="string:KG">Kyrgyzstan</option><option label="Laos" value="string:LA">Laos</option><option label="Latvia" value="string:LV">Latvia</option><option label="Lebanon" value="string:LB">Lebanon</option><option label="Lesotho" value="string:LS">Lesotho</option><option label="Liberia" value="string:LR">Liberia</option><option label="Libya" value="string:LY">Libya</option><option label="Liechtenstein" value="string:LI">Liechtenstein</option><option label="Lithuania" value="string:LT">Lithuania</option><option label="Luxembourg" value="string:LU">Luxembourg</option><option label="Macau SAR China" value="string:MO">Macau SAR China</option><option label="Macedonia" value="string:MK">Macedonia</option><option label="Madagascar" value="string:MG">Madagascar</option><option label="Malawi" value="string:MW">Malawi</option><option label="Malaysia" value="string:MY">Malaysia</option><option label="Maldives" value="string:MV">Maldives</option><option label="Mali" value="string:ML">Mali</option><option label="Malta" value="string:MT">Malta</option><option label="Marshall Islands" value="string:MH">Marshall Islands</option><option label="Martinique" value="string:MQ">Martinique</option><option label="Mauritania" value="string:MR">Mauritania</option><option label="Mauritius" value="string:MU">Mauritius</option><option label="Mayotte" value="string:YT">Mayotte</option><option label="Mexico" value="string:MX">Mexico</option><option label="Moldova" value="string:MD">Moldova</option><option label="Monaco" value="string:MC">Monaco</option><option label="Mongolia" value="string:MN">Mongolia</option><option label="Montenegro" value="string:ME">Montenegro</option><option label="Montserrat" value="string:MS">Montserrat</option><option label="Morocco" value="string:MA">Morocco</option><option label="Mozambique" value="string:MZ">Mozambique</option><option label="Myanmar (Burma)" value="string:MM">Myanmar (Burma)</option><option label="Namibia" value="string:NA">Namibia</option><option label="Nauru" value="string:NR">Nauru</option><option label="Nepal" value="string:NP">Nepal</option><option label="Netherlands" value="string:NL">Netherlands</option><option label="Netherlands Antilles" value="string:AN">Netherlands Antilles</option><option label="New Caledonia" value="string:NC">New Caledonia</option><option label="New Zealand" value="string:NZ">New Zealand</option><option label="Nicaragua" value="string:NI">Nicaragua</option><option label="Niger" value="string:NE">Niger</option><option label="Nigeria" value="string:NG">Nigeria</option><option label="Niue" value="string:NU">Niue</option><option label="Norfolk Island" value="string:NF">Norfolk Island</option><option label="North Korea" value="string:KP">North Korea</option><option label="Northern Mariana Islands" value="string:MP">Northern Mariana Islands</option><option label="Norway" value="string:NO">Norway</option><option label="Oman" value="string:OM">Oman</option><option label="Pakistan" value="string:PK">Pakistan</option><option label="Palau" value="string:PW">Palau</option><option label="Panama" value="string:PA">Panama</option><option label="Papua New Guinea" value="string:PG">Papua New Guinea</option><option label="Paraguay" value="string:PY">Paraguay</option><option label="Peru" value="string:PE">Peru</option><option label="Philippines" value="string:PH">Philippines</option><option label="Pitcairn Islands" value="string:PN">Pitcairn Islands</option><option label="Poland" value="string:PL">Poland</option><option label="Portugal" value="string:PT">Portugal</option><option label="Qatar" value="string:QA">Qatar</option><option label="Reunion" value="string:RE">Reunion</option><option label="Romania" value="string:RO">Romania</option><option label="Russia" value="string:RU">Russia</option><option label="Rwanda" value="string:RW">Rwanda</option><option label="Saint Helena" value="string:SH">Saint Helena</option><option label="Saint Kitts and Nevis" value="string:KN">Saint Kitts and Nevis</option><option label="Saint Lucia" value="string:LC">Saint Lucia</option><option label="Saint Pierre and Miquelon" value="string:PM">Saint Pierre and Miquelon</option><option label="Saint Vincent and the Grenadines" value="string:VC">Saint Vincent and the Grenadines</option><option label="Samoa" value="string:WS">Samoa</option><option label="San Marino" value="string:SM">San Marino</option><option label="Sao Tome and Principe" value="string:ST">Sao Tome and Principe</option><option label="Saudi Arabia" value="string:SA">Saudi Arabia</option><option label="Senegal" value="string:SN">Senegal</option><option label="Serbia" value="string:RS">Serbia</option><option label="Seychelles" value="string:SC">Seychelles</option><option label="Sierra Leone" value="string:SL">Sierra Leone</option><option label="Singapore" value="string:SG">Singapore</option><option label="Slovakia" value="string:SK">Slovakia</option><option label="Slovenia" value="string:SI">Slovenia</option><option label="Solomon Islands" value="string:SB">Solomon Islands</option><option label="Somalia" value="string:SO">Somalia</option><option label="South Africa" value="string:ZA">South Africa</option><option label="South Georgia and the South Sandwich Islands" value="string:GS">South Georgia and the South Sandwich Islands</option><option label="South Korea" value="string:KR">South Korea</option><option label="Spain" value="string:ES">Spain</option><option label="Sri Lanka" value="string:LK">Sri Lanka</option><option label="Sudan" value="string:SD">Sudan</option><option label="Suriname" value="string:SR">Suriname</option><option label="Svalbard and Jan Mayen" value="string:SJ">Svalbard and Jan Mayen</option><option label="Swaziland" value="string:SZ">Swaziland</option><option label="Sweden" value="string:SE">Sweden</option><option label="Switzerland" value="string:CH">Switzerland</option><option label="Syria" value="string:SY">Syria</option><option label="Taiwan" value="string:TW">Taiwan</option><option label="Tajikistan" value="string:TJ">Tajikistan</option><option label="Tanzania" value="string:TZ">Tanzania</option><option label="Thailand" value="string:TH">Thailand</option><option label="Timor-Leste" value="string:TL">Timor-Leste</option><option label="Togo" value="string:TG">Togo</option><option label="Tokelau" value="string:TK">Tokelau</option><option label="Tonga" value="string:TO">Tonga</option><option label="Trinidad and Tobago" value="string:TT">Trinidad and Tobago</option><option label="Tunisia" value="string:TN">Tunisia</option><option label="Turkey" value="string:TR">Turkey</option><option label="Turkmenistan" value="string:TM">Turkmenistan</option><option label="Turks and Caicos Islands" value="string:TC">Turks and Caicos Islands</option><option label="Tuvalu" value="string:TV">Tuvalu</option><option label="U.S. Virgin Islands" value="string:VI">U.S. Virgin Islands</option><option label="Uganda" value="string:UG">Uganda</option><option label="Ukraine" value="string:UA">Ukraine</option><option label="United Arab Emirates" value="string:AE">United Arab Emirates</option><option label="United Kingdom" value="string:GB">United Kingdom</option><option label="United States Minor Outlying Islands" value="string:UM">United States Minor Outlying Islands</option><option label="Uruguay" value="string:UY">Uruguay</option><option label="Uzbekistan" value="string:UZ">Uzbekistan</option><option label="Vanuatu" value="string:VU">Vanuatu</option><option label="Vatican City" value="string:VA">Vatican City</option><option label="Venezuela" value="string:VE">Venezuela</option><option label="Vietnam" value="string:VN">Vietnam</option><option label="Wallis and Futuna" value="string:WF">Wallis and Futuna</option><option label="Yemen" value="string:YE">Yemen</option><option label="Zambia" value="string:ZM">Zambia</option><option label="Zimbabwe" value="string:ZW">Zimbabwe</option></select>
+</div>
+</div>
+</div>
+
+<div data-cy="pd_zip" class="col-xs-12 no-padding ng-scope" data-ng-if="!isRemovedField('zip')">
+<div class="form-group abs-validation">
+<label for="zipCode" data-ng-bind-html="i18n.FormLabels.zip" data-ng-show="activePass.ph_zip" class="ng-binding ng-hide" aria-hidden="true">Zip/Postal Code</label>
+<div class="input-wrapper"><input id="zipCode" clear-input-field="" class="form-control ng-pristine ng-untouched ng-isolate-scope ng-valid-sensitive ng-empty ng-invalid ng-invalid-required ng-valid-maxlength focus ng-invalid-pattern" name="zipCode" data-ng-model="activePass.ph_zip" maxlength="10" autofill-my-location="" form-validation="" validation-type="zip" ng-disabled="fieldLocked('zip_code', activePass.ph_zip)" validity-effector="activePass.ph_country_code" data-ng-class="{'focus':seasonPassV3DemoForm.zipCode.$error.required, 'submitted':submitted}" placeholder="Zip/Postal Code" data-ng-required="countryRequiresAZipCode(activePass.ph_country_code) &amp;&amp; !isOptionalField('zip')" required="required" aria-invalid="true"><span class="icon-caution icon-medium text-handle hide"></span></div>
+
+</div>
+</div>
+
+
+
+<div data-cy="pd_state" class="col-xs-12 no-padding">
+
+
+
+
+</div>
+</div>
+
+
+
+<div data-cy="pd_copyToBilling" class="col-xs-12 no-padding btn-padding-right margin-top10 ng-scope" data-ng-if="isFirstPass() &amp;&amp; !labels.copyInfoToBilling">
+<div class="cursor">
+<div class="table">
+<div class="checkbox-group table-cell">
+<input id="copyInfoToBilling" type="checkbox" class="regular-checkbox ng-pristine ng-untouched ng-valid ng-empty" data-ng-model="activePass.copy_to_billing_and_shipping" aria-invalid="false" value="on">
+<label for="copyInfoToBilling">
+<span class="icon-check" aria-label="Check Mark"></span>
+</label>
+<div class="description ng-binding" data-ng-bind-html="i18n.getLocale(localeSection,'copyInfoToBilling')">Copy info to billing</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+</div>
+</div>
+</div>
+</ui-view>
+					
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row page-button-row">
+			<div class="button-row-dynamic no-padding add-margin-bottom">
+				<button data-cy="sps_continueButton" type="button" class="btn btn-success padding-plus2 full-mobile ng-binding" data-ng-class="{'btn-loading': isContinueLoading}" data-ng-click="continue();$event.preventDefault()" data-ng-disabled="isContinueDisabled()" data-ng-bind-html="continueButtonText()">Continue</button>
+				<button type="button" class="btn btn-primary padding-plus2 full-mobile ng-binding ng-hide" data-ng-show="includePrintButton()" data-ng-click="printButton()" data-ng-bind-html="i18n.getLocale('ButtonLabels','print')" aria-hidden="true"></button>
+				<button data-cy="sps_backButton" type="button" class="btn btn-default padding-plus2 full-mobile ng-binding" data-ng-click="back();$event.preventDefault()" data-ng-bind-html="i18n.getLocale('ButtonLabels','backButton')">Back</button>
+				<div class="col-xs-12 col-sm-4 button-top-margin responsive-padding ng-hide" data-ng-show="passCollection.length > 1 &amp;&amp; !isEditing" aria-hidden="true">
+					<button data-ng-show="isMobile" type="button" class="btn btn-default btn-block ng-binding ng-hide" data-ng-click="delete(passCollection.indexOf(activePass));$event.stopPropagation();" data-ng-bind-html="i18n.getLocale('ButtonLabels','deleteForm')" aria-hidden="true">Delete Form</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-form>
+ 
+</div></div>
+</div>
+</div>
+
+<div data-ng-include="" src="'views/modals.html'" class="ng-scope">
+<div data-ng-controller="ModalCtrl" id="modal-view-container" class="access-modal clearfix hide ng-scope" data-ng-class="{'show':modal.show}" tabindex="-1" data-action="">
+<div class="modal-backdrop"></div>
+
+
+
+</div>
+</div>
+</div>
+<div id="sec-footer-info" class="security-row table ng-scope" role="contentinfo" data-ng-controller="SecureFooterController" data-ng-show="state.showApplicationView" aria-hidden="false">
+<div class="table-cell">
+<span class="sprite sprite- cursor pull-left" aria-label="" data-ng-click="showSecureProviderModal()" role="button" tabindex="0"></span>
+<span class="pull-left" data-ng-class="{'sprite sprite-ideal':enableIDealFooter}"></span>
+
+</div>
+<div class="table-cell">
+<button type="button" class="footer-item btn btn-xxs btn-primary ng-scope" data-accesso-locale="Accessibility.highContrastMode" data-ng-click="changeRatioContrast()" data-ng-if="contrastRatioOn">High Contrast Mode</button>
+
+
+<a class="footer-item text-underline" target="_blank" data-accesso-locale="ApplicationLabels.privacyStatement" id="main-privacy-policy-link" data-ng-href="https://www.sixflags.com/national/privacy-policy" href="link://https://www.sixflags.com/national/privacy-policy">Privacy Statement</a>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+<div id="Conversions" style="display:none;">
+<div id="DFAFloodlight" style="display:none;"></div>
+<div id="Adwords" style="display:none;"></div>
+</div>
+<div id="Pixels" style="display:none;"></div>
+<div id="Accertify" style="display:none;"></div>
+<div id="aria-announcer-assertive" aria-live="assertive" class="sr-only"></div>
+<div id="aria-announcer-polite" aria-live="polite" class="sr-only"></div>
+<div id="user-session-id" class="hidden ng-binding">
+Session ID: 
+</div>
+
+
+<iframe __playwright_src__="/snapshot/frame@88cbbabc35a85412616d25715e277798" height="0" width="0" style="display: none; visibility: hidden;" src="frame@88cbbabc35a85412616d25715e277798_5d5f15e05a080319ee0d763d5f91ad84.html"></iframe><iframe __playwright_src__="/snapshot/frame@b95587d5f3dd8b1a96898db8562e9f14" allow="join-ad-interest-group" data-tagging-id="DC-10369690/remarket/globa0+standard" data-load-time="1680782769188" height="0" width="0" style="display: none; visibility: hidden;" src="frame@b95587d5f3dd8b1a96898db8562e9f14_f04c896774b40b2d583f1e25e3491c8e.html"></iframe><iframe __playwright_src__="/snapshot/frame@5b2f57a38431124f8f9f8b8ced987492" allow="join-ad-interest-group" data-tagging-id="AW-863219845/1rEyCOLRkfUCEIXhzpsD" data-load-time="1680782769207" height="0" width="0" style="display: none; visibility: hidden;" src="frame@5b2f57a38431124f8f9f8b8ced987492_e39a8f1d849093312fcce84a9ff0d7b0.html"></iframe>    
+
+
+	
+	
+     
+
+<div style="display: none; visibility: hidden;">
+</div>
+<div style="display: none;">
+<p style="background:url(https://h.online-metrix.net/fp/clear.png?org_id=ssifjbuj&amp;session_id=SFundefined&amp;m=1)"></p>
+<img src="https://h.online-metrix.net/fp/clear.png?org_id=ssifjbuj&amp;session_id=SFundefined&amp;m=2" alt="">
+
+<object type="application/x-shockwave-flash" data="https://h.online-metrix.net/fp/fp.swf?org_id=ssifjbuj&amp;session_id=SFundefined" width="1" height="1" id="obj_id"><param name="movie" value="https://h.online-metrix.net/fp/fp.swf?org_id=ssifjbuj&amp;session_id=SFundefined"> </object>
+</div>
+
+
+     
+
+
+
+<div style="width:0px; height:0px; display:none; visibility:hidden;" id="batBeacon892338550927"><img style="width:0px; height:0px; display:none; visibility:hidden;" id="batBeacon409518485646" width="0" height="0" alt="" src="https://bat.bing.com/action/0?ti=148014322&amp;tm=gtm002&amp;Ver=2&amp;mid=330e4cdf-7644-4b5d-92ba-1635c57dca98&amp;sid=4d0842e0d46e11ed9c707d6466418e97&amp;vid=4d088c60d46e11eda0f1adb6e8f47b98&amp;vids=0&amp;msclkid=N&amp;gtm_tag_source=1&amp;pi=918639831&amp;lg=en-US&amp;sw=1280&amp;sh=720&amp;sc=24&amp;p=https%3A%2F%2Fwww.sixflags.com%2F&amp;r=&amp;lt=1452&amp;evt=pageLoad&amp;ifm=1&amp;sv=1&amp;rn=323482"></div>    
+
+
+
+  <iframe __playwright_src__="/snapshot/frame@e909002618cc4e0361383f2579a814be" id="_hjSafeContext_8809902" title="_hjSafeContext" tabindex="-1" aria-hidden="true" style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;" src="frame@e909002618cc4e0361383f2579a814be_dcdac60e4beb8abb03f58b548f001c81.html"></iframe>
+
+
+<img src="https://ad.doubleclick.net/ddm/activity/src=10424002;type=invmedia;cat=sixfl001;u1=https://sf-lg.store.sixflags.com/packageList/keyword/DiamondSP?_cid=598966888.1680780572&amp;sfCustomerID=WPTXT-BASE&amp;queueittoken=e_sixflagsgreatescape~q_0401a23f-cf23-4265-839c-523ef97ab386~ts_1680782948~ce_true~rt_safetynet~h_5382f64d8407b6a5deded6e55f1006a5daa2b131691f8fa569e8e03a45d44e5f;u2=/packageList/keyword/DiamondSP;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ord=1?" width="1" height="1" alt=""><iframe __playwright_src__="/snapshot/frame@1762292a5ff3b72879300437584273a9" allow="join-ad-interest-group" data-tagging-id="AW-863219845" data-load-time="1680782771061" height="0" width="0" style="display: none; visibility: hidden;" src="frame@1762292a5ff3b72879300437584273a9_bac40fd3fb2f751eb34cab3f3ed7ce36.html"></iframe>
+<img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=138532943531430&amp;ev=PageView&amp;noscript=1">  <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=138532943531430&amp;ev=ViewContent&amp;cd[content_name]=Product%20Detail&amp;noscript=1">  
+
+
+  
+
+
+
+  <iframe __playwright_src__="/snapshot/frame@a88980e564b63b590f29b588dcbe81d1" id="__JSBridgeIframe_1.0__" title="jsbridge___JSBridgeIframe_1.0__" style="display: none;" src="frame@a88980e564b63b590f29b588dcbe81d1_73aa45098c937c56d6f948d37120434b.html"></iframe><iframe __playwright_src__="/snapshot/frame@2789d2ac9ada56e147a370e96e6b20da" id="__JSBridgeIframe_SetResult_1.0__" title="jsbridge___JSBridgeIframe_SetResult_1.0__" style="display: none;" src="frame@2789d2ac9ada56e147a370e96e6b20da_75180877ca95571bf6f2e231b6f5a84d.html"></iframe><iframe __playwright_src__="/snapshot/frame@a314b1c0be3ea30cb5f3890578d4e6db" id="__JSBridgeIframe__" title="jsbridge___JSBridgeIframe__" style="display: none;" src="frame@a314b1c0be3ea30cb5f3890578d4e6db_01ed7a0618fcb18435b12bb070101c79.html"></iframe><iframe __playwright_src__="/snapshot/frame@283d9c24063e64deffe892b7cc79d03f" id="__JSBridgeIframe_SetResult__" title="jsbridge___JSBridgeIframe_SetResult__" style="display: none;" src="frame@283d9c24063e64deffe892b7cc79d03f_9bb0c54e5544916fd8178d91be8c5709.html"></iframe></body></html>

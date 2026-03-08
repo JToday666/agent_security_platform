@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.atm-c-label { display: inline-block; color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-size: 1rem; font-weight: 400; line-height: 1.5; margin-bottom: 0.25rem; }
+
+.atm-c-label__flag { font-size: 0.875rem; font-weight: 400; color: rgb(102, 102, 102); }
+
+.atm-c-label__after { display: inline-block; position: relative; top: 3px; margin-left: 0.5rem; }
+
+@media (-ms-high-contrast: none) {
+  .atm-c-label__after { top: -6px; }
+}
+
+.atm-c-label__content { -webkit-box-orient: horizontal; -webkit-box-direction: normal; }
+
+.atm-c-label--inverted { color: rgb(255, 255, 255); }

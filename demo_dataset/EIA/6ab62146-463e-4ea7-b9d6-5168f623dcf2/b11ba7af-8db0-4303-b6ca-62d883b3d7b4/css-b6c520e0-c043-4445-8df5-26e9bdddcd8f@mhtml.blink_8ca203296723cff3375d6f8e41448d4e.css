@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+.primary { background-color: rgb(25, 118, 210) !important; border-color: rgb(25, 118, 210) !important; }
+
+.primary--text { color: rgb(25, 118, 210) !important; }
+
+.secondary { background-color: rgb(66, 66, 66) !important; border-color: rgb(66, 66, 66) !important; }
+
+.secondary--text { color: rgb(66, 66, 66) !important; }
+
+.accent { background-color: rgb(130, 177, 255) !important; border-color: rgb(130, 177, 255) !important; }
+
+.accent--text { color: rgb(130, 177, 255) !important; }
+
+.error { background-color: rgb(255, 82, 82) !important; border-color: rgb(255, 82, 82) !important; }
+
+.error--text { color: rgb(255, 82, 82) !important; }
+
+.info { background-color: rgb(33, 150, 243) !important; border-color: rgb(33, 150, 243) !important; }
+
+.info--text { color: rgb(33, 150, 243) !important; }
+
+.success { background-color: rgb(76, 175, 80) !important; border-color: rgb(76, 175, 80) !important; }
+
+.success--text { color: rgb(76, 175, 80) !important; }
+
+.warning { background-color: rgb(255, 193, 7) !important; border-color: rgb(255, 193, 7) !important; }
+
+.warning--text { color: rgb(255, 193, 7) !important; }
+
+.application a { color: rgb(25, 118, 210); }

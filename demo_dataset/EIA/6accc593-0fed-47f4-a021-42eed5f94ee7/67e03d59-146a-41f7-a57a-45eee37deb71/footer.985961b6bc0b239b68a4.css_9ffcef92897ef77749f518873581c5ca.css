@@ -1,0 +1,143 @@
+@charset "utf-8";
+
+.credit-card { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIuMSAyMEExLjEgMS4xIDAgMDExIDE4LjlWNS4xQTEuMSAxLjEgMCAwMTIuMSA0aDE5LjhBMS4xIDEuMSAwIDAxMjMgNS4xdjEzLjhhMS4xIDEuMSAwIDAxLTEuMSAxLjFIMi4xem0xOS44LTFsLjEtLjFWMTdIMnYxLjlsLjEuMWgxOS44ek0yIDV2MTFoMjBWNS4xbC0uMS0uMUgyLjF6bTEwIDcuMUw5LjUgMTRsMS0zTDggOWgzbDEtMyAxIDNoM2wtMi41IDIgMSAzLTIuNS0xLjl6IiBmaWxsPSIjMDAwIi8+PC9zdmc+") 0% 0% / 24px 24px no-repeat; }
+
+.credit-card, .email { width: 24px; height: 24px; display: inline-block; }
+
+.email { background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yMiAxOGExIDEgMCAwMS0xIDFIM2ExIDEgMCAwMS0xLTFWNmExIDEgMCAwMTAtLjRsOS43IDcuOGEuNS41IDAgMDAuNiAwTDIyIDUuNmwuMS40djEyek0yMSA1YS44LjggMCAwMS4xIDBMMTIgMTIuNCAyLjkgNUEuOC44IDAgMDEzIDVoMTh6bTAtMUgzYTIgMiAwIDAwLTIgMnYxMmEyIDIgMCAwMDIgMmgxOGEyIDIgMCAwMDItMlY2YTIgMiAwIDAwLTItMnoiIGZpbGw9IiMwMDAiLz48L3N2Zz4=") 0% 0% / 24px 24px no-repeat; }
+
+.email-filled { width: 24px; height: 24px; background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTMgMjBhMiAyIDAgMDEtMi0yVjZjMC0uNC4xLS43LjMtMWwxMC40IDguNGEuNS41IDAgMDAuNiAwTDIyLjcgNWMuMi4zLjMuNi4zIDF2MTJhMiAyIDAgMDEtMiAySDN6TTIgNC4zQTIgMiAwIDAxMyA0aDE4Yy40IDAgLjcuMSAxIC4zbC0xMCA4LTEwLTh6IiBmaWxsPSIjMDAwIi8+PC9zdmc+") 0% 0% / 24px 24px no-repeat; display: inline-block; }
+
+footer[data-uri] { background-color: rgb(235, 235, 235); height: auto; }
+
+footer[data-uri] .title { color: rgb(255, 255, 255); font-weight: 700; font-size: 14px; line-height: 20px; text-transform: capitalize; }
+
+footer[data-uri] h4.title { margin: 0px; }
+
+footer[data-uri] hr { max-width: 100%; }
+
+footer[data-uri] a { text-transform: none; }
+
+footer[data-uri] .sign-up-text { color: rgb(255, 255, 255); font-size: 12px; line-height: 18px; padding: 8px 0px 24px; }
+
+footer[data-uri] .hnfFooterTop { height: 0.3125rem; background: url("/page/digital-product-ui-mcom/static/footer_top_gradient.jpg?631f3e6d13053abdfa9fcdf9165a0422") center top no-repeat; margin-bottom: 0.9375rem; }
+
+footer[data-uri] #globalBodyFooterBannerContent { margin: 0.625rem auto; background-color: transparent; border: 0px; }
+
+footer[data-uri] img#footerFlag { width: 0.9375rem; height: 0.9375rem; margin: 0px 8px; border-radius: 50%; }
+
+footer[data-uri] #stores { width: 9.375rem; padding: 0px 0.03125rem; }
+
+footer[data-uri] #storesIntl { width: 8.83rem; margin-right: 1.125rem; padding: 0px 0.03125rem; }
+
+footer[data-uri] #macysinc { margin-left: -0.5rem; width: 4.6875rem; padding: 0px 0.03125rem; }
+
+footer[data-uri] #macysincIntl { width: 6.3575rem; padding-left: 1.375rem; padding-right: 0.03125rem; }
+
+footer[data-uri] #stayconnected div.title { color: rgb(255, 255, 255); }
+
+footer[data-uri] #stayconnected .overall-social-list .title { color: rgb(255, 255, 255); letter-spacing: 0.195px; }
+
+footer[data-uri] #stayconnectedIntl div.title { color: rgb(255, 255, 255); }
+
+footer[data-uri] #media { width: 11.7188rem; float: left; text-align: left; padding-left: 0.625rem; padding-right: 0.03125rem; }
+
+footer[data-uri] #media a.title { font-size: 0.6875rem; font-weight: 700; }
+
+footer[data-uri] #customerService { margin-right: -1.125rem; margin-left: 0.375rem; width: 11.25rem; }
+
+footer[data-uri] #creditCard { float: left; width: 8.207rem; }
+
+footer[data-uri] .legal a { padding: 0px 16px 0px 17px; position: relative; text-decoration: none; font-family: "Macys Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+footer[data-uri] .legal a::before { content: ""; display: block; position: absolute; left: 0px; top: 2px; height: 16px; width: 1px; background-color: rgb(149, 148, 153); }
+
+footer[data-uri] .legal a:first-child::before { display: none; }
+
+footer[data-uri] .legal a.no-separator::before { display: none; }
+
+footer[data-uri] .legal .standard { white-space: nowrap; }
+
+footer[data-uri] .legal #easyBrowsingSVG { color: rgb(255, 255, 255); }
+
+footer[data-uri] label { font-weight: 700; font-size: 0.75rem; line-height: 1.625em; }
+
+footer[data-uri] .row { max-width: 60rem; }
+
+footer[data-uri] .clear { clear: left; }
+
+footer[data-uri] a { color: rgb(255, 255, 255); text-decoration: none; }
+
+footer[data-uri] a:hover { text-decoration: underline; }
+
+footer[data-uri] ul { padding-left: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; }
+
+footer[data-uri] ul li { text-decoration: none; font-family: "Macys Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.125rem; font-size: 0.75rem; text-align: left; list-style: none !important; }
+
+footer[data-uri] ul li.title { float: none; line-height: 1.25rem; color: rgb(255, 255, 255); }
+
+footer[data-uri] ul li .social { margin-right: 0.1875rem; }
+
+footer[data-uri] ul li.social { height: auto; padding-right: 0px; }
+
+footer[data-uri] ul li.mobileapps { margin-top: 0.625rem; width: 7.5rem; }
+
+footer[data-uri] ul li.mobileapps div.mobileapps { background: url("/page/digital-product-ui-mcom/static/global-icons.png?fda826bdf71ae9308b168ecc61e725e1") -2px -133px no-repeat; float: left; height: 1.75rem; margin-left: 0.1875rem; width: 0.9375rem; }
+
+footer[data-uri] ul li.mobileapps div.text { float: left; padding-left: 0.3125rem; padding-top: 0.25rem; width: 4.375rem; }
+
+footer[data-uri] ul li.email { margin-top: 0.625rem; width: 8.75rem; }
+
+footer[data-uri] ul li.email div.email { background: url("/page/digital-product-ui-mcom/static/global-icons.png?fda826bdf71ae9308b168ecc61e725e1") -2px -117px no-repeat; float: left; height: 1rem; margin-top: 0.3125rem; width: 1.5rem; }
+
+footer[data-uri] ul li.email div.text { float: left; padding-left: 0.3125rem; padding-top: 0.125rem; width: 6.25rem; font-family: "Macys Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+footer[data-uri] ul li a { text-decoration: none; line-height: 1.125rem; display: inline-block; font-size: 0.6875rem; color: rgb(255, 255, 255) !important; }
+
+footer[data-uri] ul li a.title { font-size: 0.75rem; }
+
+footer[data-uri] .copyright { max-width: inherit; text-align: center; padding-top: 0.625rem; }
+
+footer[data-uri] .copyright div { width: 960px; margin-left: auto; margin-right: auto; }
+
+footer[data-uri] .copyright p { font-size: 0.75rem; font-family: "Macys Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.125rem; margin: 0px; color: rgb(255, 255, 255) !important; }
+
+footer[data-uri] #stayconnected .social-facebook-white, footer[data-uri] #stayconnectedIntl .social-facebook-white { width: 24px; height: 24px; background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEzLjggMjF2LTguMmgyLjdsLjQtMy4yaC0zdi0yYzAtMSAuMi0xLjYgMS41LTEuNkgxN1YzLjFhMTguMyAxOC4zIDAgMDAtMi40LS4xYy0yLjMgMC00IDEuNS00IDQuMnYyLjRIOHYzLjJoMi43VjIxaDMuMXoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=") 0% 0% / 24px 24px no-repeat; display: inline-block; }
+
+footer[data-uri] #stayconnected .social-instagram-white, footer[data-uri] #stayconnectedIntl .social-instagram-white { width: 24px; height: 24px; background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTguMyAyMWE2LjYgNi42IDAgMDEtMi4yLS41IDQuNCA0LjQgMCAwMS0xLjYtMSA0LjQgNC40IDAgMDEtMS0xLjYgNi41IDYuNSAwIDAxLS40LTIuMkwzIDEyVjguM0E2LjYgNi42IDAgMDEzLjYgNmMuMi0uNi42LTEuMSAxLTEuNi41LS40IDEtLjggMS42LTFBNi41IDYuNSAwIDAxOC4zIDNoNy40YTYuNiA2LjYgMCAwMTIuMi41Yy42LjIgMS4xLjYgMS42IDEgLjQuNS44IDEgMSAxLjZhNi41IDYuNSAwIDAxLjQgMi4yTDIxIDEydjMuN2E2LjUgNi41IDAgMDEtLjUgMi4yIDQuNCA0LjQgMCAwMS0xIDEuNiA1LjQgNS40IDAgMDEtMy44IDEuNCA2MCA2MCAwIDAxLTcuNCAwem0wLTE2YTQuNiA0LjYgMCAwMC0xLjUuM0w2IDZsLS42IDFhNC42IDQuNiAwIDAwLS4yIDEuNVY5YTg0LjggODQuOCAwIDAwLjIgOC4ybC42LjkgMSAuNmE0LjcgNC43IDAgMDAxLjUuMmwzLjYuMWgzLjZhNC42IDQuNiAwIDAwMS42LS4zIDIuNCAyLjQgMCAwMC45LS42bC42LTEgLjItMS41VjguNGE0LjYgNC42IDAgMDAtLjItMS42QTIuNCAyLjQgMCAwMDE4IDZhMi41IDIuNSAwIDAwLTEtLjYgNC42IDQuNiAwIDAwLTEuNS0uMkgxNWE4My40IDgzLjQgMCAwMC02LjYgMHpNOCAxMmE0IDQgMCAxMTggMCA0IDQgMCAwMS04IDB6bTIgMGEyIDIgMCAxMDQgMCAyIDIgMCAwMC00IDB6bTUuNS00LjVhMSAxIDAgMTEyIDAgMSAxIDAgMDEtMiAweiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==") 0% 0% / 24px 24px no-repeat; display: inline-block; }
+
+footer[data-uri] #stayconnected .social-twitter-white, footer[data-uri] #stayconnectedIntl .social-twitter-white { width: 24px; height: 24px; background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIxIDYuOGE3LjIgNy4yIDAgMDEtMi4xLjYgMy44IDMuOCAwIDAwMS42LTIuMSA3LjMgNy4zIDAgMDEtMi4zLjlBMy43IDMuNyAwIDAwMTUuNSA1YTMuNyAzLjcgMCAwMC0zLjcgMy44di44YTEwLjQgMTAuNCAwIDAxLTcuNS00IDQgNCAwIDAwLS41IDIgMy44IDMuOCAwIDAwMS42IDMuMSAzLjcgMy43IDAgMDEtMS43LS40IDMuOCAzLjggMCAwMDMgMy43IDMuOCAzLjggMCAwMS0xIC4xIDMuMSAzLjEgMCAwMS0uNyAwIDMuNyAzLjcgMCAwMDMuNSAyLjYgNy4zIDcuMyAwIDAxLTQuNiAxLjcgNi40IDYuNCAwIDAxLS45LS4xQTEwLjMgMTAuMyAwIDAwOC43IDIwYzYuOCAwIDEwLjUtNS44IDEwLjUtMTAuOHYtLjVhNy44IDcuOCAwIDAwMS44LTJ6IiBmaWxsPSIjZmZmIi8+PC9zdmc+") 0% 0% / 24px 24px no-repeat; display: inline-block; }
+
+footer[data-uri] #stayconnected .social-pinterest-white, footer[data-uri] #stayconnectedIntl .social-pinterest-white { width: 24px; height: 24px; background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEwLjkgMTQuOGwtLjIuNi0uNiAyLjFhOS40IDkuNCAwIDAxLTEuNSAzbC0uMy40LS4yLjF2LS4yTDcuOCAxOWExMi44IDEyLjggMCAwMS41LTMuN2wxLTMuOWEuNi42IDAgMDAwLS4zIDMuOCAzLjggMCAwMTAtM0ExLjggMS44IDAgMDExMSA3YTEuMyAxLjMgMCAwMTEuNCAxLjIgNC40IDQuNCAwIDAxLS4yIDEuOGwtLjYgMi4xYTEuNyAxLjcgMCAwMDIuMSAyLjEgMi44IDIuOCAwIDAwMS42LTEuMiA2LjUgNi41IDAgMDAxLTIuOSA2LjUgNi41IDAgMDAwLTIuMSAzLjYgMy42IDAgMDAtMi43LTMgNS4zIDUuMyAwIDAwLTQuMy41QTQuNyA0LjcgMCAwMDcgOS4xYTMuNiAzLjYgMCAwMC4zIDIuMWwuNC42YS42LjYgMCAwMS4xLjVsLS4yLjhhLjQuNCAwIDAxLS41LjMgMyAzIDAgMDEtMS43LTEuOEE1LjkgNS45IDAgMDE2LjIgNmE2LjggNi44IDAgMDE0LjctMi45IDcuNyA3LjcgMCAwMTQuMi40QTUuOSA1LjkgMCAwMTE5IDcuOWE3IDcgMCAwMTAgMi40IDcuNyA3LjcgMCAwMS0xLjMgMy41QTUgNSAwIDAxMTQgMTZhMy40IDMuNCAwIDAxLTIuOS0uOCAxLjggMS44IDAgMDEtLjItLjJsLS4yLS4yIiBmaWxsPSIjZmZmIi8+PC9zdmc+") 0% 0% / 24px 24px no-repeat; display: inline-block; }
+
+footer[data-uri] #stayconnected .social-youtube-white, footer[data-uri] #stayconnectedIntl .social-youtube-white { width: 24px; height: 24px; background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTguOSA1aDcuNWMxLjIgMCAyLjQgMCAzLjYuMy41IDAgMSAuMiAxLjUuNWEyLjYgMi42IDAgMDExIDEuNmMuMy43LjQgMS41LjQgMi4zdjJhMjkuOCAyOS44IDAgMDEwIDMuNiAxMC4zIDEwLjMgMCAwMS0uMyAyIDIuNiAyLjYgMCAwMS0yLjEgMmwtMi4yLjJIMTZsLTMuMi4xaC01bC0zLjItLjJBNC4zIDQuMyAwIDAxMyAxOWEyLjcgMi43IDAgMDEtMS42LTIgMTMuOCAxMy44IDAgMDEtLjMtMi4ybC0uMS0yYTI5LjcgMjkuNyAwIDAxLjItMy42IDEwLjMgMTAuMyAwIDAxLjMtMiAyLjYgMi42IDAgMDEyLTJMNS43IDVIOXptLjkgNC4ydjYuMmw1LjctMy4xLTUuNy0zLjEiIGZpbGw9IiNmZmYiLz48L3N2Zz4=") 0% 0% / 24px 24px no-repeat; display: inline-block; }
+
+footer[data-uri] #stayconnected [class*="social icon-"], footer[data-uri] #stayconnected [class*="icon-email-"], footer[data-uri] #stayconnected [class*="icon-mobile-"], footer[data-uri] #stayconnected [class*="social-"], footer[data-uri] #stayconnectedIntl [class*="social icon-"], footer[data-uri] #stayconnectedIntl [class*="icon-email-"], footer[data-uri] #stayconnectedIntl [class*="icon-mobile-"], footer[data-uri] #stayconnectedIntl [class*="social-"] { background-position: unset; }
+
+footer[data-uri] #stayconnected [class*="social icon-"], footer[data-uri] #stayconnectedIntl [class*="social icon-"] { display: list-item; }
+
+footer[data-uri] #footer-redesign-row-1 { padding-top: 40px; }
+
+.footer-column-last { width: 411px; }
+
+.footer-sign-up { padding-bottom: 32px; border-bottom: 1px solid rgb(98, 99, 105); }
+
+.appdownloads-section { display: none; border-top: 1px solid rgb(98, 99, 105); padding-top: 32px; }
+
+footer #footer-redesign-row-1 li.title, label.title { color: rgb(255, 255, 255) !important; }
+
+.overall-social-list, .social-card { padding: 2rem 0px; }
+
+.static .card-section .card-icon img { content: url("/page/digital-product-ui-mcom/static/macysCreditCard.jpg?50f07a592d502faa5e295fb53404df7b"); margin-top: 12px; }
+
+.social-card { border-bottom: 1px solid rgb(98, 99, 105); }
+
+.social-card .card-section { display: flex; align-items: start; margin-top: 1rem; }
+
+.social-card .card-section .card-icon { margin-right: 1rem; }
+
+.social-card .card-section .card-apply, .social-card .card-section .card-description, .social-card .card-section .card-details { font-size: 0.75rem; line-height: 1.125rem; color: rgb(255, 255, 255); }
+
+.social-card .card-section .card-apply { display: inline-block; margin-top: 0.5rem; }
+
+.social-card .card-section .link { text-decoration: underline; }

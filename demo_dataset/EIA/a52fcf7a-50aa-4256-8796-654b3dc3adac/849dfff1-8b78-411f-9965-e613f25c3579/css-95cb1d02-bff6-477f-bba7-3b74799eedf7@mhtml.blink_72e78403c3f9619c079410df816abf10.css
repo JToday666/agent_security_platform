@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.css-5qtwtd { display: flex; width: 60px; height: 60px; box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 12px; border-radius: 50%; background: rgb(27, 103, 236); -webkit-box-pack: center; justify-content: center; margin-left: auto; --primary-color:#427fe1; --secondary-color:#fbfbfb; --tertiary-color:#fff; position: relative; color: rgb(255, 255, 255); }
+
+.css-5qtwtd:hover { cursor: pointer; }

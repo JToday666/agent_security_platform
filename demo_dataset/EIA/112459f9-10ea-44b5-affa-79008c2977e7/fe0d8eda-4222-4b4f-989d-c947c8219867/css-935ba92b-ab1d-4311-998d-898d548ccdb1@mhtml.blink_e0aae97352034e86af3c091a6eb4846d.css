@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.app-components-Seatmap-SeatMapModal-SeatMapModal__seatmap-modal-wrapper---5pq2 article > div:first-child { position: relative; min-height: 3.5rem; }
+
+.app-components-Seatmap-SeatMapModal-SeatMapModal__seatmap-modal-wrapper---5pq2 article > div:first-child button:nth-child(2) { display: block; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapModal-SeatMapModal__seatmap-modal-wrapper---5pq2 article > div:first-child { padding-top: 2.5rem; }
+}
+
+.app-components-Seatmap-SeatMapModal-SeatMapModal__seatmap-modal-wrapper---5pq2[aria-hidden="true"] { z-index: -1; }

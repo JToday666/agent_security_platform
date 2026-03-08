@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.telehealth-landing-related-articles { padding-top: 32px; margin-bottom: 32px; }
+
+.telehealth-landing-related-articles-heading { color: rgb(0, 0, 80); margin-bottom: 32px; }
+
+.telehealth-landing-related-articles { background-color: rgb(247, 247, 247); }
+
+.telehealth-landing-related-articles-browse-all { display: inline-block; padding-bottom: 32px; padding-right: 48px; }
+
+.telehealth-landing-arrow-right-icon { position: absolute; transform: translate(8px, 2px); }
+
+@media (min-width: 992px) {
+  .telehealth-landing-article-card-list.article-card-list > .article-link { max-width: 33.3333%; }
+}

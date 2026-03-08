@@ -1,0 +1,38 @@
+@charset "utf-8";
+
+.elementor-widget-sf-upcoming-events .elementor-grid { gap: 20px; }
+
+.elementor-widget-sf-upcoming-events .elementor-grid-header { padding: 12px 20px; width: 192px; text-align: right; }
+
+.elementor-widget-sf-upcoming-events .elementor-grid-header h2.sf-upcomin-events--title { font-family: var(--e-global-typography-primary-font-family); font-weight: 700; font-size: 38px; margin-bottom: 14px; line-height: 110%; }
+
+.elementor-widget-sf-upcoming-events .elementor-grid-header a { font-size: 16px; font-weight: 600; text-decoration: underline; }
+
+.elementor-widget-sf-upcoming-events .sf-upcomin-events--icon { position: absolute; top: 8px; right: -98px; font-size: 100px; color: rgb(227, 227, 227); }
+
+.elementor-widget-sf-upcoming-events .elementor-grid-item { background: rgb(255, 255, 255); border: 1px solid rgb(227, 227, 227); position: relative; padding: 20px; }
+
+.elementor-widget-sf-upcoming-events .elementor-post__date { position: absolute; left: 0px; top: 0px; width: 52px; text-align: center; }
+
+.elementor-widget-sf-upcoming-events .elementor-post__month { display: block; font-weight: 700; font-size: 20px; line-height: 130%; text-transform: uppercase; }
+
+.elementor-widget-sf-upcoming-events .elementor-post__day { font-size: 36px; font-weight: 800; display: block; line-height: 110%; }
+
+.elementor-widget-sf-upcoming-events .elementor-post__text { position: relative; }
+
+.elementor-widget-sf-upcoming-events .elementor-post__data { margin-left: 66px; margin-bottom: 36px; }
+
+.elementor-widget-sf-upcoming-events .elementor-post__title a { font-size: 16px; line-height: 130%; }
+
+.elementor-widget-sf-upcoming-events .elementor-post__read-more { position: absolute; right: 20px; bottom: 24px; font-size: 16px; font-weight: 400; text-decoration: underline; color: var(--e-global-color-42f10b88); }
+
+@media (max-width: 1280px) {
+  .elementor-widget-sf-upcoming-events .elementor-grid { grid-template-columns: repeat(3, 1fr); grid-template-areas: "header header header" ". . ."; }
+  .elementor-widget-sf-upcoming-events .elementor-grid-header { padding: 0px; width: 100%; text-align: center; font-weight: 700; grid-area: header / header / header / header; }
+  .elementor-widget-sf-upcoming-events .elementor-grid-header h2.sf-upcomin-events--title { margin-bottom: 8px; }
+  .elementor-widget-sf-upcoming-events .elementor-grid-header i { display: none; }
+}
+
+@media (max-width: 1023px) {
+  .elementor-widget-sf-upcoming-events .elementor-grid { grid-template-columns: repeat(1, 1fr); grid-template-areas: "header" "."; }
+}

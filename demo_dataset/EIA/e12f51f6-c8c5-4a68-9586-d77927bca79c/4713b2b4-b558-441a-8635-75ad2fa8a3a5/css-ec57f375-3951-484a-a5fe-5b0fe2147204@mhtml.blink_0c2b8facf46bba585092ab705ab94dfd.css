@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.confirm-payment .instructions, .confirm-payment li { margin-block-end: 16px; }
+
+.confirm-payment ul { margin-block-end: 24px; }

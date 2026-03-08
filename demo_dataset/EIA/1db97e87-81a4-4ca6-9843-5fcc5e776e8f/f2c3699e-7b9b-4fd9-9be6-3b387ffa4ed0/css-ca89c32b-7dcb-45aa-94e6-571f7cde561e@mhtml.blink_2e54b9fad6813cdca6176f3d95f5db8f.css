@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.article-link { color: rgb(0, 0, 80); display: block; }
+
+.article-link > div { padding: 0px; }
+
+.article-card { width: 100%; border: none; margin-bottom: 0px; }
+
+.article-card > div { display: flex; flex-direction: column-reverse; }
+
+a.article-link > .article-card { box-shadow: rgba(0, 0, 0, 0.4) 0px 1px 3px; transition: box-shadow 250ms ease 0s; }
+
+a.article-link:hover > .article-card, a.article-link:focus > .article-card { box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 6px; }
+
+.article-inner { padding: 20px; }
+
+.article-title, .article-sub-title { margin: 0px; }
+
+.article-title { font-size: 18px; }
+
+.article-sub-title { font-weight: 400; color: rgb(98, 99, 102); }
+
+.article-image { display: block; }

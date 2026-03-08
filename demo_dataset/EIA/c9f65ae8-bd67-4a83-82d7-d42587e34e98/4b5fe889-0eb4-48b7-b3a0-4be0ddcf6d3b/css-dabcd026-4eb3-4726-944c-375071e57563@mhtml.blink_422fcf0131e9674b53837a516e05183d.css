@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-15ojd1r { color: var(--chakra-colors-white); background-image: url("https://spothero.cdn.prismic.io/spothero/cb9493f6-28af-41a5-8f62-7b2fd4cce4ef_home-hero.svg"); background-color: var(--chakra-colors-primary-default); background-size: cover; background-position: center center; padding-top: var(--chakra-space-14); padding-bottom: var(--chakra-space-14); }
+
+@media screen and (min-width: 48rem) {
+  .css-15ojd1r { padding-top: var(--chakra-space-32); padding-bottom: var(--chakra-space-32); }
+}

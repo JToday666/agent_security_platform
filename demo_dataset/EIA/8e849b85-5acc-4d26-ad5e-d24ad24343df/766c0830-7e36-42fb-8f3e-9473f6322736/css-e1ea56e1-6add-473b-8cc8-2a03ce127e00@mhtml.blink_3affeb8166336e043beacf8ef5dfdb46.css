@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.ui-widget-header, .ui-state-default, ui-button { background: rgb(44, 111, 168); border: 1px solid rgb(44, 111, 168); color: rgb(255, 255, 255); font-weight: bold; }
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .table-responsive { overflow-x: scroll; }
+}

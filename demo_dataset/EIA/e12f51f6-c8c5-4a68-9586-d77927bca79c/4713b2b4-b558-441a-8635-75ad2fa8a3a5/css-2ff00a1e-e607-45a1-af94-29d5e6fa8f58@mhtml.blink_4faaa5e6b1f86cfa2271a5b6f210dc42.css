@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.gift-card-wrapper .add-gift-card { margin: 12px 0px; }
+
+.gift-card-wrapper .add-gift-card .tds-form-item { grid-template-rows: unset; transition: height 100ms ease-in-out 0s; }
+
+.gift-card-wrapper .add-gift-card .tds-form-item.closed { display: none; }
+
+.gift-card-wrapper .add-gift-card .tds-form-item .gift-card-input-wrap { display: flex; margin-top: 4px; }
+
+.gift-card-wrapper .add-gift-card .tds-form-item .gift-card-input-wrap .tds-btn { margin: 0px 0px 0px 8px; min-width: auto; padding: 0px 12px; }
+
+.gift-card-wrapper .add-gift-card .tds-form-item:not(.tds-form-item--error) .tds-form-feedback-feedback { display: none; }
+
+.gift-card-wrapper .add-gift-card .tds-form-item .success-message { align-items: center; color: rgb(92, 94, 98); display: flex; font-size: 12px; margin: 6px; }
+
+.gift-card-wrapper .add-gift-card .tds-form-item .success-message.hide { display: none; }
+
+.gift-card-wrapper .add-gift-card .tds-form-item .success-message svg { color: rgb(18, 187, 0); margin-inline-end: 8px; }
+
+.gift-card-wrapper .use-gift-card { margin: 21px 0px; }

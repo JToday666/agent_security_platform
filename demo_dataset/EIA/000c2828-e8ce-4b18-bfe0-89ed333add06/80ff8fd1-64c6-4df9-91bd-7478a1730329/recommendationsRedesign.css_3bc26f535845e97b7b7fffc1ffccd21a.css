@@ -1,0 +1,641 @@
+@charset "utf-8";
+
+@-webkit-keyframes easeInCubicMotion { 
+  100% { transform: translate(150px); }
+}
+
+@-webkit-keyframes easeOutCubicMotion { 
+  100% { transform: translate(150px); }
+}
+
+.recommendations h3 { font-size: 1.5rem; margin-bottom: 40px; text-align: center; text-transform: uppercase; font-weight: 900 !important; }
+
+@media (min-width: 1024px) {
+  .recommendations h3 { font-size: 2.25rem; }
+}
+
+.recommendations .recommended-products-caro .slick-slide { height: inherit !important; }
+
+.recommendations .recommended-products-caro .slick-track { display: flex !important; }
+
+.recommendations .recommended-products-caro .grid-tile { margin-bottom: 20px; padding: 0px 5px; }
+
+@media (min-width: 768px) {
+  .recommendations .recommended-products-caro .grid-tile { margin-bottom: 0px; padding: 0px 12px; }
+}
+
+.recommendations .recommended-products-caro .product-tile .badges { top: -15px; }
+
+.recommendations .recommended-products-caro .product-tile .pdp-link a { line-height: 1.125rem; }
+
+.recommendations .recommended-products-caro .slick-dots { bottom: -18px; }
+
+.recently-viewed-carousel .veil .spinner .dot1, .recently-viewed-carousel .veil .spinner .dot2, .recommendations-redesign-homepage .veil .spinner .dot1, .recommendations-redesign-homepage .veil .spinner .dot2, .recommendations.recommendations-redesign .veil .spinner .dot1, .recommendations.recommendations-redesign .veil .spinner .dot2 { display: none !important; }
+
+.recently-viewed-carousel .veil .underlay, .recommendations-redesign-homepage .veil .underlay, .recommendations.recommendations-redesign .veil .underlay { background-color: rgb(255, 255, 255); opacity: 0.5; }
+
+@media (max-width: 767.98px) {
+  .recently-viewed-carousel .veil .underlay, .recommendations-redesign-homepage .veil .underlay, .recommendations.recommendations-redesign .veil .underlay { opacity: 0.2; }
+  .recently-viewed-carousel .slick-list, .recommendations-redesign-homepage .slick-list, .recommendations.recommendations-redesign .slick-list { padding-right: 33%; }
+  .recently-viewed-carousel .product-tile .price .range .value, .recommendations-redesign-homepage .product-tile .price .range .value, .recommendations.recommendations-redesign .product-tile .price .range .value { margin-top: 0px; }
+}
+
+.recently-viewed-carousel h3, .recommendations-redesign-homepage h3, .recommendations.recommendations-redesign h3 { font-size: 1.5rem; margin-bottom: 1.5rem; font-weight: 900 !important; }
+
+.recently-viewed-carousel .product-tile, .recommendations-redesign-homepage .product-tile, .recommendations.recommendations-redesign .product-tile { background: rgb(246, 246, 246); cursor: default; padding: 1rem 1rem 0.75rem; position: relative; }
+
+.recently-viewed-carousel .product-tile .color-swatches, .recommendations-redesign-homepage .product-tile .color-swatches, .recommendations.recommendations-redesign .product-tile .color-swatches { min-height: 2rem; }
+
+.recently-viewed-carousel .product-tile .product-tile-header, .recommendations-redesign-homepage .product-tile .product-tile-header, .recommendations.recommendations-redesign .product-tile .product-tile-header { min-height: 79px; }
+
+.recently-viewed-carousel .product-tile .product-tile-header a.name-link, .recommendations-redesign-homepage .product-tile .product-tile-header a.name-link, .recommendations.recommendations-redesign .product-tile .product-tile-header a.name-link { display: block; }
+
+.recently-viewed-carousel .product-tile .product-tile-header a, .recommendations-redesign-homepage .product-tile .product-tile-header a, .recommendations.recommendations-redesign .product-tile .product-tile-header a { display: inline-block; text-decoration: none; }
+
+@media (min-width: 768px) {
+  .recently-viewed-carousel .product-tile .image-container, .recommendations-redesign-homepage .product-tile .image-container, .recommendations.recommendations-redesign .product-tile .image-container { height: 263px; width: 263px; }
+}
+
+.recently-viewed-carousel .product-tile .image-container .tile-image.lazyload, .recommendations-redesign-homepage .product-tile .image-container .tile-image.lazyload, .recommendations.recommendations-redesign .product-tile .image-container .tile-image.lazyload { left: 50%; max-width: 100%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: auto; }
+
+.recently-viewed-carousel .product-tile .image-container .tile-image.lazyloading, .recommendations-redesign-homepage .product-tile .image-container .tile-image.lazyloading, .recommendations.recommendations-redesign .product-tile .image-container .tile-image.lazyloading { visibility: hidden; }
+
+.recently-viewed-carousel .product-tile .tile-body, .recommendations-redesign-homepage .product-tile .tile-body, .recommendations.recommendations-redesign .product-tile .tile-body { margin-top: 0.625rem; padding-bottom: 2.25rem; }
+
+.recently-viewed-carousel .product-tile .tile-body .bundle-pricing .conditions-pricing-on-plp .card-body, .recommendations-redesign-homepage .product-tile .tile-body .bundle-pricing .conditions-pricing-on-plp .card-body, .recommendations.recommendations-redesign .product-tile .tile-body .bundle-pricing .conditions-pricing-on-plp .card-body { -webkit-box-pack: start; justify-content: flex-start; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options, .recommendations-redesign-homepage .product-tile .tile-body .variant-options, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options { margin: 0px; min-height: 45px; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .pdp-swatch-label, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .pdp-swatch-label, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .pdp-swatch-label { display: block !important; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .pdp-swatch-label .card, .recently-viewed-carousel .product-tile .tile-body .variant-options .pdp-swatch-label .card.selected, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .pdp-swatch-label .card, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .pdp-swatch-label .card.selected, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .pdp-swatch-label .card, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .pdp-swatch-label .card.selected { background: transparent; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .pdp-swatch-label .card .card-body, .recently-viewed-carousel .product-tile .tile-body .variant-options .pdp-swatch-label .card.selected .card-body, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .pdp-swatch-label .card .card-body, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .pdp-swatch-label .card.selected .card-body, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .pdp-swatch-label .card .card-body, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .pdp-swatch-label .card.selected .card-body { background: rgb(246, 246, 246); border: 0px; color: rgb(0, 0, 0); font-size: 0.6875rem; font-weight: 400; padding: 0px; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .card, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .card, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .card { border: 0px; display: inline-block; margin: 0px 0.25rem 0.5rem 0px; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .card .card-body, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .card .card-body, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .card .card-body { background-color: transparent; border: 1px solid rgb(49, 112, 143); border-radius: 0.25rem; color: rgb(49, 112, 143); cursor: pointer; display: inline-block; font-size: 0.5rem; font-weight: 700; padding: 0.3rem 0.625rem; text-align: center; vertical-align: middle; width: auto; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .card .card-body .condition-prices, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .card .card-body .condition-prices, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .card .card-body .condition-prices { display: none; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .card.selected .card-body, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .card.selected .card-body, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .card.selected .card-body { background-color: rgb(49, 112, 143); color: rgb(255, 255, 255); cursor: default; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .condition-pricing, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .condition-pricing, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .condition-pricing { padding-bottom: 0px !important; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .size, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .size, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .size { margin-top: 0px; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .color .more-variant, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .color .more-variant, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .color .more-variant { padding-bottom: 0.5rem; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .color .attribute-swatches, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .color .attribute-swatches, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .color .attribute-swatches { display: inline-block; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .color .attribute-swatches .color-attribute-card-plp, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .color .attribute-swatches .color-attribute-card-plp, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .color .attribute-swatches .color-attribute-card-plp { cursor: pointer; display: inline-block; height: 40px; margin: 0px 0.2rem 0.4rem 0px; vertical-align: middle; width: 40px; }
+
+.recently-viewed-carousel .product-tile .tile-body .variant-options .color .attribute-swatches .color-value.selected, .recommendations-redesign-homepage .product-tile .tile-body .variant-options .color .attribute-swatches .color-value.selected, .recommendations.recommendations-redesign .product-tile .tile-body .variant-options .color .attribute-swatches .color-value.selected { border: 1px solid rgb(218, 54, 44); display: inline-block; padding: 0.188rem; vertical-align: middle; }
+
+.recently-viewed-carousel .product-tile .tile-body .conditions-pricing-on-plp .product-release-date, .recommendations-redesign-homepage .product-tile .tile-body .conditions-pricing-on-plp .product-release-date, .recommendations.recommendations-redesign .product-tile .tile-body .conditions-pricing-on-plp .product-release-date { display: block; font-size: 0.6875rem; padding-top: 0.5rem; }
+
+.recently-viewed-carousel .product-tile .tile-body .conditions-pricing-on-plp .card-body, .recommendations-redesign-homepage .product-tile .tile-body .conditions-pricing-on-plp .card-body, .recommendations.recommendations-redesign .product-tile .tile-body .conditions-pricing-on-plp .card-body { -webkit-box-align: center; -webkit-box-pack: justify; align-items: center; display: flex; justify-content: space-between; padding: 0px 0px 0.4rem; }
+
+.recently-viewed-carousel .product-tile .tile-body .conditions-pricing-on-plp .card-body .variant-type, .recommendations-redesign-homepage .product-tile .tile-body .conditions-pricing-on-plp .card-body .variant-type, .recommendations.recommendations-redesign .product-tile .tile-body .conditions-pricing-on-plp .card-body .variant-type { display: none; }
+
+.recently-viewed-carousel .product-tile .tile-body .conditions-pricing-on-plp .card-body .condition-prices, .recommendations-redesign-homepage .product-tile .tile-body .conditions-pricing-on-plp .card-body .condition-prices, .recommendations.recommendations-redesign .product-tile .tile-body .conditions-pricing-on-plp .card-body .condition-prices { margin-top: 0px; }
+
+.recently-viewed-carousel .product-tile .tile-body .conditions-pricing-on-plp .card, .recommendations-redesign-homepage .product-tile .tile-body .conditions-pricing-on-plp .card, .recommendations.recommendations-redesign .product-tile .tile-body .conditions-pricing-on-plp .card { background-color: transparent; border: 0px; display: none; }
+
+.recently-viewed-carousel .product-tile .tile-body .conditions-pricing-on-plp .card.selected, .recommendations-redesign-homepage .product-tile .tile-body .conditions-pricing-on-plp .card.selected, .recommendations.recommendations-redesign .product-tile .tile-body .conditions-pricing-on-plp .card.selected { display: block; }
+
+.recently-viewed-carousel .product-tile .tile-body .atc-btn-wrapper .instore-pickup-ajax, .recommendations-redesign-homepage .product-tile .tile-body .atc-btn-wrapper .instore-pickup-ajax, .recommendations.recommendations-redesign .product-tile .tile-body .atc-btn-wrapper .instore-pickup-ajax { display: none; }
+
+.recently-viewed-carousel .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp, .recommendations-redesign-homepage .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp, .recommendations.recommendations-redesign .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp { bottom: 1rem; margin: 0px; padding: 0.565rem 1.125rem; position: absolute; width: calc(100% - 2rem); }
+
+.recently-viewed-carousel .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp:focus, .recommendations-redesign-homepage .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp:focus, .recommendations.recommendations-redesign .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp:focus { box-shadow: none; }
+
+.recently-viewed-carousel .product-tile .tile-body .atc-btn-wrapper .add-to-cart-selection, .recommendations-redesign-homepage .product-tile .tile-body .atc-btn-wrapper .add-to-cart-selection, .recommendations.recommendations-redesign .product-tile .tile-body .atc-btn-wrapper .add-to-cart-selection { display: none; }
+
+.recently-viewed-carousel .product-tile .tile-body .atc-btn-wrapper .shiptohome-pickup, .recommendations-redesign-homepage .product-tile .tile-body .atc-btn-wrapper .shiptohome-pickup, .recommendations.recommendations-redesign .product-tile .tile-body .atc-btn-wrapper .shiptohome-pickup { bottom: 0px; font-size: 0.75rem; font-weight: 700; left: 0.5rem; position: absolute; right: 0.5rem; text-align: center; }
+
+.recently-viewed-carousel .product-tile .tile-body .atc-btn-wrapper .shiptohome-pickup .in-store-pickup, .recommendations-redesign-homepage .product-tile .tile-body .atc-btn-wrapper .shiptohome-pickup .in-store-pickup, .recommendations.recommendations-redesign .product-tile .tile-body .atc-btn-wrapper .shiptohome-pickup .in-store-pickup { color: rgb(218, 54, 44); display: block; font-size: 0.75rem; margin-bottom: 1rem; padding-top: 0.5rem; text-decoration: underline; }
+
+.recently-viewed-carousel .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp.btn.disabled, .recently-viewed-carousel .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp.btn:disabled, .recommendations-redesign-homepage .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp.btn.disabled, .recommendations-redesign-homepage .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp.btn:disabled, .recommendations.recommendations-redesign .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp.btn.disabled, .recommendations.recommendations-redesign .product-tile .tile-body .atc-btn-wrapper .add-to-cart-plp.btn:disabled { background-color: rgb(121, 122, 128); color: rgb(255, 255, 255); }
+
+.recently-viewed-carousel .product-tile .tile-body .choose-options-btn, .recommendations-redesign-homepage .product-tile .tile-body .choose-options-btn, .recommendations.recommendations-redesign .product-tile .tile-body .choose-options-btn { bottom: 1rem; margin: 0px; padding: 0.565rem 1.125rem; position: absolute; width: calc(100% - 2rem); }
+
+.recently-viewed-carousel .product-tile .tile-body .choose-options-btn:focus, .recommendations-redesign-homepage .product-tile .tile-body .choose-options-btn:focus, .recommendations.recommendations-redesign .product-tile .tile-body .choose-options-btn:focus { box-shadow: none; }
+
+.recently-viewed-carousel .product-tile .hide, .recommendations-redesign-homepage .product-tile .hide, .recommendations.recommendations-redesign .product-tile .hide { display: none; }
+
+.recently-viewed-carousel .product-tile .product-tile-availability, .recommendations-redesign-homepage .product-tile .product-tile-availability, .recommendations.recommendations-redesign .product-tile .product-tile-availability { font-size: 0.625rem; height: 1.5rem; margin-bottom: 0.5rem; }
+
+@media (max-width: 767.98px) {
+  .recently-viewed-carousel .product-tile .product-tile-availability, .recommendations-redesign-homepage .product-tile .product-tile-availability, .recommendations.recommendations-redesign .product-tile .product-tile-availability { height: 2.25rem; }
+}
+
+.recently-viewed-carousel .product-tile .pdp-link, .recommendations-redesign-homepage .product-tile .pdp-link, .recommendations.recommendations-redesign .product-tile .pdp-link { height: 1.875rem; margin-bottom: 0.3rem; padding-top: 0px; }
+
+.recently-viewed-carousel .product-tile .pdp-link .pd-name, .recommendations-redesign-homepage .product-tile .pdp-link .pd-name, .recommendations.recommendations-redesign .product-tile .pdp-link .pd-name { -webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box; font-size: 0.75rem; font-weight: 700; height: 1.875rem; line-height: 1.2; margin-bottom: 0px; overflow: hidden; text-overflow: ellipsis; }
+
+.recently-viewed-carousel .product-tile .tile-ratings, .recommendations-redesign-homepage .product-tile .tile-ratings, .recommendations.recommendations-redesign .product-tile .tile-ratings { height: 2rem; }
+
+.recently-viewed-carousel .product-tile .tile-ratings .ratings, .recommendations-redesign-homepage .product-tile .tile-ratings .ratings, .recommendations.recommendations-redesign .product-tile .tile-ratings .ratings { margin-bottom: 0.25rem; }
+
+.recently-viewed-carousel .product-tile .more-variant, .recommendations-redesign-homepage .product-tile .more-variant, .recommendations.recommendations-redesign .product-tile .more-variant { color: rgb(218, 54, 44); display: inline-block; vertical-align: middle; }
+
+.recently-viewed-carousel .product-tile .availability-msg, .recommendations-redesign-homepage .product-tile .availability-msg, .recommendations.recommendations-redesign .product-tile .availability-msg { display: none; }
+
+.recently-viewed-carousel .product-tile .default-pricing, .recommendations-redesign-homepage .product-tile .default-pricing, .recommendations.recommendations-redesign .product-tile .default-pricing { width: 100%; }
+
+@media (min-width: 768px) {
+  .recently-viewed-carousel .product-tile .default-pricing, .recommendations-redesign-homepage .product-tile .default-pricing, .recommendations.recommendations-redesign .product-tile .default-pricing { padding: 0px; }
+}
+
+.recently-viewed-carousel .product-tile .default-pricing .price .bundle-valued-price, .recommendations-redesign-homepage .product-tile .default-pricing .price .bundle-valued-price, .recommendations.recommendations-redesign .product-tile .default-pricing .price .bundle-valued-price { color: rgb(102, 102, 102); font-size: 0.75rem; margin-top: 0.25rem; }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .badge-container-redesign, .recommendations-redesign-homepage .product-tile .default-pricing .price .badge-container-redesign, .recommendations.recommendations-redesign .product-tile .default-pricing .price .badge-container-redesign { display: block; }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .badge-container-redesign .badge-indicator, .recently-viewed-carousel .product-tile .default-pricing .price .badge-container-redesign .sale-indicator, .recommendations-redesign-homepage .product-tile .default-pricing .price .badge-container-redesign .badge-indicator, .recommendations-redesign-homepage .product-tile .default-pricing .price .badge-container-redesign .sale-indicator, .recommendations.recommendations-redesign .product-tile .default-pricing .price .badge-container-redesign .badge-indicator, .recommendations.recommendations-redesign .product-tile .default-pricing .price .badge-container-redesign .sale-indicator { border-radius: 7px 3px 7px 7px; color: rgb(255, 255, 255); display: inline-block; font-size: 0.625rem; font-weight: 700; margin: 0.35rem 0.2rem 0px 0px; padding: 0.25rem 0.375rem 0.16rem; text-transform: uppercase; }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .badge-container-redesign .sale-indicator, .recommendations-redesign-homepage .product-tile .default-pricing .price .badge-container-redesign .sale-indicator, .recommendations.recommendations-redesign .product-tile .default-pricing .price .badge-container-redesign .sale-indicator { background-color: rgb(202, 26, 36); }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .badge-container-redesign .sale-indicator.hide, .recommendations-redesign-homepage .product-tile .default-pricing .price .badge-container-redesign .sale-indicator.hide, .recommendations.recommendations-redesign .product-tile .default-pricing .price .badge-container-redesign .sale-indicator.hide { display: none; }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .badge-container-redesign .badge-indicator, .recommendations-redesign-homepage .product-tile .default-pricing .price .badge-container-redesign .badge-indicator, .recommendations.recommendations-redesign .product-tile .default-pricing .price .badge-container-redesign .badge-indicator { background-color: rgb(129, 77, 192); }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .selling-price-redesign, .recommendations-redesign-homepage .product-tile .default-pricing .price .selling-price-redesign, .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign { display: block; padding-top: 0.4rem; }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .selling-price-redesign .actual-price, .recommendations-redesign-homepage .product-tile .default-pricing .price .selling-price-redesign .actual-price, .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign .actual-price { color: rgb(0, 0, 0); display: inline-block; font-size: 1.25rem; font-weight: 700; line-height: 1.2; padding-right: 0.25rem; text-transform: uppercase; }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .selling-price-redesign .savings-indicator-value, .recently-viewed-carousel .product-tile .default-pricing .price .selling-price-redesign .strike-through.strike-redesign, .recently-viewed-carousel .product-tile .default-pricing .price .selling-price-redesign .was-strike, .recommendations-redesign-homepage .product-tile .default-pricing .price .selling-price-redesign .savings-indicator-value, .recommendations-redesign-homepage .product-tile .default-pricing .price .selling-price-redesign .strike-through.strike-redesign, .recommendations-redesign-homepage .product-tile .default-pricing .price .selling-price-redesign .was-strike, .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign .savings-indicator-value, .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign .strike-through.strike-redesign, .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign .was-strike { font-size: 0.625rem; font-weight: 700; line-height: 1.2; }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .selling-price-redesign .strike-through.strike-redesign, .recently-viewed-carousel .product-tile .default-pricing .price .selling-price-redesign .was-strike, .recommendations-redesign-homepage .product-tile .default-pricing .price .selling-price-redesign .strike-through.strike-redesign, .recommendations-redesign-homepage .product-tile .default-pricing .price .selling-price-redesign .was-strike, .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign .strike-through.strike-redesign, .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign .was-strike { color: rgb(102, 102, 102); font-weight: 400; }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .selling-price-redesign .strike-through, .recommendations-redesign-homepage .product-tile .default-pricing .price .selling-price-redesign .strike-through, .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign .strike-through { margin: 0px 0.5rem 0px 0px; }
+
+.recently-viewed-carousel .product-tile .default-pricing .price .selling-price-redesign .savings-indicator-value, .recommendations-redesign-homepage .product-tile .default-pricing .price .selling-price-redesign .savings-indicator-value, .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign .savings-indicator-value { color: rgb(4, 104, 8); }
+
+.recently-viewed-carousel .slick-slide, .recommendations-redesign-homepage .slick-slide, .recommendations.recommendations-redesign .slick-slide { width: auto; }
+
+.recently-viewed-carousel .slick-next, .recently-viewed-carousel .slick-prev, .recommendations-redesign-homepage .slick-next, .recommendations-redesign-homepage .slick-prev, .recommendations.recommendations-redesign .slick-next, .recommendations.recommendations-redesign .slick-prev { background: rgb(0, 0, 0); border: 1px solid rgb(217, 217, 217); height: 80px; opacity: 1; top: 35%; width: 40px; display: none !important; }
+
+@media (min-width: 768px) {
+  .recently-viewed-carousel .slick-next, .recently-viewed-carousel .slick-prev, .recommendations-redesign-homepage .slick-next, .recommendations-redesign-homepage .slick-prev, .recommendations.recommendations-redesign .slick-next, .recommendations.recommendations-redesign .slick-prev { display: block !important; }
+}
+
+.recently-viewed-carousel .slick-next::before, .recently-viewed-carousel .slick-prev::before, .recommendations-redesign-homepage .slick-next::before, .recommendations-redesign-homepage .slick-prev::before, .recommendations.recommendations-redesign .slick-next::before, .recommendations.recommendations-redesign .slick-prev::before { background-position: 50% center; border: none; height: 12px; transform: none; width: 12px; }
+
+.recently-viewed-carousel .slick-prev, .recommendations-redesign-homepage .slick-prev, .recommendations.recommendations-redesign .slick-prev { left: 12px; }
+
+.recently-viewed-carousel .slick-prev::before, .recommendations-redesign-homepage .slick-prev::before, .recommendations.recommendations-redesign .slick-prev::before { background: url("../images/svg-icons/carousel-arrow-left-white.svg") 10px 7px no-repeat; }
+
+.recently-viewed-carousel .slick-next, .recommendations-redesign-homepage .slick-next, .recommendations.recommendations-redesign .slick-next { right: 6px; }
+
+.recently-viewed-carousel .slick-next::before, .recommendations-redesign-homepage .slick-next::before, .recommendations.recommendations-redesign .slick-next::before { background: url("../images/svg-icons/carousel-arrow-right-white.svg") 14px 7px no-repeat; }
+
+.variant-price { font-weight: 600; }
+
+.variant-type { color: rgb(35, 35, 35); display: inline-block; font-size: 0.75rem; padding-left: 2px; text-decoration: underline; }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .promotional-price, .last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .regular-price-badge, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .promotional-price, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .regular-price-badge, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .promotional-price, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .regular-price-badge { display: none; }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign { display: block; padding-top: 0.4rem; }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .actual-price, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .actual-price, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .actual-price { color: rgb(0, 0, 0); font-size: 1rem; font-weight: 900; text-transform: uppercase; }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .actual-price .price-pro, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .actual-price .price-pro, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .actual-price .price-pro { color: rgb(0, 0, 0); }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .strike-redesign, .last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .was-strike, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .strike-redesign, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .was-strike, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .strike-redesign, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .was-strike { color: rgb(102, 102, 102); display: inline; font-size: 0.625rem; }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .savings-indicator-value, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .savings-indicator-value, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .regular-price .selling-price-redesign .savings-indicator-value { color: rgb(4, 104, 8); display: inline; font-size: 0.625rem; font-weight: 700; }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .pro-day-badge-heading, .last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .pro-day-badge-heading, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .pro-day-badge-heading, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator { background-color: rgb(129, 77, 192); border-radius: 7px 3px 7px 7px; color: rgb(255, 255, 255); display: inline-block; font-size: 0.625rem; font-weight: 700; margin: 0.75rem 0.2rem 0.1rem 0px; padding: 0.25rem 0.375rem 0.16rem; text-transform: uppercase; }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .pro-day-badge-heading::before, .last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator::before, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .pro-day-badge-heading::before, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator::before, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .pro-day-badge-heading::before, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator::before { content: none; }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator { background-color: rgb(202, 26, 36); }
+
+.last-visited-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .strike-through-desktop, .recommendations-redesign .product-tile .conditions-pricing-on-plp .pro-day-pricing .strike-through-desktop, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .strike-through-desktop { display: none; }
+
+.recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .pro-day-badge-heading, .recommendations-redesign-homepage .product-tile .conditions-pricing-on-plp .pro-day-pricing .badge-container-redesign .sale-indicator { margin: 0.35rem 0.2rem 0px 0px; }
+
+.color-green-light { color: rgb(31, 153, 106); }
+
+.color-cyan-light { color: rgb(54, 179, 156); }
+
+.color-red { color: rgb(218, 54, 44); }
+
+@keyframes easeInCubicMotion { 
+  100% { transform: translate(150px); }
+}
+
+@keyframes easeOutCubicMotion { 
+  100% { transform: translate(150px); }
+}
+
+body { background: rgb(242, 244, 247); overflow-x: hidden; }
+
+.truste_cm_outerdiv { overflow: hidden !important; }
+
+.add-to-cart, .add-to-cart-global { -webkit-box-flex: 1; flex-basis: 0px; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; }
+
+@media (max-width: 575.98px) {
+  .add-to-cart, .add-to-cart-global { max-width: 100%; }
+}
+
+.modal-background { background-color: rgb(0, 0, 0); display: none; height: 100%; left: 0px; opacity: 0.5; position: fixed; top: 0px; width: 100%; z-index: 3; }
+
+input[placeholder] { text-overflow: ellipsis; }
+
+.hide-gift-cards, .hide-order-discount, .hide-shipping-discount, .hide-shipping-surcharge, .hide-total-savings { display: none; }
+
+.total-savings-total { font-size: 0.75rem; text-align: center; width: 100%; }
+
+.gift-card-totals, .order-discount, .shipping-discount, .shipping-method-discount { color: rgb(31, 153, 106); }
+
+.error-messaging { position: fixed; top: 0px; width: 100%; z-index: 1; }
+
+.error-hero { background-image: url("../images/storelocator.jpg"); margin-bottom: 0.625em; }
+
+.error-message { color: rgb(230, 74, 25); margin-bottom: 3.125rem; margin-top: 3.125rem; }
+
+.error.continue-shopping { margin-bottom: 6.25em; }
+
+h2.order-summary { font-weight: 700; text-align: center; }
+
+.sub-title-os { }
+
+.os-discount { min-height: 2.5rem; }
+
+.green-font { color: rgb(31, 153, 106); }
+
+.strike-through { color: rgb(129, 129, 129); text-decoration: line-through; }
+
+.cart-order-summary .shipping-discounts { padding-left: 0px; }
+
+.color-black { color: rgb(0, 0, 0); }
+
+.color-white { color: rgb(255, 255, 255); }
+
+.content-container .block-content-inner[class*="-absolute"], .content-container .block-content[class*="-absolute"] { top: 0px; }
+
+@media (min-width: 576px) {
+  .w-sm-25 { width: 25% !important; }
+  .w-sm-33 { width: 33.3333% !important; }
+  .w-sm-50 { width: 50% !important; }
+  .w-sm-66 { width: 66.6666% !important; }
+  .w-sm-75 { width: 75% !important; }
+  .w-sm-100 { width: 100% !important; }
+  .h-sm-25 { height: 25% !important; }
+  .h-sm-33 { height: 33.3333% !important; }
+  .h-sm-50 { height: 50% !important; }
+  .h-sm-66 { height: 66.6666% !important; }
+  .h-sm-75 { height: 75% !important; }
+  .h-sm-100 { height: 100% !important; }
+}
+
+@media (min-width: 768px) {
+  .w-md-25 { width: 25% !important; }
+  .w-md-33 { width: 33.3333% !important; }
+  .w-md-50 { width: 50% !important; }
+  .w-md-66 { width: 66.6666% !important; }
+  .w-md-75 { width: 75% !important; }
+  .w-md-100 { width: 100% !important; }
+  .h-md-25 { height: 25% !important; }
+  .h-md-33 { height: 33.3333% !important; }
+  .h-md-50 { height: 50% !important; }
+  .h-md-66 { height: 66.6666% !important; }
+  .h-md-75 { height: 75% !important; }
+  .h-md-100 { height: 100% !important; }
+}
+
+@media (min-width: 1024px) {
+  .w-lg-25 { width: 25% !important; }
+  .w-lg-33 { width: 33.3333% !important; }
+  .w-lg-50 { width: 50% !important; }
+  .w-lg-66 { width: 66.6666% !important; }
+  .w-lg-75 { width: 75% !important; }
+  .w-lg-100 { width: 100% !important; }
+  .h-lg-25 { height: 25% !important; }
+  .h-lg-33 { height: 33.3333% !important; }
+  .h-lg-50 { height: 50% !important; }
+  .h-lg-66 { height: 66.6666% !important; }
+  .h-lg-75 { height: 75% !important; }
+  .h-lg-100 { height: 100% !important; }
+}
+
+@media (min-width: 1280px) {
+  .w-xl-25 { width: 25% !important; }
+  .w-xl-33 { width: 33.3333% !important; }
+  .w-xl-50 { width: 50% !important; }
+  .w-xl-66 { width: 66.6666% !important; }
+  .w-xl-75 { width: 75% !important; }
+  .w-xl-100 { width: 100% !important; }
+  .h-xl-25 { height: 25% !important; }
+  .h-xl-33 { height: 33.3333% !important; }
+  .h-xl-50 { height: 50% !important; }
+  .h-xl-66 { height: 66.6666% !important; }
+  .h-xl-75 { height: 75% !important; }
+  .h-xl-100 { height: 100% !important; }
+}
+
+.position-absolute { position: absolute !important; }
+
+.position-relative { position: relative !important; }
+
+.position-fixed { position: fixed !important; }
+
+.position-static { position: static !important; }
+
+.position-sticky { position: sticky !important; }
+
+@media (min-width: 576px) {
+  .position-sm-absolute { position: absolute !important; }
+  .position-sm-relative { position: relative !important; }
+  .position-sm-fixed { position: fixed !important; }
+  .position-sm-static { position: static !important; }
+  .position-sm-sticky { position: sticky !important; }
+}
+
+@media (min-width: 768px) {
+  .position-md-absolute { position: absolute !important; }
+  .position-md-relative { position: relative !important; }
+  .position-md-fixed { position: fixed !important; }
+  .position-md-static { position: static !important; }
+  .position-md-sticky { position: sticky !important; }
+}
+
+@media (min-width: 1024px) {
+  .position-lg-absolute { position: absolute !important; }
+  .position-lg-relative { position: relative !important; }
+  .position-lg-fixed { position: fixed !important; }
+  .position-lg-static { position: static !important; }
+  .position-lg-sticky { position: sticky !important; }
+}
+
+@media (min-width: 1280px) {
+  .position-xl-absolute { position: absolute !important; }
+  .position-xl-relative { position: relative !important; }
+  .position-xl-fixed { position: fixed !important; }
+  .position-xl-static { position: static !important; }
+  .position-xl-sticky { position: sticky !important; }
+}
+
+@media (max-width: 1023.98px) {
+  .mob-none { display: none !important; }
+}
+
+.delivery-options-card .date-expected .geo-fast-shipping, .shipment-methods .display-name .geo-fast-shipping, .shipping-options-available .delivery-message .geo-fast-shipping { color: rgb(0, 121, 106); font-weight: 700; }
+
+.pro-day-pricing-2022 { color: rgb(64, 51, 182); display: none; font-family: Poppins, "Open Sans", sans-serif; font-size: 1.75rem; font-weight: 600; letter-spacing: -0.42px; line-height: 2.25rem; }
+
+.pro-day-pricing-2022.show { display: inline-block; }
+
+.pro-day-pricing-2022.pricing { font-size: 1rem; }
+
+.pro-day-pricing-container .pro-day-pricing-2022.show { display: inline-block; }
+
+.pro-day-pricing-2022.copy { font-size: 16px; }
+
+.pro-badge { background-color: rgb(207, 203, 243); color: rgb(45, 33, 154); }
+
+.last-visited-redesign, .recommendations.recommendations-redesign, .recommendations.recommendations-redesign-homepage { margin-top: 0px; padding: 0px; }
+
+.last-visited-redesign .veil .spinner .dot1, .last-visited-redesign .veil .spinner .dot2, .recommendations.recommendations-redesign .veil .spinner .dot1, .recommendations.recommendations-redesign .veil .spinner .dot2, .recommendations.recommendations-redesign-homepage .veil .spinner .dot1, .recommendations.recommendations-redesign-homepage .veil .spinner .dot2 { display: none !important; }
+
+.last-visited-redesign .veil .underlay, .recommendations.recommendations-redesign .veil .underlay, .recommendations.recommendations-redesign-homepage .veil .underlay { background-color: rgb(255, 255, 255); opacity: 0.5; }
+
+@media (max-width: 767.98px) {
+  .last-visited-redesign .veil .underlay, .recommendations.recommendations-redesign .veil .underlay, .recommendations.recommendations-redesign-homepage .veil .underlay { opacity: 0.2; }
+  .last-visited-redesign, .recommendations.recommendations-redesign, .recommendations.recommendations-redesign-homepage { padding: 0.75rem; }
+}
+
+.last-visited-redesign h3, .recommendations.recommendations-redesign h3, .recommendations.recommendations-redesign-homepage h3 { color: rgb(18, 18, 18); font-size: 1.125rem; margin-bottom: 0.75rem; text-align: left; text-transform: capitalize; font-weight: 700 !important; }
+
+@media (min-width: 768px) {
+  .last-visited-redesign h3, .recommendations.recommendations-redesign h3, .recommendations.recommendations-redesign-homepage h3 { font-size: 1.25rem; margin-top: 15px; }
+}
+
+.last-visited-redesign .show-pagination, .recommendations.recommendations-redesign .show-pagination, .recommendations.recommendations-redesign-homepage .show-pagination { -webkit-box-pack: justify; display: flex; justify-content: space-between; }
+
+@media (min-width: 768px) {
+  .last-visited-redesign .show-pagination h3, .recommendations.recommendations-redesign .show-pagination h3, .recommendations.recommendations-redesign-homepage .show-pagination h3 { flex-basis: 50%; }
+}
+
+.last-visited-redesign.no-searchresult-rec .show-pagination, .recommendations.recommendations-redesign-homepage.no-searchresult-rec .show-pagination, .recommendations.recommendations-redesign.no-searchresult-rec .show-pagination { margin-top: 1.1875rem; }
+
+.last-visited-redesign .pagingInfo, .recommendations.recommendations-redesign .pagingInfo, .recommendations.recommendations-redesign-homepage .pagingInfo { font-size: 1rem; font-weight: 600; margin: 15px 12px 12px 0px; padding-right: 12px; }
+
+@media (max-width: 767.98px) {
+  .last-visited-redesign .pagingInfo, .recommendations.recommendations-redesign .pagingInfo, .recommendations.recommendations-redesign-homepage .pagingInfo { display: none; }
+}
+
+.last-visited-redesign .slick-dots, .recommendations.recommendations-redesign .slick-dots, .recommendations.recommendations-redesign-homepage .slick-dots { bottom: 40px; z-index: -1; }
+
+.last-visited-redesign .slick-dots li, .recommendations.recommendations-redesign .slick-dots li, .recommendations.recommendations-redesign-homepage .slick-dots li { -webkit-box-flex: 1; flex-grow: 1; visibility: hidden; }
+
+.last-visited-redesign .slick-dots li button, .recommendations.recommendations-redesign .slick-dots li button, .recommendations.recommendations-redesign-homepage .slick-dots li button { width: 100%; }
+
+@media (max-width: 767.98px) {
+  .last-visited-redesign .slick-dots, .recommendations.recommendations-redesign .slick-dots, .recommendations.recommendations-redesign-homepage .slick-dots { display: none; }
+}
+
+.last-visited-redesign .grid-tile, .recommendations.recommendations-redesign .grid-tile, .recommendations.recommendations-redesign-homepage .grid-tile { margin: 0px 0.75rem 0px 0px; outline: none; padding: 0px; }
+
+.last-visited-redesign .grid-tile .product-tile-link-block, .recommendations.recommendations-redesign .grid-tile .product-tile-link-block, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile-link-block { background-color: rgb(0, 0, 0); border-radius: 6px; inset: 0px; opacity: 0.03; pointer-events: none; position: absolute; z-index: 1; }
+
+.last-visited-redesign .grid-tile .product-tile, .recommendations.recommendations-redesign .grid-tile .product-tile, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile { -webkit-box-orient: vertical; -webkit-box-direction: normal; background: transparent; box-shadow: none; display: flex; flex-direction: column; height: 100%; margin: 0px; padding: 16px; position: relative; transition: box-shadow 0.1s ease-in-out 0s, -webkit-box-shadow 0.1s ease-in-out 0s; width: auto; outline: none !important; }
+
+.last-visited-redesign .grid-tile .product-tile .full-height, .recommendations.recommendations-redesign .grid-tile .product-tile .full-height, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .full-height { height: 100%; }
+
+.last-visited-redesign .grid-tile .product-tile .tile-body, .recommendations.recommendations-redesign .grid-tile .product-tile .tile-body, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .tile-body { -webkit-box-orient: vertical; -webkit-box-direction: normal; display: flex; flex-direction: column; padding-bottom: 0px; }
+
+.last-visited-redesign .grid-tile .product-tile .tile-body .link-name, .recommendations.recommendations-redesign .grid-tile .product-tile .tile-body .link-name, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .tile-body .link-name { display: block; text-decoration: none; }
+
+.last-visited-redesign .grid-tile .product-tile .tile-body .link-name .pdp-link, .recommendations.recommendations-redesign .grid-tile .product-tile .tile-body .link-name .pdp-link, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .tile-body .link-name .pdp-link { margin-bottom: 0.25rem; padding-top: 0px; }
+
+.last-visited-redesign .grid-tile .product-tile .tile-body .link-name .pd-name, .recommendations.recommendations-redesign .grid-tile .product-tile .tile-body .link-name .pd-name, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .tile-body .link-name .pd-name { -webkit-box-orient: vertical; -webkit-line-clamp: 2; color: rgb(39, 39, 39); font-size: 0.875rem; font-weight: 600; line-height: 1.2; margin-bottom: 0px; max-height: 2.1rem; overflow: hidden; text-overflow: ellipsis; display: -webkit-box !important; }
+
+.last-visited-redesign .grid-tile .product-tile .condition, .recommendations.recommendations-redesign .grid-tile .product-tile .condition, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .condition { padding-top: 0px; }
+
+.last-visited-redesign .grid-tile .product-tile a, .recommendations.recommendations-redesign .grid-tile .product-tile a, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile a { display: inline-block; text-decoration: none; }
+
+.last-visited-redesign .grid-tile .product-tile .more-variant, .recommendations.recommendations-redesign .grid-tile .product-tile .more-variant, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .more-variant { color: rgb(0, 0, 0); font-size: 0.875rem; text-decoration: underline; }
+
+.last-visited-redesign .grid-tile .product-tile .more-variant:nth-child(2), .recommendations.recommendations-redesign .grid-tile .product-tile .more-variant:nth-child(2), .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .more-variant:nth-child(2) { display: none; }
+
+.last-visited-redesign .grid-tile .product-tile .more-variant-count, .recommendations.recommendations-redesign .grid-tile .product-tile .more-variant-count, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .more-variant-count { color: rgb(40, 40, 40); display: inline-block; font-size: 0.875rem; font-weight: 400; margin-top: -0.25rem; text-decoration: none; vertical-align: middle; }
+
+.last-visited-redesign .grid-tile .product-tile .more-variant-count:first-child, .recommendations.recommendations-redesign .grid-tile .product-tile .more-variant-count:first-child, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .more-variant-count:first-child { display: none; }
+
+.last-visited-redesign .grid-tile .product-tile .swatch.color .more-variant-count, .recommendations.recommendations-redesign .grid-tile .product-tile .swatch.color .more-variant-count, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .swatch.color .more-variant-count { margin-top: 2px; vertical-align: top; }
+
+.last-visited-redesign .grid-tile .product-tile .add-to-cart-plp-buttons, .last-visited-redesign .grid-tile .product-tile .choose-options-link, .last-visited-redesign .grid-tile .product-tile .product-availability, .recommendations.recommendations-redesign .grid-tile .product-tile .add-to-cart-plp-buttons, .recommendations.recommendations-redesign .grid-tile .product-tile .choose-options-link, .recommendations.recommendations-redesign .grid-tile .product-tile .product-availability, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .add-to-cart-plp-buttons, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .choose-options-link, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-availability { display: none; }
+
+.last-visited-redesign .grid-tile .product-tile .pd-name, .last-visited-redesign .grid-tile .product-tile .pdp-link, .last-visited-redesign .grid-tile .product-tile .product-tile-availability, .last-visited-redesign .grid-tile .product-tile .tile-ratings, .recommendations.recommendations-redesign .grid-tile .product-tile .pd-name, .recommendations.recommendations-redesign .grid-tile .product-tile .pdp-link, .recommendations.recommendations-redesign .grid-tile .product-tile .product-tile-availability, .recommendations.recommendations-redesign .grid-tile .product-tile .tile-ratings, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .pd-name, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .pdp-link, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-tile-availability, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .tile-ratings { height: auto; }
+
+.last-visited-redesign .grid-tile .product-tile .product-tile-availability, .recommendations.recommendations-redesign .grid-tile .product-tile .product-tile-availability, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-tile-availability { color: rgb(114, 114, 114); font-size: 0.75rem; font-weight: 400; }
+
+.last-visited-redesign .grid-tile .product-tile .product-tile-availability .platform, .recommendations.recommendations-redesign .grid-tile .product-tile .product-tile-availability .platform, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-tile-availability .platform { padding-right: 0.125rem !important; }
+
+.last-visited-redesign .grid-tile .product-tile .product-tile-availability .gc-seperator, .recommendations.recommendations-redesign .grid-tile .product-tile .product-tile-availability .gc-seperator, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-tile-availability .gc-seperator { display: inline-block; padding-right: 0.125rem; }
+
+.last-visited-redesign .grid-tile .product-tile .tile-ratings, .recommendations.recommendations-redesign .grid-tile .product-tile .tile-ratings, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .tile-ratings { margin-bottom: 0.1rem; }
+
+.last-visited-redesign .grid-tile .product-tile .tile-ratings .star-img, .recommendations.recommendations-redesign .grid-tile .product-tile .tile-ratings .star-img, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .tile-ratings .star-img { background-image: url("../../images/star-ratings-black.svg"); }
+
+.last-visited-redesign .grid-tile .product-tile .product-badge-content, .recommendations.recommendations-redesign .grid-tile .product-tile .product-badge-content, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-badge-content { margin-bottom: 10px; }
+
+.last-visited-redesign .grid-tile .product-tile .product-badge-container, .recommendations.recommendations-redesign .grid-tile .product-tile .product-badge-container, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-badge-container { margin-right: 25px; width: max-content; }
+
+.last-visited-redesign .grid-tile .product-tile .product-badge-container .product-badge-indicator, .recommendations.recommendations-redesign .grid-tile .product-tile .product-badge-container .product-badge-indicator, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-badge-container .product-badge-indicator { background: url("../images/plp-redesign-new-sprite.png") -338px -10px; display: inline-block; height: 20px; vertical-align: middle; width: 20px; }
+
+.last-visited-redesign .grid-tile .product-tile .product-badge-container .product-badge-label, .recommendations.recommendations-redesign .grid-tile .product-tile .product-badge-container .product-badge-label, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-badge-container .product-badge-label { color: rgb(40, 40, 40); font-size: 0.75rem; font-weight: 600; padding-left: 2px; padding-top: 1px; text-align: left; text-transform: capitalize; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-price, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-price, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-price { font-weight: 600; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-type, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-type, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-type { -webkit-box-align: center; align-items: center; color: rgb(35, 35, 35); display: inline-block; font-size: 0.75rem; padding-left: 2px; text-decoration: none; }
+
+.last-visited-redesign .grid-tile .product-tile .product-tile-header, .recommendations.recommendations-redesign .grid-tile .product-tile .product-tile-header, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .product-tile-header { -webkit-box-ordinal-group: 3; margin-bottom: 0.25rem; min-height: unset; order: 2; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options { -webkit-box-ordinal-group: 4; margin: 0px 0px 0.25rem; min-height: unset; order: 3; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .color, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .color, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .color { margin-bottom: 0.25rem; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .color .attribute-swatches { display: inline-block; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp { display: inline-block; height: 20px; pointer-events: none; width: 20px; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp .color-value, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp .color-value, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp .color-value { border: none; border-radius: 50%; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp .color-value.selected, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp .color-value.selected, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp .color-value.selected { padding: 0px; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp img, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp img, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .color .attribute-swatches .color-attribute-card-plp img { border: none; border-radius: 50%; height: 1.25rem; width: 1.25rem; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .condition-pricing, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .condition-pricing, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .condition-pricing { padding-bottom: 0px !important; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .condition-pricing .condition-prices, .last-visited-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .condition-pricing .condition-prices, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .condition-pricing .condition-prices, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .pdp-swatch-label { display: none; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label .card, .last-visited-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label .card.selected, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label .card, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label .card.selected, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .pdp-swatch-label .card, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .pdp-swatch-label .card.selected { background: transparent; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label .card .card-body, .last-visited-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label .card.selected .card-body, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label .card .card-body, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .pdp-swatch-label .card.selected .card-body, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .pdp-swatch-label .card .card-body, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .pdp-swatch-label .card.selected .card-body { background: rgb(246, 246, 246); border: 0px; color: rgb(0, 0, 0); font-size: 0.6875rem; font-weight: 400; padding: 0px; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .card, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .card, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .card { border: 0px; display: inline-block; margin: 0px 0.25rem 0.5rem 0px; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .card .card-body, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .card .card-body, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .card .card-body { border: 1px solid rgb(148, 148, 148); border-radius: 1px; color: rgb(40, 40, 40); font-size: 0.875rem; font-weight: 400; letter-spacing: -0.2px; padding: 0.375rem; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .card.selected .card-body, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .card.selected .card-body, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .card.selected .card-body { background-color: rgb(35, 35, 35); border-color: rgb(35, 35, 35); border-radius: 2px; border-width: 1px; color: rgb(255, 255, 255); }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .card.not-orderable, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .card.not-orderable, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .card.not-orderable { pointer-events: none; }
+
+.last-visited-redesign .grid-tile .product-tile .variant-options .card.not-orderable .card-body, .recommendations.recommendations-redesign .grid-tile .product-tile .variant-options .card.not-orderable .card-body, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .variant-options .card.not-orderable .card-body { color: rgb(148, 148, 148); }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp { border: none; margin: 0px 0px 0.125rem; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .product-release-date, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .product-release-date, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .product-release-date { display: none; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .card { background-color: transparent; border: 0px; display: none; margin-bottom: 0px; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card.selected, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card.selected, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .card.selected { display: block; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .product-release-date, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .product-release-date, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .product-release-date { color: rgb(40, 40, 40); }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card-body, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card-body, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .card-body { -webkit-box-align: center; -webkit-box-pack: justify; align-items: center; border: none; display: flex; justify-content: space-between; padding: 0px; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card-body .variant-type, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card-body .variant-type, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .card-body .variant-type { display: none; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card-body .condition-prices, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .card-body .condition-prices, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .card-body .condition-prices { margin-top: 0px; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign { display: block; padding-top: 0.4rem; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign .actual-price, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign .actual-price, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign .actual-price { color: rgb(40, 40, 40); display: inline-block; font-size: 1.25rem; font-weight: 700; line-height: 1.2; padding-right: 0.25rem; text-transform: capitalize; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign .actual-price.see-price-in-cart, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign .actual-price.see-price-in-cart, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign .actual-price.see-price-in-cart { font-size: 1rem; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .badge-container-redesign.has-savings, .last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .savings-indicator-value, .last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .was-strike, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .badge-container-redesign.has-savings, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .savings-indicator-value, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .was-strike, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .badge-container-redesign.has-savings, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .savings-indicator-value, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .was-strike { display: none; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .actual-price, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .actual-price, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .actual-price { color: rgb(231, 34, 12); }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .strike-redesign.strike-through .value, .recommendations.recommendations-redesign .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .strike-redesign.strike-through .value, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .conditions-pricing-on-plp .default-pricing .price .selling-price-redesign.has-savings .strike-redesign.strike-through .value { color: rgb(114, 114, 114); font-size: 0.875rem; font-weight: 400; }
+
+.last-visited-redesign .slick-list, .recommendations.recommendations-redesign .slick-list, .recommendations.recommendations-redesign-homepage .slick-list { display: block; overflow: hidden !important; padding: 0px 12px !important; }
+
+@media (min-width: 768px) {
+  .last-visited-redesign .recommended-products-caro-redesign, .recommendations.recommendations-redesign .recommended-products-caro-redesign, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign { display: flex; margin-bottom: -34px; min-height: 380px; overflow: hidden; padding: 0px 0px 10px; width: 100%; }
+  .last-visited-redesign .recommended-products-caro-redesign.slick-slider, .recommendations.recommendations-redesign .recommended-products-caro-redesign.slick-slider, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign.slick-slider { display: block; }
+  .last-visited-redesign .recommended-products-caro-redesign .slick-next, .last-visited-redesign .recommended-products-caro-redesign .slick-prev, .recommendations.recommendations-redesign .recommended-products-caro-redesign .slick-next, .recommendations.recommendations-redesign .recommended-products-caro-redesign .slick-prev, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .slick-next, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .slick-prev { background: transparent; border: none; height: 100%; top: 35%; }
+  .last-visited-redesign .recommended-products-caro-redesign .slick-next::before, .last-visited-redesign .recommended-products-caro-redesign .slick-prev::before, .recommendations.recommendations-redesign .recommended-products-caro-redesign .slick-next::before, .recommendations.recommendations-redesign .recommended-products-caro-redesign .slick-prev::before, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .slick-next::before, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .slick-prev::before { background: url("../../images/svg-icons/carousel-arrow-right-white.svg") 14px 7px no-repeat rgb(0, 0, 0); border: 1px solid rgb(0, 0, 0); border-radius: 50%; height: 2.5rem; opacity: 1; transform: none; width: 2.5rem; }
+  .last-visited-redesign .recommended-products-caro-redesign .slick-next.slick-disabled, .last-visited-redesign .recommended-products-caro-redesign .slick-prev.slick-disabled, .recommendations.recommendations-redesign .recommended-products-caro-redesign .slick-next.slick-disabled, .recommendations.recommendations-redesign .recommended-products-caro-redesign .slick-prev.slick-disabled, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .slick-next.slick-disabled, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .slick-prev.slick-disabled { opacity: 0.5; }
+  .last-visited-redesign .recommended-products-caro-redesign .slick-prev, .recommendations.recommendations-redesign .recommended-products-caro-redesign .slick-prev, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .slick-prev { left: -999px; transition: left 0.5s ease-in-out 0s; }
+  .last-visited-redesign .recommended-products-caro-redesign .slick-prev::before, .recommendations.recommendations-redesign .recommended-products-caro-redesign .slick-prev::before, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .slick-prev::before { background: url("../../images/svg-icons/carousel-arrow-left-white.svg") 10px 7px no-repeat rgb(0, 0, 0); }
+  .last-visited-redesign .recommended-products-caro-redesign .slick-next, .recommendations.recommendations-redesign .recommended-products-caro-redesign .slick-next, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .slick-next { right: -999px; transition: right 0.5s ease-in-out 0s; }
+  .last-visited-redesign .recommended-products-caro-redesign:hover, .recommendations.recommendations-redesign .recommended-products-caro-redesign:hover, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign:hover { z-index: 2; }
+  .last-visited-redesign .recommended-products-caro-redesign:hover .slick-prev, .recommendations.recommendations-redesign .recommended-products-caro-redesign:hover .slick-prev, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign:hover .slick-prev { left: 0px; }
+  .last-visited-redesign .recommended-products-caro-redesign:hover .slick-next, .recommendations.recommendations-redesign .recommended-products-caro-redesign:hover .slick-next, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign:hover .slick-next { right: 0px; }
+}
+
+@media (min-width: 768px) and (min-width: 768px) {
+  .last-visited-redesign .recommended-products-caro-redesign:hover .slick-dots .slick-active, .recommendations.recommendations-redesign .recommended-products-caro-redesign:hover .slick-dots .slick-active, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign:hover .slick-dots .slick-active { visibility: visible; }
+  .last-visited-redesign .recommended-products-caro-redesign:hover .slick-dots .slick-active button, .recommendations.recommendations-redesign .recommended-products-caro-redesign:hover .slick-dots .slick-active button, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign:hover .slick-dots .slick-active button { background: rgb(204, 204, 204); border-radius: 4px; }
+}
+
+@media (min-width: 768px) {
+  .last-visited-redesign .slick-list, .recommendations.recommendations-redesign .slick-list, .recommendations.recommendations-redesign-homepage .slick-list { overflow: visible; padding-right: unset; }
+  .last-visited-redesign .slick-slide, .recommendations.recommendations-redesign .slick-slide, .recommendations.recommendations-redesign-homepage .slick-slide { transition: all 0.1s linear 0s; }
+  .last-visited-redesign .grid-tile, .recommendations.recommendations-redesign .grid-tile, .recommendations.recommendations-redesign-homepage .grid-tile { flex-basis: 15.8%; flex-shrink: 0; padding: 0.75rem 0px; }
+  .last-visited-redesign .grid-tile.slick-slide, .recommendations.recommendations-redesign .grid-tile.slick-slide, .recommendations.recommendations-redesign-homepage .grid-tile.slick-slide { flex-basis: auto; flex-shrink: unset; }
+  .last-visited-redesign .grid-tile .full-height, .recommendations.recommendations-redesign .grid-tile .full-height, .recommendations.recommendations-redesign-homepage .grid-tile .full-height { height: 100%; }
+  .last-visited-redesign .grid-tile .product-tile, .recommendations.recommendations-redesign .grid-tile .product-tile, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile { padding: 1rem; transition: box-shadow 0.1s ease-in-out 0s, -webkit-box-shadow 0.1s ease-in-out 0s; }
+  .last-visited-redesign .grid-tile .product-tile .image-container, .recommendations.recommendations-redesign .grid-tile .product-tile .image-container, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .image-container { width: auto; height: 172px !important; }
+  .last-visited-redesign .grid-tile .product-tile .atc-btn-wrapper .add-to-cart-plp, .recommendations.recommendations-redesign .grid-tile .product-tile .atc-btn-wrapper .add-to-cart-plp, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile .atc-btn-wrapper .add-to-cart-plp { bottom: 0.75rem; height: 3rem; width: calc(100% - 24px); }
+  .last-visited-redesign .grid-tile .product-tile:hover, .recommendations.recommendations-redesign .grid-tile .product-tile:hover, .recommendations.recommendations-redesign-homepage .grid-tile .product-tile:hover { background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 16px 0px; z-index: 2; }
+}
+
+@media (max-width: 767.98px) {
+  .last-visited-redesign .recommended-products-caro-redesign, .recommendations.recommendations-redesign .recommended-products-caro-redesign, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign { padding: 0px 0.75rem; }
+}
+
+.last-visited-redesign .google-recommendation .lds-gamestop-container, .recommendations.recommendations-redesign .google-recommendation .lds-gamestop-container, .recommendations.recommendations-redesign-homepage .google-recommendation .lds-gamestop-container { -webkit-box-pack: center; -webkit-box-align: center; align-items: center; justify-content: center; min-height: 70%; width: 100%; }
+
+.last-visited-redesign .google-recommendation .lds-gamestop, .recommendations.recommendations-redesign .google-recommendation .lds-gamestop, .recommendations.recommendations-redesign-homepage .google-recommendation .lds-gamestop { display: inline-block; height: 80px; position: relative; width: 80px; }
+
+.last-visited-redesign .google-recommendation .lds-gamestop div, .recommendations.recommendations-redesign .google-recommendation .lds-gamestop div, .recommendations.recommendations-redesign-homepage .google-recommendation .lds-gamestop div { animation: 1.2s cubic-bezier(0, 0.5, 0.5, 1) 0s infinite normal none running lds-gamestop; background: rgb(204, 204, 204); display: inline-block; left: 8px; position: absolute; width: 16px; }
+
+.last-visited-redesign .google-recommendation .lds-gamestop div:first-child, .recommendations.recommendations-redesign .google-recommendation .lds-gamestop div:first-child, .recommendations.recommendations-redesign-homepage .google-recommendation .lds-gamestop div:first-child { animation-delay: -0.24s; left: 8px; }
+
+.last-visited-redesign .google-recommendation .lds-gamestop div:nth-child(2), .recommendations.recommendations-redesign .google-recommendation .lds-gamestop div:nth-child(2), .recommendations.recommendations-redesign-homepage .google-recommendation .lds-gamestop div:nth-child(2) { animation-delay: -0.12s; left: 32px; }
+
+.last-visited-redesign .google-recommendation .lds-gamestop div:nth-child(3), .recommendations.recommendations-redesign .google-recommendation .lds-gamestop div:nth-child(3), .recommendations.recommendations-redesign-homepage .google-recommendation .lds-gamestop div:nth-child(3) { left: 56px; }
+
+@-webkit-keyframes lds-gamestop { 
+  0% { height: 64px; top: 8px; }
+  50%, 100% { height: 32px; top: 24px; }
+}
+
+.last-visited-redesign .google-recommendation .lds-gamestop-container, .recommendations.recommendations-redesign .google-recommendation .lds-gamestop-container, .recommendations.recommendations-redesign-homepage .google-recommendation .lds-gamestop-container { display: flex; min-height: 400px; }
+
+.last-visited-redesign .recently-viewed-carousel, .last-visited-redesign .recommended-products-caro-redesign, .recommendations.recommendations-redesign .recently-viewed-carousel, .recommendations.recommendations-redesign .recommended-products-caro-redesign, .recommendations.recommendations-redesign-homepage .recently-viewed-carousel, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign { margin-bottom: 1.25rem; }
+
+.last-visited-redesign .recently-viewed-carousel .lds-gamestop-container, .last-visited-redesign .recommended-products-caro-redesign .lds-gamestop-container, .recommendations.recommendations-redesign .recently-viewed-carousel .lds-gamestop-container, .recommendations.recommendations-redesign .recommended-products-caro-redesign .lds-gamestop-container, .recommendations.recommendations-redesign-homepage .recently-viewed-carousel .lds-gamestop-container, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .lds-gamestop-container { -webkit-box-pack: center; -webkit-box-align: center; align-items: center; display: flex; justify-content: center; min-height: 70%; width: 100%; }
+
+.last-visited-redesign .recently-viewed-carousel .lds-gamestop, .last-visited-redesign .recommended-products-caro-redesign .lds-gamestop, .recommendations.recommendations-redesign .recently-viewed-carousel .lds-gamestop, .recommendations.recommendations-redesign .recommended-products-caro-redesign .lds-gamestop, .recommendations.recommendations-redesign-homepage .recently-viewed-carousel .lds-gamestop, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .lds-gamestop { display: inline-block; height: 80px; position: relative; width: 80px; }
+
+.last-visited-redesign .recently-viewed-carousel .lds-gamestop div, .last-visited-redesign .recommended-products-caro-redesign .lds-gamestop div, .recommendations.recommendations-redesign .recently-viewed-carousel .lds-gamestop div, .recommendations.recommendations-redesign .recommended-products-caro-redesign .lds-gamestop div, .recommendations.recommendations-redesign-homepage .recently-viewed-carousel .lds-gamestop div, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .lds-gamestop div { animation: 1.2s cubic-bezier(0, 0.5, 0.5, 1) 0s infinite normal none running lds-gamestop; background: rgb(204, 204, 204); display: inline-block; left: 8px; position: absolute; width: 16px; }
+
+.last-visited-redesign .recently-viewed-carousel .lds-gamestop div:first-child, .last-visited-redesign .recommended-products-caro-redesign .lds-gamestop div:first-child, .recommendations.recommendations-redesign .recently-viewed-carousel .lds-gamestop div:first-child, .recommendations.recommendations-redesign .recommended-products-caro-redesign .lds-gamestop div:first-child, .recommendations.recommendations-redesign-homepage .recently-viewed-carousel .lds-gamestop div:first-child, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .lds-gamestop div:first-child { animation-delay: -0.24s; left: 8px; }
+
+.last-visited-redesign .recently-viewed-carousel .lds-gamestop div:nth-child(2), .last-visited-redesign .recommended-products-caro-redesign .lds-gamestop div:nth-child(2), .recommendations.recommendations-redesign .recently-viewed-carousel .lds-gamestop div:nth-child(2), .recommendations.recommendations-redesign .recommended-products-caro-redesign .lds-gamestop div:nth-child(2), .recommendations.recommendations-redesign-homepage .recently-viewed-carousel .lds-gamestop div:nth-child(2), .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .lds-gamestop div:nth-child(2) { animation-delay: -0.12s; left: 32px; }
+
+.last-visited-redesign .recently-viewed-carousel .lds-gamestop div:nth-child(3), .last-visited-redesign .recommended-products-caro-redesign .lds-gamestop div:nth-child(3), .recommendations.recommendations-redesign .recently-viewed-carousel .lds-gamestop div:nth-child(3), .recommendations.recommendations-redesign .recommended-products-caro-redesign .lds-gamestop div:nth-child(3), .recommendations.recommendations-redesign-homepage .recently-viewed-carousel .lds-gamestop div:nth-child(3), .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .lds-gamestop div:nth-child(3) { left: 56px; }
+
+@keyframes lds-gamestop { 
+  0% { height: 64px; top: 8px; }
+  50%, 100% { height: 32px; top: 24px; }
+}
+
+@media (max-width: 1023.98px) {
+  .last-visited-redesign .recently-viewed-carousel, .last-visited-redesign .recommended-products-caro-redesign, .recommendations.recommendations-redesign .recently-viewed-carousel, .recommendations.recommendations-redesign .recommended-products-caro-redesign, .recommendations.recommendations-redesign-homepage .recently-viewed-carousel, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign { display: flex; overflow: auto; }
+  .last-visited-redesign .recently-viewed-carousel::-webkit-scrollbar, .last-visited-redesign .recommended-products-caro-redesign::-webkit-scrollbar, .recommendations.recommendations-redesign .recently-viewed-carousel::-webkit-scrollbar, .recommendations.recommendations-redesign .recommended-products-caro-redesign::-webkit-scrollbar, .recommendations.recommendations-redesign-homepage .recently-viewed-carousel::-webkit-scrollbar, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign::-webkit-scrollbar { display: none; }
+  .last-visited-redesign .recently-viewed-carousel .product.grid-tile, .last-visited-redesign .recommended-products-caro-redesign .product.grid-tile, .recommendations.recommendations-redesign .recently-viewed-carousel .product.grid-tile, .recommendations.recommendations-redesign .recommended-products-caro-redesign .product.grid-tile, .recommendations.recommendations-redesign-homepage .recently-viewed-carousel .product.grid-tile, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .product.grid-tile { flex-basis: calc(25% - 12px); flex-shrink: 0; }
+}
+
+@media (max-width: 767.98px) {
+  .last-visited-redesign .recently-viewed-carousel .product.grid-tile, .last-visited-redesign .recommended-products-caro-redesign .product.grid-tile, .recommendations.recommendations-redesign .recently-viewed-carousel .product.grid-tile, .recommendations.recommendations-redesign .recommended-products-caro-redesign .product.grid-tile, .recommendations.recommendations-redesign-homepage .recently-viewed-carousel .product.grid-tile, .recommendations.recommendations-redesign-homepage .recommended-products-caro-redesign .product.grid-tile { flex-basis: 45%; flex-shrink: 0; }
+}

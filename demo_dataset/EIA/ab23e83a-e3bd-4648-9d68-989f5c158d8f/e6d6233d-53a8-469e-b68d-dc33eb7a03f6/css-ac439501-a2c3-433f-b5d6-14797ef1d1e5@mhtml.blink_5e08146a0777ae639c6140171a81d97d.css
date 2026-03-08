@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+@media screen and (min-width: 720px) {
+  .app-components-QuickSearch-styles__myDatePickerClass--3balC div.DayPicker__horizontal, .app-components-QuickSearch-styles__singleDatePickerClass--1jjCZ div.DayPicker__horizontal { width: 365px !important; }
+}
+
+.app-components-QuickSearch-styles__singleDatePickerClass--1jjCZ input { border: 1px solid rgb(102, 102, 102) !important; padding-left: 8px !important; }
+
+.app-components-QuickSearch-styles__errorMessage--1xd5a { color: rgb(213, 0, 50); font-size: 12px; }
+
+.app-components-QuickSearch-styles__reviseTripBlock--1VgUr { display: flex; flex-direction: column; flex: 1 0 auto; width: 100%; height: 100%; outline-style: none; }
+
+.app-components-QuickSearch-styles__content--2SCpg { flex: 1 0 auto; }

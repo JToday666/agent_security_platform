@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.app-components-Uplift-styles__monthlyPriceContainer--3Kzl4 { quotes: none; pointer-events: none; display: none; }
+
+.app-components-Uplift-styles__monthlyPriceContainer--3Kzl4 .app-components-Uplift-styles__leftSide--2QLM0 { float: left; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Uplift-styles__monthlyPriceContainer--3Kzl4 .app-components-Uplift-styles__leftSide--2QLM0 { width: auto; }
+}
+
+.app-components-Uplift-styles__monthlyPriceContainer--3Kzl4 .app-components-Uplift-styles__rightSide--1DhVz { float: right; text-align: right; margin-left: 8px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Uplift-styles__monthlyPriceContainer--3Kzl4 .app-components-Uplift-styles__rightSide--1DhVz { float: left; width: auto; margin-left: 8px; }
+}
+
+.app-components-Uplift-styles__tooltipIcon--3Adxu { display: inline-block; }
+
+.app-components-Uplift-styles__upliftTooltipNode--1GMLL { margin-left: 5px; }
+
+.app-components-Uplift-styles__upliftTooltipNode--1GMLL:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+.app-components-Uplift-styles__upliftTooltipNode--1GMLL span { font-size: 12px; }
+
+.app-components-Uplift-styles__upliftTooltipNode--1GMLL strong { font-size: 14px; }
+
+.app-components-Uplift-styles__price--31nub { pointer-events: auto; align-items: flex-start; padding: 0px; border: 0px; border-radius: 0px; text-align: left; color: rgb(0, 96, 128); text-decoration: underline; font-weight: normal; background-color: rgba(0, 0, 0, 0); }
+
+.app-components-Uplift-styles__price--31nub:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+.app-components-Uplift-styles__price--31nub:hover { color: rgb(0, 51, 160); }
+
+.app-components-Uplift-styles__uplifttooltipIcon--2nAoy { display: inline-block; margin-left: 4px; margin-bottom: 3px; }

@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.display-0[_ngcontent-iyw-c65] { font-size: 4.5rem; line-height: 4.5rem; }
+
+.display-1[_ngcontent-iyw-c65] { font-size: 3.25rem; line-height: 3.25rem; }
+
+.display-2[_ngcontent-iyw-c65] { font-size: 2.5rem; line-height: 2.5rem; }
+
+.display-3[_ngcontent-iyw-c65] { font-size: 2rem; }
+
+.display-4[_ngcontent-iyw-c65] { font-size: 1.25rem; line-height: 1.15rem; }
+
+.display-5[_ngcontent-iyw-c65] { font-size: 1rem; }
+
+.icon-20[_ngcontent-iyw-c65] { height: 1.25rem; width: 1.25rem; }
+
+.icon-30[_ngcontent-iyw-c65] { height: 1.875rem; width: 1.875rem; }
+
+.b0[_ngcontent-iyw-c65] { font-size: 1.125rem; line-height: 1.325rem; }
+
+.my-ryanair-deals-banner[_ngcontent-iyw-c65] { align-items: stretch; background-color: rgb(139, 11, 108); background-image: url("https://assets.ryanair.com/resources/ui/rooms/v2/myryanair_deals/mobile_myryanairdeals_banner.jpg"); background-position-x: 100%; background-repeat: no-repeat; color: var(--light-base, #fff); cursor: pointer; display: flex; flex-flow: row nowrap; padding: 0.25rem 0.625rem 0.25rem 0px; position: relative; }
+
+@media (min-width: 1024px) {
+  .my-ryanair-deals-banner[_ngcontent-iyw-c65] { background-image: url("https://assets.ryanair.com/resources/ui/rooms/v2/myryanair_deals/desktop_myryanairdeals_banner.jpg"); border-radius: 4px; }
+}
+
+.my-ryanair-deals-banner__element[_ngcontent-iyw-c65] { align-items: center; display: flex; padding: 0.25rem; position: relative; }
+
+.my-ryanair-deals-banner__element--lock[_ngcontent-iyw-c65] { padding-left: 0.75rem; padding-right: 0.75rem; }
+
+.my-ryanair-deals-banner__element--title[_ngcontent-iyw-c65] { z-index: 10; }
+
+.my-ryanair-deals-banner__element--button[_ngcontent-iyw-c65] { margin-left: auto; z-index: 10; }

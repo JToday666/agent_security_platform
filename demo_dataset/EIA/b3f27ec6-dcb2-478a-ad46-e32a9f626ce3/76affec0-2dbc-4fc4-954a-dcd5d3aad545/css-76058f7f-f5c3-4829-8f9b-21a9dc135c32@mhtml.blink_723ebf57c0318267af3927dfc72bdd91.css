@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.smb-uikit__main-header { background-color: rgb(255, 255, 255); border-bottom: 1px solid rgb(220, 224, 230); height: 8rem; }
+
+.smb-uikit__main-header-container { align-items: center; display: flex; flex-direction: row; height: 100%; }
+
+.smb-uikit__main-header .smb-uikit__header-content { display: flex; flex: 1 1 0%; }
+
+.smb-uikit__main-header .smb-uikit__header-content-left { flex-direction: column; }
+
+.smb-uikit__main-header .smb-uikit__header-content-right { flex-direction: row; justify-content: flex-end; }

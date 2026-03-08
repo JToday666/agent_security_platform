@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-1t58203 { grid-column: span 12 / span 12; order: 1; display: flex; -webkit-box-align: center; align-items: center; -webkit-box-pack: center; justify-content: center; }
+
+@media screen and (min-width: 48rem) {
+  .css-1t58203 { grid-column: span 6 / span 6; order: 1; }
+}

@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.app-components-Form-InputText-styles__legacyStyle--zxqVb.atm-is-error input { border-color: rgb(213, 0, 50); color: rgb(213, 0, 50); }
+
+.app-components-Form-InputText-styles__legacyStyle--zxqVb.atm-is-error input ::placeholder { color: rgb(213, 0, 50); opacity: 1; }
+
+.app-components-Form-InputText-styles__legacyStyle--zxqVb.atm-is-error input::-webkit-input-placeholder { color: rgb(213, 0, 50); opacity: 1; }
+
+.app-components-Form-InputText-styles__ellipsis--AlR8n input { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

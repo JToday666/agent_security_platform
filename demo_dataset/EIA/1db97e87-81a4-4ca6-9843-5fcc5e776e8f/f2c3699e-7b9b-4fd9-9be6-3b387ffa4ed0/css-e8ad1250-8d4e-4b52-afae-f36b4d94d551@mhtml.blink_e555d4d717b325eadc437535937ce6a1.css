@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.login-confirm { margin: 0px auto; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+
+.login-confirm.login-confirm-full-page { padding-top: 72px; }
+
+.login-confirm .icon-circle-background { margin-bottom: 24px; }
+
+.login-confirm p, .login-confirm h2 { text-align: center; }
+
+.login-confirm button { margin-top: 18px; width: 80%; }

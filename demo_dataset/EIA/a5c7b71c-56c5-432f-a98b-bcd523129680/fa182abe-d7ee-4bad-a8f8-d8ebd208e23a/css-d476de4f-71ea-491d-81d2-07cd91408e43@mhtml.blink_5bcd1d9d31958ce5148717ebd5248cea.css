@@ -1,0 +1,532 @@
+@charset "utf-8";
+
+* { font-family: WF-Segoe-UI-Semilight, "Segoe UI Semilight", "Segoe WP Semilight", "Segoe UI", Tahoma, Arial, sans-serif; }
+
+*, div:focus, span:focus { outline: none; }
+
+:focus, .focusable:focus { outline: gray dotted 2px; }
+
+button:focus { outline: black dotted 2px; outline-offset: 2px; }
+
+body { padding: 0px; margin: 0px; font-size: 16px; overflow: hidden auto; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+
+input, button, select, textarea { border-style: solid; border-collapse: collapse; font-size: inherit; border-radius: 0px; box-sizing: border-box; }
+
+input, button, select { min-height: 30px; padding: 0px; margin: 0px; border-width: 0px; overflow: hidden; }
+
+input[type="text"], input[type="email"], input[type="tel"], input[type="url"] { border-bottom-width: 1px; text-align: left; }
+
+input[type="radio"] { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; padding: 0px; margin: 0px; opacity: 0; z-index: -1; }
+
+input[type="radio"]:focus + label { outline: gray dotted 2px; }
+
+input[type="checkbox"]:disabled, input[type="checkbox"]:disabled + label { cursor: default !important; }
+
+input, textarea { padding: 9px 14px; }
+
+textarea { resize: none; overflow: auto; border-width: 1px; text-align: left; }
+
+button { padding: 7px 20px; cursor: pointer; transition: background 0.1s ease 0s; }
+
+button.secondary { border: 1px solid; }
+
+button, select { line-height: 30px; }
+
+button, label span, label var { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+a { text-decoration: none; }
+
+h1, h3 { padding: 0px; margin: 0px; font-weight: normal; opacity: 0.9; }
+
+h1 { font-size: 44px; font-family: WF-Segoe-UI-Light, "Segoe UI Light", "Segoe WP Light", "Segoe UI", Tahoma, Arial, sans-serif; }
+
+h3 { font-size: 18px; font-family: WF-Segoe-UI-Semibold, "Segoe UI Semibold", "Segoe WP Semibold", "Segoe UI", Tahoma, Arial, sans-serif; }
+
+var { font-style: normal; }
+
+.nowrap { white-space: nowrap; }
+
+::-webkit-clear-button { display: none; appearance: none; }
+
+.breakword { word-break: break-word; }
+
+.image { display: inline-block; text-align: center; text-overflow: initial; }
+
+.circle { border-radius: 50%; }
+
+.charm { width: 48px !important; height: 48px !important; line-height: 44px !important; }
+
+.spinner { animation: 0.6s linear 0s infinite normal none running spin; border: 3px solid; }
+
+.bookingsLogo { padding: 8px; }
+
+[class^="icon-"]::before, [class*=" icon-"]::before { display: inline-block; font-family: WF-Office365Icons; line-height: 1; color: inherit; }
+
+.icon-bookings::before { content: ""; }
+
+.icon-chevronLeft::before { content: ""; }
+
+.icon-chevronRight::before { content: ""; }
+
+.icon-chevronDown::before { content: ""; }
+
+.icon-borderedInfo::before { content: ""; }
+
+.icon-info::before { content: ""; }
+
+.icon-error::before { content: ""; }
+
+.icon-email::before { content: ""; }
+
+.icon-phone::before { content: ""; }
+
+.icon-website::before { content: ""; }
+
+.icon-location::before { content: ""; }
+
+.icon-appointment::before { content: ""; }
+
+.icon-cancel::before { content: ""; }
+
+.icon-doughboy::before { content: ""; }
+
+.icon-onlineMeeting::before { content: ""; }
+
+.icon-shield::before { content: ""; }
+
+.mainContent { max-width: 1024px; min-width: 320px; margin: 0px auto; text-align: center; }
+
+.overlay { position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; }
+
+.dialog { position: fixed; inset: 0px; z-index: 100; }
+
+.dialog .container { display: inline-block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; overflow: hidden auto; max-height: 100%; max-width: 100%; box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px; }
+
+.dialog .content, .dialog .buttons { padding: 16px 36px; }
+
+.dialog .content { min-height: 100px; max-height: 420px; overflow: hidden auto; box-sizing: border-box; }
+
+.dialog div.content > div { margin: 20px 0px; }
+
+.dialog h3 ~ small { display: block; margin: 8px 0px 0px; }
+
+.dialog .details { font-size: 18px; }
+
+.dialog h3 ~ small, .dialog .description { font-size: 16px; }
+
+.dialog .description div.sub-description { font-size: 12px; font-weight: 600; color: rgb(118, 118, 118); }
+
+.dialog .description.left { text-align: left; }
+
+.dialog .description ul { margin: 10px 0px; padding: 0px 0px 0px 30px; }
+
+.dialog .buttons { padding: 16px 36px 36px; }
+
+.dialog button { width: 100%; }
+
+.dialog button.link { display: block; margin: 10px auto 0px; padding: 0px; width: auto; height: auto; min-height: 0px; max-width: 100%; font-size: 13px; line-height: normal; }
+
+.dialog input.verificationCode { font-family: WF-Segoe-UI-Regular, "Segoe UI Regular", "Segoe WP Regular", "Segoe UI", Tahoma, Arial, sans-serif; font-size: 32px; width: 90%; padding: 5px; border-width: 1px; text-align: center; letter-spacing: 5px; }
+
+.dialog small.verificationError { display: block; width: 90%; font-size: 13px; margin: 0px auto; }
+
+.dialog .termsLink:hover { text-decoration: underline; }
+
+.bookingForm, .bookingSummaryForm { text-align: center; }
+
+.section { box-shadow: rgba(0, 0, 0, 0.1) 0px -2px 6px 0px; }
+
+.headerSection img { border: 0px; width: 120px; height: 120px; }
+
+.headerSection h1 { margin: 10px 28px; }
+
+.headerSection h1.noPhoto { margin: 20px 28px; }
+
+.timeZonePicker, .timeZoneInfo { font-size: 14px; height: 24px; animation: 0.5s ease 0s 1 normal backwards running fade-in; }
+
+.timeZonePicker *, .timeZoneInfo * { max-width: 100%; min-height: 21px; }
+
+.timeZonePicker > span, .timeZoneInfo > span { margin: 0px 3px; vertical-align: middle; }
+
+.timeZonePicker select { cursor: pointer; transition: width 0.5s ease 0s; }
+
+.timeZonePicker select:disabled { cursor: default; }
+
+.timeZonePicker .sizingContainer { visibility: hidden; min-height: 0px; height: 0px; margin: 0px; padding: 0px; }
+
+.bookButtonContainer { box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 6px 0px; margin-top: -4px !important; }
+
+.footerSection { font-size: 14px; line-height: 20px; text-align: center; box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 6px 0px; }
+
+.footerSection .divider { margin: 0px 3px; }
+
+.footerSection .hidden { color: transparent; height: 0px; width: 0px; display: inline-block; overflow: hidden; }
+
+.footerSection p { margin: 8px 0px; overflow: hidden; text-overflow: ellipsis; }
+
+.footerSection .separator { border: 1px solid rgb(237, 235, 229); height: 0px; left: 158.5px; top: 2573px; margin: 32px; }
+
+.termsAndConditionText, .privacyPolicyText, .websiteLinkText { text-decoration: underline; }
+
+.bookingSummaryHeader { padding: 0px 0px 16px; margin: 0px 28px 11px; border-bottom: 1px solid; }
+
+.bookingSummaryServiceName { padding: 5px 28px 24px; }
+
+.bookingDetailsSection { padding-bottom: 35px; }
+
+.bookingErrorDetails { margin-bottom: 40px; }
+
+.bookingDetailsColumn { vertical-align: top; box-sizing: border-box; overflow: hidden; }
+
+.bookingDetailsButtons { margin-top: 24px; }
+
+.bookingDetailsRow { text-align: center; margin: 3px 0px; }
+
+.bookingDetailsRow .separator { margin: 0px 28px 15px; padding: 4px 0px 8px; border-bottom: 1px solid; }
+
+.bookingDetailsText { min-height: 48px; overflow: hidden; padding: 0px 10px; margin: 13px 0px 5px; }
+
+.bookingDetailsTextMultiDay { overflow: hidden; padding: 0px 10px; margin: 13px 0px 5px; }
+
+.bookingDays { margin: 0px 0px 15px; }
+
+.bookingDetailsButton { max-width: 300px; min-width: 240px; height: 45px; margin-bottom: 4px; }
+
+.bookingDetailsButton span { line-height: 24px; }
+
+.bookingDetailsButton span.icon { font-size: 22px; padding: 0px 5px; }
+
+.bookingCancelDialogBack { margin-top: 6px; }
+
+.cancelDialog > h3 { padding-top: 21px; }
+
+.cancelConfirmDialog > h3 { padding-top: 20px; margin: 0px; }
+
+.cancelConfirmDialog > p { margin: 0px; }
+
+.bookingInfoHeader { display: inline-block; width: 100%; }
+
+.bookingInfoHeader > h3 { display: inline-block; max-width: 70%; }
+
+.icon-warningRegular::before { content: ""; font-family: Fluent-Office365Icons; }
+
+.servicePicker .appointmentTypePicker { margin: auto; max-height: 400px; overflow: hidden auto; }
+
+.servicePicker ul, .appointmentTypePicker ul, .staffPicker ul, .timePicker ul { font-size: 0px; text-align: left; padding: 0px; margin: 0px; }
+
+.servicePicker ul, .appointmentTypePicker ul { margin: 1px -1px; }
+
+.appointmentTypePicker ul.center, .servicePicker ul.center { text-align: center; }
+
+.servicePicker li, .appointmentTypePicker li, .staffPicker li, .timePicker li { font-size: 16px; line-height: 20px; list-style: none; display: inline-block; position: relative; transition: background 0.1s ease 0s; }
+
+.appointmentTypePicker li, .servicePicker li { width: 46%; text-align: left; }
+
+.appointmentTypePicker li.left, .servicePicker li.left { margin: 0px 4% 0px 0px; }
+
+.appointmentTypePicker li.right, .servicePicker li.right { margin: 0px 0px 0px 4%; }
+
+.servicePicker label, .appointmentTypePicker label, .staffPicker label, .timePicker label { cursor: pointer; display: block; overflow: hidden; white-space: nowrap; transition: background 0.1s ease 0s; }
+
+.appointmentTypePicker label, .servicePicker label { border-bottom-width: 1px; border-bottom-style: solid; }
+
+.appointmentTypePicker li.left label, .servicePicker li.left label { padding: 15px 20px 15px 80px; }
+
+.appointmentTypePicker li.right label, .servicePicker li.right label { padding: 15px 80px 15px 20px; }
+
+.appointmentTypePicker li.center label, .servicePicker li.center label { padding: 15px 20px; }
+
+.appointmentTypePicker li.top label, .servicePicker li.top label { border-top-width: 1px; border-top-style: solid; }
+
+.appointmentTypePicker span.name, .servicePicker span.name { display: inline-block; line-height: 24px; }
+
+.appointmentTypePicker span.details, .servicePicker span.details { display: block; line-height: 21px; }
+
+.servicePicker button.infoCircleButton, .appointmentTypePicker button.infoCircleButton, .bookingInfoHeader button.infoCircleButton { display: inline-block; margin: 0px; padding: 0px; min-width: 24px; min-height: 24px; height: 24px; line-height: 24px; }
+
+.appointmentTypePicker button.infoCircleButton, .servicePicker button.infoCircleButton { float: right; }
+
+.onlineMeetingIcon { display: inline-block; margin: 0px; padding: 0px 5px 0px 0px; float: right; opacity: 0.6; }
+
+.bookingInfoHeader button.infoCircleButton { margin-left: 10px; vertical-align: middle; }
+
+.picker { display: inline-block; vertical-align: top; width: 392px; margin: 0px 40px; text-align: left; }
+
+.datePicker { width: 392px; }
+
+.datePicker .header { margin: 0px 8px; }
+
+.datePicker .monthName, .datePicker .navigator { display: inline-block; text-align: center; vertical-align: middle; line-height: 48px; }
+
+.datePicker .monthName { font-size: 18px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-left: 8px; }
+
+.datePicker .navigator { cursor: pointer; width: 32px; }
+
+.datePicker .navigator:hover { font-weight: bold; }
+
+.datePicker .navigator.disabled { font-weight: inherit; cursor: default; }
+
+.datePicker .loading { position: absolute; width: 100%; height: 100%; text-align: center; }
+
+.datePicker .loading .spinner { margin: 102px 0px 0px; }
+
+.datePicker .dates { position: relative; }
+
+.datePicker .weekday, .datePicker .date { display: inline-block; text-align: center; vertical-align: middle; width: 36px; height: 36px; line-height: 36px; padding: 4px; margin: 2px 6px; }
+
+.datePicker .date { cursor: pointer; animation: 0.5s ease 0s 1 normal backwards running fade-in; transition: background 0.1s ease 0s; }
+
+.datePicker .empty, .datePicker .empty:hover { cursor: auto; }
+
+.staffPicker { width: 100%; font-size: 0px; }
+
+.staffPicker button { position: relative; width: 100%; height: 48px; font-size: 18px; line-height: 40px; text-align: left; padding: 3px 20px 3px 1px; border: 1px solid; }
+
+.staffPicker .doughboy { margin: 0px 10px; }
+
+.staffPicker var { float: right; margin-left: 12px; }
+
+.staffPicker ul { position: absolute; overflow: hidden auto; width: 100%; max-width: 392px; max-height: 246px; z-index: 50; border: 1px solid; box-sizing: border-box; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 6px 0px; margin-top: -1px; }
+
+.staffPicker li { display: block; margin: 1px 0px; }
+
+.staffPicker li span { display: block; line-height: normal; }
+
+.staffPicker li var { font-family: WF-Segoe-UI-Regular, "Segoe UI Regular", "Segoe WP Regular", "Segoe UI", Tahoma, Arial, sans-serif; font-size: 12px; }
+
+.staffPicker label { padding: 13px 20px; }
+
+.staffPicker label.heading { padding: 13px 0px; font-size: 16px; }
+
+.staffPicker + .timePicker .spinner { margin: 40px 0px 0px; }
+
+.timePicker { width: 100%; max-height: 288px; margin-top: 48px; overflow: hidden auto; }
+
+.timePicker li { width: 32%; text-align: center; animation: 1s ease 0s 1 normal backwards running fade-in; margin: 2px; }
+
+.timePicker label { padding: 11px 0px; margin: 1px; }
+
+.timePicker span.message, .timePicker span.loading { display: block; cursor: auto; text-align: center; white-space: normal; padding: 12px 10px; margin: 1px; }
+
+.timePicker p.subtext { display: block; font-size: 14px; margin: 20px 0px 0px; }
+
+.timePicker .spinner { margin: 136px 0px 0px; }
+
+.customerDetails { display: block; margin: 0px auto; }
+
+.customerDetails div { display: inline-block; width: 392px; vertical-align: top; margin: 0px 40px; text-align: left; }
+
+.customerDetails input { display: block; width: 100%; height: 48px; }
+
+.customerDetails span { display: block; }
+
+.customerDetails textarea { width: 100%; margin-top: 20px; vertical-align: bottom; }
+
+.customerPhone { display: inline-flex !important; margin: 0px !important; width: 100% !important; }
+
+.customerPhone select { border-bottom-width: 1px; border-bottom-style: solid; padding-left: 10px; max-width: 172px; cursor: pointer; }
+
+div.smscheck { display: flex; padding: 14px; margin: 0px; }
+
+input.smscheck-checkbox { width: 16px; height: 16px; }
+
+div.smscheck-text { margin: 0px 0px 0px 8px; padding-top: 5px; font-size: 14px; }
+
+label.smscheck-regiontext { font-size: 12px; }
+
+input.smscheck-checkbox:disabled + div { color: rgb(200, 198, 196); }
+
+.questionList { text-align: left; margin: 0px 84px; }
+
+.questionList label { display: inline-block; margin-top: 16px; }
+
+.questionList label span { white-space: normal; }
+
+.questionList input, .questionList select { display: block; width: 100%; margin: 7px 0px; border-width: 1px; }
+
+.questionList input { padding: 9px 10px; }
+
+.questionList select { padding: 8px 10px; cursor: pointer; }
+
+.pspSection { text-align: left; margin: 0px 45px 50px 10px; }
+
+.pspSection div { display: inline-block; width: 392px; vertical-align: top; margin: 0px 6px 0px 72px; text-align: left; }
+
+.pspSection label { display: inline-block; margin-top: 16px; }
+
+.pspSection label span { white-space: normal; }
+
+.pspSection input { display: block; width: 100%; padding: 0px; }
+
+.pspSection textarea { display: block; width: 100%; margin-top: 10px; }
+
+div.smsconsent { padding: 0px; margin: 4px 90px; }
+
+div.smsconsent label { cursor: default; }
+
+label.smsconsent-disabled { color: rgb(200, 198, 196); }
+
+label.smsconsent-disabled a { color: gray; }
+
+label.smsconsent-disabled a:hover { color: gray; }
+
+.agreement, .consent { font-size: 13px; }
+
+.agreement { text-align: center; }
+
+.consent { display: table; text-align: left; padding: 0px; margin: 0px 0px 10px; }
+
+.consent label, .consent input[type="checkbox"] { display: table-cell; cursor: pointer; }
+
+.consent label { padding: 5px; word-break: break-word; text-align: justify; white-space: pre-wrap; }
+
+.consent input[type="checkbox"] { min-height: 15px; height: 15px; width: 15px; vertical-align: middle; margin: 5px 5px 5px 14px; }
+
+.consent span { white-space: break-spaces; }
+
+.consent a { color: rgb(0, 98, 175); }
+
+.consent a:hover { color: rgb(0, 98, 175); }
+
+@keyframes fade-in { 
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@keyframes spin { 
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (min-width: 1021px) {
+  .section { padding: 16px 0px 48px; }
+  .singleServiceSection { padding: 16px 0px; }
+  .questionSection h3 { margin: 6px 0px 20px; }
+  .customerSection h3, .timeSection h3 { margin: 6px 20px 36px; }
+  .headerSection { padding: 16px 0px; }
+  .bookingInfoSection { padding: 20px 0px; }
+  .serviceSection h3 { margin: 0px 20px 24px; }
+  .footerSection { padding: 24px 80px; }
+  .errorSection { padding: 32px 0px; }
+  .errorSection h3 { margin: 10px 128px; }
+  .bookingDetails { display: table; width: 90%; margin: 0px auto; }
+  .bookingDetailsColumn { display: table-cell; width: 40%; max-width: 400px; padding: 10px 0px; }
+  .bookingSummaryLine { border-right: 1px solid; }
+  .bookingInfoSection .bookingDetailsColumn { display: inline-block; width: 90%; }
+  .bookingDetailsButton { width: 75%; }
+  .agreement, .consent { padding: 10px 148px 0px; }
+  .bookButton, .bookDiscardButton { margin: 20px 0px 0px; min-width: 240px; display: inline-block; }
+  .bookDiscardButton { margin-left: 12px; }
+  .bookingInfoHeader button.infoCircleButton { vertical-align: top; }
+  .bookButtonContainer { display: block; padding-bottom: 30px; }
+  .servicePicker label { height: 64px; }
+  .appointmentTypePicker span.name, .servicePicker span.name { max-width: 310px; font-size: 18px; }
+  .appointmentTypePicker li.center span.name, .servicePicker li.center span.name { max-width: 390px; }
+  .staffPicker + .timePicker { max-height: 192px; }
+  .timeZonePicker, .timeZoneInfo { margin: 24px 28px 0px; }
+  .bookingFormSubmissionFail { width: 714px; height: 66px; margin: 0px auto 36px; background-color: rgb(253, 231, 233); border-radius: 4px; display: flex; align-items: center; }
+  .bookingFormSubmissionFail .warningIcon { color: rgb(168, 0, 0); margin-left: 34px; font-family: Fluent-Office365Icons; }
+  .bookingFormSubmissionFail .text { justify-content: left; margin-left: 14px; width: 505px; height: 44px; }
+  .bookingFormSubmissionFail .text .errorHeading { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; line-height: 16px; color: rgb(33, 33, 33); font-weight: bold; margin-left: -340px; }
+  .bookingFormSubmissionFail .text .errorDescription { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; line-height: 16px; color: rgb(33, 33, 33); }
+}
+
+@media (max-width: 1020px) {
+  body { font-size: 15px; }
+  h1, h3 { opacity: 1; }
+  h1 { font-size: 26px; }
+  h3 { font-size: 15px; }
+  .mainContent { max-width: 420px; }
+  .dialog .content, .dialog .buttons { padding: 8px 28px; }
+  .dialog .buttons { padding: 8px 28px 28px; }
+  .dialog h3 ~ small, .dialog div.content > div { font-size: 15px; }
+  .section { padding: 10px 0px; }
+  .questionSection h3, .customerSection h3, .timeSection h3, .serviceSection h3, .staffSection h3 { margin: 4px 28px 14px; }
+  .headerSection img { margin-top: 10px; }
+  .headerSection .actionButtons { margin: 10px 0px; }
+  .headerSection button { width: 36px; height: 36px; padding: 0px; margin: 0px 8px; }
+  .serviceSection, .bookingSummaryHeader, .bookingInfoSection { text-align: center; }
+  .bookingSummaryHeader { padding: 10px 0px 16px; }
+  .bookingInfoSection { padding: 14px 0px; }
+  .bookingDetailsRow { padding: 0px 28px; }
+  .bookingDetailsRow .separator { margin: 0px 0px 15px; }
+  .bookingDetailsButton { width: 100%; }
+  .customerSection { padding: 10px 0px; }
+  .footerSection { padding: 24px 28px; }
+  .errorSection { padding: 32px 0px; }
+  .errorSection h3 { margin: 10px 40px; }
+  .servicePicker { max-height: inherit; }
+  .servicePicker label { max-height: 60px; }
+  .servicePicker li, .appointmentTypePicker li, .staffPicker li, .timePicker li { font-size: 15px; line-height: 20px; }
+  .servicePicker li, .appointmentTypePicker li, .servicePicker li.left, .appointmentTypePicker li.left, .appointmentTypePicker li.right, .servicePicker li.right { width: 100%; margin: 0px; }
+  .servicePicker li.left label, .servicePicker li.right label, .appointmentTypePicker li.left label, .appointmentTypePicker li.right label { padding: 12px 28px; }
+  .servicePicker span.name, .appointmentTypePicker span.name { font-size: inherit; line-height: inherit; max-width: 210px; }
+  .servicePicker span.details, .appointmentTypePicker span.details { font-size: 12px; line-height: 16px; }
+  .picker { width: 100%; margin: 0px; }
+  .staffPicker, .timePicker { max-height: inherit; }
+  .staffPicker { margin-top: 0px; }
+  .staffPicker button var, .staffPicker ul var { display: none; }
+  .staffPicker ul { max-width: inherit; max-height: inherit; position: relative; border: 0px; box-shadow: none; }
+  .staffPicker label { padding: 14px 28px; }
+  .datePicker { width: 336px; margin: auto; }
+  .datePicker .monthName, .datePicker .navigator { line-height: 40px; }
+  .datePicker .monthName { font-size: inherit; }
+  .datePicker .navigator { width: 28px; }
+  .datePicker .loading .spinner { margin: 87px 0px 0px; }
+  .datePicker .weekday, .datePicker .date { padding: 0px; margin: 3px 6px; }
+  .timePicker { width: 330px; margin: 32px auto 16px; }
+  .timePicker li { width: 105px; }
+  .timePicker p.subtext { font-size: 12px; }
+  .timePicker .spinner { margin: 0px; }
+  .timeZonePicker, .timeZoneInfo { margin: 24px 28px; }
+  .customerDetails { margin: 0px auto; }
+  .customerDetails div { display: block; width: inherit; margin: 0px 28px 20px; }
+  .customerDetails input { padding: 9px 1px; }
+  .customerDetails span { margin-top: 48px; }
+  .customerPhone select { padding-left: 0px; }
+  .customerPhone input { padding-left: 2px; }
+  .questionList { margin: 0px 28px 24px; }
+  .pspSection { padding: 10px 0px; margin: 0px 28px 24px; }
+  .pspSection div { display: block; width: inherit; margin: 0px 28px 20px; }
+  .pspSection input { padding: 9px 1px; }
+  .agreement, .consent { margin: 20px auto 20px 0px; }
+  .consent input[type="checkbox"] { margin: 5px 5px 5px 0px; }
+  div.smscheck { display: flex; margin: 0px; width: 100%; }
+  div.smscheck-text { margin: 0px 0px 0px 8px; }
+  div.smsconsent { margin: 0px; }
+  .smsconsent span { display: inline; }
+  .bookButton, .bookDiscardButton { display: block; width: 100%; margin-top: 8px; }
+  .bookButtonContainer { padding: 2px 28px 24px; }
+  .bookingInfoHeader > h3, .bookingInfoHeader button.infoCircleButton { vertical-align: middle; }
+  .bookingFormSubmissionFail { width: 350px; height: 96px; margin: 0px auto 36px; background-color: rgb(253, 231, 233); border-radius: 4px; display: flex; align-items: center; text-align: left; }
+  .bookingFormSubmissionFail .warningIcon { color: rgb(168, 0, 0); margin-left: 34px; font-family: Fluent-Office365Icons; }
+  .bookingFormSubmissionFail .text { justify-content: left; margin-left: 8px; width: 505px; height: 64px; }
+  .bookingFormSubmissionFail .text .errorHeading { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; line-height: 16px; color: rgb(33, 33, 33); font-weight: bold; margin-left: 0px; }
+  .bookingFormSubmissionFail .text .errorDescription { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; line-height: 16px; color: rgb(33, 33, 33); }
+}
+
+@media (max-width: 374px) {
+  .datePicker { width: 280px; }
+  .datePicker .header { margin: 0px 4px; }
+  .datePicker .weekday, .datePicker .date { margin: 3px 2px; }
+  .timePicker { width: 276px; }
+  .timePicker li { width: 88px; }
+  .customerPhone select { padding-left: 1px; max-width: 130px; }
+  .bookingFormSubmissionFail { width: 305px; height: 106px; margin: 0px auto 36px; background-color: rgb(253, 231, 233); border-radius: 4px; display: flex; align-items: center; }
+  .bookingFormSubmissionFail .warningIcon { color: rgb(168, 0, 0); margin-left: 34px; font-family: Fluent-Office365Icons; }
+  .bookingFormSubmissionFail .text { justify-content: left; margin-left: 0px; width: 505px; height: 64px; }
+  .bookingFormSubmissionFail .text .errorHeading { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; line-height: 16px; color: rgb(33, 33, 33); font-weight: bold; margin-left: 0px; }
+  .bookingFormSubmissionFail .text .errorDescription { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; line-height: 16px; color: rgb(33, 33, 33); }
+}
+
+@media screen and (-ms-high-contrast: active) {
+  .dialog .container { border: 1px solid; }
+}
+
+@media screen and (-ms-high-contrast: white-on-black) {
+  .servicePicker label.selected, .appointmentTypePicker label.selected, .timePicker label.selected { background-color: rgb(26, 235, 255) !important; }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+  .servicePicker label.selected, .appointmentTypePicker label.selected, .timePicker label.selected { background-color: rgb(55, 0, 110) !important; }
+}

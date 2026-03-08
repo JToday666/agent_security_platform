@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.css-hizknv { height: 12px; width: 12px; fill: rgb(0, 107, 194); stroke: rgb(0, 107, 194); margin: 0px auto; transform: rotate3d(0, 0, 1, 0deg); transition: transform 0.4s ease 0s; }
+
+.css-hizknv:focus { outline: none; box-shadow: rgb(0, 107, 194) 0px 0px 8px 0px; }

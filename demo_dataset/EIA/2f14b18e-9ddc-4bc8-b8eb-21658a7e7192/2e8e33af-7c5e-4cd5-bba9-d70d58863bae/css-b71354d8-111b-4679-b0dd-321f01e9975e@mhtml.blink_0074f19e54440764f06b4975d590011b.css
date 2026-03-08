@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.atm-c-text-link { color: rgb(0, 96, 128); text-decoration: underline; font-weight: normal; cursor: pointer; }
+
+.atm-c-text-link:hover { color: rgb(0, 51, 160); }
+
+.atm-c-text-link:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+.atm-c-text-link--inverted { color: rgb(255, 255, 255); }
+
+.atm-c-text-link--inverted:hover { color: rgb(204, 204, 204); }
+
+.atm-c-text-link--inverted:focus { outline: rgb(179, 165, 223) solid 4px; }
+
+.atm-c-text-passage .atm-c-text-link--inverted { color: rgb(255, 255, 255); }
+
+.atm-c-text-link--bold { font-weight: 600; }

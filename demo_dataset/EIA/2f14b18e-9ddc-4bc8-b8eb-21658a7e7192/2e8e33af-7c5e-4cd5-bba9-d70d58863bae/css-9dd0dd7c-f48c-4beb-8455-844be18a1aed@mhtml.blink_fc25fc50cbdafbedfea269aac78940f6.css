@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.atm-c-flight-path { margin: 0px; padding: 0px; list-style: none; display: flex; flex-wrap: wrap; }
+
+.atm-c-flight-path__item { display: flex; flex-wrap: nowrap; -webkit-box-align: center; align-items: center; }
+
+.atm-c-flight-path__text { font-size: 0.875rem; font-weight: 400; line-height: 1.71429; margin-bottom: 0px; }
+
+@media (min-width: 47em) {
+  .atm-c-shopping-cart .atm-c-flight-path__text { line-height: 3; }
+}
+
+@media (min-width: 60em) {
+  .atm-c-shopping-cart .atm-c-flight-path__text { line-height: 2.5; }
+}
+
+.atm-c-flight-path__icon { height: 0.75rem; width: 0.75rem; fill: rgb(0, 0, 0); margin-left: 0.5rem; margin-right: 0.5rem; }
+
+.atm-c-flight-path__item:last-child .atm-c-flight-path__icon { display: none; }
+
+.atm-c-shopping-cart .atm-c-flight-path__icon { fill: rgb(255, 255, 255); }

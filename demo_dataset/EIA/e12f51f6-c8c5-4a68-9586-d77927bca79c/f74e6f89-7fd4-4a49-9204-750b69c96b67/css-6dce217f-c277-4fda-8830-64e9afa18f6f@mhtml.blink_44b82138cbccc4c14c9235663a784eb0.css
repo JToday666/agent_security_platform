@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.payment-react iframe { border: none; display: block; width: 100%; }
+
+.payment-react .hidden { display: none; }

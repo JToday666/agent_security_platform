@@ -1,0 +1,38 @@
+@charset "utf-8";
+
+.hgGlobalHeaderSubMenu__FlexContainer { display: flex; flex-direction: column; overflow-y: auto; top: 44px; padding-right: 20px; bottom: 0px; height: auto; width: 100%; position: absolute; }
+
+.hgGlobalHeaderSubMenu__FlexContainer a:hover { text-decoration: underline; }
+
+.hgGlobalHeaderSubMenu__FlexContainer strong { font-weight: 700; display: block; position: relative; }
+
+.hgGlobalHeaderSubMenu__FlexContainer div { padding: 0px 8px; }
+
+.hgGlobalHeaderSubMenu__FlexContainer div > p, .hgGlobalHeaderSubMenu__FlexContainer div strong { color: rgb(98, 99, 102); display: inline-block; margin-top: 20px; width: fit-content; font-weight: 700; }
+
+.hgGlobalHeaderSubMenu__FlexContainer div > p::after, .hgGlobalHeaderSubMenu__FlexContainer div strong::after { content: ""; display: block; border-radius: 4rem; background: rgb(41, 182, 194); height: 0.3125rem; margin-top: 0.3125rem; }
+
+.hgGlobalHeaderSubMenu__FlexContainer ul { padding: 0px; }
+
+.hgGlobalHeaderSubMenu__FlexContainer li { list-style-type: none; margin: 10px 0px; }
+
+.hgGlobalHeaderSubMenu__FlexContainer__SideMenu { display: block; margin: 20px 0px; }
+
+.hgGlobalHeaderSubMenu__FlexContainer__Icon { display: inline; vertical-align: bottom; }
+
+.hgGlobalHeaderSubMenu__FlexContainer .stackLinks a { margin: 0px 0px 40px; display: block; }
+
+.hgGlobalHeaderSubMenu__FlexContainer .stackLinks a strong { margin-top: 0px; }
+
+@media (min-width: 768px) {
+  .hgGlobalHeaderSubMenu__FlexContainer { justify-content: space-around; position: relative; flex-direction: row; padding: 0px; top: 0px; }
+  .hgGlobalHeaderSubMenu__FlexContainer ul { margin: 20px 0px; }
+}
+
+.hgGlobalHeaderSubMenu__FlexContainer__link-container { display: flex; flex-direction: column; }
+
+.hgGlobalHeaderSubMenu__FlexContainer .new-icon { display: inline-block; background: rgb(236, 88, 91); color: rgb(255, 255, 255); font-size: 9px; border-radius: 0.125rem; padding: 2px 4px; margin: -3px 5px 0px 0px; align-items: center; line-height: 11px; vertical-align: middle; }
+
+@media (min-width: 540px) {
+  .hgGlobalHeaderSubMenu__FlexContainer .new-icon { line-height: 13px; }
+}

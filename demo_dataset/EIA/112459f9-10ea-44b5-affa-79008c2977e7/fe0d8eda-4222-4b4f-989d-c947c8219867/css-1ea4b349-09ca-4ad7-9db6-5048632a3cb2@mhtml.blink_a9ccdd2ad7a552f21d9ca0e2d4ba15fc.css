@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+.app-components-CommonShoppingCartModal-styles__cartIcon--17WbO, .app-components-CommonShoppingCartModal-styles__loadingIcon--25I4H { display: inline-block; margin-right: 4px; }
+
+.app-components-CommonShoppingCartModal-styles__emptyCartIcon--VmV4a svg { margin-right: 0px; top: 3px; }
+
+.app-components-CommonShoppingCartModal-styles__totalItems--LyXnc { display: inline-block; background-color: rgb(98, 68, 187); padding: 2px; font-weight: 400; height: 20px; width: 20px; margin-top: 2px; }
+
+.app-components-CommonShoppingCartModal-styles__panel--SYjRY { transform: translate3d(0px, 0px, 0px); position: absolute; top: 0px; display: block; width: 100%; height: 100%; text-align: left; transition: transform 0.4s ease 0s; background-color: rgb(255, 255, 255); border-radius: 4px; border: 1px solid rgb(204, 204, 204); }
+
+@media (min-width: 720px) {
+  .app-components-CommonShoppingCartModal-styles__panel--SYjRY { width: 400px; height: 100%; right: 0px; }
+}
+
+.app-components-CommonShoppingCartModal-styles__panel--SYjRY.app-components-CommonShoppingCartModal-styles__panelAfterOpen--11U4F { transform: translate3d(0px, 0px, 0px); overflow: hidden auto; z-index: 899; }
+
+.app-components-CommonShoppingCartModal-styles__panel--SYjRY.app-components-CommonShoppingCartModal-styles__panelBeforeClose--3pa9H { transform: translate3d(100%, 0px, 0px); }
+
+.app-components-CommonShoppingCartModal-styles__panel--SYjRY:focus { outline: 0px; }
+
+.app-components-CommonShoppingCartModal-styles__overlayClass--2yCPi { position: absolute; inset: 0px; transition: opacity 0.4s ease 0s; z-index: 899; }
+
+@media screen and (min-width: 720px) {
+  .app-components-CommonShoppingCartModal-styles__overlayClass--2yCPi { background-color: rgba(0, 0, 0, 0.4); opacity: 0; }
+  .app-components-CommonShoppingCartModal-styles__overlayClass--2yCPi.app-components-CommonShoppingCartModal-styles__overlayClassAfterOpen--2vahu { opacity: 1; }
+  .app-components-CommonShoppingCartModal-styles__overlayClass--2yCPi.app-components-CommonShoppingCartModal-styles__overlayClassAfterClose--1Ttcq { opacity: 0; }
+}
+
+.app-components-CommonShoppingCartModal-styles__closeModalButton--18eYV { padding: 0px; position: absolute; top: 20px; right: 20px; }
+
+.app-components-CommonShoppingCartModal-styles__loadingIcon--25I4H { padding: 2px 0px 3px; }
+
+.app-components-CommonShoppingCartModal-styles__loadingIcon--25I4H svg { margin-right: 8px; top: 1px; }
+
+@media (min-width: 944px) {
+  .app-components-CommonShoppingCartModal-styles__loadingIcon--25I4H { padding: 2px 0px; }
+}
+
+.app-components-CommonShoppingCartModal-styles__loadingText--1ZFZE { font-size: 12px; display: none; }
+
+@media screen and (min-width: 944px) {
+  .app-components-CommonShoppingCartModal-styles__loadingText--1ZFZE { margin-left: 4px; display: inline-block; }
+}
+
+@media screen and (min-width: 944px) {
+  .app-components-CommonShoppingCartModal-styles__btnCart--XP81o { padding: 0px; }
+}

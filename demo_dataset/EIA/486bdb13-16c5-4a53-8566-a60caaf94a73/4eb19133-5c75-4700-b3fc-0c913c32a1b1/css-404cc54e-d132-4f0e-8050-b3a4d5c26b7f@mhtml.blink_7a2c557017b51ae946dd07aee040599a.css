@@ -1,0 +1,99 @@
+@charset "utf-8";
+
+#gladlyChat_container .initialChatButton, #gladlyChat_container .ongoingChat_selector, #gladlyChat_container .onboarding_selector, #gladlyChat_container .proactiveGreeting, #gladlyChat_container .minimizedChatButtonSelector { font-family: Graphik, "Helvetica Neue", sans-serif; }
+
+#gladlyChat_container .chatIcon_customFillColors { fill: rgb(255, 255, 255) !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector, #gladlyChat_container .onboarding_submitButton_selector { background: rgb(34, 92, 78) !important; border: rgb(34, 92, 78) !important; color: rgb(255, 255, 255) !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector:hover, #gladlyChat_container .onboarding_submitButton_selector:hover { transition: background-color 0.1s ease 0s !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector:active, #gladlyChat_container .onboarding_submitButton_selector:active { background: rgb(26, 71, 60) !important; transition: background-color 0.1s ease 0s !important; }
+
+#gladlyChat_container .chatSubmitArrow_customColors, #gladlyChat_container .chatIcon_customStrokeColors { stroke: rgb(34, 92, 78) !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector:hover .chatIcon_customStrokeColors { stroke: rgb(43, 115, 98) !important; transition: stroke 0.1s ease 0s !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector:active .chatIcon_customStrokeColors { stroke: rgb(26, 71, 60) !important; transition: stroke 0.1s ease 0s !important; }
+
+#gladlyChat_container .message_agent_rtl, #gladlyChat_container .message_agent, #gladlyChat_container .typingIndicator { background: rgb(34, 92, 78) !important; border: 1px solid rgb(26, 71, 60) !important; color: rgb(255, 255, 255) !important; }
+
+#gladlyChat_container .chatLink_customAgentColors { color: rgb(255, 255, 255) !important; }
+
+#gladlyChat_container .typingIndicator_dots { background-color: rgb(255, 255, 255) !important; }
+
+#gladlyChat_container .chatIcon_customFillColors { fill: rgb(255, 255, 255) !important; }
+
+#gladlyChat_container .chatSubmitArrow_customColors, #gladlyChat_container .chatIcon_customStrokeColors { stroke: rgb(34, 92, 78) !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector, #gladlyChat_container .onboarding_submitButton_selector { background: rgb(34, 92, 78) !important; border: rgb(34, 92, 78) !important; color: rgb(255, 255, 255) !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector:hover, #gladlyChat_container .onboarding_submitButton_selector:hover { background: rgb(43, 115, 98) !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector:active, #gladlyChat_container .onboarding_submitButton_selector:active { background: rgb(26, 71, 60) !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector:hover .chatIcon_customStrokeColors { stroke: rgb(43, 115, 98) !important; }
+
+#gladlyChat_container .minimizedChatButtonSelector:active .chatIcon_customStrokeColors { stroke: rgb(26, 71, 60) !important; }
+
+#gladlyChat_container { right: 0px !important; }
+
+#gladlyChat_container .initialChatButton, #gladlyChat_container .ongoingChat_selector, #gladlyChat_container .onboarding_selector, #gladlyChat_container .proactiveGreeting, #gladlyChat_container .minimizedChatButtonSelector { box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 30px 1px !important; }
+
+#gladlyChat_container .initialChatButton, #gladlyChat_container .minimizedChatButtonSelector, #gladlyChat_container .onboarding_selector, #gladlyChat_container .proactiveGreeting, #gladlyChat_container .ongoingChat_selector { border-color: rgb(255, 255, 255) !important; border-style: solid !important; border-width: 1px !important; }
+
+#gladlyChat_container .adaWrapper, #gladlyChat_container .initialChatButton, #gladlyChat_container .onboarding_submitButton_selector, #gladlyChat_container .minimizedChatButtonSelector { border-radius: 32px !important; }
+
+#gladlyChat_container .minimizedChatButton_notification { right: 9px !important; top: 9px !important; }
+
+#gladlyChat_container .ongoingChat_selector, #gladlyChat_container .onboarding_selector, #gladlyChat_container .onboarding, #gladlyChat_container .message_agent, #gladlyChat_container .message_agent_rtl, #gladlyChat_container .message_customer, #gladlyChat_container .message_customer_rtl, #gladlyChat_container .typingIndicator { border-radius: 16px !important; }
+
+#gladlyChat_container .message_customer_rtl, #gladlyChat_container .message_agent { border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important; white-space: pre-wrap !important; }
+
+#gladlyChat_container .message_agent_rtl, #gladlyChat_container .message_customer { border-top-right-radius: 0px !important; border-bottom-right-radius: 0px !important; white-space: pre-wrap !important; }
+
+#gladlyChat_container .message_customer:last-child { border-bottom-right-radius: 16px !important; }
+
+#gladlyChat_container .message_agent_rtl:last-child { border-bottom-right-radius: 16px !important; }
+
+#gladlyChat_container .message_agent:last-child { border-bottom-left-radius: 16px !important; }
+
+#gladlyChat_container .message_customer_rtl:last-child { border-bottom-left-radius: 16px !important; }
+
+#gladlyChat_container .typingIndicator { border-top-left-radius: 0px !important; }
+
+#gladlyChat_container .onboarding_inputBox_name, #gladlyChat_container .onboarding_inputBox_email { border-radius: 4px !important; }
+
+#gladlyChat_container.preload { z-index: 2147483000 !important; }
+
+#gladlyChat_container .tempButton { min-width: 50px !important; height: 50px !important; padding: 0px 15px !important; text-transform: none !important; }
+
+#gladlyChat_container .tempButton.icon { padding: 0px !important; }
+
+#gladlyChat_container .tempButton:focus { outline: none !important; }
+
+#gladlyChat_container .adaWrapper:focus { box-shadow: rgb(129, 181, 234) 0px 0px 0px 3px !important; outline: none !important; }
+
+#gladlyChat_container .tempButton .chatIcon { height: 24px !important; width: 24px !important; }
+
+#gladlyChat_container .tempButton { opacity: 0 !important; transform: translateY(30px) scale(0.9) !important; }
+
+#gladlyChat_container .tempButton.tempButton-animated { transition: opacity 400ms cubic-bezier(0.42, 0, 1, 1) 0s, transform 250ms ease-out 0s !important; opacity: 1 !important; transform: translateY(0px) scale(1) !important; }
+
+#gladlyChat_container .loadingPanel { background-color: white !important; border-radius: 16px !important; box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 30px 1px !important; flex-direction: column !important; height: 581px !important; margin: 0px !important; -webkit-box-pack: end !important; opacity: 0 !important; overflow: hidden !important; top: 0px !important; transform: translateY(50px) !important; width: 368px !important; display: flex !important; justify-content: center !important; align-items: center !important; border: 0px solid transparent !important; z-index: 2147483000 !important; }
+
+#gladlyChat_container .loadingPanel.loadingPanel-animated { opacity: 1 !important; transition: opacity 300ms cubic-bezier(0.42, 0, 1, 1) 0s, transform 350ms ease 0s !important; transform: translateY(0px) !important; }
+
+#gladlyChat_container .loadingPanel .loadingPanel-spinner { animation: 1s linear 0s infinite normal none running loadContainer-spin; box-sizing: border-box !important; height: 68px !important; width: 68px !important; fill: red !important; }
+
+@-webkit-keyframes loadContainer-spin { 
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes loadContainer-spin { 
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 667px) {
+  #gladlyChat_container .loadingPanel { bottom: 0px !important; border-radius: 0px !important; height: 100vh !important; margin: 0px !important; overflow: hidden !important; width: 100vw !important; }
+}

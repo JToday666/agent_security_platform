@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.kcppay-payment-modal { height: fit-content; padding: 36px; width: fit-content; }
+
+.kcppay-payment-modal > div { display: none; }

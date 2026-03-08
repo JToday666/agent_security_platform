@@ -1,0 +1,81 @@
+@charset "utf-8";
+
+body { }
+
+p, li { color: rgb(102, 106, 115); }
+
+a { color: rgb(37, 37, 37); }
+
+h1 { color: rgb(255, 255, 255); }
+
+h2 { color: rgb(246, 104, 47); }
+
+h3 { color: rgb(54, 58, 67); }
+
+blockquote { }
+
+.block-header { background-color: rgb(37, 37, 37); color: rgb(255, 255, 255); }
+
+.block-header .block-header-social-links a { color: rgb(255, 255, 255); }
+
+.block-footer { background-color: rgb(37, 37, 37); color: rgb(255, 255, 255); }
+
+.block-footer .block-header-social-links a { color: rgb(255, 255, 255); }
+
+.social-link { color: rgb(37, 37, 37); }
+
+.block-image-text * { color: rgb(255, 255, 255); }
+
+.row-background-brand_color_1 { background-color: rgb(255, 255, 255); }
+
+.row-foreground-brand_color_1 * { color: rgb(255, 255, 255); }
+
+.row-foreground-brand_color_1 form [type="submit"] { border-color: rgb(255, 255, 255); }
+
+.row-foreground-brand_color_1 form [type="submit"]:hover { border-color: inherit; }
+
+.row-background-brand_color_2 { background-color: rgb(240, 85, 55); }
+
+.row-foreground-brand_color_2 * { color: rgb(240, 85, 55); }
+
+.row-foreground-brand_color_2 form [type="submit"] { border-color: rgb(240, 85, 55); }
+
+.row-foreground-brand_color_2 form [type="submit"]:hover { border-color: inherit; }
+
+.row-background-brand_color_3 { background-color: rgb(30, 10, 60); }
+
+.row-foreground-brand_color_3 * { color: rgb(30, 10, 60); }
+
+.row-foreground-brand_color_3 form [type="submit"] { border-color: rgb(30, 10, 60); }
+
+.row-foreground-brand_color_3 form [type="submit"]:hover { border-color: inherit; }
+
+.row-background-brand_color_4 { background-color: rgb(30, 12, 60); }
+
+.row-foreground-brand_color_4 * { color: rgb(30, 12, 60); }
+
+.row-foreground-brand_color_4 form [type="submit"] { border-color: rgb(30, 12, 60); }
+
+.row-foreground-brand_color_4 form [type="submit"]:hover { border-color: inherit; }
+
+.row-background-brand_color_5 { background-color: rgb(248, 248, 250); }
+
+.row-foreground-brand_color_5 * { color: rgb(248, 248, 250); }
+
+.row-foreground-brand_color_5 form [type="submit"] { border-color: rgb(248, 248, 250); }
+
+.row-foreground-brand_color_5 form [type="submit"]:hover { border-color: inherit; }
+
+.sc-chat-window { z-index: 10000; }
+
+.sc-chat-window .sc-user-input--file-icon-wrapper { display: none; }
+
+.sc-message--avatar { display: none; }
+
+.sc-launcher { background-color: rgb(78, 140, 255); }
+
+.sc-chat-window .sc-header { color: rgb(255, 255, 255); background-color: rgb(78, 140, 255); }
+
+.sc-message--content.sent .sc-message--text { color: rgb(255, 255, 255); background-color: rgb(78, 140, 255); }
+
+.sc-message--content.sent a[href] { color: rgb(255, 255, 255); }

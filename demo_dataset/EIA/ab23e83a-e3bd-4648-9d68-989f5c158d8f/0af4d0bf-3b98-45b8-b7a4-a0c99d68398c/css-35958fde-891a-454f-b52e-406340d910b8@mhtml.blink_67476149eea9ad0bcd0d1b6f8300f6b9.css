@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+@keyframes app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__shine-lines--2alw8 { 
+  0% { background-position: -60% center; }
+  40%, 100% { background-position: 180% center; }
+}
+
+.app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__skeletonCard--AcVlm { display: flex; box-shadow: rgba(0, 0, 0, 0.25) 1px 1px 4px 0px; background: rgb(255, 255, 255); flex-direction: column; min-height: 382px; margin: 24px 0px; width: 100%; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__skeletonCard--AcVlm { min-height: 500px; }
+}
+
+@media screen and (min-width: 1184px) {
+  .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__skeletonCard--AcVlm { border-radius: 4px; }
+}
+
+.app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__skeletonCard--AcVlm .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__skeletonCardHeader--37Mvu { background-color: rgba(204, 204, 204, 0.5); width: 100%; height: 67px; padding: 14px 24px; align-items: center; display: flex; color: rgb(255, 255, 255); background-image: linear-gradient(90deg, rgba(211, 211, 211, 0) 0px, rgba(211, 211, 211, 0.8) 50%, rgba(211, 211, 211, 0) 100%); background-size: 40% 100%; animation: 4s ease-in-out 0s infinite normal none running app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__shine-lines--2alw8; }
+
+@media screen and (min-width: 1184px) {
+  .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__skeletonCard--AcVlm .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__skeletonCardHeader--37Mvu { border-top-left-radius: 4px; border-top-right-radius: 4px; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__skeletonCard--AcVlm .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonCard-styles__internalContent--jeiGc { padding: 40px; }
+}

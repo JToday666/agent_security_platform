@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+.btn_enter_promo { color: rgb(0, 0, 0); cursor: pointer; font-size: 20px; }
+
+.div_promo { position: relative; display: none; }
+
+.div_input { display: flex; position: relative; justify-content: center; }
+
+.div_input .btn_accesso { color: rgb(255, 255, 255); height: 45px; min-width: 57px; background: rgb(37, 85, 149); font-weight: 400; font-size: 14px; border: 0px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; padding: 0px !important; }
+
+.div_input .btn_accesso i { margin: 0px auto; }
+
+input[type="text"].input_accesso, input[type="text"].input_accesso:focus, input[type="text"].input_accesso:active { text-align: center; padding: 0px; width: 220px; border: 0px; border-radius: 8px 0px 0px 8px; background-color: rgb(244, 243, 243); outline: none; }
+
+input[type="text"].input_accesso::placeholder { text-align: left; padding-left: 15px; font-style: italic; color: rgb(0, 0, 0); }
+
+@media screen and (min-width: 1025px) {
+  .btn_enter_promo { background: 0px 0px; }
+  .div_input { position: absolute; top: 66px; background: rgb(246, 197, 68); right: 0px; padding: 12px; }
+}
+
+.enter-promo-mobile { position: fixed !important; bottom: 124px !important; width: 100% !important; min-width: 300px !important; z-index: 200 !important; }
+
+@media screen and (min-width: 1025px) {
+  .enter-promo-mobile, .enter-promo-mobile-minify { display: none !important; }
+}
+
+.enter-promo-mobile .ubermenu-target { display: none !important; }
+
+.enter-promo-mobile .btn_accesso { padding: 14px !important; }
+
+.enter-promo-mobile .input_accesso { width: 100% !important; }
+
+.enter-promo-mobile-minify { order: 16; text-align: center; padding: 15px; background: rgb(244, 244, 244); cursor: pointer; }
+
+.enter-promo-mobile-minify span { color: rgb(102, 102, 102); text-decoration: underline; }
+
+@media only screen and (max-width: 1023px) {
+  .header-mainmenu .btn_enter_promo { display: none; }
+  .div_promo { display: block; }
+}
