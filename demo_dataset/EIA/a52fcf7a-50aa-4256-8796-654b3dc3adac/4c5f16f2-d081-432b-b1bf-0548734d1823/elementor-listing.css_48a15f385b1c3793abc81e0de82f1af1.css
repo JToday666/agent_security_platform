@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select, textarea, input { font-size: 1rem; }
+}
+
+#main .smartfilter-container .elementor-heading-title { font-family: "open sans", sans-serif !important; font-size: 2rem !important; font-weight: 700 !important; }
+
+@media (min-width: 768px) {
+  #main .sf-thingstodo-listing { width: 100%; max-width: 1194px; }
+  #main .sf-thingstodo-listing .column-image { width: 240px; min-width: 240px; }
+  #main .sf-thingstodo-listing .column-info { width: auto; flex: 1 1 0%; }
+  #main .sf-thingstodo-listing .column-indicators { width: 240px; min-width: 240px; }
+  #main .sf-thingstodo-listing .column-link { width: 36px; min-width: 36px; padding: 0px; }
+  #main .sf-thingstodo-listing .jet-listing-grid__item { position: relative; min-height: 180px; }
+  #main .sf-thingstodo-listing > section.elementor-element .listing-title { line-height: 100%; margin: 0px; padding: 0px; }
+  #main .sf-thingstodo-listing .elementor-image { position: relative; max-width: 218px; height: 122px; overflow: hidden; }
+  #main .sf-thingstodo-listing .elementor-image img { width: 218px; }
+  #main .sf-thingstodo-listing .listing-description .jet-listing-dynamic-field__content { position: relative; }
+  #main .sf-thingstodo-listing .listing-tags { margin: 0px; font-size: 1rem; }
+}
+
+@media (max-width: 479px) {
+  #main .sf-thingstodo-listing .elementor-image { position: relative; max-width: 109px; height: 61px; overflow: hidden; }
+  #main .sf-thingstodo-listing .elementor-image img { width: 109px; }
+  #main .sf-thingstodo-listing .listing-tags { margin: 0px; font-size: 1rem; }
+}
+
+@media (min-width: 480px) {
+  #main .smartfilter-container { padding-bottom: 60px; margin-bottom: 40px; }
+  #main .smartfilter-container > .elementor-container { width: 100%; border: none; background: rgb(255, 255, 255); }
+  #main .smartfilter-container .elementor-column { white-space: nowrap; margin: 0px; padding: 6px 0px; width: auto; }
+  #main .smartfilter-container .elementor-column .elementor-widget-container { padding: 0px 26px; }
+  #main .smartfilter-container .elementor-column:first-child .elementor-widget-container { padding-right: 40px; }
+  #main .smartfilter-container .elementor-widget-wrap { padding: 0px; margin: 0px; border-right: 1px solid rgb(227, 227, 227); }
+  #main .smartfilter-container .elementor-column:last-child .elementor-widget-wrap { border-right: none; }
+  #main .smartfilter-container select { background: 0px 0px; border: none; }
+}
+
+@media (max-width: 479px) {
+  #main .smartfilter-container { margin: 0px 10px 40px; }
+  #main .smartfilter-container .elementor-widget-container { padding-left: 0px; }
+  #main .smartfilter-container .elementor-widget-wrap { margin-left: 0px; }
+}
+
+@media (max-width: 767px) {
+  .sf-jetengine-sort select { width: 100%; }
+}
+
+@media (max-width: 1023px) {
+  #main .smartfilter-container.multiple-filter .sf-jetengine-sort select { width: 100%; }
+}
+
+@media (min-width: 480px) and (max-width: 1024px) {
+  #main .smartfilter-container.multiple-filter .elementor-column:first-child .elementor-widget-container { padding-right: 25px; }
+  #main .smartfilter-container.multiple-filter .elementor-column .elementor-widget-container { padding: 0px 10px; }
+}
+
+@media (min-width: 480px) and (max-width: 1023px) {
+  #main .smartfilter-container.multiple-filter .elementor-column:first-child { width: 100%; }
+  #main .smartfilter-container.multiple-filter > .elementor-container { width: 100%; border: none; background: 0px 0px; }
+  #main .smartfilter-container.multiple-filter .elementor-container .elementor-column:not(:first-child) { border: 1px solid rgb(227, 227, 227); background: rgb(255, 255, 255); }
+  #main .smartfilter-container.multiple-filter .elementor-column { white-space: nowrap; margin: 5px 0px; padding: 6px 0px; width: 100%; }
+  #main .smartfilter-container.multiple-filter .elementor-column-wrap { padding: 0px; margin: 0px; border-right: none; }
+}

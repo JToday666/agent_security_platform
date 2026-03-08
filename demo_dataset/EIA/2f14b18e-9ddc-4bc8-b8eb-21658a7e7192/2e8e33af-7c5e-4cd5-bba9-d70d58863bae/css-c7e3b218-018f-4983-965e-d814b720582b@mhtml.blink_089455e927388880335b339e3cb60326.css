@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.atm-c-divider { display: flex; -webkit-box-pack: center; justify-content: center; -webkit-box-align: start; align-items: flex-start; }
+
+.atm-c-divider--solid::before { content: ""; height: 1px; border-bottom: 1px solid rgb(148, 148, 148); width: 100%; }
+
+.atm-c-divider--solid::after { content: ""; height: 1px; border-bottom: 1px solid rgb(148, 148, 148); width: 100%; }
+
+.atm-c-divider__content { display: flex; -webkit-box-flex: 1; flex: 1 0 auto; }
+
+.atm-c-divider__icon { position: relative; top: 2px; height: 14px; width: 14px; margin-left: 0.5rem; }
+
+.atm-c-divider__body { text-align: center; width: 100%; }
+
+.atm-c-divider__title { display: flex; -webkit-box-align: center; align-items: center; }
+
+.atm-c-divider__title::before { content: ""; height: 1px; border-bottom: 1px dashed rgb(148, 148, 148); width: 100%; -webkit-box-flex: 1; flex: 1 1 0%; }
+
+.atm-c-divider__title::after { content: ""; height: 1px; border-bottom: 1px dashed rgb(148, 148, 148); width: 100%; -webkit-box-flex: 1; flex: 1 1 0%; }
+
+.atm-c-divider__text { display: flex; padding: 0.5rem 0.25rem; margin: 0px; color: rgb(148, 148, 148); text-align: center; font-size: 0.75rem; font-weight: 300; line-height: 1.66667; background: rgb(255, 255, 255); }
+
+.atm-c-divider__description { font-size: 0.75rem; font-weight: 300; line-height: 1.66667; color: rgb(148, 148, 148); background: rgb(255, 255, 255); }

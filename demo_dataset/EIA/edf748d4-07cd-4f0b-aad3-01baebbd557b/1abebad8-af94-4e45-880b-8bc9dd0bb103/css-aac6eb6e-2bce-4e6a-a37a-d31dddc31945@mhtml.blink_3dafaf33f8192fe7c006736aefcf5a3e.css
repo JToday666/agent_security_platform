@@ -1,0 +1,299 @@
+@charset "utf-8";
+
+@font-face { font-display: swap; font-family: Roboto; font-style: normal; font-weight: 300; src: local(""), url("https://assets.ryanair.com/resources/ui/fonts/roboto-300.woff2") format("woff2"), url("https://assets.ryanair.com/resources/ui/fonts/roboto-300.woff") format("woff"); }
+
+@font-face { font-display: swap; font-family: Roboto; font-style: normal; font-weight: normal; src: local(""), url("https://assets.ryanair.com/resources/ui/fonts/roboto.woff2") format("woff2"), url("https://assets.ryanair.com/resources/ui/fonts/roboto.woff") format("woff"); }
+
+@font-face { font-display: swap; font-family: Roboto; font-style: normal; font-weight: 500; src: local(""), url("https://assets.ryanair.com/resources/ui/fonts/roboto-500.woff2") format("woff2"), url("https://assets.ryanair.com/resources/ui/fonts/roboto-500.woff") format("woff"); }
+
+@font-face { font-display: swap; font-family: Roboto; font-style: normal; font-weight: bold; src: local(""), url("https://assets.ryanair.com/resources/ui/fonts/roboto-700.woff2") format("woff2"), url("https://assets.ryanair.com/resources/ui/fonts/roboto-700.woff") format("woff"); }
+
+html[_ngcontent-iyw-c151], body[_ngcontent-iyw-c151] { font-family: Roboto, sans-serif; -webkit-font-smoothing: antialiased; height: 100%; margin: 0px; padding: 0px; }
+
+html[_ngcontent-iyw-c151] { font-size: 100%; line-height: 1.3rem; }
+
+h1[_ngcontent-iyw-c151], .h1[_ngcontent-iyw-c151] { font-size: 1.25rem; line-height: 1.375rem; margin: 0px; }
+
+@media only screen and (min-width: 48em) {
+  h1[_ngcontent-iyw-c151], .h1[_ngcontent-iyw-c151] { font-size: 2.25rem; line-height: 2.625rem; }
+}
+
+h2[_ngcontent-iyw-c151], .h2[_ngcontent-iyw-c151] { font-size: 1.125rem; line-height: 1.2375rem; margin: 0px; }
+
+@media only screen and (min-width: 48em) {
+  h2[_ngcontent-iyw-c151], .h2[_ngcontent-iyw-c151] { font-size: 1.875rem; line-height: 2.25rem; }
+}
+
+h3[_ngcontent-iyw-c151], .h3[_ngcontent-iyw-c151] { font-size: 1rem; line-height: 1.1rem; margin: 0px; }
+
+@media only screen and (min-width: 48em) {
+  h3[_ngcontent-iyw-c151], .h3[_ngcontent-iyw-c151] { font-size: 1.5rem; line-height: 1.75rem; }
+}
+
+h4[_ngcontent-iyw-c151], .h4[_ngcontent-iyw-c151] { font-size: 0.875rem; line-height: 0.9625rem; margin: 0px; }
+
+@media only screen and (min-width: 48em) {
+  h4[_ngcontent-iyw-c151], .h4[_ngcontent-iyw-c151] { font-size: 1.25rem; line-height: 1.5rem; }
+}
+
+.b2[_ngcontent-iyw-c151] { font-size: 0.875rem; line-height: 1.1375rem; }
+
+.b3[_ngcontent-iyw-c151] { font-size: 0.75rem; line-height: 0.975rem; }
+
+.b4[_ngcontent-iyw-c151] { font-size: 0.625rem; line-height: 0.8125rem; }
+
+@media only screen and (min-width: 48em) {
+  .title-xl-lg[_ngcontent-iyw-c151] { font-size: 2.25rem; line-height: 2.5rem; font-weight: bold; }
+}
+
+@media only screen and (max-width: 48em) {
+  .title-xl-sm[_ngcontent-iyw-c151] { font-size: 1.25rem; line-height: 1.5rem; font-weight: bold; }
+}
+
+@media only screen and (min-width: 48em) {
+  .title-l-lg[_ngcontent-iyw-c151] { font-size: 1.75rem; line-height: 2.25rem; font-weight: bold; }
+}
+
+@media only screen and (max-width: 48em) {
+  .title-l-sm[_ngcontent-iyw-c151] { font-size: 1.125rem; line-height: 1.25rem; font-weight: bold; }
+}
+
+@media only screen and (min-width: 48em) {
+  .title-m-lg[_ngcontent-iyw-c151] { font-size: 1.5rem; line-height: 1.75rem; font-weight: bold; }
+}
+
+@media only screen and (max-width: 48em) {
+  .title-m-sm[_ngcontent-iyw-c151] { font-size: 1rem; line-height: 1.25rem; font-weight: bold; }
+}
+
+@media only screen and (min-width: 48em) {
+  .title-s-lg[_ngcontent-iyw-c151] { font-size: 1.25rem; line-height: 1.5rem; font-weight: bold; }
+}
+
+@media only screen and (max-width: 48em) {
+  .title-s-sm[_ngcontent-iyw-c151] { font-size: 0.875rem; line-height: 1.25rem; font-weight: bold; }
+}
+
+@media only screen and (min-width: 48em) {
+  .subtitle-l-lg[_ngcontent-iyw-c151] { font-size: 1rem; line-height: 1.25rem; font-weight: bold; }
+}
+
+@media only screen and (max-width: 48em) {
+  .subtitle-l-sm[_ngcontent-iyw-c151] { font-size: 1rem; line-height: 1.25rem; font-weight: bold; }
+}
+
+@media only screen and (min-width: 48em) {
+  .subtitle-m-lg[_ngcontent-iyw-c151] { font-size: 0.875rem; line-height: 1.25rem; font-weight: bold; }
+}
+
+@media only screen and (max-width: 48em) {
+  .subtitle-m-sm[_ngcontent-iyw-c151] { font-size: 0.875rem; line-height: 1.25rem; font-weight: bold; }
+}
+
+@media only screen and (min-width: 48em) {
+  .subtitle-s-lg[_ngcontent-iyw-c151] { font-size: 0.75rem; line-height: 1rem; font-weight: bold; }
+}
+
+@media only screen and (max-width: 48em) {
+  .subtitle-s-sm[_ngcontent-iyw-c151] { font-size: 0.75rem; line-height: 1rem; font-weight: bold; }
+}
+
+@media only screen and (min-width: 48em) {
+  .body-xl-lg[_ngcontent-iyw-c151] { font-size: 1rem; line-height: 1.25rem; }
+}
+
+@media only screen and (max-width: 48em) {
+  .body-xl-sm[_ngcontent-iyw-c151] { font-size: 1rem; line-height: 1.25rem; }
+}
+
+@media only screen and (min-width: 48em) {
+  .body-l-lg[_ngcontent-iyw-c151] { font-size: 0.875rem; line-height: 1.25rem; }
+}
+
+@media only screen and (max-width: 48em) {
+  .body-l-sm[_ngcontent-iyw-c151] { font-size: 0.875rem; line-height: 1.25rem; }
+}
+
+@media only screen and (min-width: 48em) {
+  .body-m-lg[_ngcontent-iyw-c151] { font-size: 0.75rem; line-height: 1rem; }
+}
+
+@media only screen and (max-width: 48em) {
+  .body-m-sm[_ngcontent-iyw-c151] { font-size: 0.75rem; line-height: 1rem; }
+}
+
+@media only screen and (min-width: 48em) {
+  .body-s-lg[_ngcontent-iyw-c151] { font-size: 0.625rem; line-height: 0.75rem; }
+}
+
+@media only screen and (max-width: 48em) {
+  .body-s-sm[_ngcontent-iyw-c151] { font-size: 0.625rem; line-height: 0.75rem; }
+}
+
+@media only screen and (min-width: 48em) {
+  .OVERLINE-lg[_ngcontent-iyw-c151] { font-size: 0.75rem; line-height: 1rem; font-weight: bold; }
+}
+
+@media only screen and (max-width: 48em) {
+  .OVERLINE-sm[_ngcontent-iyw-c151] { font-size: 0.75rem; line-height: 1rem; font-weight: bold; }
+}
+
+@media only screen and (min-width: 48em) {
+  .tagline-lg[_ngcontent-iyw-c151] { font-size: 0.875rem; line-height: 1rem; font-weight: bold; }
+}
+
+@media only screen and (max-width: 48em) {
+  .tagline-sm[_ngcontent-iyw-c151] { font-size: 0.875rem; line-height: 1rem; font-weight: bold; }
+}
+
+.display-0[_ngcontent-iyw-c151] { font-size: 4.5rem; line-height: 4.5rem; }
+
+.display-1[_ngcontent-iyw-c151] { font-size: 3.25rem; line-height: 3.25rem; }
+
+.display-2[_ngcontent-iyw-c151] { font-size: 2.5rem; line-height: 2.5rem; }
+
+.display-3[_ngcontent-iyw-c151] { font-size: 2rem; }
+
+.display-4[_ngcontent-iyw-c151] { font-size: 1.25rem; line-height: 1.15rem; }
+
+.display-5[_ngcontent-iyw-c151] { font-size: 1rem; }
+
+.icon-20[_ngcontent-iyw-c151] { height: 1.25rem; width: 1.25rem; }
+
+.icon-30[_ngcontent-iyw-c151] { height: 1.875rem; width: 1.875rem; }
+
+.b0[_ngcontent-iyw-c151] { font-size: 1.125rem; line-height: 1.325rem; }
+
+.acc-details[_ngcontent-iyw-c151] { font-family: Roboto, sans-serif; min-height: 100vh; }
+
+.acc-details__body[_ngcontent-iyw-c151] { background-color: var(--light-base, #fff); box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 4px; margin: 0px auto; }
+
+@media (min-width: 1024px) {
+  .acc-details__body[_ngcontent-iyw-c151] { max-width: 63.75rem; padding: 1.75rem 1.5rem; }
+}
+
+@media (min-width: 1024px) {
+  .acc-details__flight-deal-banner[_ngcontent-iyw-c151] { margin-bottom: 1rem; }
+}
+
+.acc-details__tc-banner[_ngcontent-iyw-c151] { font-family: Impact, Roboto, sans-serif; font-weight: 900; letter-spacing: 0.02rem; }
+
+.acc-details__tc-banner[_ngcontent-iyw-c151] .banner.banner[_ngcontent-iyw-c151] { background-image: url("https://assets.ryanair.com/resources/ui/rooms/v2/travel_credit/tc-banner-bg-img.png"), linear-gradient(to right, rgb(236, 183, 7), rgb(241, 201, 51)); background-position: center top; background-repeat: no-repeat; margin-bottom: 0px; }
+
+.acc-details__tc-banner[_ngcontent-iyw-c151] .banner.banner[_ngcontent-iyw-c151] .banner__icon.banner__icon[_ngcontent-iyw-c151] { background-color: rgb(13, 73, 192); }
+
+@media (min-width: 1024px) {
+  .acc-details__tc-banner[_ngcontent-iyw-c151] .banner.banner[_ngcontent-iyw-c151] { border-radius: 4px; margin-bottom: 1rem; }
+}
+
+.acc-details__deals-banner[_ngcontent-iyw-c151] { position: relative; z-index: 0; }
+
+@media (min-width: 1024px) {
+  .acc-details__deals-banner[_ngcontent-iyw-c151] { margin-top: 0.5rem; }
+}
+
+.acc-details[_ngcontent-iyw-c151] section[_ngcontent-iyw-c151]:last-child { padding-bottom: 50px; }
+
+@media (min-width: 1024px) {
+  .acc-details[_ngcontent-iyw-c151] section[_ngcontent-iyw-c151]:last-child { padding-bottom: 50px; }
+}
+
+.acc-details__sections-container[_ngcontent-iyw-c151] { background: var(--bg-grey, #f4f4f4); margin-top: 1rem; }
+
+@media (min-width: 1024px) {
+  .acc-details__sections-container[_ngcontent-iyw-c151] { background: var(--light-base, #fff); margin-top: 2rem; }
+}
+
+.acc-details__overview-section[_ngcontent-iyw-c151], .acc-details__facilities-section[_ngcontent-iyw-c151], .acc-details__info-section[_ngcontent-iyw-c151] { background: var(--light-base, #fff); padding: 0.75rem; }
+
+@media (min-width: 1024px) {
+  .acc-details__overview-section[_ngcontent-iyw-c151], .acc-details__facilities-section[_ngcontent-iyw-c151], .acc-details__info-section[_ngcontent-iyw-c151] { margin-top: 2.5rem; padding: 0px; }
+}
+
+.acc-details__overview-section[_ngcontent-iyw-c151] { border-top: 1px solid var(--light-grey, #c3c7cc); margin-top: 0.625rem; }
+
+@media (min-width: 1024px) {
+  .acc-details__overview-section[_ngcontent-iyw-c151] { border: none; margin-top: 0px; }
+}
+
+.acc-details__rooms-section[_ngcontent-iyw-c151] { background: var(--bg-grey, #f4f4f4); padding: 0.625rem 0.25rem; }
+
+@media (min-width: 1024px) {
+  .acc-details__rooms-section[_ngcontent-iyw-c151] { background: none; border: none; margin-top: 1.25rem; padding: 0.75rem 0px 0px; }
+}
+
+.acc-details__search-header[_ngcontent-iyw-c151] { background-color: rgb(232, 244, 253); border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-bottom: none; border-radius: 2px; height: 46px; padding: 0.625rem 0.75rem 0px; width: 100%; }
+
+@media (min-width: 1024px) {
+  .acc-details__search-header[_ngcontent-iyw-c151] { background: none; border: none; padding: 0px; }
+}
+
+.acc-details__search-header__title[_ngcontent-iyw-c151] { font-size: 1.313rem; font-weight: 700; float: left; max-width: 240px; padding-top: 0.2rem; }
+
+.acc-details__search-results[_ngcontent-iyw-c151] { border: 0px; display: flex; margin: 0px; }
+
+.acc-details__search-results__item[_ngcontent-iyw-c151] { flex: 1 1 0%; }
+
+.acc-details__search-results__item--empty[_ngcontent-iyw-c151] { border: 1px solid var(--light-grey, #c3c7cc); flex: 1 1 auto; padding: 80px 0px; text-align: center; }
+
+.acc-details__search-results__item--empty[_ngcontent-iyw-c151] > div[_ngcontent-iyw-c151] { margin-top: 6px; }
+
+.acc-details__search-results__loading-rooms[_ngcontent-iyw-c151] { flex: 1 1 0%; padding: 2.5rem 1.25rem 2.5rem 0px; text-align: center; }
+
+.acc-details__search-results[_ngcontent-iyw-c151] .loading[_ngcontent-iyw-c151] { display: none; }
+
+.acc-details__search-results--loading[_ngcontent-iyw-c151] .loading[_ngcontent-iyw-c151] { border: 1px solid var(--light-grey, #c3c7cc); display: block; }
+
+.acc-details__search-results--loading[_ngcontent-iyw-c151] .acc-details__search-results__item--empty[_ngcontent-iyw-c151], .acc-details__search-results--loading[_ngcontent-iyw-c151] .room-cards[_ngcontent-iyw-c151], .acc-details__search-results--loading[_ngcontent-iyw-c151] .hostel-room-cards[_ngcontent-iyw-c151] { display: none; }
+
+@media (min-width: 1024px) {
+  .acc-details__search-results--loading[_ngcontent-iyw-c151] .loading__icon[_ngcontent-iyw-c151] { margin-top: 60px; }
+  .acc-details__search-results--loading[_ngcontent-iyw-c151] .loading__legend[_ngcontent-iyw-c151] { margin-bottom: 60px; }
+}
+
+.acc-details__provider[_ngcontent-iyw-c151] { align-items: center; display: flex; flex-direction: row; float: right; }
+
+.acc-details__provider__text[_ngcontent-iyw-c151] { font-size: 0.75rem; font-weight: 400; color: var(--standard-grey, #6c7079); display: none; }
+
+@media (min-width: 1024px) {
+  .acc-details__provider__text[_ngcontent-iyw-c151] { display: inline; }
+}
+
+.acc-details__provider[_ngcontent-iyw-c151] img[_ngcontent-iyw-c151] { max-height: 21px; max-width: 110px; }
+
+.acc-details__description[_ngcontent-iyw-c151] { padding: 0.5rem 0.75rem; }
+
+@media (min-width: 1024px) {
+  .acc-details__description[_ngcontent-iyw-c151] { margin-bottom: 1rem; padding: 0px; }
+}
+
+.acc-details[_ngcontent-iyw-c151] .acc-details__trust-you-review-section.acc-details__trust-you-review-section[_ngcontent-iyw-c151] { padding: 0px; }
+
+.acc-details[_ngcontent-iyw-c151] .acc-details__trust-you-review-section.acc-details__trust-you-review-section[_ngcontent-iyw-c151] .review-details[_ngcontent-iyw-c151] { border-bottom: 1px solid var(--light-grey, #c3c7cc); border-top: 1px solid var(--light-grey, #c3c7cc); }
+
+@media (min-width: 1024px) {
+  .acc-details[_ngcontent-iyw-c151] .acc-details__trust-you-review-section.acc-details__trust-you-review-section[_ngcontent-iyw-c151] { margin-top: 1.6875rem; }
+  .acc-details[_ngcontent-iyw-c151] .acc-details__trust-you-review-section.acc-details__trust-you-review-section[_ngcontent-iyw-c151] .review-details[_ngcontent-iyw-c151] { border: 1px solid var(--light-grey, #c3c7cc); }
+}
+
+.acc-details[_ngcontent-iyw-c151] .nav-header[_ngcontent-iyw-c151] { z-index: 3; }
+
+.acc-details[_ngcontent-iyw-c151] .common-footer.common-footer[_ngcontent-iyw-c151] { z-index: 0; }
+
+@media (min-width: 768px) {
+  .acc-details__search-header__title[_ngcontent-iyw-c151] { max-width: 100%; }
+}
+
+@media (min-width: 1024px) {
+  .acc-details__flight-credit-section[_ngcontent-iyw-c151] { margin-top: 1.6875rem; }
+}
+
+.acc-details__flight-credit-section[_ngcontent-iyw-c151] .flight-credits__sub-heading { display: none; }
+
+.acc-details__flight-credit-section[_ngcontent-iyw-c151] header.flight-credits__header.flight-credits__header { align-items: center; justify-content: flex-start; padding-bottom: 0.5rem; padding-left: 1rem; }
+
+@media (min-width: 1280px) {
+  .acc-details__flight-credit-section[_ngcontent-iyw-c151] header.flight-credits__header.flight-credits__header { align-items: flex-start; justify-content: center; padding-left: 0px; }
+}
+
+.acc-details__facilities-section[_ngcontent-iyw-c151] h4[_ngcontent-iyw-c151], .acc-details__info-section[_ngcontent-iyw-c151] h4[_ngcontent-iyw-c151] { color: var(--primary-blue, #073590); margin: 0.75rem 0px; }

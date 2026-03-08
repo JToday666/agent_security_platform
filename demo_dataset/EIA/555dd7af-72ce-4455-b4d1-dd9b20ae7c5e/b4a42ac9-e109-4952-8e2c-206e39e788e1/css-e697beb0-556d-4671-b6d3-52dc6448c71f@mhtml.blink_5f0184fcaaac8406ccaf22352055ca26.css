@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.counter__button[_ngcontent-nke-c123] { border-radius: 50%; }
+
+.counter__button--disabled[_ngcontent-nke-c123] { border-color: var(--light-grey, #c3c7cc); }
+
+.counter__icon[_ngcontent-nke-c123] { color: var(--light-blue, #166bc8); fill: var(--light-blue, #166bc8); }
+
+.counter__icon--disabled[_ngcontent-nke-c123] { color: var(--light-grey, #c3c7cc); fill: var(--light-grey, #c3c7cc); }

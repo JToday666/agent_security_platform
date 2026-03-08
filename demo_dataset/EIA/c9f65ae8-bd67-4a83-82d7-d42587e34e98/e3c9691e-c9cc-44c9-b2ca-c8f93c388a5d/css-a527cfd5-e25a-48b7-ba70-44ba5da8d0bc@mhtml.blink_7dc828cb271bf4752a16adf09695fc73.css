@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.css-1cgjgnb { grid-column: span 12 / span 12; order: 2; align-self: center; }
+
+@media screen and (min-width: 48rem) {
+  .css-1cgjgnb { grid-column: span 6 / span 6; order: 2; }
+}
+
+@media screen and (min-width: 64rem) {
+  .css-1cgjgnb { grid-column: 8 / span 5; }
+}

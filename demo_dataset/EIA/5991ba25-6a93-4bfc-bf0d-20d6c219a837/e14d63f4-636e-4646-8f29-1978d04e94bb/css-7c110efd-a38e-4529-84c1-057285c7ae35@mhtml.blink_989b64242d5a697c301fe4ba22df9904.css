@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+body div.combobox div.dropdownlist { width: calc(100% + 2px) !important; }
+
+.expired-cc-banner { padding: 25px; margin-bottom: 0px; display: flex; align-items: center; justify-content: center; border: 0px; }
+
+.expired-cc-banner.warn { color: rgb(54, 30, 0); background-color: rgb(255, 249, 242); }
+
+.expired-cc-banner.error { color: rgb(68, 1, 13); background-color: rgb(255, 242, 245); }
+
+.expired-cc-banner .alert-warning__content { width: 100%; margin-left: 20px; }
+
+.expired-cc-banner .zm-icon-warning { font-size: 17px; color: rgb(179, 98, 0); }
+
+.expired-cc-banner .zm-icon-error { font-size: 17px; color: rgb(232, 23, 61); }
+
+.expired-cc-banner .zm-icon-close { color: rgb(19, 22, 25); cursor: pointer; }

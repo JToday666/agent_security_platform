@@ -1,0 +1,56 @@
+@charset "utf-8";
+
+.main { width: 100%; box-sizing: border-box; color: rgb(88, 111, 124); font-size: 14px; line-height: 24px; padding: 15px 15px 20px; display: flex; justify-content: flex-start; align-items: center; flex-direction: column; font-family: "Open Sans", sans-serif; background-color: rgb(255, 255, 255); border-radius: 3px; border: 1px solid rgb(221, 221, 221); }
+
+.image-container { display: block; flex-shrink: 0; height: 215px; border-radius: 3px; border: 1px solid rgb(221, 221, 221); margin-right: 15px; margin-bottom: 10px; cursor: pointer; }
+
+.image { border-radius: 4px; height: 217px; width: 217px; }
+
+.data { flex-grow: 1; color: rgb(102, 102, 102); display: flex; line-height: 23px; flex-direction: column; position: relative; width: 100%; }
+
+.spec { font-size: 12px; display: flex; align-items: center; font-weight: bold; color: rgb(153, 153, 153); }
+
+.name { font-weight: bold; font-size: 20px; color: rgb(51, 51, 51); text-align: left; margin-bottom: 5px; }
+
+.name:link { text-decoration: none; }
+
+.name:hover { text-decoration: underline; }
+
+.secondary-headers { text-align: left; font-weight: 600; line-height: 20px; font-size: 14px; font-family: "Open Sans", sans-serif; }
+
+.about { margin-top: 2px; }
+
+.promoted { color: rgb(153, 153, 153); font-size: 12px; margin-left: 10px; }
+
+.buttons { margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+
+.button { width: 84px; border-radius: 3px; color: rgb(255, 255, 255); background-color: rgb(51, 51, 51); border: 1px solid rgb(51, 51, 51); text-decoration: none; font-family: "Open Sans", sans-serif; font-weight: 500; flex-grow: 1; cursor: pointer; font-size: 16px; height: 30px; display: flex; justify-content: center; align-items: center; padding: 0px 10px; text-align: center; transition: opacity 0.2s ease 0s; box-sizing: border-box; }
+
+.button:focus { outline: 0px; box-shadow: none; }
+
+.is-inverted { background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); }
+
+.call { display: flex; margin-left: 10px; }
+
+.message { margin-left: 10px; }
+
+.website { display: none; margin-left: 10px; }
+
+@media only screen and (max-device-width: 480px) and (hover: none), (hover:on-demand) {
+  .listings { display: flex; }
+}
+
+@media only screen and (min-width: 601px) {
+  .main { flex-direction: row; }
+  .image-container { margin-bottom: 0px; }
+  .about { min-height: 103px; }
+  .website { display: flex; }
+  .call { display: none; }
+}
+
+@media only screen and (min-width: 900px) {
+}
+
+@media only screen and (min-width: 1024px) {
+  .data { padding-right: 15px; }
+}

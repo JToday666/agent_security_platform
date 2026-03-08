@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+    <defs>
+        <filter id="pvbir1wrsa" width="171.4%" height="176.9%" x="-35.7%" y="-38.5%" filterUnits="objectBoundingBox">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="1.5" result="shadowSpreadOuter1"/>
+            <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+            <feMorphology in="SourceAlpha" radius="1.5" result="shadowInner"/>
+            <feOffset in="shadowInner" result="shadowInner"/>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="1"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+        </filter>
+        <path id="d5nfd0qy3b" d="M12.856 6.796C13.562 6.076 14 5.09 14 4c0-2.21-1.79-4-4-4-1.201 0-2.293.886-3.026 1.726C6.24.886 5.202 0 4 0 1.791 0 0 1.79 0 4 0 5.06.419 6.015 1.091 6.731L7.008 13l5.806-6.16c.013-.011.024-.025.037-.038l.005-.006z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g>
+                    <g>
+                        <g>
+                            <g>
+                                <g>
+                                    <path fill="#FFF" fill-opacity=".75" d="M12.856 6.796C13.562 6.076 14 5.09 14 4c0-2.21-1.79-4-4-4-1.201 0-2.293.886-3.026 1.726C6.24.886 5.202 0 4 0 1.791 0 0 1.79 0 4 0 5.06.419 6.015 1.091 6.731L7.008 13l5.806-6.16c.013-.011.024-.025.037-.038l.005-.006z" transform="translate(-260 -732) translate(-66 136) translate(90 580) matrix(-1 0 0 1 272 0) translate(16 16) translate(2 2) translate(1 1.5)"/>
+                                    <g stroke-linejoin="round" transform="translate(-260 -732) translate(-66 136) translate(90 580) matrix(-1 0 0 1 272 0) translate(16 16) translate(2 2) translate(1 1.5)">
+                                        <use fill="#000" filter="url(#pvbir1wrsa)" xlink:href="#d5nfd0qy3b"/>
+                                        <use stroke="#FFF" stroke-width="2" xlink:href="#d5nfd0qy3b"/>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
+

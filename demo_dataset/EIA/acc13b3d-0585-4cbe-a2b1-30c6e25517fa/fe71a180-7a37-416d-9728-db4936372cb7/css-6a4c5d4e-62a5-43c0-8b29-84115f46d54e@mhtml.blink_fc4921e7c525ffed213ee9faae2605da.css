@@ -1,0 +1,3 @@
+@charset "utf-8";
+
+#subpage-banner_1-img-overlay { position: relative; z-index: 1; height: 150px; background-repeat: no-repeat; background-image: url("/images/structure/_blank.png"), url("/files/Images/subpage-banner/MB2C-subpage-banner.jpg"); background-position: 50% 50%; background-size: cover; }

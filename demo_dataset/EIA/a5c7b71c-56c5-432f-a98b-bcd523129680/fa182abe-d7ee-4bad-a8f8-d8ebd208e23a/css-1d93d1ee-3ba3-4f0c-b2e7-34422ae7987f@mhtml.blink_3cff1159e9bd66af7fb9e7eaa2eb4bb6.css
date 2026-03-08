@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.suggestionsContainer_3fbc7ae6 { overflow: hidden auto; max-height: 300px; }
+
+.suggestionsContainer_3fbc7ae6 .ms-Suggestion-item:hover { background-color: rgb(243, 242, 241); cursor: pointer; }
+
+.suggestionsContainer_3fbc7ae6 .is-suggested { background-color: rgb(222, 236, 249); }
+
+.suggestionsContainer_3fbc7ae6 .is-suggested:hover { background-color: rgb(199, 224, 244); cursor: pointer; }

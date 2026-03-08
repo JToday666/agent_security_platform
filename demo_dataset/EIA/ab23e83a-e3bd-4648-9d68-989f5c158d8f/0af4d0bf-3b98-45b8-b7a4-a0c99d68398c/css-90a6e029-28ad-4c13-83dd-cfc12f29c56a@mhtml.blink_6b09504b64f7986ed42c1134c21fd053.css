@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd { overflow: auto; }
+
+@media screen and (max-width: 720px) {
+  .app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd { margin-top: 6px; }
+}
+
+@media screen and (max-width: 720px) {
+  .app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__notificationsContainer--AvMHf { margin-top: 20px; }
+}
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__notificationsContainer--AvMHf .app-components-NotificationsPopover-NotificationTab-styles__notifications--Dvu3v { white-space: normal; height: 280px; }
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__loading--1Qkl4 .app-components-NotificationsPopover-NotificationTab-styles__block--1PWYx { margin-bottom: 22px; }
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__loading--1Qkl4 .app-components-NotificationsPopover-NotificationTab-styles__block--1PWYx:last-child { margin-bottom: 18px; }
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__loading--1Qkl4 .app-components-NotificationsPopover-NotificationTab-styles__block--1PWYx .app-components-NotificationsPopover-NotificationTab-styles__bar--1BhKg { border-radius: 8px; margin-bottom: 9px; }
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__loading--1Qkl4 .app-components-NotificationsPopover-NotificationTab-styles__block--1PWYx .app-components-NotificationsPopover-NotificationTab-styles__bar--1BhKg:last-child { width: 109px; margin-bottom: 0px; }
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__viewAll--29NLG { position: absolute; bottom: 16px; color: rgb(98, 68, 187); width: 90%; }
+
+@media screen and (max-width: 720px) {
+  .app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__viewAll--29NLG { width: calc(100% - 49px); left: 24px; bottom: 24px; }
+}
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__viewAllLink--3V4p2 { position: absolute; bottom: 24px; left: 20px; color: rgb(0, 96, 128); text-decoration: underline; }
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__viewAllLink--3V4p2:hover { color: rgb(0, 96, 128); }
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__viewAllLink--3V4p2 > span { font-size: 14px; }
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__viewAllLink--3V4p2 > svg { width: 10px; height: 10px; margin-top: 5px; pointer-events: none; }
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__noItems--3O8co { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 220px; }
+
+@media screen and (max-width: 720px) {
+  .app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__noItems--3O8co { height: 450px; }
+}
+
+.app-components-NotificationsPopover-NotificationTab-styles__notificationsTab--2zaMd .app-components-NotificationsPopover-NotificationTab-styles__noItems--3O8co > p { width: 244px; text-align: center; white-space: normal; }

@@ -1,0 +1,90 @@
+@charset "utf-8";
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); border: 0px; }
+
+.sr-only-focusable:active, .sr-only-focusable:focus { position: static; width: auto; height: auto; margin: 0px; overflow: visible; clip: auto; }
+
+.skip-show--hidden { display: none; }
+
+.unav { -webkit-font-smoothing: antialiased; font-family: Graphik, "Helvetica Neue", sans-serif; text-size-adjust: 100%; background-color: rgb(41, 41, 41); overflow: auto hidden; text-align: left; }
+
+@media screen and (min-width: 992px) {
+  .unav [data-visible="mobile"] { display: none !important; }
+}
+
+@media screen and (max-width: 991px) {
+  .unav [data-visible="desktop"] { display: none !important; }
+  .unav .sr-mobile { position: absolute; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); border: 0px; }
+}
+
+.unav__container { margin-left: auto; margin-right: auto; max-width: 1200px; padding-left: 16px; padding-right: 16px; box-sizing: border-box; }
+
+.unav__container::-webkit-scrollbar { width: 0px !important; }
+
+@media screen and (min-width: 992px) {
+  .unav__container { padding-left: 30px; padding-right: 30px; }
+}
+
+.unav__layout-wrapper { display: flex; flex-wrap: nowrap; padding-right: 16px; }
+
+.unav__list, .unav__nav, .unav__skiplinks { height: 40px; display: inline-flex; flex-wrap: nowrap; list-style: none; margin: 0px; padding: 0px; }
+
+.unav__skiplinks { text-transform: uppercase; }
+
+.unav-item:not(.skip-show--hidden) { display: flex; flex: 0 0 auto; }
+
+.unav-item.bullet::before { content: "•"; align-self: center; color: rgb(153, 153, 153); }
+
+.unav-item__button { font-family: Graphik, "Helvetica Neue", sans-serif; font-style: normal; font-weight: 500; letter-spacing: -0.08px; line-height: 22px; border: none; cursor: pointer; outline: none; overflow: visible; text-align: left; text-decoration: none; text-transform: none; vertical-align: middle; transition: box-shadow 0.2s cubic-bezier(0.15, 0, 0.15, 0) 0s, background-color 0.2s cubic-bezier(0.15, 0, 0.15, 0) 0s, color 0.2s cubic-bezier(0.15, 0, 0.15, 0) 0s, fill 0.2s cubic-bezier(0.15, 0, 0.15, 0) 0s; background-color: rgb(249, 248, 246); box-shadow: rgb(146, 139, 128) 0px 0px 0px 1px inset; color: rgb(78, 77, 73); fill: rgb(146, 139, 128); display: flex; border-radius: 4px; font-size: 14px; padding: 4px 12px; margin: auto; }
+
+.unav-item__button:active, .unav-item__button:focus, .unav-item__button:hover { outline: none; outline-offset: 0px; text-decoration: none; }
+
+.unav-item__button[disabled] { cursor: not-allowed; }
+
+.unav-item__button:focus, .unav-item__button:hover { color: rgb(78, 77, 73); fill: rgb(78, 77, 73); background-color: rgb(244, 242, 237); box-shadow: rgb(78, 77, 73) 0px 0px 0px 3px inset, rgba(12, 11, 8, 0.2) 0px 0.2rem 0.2rem 0px; }
+
+.unav-item__button:active { color: rgb(249, 248, 246); fill: rgb(249, 248, 246); background-color: rgb(146, 139, 128); }
+
+.unav-item__button[disabled] { background-color: rgb(249, 248, 246); box-shadow: rgb(220, 214, 203) 0px 0px 0px 1px inset; color: rgb(209, 203, 189); fill: rgb(209, 203, 189); }
+
+.unav-item__button:focus, .unav-item__button:hover { box-shadow: rgb(78, 77, 73) 0px 0px 0px 3px inset, rgba(12, 11, 8, 0.2) 0px 2px 2px 0px; }
+
+.unav-item__button:active { box-shadow: rgb(146, 139, 128) 0px 0px 0px 3px inset, rgb(244, 242, 237) 0px 0px 0px 5px inset; }
+
+.unav-item__button--first { margin-left: 4px; }
+
+.unav-item__button--last { margin-right: 4px; }
+
+.unav-item__link { display: block; white-space: nowrap; position: relative; padding: 10px 8px 12px; color: rgb(153, 153, 153); font-family: Graphik, "Helvetica Neue", sans-serif; font-size: 14px; line-height: 20px; text-align: center; text-decoration: none; letter-spacing: -0.16px; }
+
+.unav-item__link:active, .unav-item__link:focus, .unav-item__link:hover { text-decoration: none; color: rgb(250, 250, 250); }
+
+.unav-item__link:focus { outline: rgb(78, 170, 255) auto 5px; outline-offset: -2px; }
+
+@media (-webkit-min-device-pixel-ratio: 0) {
+  .unav-item__link:focus { outline-color: -webkit-focus-ring-color; outline-style: auto; }
+}
+
+[data-active="true"] .unav-item__link { color: rgb(250, 250, 250); }
+
+[data-active="true"] .unav-item__link::after, [data-active="true"] .unav-item__link::before { content: ""; color: rgb(247, 247, 247); position: absolute; bottom: -1px; left: 48%; border-right: 11px solid transparent; border-bottom-width: 11px; border-left: 11px solid transparent; border-top-style: solid; border-bottom-style: solid; border-top-color: transparent; border-image: initial; border-bottom-color: inherit; transform: translate(-13px); border-top-width: 0px !important; }
+
+[data-active="true"] .unav-item__link::after { border-width: 0px 8px 8px; transform: translate(-2px); }
+
+.unav-item__text.beta::after { content: "beta"; position: relative; top: -1px; padding: 0px 3px; border-radius: 2px; margin-left: 6px; background-color: rgb(97, 97, 97); color: rgb(255, 255, 255); font-size: 11px; line-height: 14px; }
+
+.unav-item.sr-only { position: relative; }
+
+.unav-item.sr-only .unav-item__text { position: absolute; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); border: 0px; }
+
+.unav-item[data-skip-show] { position: relative; }
+
+.unav-item__link[data-skip-link] { background-color: rgb(255, 255, 255); color: rgb(52, 124, 177); }
+
+@font-face { font-display: swap; font-family: Stuart; font-weight: 1 999; src: url("//www.rei.com/satchel/media/font-optimized/Stuart/REIStuart-VF-Web-Subset.woff2") format("woff2-variations"), url("//www.rei.com/satchel/media/font-optimized/Stuart/REIStuart-VF-Web-Subset.woff2") format("woff2"); }
+
+@font-face { font-display: swap; font-family: Stuart; font-weight: 1 999; font-style: italic; src: url("//www.rei.com/satchel/media/font-optimized/Stuart/REIStuartWebItalics-VF-Web-Subset.woff2") format("woff2-variations"), url("//www.rei.com/satchel/media/font-optimized/Stuart/REIStuartWebItalics-VF-Web-Subset.woff2") format("woff2"); }
+
+@font-face { font-display: swap; font-family: Graphik; font-weight: 1 999; src: url("//www.rei.com/satchel/media/font-optimized/Graphik/Graphik-VF-Web-Subset.woff2") format("woff2-variations"), url("//www.rei.com/satchel/media/font-optimized/Graphik/Graphik-VF-Web-Subset.woff2") format("woff2"); }
+
+@font-face { font-display: swap; font-family: Graphik; font-weight: 1 999; font-style: italic; src: url("//www.rei.com/satchel/media/font-optimized/Graphik/GraphikWebItalic-VF-Web-Subset.woff2") format("woff2-variations"), url("//www.rei.com/satchel/media/font-optimized/Graphik/GraphikWebItalic-VF-Web-Subset.woff2") format("woff2"); }

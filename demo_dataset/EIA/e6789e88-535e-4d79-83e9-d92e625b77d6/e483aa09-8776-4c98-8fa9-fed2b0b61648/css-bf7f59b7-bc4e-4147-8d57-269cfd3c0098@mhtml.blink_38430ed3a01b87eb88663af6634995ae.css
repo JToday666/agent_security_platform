@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.calendar-modal[_ngcontent-noc-c209] { position: fixed; display: flex; flex-direction: column; inset: 0px; background: rgb(255, 255, 255); z-index: 99; }
+
+.calendar-modal-header[_ngcontent-noc-c209] { color: rgb(0, 83, 126); padding: 1.5rem 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+
+.calendar-modal-header[_ngcontent-noc-c209] .title[_ngcontent-noc-c209] { font-size: 1.4rem; font-weight: 600; }
+
+.calendar-modal-header[_ngcontent-noc-c209] .close[_ngcontent-noc-c209] { font-size: 2rem; font-weight: 300; color: rgb(0, 83, 126); line-height: 1; margin-top: -1rem; float: right; }
+
+.calendar-modal-body[_ngcontent-noc-c209] { overflow: auto; }
+
+.calendar-modal-footer[_ngcontent-noc-c209] { min-height: 6rem; }
+
+.railpassHeader[_ngcontent-noc-c209] { color: rgb(0, 36, 54); font-size: 1.6rem; letter-spacing: 0.11px; line-height: 2.4rem; }
+
+.railPassRange[_ngcontent-noc-c209] { color: rgb(0, 36, 54); font-size: 1.4rem; letter-spacing: 0.1px; line-height: 2.4rem; }
+
+@media (min-width: 768px) {
+  .dates-input[_ngcontent-noc-c209] { margin: 0px; }
+  .calendar-modal[_ngcontent-noc-c209] { position: absolute; inset: 0.5rem 0px auto auto; min-width: 28rem; max-width: 50rem; z-index: 8; box-shadow: rgba(12, 0, 51, 0.1) 0px 4px 8px; }
+  .calendar-modal.top[_ngcontent-noc-c209] { top: -36rem; z-index: 12; }
+  .calendar-modal-body[_ngcontent-noc-c209] { overflow: visible; }
+  .calendar-modal-footer[_ngcontent-noc-c209] { min-height: auto; }
+}
+
+@media (min-width: 992px) {
+  .calendar-modal.top[_ngcontent-noc-c209] { top: -37.5rem; }
+}
+
+.rectangle[_ngcontent-noc-c209] { box-sizing: border-box; height: 1rem; width: 1rem; border: 1px solid rgb(22, 127, 166); background-color: rgb(225, 245, 253); }
+
+.upcoming-travel[_ngcontent-noc-c209] { color: rgb(0, 36, 54); font-size: 1.2rem; letter-spacing: 0px; line-height: 1.7rem; }

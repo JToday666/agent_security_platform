@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.ae-accessible-carousel-link { color: black !important; }
+
+.ae-toolbar .back-to-top { margin-right: 60px !important; margin-bottom: 30px !important; }
+
+.ae-lite-reader .back-to-top, .ae-player .back-to-top { margin-right: 60px !important; margin-bottom: 60px !important; }
+
+.ae-toolbar #s1chat_welcome_wrapper { margin-right: 60px !important; }
+
+.ae-lite-reader #s1chat_welcome_wrapper, .ae-player #s1chat_welcome_wrapper { margin-bottom: 60px !important; }
+
+.ae-rotor-items a { font-size: 20px !important; }

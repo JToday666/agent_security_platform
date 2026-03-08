@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__popUpContainer--3bFCl { position: relative; width: 70px; height: 47px; }
+
+.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__popUpContainer--3bFCl > img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__popUpContainer--3bFCl > span { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); color: rgb(98, 68, 187); font-size: 16px; font-weight: 600; font-family: Roboto, Arial, sans-serif; }
+
+.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__popUpContainer--3bFCl.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__awards--2TvvI > img { height: 65px; width: 120px; }
+
+.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__popUpContainer--3bFCl.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__awards--2TvvI > span { top: 20%; }
+
+.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__popUpContainer--3bFCl.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__awards--2TvvI .app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__taxLabel--1QFFd { display: block; position: absolute; inset: auto 0px 25%; transform: none; font-size: 12px; }
+
+.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__popUpContainer--3bFCl.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__milesFavorite--2qxWf .app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__taxLabel--1QFFd { display: block; position: absolute; bottom: 25%; top: auto; transform: none; font-size: 12px; left: 10%; }
+
+.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__popUpContainer--3bFCl.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__favorite--30kMx > span { left: 30%; top: 44%; }
+
+.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__popUpContainer--3bFCl.app-components-GoogleMap-MapSearch-Markers-MarkerComponent-styles__milesFavorite--2qxWf > span { top: 30%; left: 30%; }

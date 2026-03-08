@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+.tab-bar { text-align: center; margin-bottom: 24px; }
+
+.tab-bar .react-tabs__tab-list { margin: 0px 0px 32px; display: flex; padding: 0px; }
+
+.tab-bar .react-tabs__tab-panel { text-align: left; }
+
+.tab-bar .react-tabs__tab { flex: 1 1 0%; cursor: pointer; text-align: center; height: 30px; line-height: 27px; color: rgb(105, 117, 131); display: inline-block; border-right: 1.5px solid rgb(220, 224, 230); border-top: 1.5px solid rgb(220, 224, 230); border-bottom: 1.5px solid rgb(220, 224, 230); font-size: 14px; }
+
+.tab-bar .react-tabs__tab:first-child { border-left: 1.5px solid rgb(220, 224, 230); border-top-left-radius: 2px; border-bottom-left-radius: 2px; }
+
+.tab-bar .react-tabs__tab:last-child { border-top-right-radius: 2px; border-bottom-right-radius: 2px; }
+
+.tab-bar .react-tabs__tab--selected { background-color: rgb(24, 164, 252); color: white; border-color: rgb(24, 164, 252); }
+
+.tab-bar .react-tabs__tab--selected:first-child { border-left: 1.5px solid rgb(24, 164, 252); }
+
+.tab-bar .tab-section { margin-bottom: 37px; }

@@ -1,0 +1,72 @@
+@charset "utf-8";
+
+.app-containers-Carousel-horizontal__noPadding--1ty2n { padding: 0px; }
+
+.app-containers-Carousel-horizontal__noMargin--H76dZ { margin: 0px; }
+
+.app-containers-Carousel-horizontal__alignLeft--1HpCs { text-align: left; }
+
+.app-containers-Carousel-horizontal__horizontalContainer--24IYm { display: flex; align-items: stretch; justify-content: stretch; background-color: rgba(0, 0, 0, 0.5); }
+
+@media (min-width: 944px) {
+  .app-containers-Carousel-horizontal__horizontalContainer--24IYm { background-color: rgba(0, 0, 0, 0); background-image: linear-gradient(65deg, rgba(12, 35, 64, 0.7) 37%, rgba(12, 35, 64, 0.5) 54%, rgba(12, 35, 64, 0) 67%); }
+}
+
+.app-containers-Carousel-horizontal__carouselContainer--1a671 { min-height: 365px; width: 100%; margin: 0px auto; max-width: 1136px; padding: 25px; position: relative; color: rgb(255, 255, 255); display: flex; flex-direction: column; justify-content: space-between; }
+
+.app-containers-Carousel-horizontal__carouselContainer--1a671 h2 { margin: 0px; font-size: 32px; font-weight: normal; line-height: 36px; }
+
+@media (min-width: 944px) {
+  .app-containers-Carousel-horizontal__carouselContainer--1a671 h2 { font-size: 24px; }
+}
+
+@media (min-width: 1184px) {
+  .app-containers-Carousel-horizontal__carouselContainer--1a671 { padding: 32px 0px; }
+  .app-containers-Carousel-horizontal__carouselContainer--1a671 h2 { font-size: 28px; }
+}
+
+.app-containers-Carousel-horizontal__navigation--1SskF { position: absolute; left: 32px; bottom: 32px; }
+
+@media (min-width: 1184px) {
+  .app-containers-Carousel-horizontal__navigation--1SskF { left: 0px; }
+}
+
+.app-containers-Carousel-horizontal__carouselContent--onP3j { margin-top: 32px; }
+
+@media (min-width: 944px) {
+  .app-containers-Carousel-horizontal__carouselContent--onP3j { margin-top: 75px; }
+}
+
+.app-containers-Carousel-horizontal__learnMore--2EwTn { font-size: 16px; padding: 0px; display: block; }
+
+.app-containers-Carousel-horizontal__learnMore--2EwTn::after { content: ""; display: inline-block; margin-left: 4px; border-style: solid; border-image: initial; border-width: 0px 2px 2px 0px; transform: rotate(315deg); width: 8px; height: 8px; transition: border-color 0.4s ease 0s; border-color: rgb(255, 255, 255); }
+
+@media (min-width: 720px) {
+  .app-containers-Carousel-horizontal__learnMore--2EwTn { font-size: 14px; background-color: rgb(255, 255, 255); padding: 9px 40px; color: rgb(98, 68, 187); border: 2px solid rgb(98, 68, 187); text-align: center; border-radius: 4px; font-weight: 600; }
+  .app-containers-Carousel-horizontal__learnMore--2EwTn::after { display: none; }
+}
+
+.app-containers-Carousel-horizontal__learnMore--2EwTn:focus, .app-containers-Carousel-horizontal__learnMore--2EwTn:hover { text-decoration: underline; }
+
+.app-containers-Carousel-horizontal__dot--pIYzj { width: 10px; height: 10px; margin: 0px 0px 0px 16px; border: 2px solid rgb(255, 255, 255); background-color: rgb(255, 255, 255); border-radius: 10px; padding: 0px; }
+
+.app-containers-Carousel-horizontal__dot--pIYzj.app-containers-Carousel-horizontal__active--2RFIs { background-color: rgba(0, 0, 0, 0); }
+
+.app-containers-Carousel-horizontal__playbackControl--Io6ua { position: relative; display: inline-block; font-size: inherit; background: none; margin: 0px 16px 0px 0px; width: 24px; height: 24px; padding: 0px; }
+
+.app-containers-Carousel-horizontal__playbackControl--Io6ua::after { content: ""; border-right: 1px solid rgba(255, 255, 255, 0.5); position: absolute; top: 1px; bottom: -1px; right: -12px; }
+
+.app-containers-Carousel-horizontal__playbackControl--Io6ua img { width: 16px; }
+
+.app-containers-Carousel-horizontal__passthroughLink--ji8dN { text-align: left; max-width: 550px; padding: 0px; margin-bottom: 24px; }
+
+.app-containers-Carousel-horizontal__passthroughLink--ji8dN h2 { font-size: 1.5rem; margin-bottom: 16px; font-weight: 600; }
+
+.app-containers-Carousel-horizontal__passthroughLink--ji8dN p { margin: 0px; }
+
+@media (min-width: 720px) {
+  .app-containers-Carousel-horizontal__passthroughLink--ji8dN h2 { font-size: 2.5rem; }
+  .app-containers-Carousel-horizontal__passthroughLink--ji8dN p { font-size: 1.25rem; }
+}
+
+.app-containers-Carousel-horizontal__exit--3AjbC { height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); position: absolute !important; }

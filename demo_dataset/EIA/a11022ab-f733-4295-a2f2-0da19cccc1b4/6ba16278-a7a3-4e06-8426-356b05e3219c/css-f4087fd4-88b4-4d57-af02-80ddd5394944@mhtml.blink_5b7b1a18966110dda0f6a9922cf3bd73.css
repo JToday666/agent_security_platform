@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.sf-bg-white { background-color: rgb(255, 255, 255); }
+
+.sf-container .sf-col div { height: 100%; }
+
+.sf-container .sf-col .elementor-widget-container div { height: auto; }
+
+.sf-container .sf-col .h-100 .elementor-widget-container .elementor-image { height: 100%; }
+
+.h-auto { height: auto !important; }
+
+.img-h-cover img { height: 100%; object-fit: cover; }

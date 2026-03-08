@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.main-tiles .jet-listing-grid__item { display: flex; }
+
+.main-tiles .jet-engine-listing-overlay-wrap, .main-tiles .elementor-bc-flex-widget, .main-tiles .elementor, .main-tiles .elementor-inner, .main-tiles .elementor-section-wrap, .main-tiles .listing-tiles, .main-tiles .elementor-column-gap-default, .main-tiles .elementor-row { height: 100%; }
+
+.main-tiles .elementor-widget-wrap { align-content: space-between; }
+
+.main-tiles .img_ride_tiles img { width: 100% !important; height: 200px !important; object-fit: cover !important; }
+
+.custom_dynamic_link_class { font-size: 32px; color: rgb(63, 168, 223); }
+
+@media (max-width: 1023px) {
+  .custom_dynamic_link_class { font-size: 16px; }
+}

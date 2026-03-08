@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.atm-disambiguation-datepickerfield .DayPickerNavigation.DayPickerNavigation__vertical .DayPickerNavigation_button__vertical { position: relative; }
+
+.atm-disambiguation-datepickerfield .DateRangePicker .DateInput_input { padding-left: 0.5rem; }

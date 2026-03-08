@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.css-1unbqsi { display: inline-block; z-index: 2; position: relative; margin: 0px 24px; text-align: center; background: none; padding: 0px; border: none; outline: none; cursor: pointer; }
+
+.css-1unbqsi :hover > div > div { border-style: solid; border-width: 1px; border-color: rgb(0, 107, 194); box-sizing: border-box; }
+
+.css-1unbqsi :focus > div > div { outline: none; box-shadow: rgb(0, 107, 194) 0px 0px 8px 0px; }
+
+.css-1unbqsi :active > div > div { background-color: rgb(192, 192, 192); }

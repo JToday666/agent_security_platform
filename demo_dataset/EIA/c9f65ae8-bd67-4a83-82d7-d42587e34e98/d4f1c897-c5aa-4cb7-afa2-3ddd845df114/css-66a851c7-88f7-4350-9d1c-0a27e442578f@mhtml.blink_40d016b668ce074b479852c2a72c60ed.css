@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-3zpb6q { line-height: 1.5; font-weight: 400; font-size: 1rem; }
+
+@media screen and (min-width: 64rem) {
+  .css-3zpb6q { font-size: 1rem; text-align: right; width: var(--chakra-sizes-full); }
+}

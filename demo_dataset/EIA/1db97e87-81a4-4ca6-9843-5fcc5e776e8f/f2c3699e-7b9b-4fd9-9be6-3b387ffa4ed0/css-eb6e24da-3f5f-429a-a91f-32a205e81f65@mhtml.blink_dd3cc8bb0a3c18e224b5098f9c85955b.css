@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.state-button { margin-bottom: 16px; }
+
+.state-search-text { color: rgb(0, 0, 80); font-size: 1.125rem; font-weight: 700; }
+
+.state-toggle { transition: all 500ms ease 0s; margin-left: 10px; margin-bottom: -5px; color: rgb(98, 99, 102); }
+
+.is-active > .state-toggle { transform: rotate(180deg); }
+
+.state-drawer { max-height: 0px; overflow: hidden; transition: all 250ms ease 0s; margin-bottom: 16px; }
+
+@media (min-width: 540px) {
+  .state-drawer { margin-bottom: 32px; }
+}
+
+.state-drawer.is-active { max-height: 660px; transition: all 500ms ease 0s; margin-bottom: 16px; }
+
+@media (min-width: 540px) {
+  .state-drawer.is-active { max-height: 440px; }
+}
+
+.state-holder { columns: 130px; column-gap: 12px; margin-bottom: 24px; }
+
+@media (min-width: 540px) {
+  .state-holder { columns: 150px; column-gap: 34px; }
+}
+
+@media (min-width: 992px) {
+  .state-holder { columns: 150px; column-gap: 48px; }
+}
+
+.state-holder > a { display: block; }

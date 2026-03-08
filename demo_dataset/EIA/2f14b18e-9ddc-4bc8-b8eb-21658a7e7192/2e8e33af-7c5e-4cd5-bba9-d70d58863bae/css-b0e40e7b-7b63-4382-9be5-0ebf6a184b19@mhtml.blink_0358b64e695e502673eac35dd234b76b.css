@@ -1,0 +1,88 @@
+@charset "utf-8";
+
+@media (min-width: 60em) {
+  .atm-l-sidebar { display: flex; }
+}
+
+@supports (display: grid) {
+  .atm-l-sidebar { grid-template-columns: repeat(1, 1fr); }
+  @media (min-width: 60em) {
+  .atm-l-sidebar { display: grid; gap: 0px 3rem; grid-template-columns: repeat(12, 1fr); }
+}
+}
+
+@media (min-width: 60em) {
+  .atm-l-sidebar--fixed { display: block; }
+}
+
+@media (min-width: 60em) {
+  .atm-l-sidebar__main { width: 75%; }
+}
+
+@supports (display: grid) {
+  .atm-l-sidebar__main { margin-bottom: 2rem; }
+  @media (min-width: 60em) {
+  .atm-l-sidebar__main { width: auto; grid-area: 1 / 1 / auto / 9; margin-bottom: 0px; }
+}
+}
+
+@media (min-width: 60em) {
+  .atm-l-sidebar--reversed .atm-l-sidebar__main { -webkit-box-ordinal-group: 2; order: 1; }
+}
+
+@supports (display: grid) {
+  @media (min-width: 60em) {
+  .atm-l-sidebar--reversed .atm-l-sidebar__main { grid-area: 1 / 4 / auto / 13; }
+}
+}
+
+@media (min-width: 60em) {
+  .atm-l-sidebar--fixed .atm-l-sidebar__main { margin-left: 18rem; }
+}
+
+@media (min-width: 60em) {
+  .atm-l-sidebar--narrow .atm-l-sidebar__main { width: 83.33%; }
+}
+
+@supports (display: grid) {
+  @media (min-width: 60em) {
+  .atm-l-sidebar--narrow .atm-l-sidebar__main { width: 100%; grid-column: 1 / 11; }
+}
+}
+
+.atm-l-sidebar__sidebar { margin-top: 2rem; }
+
+@media (min-width: 60em) {
+  .atm-l-sidebar__sidebar { width: 25%; margin-top: 0px; margin-left: 2rem; }
+}
+
+@supports (display: grid) {
+  .atm-l-sidebar__sidebar { margin-top: 0px; }
+  @media (min-width: 60em) {
+  .atm-l-sidebar__sidebar { margin-left: 0px; width: auto; grid-area: 1 / 9 / auto / 13; }
+}
+}
+
+@media (min-width: 60em) {
+  .atm-l-sidebar--reversed .atm-l-sidebar__sidebar { -webkit-box-ordinal-group: 3; order: 2; }
+}
+
+@supports (display: grid) {
+  @media (min-width: 60em) {
+  .atm-l-sidebar--reversed .atm-l-sidebar__sidebar { grid-area: 1 / 1 / auto / 4; }
+}
+}
+
+@media (min-width: 60em) {
+  .atm-l-sidebar--fixed .atm-l-sidebar__sidebar { position: fixed; height: 100vh; width: 18rem; overflow: auto; z-index: 2; }
+}
+
+@media (min-width: 60em) {
+  .atm-l-sidebar--narrow .atm-l-sidebar__sidebar { width: 16.66%; }
+}
+
+@supports (display: grid) {
+  @media (min-width: 60em) {
+  .atm-l-sidebar--narrow .atm-l-sidebar__sidebar { width: 100%; grid-column: 11 / 13; }
+}
+}

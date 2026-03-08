@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+footer[data-uri].minimalist { margin: 0.9375rem auto 0px; background-color: inherit; border-top: 0.0625rem solid rgb(230, 230, 230); min-width: 20rem; padding-top: 0px !important; color: rgb(230, 230, 230) !important; }
+
+footer[data-uri].minimalist .row { max-width: 79rem; padding-bottom: 0px; }
+
+footer[data-uri].minimalist .hnfFooterTop { height: 1px; background: none; margin-bottom: 0px; }
+
+footer[data-uri].minimalist .m-footer-line, footer[data-uri].minimalist .m-footer-line p { font-size: 0.75rem; line-height: 1rem; color: rgb(230, 230, 230); text-align: center; margin-bottom: 1rem; }
+
+footer[data-uri].minimalist .m-footer-line a, footer[data-uri].minimalist .m-footer-line p a { display: inline-block; text-decoration: none; border-right: 1px solid rgb(202, 202, 202); padding: 0px 16px; color: rgb(0, 0, 0) !important; }
+
+footer[data-uri].minimalist .m-footer-line a:last-child, footer[data-uri].minimalist .m-footer-line p a:last-child { border: none; }
+
+footer[data-uri].minimalist .m-footer-line p, footer[data-uri].minimalist .m-footer-line p a { font-family: "Macys Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; color: rgb(0, 0, 0) !important; font-size: 0.75rem !important; line-height: normal !important; }
+
+footer[data-uri].minimalist .m-footer-line p a:first-child { padding-left: 0px; }
+
+footer[data-uri].minimalist .m-footer-line p a:last-child { padding-right: 0px; }
+
+footer[data-uri].minimalist .greyContent { color: rgb(230, 230, 230) !important; }
+
+.blackContent { color: rgb(0, 0, 0) !important; }
+
+.footer-container { display: flex; justify-content: space-between; padding-top: 32px; padding-right: 80px; padding-left: 80px; padding-bottom: 0px !important; }
+
+.copyright { padding-top: 0px !important; }
+
+footer[data-uri].minimalist .footer-container a:hover { text-decoration: underline; }
+
+@media (min-width: 1440px) {
+  footer[data-uri].minimalist .footer-container { max-width: 1280px; margin: 0px auto; padding-left: 0px; padding-right: 0px; }
+}
+
+@media (min-width: 1600px) {
+  footer[data-uri].minimalist .footer-container { max-width: 1440px; }
+}
+
+@media only screen and (max-width: 1068px) {
+  footer[data-uri].minimalist .footer-container { padding: 32px 20px; }
+}
+
+@media only screen and (max-width: 949px) {
+  footer[data-uri].minimalist .footer-container { display: inline; padding: 32px 15px; }
+}
+
+@media only screen and (max-width: 375px) {
+  footer[data-uri].minimalist .copyright { max-width: 335px; margin: 0px auto; }
+  footer[data-uri].minimalist .copyright .blackContent { max-width: 90%; margin: 0px auto; }
+}

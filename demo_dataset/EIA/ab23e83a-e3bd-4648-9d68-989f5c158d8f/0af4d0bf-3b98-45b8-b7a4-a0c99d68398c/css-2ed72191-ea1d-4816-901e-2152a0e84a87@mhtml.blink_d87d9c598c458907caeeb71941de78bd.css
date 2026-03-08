@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.app-components-Refunds-tabs-RequestARefund-sections-SelectItems-styles__mpBlock--2pc9v { margin-bottom: 24px; }
+
+.app-components-Refunds-tabs-RequestARefund-sections-SelectItems-styles__purchaseHeading--3Q2Tp { font-size: 20px; font-weight: 600; margin-top: 0px; }
+
+.app-components-Refunds-tabs-RequestARefund-sections-SelectItems-styles__noFlightHeading--3EOL2 { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+
+.app-components-Refunds-tabs-RequestARefund-sections-SelectItems-styles__tooltip--qvNbm span:last-child { transform: translateX(-20%); }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-sections-SelectItems-styles__tooltip--qvNbm span:last-child { transform: translateX(0%); }
+}
+
+.app-components-Refunds-tabs-RequestARefund-sections-SelectItems-styles__gogoSection--3zV4Q a { font-size: 16px; }
+
+.app-components-Refunds-tabs-RequestARefund-sections-SelectItems-styles__buttonGroup--2DwGz { margin-top: 24px; }
+
+.app-components-Refunds-tabs-RequestARefund-sections-SelectItems-styles__icon--2uLbX { fill: rgb(0, 34, 68); }
+
+.app-components-Refunds-tabs-RequestARefund-sections-SelectItems-styles__showMoreLessButton--1UNob { display: flex; justify-content: center; }

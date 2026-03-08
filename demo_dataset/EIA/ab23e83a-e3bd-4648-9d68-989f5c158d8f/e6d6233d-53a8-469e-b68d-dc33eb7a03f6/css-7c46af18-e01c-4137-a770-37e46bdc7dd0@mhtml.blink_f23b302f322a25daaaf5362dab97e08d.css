@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+.atm-c-skeleton-bar { position: relative; padding: 1rem; background: linear-gradient(-90deg, rgb(242, 242, 242) 0%, rgb(230, 230, 230) 50%, rgb(242, 242, 242) 100%) 0% 0% / 400% 400%; animation: 1.25s linear 0s infinite normal none running pulse; }
+
+.atm-c-skeleton-bar--small { padding: 0.5rem; }
+
+.atm-c-skeleton-bar--large { padding: 2rem 1rem; }
+
+.atm-c-skeleton-bar--xl { padding: 6rem 1rem; }
+
+@-webkit-keyframes pulse { 
+  0% { background-position: 0% 0%; }
+  100% { background-position: -135% 0%; }
+}
+
+@keyframes pulse { 
+  0% { background-position: 0% 0%; }
+  100% { background-position: -135% 0%; }
+}

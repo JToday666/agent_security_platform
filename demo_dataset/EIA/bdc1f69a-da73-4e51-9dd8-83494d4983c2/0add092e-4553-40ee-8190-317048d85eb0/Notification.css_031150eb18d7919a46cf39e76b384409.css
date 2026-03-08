@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.NotificationMsg { text-align: center; clear: both; padding: 0px; width: 98%; }
+
+.NotificationMsg .ErrorMsg { text-align: left; float: left; padding: 0px; margin: 2px 0px; width: 99%; border: 0px solid rgb(219, 219, 219); }
+
+.NotificationMsg .CommonMsg { display: inline-block; padding: 20px; margin: 10px 0px; border: 0px solid rgb(219, 219, 219); }
+
+.NotificationMsg .Innerbox { display: inline-block; float: left; padding: 0px; margin: 0px; width: 100%; border: 0px solid rgb(245, 245, 245); }
+
+.NotificationMsg .Error { text-align: left; display: inline-block; padding: 5px 20px 5px 22px; margin: auto; color: rgb(212, 4, 43); }
+
+.NotificationMsg .Note { margin: auto; display: inline-block; text-align: left; padding: 10px 0px; font-size: 14px; }
+
+.NotificationMsg .AlertNote { position: relative; margin: 0px -10px; text-align: left; padding: 10px 0px 0px; font-size: 14px; }
+
+.NotificationMsg .NoteBold { position: relative; font-weight: bold; margin: auto; text-align: center; padding: 20px 0px; font-size: 14px; }
+
+.NotificationMsg .UrgentAttention { position: relative; display: inline-block; text-align: left; padding: 20px; font-weight: bold; }
+
+.NotificationMsg .Refinement { color: rgb(1, 52, 115); font-weight: bold; margin: auto; display: inline-block; text-align: left; padding: 10px; font-size: 16px; }
+
+.NotificationMsg .ReturnMsg { display: inline-block; padding: 10px 10px 10px 5px; margin: 10px 0px; border: 1px solid rgb(219, 219, 219); }

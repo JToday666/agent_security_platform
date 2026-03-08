@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+@media (min-width: 768px) {
+  .pwd-stepper[_ngcontent-noc-c197] ul[_ngcontent-noc-c197] { gap: 0rem 1rem; }
+}
+
+.pwd-stepper__step-button-disability[_ngcontent-noc-c197] { border-radius: 3rem; text-align: center; transition: background-color 0.2s ease 0s; width: 6rem; height: 6rem; }
+
+.pwd-stepper__step-button-disability[_ngcontent-noc-c197] .disability-img[_ngcontent-noc-c197] { width: 5.6rem; max-width: 5.6rem; }
+
+.pwd-stepper__step-button-disability[_ngcontent-noc-c197] .hover-img[_ngcontent-noc-c197] { display: none; }
+
+.pwd-stepper__step-button-disability.action[_ngcontent-noc-c197]:hover { background-color: rgb(22, 127, 166); }
+
+.pwd-stepper__step-button-disability.action[_ngcontent-noc-c197]:hover .default-img[_ngcontent-noc-c197] { display: none; }
+
+.pwd-stepper__step-button-disability.action[_ngcontent-noc-c197]:hover .hover-img[_ngcontent-noc-c197] { display: inline-block; }
+
+.pwd-stepper__step-button.action[_ngcontent-noc-c197]:hover .pwd-stepper--step-circle[_ngcontent-noc-c197] { background-color: rgb(0, 36, 54); }
+
+.pwd-stepper--step-circle[_ngcontent-noc-c197] { background-color: rgb(22, 127, 166); color: rgb(255, 255, 255); font-size: 1rem; text-align: center; line-height: 1.3rem; border-radius: 3rem; padding: 0.5rem; width: 2.2rem; height: 2.2rem; }
+
+.pwd-stepper--step-content[_ngcontent-noc-c197] { max-width: 70px; margin: 0px 5px; text-align: center; }
+
+@media (min-width: 768px) {
+  .pwd-stepper--step-content[_ngcontent-noc-c197] { max-width: none; margin: unset; }
+}

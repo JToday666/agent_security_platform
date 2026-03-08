@@ -1,0 +1,64 @@
+@charset "utf-8";
+
+.atm-c-modal { display: flex; -webkit-box-align: center; align-items: center; -webkit-box-pack: center; justify-content: center; visibility: hidden; width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 20; overflow: auto; background-color: transparent; transition: all 0.4s ease-out 0s; transform: translateZ(0px); pointer-events: none; }
+
+.atm-c-modal.atm-is-active { pointer-events: auto; visibility: visible; background-color: rgba(0, 0, 0, 0.4); }
+
+.atm-c-modal:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+@media (min-width: 35em) {
+  .atm-c-modal { height: 100vh; }
+}
+
+.atm-c-modal__window { display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; flex-direction: column; position: fixed; top: 0px; left: 0px; height: 100%; width: 100%; max-width: 100%; opacity: 0; background: rgb(255, 255, 255); border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.25) 1px 1px 2px; transition: opacity 0.15s ease-out 0s; }
+
+.atm-c-modal.atm-is-active .atm-c-modal__window { opacity: 1; transform: translateY(0px); transition: opacity 0.3s ease-out 0s; }
+
+.atm-c-modal__window:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+@media (min-width: 35em) {
+  .atm-c-modal__window { position: relative; width: 40rem; max-width: 90%; height: auto; transform: translateY(4rem); overflow: auto; max-height: 90vh; transition: opacity 0.15s ease-out 0s, transform 0.15s ease-out 0s, -webkit-transform 0.15s ease-out 0s; }
+  .atm-c-modal.atm-is-active .atm-c-modal__window { transform: translateY(0px); transition: opacity 0.3s ease-out 0s, transform 0.3s ease-out 0s, -webkit-transform 0.3s ease-out 0s; }
+  .atm-c-modal--wide .atm-c-modal__window { width: 60rem; }
+  .atm-c-modal--narrow .atm-c-modal__window { width: 27rem; }
+}
+
+.atm-c-modal__btn-container { display: flex; position: absolute; top: 0px; left: 0px; width: 100%; padding: 1rem 2rem; background: rgb(255, 255, 255); border-bottom: 1px solid rgb(204, 204, 204); z-index: 1; }
+
+@media (min-width: 35em) {
+  .atm-c-modal__btn-container { padding-top: 0px; padding-bottom: 0px; border-bottom: none; }
+}
+
+.atm-c-modal__close-btn { margin-left: auto; display: none; }
+
+.atm-c-modal__close-btn:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+.atm-c-modal__close-btn:focus-visible { outline: rgb(98, 68, 187) solid 4px; }
+
+@media (min-width: 35em) {
+  .atm-c-modal__close-btn { display: block; position: absolute; top: 1rem; right: 1rem; }
+}
+
+.atm-c-modal__back-btn { margin-right: 2rem; }
+
+@media (min-width: 35em) {
+  .atm-c-modal__back-btn { display: none; }
+}
+
+.atm-c-modal__content { padding-top: 3.5rem; height: 100vh; overflow: auto; }
+
+.atm-c-modal__content::after { content: ""; display: block; height: 2rem; }
+
+@media (min-width: 35em) {
+  .atm-c-modal:not(.atm-c-modal--full-screen) .atm-c-modal__content { padding-top: 0px; height: auto; overflow: visible; }
+}
+
+.atm-c-modal__header { padding-top: 1.5rem; padding-left: 2rem; padding-right: 2rem; margin-bottom: 1rem; }
+
+.atm-c-modal--hero .atm-c-modal__header { padding-top: 0px; padding-left: 0px; padding-right: 0px; }
+
+.atm-c-modal__body { padding-left: 2rem; padding-right: 2rem; }
+
+.atm-c-modal__footer { padding-left: 2rem; padding-right: 2rem; margin-top: 1rem; }
+
+.atm-body-is-disabled { overflow: hidden; }

@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.atm-c-footer-nav { padding: 0.5rem 0px; width: 100%; }
+
+.atm-c-footer-nav__list { margin: 0px -1rem; padding: 0px; list-style: none; display: flex; flex-wrap: wrap; }
+
+.atm-c-footer-nav__item { margin: 0.5rem 1rem; }
+
+.atm-c-footer .atm-c-footer-nav__link { color: rgb(255, 255, 255); transition: color 0.15s ease-out 0s; }
+
+.atm-c-footer .atm-c-footer-nav__link:focus { outline: rgb(98, 68, 187) solid 4px; }

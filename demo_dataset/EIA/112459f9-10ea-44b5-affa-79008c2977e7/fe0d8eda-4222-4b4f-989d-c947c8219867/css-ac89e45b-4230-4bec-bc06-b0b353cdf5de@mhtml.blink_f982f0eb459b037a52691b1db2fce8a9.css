@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+.atm-c-badge { display: inline-block; padding: 0.25rem 0.75rem; color: rgb(255, 255, 255); background-color: rgb(0, 34, 68); font-size: 0.875rem; line-height: 1.71429; letter-spacing: 0.0625rem; text-transform: uppercase; font-weight: 600; border-radius: 20px; }
+
+.atm-c-shopping-cart__title-after .atm-c-badge { padding: 0.0625rem 0.625rem; }
+
+@media (min-width: 47em) {
+  .atm-c-shopping-cart__title-after .atm-c-badge { padding: 0.25rem 0.75rem; }
+}
+
+.atm-c-badge--small { font-size: 0.75rem; font-weight: 600; line-height: 1.4; padding-left: 0.5rem; padding-right: 0.5rem; }
+
+.atm-c-badge--disabled { opacity: 0.4; }
+
+.atm-c-badge--success { background-color: rgb(68, 136, 62); }
+
+.atm-c-badge--warning { color: rgb(0, 0, 0); background-color: rgb(255, 198, 88); }
+
+.atm-c-badge--error { background-color: rgb(213, 0, 50); }
+
+.atm-c-badge--basic-economy { background-color: rgb(241, 99, 33); }
+
+.atm-c-badge--united-blue { background-color: rgb(0, 51, 160); }
+
+.atm-c-badge--secondary { background-color: transparent; border: 1px solid rgb(124, 135, 142); color: rgb(124, 135, 142); }
+
+.atm-c-badge__text { white-space: nowrap; }

@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+@media screen and (max-width: 480px) {
+  .app-components-Seatmap-PassengerSelect-PassengerSelect__passenger-select__header--Y7sMr { display: none; }
+}
+
+.app-components-Seatmap-PassengerSelect-PassengerSelect__passenger-select__passenger-list-item--Et1qi { appearance: none; display: block; margin: 16px 0px 0px; padding: 0px; width: 100%; }
+
+.app-components-Seatmap-PassengerSelect-PassengerSelect__passenger-select__passenger-list-item--Et1qi.app-components-Seatmap-PassengerSelect-PassengerSelect__stretch-align--2GC3o { align-items: stretch; }
+
+.app-components-Seatmap-PassengerSelect-PassengerSelect__passenger-select__discountIncluded--3Ok4V { margin-top: 12px; }
+
+.app-components-Seatmap-PassengerSelect-PassengerSelect__passenger-select__discountIncluded--3Ok4V > svg { fill: rgb(0, 34, 68); margin-right: 8px; width: 20px; }

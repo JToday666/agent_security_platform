@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.app-components-MileagePlusSignIn-Callout-styles__callout--dENSl { width: 100%; padding: 25px 35px 50px; }
+
+.app-components-MileagePlusSignIn-Callout-styles__callout--dENSl h3 { font-size: 20px; }
+
+.app-components-MileagePlusSignIn-Callout-styles__callout--dENSl button { margin: 0px 13px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-MileagePlusSignIn-Callout-styles__callout--dENSl { max-width: 368px; }
+}

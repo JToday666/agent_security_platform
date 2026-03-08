@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-1mflud1 { width: var(--chakra-sizes-80); flex: 0 0 auto; max-width: 100%; margin: 0px auto; }
+
+@media screen and (min-width: 64rem) {
+  .css-1mflud1 { margin-right: var(--chakra-space-12); width: auto; flex: 0 0 auto; }
+}

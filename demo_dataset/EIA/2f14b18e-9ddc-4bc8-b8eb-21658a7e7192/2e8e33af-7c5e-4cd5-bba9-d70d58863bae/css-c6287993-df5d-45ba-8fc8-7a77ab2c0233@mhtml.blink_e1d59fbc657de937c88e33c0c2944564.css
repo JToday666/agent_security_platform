@@ -1,0 +1,36 @@
+@charset "utf-8";
+
+.app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__content--126V_ { background: rgb(255, 255, 255); display: flex; flex-direction: column; margin: 0px auto; max-width: 700px; min-height: 100%; }
+
+.app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__content__loader--2eH6e { min-height: 240px; padding-top: 48px; text-align: center; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__content__loader--2eH6e { padding-right: 48px; }
+}
+
+.app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__content__loaderTitle--19bk_ { margin-bottom: 18px; }
+
+.app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__content__legend--2IFsg { border-bottom: 1px solid rgb(102, 102, 102); margin-bottom: 32px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__content__legend--2IFsg { border: 0px; flex: 1 1 0%; margin-bottom: 0px; margin-left: 16px; order: 2; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__content__aircraft--2SJuh { order: 1; padding: 0px; width: 320px; }
+  .app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__content__wrapper--G0Q2Y { display: flex; flex-direction: row; }
+}
+
+.app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__modal--3_UrO { padding: 48px 0px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__modal--3_UrO { height: 100%; padding: 48px 0px 0px 48px; width: 700px; }
+}
+
+.app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__modal__overlay--BTOZB { align-items: center; background-color: rgba(255, 255, 255, 0.5); inset: 0px; display: flex; justify-content: center; position: fixed; transition: opacity 0.4s ease 0s; z-index: 10; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__modal__overlay--BTOZB { padding: 48px 0px; }
+}
+
+.app-components-Seatmap-SeatMapViewOnly-SeatMapViewOnly__visually-hidden--2Vy77 { height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); position: absolute !important; }

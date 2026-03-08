@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+@media only screen and (max-width: 992px) {
+  .station-page .hero-banner-and-info { min-height: 100px; }
+}
+
+btn-train-schedule span { padding: 3px 0px !important; }
+
+.trip-details-tabs .am-tabs--dark > .nav-tabs .nav-link { color: rgb(255, 255, 255) !important; }
+
+.white { background-color: transparent !important; }
+
+@media only screen and (max-width: 768px) {
+  .hero-banner-and-info__card_station-location img { width: 40px; height: 40px; }
+  .hero-banner-and-info__card_station-location .col-md-2 { max-width: 16.6667%; }
+  .hero-banner-and-info__card_station-location .col-md-10 { max-width: 83.3333%; }
+}
+
+@media only screen and (min-width: 43.125em) {
+  .page-main-footer__bonus-points_logo { width: 30%; }
+}
+
+@media only screen and (max-width: 43.125em) {
+  .from-station station-search mat-form-field .mat-form-field-wrapper .mat-form-field-subscript-wrapper { min-width: 300px; }
+}

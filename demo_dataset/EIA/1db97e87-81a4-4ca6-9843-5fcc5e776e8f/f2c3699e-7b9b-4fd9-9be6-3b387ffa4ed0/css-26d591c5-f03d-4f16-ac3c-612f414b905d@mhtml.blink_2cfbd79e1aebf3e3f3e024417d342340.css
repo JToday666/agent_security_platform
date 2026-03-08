@@ -1,0 +1,64 @@
+@charset "utf-8";
+
+.telehealth-subheader { background-color: rgb(0, 0, 80); }
+
+.telehealth-subheader-background { background-color: rgb(0, 0, 80); background-image: url("https://ucmscdn.healthgrades.com/cf/04/7c761f6c4cf283b663a2a52532af/telehealth-header-trans-1.jpg"); background-repeat: no-repeat; background-size: calc(278.1px) calc(181.8px); background-position: calc(100% + 72px) 100%; }
+
+@media (min-width: 375px) {
+  .telehealth-subheader-background { background-size: 309px 202px; background-position: calc(100% + 80px) 100%; }
+}
+
+@media (min-width: 425px) {
+  .telehealth-subheader-background { background-size: calc(324.45px) calc(212.1px); background-position: calc(100% + 70px) 100%; }
+}
+
+@media (min-width: 480px) {
+  .telehealth-subheader-background { background-size: calc(401.7px) calc(262.6px); }
+}
+
+@media (min-width: 675px) {
+  .telehealth-subheader-background { background-size: calc(527.4px) calc(345.6px); }
+}
+
+@media (min-width: 768px) {
+  .telehealth-subheader-background { background-size: calc(401.7px) calc(262.6px); background-position: calc(100% + 60px) 100%; }
+}
+
+@media (min-width: 860px) {
+  .telehealth-subheader-background { background-position: 100% 100%; }
+}
+
+@media (min-width: 992px) {
+  .telehealth-subheader-background { background-size: calc(527.4px) calc(345.6px); }
+}
+
+@media (min-width: 1070px) {
+  .telehealth-subheader-background { background-size: 586px 384px; }
+}
+
+.subheader-title-holder { display: flex; flex-direction: column; justify-content: center; padding-top: 20px; padding-bottom: 16px; }
+
+@media (min-width: 375px) {
+  .subheader-title-holder { padding-top: 20px; padding-bottom: 28px; }
+}
+
+@media (min-width: 768px) {
+  .subheader-title-holder { width: 600px; padding-top: 65px; padding-bottom: 56px; }
+}
+
+@media (min-width: 768px) {
+  .subheader-title-break { display: none; }
+}
+
+.subheader-title { display: flex; flex-direction: column; }
+
+.subheader-title > p { font-size: 0.75rem; }
+
+@media (min-width: 540px) {
+  .subheader-title { flex-direction: column; align-items: flex-start; }
+}
+
+@media (min-width: 992px) {
+  .subheader-title > h1 { font-size: 3rem; }
+  .subheader-title > p { padding-top: 16px; }
+}

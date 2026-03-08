@@ -1,0 +1,116 @@
+@charset "utf-8";
+
+.sf-dropdown-park-selector { color: rgb(255, 255, 255); padding-left: 0.75em; padding-top: 0px; padding-bottom: 0px; background: 0px 0px; height: 75px; width: 100%; box-shadow: none; box-sizing: border-box; letter-spacing: normal; font-size: 1rem; font-weight: 600; font-stretch: normal; font-style: normal; line-height: normal; justify-content: space-between; align-items: center; }
+
+.sf-dropdown-park-selector-text { display: flex; align-items: baseline; margin-left: 35px; font-weight: 400; font-size: 18px; }
+
+.nav-toggle { display: inline; width: 75%; }
+
+.sf-park-selector-mobile button:hover, .sf-park-selector-mobile button:focus { background-color: rgb(0, 0, 0); border-color: rgb(255, 255, 255); }
+
+.sf-dropdown-selector-inactive { border-width: 2px 0px 2px 2px; border-style: solid; border-color: rgb(255, 255, 255); border-image: initial; border-radius: 6px 0px 0px 6px; }
+
+.sf-dropdown-selector-active { border-bottom: 2px solid rgb(255, 255, 255); border-radius: 0px; padding-left: 7px; background: 0px 0px; }
+
+.sf-dropdown-selector-active:focus, .sf-dropdown-selector-active:hover, .sf-dropdown-go-active:focus, .sf-dropdown-go-active:hover { border-width: 0px 0px 2px !important; border-style: solid !important; border-color: transparent transparent rgb(255, 255, 255) !important; }
+
+.sf-dropdown-go { padding-left: 25px; padding-right: 25px; }
+
+@media screen and (max-width: 1083px) and (min-width: 1024px) {
+  .sf-dropdown-go { padding-left: 15px; padding-right: 15px; }
+}
+
+.sf-dropdown-go-inactive { border-width: 2px 2px 2px 0px; border-style: solid; border-color: rgb(255, 255, 255); border-image: initial; border-radius: 0px 5px 5px 0px; background-color: rgb(198, 42, 28); }
+
+.sf-dropdown-go-active { border-bottom: 2px solid rgb(255, 255, 255); border-top: 0px solid transparent; border-right: 0px solid transparent; border-radius: 0px; background: 0px 0px; }
+
+.sf-row-park.sf-row-no-pt small { font-size: 12px; padding-top: 4px; }
+
+.sf-dropdown-park-selector:focus { z-index: 50; background-color: transparent; }
+
+.sf-dropdown { display: flex; flex-flow: row wrap; align-items: stretch; justify-content: center; width: 100%; }
+
+.sf-dropdown-content { display: none; background-color: transparent; color: rgb(255, 255, 255); min-width: 160px; z-index: 1; margin-top: 1px; }
+
+.sf-dropdown-content a { color: rgb(255, 255, 255); text-decoration: none; }
+
+.sf-dropdown-content .single-park-desktop:focus .sf-row-park { z-index: 50; box-shadow: rgb(44, 196, 255) 0px 0px 5px !important; }
+
+.sf-dropdown-content .single-park-desktop { color: rgb(255, 255, 255); }
+
+.sf-row-park { padding: 8.5px 0px; display: flex; align-items: center; line-height: 1; }
+
+.sf-row-park-content-padding { padding-top: 0px; }
+
+.sf-row-park > div { flex: 1 0 0%; }
+
+.sf-dropdown-content a span { font-family: inherit; font-size: 1rem; }
+
+.sf-dropdown-content a span:hover { text-decoration: underline; }
+
+.sf-dropdown-content img { height: 48px; width: 48px; margin-right: 17px; }
+
+.sf-dropdown-content a:hover { background-color: rgb(221, 221, 221); }
+
+.sf-state-label { font-weight: 700; font-family: "open sans"; line-height: inherit; text-transform: inherit; font-size: 1.125rem; }
+
+.sf-park { padding: 0px 16px 0px 34px; }
+
+.sf-row-no-pt { padding-top: 0px; }
+
+.sf-dropdown-content.collapse { width: 100%; height: 314px; overflow-y: scroll; }
+
+.mobile-content { position: static !important; width: 100% !important; overflow-y: scroll !important; }
+
+.map-pin { position: absolute; background-image: url("/wp-content/themes/sixflags/assets/img/map-pin.svg"); background-repeat: no-repeat; background-size: contain; background-position: center center; height: 22px; width: 22px; display: inline-block; color: rgb(255, 255, 255); transform: translate(-30px, 0px); }
+
+.sf-dropdown-content.collapse::-webkit-scrollbar-track { background-clip: content-box; margin-top: 30px; margin-bottom: 15px; }
+
+.sf-dropdown-content.collapse::-webkit-scrollbar-track { border-radius: 10px; background-color: transparent; border: 1px solid rgb(255, 255, 255); }
+
+.sf-dropdown-content.collapse::-webkit-scrollbar { width: 7px; background-color: transparent; }
+
+.sf-dropdown-content.collapse::-webkit-scrollbar-thumb { border-radius: 10px; background-color: rgb(0, 0, 0); }
+
+.sf-park:nth-child(2n) { padding-top: 0.5px; }
+
+.sf-state-label { margin-top: 8px; }
+
+.sf-park-selector-mobile { display: none; }
+
+.sf-content-text { padding-left: 35px; }
+
+.sf-content-state { padding-left: 35px; }
+
+@media only screen and (max-width: 533px) {
+  .sf-dropdown-park-selector { padding: 0px; }
+  .sf-dropdown-park-selector-text { padding-left: 0px; }
+  .sf-row-park > div:first-of-type { width: 40px; max-width: 65px; }
+}
+
+@media only screen and (max-width: 1023px) {
+  .sf-park:nth-child(2n) { width: 100%; }
+  .sf-park > .sf-row-park-mobile:nth-of-type(2) { padding-top: 0px; }
+  .sf-park-selector-mobile { display: flex; flex-flow: row wrap; align-items: stretch; justify-content: center; background-color: transparent; }
+  .sf-row-park-mobile { border: 0px; padding-top: 3px; padding-bottom: 10px; }
+  .mobile-single-park { color: inherit; text-decoration: inherit; }
+  .mobile-single-park:focus .sf-row-park-mobile { z-index: 50; box-shadow: rgb(44, 196, 255) 0px 0px 5px !important; }
+  a.mobile-single-park:focus { color: beige; }
+  .sf-park { color: rgb(255, 255, 255); padding: 5px 22px 0px !important; }
+  .sf-row-img-title { display: flex; align-items: center; justify-content: space-between; }
+  .sf-title-city-row { display: grid; }
+  .sf-park-title-mobile { font-family: inherit; font-size: 1rem; font-stretch: normal; font-style: normal; line-height: normal; letter-spacing: normal; }
+  .sf-park-city-mobile { font-family: inherit; font-stretch: normal; font-style: normal; line-height: normal; letter-spacing: normal; font-size: 0.8rem !important; }
+  .sf-state-label { margin-top: 4px; }
+  .sf-dropdown { display: none; }
+}
+
+@media only screen and (max-width: 1023px) and (min-width: 525px) {
+  .sf-dropdown-content.mobile-content { width: 86% !important; }
+}
+
+@media only screen and (width: 1024px) {
+  .sf-dropdown-content { width: 90% !important; }
+}
+
+.align-content-stretch .elementor-widget-wrap { align-content: stretch !important; }

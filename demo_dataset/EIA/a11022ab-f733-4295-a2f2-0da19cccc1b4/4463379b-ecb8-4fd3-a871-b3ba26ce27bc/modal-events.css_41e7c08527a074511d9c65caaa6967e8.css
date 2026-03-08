@@ -1,0 +1,107 @@
+@charset "utf-8";
+
+.modal-sf-events { position: absolute; z-index: 4; background: rgb(255, 255, 255); width: 490px; height: auto; padding: 15px 24px 24px; border: 1px solid rgb(227, 227, 238); box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 8px 0px; }
+
+.modal-sf-events button { background: 0px 0px; color: inherit; border: none; padding: 0px; font: inherit; cursor: pointer; outline: inherit; }
+
+.modal-sf-events #sf-card-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgb(227, 227, 227); }
+
+.modal-sf-events #sf-card-park-hour { display: flex; flex-flow: column wrap; align-content: flex-start; border-bottom: 1px solid rgb(227, 227, 227); }
+
+.modal-sf-events #sf-card-park-hour span { text-align: left; }
+
+.modal-sf-events #sf-card-park-hour span:nth-child(2n+1) { font-size: 1rem; margin-top: 7px; }
+
+.modal-sf-events #sf-card-park-hour span:nth-child(2n) { font-size: 1rem; font-weight: 600; font-stretch: normal; font-style: normal; line-height: normal; letter-spacing: normal; margin: 0px 5px; }
+
+.sf-card-events-row { display: flex; margin-top: 11px; }
+
+#sf-card-events #sf-card-events-label { margin-top: 7px; font-size: 1rem; display: flex; }
+
+#sf-card-events { text-align: left; }
+
+#sf-card-events .sf-no-events-label { font-size: 1.125rem; display: flex; }
+
+.sf-card-events-row img { width: 210px; height: 110px; margin-right: 16px; }
+
+.sf-event-title { font-size: 1.125rem; font-weight: 600; font-stretch: normal; font-style: normal; line-height: 1.33; letter-spacing: normal; }
+
+.sf-event-details { display: flex; flex-direction: column; }
+
+.sf-event-details span:last-child { margin-top: 16px; }
+
+.sf-event { border-bottom: 1px solid rgb(227, 227, 227); padding-top: 5px; padding-bottom: 11px; }
+
+.sf-event:last-child { border-bottom: none; }
+
+.sf-event .sf-event-description { font-size: 1rem; font-weight: 400; font-stretch: normal; font-style: normal; line-height: normal; letter-spacing: normal; }
+
+.sf-event .sf-event-learn-more { color: rgb(27, 103, 236); text-decoration: underline; }
+
+.sf-event .sf-event-learn-more:hover { text-decoration: none; }
+
+.modal-sf-events #sf-card-header #date { margin-bottom: 8px; font-size: 1.5rem; font-weight: 600; }
+
+.modal-sf-events #sf-card-park-hour span:last-child { margin-bottom: 8px; }
+
+.modal-sf-events .sf-event-footer { margin-top: 11px; }
+
+.sf_evt_mob_label_hide { display: none; }
+
+.sf_evt_mob_events_title { font-size: 14px; font-weight: 700; margin-top: 8px; margin-bottom: 0px; display: block; }
+
+.sf-event-mobile-wrapper { padding: 0px; }
+
+.sf-event-mobile-wrapper .jet-listing-dynamic-field__inline-wrap { width: 100% !important; }
+
+.sf-event-mobile-wrapper .jet-listing-dynamic-field__content { width: 100% !important; }
+
+.sf_evt_mob_wrapper { display: flex; margin-top: 6px; }
+
+.sf_evt_mob_column { width: 60%; }
+
+.sf_evt_mob_column_date { font-size: 11px; }
+
+.sf_evt_mob_column_time { font-size: 11px; text-align: right; width: 40%; }
+
+a.sf_evt_mob_title { font-size: 12px; font-weight: 400; }
+
+.sf_evt_mob_date, .sf_evt_mob_time { display: block; color: var(--e-global-color-secondary); }
+
+.sf_evt_mob_learn_more { font-size: 1rem; font-weight: 600; font-stretch: normal; font-style: normal; line-height: 1.41; letter-spacing: normal; color: rgb(0, 155, 223); }
+
+div[nattr="sf_event_mob_div"] .elementor-heading-title { display: none; }
+
+.sf_evt_mob_event { margin-bottom: 2px; }
+
+.sf_evt_mob_event { line-height: normal; }
+
+.icon-flag-calendar { left: 10px; position: absolute; width: 20px; }
+
+.park-hours-str { display: flex; width: 100%; justify-content: center; font-size: 1rem; }
+
+.waterpark-str { color: rgb(0, 86, 163); }
+
+.sf-modal-hours--close:focus { outline: rgb(44, 196, 255) solid 1px; z-index: 50; transition: outline 0.1s linear 0s; box-shadow: rgb(44, 196, 255) 0px 0px 5px !important; }
+
+.loader { border-width: 8px; border-style: solid; border-color: rgb(52, 152, 219) rgb(243, 243, 243) rgb(243, 243, 243); border-image: initial; border-radius: 50%; width: 70px; height: 70px; animation: 2s linear 0s infinite normal none running spin; }
+
+.loader.mobile-listing { border-color: rgb(52, 152, 219) rgb(215, 215, 215) rgb(215, 215, 215); margin: 30px auto; }
+
+@keyframes spin { 
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.sf-card-body .loader { margin: 30px auto; }
+
+#sf-card-park-hour .modal-hours { text-align: left; margin-top: 0.15rem; margin-bottom: 0.15rem; }
+
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance:none) {
+  @media (min-width: 1025px) {
+  .sf-calendar .jet-calendar-grid { margin-top: 40px; }
+  .sf-calendar .jet-calendar-grid .jet-calendar-caption { position: absolute; top: -5px; left: 50%; transform: translateX(-50%); }
+}
+}
+}

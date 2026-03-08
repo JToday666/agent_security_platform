@@ -1,0 +1,76 @@
+@charset "utf-8";
+
+.sf-fright-night--videohero .elementor-background-video-container { display: none; }
+
+.sf-fright-night--videohero-overlay { position: absolute; top: 0px; left: 0px; right: 0px; min-height: 100%; }
+
+.sf-fright-night--videohero-copy > .elementor-column-wrap { margin-left: 95px; }
+
+.sf-fright-night--videohero-copy-wrapper { max-width: 1500px; margin: 0px auto; padding: 0px 70px; }
+
+.sf-fright-night--videohero-copy-subtitle .elementor-heading-title { color: rgb(255, 255, 255); font-size: 25px; font-weight: 700; margin-bottom: 12px; }
+
+.sf-fright-night--videohero-copy-title .elementor-heading-title { color: rgb(255, 255, 255); font-size: 60px; font-weight: 700; margin: 0px; }
+
+.sf-fright-night--videohero-copy-warning { position: relative; margin-top: 45px; color: rgb(255, 255, 255); font-size: 16px; font-weight: 300; max-width: 410px; padding-left: 70px; }
+
+.sf-fright-night--videohero-copy-icon .elementor-icon { position: absolute; top: 50px; left: 0px; font-size: 50px; }
+
+.sf-fright-night--videohero-copy-warning .elementor-text-editor p { margin: 0px 0px 10px; }
+
+.sf-fright-night--videohero-copy-warning .elementor-text-editor p a, .sf-fright-night--videohero-copy-warning .elementor-text-editor a { font-size: 14px; color: rgb(255, 255, 255); font-weight: 600; white-space: nowrap; }
+
+.sf-fright-night--videohero-logo > .elementor-column-wrap { margin-right: 25px; }
+
+.sf-fright-night--videohero-logo img { width: auto; }
+
+.sf-fright-night--videohero-copy-title { }
+
+.sf-fright-night--videohero-copy-title .sf-fright-night--videohero-play { display: inline-block; margin-left: 18px; vertical-align: top; }
+
+.sf-fright-night--videohero-logo .sf-fright-night--videohero-play { display: none; }
+
+.sf-fright-night--videohero-play::before { display: block; content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNzAnIGhlaWdodD0nMTE4JyBmaWxsPSdub25lJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxjaXJjbGUgY3g9JzM1JyBjeT0nMzUnIHI9JzMzJyBzdHJva2U9JyNENjM2MkUnIHN0cm9rZS13aWR0aD0nNCcvPjxwYXRoIGQ9J20zMCAyMyAxMS41IDExLjVMMzAgNDYnIHN0cm9rZT0nI0Q2MzYyRScgc3Ryb2tlLXdpZHRoPSc0Jy8+PHBhdGggZD0nTTIzLjY5NCA4Ny43MmMxLjE5OCAwIDIuMDcyLjIzNSAyLjYyMi43MDQuNTU0LjQ2Ni44MzIgMS4xMzQuODMyIDIuMDA2IDAgLjM5NC0uMDY2Ljc2OC0uMTk3IDEuMTI0YTIuMzgzIDIuMzgzIDAgMCAxLS42MjIuOTMzYy0uMjg4LjI2Ni0uNjY3LjQ3OC0xLjEzNy42MzUtLjQ2NS4xNTItMS4wMzYuMjI4LTEuNzEzLjIyOGgtMS4xM1Y5N2gtMS4wOHYtOS4yOGgyLjQyNXptLS4xMDEuOTJoLTEuMjQ0djMuNzgzaDEuMDA5Yy41OTIgMCAxLjA4NS0uMDYzIDEuNDc5LS4xOS4zOTgtLjEyNy42OTYtLjMzMi44OTUtLjYxNi4xOTktLjI4OC4yOTgtLjY2OC4yOTgtMS4xNDIgMC0uNjE4LS4xOTctMS4wNzctLjU5LTEuMzc4LS4zOTQtLjMwNC0xLjAxLS40NTctMS44NDctLjQ1N3pNMjguOTYgOTd2LTkuMjhoMS4wNzl2OC4zMTVoNC4xMlY5N2gtNS4yem0xMi40ODMgMEw0MC4zIDk0LjA1NWgtMy43MkwzNS40NDQgOTdoLTEuMDkybDMuNjMxLTkuMzE4aC45NzFMNDIuNTYgOTdoLTEuMTE3em0tMS40NjctMy45MDQtMS4wODUtMi45MjZhNjAuODU5IDYwLjg1OSAwIDAgMC0uMTI3LS4zNzUgNDIyLjQ4MyA0MjIuNDgzIDAgMCAwLS4zMTgtLjk5Yy0uMDQyLjE3NC0uMDg4LjM0Ny0uMTQuNTJhMTMuODAyIDEzLjgwMiAwIDAgMS0uMjYuODQ1bC0xLjEwNCAyLjkyNmgzLjAzNHptNi4xMS0uNzIzIDIuNDctNC42NTNoMS4xNmwtMy4wOSA1LjY4Vjk3aC0xLjA4di0zLjU0OEw0Mi40NSA4Ny43MmgxLjE4bDIuNDU3IDQuNjUzeicgZmlsbD0nI0Q2MzYyRScvPjwvc3ZnPg=="); }
+
+.sf-fright-night--videohero-play { opacity: 0.75; }
+
+.sf-fright-night--videohero-play:hover { opacity: 1; }
+
+.sf-fright-night--videohero.play-video .sf-fright-night--videohero-overlay > .elementor-column-wrap { background-position: 100vw 0px !important; }
+
+.sf-fright-night--videohero.play-video .elementor-background-video-container { display: block !important; }
+
+.sf-fright-night--videohero.play-video .sf-fright-night--videohero-play { visibility: hidden; z-index: -1; }
+
+@media screen and (max-width: 1440px) {
+  .sf-fright-night--videohero-overlay > .sf-fright-night--videohero-play { top: 50%; }
+  .sf-fright-night--videohero-copy > .elementor-column-wrap { margin-left: 25px; }
+}
+
+@media screen and (max-width: 1024px) {
+  .sf-fright-night--videohero-overlay > .sf-fright-night--videohero-play { display: none; }
+  .sf-fright-night--videohero-copy > .elementor-column-wrap { margin-left: 0px; }
+  .sf-fright-night--videohero-logo .sf-fright-night--videohero-play { display: block; margin-left: 80px; padding: 50px 0px 0px; opacity: 1; }
+  .sf-fright-night--videohero-play::before { content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTIwJyBoZWlnaHQ9JzcwJyBmaWxsPSdub25lJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxjaXJjbGUgY3g9Jzg1JyBjeT0nMzUnIHI9JzMzJyBzdHJva2U9JyNENjM2MkUnIHN0cm9rZS13aWR0aD0nNCcvPjxwYXRoIGQ9J204MCAyMyAxMS41IDExLjVMODAgNDYnIHN0cm9rZT0nI0Q2MzYyRScgc3Ryb2tlLXdpZHRoPSc0Jy8+PHBhdGggZD0nTTMuNjk0IDI3LjcyYzEuMTk4IDAgMi4wNzIuMjM1IDIuNjIyLjcwNC41NTQuNDY2LjgzMSAxLjEzNC44MzEgMi4wMDYgMCAuMzk0LS4wNjUuNzY4LS4xOTYgMS4xMjRhMi4zODMgMi4zODMgMCAwIDEtLjYyMi45MzNjLS4yODguMjY2LS42NjcuNDc4LTEuMTM3LjYzNS0uNDY1LjE1Mi0xLjAzNi4yMjgtMS43MTMuMjI4aC0xLjEzVjM3aC0xLjA4di05LjI4aDIuNDI1em0tLjEwMS45MkgyLjM0OXYzLjc4M2gxLjAwOWMuNTkyIDAgMS4wODUtLjA2MyAxLjQ3OS0uMTkuMzk4LS4xMjcuNjk2LS4zMzIuODk1LS42MTYuMTk5LS4yODguMjk4LS42NjguMjk4LTEuMTQyIDAtLjYxOC0uMTk3LTEuMDc3LS41OS0xLjM3OC0uMzk0LS4zMDUtMS4wMS0uNDU3LTEuODQ3LS40NTd6TTguOTYgMzd2LTkuMjhoMS4wNzl2OC4zMTVoNC4xMlYzN2gtNS4yem0xMi40ODMgMEwyMC4zIDM0LjA1NWgtMy43MkwxNS40NDQgMzdoLTEuMDkybDMuNjMxLTkuMzE4aC45NzFMMjIuNTYgMzdoLTEuMTE3em0tMS40NjctMy45MDQtMS4wODUtMi45MjZhNjAuODU5IDYwLjg1OSAwIDAgMC0uMTI3LS4zNzUgNDIyLjQ4MyA0MjIuNDgzIDAgMCAwLS4zMTctLjk5Yy0uMDQzLjE3NC0uMDkuMzQ3LS4xNC41MmExMy44MDIgMTMuODAyIDAgMCAxLS4yNi44NDVsLTEuMTA1IDIuOTI2aDMuMDM0em02LjExLS43MjMgMi40Ny00LjY1M2gxLjE2bC0zLjA5IDUuNjhWMzdoLTEuMDh2LTMuNTQ4TDIyLjQ1IDI3LjcyaDEuMThsMi40NTcgNC42NTN6JyBmaWxsPScjRDYzNjJFJy8+PC9zdmc+"); }
+  .sf-fright-night--videohero-copy { padding-top: 40px; }
+}
+
+@media screen and (max-width: 479px) {
+  body:not(.park-hurricaneharborox):not(.park-mexico):not(.park-larondeen):not(.park-larondefr) .sf-fright-night--videohero { position: relative; background-color: rgb(0, 0, 0); padding-bottom: 5px; }
+  .sf-fright-night--videohero { position: relative; background-color: rgb(0, 0, 0); padding-bottom: 160px; }
+  .sf-fright-night--videohero > .elementor-background-video-container > .elementor-html5-video { top: 0px; left: 50%; transform: translate(-50%, 0px); height: 580px !important; }
+  .sf-fright-night--videohero--has-video .sf-fright-night--videohero-overlay > .elementor-column-wrap { align-items: flex-start; justify-content: flex-end; border-bottom: 14px solid rgb(30, 30, 30); height: 658px; }
+  .sf-fright-night--videohero-copy-wrapper { position: relative; padding-left: 12px; padding-right: 12px; }
+  .sf-fright-night--videohero-copy > .elementor-column-wrap { margin-left: 0px; }
+  .sf-fright-night--videohero-copy .elementor-row > .elementor-column { margin-left: auto; margin-right: auto; max-width: 280px; }
+  .sf-fright-night--videohero-copy-subtitle .elementor-heading-title { font-size: 18px; text-align: center; }
+  .sf-fright-night--videohero-copy-title .elementor-heading-title { font-size: 45px; text-align: center; }
+  .sf-fright-night--videohero-logo > .elementor-widget-container { text-align: center; }
+  .sf-fright-night--videohero-logo img { width: 235px; margin-left: auto; margin-right: auto; }
+  .sf-fright-night--videohero-logo .sf-fright-night--videohero-play { margin-left: 0px; padding: 90px 0px 0px; }
+  .sf-fright-night--videohero-logo .sf-fright-night--videohero-play::before { display: block; content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTIwJyBoZWlnaHQ9JzcwJyBmaWxsPSdub25lJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxjaXJjbGUgY3g9Jzg1JyBjeT0nMzUnIHI9JzMzJyBzdHJva2U9JyNENjM2MkUnIHN0cm9rZS13aWR0aD0nNCcvPjxwYXRoIGQ9J204MCAyMyAxMS41IDExLjVMODAgNDYnIHN0cm9rZT0nI0Q2MzYyRScgc3Ryb2tlLXdpZHRoPSc0Jy8+PHBhdGggZD0nTTMuNjk0IDI3LjcyYzEuMTk4IDAgMi4wNzIuMjM1IDIuNjIyLjcwNC41NTQuNDY2LjgzMSAxLjEzNC44MzEgMi4wMDYgMCAuMzk0LS4wNjUuNzY4LS4xOTYgMS4xMjRhMi4zODMgMi4zODMgMCAwIDEtLjYyMi45MzNjLS4yODguMjY2LS42NjcuNDc4LTEuMTM3LjYzNS0uNDY1LjE1Mi0xLjAzNi4yMjgtMS43MTMuMjI4aC0xLjEzVjM3aC0xLjA4di05LjI4aDIuNDI1em0tLjEwMS45MkgyLjM0OXYzLjc4M2gxLjAwOWMuNTkyIDAgMS4wODUtLjA2MyAxLjQ3OS0uMTkuMzk4LS4xMjcuNjk2LS4zMzIuODk1LS42MTYuMTk5LS4yODguMjk4LS42NjguMjk4LTEuMTQyIDAtLjYxOC0uMTk3LTEuMDc3LS41OS0xLjM3OC0uMzk0LS4zMDUtMS4wMS0uNDU3LTEuODQ3LS40NTd6TTguOTYgMzd2LTkuMjhoMS4wNzl2OC4zMTVoNC4xMlYzN2gtNS4yem0xMi40ODMgMEwyMC4zIDM0LjA1NWgtMy43MkwxNS40NDQgMzdoLTEuMDkybDMuNjMxLTkuMzE4aC45NzFMMjIuNTYgMzdoLTEuMTE3em0tMS40NjctMy45MDQtMS4wODUtMi45MjZhNjAuODU5IDYwLjg1OSAwIDAgMC0uMTI3LS4zNzUgNDIyLjQ4MyA0MjIuNDgzIDAgMCAwLS4zMTctLjk5Yy0uMDQzLjE3NC0uMDkuMzQ3LS4xNC41MmExMy44MDIgMTMuODAyIDAgMCAxLS4yNi44NDVsLTEuMTA1IDIuOTI2aDMuMDM0em02LjExLS43MjMgMi40Ny00LjY1M2gxLjE2bC0zLjA5IDUuNjhWMzdoLTEuMDh2LTMuNTQ4TDIyLjQ1IDI3LjcyaDEuMThsMi40NTcgNC42NTN6JyBmaWxsPScjRDYzNjJFJy8+PC9zdmc+"); }
+  .sf-fright-night--videohero-copy-warning { margin-top: 10px; padding: 0px 50px; }
+  .sf-fright-night--videohero-copy-icon .elementor-icon { position: relative; margin-top: 42px; top: auto; left: auto; }
+  .sf-fright-night--videohero-copy-warning .elementor-text-editor { text-align: center; }
+  .sf-fright-night--videohero-logo > .elementor-column-wrap { padding: 0px; margin-right: 0px; }
+}

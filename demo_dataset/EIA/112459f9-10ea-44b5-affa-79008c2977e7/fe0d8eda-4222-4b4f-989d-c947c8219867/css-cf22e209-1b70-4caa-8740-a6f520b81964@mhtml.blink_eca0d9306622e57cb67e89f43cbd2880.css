@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.atm-c-selectable-card { height: 100%; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; flex-direction: column; -webkit-box-pack: justify; justify-content: space-between; transition: border-color 0.15s ease-out 0s, box-shadow 0.15s ease-out 0s; }
+
+.atm-c-selectable-card.atm-is-selected { border-color: rgb(0, 51, 160); box-shadow: rgb(0, 51, 160) 0px 0px 0px 1px inset; }

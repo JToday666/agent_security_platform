@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.main__account--loginContainer { position: relative; }
+
+.header-login-container { position: relative; }
+
+.account-menu--wrapper { display: flex; place-content: center; flex-direction: column; padding-top: 16px; border-radius: 10px; }
+
+.account-menu__link { font-size: 1rem; font-weight: 400; padding: 8px 8px 8px 52px; }
+
+.account-menu__link:hover, .account-menu__link:focus { background-color: rgb(211, 251, 255); }
+
+@media (min-width: 768px) {
+  .account-menu__link { padding-left: 24px; }
+}
+
+.horizontial-divider { border: 1.2px solid rgb(227, 227, 227); background-color: rgb(227, 227, 227); }
+
+.account-menu-logout-btn { font-size: 1rem; font-weight: 400; text-align: left; padding: 8px 54px 8px 52px; color: rgb(98, 99, 102); }
+
+.account-menu-logout-btn:hover, .account-menu-logout-btn:focus { background-color: rgb(211, 251, 255); color: rgb(98, 99, 102); }
+
+@media (min-width: 768px) {
+  .account-menu-logout-btn { margin-bottom: 24px; padding-left: 24px; }
+}

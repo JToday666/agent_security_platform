@@ -1,0 +1,14 @@
+@charset "utf-8";
+
+@keyframes resizeanim { 
+  0% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.resize-triggers { animation: 1ms ease 0s 1 normal none running resizeanim; visibility: hidden; opacity: 0; }
+
+.resize-triggers, .resize-triggers > div, .contract-trigger::before { content: " "; display: block; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; }
+
+.resize-triggers > div { background: rgb(238, 238, 238); overflow: auto; }
+
+.contract-trigger::before { width: 200%; height: 200%; }

@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-1ebjjys { grid-column: span 12 / span 12; text-align: left; }
+
+@media screen and (min-width: 64rem) {
+  .css-1ebjjys { grid-column: 3 / span 8; }
+}

@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.app-components-FlightBlock-PlaneSegment-styles__planeSegmentWrapper--3VKWu { display: flex; justify-content: center; flex: 4 1 0%; height: 35px; align-items: center; }
+
+.app-components-FlightBlock-PlaneSegment-styles__planeSegmentWrapper--3VKWu.app-components-FlightBlock-PlaneSegment-styles__start--36AmQ { justify-content: flex-start; }
+
+.app-components-FlightBlock-PlaneSegment-styles__planeSegmentWrapper--3VKWu.app-components-FlightBlock-PlaneSegment-styles__start--36AmQ .app-components-FlightBlock-PlaneSegment-styles__airplane--1voZH { margin: 0px 15px; }
+
+.app-components-FlightBlock-PlaneSegment-styles__planeSegmentWrapper--3VKWu.app-components-FlightBlock-PlaneSegment-styles__center--78fl8 { justify-content: center; }
+
+.app-components-FlightBlock-PlaneSegment-styles__planeSegmentWrapper--3VKWu.app-components-FlightBlock-PlaneSegment-styles__center--78fl8 hr.app-components-FlightBlock-PlaneSegment-styles__dottedSegment--2oJxc { width: 40%; }
+
+.app-components-FlightBlock-PlaneSegment-styles__planeSegmentWrapper--3VKWu.app-components-FlightBlock-PlaneSegment-styles__end--2IaM4 { justify-content: flex-end; }
+
+.app-components-FlightBlock-PlaneSegment-styles__planeSegmentWrapper--3VKWu hr.app-components-FlightBlock-PlaneSegment-styles__dottedSegment--2oJxc { border-right: none; border-bottom: none; border-left: none; border-image: initial; border-top: 2px dotted rgb(153, 153, 153); height: 1px; width: 85%; margin: 0px 10px 0px 0px; }
+
+.app-components-FlightBlock-PlaneSegment-styles__planeSegmentWrapper--3VKWu .app-components-FlightBlock-PlaneSegment-styles__airplane--1voZH { width: 25px; height: 24.7px; margin-right: 5px; }

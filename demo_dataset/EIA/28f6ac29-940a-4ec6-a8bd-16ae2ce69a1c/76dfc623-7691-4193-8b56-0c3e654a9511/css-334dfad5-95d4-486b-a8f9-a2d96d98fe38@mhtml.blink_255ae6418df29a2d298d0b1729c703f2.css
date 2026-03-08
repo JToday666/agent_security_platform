@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.app-components-Receipts-PurchaseDetails-styles__purchaseDetails--2d_ur { margin-top: 24px; }
+
+.app-components-Receipts-PurchaseDetails-styles__searchButton--1YgcR { width: 100%; height: 52px; margin-top: 25px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Receipts-PurchaseDetails-styles__searchButton--1YgcR { width: 272px; }
+}
+
+.app-components-Receipts-PurchaseDetails-styles__toolTipTitle--25lij { display: block; margin: 4px auto; font-weight: 600; }
+
+.app-components-Receipts-PurchaseDetails-styles__btnToolTipModal--2dg6J { margin-top: 16px; }
+
+.app-components-Receipts-PurchaseDetails-styles__inputContainer--SEIeX { display: flex; flex-flow: row wrap; }
+
+.app-components-Receipts-PurchaseDetails-styles__inputContainer--SEIeX .app-components-Receipts-PurchaseDetails-styles__inputItem--2dfug { width: 100%; margin-top: 25px; margin-bottom: 25px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Receipts-PurchaseDetails-styles__inputContainer--SEIeX .app-components-Receipts-PurchaseDetails-styles__inputItem--2dfug { width: 272px; margin-right: 32px; }
+}
+
+.atm-disambiguation-datepickerfield .DayPickerNavigation.DayPickerNavigation__vertical .DayPickerNavigation_button__vertical { position: relative; }
+
+.atm-disambiguation-datepickerfield .DateRangePicker .DateInput_input { padding-left: 0.5rem; }

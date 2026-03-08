@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.ac_results { padding: 0px; border: 1px solid black; background-color: white; overflow: hidden; z-index: 99999; margin-left: 1px; font-family: din-web-jetblue2; font-size: 14px; }
+
+.ac_results ul { width: 100%; list-style: none; padding: 0px; margin: 0px; }
+
+.ac_results li { margin: 0px; padding: 2px 1px; cursor: default; display: block; text-align: left; font-size: 14px; line-height: 16px; overflow: hidden; }
+
+.ac_loading { background: url("indicator.gif") right center no-repeat white; }
+
+.ac_odd { }
+
+.ac_over { background-color: rgb(48, 111, 170); border: 2px solid rgb(48, 111, 170); color: white; }
+
+.ac_results li.fullList { border-top: 1px solid rgb(222, 222, 222); background: url("../images/bulltet_arrowright1.gif") 105px center no-repeat transparent; padding: 5px; color: rgb(0, 73, 144); }
+
+.ac_results { color: rgb(0, 73, 144); }
+
+.a:link, a:active, a:visited { color: rgb(48, 111, 170); }
+
+.a:hover { color: rgb(0, 73, 144); }

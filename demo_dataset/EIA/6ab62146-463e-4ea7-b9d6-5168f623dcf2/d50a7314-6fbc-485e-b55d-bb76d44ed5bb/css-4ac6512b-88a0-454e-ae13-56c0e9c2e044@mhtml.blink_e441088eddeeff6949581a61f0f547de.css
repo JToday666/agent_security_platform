@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.message-list-container { position: fixed; }
+
+.message-list-container.toolbar-height-sm { top: 48px; height: calc(100% - 140px); }
+
+.message-list-container.toolbar-height-md { top: 48px; height: calc(100% - 140px); }
+
+.message-list-container.toolbar-height-lg { top: 48px; height: calc(100% - 140px); }
+
+#lex-web[ui-minimized] { background: transparent; }

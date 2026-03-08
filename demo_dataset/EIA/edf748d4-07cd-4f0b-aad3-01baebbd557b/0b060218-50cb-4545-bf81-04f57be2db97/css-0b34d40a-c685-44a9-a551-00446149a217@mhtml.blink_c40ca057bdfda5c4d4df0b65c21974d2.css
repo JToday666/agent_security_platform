@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+.error-modal[_ngcontent-iyw-c263] { align-items: center; background-color: rgba(0, 0, 0, 0.7); display: flex; height: 100%; justify-content: center; left: 0px; overflow-x: hidden; position: fixed; top: 0px; width: 100%; z-index: 1; }
+
+.error-modal__container[_ngcontent-iyw-c263] { background-color: var(--light-base, #fff); border-radius: 2px; height: 270px; width: 380px; }
+
+.error-modal__header[_ngcontent-iyw-c263] { border-bottom: 1px solid; border-radius: 2px 2px 0px 0px; padding: 32px 1rem; text-align: center; }
+
+@media (min-width: 1024px) {
+  .error-modal__header[_ngcontent-iyw-c263] { align-items: center; display: flex; justify-content: center; }
+}
+
+.error-modal__header-icon { height: 33px; padding: 4px 0px; width: 33px; }
+
+.error-modal__header-text[_ngcontent-iyw-c263] { margin: 0px; padding: 0px; }
+
+@media (min-width: 1024px) {
+  .error-modal__header-text[_ngcontent-iyw-c263] { margin-left: 11px; }
+}
+
+.error-modal__body[_ngcontent-iyw-c263] { padding: 1.5rem 1rem; text-align: center; }
+
+.error-modal__button-row[_ngcontent-iyw-c263] { padding-top: 1.5rem; }
+
+.error-modal__container--ERROR[_ngcontent-iyw-c263] .error-modal__header[_ngcontent-iyw-c263] { background-color: var(--error-red-bg, #fdeeec); border-bottom-color: var(--error-red, #cf2e1d); }
+
+.error-modal__container--ERROR[_ngcontent-iyw-c263] .error-modal__header-text[_ngcontent-iyw-c263] { color: var(--error-red, #cf2e1d); }
+
+.error-modal__container--WARNING[_ngcontent-iyw-c263] .error-modal__header[_ngcontent-iyw-c263] { background-color: var(--warning-orange-bg, #fff5e4); border-bottom-color: var(--warning-orange, #c14b01); }
+
+.error-modal__container--WARNING[_ngcontent-iyw-c263] .error-modal__header-text[_ngcontent-iyw-c263] { color: rgb(123, 78, 2); }
+
+.error-modal__container--DEFAULT[_ngcontent-iyw-c263] .error-modal__header[_ngcontent-iyw-c263], .error-modal__container--SOLD_OUT[_ngcontent-iyw-c263] .error-modal__header[_ngcontent-iyw-c263] { background-color: var(--light-grey, #c3c7cc); border-bottom-color: var(--standard-grey, #6c7079); }
+
+.error-modal__container--DEFAULT[_ngcontent-iyw-c263] .error-modal__header-text[_ngcontent-iyw-c263], .error-modal__container--SOLD_OUT[_ngcontent-iyw-c263] .error-modal__header-text[_ngcontent-iyw-c263] { color: var(--very-dark-grey, #2e2e2e); }
+
+.error-modal { margin: 0px 15px; }

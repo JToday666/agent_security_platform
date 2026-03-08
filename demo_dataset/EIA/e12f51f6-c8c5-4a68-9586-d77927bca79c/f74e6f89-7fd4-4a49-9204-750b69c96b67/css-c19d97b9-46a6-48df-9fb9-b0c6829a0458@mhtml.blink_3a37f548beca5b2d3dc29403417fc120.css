@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.wallet-item { display: flex; margin-right: 64px; }
+
+.wallet-item img { margin-inline-end: 20px; width: 58px; }
+
+.wallet-item .wallet-item-summary { align-items: center; display: flex; flex-wrap: wrap; }
+
+.wallet-item .wallet-item-summary p { padding: 0px; }

@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+[_nghost-nke-c70] { background: var(--blue-gradient, linear-gradient(to right, var(--primary-blue, #073590), var(--medium-blue, #0d49c0))); display: block; }
+
+.common-header[_ngcontent-nke-c70] { color: var(--light-base, #fff); display: flex; height: 3.4375rem; margin-left: auto; margin-right: auto; padding: 0px 1.25rem 0px 0.875rem; width: 100%; }
+
+.common-header__logo-icon-container[_ngcontent-nke-c70] { display: inline-block; min-height: 2rem; }
+
+.common-header__logo-icon[_ngcontent-nke-c70] { width: 9.8125rem; }
+
+.common-header__logo[_ngcontent-nke-c70], .common-header__content[_ngcontent-nke-c70] { align-items: center; display: flex; justify-content: center; }
+
+.common-header__content[_ngcontent-nke-c70] { flex: 1 0 auto; }
+
+.common-header__side-sections[_ngcontent-nke-c70] { align-items: center; display: flex; justify-content: space-between; min-height: 2.25rem; padding: 0px; width: 100%; }
+
+.common-header__side-sections[_ngcontent-nke-c70]:nth-of-type(1) { justify-content: flex-start; margin-left: 3.0625rem; }
+
+.common-header__side-sections[_ngcontent-nke-c70]:nth-of-type(2) { justify-content: flex-end; }
+
+.common-header__section-separator[_ngcontent-nke-c70] { background-color: var(--light-base, #fff); height: 1rem; margin: 0.625rem 1rem; width: 1px; }

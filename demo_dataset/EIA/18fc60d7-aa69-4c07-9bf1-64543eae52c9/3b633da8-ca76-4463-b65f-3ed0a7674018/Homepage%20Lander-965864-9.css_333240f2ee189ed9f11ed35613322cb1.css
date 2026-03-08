@@ -1,0 +1,8 @@
+@charset "utf-8";
+
+@media screen and (min-width: 768px) {
+  .bucket--template-category .owl-nav, .bucket--template-products .owl-nav { top: 41%; }
+  .owl-nav .owl-prev:focus { box-shadow: rgba(29, 29, 29, 0.2) 0px 0px 0.625rem !important; }
+}
+
+.module--horizontal-scroll-dt .owl-stage .module__primary-img img, .module--horizontal-scroll-mb .owl-stage .module__primary-img img { aspect-ratio: initial; }

@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.sf-tickets-passes-highlights .elementor-column:not(.elementor-top-column) { border-right: 1px solid rgb(241, 241, 241); border-bottom: 1px solid rgb(241, 241, 241); }
+
+.sf-tickets-passes-highlights header.elementor-section-boxed { border-bottom: 1px solid rgb(241, 241, 241); }
+
+.sf-tickets-passes-highlights section.elementor-section-boxed { border-left: 1px solid rgb(241, 241, 241); }
+
+.sf-tickets-passes-highlights .elementor-column-gap-wide > .elementor-column > .elementor-element-populated { padding: 8px 20px; }
+
+@media (max-width: 1024px) {
+  .sf-tickets-passes-highlights .sf-tickets-col .elementor-element-populated, .sf-membership-grid .sf-tickets-col .elementor-element-populated { padding: 20px 0px !important; }
+  .sf-tickets-passes-highlights.no-gap .elementor-column-gap-wide > .elementor-column > .elementor-element-populated, .sf-membership-grid.no-gap .elementor-column-gap-wide > .elementor-column > .elementor-element-populated { padding: 5px; }
+}
+
+@media (max-width: 769px) {
+  .sf-tickets-col, .sf-tickets-col + .elementor-column { width: 16% !important; }
+  .sf-tickets-passes-highlights .sf-tickets-col .elementor-element-populated, .sf-membership-grid .sf-tickets-col .elementor-element-populated { padding: 0px !important; }
+}
+
+.sf-tickets-passes-highlights-heading .elementor-column { border: none !important; }
+
+.sf-tickets-passes-highlights-footer .elementor-column { border: none !important; }
+
+.sf-tickets-passes-highlights-caption .elementor-column { border: none !important; }

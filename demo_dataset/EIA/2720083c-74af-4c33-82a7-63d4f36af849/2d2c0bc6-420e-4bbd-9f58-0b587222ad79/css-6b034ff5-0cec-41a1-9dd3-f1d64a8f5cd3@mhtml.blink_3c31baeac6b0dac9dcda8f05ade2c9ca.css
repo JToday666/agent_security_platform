@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-18iiw16 { appearance: none; background: transparent; margin: 0px; color: inherit; cursor: pointer; padding: 0px; display: flex; -webkit-box-pack: center; justify-content: center; -webkit-box-align: center; align-items: center; border: 0px; border-radius: 6px; --primary-color:#2000F0; --secondary-color:#FFFFFF; --tertiary-color:#E3E3E3; }
+
+.css-18iiw16:disabled { cursor: not-allowed; }
+
+.css-18iiw16:focus { outline-style: auto; }

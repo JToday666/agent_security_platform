@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+.smb-uikit__text-input { box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0%; width: 100%; }
+
+.smb-uikit__text-input > * { box-sizing: border-box; }
+
+.smb-uikit__text-input__label { color: rgb(86, 105, 134); font-size: 14px; }
+
+.smb-uikit__text-input__container { position: relative; }
+
+.smb-uikit__text-input__element { box-sizing: border-box; font-size: 14px; height: 2.25rem; min-height: 2.25rem; max-height: 2.25rem; width: 100%; padding: 0.5rem 0.75rem; transition: all 0.25s ease 0s; border-radius: 3px; box-shadow: rgb(208, 217, 228) 0px 2px 3px 0px inset; color: rgb(86, 105, 134); border: 2px solid rgb(185, 201, 218); }
+
+.smb-uikit__text-input__element > * { box-sizing: border-box; }
+
+.smb-uikit__text-input__element:focus { outline: none; }
+
+.smb-uikit__text-input__element::placeholder { color: rgb(207, 217, 225); }
+
+.smb-uikit__text-input__element:disabled { color: rgb(195, 204, 212); cursor: not-allowed; }
+
+.smb-uikit__text-input__element:hover { border: 2px solid rgb(165, 180, 199); }
+
+.smb-uikit__text-input__element:focus, .smb-uikit__text-input__element:active { border: 2px solid rgb(24, 164, 252); color: rgb(0, 0, 0); }
+
+.smb-uikit__text-input__element[value=""] { background-color: rgb(252, 253, 255); }
+
+.smb-uikit__text-input__element:read-only { padding: 0.25rem; text-align: center; }
+
+.smb-uikit__text-input__element-icon { position: absolute; top: 50%; transform: translateY(-50%); font-size: 16px; z-index: 1; color: rgb(207, 217, 225); display: flex; left: 0.75rem; transition: color 0.25s ease 0s; }
+
+.smb-uikit__text-input__remove-icon { position: absolute; top: 50%; transform: translateY(-50%); font-size: 16px; z-index: 1; color: rgb(165, 180, 199); right: 0.5rem; cursor: pointer; }
+
+.smb-uikit__text-input__error-icon { position: absolute; top: 50%; transform: translateY(-50%); font-size: 16px; z-index: 1; color: rgb(244, 88, 76); right: 0.5rem; }
+
+.smb-uikit__text-input__error-message { color: rgb(244, 88, 76); font-size: 13px; line-height: 1rem; width: max-content; }
+
+.smb-uikit__text-input__remove-icon + .smb-uikit__text-input__error-icon { right: 2rem; }
+
+.smb-uikit__text-input.smb-uikit__disabled .smb-uikit__text-input__label { color: rgb(195, 204, 212); }
+
+.smb-uikit__text-input.smb-uikit__disabled .smb-uikit__text-input__error-icon { color: rgb(195, 204, 212); }
+
+.smb-uikit__text-input.smb-uikit__has-error .smb-uikit__text-input__element { border: 2px solid rgb(244, 88, 76); padding-right: 1rem; }
+
+.smb-uikit__text-input.smb-uikit__has-remove .smb-uikit__text-input__element { padding-right: 1.75rem; }
+
+.smb-uikit__text-input.smb-uikit__has-remove.smb-uikit__has-error .smb-uikit__text-input__element { padding-right: 2.75rem; }
+
+.smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element { padding-left: 2rem; }
+
+.smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element:focus, .smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element:active, .smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element::placeholder, .smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element:not([value=""]) { font-style: italic; }
+
+.smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element:focus, .smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element:active { border: 2px solid rgb(24, 164, 252); color: rgb(0, 0, 0); }
+
+.smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element[value=""] { color: rgb(86, 105, 134); background-color: rgb(252, 253, 255); }
+
+.smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element:disabled { color: rgb(195, 204, 212); border: 2px solid rgb(185, 201, 218); }
+
+.smb-uikit__text-input.smb-uikit__has-icon .smb-uikit__text-input__element::placeholder { color: rgba(86, 105, 134, 0.5); }
+
+.smb-uikit__text-input__element:hover + .smb-uikit__text-input__element-icon { color: rgb(165, 180, 199); }
+
+.smb-uikit__text-input__element:focus + .smb-uikit__text-input__element-icon, .smb-uikit__text-input__element:active + .smb-uikit__text-input__element-icon { color: rgb(86, 105, 134); }
+
+.smb-uikit__text-input__element:disabled + .smb-uikit__text-input__element-icon { color: rgb(195, 204, 212); }

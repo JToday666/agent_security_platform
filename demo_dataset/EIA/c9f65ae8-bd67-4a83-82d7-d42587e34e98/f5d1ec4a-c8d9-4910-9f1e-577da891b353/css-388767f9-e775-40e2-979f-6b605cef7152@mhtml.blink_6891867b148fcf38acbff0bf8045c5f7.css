@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-1lx8nls { text-align: center; }
+
+@media screen and (min-width: 48rem) {
+  .css-1lx8nls { text-align: left; }
+}

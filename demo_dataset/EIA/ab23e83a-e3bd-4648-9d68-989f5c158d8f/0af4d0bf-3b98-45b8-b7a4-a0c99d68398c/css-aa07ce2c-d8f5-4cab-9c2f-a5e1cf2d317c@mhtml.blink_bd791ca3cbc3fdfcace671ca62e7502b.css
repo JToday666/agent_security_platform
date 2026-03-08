@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.app-components-NotificationsPopover-NotificationsContent-styles__notificationsContent--X3cYg { text-align: left; height: 384px; color: rgb(51, 51, 51); }
+
+.app-components-NotificationsPopover-NotificationsContent-styles__notificationsContent--X3cYg > div > ul > li > a { color: rgb(51, 51, 51); text-decoration: none; font-size: 16px; }
+
+.app-components-NotificationsPopover-NotificationsContent-styles__notificationsContent--X3cYg > div { background: none; }
+
+.app-components-NotificationsPopover-NotificationsContent-styles__notificationsContent--X3cYg > div:first-child { overflow: visible; }
+
+@media screen and (max-width: 720px) {
+  .app-components-NotificationsPopover-NotificationsContent-styles__notificationsContent--X3cYg { margin-top: 36px; }
+}

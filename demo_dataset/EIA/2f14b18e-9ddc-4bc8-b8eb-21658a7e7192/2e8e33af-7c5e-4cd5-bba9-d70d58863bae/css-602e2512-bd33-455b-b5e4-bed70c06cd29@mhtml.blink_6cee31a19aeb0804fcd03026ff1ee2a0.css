@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.gm-style .gm-style-cc a, .gm-style .gm-style-cc button, .gm-style .gm-style-cc span, .gm-style .gm-style-mtc div { font-size: 10px; box-sizing: border-box; }
+
+.gm-style .gm-style-cc a, .gm-style .gm-style-cc button, .gm-style .gm-style-cc span { outline-offset: 3px; }
+
+sentinel { }

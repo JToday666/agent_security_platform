@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.atm-c-main { display: block; -webkit-box-flex: 1; flex: 1 0 auto; padding-bottom: 4rem; }
+
+.atm-l-sidebar--fixed .atm-c-main { padding-top: 2rem; }

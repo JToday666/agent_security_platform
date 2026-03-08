@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+body { font-family: var(--chakra-fonts-body); color: var(--chakra-colors-gray-800); background: var(--chakra-colors-white); transition-property: background-color; transition-duration: var(--chakra-transition-duration-normal); line-height: var(--chakra-lineHeights-base); }
+
+::-webkit-input-placeholder { color: var(--chakra-colors-gray-400); }
+
+::placeholder { color: var(--chakra-colors-gray-400); }
+
+*, ::before, ::after { border-color: var(--chakra-colors-gray-200); overflow-wrap: break-word; }
+
+html, body { color: var(--chakra-colors-text-primary-light); }
+
+svg { display: inline-block; }

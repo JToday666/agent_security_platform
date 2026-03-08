@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.app-components-Accordion-accordion__accordionGroupContainer--2eHdy .app-components-Accordion-accordion__accordion--1i60R { border-width: 1px 0px; border-top-style: solid; border-bottom-style: solid; border-top-color: rgb(102, 102, 102); border-bottom-color: rgb(102, 102, 102); border-image: initial; border-left-style: initial; border-left-color: initial; border-right-style: initial; border-right-color: initial; }
+
+.app-components-Accordion-accordion__accordionGroupContainer--2eHdy .app-components-Accordion-accordion__accordion--1i60R.app-components-Accordion-accordion__link--PQD9v { border: none; }
+
+.app-components-Accordion-accordion__accordionGroupContainer--2eHdy .app-components-Accordion-accordion__accordion--1i60R > * + * { border-top: 1px solid rgb(102, 102, 102); }
+
+@media (min-width: 720px) {
+  .app-components-Accordion-accordion__accordionGroupContainer--2eHdy .app-components-Accordion-accordion__borderNone--15rlo { border: none; }
+}

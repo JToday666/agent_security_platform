@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+.app-components-Seatmap-AircraftMap-AircraftMap__small--JDrwx.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C .app-components-Seatmap-AircraftMap-AircraftMap__small--JDrwx.app-components-Seatmap-AircraftMap-AircraftMap__aircraft__body--1j59w { height: 173px; padding: 7.5px 12px 7.5px 0px; border-radius: 30% 0px 0px 30% / 12px; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__small--JDrwx.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C .app-components-Seatmap-AircraftMap-AircraftMap__small--JDrwx.app-components-Seatmap-AircraftMap-AircraftMap__aircraft__body--wide--2QoPU { height: 210px; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--2eItA { font-size: 0px; text-align: center; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C { overflow: auto hidden; text-align: left; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft__holder--2pb6w { font-size: 12px; text-align: left; display: inline-block; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__holder--2pb6w { padding: 20px 10px; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft__body--1j59w { border: 1px solid rgb(102, 102, 102); position: relative; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--vertical--CfDmJ .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__body--1j59w { width: 230px; padding: 0px 9px 15px; margin: 0px auto; border-radius: 12px / 30% 30% 0px 0px; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--vertical--CfDmJ .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__body--wide--2QoPU { width: 280px; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__body--1j59w { height: 230px; padding: 9px 15px 9px 0px; border-radius: 30% 0px 0px 30% / 12px; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__body--wide--2QoPU { height: 280px; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft__cabins--1kU-- { display: flex; align-items: center; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--vertical--CfDmJ .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__cabins--1kU-- { flex-direction: column; width: 100%; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__cabins--1kU-- { flex-direction: row; height: 100%; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft__wing--267wD { position: absolute; fill: rgb(230, 230, 230); stroke: rgb(102, 102, 102); }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--vertical--CfDmJ .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__wing--267wD { top: 100px; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--vertical--CfDmJ .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__wing--right--2QUhd { left: 100%; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--vertical--CfDmJ .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__wing--left--3NQ3Q { right: 100%; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__wing--267wD { left: 100px; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__wing--right--2QUhd { bottom: 100%; }
+
+.app-components-Seatmap-AircraftMap-AircraftMap__aircraft--horizontal--35V4C .app-components-Seatmap-AircraftMap-AircraftMap__aircraft__wing--left--3NQ3Q { top: 100%; }

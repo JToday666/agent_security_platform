@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.app-containers-BaggageCalculator-AdditionalInfo-styles__additionalContent--4v94y { display: flex; flex-wrap: wrap; margin-top: 40px; }
+
+.app-containers-BaggageCalculator-AdditionalInfo-styles__content--g0FG1 { flex: 0 1 100%; display: flex; flex-direction: column; border-top: 1px solid rgb(204, 204, 204); padding-top: 8px; align-items: center; }
+
+@media screen and (min-width: 720px) and (max-width: 944px) {
+  .app-containers-BaggageCalculator-AdditionalInfo-styles__content--g0FG1 { align-items: flex-start; flex: 0 1 50%; padding: 16px 32px; }
+  .app-containers-BaggageCalculator-AdditionalInfo-styles__content--g0FG1:nth-child(2n+1) { padding-left: 0px; }
+  .app-containers-BaggageCalculator-AdditionalInfo-styles__content--g0FG1:nth-child(2n) { padding-right: 0px; }
+}
+
+@media screen and (min-width: 944px) {
+  .app-containers-BaggageCalculator-AdditionalInfo-styles__content--g0FG1 { align-items: stretch; flex: 0 1 25%; padding: 0px 16px; border-top: none; }
+  .app-containers-BaggageCalculator-AdditionalInfo-styles__content--g0FG1:first-of-type { padding-left: 0px; }
+  .app-containers-BaggageCalculator-AdditionalInfo-styles__content--g0FG1:last-of-type { padding-right: 0px; }
+}
+
+.app-containers-BaggageCalculator-AdditionalInfo-styles__contentImage--3fl5H { margin-bottom: 24px; min-height: 121px; }
+
+.app-containers-BaggageCalculator-AdditionalInfo-styles__breathe--A106W { margin-bottom: 40px; }

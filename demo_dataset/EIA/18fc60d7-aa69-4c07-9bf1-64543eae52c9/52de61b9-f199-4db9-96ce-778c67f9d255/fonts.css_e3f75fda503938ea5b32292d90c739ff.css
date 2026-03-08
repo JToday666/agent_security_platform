@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+@font-face { font-family: NeuePlak; src: local("NeuePlakUABd"), local("ARMOUR Bold"), local("ARMOUR-Bold"), url("../fonts/NeuePlakUA-Bold.woff2") format("woff2"), url("../fonts/NeuePlakUA-Bold.woff") format("woff"); font-style: normal; font-weight: 700; }
+
+@font-face { font-family: NeuePlak; src: local("NeuePlakUASmBd"), local("ARMOUR Medium"), local("ARMOUR-Medium"), url("../fonts/NeuePlakUA-SemiBold.woff2") format("woff2"), url("../fonts/NeuePlakUA-SemiBold.woff") format("woff"); font-style: normal; font-weight: 500; }
+
+@font-face { font-family: NeuePlak; src: local("NeuePlakUAText"), local("ARMOUR Regular"), local("ARMOUR-Regular"), url("../fonts/NeuePlakUA-Regular.woff2") format("woff2"), url("../fonts/NeuePlakUA-Regular.woff") format("woff"); font-style: normal; font-weight: 400; }
+
+@font-face { font-family: NeuePlak; src: local("NeuePlakUACnBlk"), local("ARMOUR Title"), local("ARMOUR-Title"), url("../fonts/NeuePlakUA-CompBlack.woff2") format("woff2"), url("../fonts/NeuePlakUA-CompBlack.woff") format("woff"); font-style: normal; font-stretch: condensed; font-weight: 900; }
+
+@font-face { font-family: icomoon; src: url("../fonts/icomoon.ttf?jy1bhl") format("truetype"), url("../fonts/icomoon.woff?jy1bhl") format("woff"); font-weight: 400; font-style: normal; }

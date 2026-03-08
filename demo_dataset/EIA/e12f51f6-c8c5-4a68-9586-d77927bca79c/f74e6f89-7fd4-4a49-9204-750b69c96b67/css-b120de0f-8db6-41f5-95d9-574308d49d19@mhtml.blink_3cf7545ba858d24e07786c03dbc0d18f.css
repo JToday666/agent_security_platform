@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.confirm-delete-wallet-item .warning { display: flex; margin-bottom: 16px; }
+
+.confirm-delete-wallet-item .warning .tds-icon-warning { color: var(--tds-color--yellow); margin-right: 8px; }
+
+.confirm-delete-wallet-item .wallet-item { margin: 16px 0px 32px; }

@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.ib-booking-app__main .ib-booking_secondary-button { color: var(--ib-booking-app-primary-button-bg); background-color: rgb(255, 255, 255); border: 1px solid rgb(216, 216, 216); border-radius: 4px; padding: 0px 20px; height: 40px; line-height: 40px; display: inline-block; box-sizing: border-box; margin: 0px 20px; cursor: pointer; }
+
+.ib-booking-app__main .ib-booking-primary-button { height: 40px; line-height: 40px; border-radius: var(--ib-booking-app-border-radius-primary-button); font-size: var(--ib-booking-app-font-big); text-align: center; cursor: pointer; min-width: 70px; padding: 0px 40px; color: rgb(255, 255, 255); text-decoration: none; background: var(--ib-booking-app-primary-button-bg); border: 1px solid rgb(216, 216, 216); box-shadow: var(--ib-booking-app-primary-button-shadow); }
+
+.ib-booking-app__main .ib-booking-primary-button:hover { background: var(--ib-booking-app-primary-button-hover-bg); }
+
+.ib-booking-app__main .ib-booking-primary-button.ib-booking-disabled { color: rgb(255, 255, 255); opacity: 0.4; background: var(--ib-booking-app-primary-button-disabled-bg); }

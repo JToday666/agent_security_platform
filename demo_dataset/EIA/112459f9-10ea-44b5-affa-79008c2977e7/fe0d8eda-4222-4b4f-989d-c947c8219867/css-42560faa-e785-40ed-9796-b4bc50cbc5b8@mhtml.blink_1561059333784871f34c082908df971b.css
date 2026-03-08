@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.atm-c-box { border: 1px solid rgb(204, 204, 204); border-radius: 4px; padding: 1rem; }
+
+.atm-is-active .atm-c-box { box-shadow: rgb(98, 68, 187) 0px 0px 0px 2px inset; }
+
+.atm-c-box--flush { padding: 0px; }
+
+.atm-c-box--align-center { display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; flex-direction: column; -webkit-box-align: center; align-items: center; -webkit-box-pack: center; justify-content: center; }

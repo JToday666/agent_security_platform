@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+@font-face { font-family: "Almaden Sans"; font-style: normal; font-weight: 400; src: url("../../fonts/news/almaden-sans/AlmadenSans-Regular-WebXL.woff2") format("woff2"), url("../../fonts/news/almaden-sans/AlmadenSans-Regular-WebXL.woff") format("woff"); }
+
+@font-face { font-family: "Almaden Sans"; font-style: italic; font-weight: 400; src: url("../../fonts/news/almaden-sans/AlmadenSans-RegularItalic-WebXL.woff2") format("woff2"), url("../../fonts/news/almaden-sans/AlmadenSans-RegularItalic-WebXL.woff") format("woff"); }
+
+@font-face { font-family: "Almaden Sans"; font-style: normal; font-weight: 500; src: url("../../fonts/news/almaden-sans/AlmadenSans-Book-WebXL.woff2") format("woff2"), url("../../fonts/news/almaden-sans/AlmadenSans-Book-WebXL.woff") format("woff"); }
+
+@font-face { font-family: "Almaden Sans"; font-style: italic; font-weight: 500; src: url("../../fonts/news/almaden-sans/AlmadenSans-BookItalic-WebXL.woff2") format("woff2"), url("../../fonts/news/almaden-sans/AlmadenSans-BookItalic-WebXL.woff") format("woff"); }
+
+@font-face { font-family: "Almaden Sans"; font-style: normal; font-weight: 600; src: url("../../fonts/news/almaden-sans/AlmadenSans-SemiBold-WebXL.woff2") format("woff2"), url("../../fonts/news/almaden-sans/AlmadenSans-SemiBold-WebXL.woff") format("woff"); }
+
+@font-face { font-family: "Almaden Sans"; font-style: italic; font-weight: 600; src: url("../../fonts/news/almaden-sans/AlmadenSans-SemiBoldItalic-WebXL.woff2") format("woff2"), url("../../fonts/news/almaden-sans/AlmadenSans-SemiBoldItalic-WebXL.woff") format("woff"); }
+
+html, body { letter-spacing: 0.03em; font-family: "Almaden Sans", Helvetica, Arial !important; }
+
+html body { font-family: "Almaden Sans", Helvetica, Arial !important; }
+
+.zm-button__slot, .btn, .form-control, .zm-input__inner, .zm-textarea__inner { letter-spacing: 0.03em; }

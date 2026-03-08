@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.sf-big-hero { transform: translateY(0px) !important; }
+
+.elementor-top-section.sf-big-hero .sf-hero-cta { transform: translateY(0px) !important; }
+
+.pcev2-item-header-title-slogan { color: rgb(58, 58, 58); }
+
+#annualPassText p { margin-top: 10px; }
+
+.park-mexico .elementor-top-section.sf-big-hero .sf-hero-cta { transform: translateY(310px) !important; }
+
+.park-larondefr .elementor-top-section.sf-big-hero .sf-hero-cta { transform: translateY(290px) !important; }
+
+.park-hurricaneharborox .elementor-top-section.sf-big-hero .sf-hero-cta { transform: translateY(310px) !important; }
+
+@media only screen and (max-width: 600px) {
+  .elementor-top-section.sf-big-hero .sf-hero-cta { transform: translateY(-150px) !important; }
+  .park-mexico .elementor-top-section.sf-big-hero .sf-hero-cta { transform: translateY(100px) !important; }
+  .park-hurricaneharborox .elementor-top-section.sf-big-hero .sf-hero-cta { transform: translateY(100px) !important; }
+}

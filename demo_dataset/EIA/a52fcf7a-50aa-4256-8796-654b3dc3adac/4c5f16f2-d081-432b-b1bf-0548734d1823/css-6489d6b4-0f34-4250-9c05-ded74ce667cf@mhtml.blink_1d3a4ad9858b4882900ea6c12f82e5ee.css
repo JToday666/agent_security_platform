@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.css-q175pv { appearance: none; background: transparent; margin: 0px; color: inherit; cursor: pointer; border: 0px; border-radius: 4px; --primary-color:#427fe1; --secondary-color:#fbfbfb; --tertiary-color:#fff; padding: 0px; width: 100%; display: flex; -webkit-box-pack: center; justify-content: center; -webkit-box-align: center; align-items: center; }
+
+.css-q175pv:disabled { cursor: not-allowed; }

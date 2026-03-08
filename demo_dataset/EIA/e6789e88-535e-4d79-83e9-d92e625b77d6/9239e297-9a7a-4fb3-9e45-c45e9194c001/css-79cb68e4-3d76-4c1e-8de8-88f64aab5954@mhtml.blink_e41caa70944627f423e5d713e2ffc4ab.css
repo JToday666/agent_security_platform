@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+ngb-datepicker-navigation { display: flex; align-items: center; }
+
+.ngb-dp-navigation-chevron { border-style: solid; border-width: 0.2em 0.2em 0px 0px; display: inline-block; width: 0.75em; height: 0.75em; margin-left: 0.25em; margin-right: 0.15em; transform: rotate(-135deg); }
+
+.ngb-dp-arrow { display: flex; flex: 1 1 auto; padding-right: 0px; padding-left: 0px; margin: 0px; width: 2rem; height: 2rem; }
+
+.ngb-dp-arrow.right { justify-content: flex-end; }
+
+.ngb-dp-arrow.right .ngb-dp-navigation-chevron { transform: rotate(45deg); margin-left: 0.15em; margin-right: 0.25em; }
+
+.ngb-dp-arrow-btn { padding: 0px 0.25rem; margin: 0px 0.5rem; border: none; background-color: transparent; z-index: 1; }
+
+.ngb-dp-arrow-btn:focus { outline-width: 1px; outline-style: auto; }
+
+@media (-ms-high-contrast:active), (-ms-high-contrast:none) {
+  .ngb-dp-arrow-btn:focus { outline-style: solid; }
+}
+
+.ngb-dp-month-name { font-size: larger; height: 2rem; line-height: 2rem; text-align: center; }
+
+.ngb-dp-navigation-select { display: flex; flex: 1 1 9rem; }

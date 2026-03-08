@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.css-16s84qo { -webkit-box-align: center; align-items: center; display: flex; flex: 0 0 auto; padding: 0px 2px; text-align: left; font-family: "Open Sans", sans-serif, Tahoma, Arial; font-size: 12px; font-weight: 400; letter-spacing: 0.5px; color: rgb(0, 107, 194); line-height: 21px; text-decoration: none; }
+
+.css-16s84qo:first-of-type { padding-left: 0px; }
+
+.css-16s84qo:hover { text-decoration: underline; }
+
+.css-16s84qo:focus { outline: none; text-decoration: underline; }
+
+.css-16s84qo:active { background-color: rgba(192, 192, 192, 0.4); border-radius: 4px; box-shadow: none; }

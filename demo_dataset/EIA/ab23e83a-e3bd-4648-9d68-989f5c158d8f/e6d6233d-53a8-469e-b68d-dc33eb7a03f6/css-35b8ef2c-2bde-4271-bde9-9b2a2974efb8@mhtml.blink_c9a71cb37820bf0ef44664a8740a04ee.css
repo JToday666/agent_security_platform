@@ -1,0 +1,110 @@
+@charset "utf-8";
+
+.app-components-QueryBuilder-styles__autoComplete--1CFQd { padding: 18px 0px 25px; position: relative; }
+
+.app-components-QueryBuilder-styles__autoComplete--1CFQd .app-components-QueryBuilder-styles__autocompleteInputContainer--2B_Ng { position: relative; }
+
+.app-components-QueryBuilder-styles__autoComplete--1CFQd.app-components-QueryBuilder-styles__labelIsHidden--3f4Hb { padding-top: 0px; }
+
+.app-components-QueryBuilder-styles__autoComplete--1CFQd .app-components-QueryBuilder-styles__closeButton--h_v4k { display: none; position: absolute; top: 20px; right: 20px; }
+
+@media screen and (max-width: 944px) {
+  .app-components-QueryBuilder-styles__autoComplete--1CFQd.app-components-QueryBuilder-styles__hasFocus--1LRHI { background-color: rgb(255, 255, 255); position: fixed; top: 0px; right: 0px; height: 100vh; left: 0px; z-index: 10; padding: 50px 30px 20px; }
+  .app-components-QueryBuilder-styles__autoComplete--1CFQd .app-components-QueryBuilder-styles__closeButton--h_v4k { display: block; }
+  .app-components-QueryBuilder-styles__autoComplete--1CFQd .app-components-QueryBuilder-styles__menu--vCvRl { margin-top: 24px; }
+}
+
+.app-components-QueryBuilder-styles__menu--vCvRl { position: relative; padding: 0px; margin: 0px; width: 100%; border: none; box-shadow: none; }
+
+.app-components-QueryBuilder-styles__menu--vCvRl ul { background-color: rgb(255, 255, 255); padding: 0px; margin: 0px; overflow-y: auto; overscroll-behavior-y: contain; max-height: calc(100vh - 150px); }
+
+.app-components-QueryBuilder-styles__menu--vCvRl ul li { padding: 0px; margin: 0px; list-style-type: none; }
+
+@media screen and (min-width: 944px) {
+  .app-components-QueryBuilder-styles__menu--vCvRl { display: block; position: absolute; width: 365px; outline: 0px; transition: opacity 0.1s ease 0s; z-index: 4; }
+  .app-components-QueryBuilder-styles__menu--vCvRl ul { max-height: 400px; }
+  .app-components-QueryBuilder-styles__menu--vCvRl ul:not(:empty) { border-radius: 0px 0px 0.28rem 0.28rem; border: 1px solid rgb(153, 153, 153); box-shadow: rgb(102, 102, 102) -1px 1px 1px 0px; }
+}
+
+.app-components-QueryBuilder-styles__menuContent--3Ka99 { overflow: hidden auto; overscroll-behavior-y: contain; max-height: 100vh; scroll-behavior: smooth; }
+
+@media screen and (min-width: 720px) {
+  .app-components-QueryBuilder-styles__menuContent--3Ka99 { overflow-y: hidden; max-height: 400px; height: auto; }
+}
+
+.app-components-QueryBuilder-styles__autoCompleteLabel--1RSqU { position: absolute; display: block; transform: translate3d(0px, -68px, 0px); transition: color 0.4s ease 0s; color: rgb(0, 34, 68); text-transform: none; font-weight: 700; }
+
+@media screen and (min-width: 720px) {
+  .app-components-QueryBuilder-styles__autoCompleteLabel--1RSqU { transform: translate3d(0px, -57px, 0px); }
+}
+
+.app-components-QueryBuilder-styles__fixedLabel--h-pGG { display: block; color: rgb(0, 34, 68); text-transform: none; font-weight: 700; }
+
+.app-components-QueryBuilder-styles__autoCompleteInput--3oGT5 { text-overflow: ellipsis; }
+
+.app-components-QueryBuilder-styles__autoCompleteInput--3oGT5.app-components-QueryBuilder-styles__clearButtonIsShown--3koVj { padding-right: 30px; margin-right: -30px; }
+
+.app-components-QueryBuilder-styles__autoCompleteInput--3oGT5[value=""] + label.app-components-QueryBuilder-styles__autoCompleteLabel--1RSqU { opacity: 0; transition: opacity 0.8s ease 0s, transform 0.4s ease 0s; transform: translate3d(0px, -35px, 0px); }
+
+@media screen and (min-width: 720px) and (max-width: 944px) {
+  .app-components-QueryBuilder-styles__autoCompleteInput--3oGT5 { top: 10px; }
+}
+
+.app-components-QueryBuilder-styles__autoCompleteInput--3oGT5:disabled + label.app-components-QueryBuilder-styles__autoCompleteLabel--1RSqU { color: rgb(153, 153, 153); border-color: rgb(153, 153, 153); }
+
+@media screen and (min-width: 1184px) {
+  .app-components-QueryBuilder-styles__autoCompleteInput--3oGT5:hover:not([disabled]) { outline: rgba(0, 0, 0, 0); color: rgb(33, 114, 186); border-color: rgb(33, 114, 186); }
+  .app-components-QueryBuilder-styles__autoCompleteInput--3oGT5:hover:not([disabled]) + label.app-components-QueryBuilder-styles__autoCompleteLabel--1RSqU { opacity: 1; transform: translate3d(0px, -68px, 0px); color: rgb(33, 114, 186); }
+}
+
+@media screen and (min-width: 1184px) and (min-width: 720px) {
+  .app-components-QueryBuilder-styles__autoCompleteInput--3oGT5:hover:not([disabled]) + label.app-components-QueryBuilder-styles__autoCompleteLabel--1RSqU { transform: translate3d(0px, -57px, 0px); }
+}
+
+.app-components-QueryBuilder-styles__autoCompleteInput--3oGT5:focus { outline: rgba(0, 0, 0, 0); color: rgb(33, 114, 186); border-color: rgb(33, 114, 186); }
+
+.app-components-QueryBuilder-styles__autoCompleteInput--3oGT5:focus + label.app-components-QueryBuilder-styles__autoCompleteLabel--1RSqU { opacity: 1; transform: translate3d(0px, -68px, 0px); color: rgb(33, 114, 186); }
+
+@media screen and (min-width: 720px) {
+  .app-components-QueryBuilder-styles__autoCompleteInput--3oGT5:focus + label.app-components-QueryBuilder-styles__autoCompleteLabel--1RSqU { transform: translate3d(0px, -57px, 0px); }
+}
+
+.app-components-QueryBuilder-styles__hiddenButAccesible--2wKuj { border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; width: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; }
+
+.app-components-QueryBuilder-styles__hidden--1XFjC { display: none; }
+
+.app-components-QueryBuilder-styles__line--3FKc7 { margin: 20px 0px; border-top: 1px solid rgb(102, 102, 102); }
+
+@media screen and (min-width: 720px) {
+  .app-components-QueryBuilder-styles__line--3FKc7 { margin: 10px 18px; }
+}
+
+.app-components-QueryBuilder-styles__disclaimer--3ch-k { font-size: 12px; color: rgb(102, 102, 102); text-align: center; padding: 7px 0px; position: fixed; bottom: 0px; width: 100%; background-color: rgb(255, 255, 255); margin: 0px; left: 0px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-QueryBuilder-styles__disclaimer--3ch-k { position: absolute; left: auto; }
+}
+
+.app-components-QueryBuilder-styles__clearButton--dzha6 { position: absolute; padding: 0px; right: 3px; top: calc(50% - 10px); border-style: none; border-color: rgba(0, 0, 0, 0); color: rgb(0, 0, 0); }
+
+@media screen and (max-width: 944px) {
+  .app-components-QueryBuilder-styles__clearButton--dzha6.app-components-QueryBuilder-styles__panelIsOpen--2oyfn { bottom: 10px; right: 10px; }
+}
+
+.app-components-QueryBuilder-styles__clearButton--dzha6 svg { width: 18px; height: 18px; }
+
+.app-components-QueryBuilder-styles__autoCompleteItem--JzeO6 { position: relative; cursor: pointer; display: block; border: none; height: auto; line-height: 1em; color: rgba(0, 0, 0, 0.87); font-size: 1em; text-transform: none; font-weight: 400; box-shadow: none; padding: 0.8rem 0px; white-space: normal; overflow-wrap: normal; width: 100%; text-align: left; }
+
+@media screen and (min-width: 720px) {
+  .app-components-QueryBuilder-styles__autoCompleteItem--JzeO6 { padding: 0.8rem 1.1rem; }
+}
+
+.app-components-QueryBuilder-styles__autoCompleteItem--JzeO6.app-components-QueryBuilder-styles__isActive--2YOYm { background-color: rgb(238, 242, 249); }
+
+.app-components-QueryBuilder-styles__autoCompleteItem--JzeO6.app-components-QueryBuilder-styles__isSelected--2O_LI { font-weight: bolder; }
+
+.app-components-QueryBuilder-styles__mobileClose--3jNJG { position: absolute; top: 24px; right: 24px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-QueryBuilder-styles__mobileClose--3jNJG { display: none; }
+}

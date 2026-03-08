@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.notify-user-wrapper { display: flex; align-items: center; justify-content: center; flex-direction: column; margin: 0px auto; }
+
+.notify-user-wrapper .notify-user_title { margin-top: 12px; text-align: center; }
+
+.notify-user-wrapper .notify-user_message { text-align: center; margin-top: 16px; white-space: pre-wrap; }
+
+.notify-user-wrapper .notify-button { width: 100%; margin-top: 48px; }
+
+.notify-user-wrapper .notify-oas_title { margin-top: 32px; }

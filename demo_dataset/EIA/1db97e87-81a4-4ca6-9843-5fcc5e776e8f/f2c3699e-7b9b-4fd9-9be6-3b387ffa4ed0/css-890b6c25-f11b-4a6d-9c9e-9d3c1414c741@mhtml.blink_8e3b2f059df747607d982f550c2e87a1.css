@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.telehealth-location-box { margin-top: 16px; }
+
+.payment-callout { background: rgb(226, 159, 255); display: flex; max-width: 480px; margin-top: 32px; margin-bottom: 32px; padding: 6px; }
+
+.description-holder .state-select { max-width: 343px; }
+
+@media (min-width: 540px) {
+  .description-holder .state-select { max-width: 400px; }
+}

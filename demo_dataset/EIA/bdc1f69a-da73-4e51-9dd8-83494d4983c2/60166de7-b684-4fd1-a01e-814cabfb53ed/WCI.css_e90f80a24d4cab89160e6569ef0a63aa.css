@@ -1,0 +1,3591 @@
+@charset "utf-8";
+
+div.borderBox { box-sizing: border-box; }
+
+span.borderBox { box-sizing: border-box; }
+
+a:hover { color: rgb(0, 73, 144); text-decoration: none; cursor: pointer; }
+
+a:focus { color: rgb(0, 73, 144); text-decoration: none; cursor: pointer; }
+
+a.disabled { visibility: hidden; }
+
+p.disabled { visibility: hidden; }
+
+form#mainForm { position: relative; min-height: 100%; }
+
+html, body { border: 0px; height: 100%; min-height: 100%; }
+
+html { overflow: auto; }
+
+label { user-select: none; }
+
+label.paxSelectionTable { color: rgb(0, 73, 144); }
+
+table.main td { padding: 9px; }
+
+table.main td.padZero { padding: 0px; }
+
+table.main tr.message { height: 300px; text-align: center; font-size: 18px; }
+
+table.main tr.messageLeft { height: 300px; text-align: left; font-size: 18px; }
+
+table.main tr.messageLeft td { padding-left: 50px; text-align: left; }
+
+table.main tr.messageWithYesNoBelow { vertical-align: bottom; height: 150px; text-align: center; font-size: 18px; }
+
+table.main tr.messageYesNoRadioBelow { vertical-align: bottom; height: 100px; text-align: center; font-size: 18px; }
+
+input.noRadio { margin-left: 40px !important; }
+
+input.placeholder { color: rgb(0, 73, 144); font-weight: bold; }
+
+input.noPlaceholder { font-style: normal; }
+
+::-webkit-input-placeholder { color: rgb(0, 73, 144); font-weight: bold; }
+
+.ac_results { color: rgb(0, 73, 144); }
+
+.visuallyHidden { border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; width: 1px; margin: -1px; padding: 0px; overflow: hidden; position: absolute; }
+
+table.yesNoButtons { text-align: center; width: 100%; height: 100px; border-spacing: 60px 2px; }
+
+table.yesNoButtons tr { vertical-align: top; }
+
+table.height60 { height: 60px; }
+
+table.height40 { height: 40px; }
+
+tr.messageYesNoRadio { text-align: center; width: 100%; height: 140px; vertical-align: top; }
+
+table.notpadded td { padding: 0px 0px 0px 20px; }
+
+table.notpadded td.footer-padded { padding-left: 20px; padding-right: 20px; }
+
+table.notpadded th { padding: 0px; }
+
+table.guestID { width: 100%; border-spacing: 0px !important; }
+
+table.guestID th { padding-bottom: 10px; padding-left: 10px; vertical-align: top; font-size: 16px; }
+
+table.guestID tr { height: 18px; vertical-align: top; }
+
+table.guestID td { padding: 0px 0px 10px 10px; }
+
+table.guestID td.label { font-size: 14px; padding-left: 10px; padding-right: 0px; padding-bottom: 0px; color: rgb(0, 0, 0); }
+
+table.guestID td.smallText { font-size: 12px; padding-top: 25px; width: 600px; }
+
+table.guestID td.radioId { vertical-align: middle; width: 10px; padding-left: 5px; padding-right: 0px; padding-bottom: 0px; }
+
+table.guestID td.TitleText12 { padding-bottom: 10px; padding-top: 0px; }
+
+table.guestID td.and { text-align: center; vertical-align: middle; height: 30px; padding-top: 10px; }
+
+div.guestIDAndDiv { background: url("../images/ANDLine.png") center center / 790px 1px no-repeat; width: 790px; height: 25px; vertical-align: middle; font-weight: bold; font-size: 18px; font-family: din-web-jetblue-med2, Arial, Helvetica, sans-serif; }
+
+div.guestID { width: 100%; border-spacing: 0px !important; }
+
+div.guestID p { padding-bottom: 10px; padding-left: 10px; vertical-align: top; font-size: 16px; }
+
+div.guestID span { padding: 0px 0px 10px 10px; }
+
+div.guestID span.label { font-size: 14px; padding-left: 10px; padding-right: 0px; padding-bottom: 0px; color: rgb(0, 0, 0); }
+
+div.guestID span.smallText { font-size: 12px; padding-top: 25px; width: 600px; }
+
+div.guestID span.radioId { vertical-align: middle; width: 10px; padding-left: 5px; padding-right: 0px; padding-bottom: 0px; }
+
+div.guestID span.TitleText12 { padding-bottom: 10px; padding-top: 0px; }
+
+div.guestID span.and { text-align: center; vertical-align: middle; height: 30px; padding-top: 10px; }
+
+input#recordLocator { text-transform: uppercase !important; }
+
+h1.headingSize18 { font-size: 18px; }
+
+h1.heading1em { font-size: 1em; }
+
+h2.headingSize16 { font-size: 16px; }
+
+h2.heading1em { font-size: 1em; }
+
+h2.headingSize17 { font-size: 17px; }
+
+h2.extrasTitleSmaller { display: inline; font-size: 17px; font-weight: bold; }
+
+h2.headingTraveler { float: left; font-size: 1em; margin-left: 46px; }
+
+h2.headingTrueBlueNum { font-size: 1em; margin-right: 20px; text-align: right; }
+
+h2.headingKnownTravelerNum { font-size: 1em; margin-right: 20px; text-align: right; }
+
+h2.headingSize18 { font-size: 18px; }
+
+h2.headingSize20 { font-size: 20px; }
+
+h2.size16NotBold { font-size: 16px; font-weight: normal; }
+
+h2.topBannerIncluded { font-size: 16px; font-weight: normal; display: inline; }
+
+h3.headingSize18 { font-size: 18px; }
+
+h3.headingSize14 { font-size: 14px; }
+
+h4.notBold { font-weight: normal; }
+
+.hidden-accessible { border: 0px none; clip: rect(0px, 0px, 0px, 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; }
+
+table.buttonsTable { border-collapse: collapse; }
+
+table.buttonsTable td { padding: 0px; }
+
+div.buttonsTable span { padding: 0px; }
+
+table.refinement { width: 100%; border-collapse: collapse; }
+
+table.refinement tr { height: 20px; }
+
+table.refinement td { padding: 0px !important; }
+
+table.refinement td.labelRefinement { width: 240px; font-size: 12px; vertical-align: top; padding-left: 0px !important; }
+
+table.refinement td.field { width: 200px; padding-bottom: 10px; }
+
+table.refinement td.radio { width: 0.01%; padding-left: 0px; padding-right: 2px; vertical-align: top; }
+
+table.refinement td.TitleText12 { padding-left: 3px; height: 30px; padding-bottom: 20px; padding-top: 0px; }
+
+table.refinement tr.heightZero { height: 0px; }
+
+table.refinement td.date { padding-top: 0px !important; }
+
+table.refinement td.or { width: 85px; text-align: center; vertical-align: middle; }
+
+table.refinement td.buttons { vertical-align: bottom; }
+
+div.refinementOrDiv { background: url("../images/ORLine.png") center center / 1px 90px no-repeat; width: 60px; height: 50px; vertical-align: middle; padding-top: 30px; font-weight: bold; font-size: 18px; font-family: din-web-jetblue-med2, Arial, Helvetica, sans-serif; }
+
+table.guestType { margin-top: 10px; margin-bottom: 10px; }
+
+table.guestType tr { height: 20px; }
+
+table.guestType tbody td.name { font-size: 12px; height: 20px; }
+
+table.guestType tbody td.male { width: 20%; font-size: 12px; height: 20px; padding-right: 10px; }
+
+table.guestType tbody td.female { width: 20%; font-size: 12px; height: 20px; padding-right: 10px; }
+
+table.guestType tbody td.dob { width: 348px; font-size: 12px; height: 20px; }
+
+table.stayType { margin-top: 10px; margin-bottom: 10px; }
+
+table.stayType tr { height: 50px; }
+
+table.stayType tbody td.name { font-size: 12px; height: 20px; width: 60%; }
+
+table.stayType tbody td.leisure { width: 20%; font-size: 12px; height: 20px; padding-right: 10px; }
+
+table.stayType tbody td.business { width: 20%; font-size: 12px; height: 20px; padding-right: 10px; }
+
+table.stayType tbody td.dob { width: 348px; font-size: 12px; height: 20px; }
+
+table.fqtvTable { margin: auto; width: 95%; }
+
+table.fqtvTable tr { height: 20px; }
+
+table.fqtvTable tbody td.name { font-size: 12px; height: 20px; }
+
+table.fqtvTable tbody td.number { width: 40%; font-size: 12px; height: 20px; }
+
+table.bagsTable { margin-top: 10px; margin-bottom: 10px; }
+
+table.bagsTable tr { height: 20px; }
+
+table.bagsTable td.bagsInput { padding-left: 5px; width: 50px; }
+
+table.bagsTable td.spacer { }
+
+table.bagsTable td.bagsEntryCost { font-size: 17px; font-weight: bold; color: rgb(0, 73, 144); width: 100px; padding-right: 15px; vertical-align: middle; }
+
+table.bagsTable td.bagsDesc { width: 112px; }
+
+table.bagsTable td.assistiveBagCheckbox { width: 160px; vertical-align: top; padding-top: 12px; }
+
+table.bagsTable td.assistiveBagCheckbox label { color: rgb(0, 73, 144); font-size: 12px; }
+
+table.bagsTable td.totalBags { width: 100px; font-weight: bold; font-size: 17px; color: rgb(0, 73, 144); }
+
+table.bagsTable td#totalNumOfBags { font-weight: bold; font-size: 20px; color: rgb(0, 73, 144); font-family: din-web-jetblue-med2; padding-right: 30px; }
+
+table.bagsTable td#totalCosts { font-weight: bold; font-size: 20px; color: rgb(0, 73, 144); font-family: din-web-jetblue-med2; padding-right: 20px; width: 200px; }
+
+table.bagsTable td.totalNumOfBagsPax { font-weight: bold; font-size: 17px; color: rgb(0, 73, 144); width: 270px; }
+
+table.bagsTable td.totalCostsPax { font-weight: bold; font-size: 17px; color: rgb(0, 73, 144); width: 220px; padding-right: 18px; }
+
+table.bagsTable td.labelComplete { width: 240px !important; }
+
+table.merchandiseTable td#totalCosts { font-weight: bold; font-size: 20px; color: rgb(0, 73, 144); font-family: din-web-jetblue-med2; padding-right: 20px; width: 200px; }
+
+table.paymentReceipt { width: 100%; border-collapse: collapse; }
+
+table.paymentReceipt tr { height: 44px; }
+
+table.paymentReceipt td { padding: 0px 0px 0px 20px; font-size: 14px; }
+
+table.paymentReceipt td div.spacing { float: left; width: 100px; }
+
+table.progressIndicator { width: 100%; }
+
+table.progressIndicator th { padding: 0px; text-align: left; font-size: 15px; font-weight: bold; line-height: 90%; color: rgb(169, 169, 186); }
+
+table.progressIndicator th.current { color: rgb(0, 45, 98); }
+
+table.progressIndicator th.first { width: 174px; }
+
+table.progressIndicator th.second { width: 176px; }
+
+table.progressIndicator th.third { width: 164px; }
+
+table.progressIndicator th.fourth { width: 172px; }
+
+table.progressIndicator th.fifth { width: 194px; }
+
+div.topBanner { width: 100%; text-align: center; background-color: rgb(0, 51, 160); color: rgb(255, 255, 255); height: 20px; padding: 10px; display: flex; }
+
+div.topBanner a:hover { color: rgb(255, 255, 255); text-decoration: underline !important; }
+
+div.topBanner a, div.topBanner a:active, div.topBanner a:visited { color: rgb(255, 255, 255); text-decoration: none; padding: 2px; }
+
+div.topBannerInternal { display: flex; margin: auto; }
+
+span.bannerClose { float: right; }
+
+table.closingRemarks th.closingRemarksHeading { color: rgb(0, 73, 144); font-size: 18px; font-weight: bold; text-align: left; }
+
+table.closingRemarks { margin: 40px auto; border-collapse: collapse; width: 100%; }
+
+table.closingRemarks td.buffer { height: 10px; }
+
+table.closingRemarks td.message { width: 100%; font-size: 12px; }
+
+table.closingRemarks td.label { width: 50%; font-size: 12px; padding-right: 10px; padding-top: 3px; padding-bottom: 3px; }
+
+table.closingRemarks td.field { width: 50%; font-weight: bold; }
+
+table.closingRemarkSubTable { width: 100%; }
+
+table.closingRemarkSubTable tr { height: 40px; }
+
+table.closingRemarkSubTable td.label { width: 50%; font-size: 12px; text-align: right; padding-right: 10px; }
+
+table.closingRemarkSubTable td.field { width: 50%; font-weight: bold; }
+
+table.errorOrQuitTable { padding: 50px 5px; }
+
+table.errorOrQuitTable td.message { text-align: left; font-size: 16px; color: red; font-weight: bold; }
+
+table.errorOrQuitTable td.buttons { height: 10%; }
+
+table.countryTable { table-layout: fixed; padding-top: 10px; }
+
+table.countryTable td { width: 24%; vertical-align: top; line-height: 18px; height: 450px; }
+
+table.departCityTable { table-layout: fixed; padding-top: 10px; }
+
+table.departCityTable td { width: 24%; vertical-align: top; line-height: 20px; height: 520px; }
+
+table.creditCardInfo { width: 100%; margin: auto; border-collapse: collapse; }
+
+table.creditCardInfo td { padding: 0px !important; }
+
+p.paymentNotes { font-size: 12px; vertical-align: middle; height: 20px; }
+
+table.fastpath { width: 75%; margin-left: auto; margin-right: auto; }
+
+table.fastpath td { font-size: 14px; padding-bottom: 10px; }
+
+table.fastpath td.gap { width: 10px !important; }
+
+table.fastpath td.radio { padding-left: 20px; width: 10px; background: rgb(255, 255, 255) !important; }
+
+table.fastpath td.options { width: 410px; }
+
+table.fastpath td.textSubHeading { text-align: left; font-weight: bold; padding-top: 10px; }
+
+table.fastpath td.textOr { text-align: left; font-size: 18px; color: rgb(0, 73, 144); font-family: din-web-jetblue-med2; }
+
+table.fastpath td label { }
+
+table.fastpath td.passengerList { padding-top: 10px; padding-bottom: 10px; font-weight: bold; color: rgb(69, 69, 69); border-bottom: 1px solid rgb(200, 200, 200); }
+
+table.quitPopUp { margin-top: 15px; margin-left: auto; margin-right: auto; width: 90%; height: 90%; text-align: left; }
+
+table.quitPopUp tr.messageRow { height: 70%; }
+
+table.quitPopUp tr.footerRow { height: 30%; vertical-align: top; }
+
+table.quitPopUp td { padding: 9px; }
+
+table.quitPopUp td.message { padding-top: 15px; text-align: left; vertical-align: top; line-height: 200%; font-size: 14px; }
+
+table.quitPopUp td.footerCell { width: 100%; text-align: right; }
+
+table.bulkHeadPopUp { padding-top: 10px; margin: auto; width: 90%; height: 80%; text-align: left; }
+
+table.bulkHeadPopUp td { padding: 5px; text-align: left; vertical-align: top; font-size: 14px; }
+
+table.pleaseWaitPopUp { padding-top: 10px; padding-bottom: 17px; margin: auto; width: 90%; height: 80%; text-align: left; }
+
+table.pleaseWaitPopUp tr.imageRow { height: 50px; width: 80%; vertical-align: top; text-align: left; }
+
+table.pleaseWaitPopUp tr.advertRow { height: 360px; width: 80%; vertical-align: top; text-align: center; }
+
+table.pleaseWaitPopUp td.advertMessage { text-align: left; vertical-align: bottom; line-height: 200%; font-size: 10px; }
+
+table.pleaseWaitPopUp tr.gifRow { text-align: center; vertical-align: bottom; height: 70%; }
+
+table.pleaseWaitPopUp tr.messageRow { text-align: center; vertical-align: top; height: 30%; }
+
+table.pleaseWaitPopUp td.message { padding-top: 10px; color: rgb(255, 255, 255); font-size: 18px; }
+
+table.specialBagsPopup { margin-top: 15px; margin-left: auto; margin-right: auto; width: 90%; height: 90%; text-align: left; }
+
+table.specialBagsPopup tr.messageRow { height: 70%; }
+
+table.specialBagsPopup tr.footerRow { height: 30%; vertical-align: top; }
+
+table.specialBagsPopup td { padding: 9px; }
+
+table.specialBagsPopup td.message { text-align: left; vertical-align: top; line-height: 200%; font-size: 14px; }
+
+table.specialBagsPopup td.footerCell { width: 100%; text-align: right; }
+
+table.bagMinimumPopup { margin-top: 15px; margin-left: auto; margin-right: auto; width: 90%; height: 90%; text-align: left; }
+
+table.bagMinimumPopup tr.messageRow { height: 70%; }
+
+table.bagMinimumPopup tr.footerRow { height: 30%; vertical-align: top; }
+
+table.bagMinimumPopup td { padding: 9px; }
+
+table.bagMinimumPopup td.message { text-align: left; vertical-align: top; line-height: 200%; font-size: 14px; }
+
+table.bagMinimumPopup td.footerCell { width: 100%; text-align: right; }
+
+table.bagsPaymentDetailsPopup { margin-top: 15px; margin-left: auto; margin-right: auto; width: 90%; height: 90%; text-align: left; }
+
+table.bagsPaymentDetailsPopup tr.messageRow { height: 10%; }
+
+table.bagsPaymentDetailsPopup tr.tableRow { height: 60%; }
+
+table.bagsPaymentDetailsPopup tr.footerRow { height: 30%; vertical-align: top; }
+
+table.bagsPaymentDetailsPopup td { padding: 9px; }
+
+table.bagsPaymentDetailsPopup td.message { text-align: left; vertical-align: top; line-height: 200%; font-size: 14px; }
+
+table.bagsPaymentDetailsPopup td.footerCell { width: 100%; text-align: right; }
+
+table.changeFlightWarningPopUp { margin: auto; width: 90%; height: 80%; text-align: left; }
+
+table.changeFlightWarningPopUp tr.messageRow { height: 40%; }
+
+table.changeFlightWarningPopUp td.message { text-align: center; vertical-align: bottom; line-height: 200%; font-size: 14px; }
+
+table.changeFlightWarningPopUp tr.imageRow { height: 60%; vertical-align: top; text-align: center; }
+
+table.premiumSeatConfirmationPopup { margin: auto; width: 100%; height: 100%; text-align: left; }
+
+table.premiumSeatConfirmationPopup tr.messageRow { height: 40%; }
+
+table.premiumSeatConfirmationPopup td.message { text-align: center; vertical-align: bottom; line-height: 200%; font-size: 14px; }
+
+table.premiumSeatConfirmationPopup tr.imageRow { height: 60%; vertical-align: top; text-align: center; }
+
+textarea { font-size: 12px; font-family: din-web-jetblue; color: rgb(0, 45, 98); }
+
+table.seatmap-content { width: 100%; clear: both; }
+
+table.seatmap-content td.seatmapinfo { padding-top: 0px; padding-bottom: 6px; padding-left: 0px; width: 25%; vertical-align: top; }
+
+table.seatmap-content td.info { padding-top: 0px; padding-bottom: 0px; padding-left: 0px; width: 213px; vertical-align: top; }
+
+table.seatmap-content td.map { padding-top: 5px; padding-bottom: 0px; width: 450px; vertical-align: top; }
+
+table.seatmap-content td.legend { padding-top: 5px; padding-bottom: 0px; width: 150px; vertical-align: top; }
+
+table.seatmap-content td.message { padding-top: 0px; padding-bottom: 0px; width: 65%; color: rgb(0, 191, 255); font-size: 14px; font-weight: bold; vertical-align: top; text-align: center; }
+
+table.seatmap-content td.textBold { font-weight: bold; width: 100%; }
+
+table.seatmap-content td.flightButtons { width: 200px; padding-left: 0px; }
+
+table.footerButtonsEnclosed { width: 100%; padding-top: 20px; }
+
+table.footerButtons { border: none; margin: auto; width: 922px; padding-top: 0px; padding-bottom: 10px; }
+
+table.footerButtonsEnclosed td#left_buttons { padding-left: 0px; padding-right: 20px; padding-bottom: 5px; }
+
+table.footerButtonsEnclosed td#center_buttons { padding-left: 0px; padding-right: 0px; padding-bottom: 5px; }
+
+table.footerButtonsEnclosed td#right_buttons { padding-left: 0px; padding-right: 0px; padding-bottom: 5px; }
+
+table.footerButtonsEnclosed tr { height: 18px; }
+
+table.footerButtonsEnclosed tr.footerRow { padding-left: 10px; padding-top: 5px; padding-bottom: 10px; }
+
+table.footerButtonsEnclosed td#center_button_skip { padding-bottom: 20px; display: none; }
+
+table.footerButtonsEnclosed td.question { width: 420px; font-size: 14px; font-weight: bold; color: rgb(214, 0, 0); text-align: right; }
+
+table.footerButtonsEnclosed td.questionLeft { padding-left: 5px; padding-right: 5px; font-size: 12px; font-weight: bold; color: rgb(214, 0, 0); text-align: left; }
+
+table.footerButtonsEnclosed td.no { padding-left: 0px !important; padding-right: 0px !important; }
+
+table.footerButtonsEnclosed td.yes { padding-left: 10px !important; padding-right: 70px !important; }
+
+table.footerButtonsEnclosed td.seatNo { padding-left: 20px !important; padding-right: 20px !important; }
+
+table.footerButtonsEnclosed td.seatYes { padding-left: 20px !important; padding-right: 20px !important; }
+
+table.footerButtons td#left_buttons { width: 47%; padding-left: 0px; padding-right: 0px; padding-bottom: 5px; }
+
+table.footerButtons td#center_buttons { width: 6%; padding-left: 0px; padding-right: 0px; padding-bottom: 5px; }
+
+table.footerButtons td#right_buttons { width: 47%; padding-left: 0px; padding-right: 0px; padding-bottom: 5px; text-align: center; }
+
+table.footerButtons tr { height: 18px; }
+
+table.footerButtons tr.footerRow { padding-left: 10px; padding-top: 5px; padding-bottom: 10px; }
+
+table.footerButtons td#center_button_skip { padding-bottom: 5px; padding-right: 10px; }
+
+table.footerButtons td.question { font-size: 14px; font-weight: bold; color: rgb(214, 0, 0); text-align: center; }
+
+table.footerButtons td.questionLeft { padding-right: 5px; font-size: 12px; font-weight: bold; color: rgb(214, 0, 0); text-align: left; }
+
+table.footerButtons td.no { padding-left: 10px; padding-right: 10px; }
+
+table.footerButtons td.yes { padding-left: 20px; padding-right: 20px; }
+
+table.dangerousGoods { width: 100%; margin-left: auto; margin-right: auto; margin-bottom: 20px; padding-bottom: 17px; padding-top: 17px; }
+
+table.dangerousGoods td { }
+
+table.dangerousGoods td.description { padding: 5px 30px 15px 0px; }
+
+table.dangerousGoods td.step1 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+table.dangerousGoods td.step2 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+table.dangerousGoods td.step3 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+table.dangerousGoods td.step4 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+table.dangerousGoods td.step5 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+table.dangerousGoods td.step6 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+table.dangerousGoods td.step7 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+table.dangerousGoods td.step8 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+table.dangerousGoods td.top { vertical-align: top; }
+
+table.dangerousGoods td.question { font-size: 16px; font-weight: bold; text-align: right; color: rgb(0, 73, 144); padding-top: 30px; padding-right: 10px; border-top: 1px solid rgb(198, 214, 229); }
+
+table.dangerousGoods td.yesButton { text-align: center; width: 10%; padding-top: 40px; vertical-align: bottom; }
+
+table.dangerousGoods td.noButton { text-align: center; width: 23%; padding-top: 40px; vertical-align: bottom; }
+
+table.dangerousGoods td.label { font-weight: bold; font-size: 18px; width: 410px; color: rgb(0, 73, 144) !important; padding-left: 0px !important; }
+
+table.dangerousGoods td.padZero { padding: 0px; }
+
+#borderTable span.borderTableEnd { border-bottom: 20px solid rgb(241, 245, 248); }
+
+div.jetblue-table { width: 90%; clear: both; background-color: rgb(241, 245, 248); }
+
+div.jetblue-table span { padding: 1px; font-size: 12px; color: rgb(65, 65, 65); text-align: left; }
+
+div.jetblue-table span.paxSelectionTable { padding: 30px 1px 1px; font-size: 12px; color: rgb(0, 73, 144); text-align: left; }
+
+div.jetblue-table div.blue { background-color: rgb(241, 245, 248); }
+
+div.dangerousGoods { width: 113%; margin-left: -4em; margin-right: auto; margin-bottom: 20px; padding-top: 17px; }
+
+div.dangerousGoods span { }
+
+div.dangerousGoods span.description { padding: 5px 30px 15px 0px; }
+
+div.dangerousGoods span.step1 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+div.dangerousGoods span.step2 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+div.dangerousGoods span.step3 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+div.dangerousGoods span.step4 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+div.dangerousGoods span.step5 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+div.dangerousGoods span.step6 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+div.dangerousGoods span.step7 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+div.dangerousGoods span.step8 { vertical-align: top; height: 65px; width: 65px; padding: 0px 0px 15px !important; }
+
+div.dangerousGoods span.top { vertical-align: top; }
+
+div.dangerousGoods span.question { font-size: 16px; font-weight: bold; text-align: right; color: rgb(0, 73, 144); padding-top: 30px; padding-right: 10px; border-top: 1px solid rgb(198, 214, 229); }
+
+div.dangerousGoods span.yesButton { text-align: center; width: 10%; padding-top: 40px; vertical-align: bottom; }
+
+div.dangerousGoods span.noButton { text-align: center; width: 23%; padding-top: 40px; vertical-align: bottom; }
+
+div.dangerousGoods span.label { font-weight: bold; font-size: 18px; width: 410px; color: rgb(0, 73, 144) !important; padding-left: 0px !important; }
+
+div.dangerousGoods span.padZero { padding: 0px; }
+
+.divRow { width: 100%; clear: both; }
+
+.divCol33 { width: 30%; float: left; }
+
+.divCol33PaxSelection { width: 33%; float: left; }
+
+.divCol5 { width: 5%; float: left; }
+
+.divCol_33 { width: 100%; float: left; }
+
+.divCol34 { width: 34%; float: left; }
+
+.divCol35 { width: 35%; float: left; }
+
+.divCol25 { width: 24%; float: left; }
+
+.divCol50 { width: 50%; float: left; }
+
+.divCol50Right { width: 50%; float: right; }
+
+.divCol67 { float: left; }
+
+.divCol27 { width: 27%; float: left; }
+
+.divCol30 { width: 30%; float: left; }
+
+.divCol40 { width: 40%; float: left; }
+
+.divCol4 { width: 4%; float: left; }
+
+.divCol36 { width: 36%; float: left; }
+
+.divCol32 { width: 32%; float: left; }
+
+.divCol22 { width: 22%; float: left; }
+
+.divCol21 { width: 21%; float: left; }
+
+.w14 { width: 14%; }
+
+.w100 { width: 100%; }
+
+.divTop { width: 100%; margin-top: 10px; }
+
+.lastItemRow { width: 90%; padding-left: 80px; padding-top: 12px; padding-bottom: 12px; }
+
+.trueBlue { float: left; text-align: end; width: 27%; }
+
+.knowntraveller { float: right; text-align: end; width: 33%; }
+
+.divRowQues { width: 100%; clear: both; font-size: 16px; font-weight: bold; text-align: right; color: rgb(0, 73, 144); padding-top: 30px; padding-right: 10px; border-top: 1px solid rgb(198, 214, 229); }
+
+#borderTable p.borderTop { border-top: 1px solid rgb(198, 214, 229); padding-top: 10px; }
+
+#borderTable span.borderTop { border-top: 1px solid rgb(198, 214, 229); padding-top: 10px; padding-bottom: 10px; }
+
+#borderTable p.borderTableEnd { border-bottom: 20px solid rgb(241, 245, 248); }
+
+#borderTable span.borderTableEnd { border-bottom: 20px solid rgb(241, 245, 248); }
+
+#borderTable div.zeroHeight { height: 0px; }
+
+div.jetblue-table span.label label { color: rgb(0, 73, 144); font-size: 0.7em; width: 280px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; max-height: 40px; display: inline-block; }
+
+div.jetblue-table div.tblGridAlternate span.gap { background: none; width: 0px; padding: 1px; }
+
+div.jetblue-table div.tblGridAlternate span.arrow { background: none; width: 67px !important; }
+
+div.jetblue-table div.tblGridAlternate span.arrowComplete { background: url("../images/But_ExpColComp.png") left center no-repeat; width: 67px; }
+
+div.jetblue-table div.tblGridAlternate span.fqtvColumn { text-align: right; vertical-align: top; padding-top: 36px; padding-right: 15px; }
+
+div.jetblue-table div.tblGridAlternate span.ktColumn { text-align: right; vertical-align: top; padding-top: 36px; padding-right: 15px; }
+
+div.jetblue-table div.tblGridAlternate span.costColumn { width: 350px; text-align: right; font-size: 17px; font-weight: bold; color: rgb(0, 73, 144); padding-right: 15px; }
+
+div.jetblue-table div.tblGridAlternate span.greyOut { background: rgb(128, 128, 128); }
+
+div.jetblue-table div.tblGridAlternate span { background: rgb(255, 255, 255); }
+
+div.jetblue-table div.tblGridAlternate span.checkbox { width: 100px; }
+
+div.jetblue-table div.tblGridAlternate span.checkboxSelectPax { width: 60px; }
+
+div.jetblue-table div.tblGridAlternate span.infoComplete { width: 80px; }
+
+div.jetblue-table div.tblGridAlternate span.radio { background: rgb(0, 73, 144); width: 25px; }
+
+div.jetblue-table div.tblGridAlternate span.radioSpace { background: none; width: 15px; }
+
+div.jetblue-table div.tblGridAlternate span.standbySelected { font-weight: bold; color: rgb(0, 73, 144); }
+
+div.jetblue-table span.selectAllCol { width: 170px; padding: 3px 3px 6px 6px; }
+
+div.jetblue-table span.passengerListHeading { font-size: 16px; font-weight: bold; color: rgb(0, 73, 144); vertical-align: middle; padding: 3px 3px 6px 6px; }
+
+.borderless span.heading { padding-bottom: 0px; padding-top: 20px; }
+
+div.jetblue-table span.first { border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+
+div.jetblue-table span.last { border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
+
+div.jetblue-textTable span { padding: 6px 3px 6px 6px; font-size: 12px; color: rgb(69, 69, 69); text-align: left; border: 0px; }
+
+div.jetblue-textTable span.tableText { padding: 6px 3px 6px 6px; font-size: 12px; color: rgb(69, 69, 69); text-align: left; }
+
+div.jetblue-textTable span.boldText { padding: 6px 3px 6px 6px; font-weight: bold; color: rgb(0, 73, 144); font-size: 17px; }
+
+div.jetblue-textTable span.greyText { color: rgb(69, 69, 69); }
+
+div.jetblue-textTable span.checkBox { padding: 6px 3px 6px 6px; background: none !important; }
+
+div.jetblue-textTable span.checkBoxShort { padding: 0px 3px 0px 6px; }
+
+div.jetblue-textTable span.checkInAll { padding: 0px 3px 0px 6px; }
+
+div.popupWindowTable { width: auto; height: auto; background-color: white; border-collapse: collapse; border-color: rgb(192, 192, 192) rgb(240, 240, 240) rgb(231, 231, 231) rgb(192, 192, 192); border-style: solid; border-width: 1px; }
+
+@media screen and (-ms-high-contrast: active) {
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+  div.popupWindowTable { border: 1px solid rgb(255, 255, 255) !important; }
+}
+
+@media screen and (-ms-high-contrast: white-on-black) {
+  div.popupWindowTable { border: 1px solid rgb(255, 255, 255) !important; }
+}
+
+div.popupWindowTable span.exitRow { padding: 5px 20px !important; }
+
+div.popupWindowTable span.heading { color: rgb(0, 73, 144); font-weight: bold; font-size: 16px; padding: 20px 20px 0px !important; border: 0px none !important; }
+
+div.popupWindowTable span.description li { list-style-position: inside; }
+
+div.popupWindowTable span.description { line-height: 25px; color: rgb(69, 69, 69); padding-right: 20px; font-size: 14px; vertical-align: top; padding-left: 20px !important; }
+
+div.popupWindowTable span.black { color: rgb(69, 69, 69); }
+
+div.popupWindowTable div.heading { height: auto; }
+
+div.popupWindowTable div.heading_A { height: auto; }
+
+div.popupWindowTable div.subHeading { height: 70px; }
+
+div.popupWindowTable p.heading { background-color: rgb(0, 73, 144); color: rgb(255, 255, 255); text-align: left; font-size: 18px; font-weight: bold; vertical-align: middle; padding: 0px 20px !important; border: 0px none !important; }
+
+div.popupWindowTable span.label { vertical-align: top; padding-top: 10px; padding-bottom: 10px; padding-left: 20px !important; }
+
+div.popupWindowTable span.label li { list-style-position: inside; }
+
+div.popupWindowTable span.exitRowHeading { font-size: 16px; font-weight: bold; }
+
+div.popupWindowTable span.close { padding: 5px 0px !important; }
+
+div.popupWindowTable p.close { padding: 10px !important; }
+
+div.popupWindowTable span.zeroPadding { padding: 0px !important; }
+
+div.popupWindowTable span.fqtvNum { vertical-align: bottom; padding: 5px 20px !important; }
+
+div.popupWindowTable span.ktNum { vertical-align: bottom; padding: 5px 20px !important; }
+
+div.popupWindowTable span.buttons { height: 50px; padding-left: 20px !important; padding-right: 20px !important; }
+
+div.popupButtons { }
+
+div.popupButtons span { }
+
+.divRowFlex { width: 100%; clear: both; display: flex; }
+
+.divHeadingPopUp { display: flex; background-color: rgb(0, 73, 144); color: rgb(255, 255, 255); font-size: 18px; font-weight: bold; text-align: left; vertical-align: middle; height: 60px; border: 0px none !important; padding: 0px 20px !important; }
+
+.divComplete { display: inline-block; width: 17%; height: 23px; padding-top: 0px; }
+
+div.petHeading { margin-left: 18px; }
+
+div.exitRowHeading { margin-left: 18px; }
+
+div.petSubHeading { margin-left: 18px; }
+
+div.exitRowSubHeading { margin-left: 18px; }
+
+div.popupWindowTable span.petButtons { margin-left: 18px; }
+
+div.popupWindowTable span.exitRowButtons { margin-left: 18px; }
+
+div.bagsQuestionTable { background-color: white; }
+
+div.bagsQuestionTable span.bagQuestionCol { width: 21%; padding-left: 14px; padding-right: 10px; padding-bottom: 15px; text-align: left; font-size: 14px; vertical-align: top; float: left; border-collapse: collapse; border-color: rgb(241, 245, 248); border-right-style: solid; border-right-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-left-style: solid; border-left-width: 1px; }
+
+div.bagsQuestionTable div.bannerRow { background: white; }
+
+div.bagsQuestionTable span.topBannerIncluded { text-align: center; color: white; background: rgb(58, 119, 40); font-size: 16px; border-collapse: collapse; border-color: rgb(240, 240, 240); border-right-style: solid; border-right-width: 1px; border-top-style: solid; border-top-width: 1px; border-left-style: solid; border-left-width: 1px; }
+
+div.bagsQuestionTable div.whiteCheckmark { background-image: url("../images/WhiteChk.png"); background-repeat: no-repeat; width: 20px; height: 12px; display: inline-block; }
+
+div.bagsQuestionTable span.topBannerAdditional { text-align: center; color: white; background: rgb(48, 111, 170); font-size: 16px; font-weight: normal; border-collapse: collapse; border-color: rgb(240, 240, 240); border-right-style: solid; border-right-width: 1px; border-top-style: solid; border-top-width: 1px; border-left-style: solid; border-left-width: 1px; }
+
+div.bagsQuestionTable span.borderRight { border-right: 2px solid rgb(198, 214, 229); }
+
+div.bagsQuestionTable p.borderRight { border-right: 2px solid rgb(198, 214, 229); }
+
+div.bagsQuestionTable span.tinySpace { background: white; width: 1%; }
+
+div.bagsQuestionTable p.tinySpace { background: white; width: 1%; }
+
+div.bagsQuestionTable p.bagQuestionCol { width: 230px; padding: 5px 5px 5px 15px; text-align: left; font-size: 18px; font-weight: bold; color: rgb(0, 73, 144); }
+
+div.bagsQuestionTable span.bagQuestionColHeading { width: 230px; padding: 5px 5px 5px 15px; text-align: left; font-size: 18px; font-weight: bold; color: rgb(0, 73, 144); }
+
+div.bagsQuestionTable span.bagQuestionCol p.heading { text-align: left; font-size: 18px; font-weight: bold; color: rgb(0, 73, 144); }
+
+div.bagsQuestionTable span.bagQuestionCol p.subHeading { text-align: left; font-size: 16px; font-weight: bold; color: rgb(65, 65, 65); padding-top: 5px; }
+
+div.bagsQuestionTable span.bagQuestionCol p.regular { color: black; font-size: 13px; padding-top: 15px; padding-bottom: 20px; line-height: 150%; }
+
+div.bagsQuestionTable span.carryOn { background: url("../images/baggage/BagsCarryOn.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+div.bagsQuestionTable span.carryOnCol { padding-left: 15px !important; padding-right: 10px !important; }
+
+div.bagsQuestionTable span.bagImg { padding-left: 14.2px; height: 70px; border-collapse: collapse; border-color: rgb(241, 245, 248); border-right-style: solid; border-right-width: 1px; border-left-style: solid; border-left-width: 1px; }
+
+div.bagsQuestionTable span.additionalBag { background: url("../images/baggage/AddBag.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+div.bagsQuestionTable span.additionalBagCol { text-align: center; }
+
+div.bagsQuestionTable span.overweight { background: url("../images/baggage/Overweightsize.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+div.bagsQuestionTable span.overweightCol { padding-left: 10px; padding-right: 10px; }
+
+div.bagsQuestionTable span.allowance0 { background: url("../images/baggage/Bags0.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+div.bagsQuestionTable span.allowance1 { background: url("../images/baggage/Bags1.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+div.bagsQuestionTable span.allowance2 { background: url("../images/baggage/Bags2.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+div.bagsQuestionTable span.allowanceCol { text-align: center; }
+
+div.bagsQuestionTable span.bottomInfo { width: 230px; padding: 0px; text-align: left; font-size: 13px; vertical-align: top; }
+
+div.bagsQuestionTable span.blueBox { background: rgb(191, 217, 242); text-align: center; font-weight: normal; color: black; padding-left: 5px; padding-right: 5px; }
+
+div.bagsQuestionTable span p.padParagraphBottom { padding-bottom: 5px; font-size: 14px; }
+
+div.bagsQuestionTable span p.padParagraphTop { padding-top: 5px; font-size: 14px; }
+
+div.bagsQuestionTable span.spacer { width: 50px; padding-top: 80px; }
+
+div.jetblue-table .TblGridCol100 { width: 100%; }
+
+div.jetblue-table div.tallA { height: 7.5em; }
+
+div.jetblue-table div.minHeight40 { min-height: 5em; }
+
+div.jetblue-table div.minHeight50 { min-height: 50px; }
+
+div.jetblue-table div.white { background-color: white; }
+
+div.jetblue-table .TblGridCol17 { width: 17%; }
+
+div.jetblue-table .TblGridCol15 { width: 15%; }
+
+div.jetblue-table .TblGridCol13 { width: 15%; }
+
+div.jetblue-table .TblGridCol5 { width: 5%; }
+
+div.emlInfoSubDiv { padding-top: 9em; padding-left: 10px; padding-right: 10px; }
+
+div.emlInfoDiv span.emlInfoSubHeadingDiv, div.emlInfoDiv span.emlInfoSubHeadingDiv { height: 58px; padding-top: 23px; padding-left: 12px; float: left; }
+
+div.emlInfoDiv span.emlInfoSectionDiv { vertical-align: top; }
+
+div.emlInfoDiv span.extraSpace { background: url("../images/EMS_ExtraSpace.png") center center / contain no-repeat; height: 21em; width: 17em; text-align: center; vertical-align: top; margin-right: 0.7em; }
+
+div.emlInfoDiv span.earlyBoardingSpan { background: url("../images/EMS_EarlyBoarding.png") center center / contain no-repeat; height: 21em; width: 17em; text-align: center; vertical-align: top; margin-right: 0.7em; }
+
+div.emlInfoDiv span.overheadBinsSpan { background: url("../images/EMS_Overhead.png") center center / contain no-repeat; height: 21em; width: 17em; text-align: center; vertical-align: top; }
+
+div.emlInfoDiv div.infoHeadingDiv { color: rgb(0, 73, 144); font-weight: bold; font-size: 16px; padding: 20px 0px 10px !important; border: 0px none !important; }
+
+div.emlInfoDiv span.infoDescriptionSpan { font-size: 14px; color: rgb(69, 69, 69); }
+
+div.popupWindowDiv { width: 100%; height: 100%; border-collapse: collapse; border-color: rgb(192, 192, 192) rgb(240, 240, 240) rgb(231, 231, 231) rgb(192, 192, 192); border-style: solid; border-width: 1px; }
+
+div.popupWindowDiv div.heading { height: 60px; }
+
+div.popupWindowDiv div.subHeading { height: 70px; }
+
+div.popupWindowDiv span.heading { background-color: rgb(0, 73, 144); color: rgb(255, 255, 255); text-align: left; font-size: 18px; font-weight: bold; vertical-align: middle; padding: 0px 20px !important; border: 0px none !important; }
+
+div.emlInfoDiv span.evenMoreSpeedSpan { vertical-align: middle; padding-left: 3px; color: rgb(69, 69, 69); font-size: 14px; background-size: 131px 40px; float: left; margin-top: 15px; border: 0px none !important; }
+
+.evnMore { float: left; margin-top: 15px; }
+
+h1.headingLeft20 { font-size: 1em; padding-left: 20px; }
+
+.divClear { clear: both; height: 30px; padding-top: 10px; padding-left: 10px; text-align: center; vertical-align: middle; }
+
+div.jetblue-table span.labelComplete { color: rgb(0, 73, 144); font-size: 17px; width: 280px; padding-left: 10px; }
+
+div.jetblue-table span.bold { font-weight: bold; }
+
+div.jetblue-table p.thTwoLine { border-right: 1px solid rgb(77, 144, 205); vertical-align: middle; background: url("../images/tbl_titlebgnew.gif") left bottom repeat-x; color: rgb(74, 74, 74); }
+
+div.jetblue-table p.thTxtAlnLft { text-align: left; }
+
+div.jetblue-table tr.thSubTitle p { text-align: left; vertical-align: middle; border-top: 1px solid rgb(198, 214, 229); border-bottom: 1px solid rgb(198, 214, 229); padding: 15px 0px; color: rgb(48, 111, 170); font-size: 14px; }
+
+div.jetblue-table span.AlignCenter { text-align: center; }
+
+div.jetblue-table span.cardInfo { vertical-align: top; padding: 10px 0px 10px 10px; }
+
+div.jetblue-table span.payment { vertical-align: top; padding: 10px 0px; }
+
+div.jetblue-table span.leftPadding { padding-left: 15px; }
+
+div.jetblue-table .SplitCol { background: rgb(255, 255, 255); width: 10px; }
+
+div.jetblue-table .tdTxtAlnCen { text-align: center; padding-left: 0px; }
+
+div.jetblue-table .thBrdTopNone { border-top: none; }
+
+div.jetblue-table .thBrdBtmNone { border-bottom: none; }
+
+div.jetblue-table .BrdBtm { border-bottom: 1px solid rgb(198, 214, 229); }
+
+div.jetblue-table .BrdTop { border-top: 1px solid rgb(198, 214, 229); }
+
+div.jetblue-table .BrdLft { border-left: 1px solid rgb(198, 214, 229); }
+
+div.jetblue-table .BrdRgt { padding-left: 10px; padding-right: 10px; border-right: 1px solid rgb(198, 214, 229); }
+
+div.jetblue-table div.nextFlightText { height: 2em; width: 100%; }
+
+div.jetblue-table div.nextFlightText span { padding: 0px; font-size: 11px; color: rgb(0, 73, 144); text-align: center; }
+
+div.jetblue-table div.nextFlightText div.nextFlightTextStyle { padding: 0px; font-size: 11px; color: rgb(0, 73, 144); text-align: center; width: 100%; }
+
+div.jetblue-table div.tall { height: 5em; }
+
+div.jetblue-table span.itinPaxHeader { background-color: rgb(255, 255, 255); padding: 15px 0px; vertical-align: top; color: rgb(0, 73, 144); font-size: 14px; }
+
+div.jetblue-table span.paxName { padding-left: 20px; }
+
+.divRowBg { background-color: rgb(255, 255, 255); clear: both; display: flex; width: 100%; }
+
+div.tblGridAlternateBg span { background: none 0px 0px repeat scroll white; }
+
+.divCol14 { width: 14%; float: left; margin-top: 20px; }
+
+div.progTable { border-collapse: collapse; width: 1000px; height: 58px; font-size: 13px; font-weight: bold; margin: auto; }
+
+div.progTable ol { height: 58px; margin: 0px; padding: 0px 10px 0px 30px !important; }
+
+ol li { display: table-cell; }
+
+div.progTable li.Guest { vertical-align: middle; text-align: center; width: 250px; color: rgb(255, 255, 255); margin: 14px; text-transform: uppercase; }
+
+div.progTable li.Flight { vertical-align: middle; text-align: center; width: 100px; color: rgb(255, 255, 255); margin: 14px; text-transform: uppercase; }
+
+div.progTable li.Baggage { vertical-align: middle; text-align: center; width: 200px; padding-right: 10px; color: rgb(255, 255, 255); margin: 14px; text-transform: uppercase; }
+
+div.progTable li.Payment { vertical-align: middle; text-align: center; width: 90px; padding-right: 10px; color: rgb(255, 255, 255); margin: 14px; text-transform: uppercase; }
+
+div.progTable li.Search { vertical-align: middle; text-align: center; width: 140px; color: rgb(255, 255, 255); margin: 14px; text-transform: uppercase; }
+
+div.progTable li.BoardingPass { vertical-align: middle; text-align: center; width: 190px; color: rgb(255, 255, 255); margin: 14px; text-transform: uppercase; }
+
+div.progTable li.current { background: url("../images/Selected.png") center center / 100% 100% no-repeat; margin: 14px; }
+
+.divCol13 { width: 13%; float: left; }
+
+.divCol13_pp { float: left; width: 22%; border: 1px solid rgb(212, 4, 43) !important; }
+
+.divCol1 { width: 1%; float: left; }
+
+div.regDocTable { width: 95%; margin-left: auto; margin-right: auto; font-size: 14px; padding-bottom: 5px; padding-top: 5px; display: inline-block; }
+
+div.regDocTable div { height: 60px; }
+
+div.regDocTable div.heightZero { height: 0px; }
+
+div.regDocTable span.heightZero { height: 0px; }
+
+div.regDocTable span { padding: 0px; }
+
+div.regDocTable span.label { color: rgb(255, 255, 255); font-size: 17px; width: 280px; padding-left: 10px; }
+
+div.regDocTable span.labelComplete { color: rgb(0, 73, 144); font-size: 17px; width: 280px; padding-left: 10px; }
+
+div.regDocTable span.bold { font-weight: bold; }
+
+div.regDocTable span.gender { width: 72px; }
+
+div.regDocTable span.gender2 { width: 82px; }
+
+div.regDocTable span.field40 { width: 500px; }
+
+div.regDocTable span.fieldPadding { padding-top: 10px; }
+
+div.regDocTable span.fieldLarge { width: 230px; }
+
+div.regDocTable span.fieldExtraLarge { width: 400px; }
+
+div.regDocTable span.complete { width: 100px; color: rgb(58, 119, 40); }
+
+div.regDocTable span.space { }
+
+div.regDocTable span.spacer { width: 60px; }
+
+div.regDocTable span.message { width: 100%; }
+
+div.regDocTable span.field2 { width: 60%; }
+
+div.regDocTable div.spacer { height: 10px; }
+
+div.regDocTable span.print { width: 300px; float: left; padding-top: 5px; }
+
+div.regDocTable span.send { width: 300px; float: left; }
+
+div.regDocTable span input.email { margin-left: 0px; margin-right: 140px; padding-right: 0px; margin-top: 7px; }
+
+div.regDocTable span input.datefield { border: 1px solid rgb(127, 157, 185); padding: 2px 5px; color: rgb(92, 92, 92); }
+
+div.regDocTable span.topPadding { padding-top: 20px; }
+
+div.regDocTable span.leftPaddingZero { padding-left: 0px; }
+
+div.regDocTable span.topMargin { margin-top: 20px; }
+
+div.regDocTable span.applyToAll { padding-bottom: 7px; padding-top: 7px; font-weight: bold; }
+
+div.regDocTable span.passengerPrompt { font-size: 14px; padding-bottom: 10px; }
+
+div.jetblue-table div.tblGridAlternateHighlight span.paxPaymentHeadingLabel { color: rgb(0, 73, 144); }
+
+div.jetblue-table div.tblGridAlternateHighlight span.space { border-right: none; }
+
+div.jetblue-table div.tblGridAlternateHighlight span.gap, table.jetblue-table div.tblGridAlternateNotHighlight span.gap { background: none; width: 0px; padding: 1px; }
+
+div.jetblue-table div.tblGridAlternateHighlight span.noImageArrow { padding: 0px; column-gap: 10px; background: none left center no-repeat; width: 67px !important; }
+
+div.jetblue-table div.tblGridAlternateHighlight span.gap, table.jetblue-table div.tblGridAlternateNotHighlight span.gap { background: none; width: 0px; padding: 1px; }
+
+.tblGridAlternateHighlightDiv { background: rgb(0, 73, 144); }
+
+div.jetblue-table div.tblGridAlternateHighlight div.arrow { padding: 0px; column-gap: 10px; background: url("../images/But_ExpColSelect.png") left center no-repeat; width: 67px !important; }
+
+.height20 { height: 20px; }
+
+.divColRight90 { float: right; margin-top: 10px; margin-bottom: 10px; width: 90%; display: table; }
+
+div#radioText { width: 100%; }
+
+div#radioText div { height: 30px; }
+
+div#radioText span { margin: 0px; padding: 0px; }
+
+div#radioTextEmail span { margin: 0px; padding: 0px; }
+
+div.destinationTypeTable { width: 100%; font-size: 14px; margin-left: 85px; }
+
+div.destinationTypeTable div { height: 60px; }
+
+div.destinationTypeTable span { padding: 0px 0px 0px 20px; }
+
+div.destinationTypeTable span.label { width: 35%; }
+
+div.destinationTypeTable span.fieldLabel { text-align: right; width: 150px; }
+
+div.destinationTypeTable span.field { width: 350px; }
+
+div.destinationTypeTable div.heightZero { height: 0px; padding: 0px; }
+
+div.destinationTypeTable span.heightZero { height: 0px; padding: 0px; }
+
+div.destinationTypeTable div.applyAllRow span { width: 98%; padding-top: 10px; border-top: 1px solid rgb(198, 214, 229); margin-left: -75px; }
+
+.divColRight92 { float: right; margin-top: 10px; margin-bottom: 10px; width: 92%; }
+
+.divTopLeft10 { padding-top: 10px; padding-left: 10px; }
+
+.divLabelField { margin-right: 10px; margin-top: 20px; float: left; }
+
+#borderTable_1 { background-color: rgb(241, 245, 248); border-spacing: 0px 7px; border-top: 20px solid rgb(241, 245, 248); border-left: 20px solid rgb(241, 245, 248); border-radius: 3px; }
+
+div.fastpath_1 { width: 75%; margin-left: auto; margin-right: auto; }
+
+div.fastpath span { font-size: 14px; padding-bottom: 10px; }
+
+div.fastpath span.gap { float: left; width: 10px !important; }
+
+div.fastpath span.radio { width: 10%; float: left; padding-top: 5%; background: rgb(255, 255, 255) !important; }
+
+div.fastpath span.options { width: 80%; float: left; padding-top: 5%; vertical-align: middle; }
+
+div.fastpath span.oneClickOptions { width: 39%; float: left; padding-top: 5%; vertical-align: middle; }
+
+@media screen and (-moz-images-in-menus:0) {
+  div.fastpath span.radio { padding-top: 33%; }
+  div.fastpath span.options { padding-top: 33%; }
+}
+
+@media screen and (-moz-images-in-menus:0) {
+  .field > .tooltip { margin-left: -5.8em; }
+}
+
+div.fastpath span.textSubHeading { text-align: left; font-weight: bold; padding-top: 10px; }
+
+div.fastpath span.textOr { text-align: left; font-size: 18px; color: rgb(0, 73, 144); font-family: din-web-jetblue-med2; }
+
+div.fastpath span label { }
+
+div.fastpath span.passengerList { padding-top: 10px; padding-bottom: 10px; font-weight: bold; color: rgb(69, 69, 69); border-bottom: 1px solid rgb(200, 200, 200); }
+
+div.jetblue-table span.tall { height: 88px; }
+
+.divSpanPad { padding-bottom: 36px; padding-top: 24px; }
+
+.divFastPathRows { clear: both; display: inline-flex; margin-bottom: 10px; width: 50%; }
+
+.divOneClickRows { clear: both; display: inline-flex; margin-bottom: 10px; width: 100%; }
+
+div.jetblue-table span.spanTop30 { padding-top: 30px; }
+
+div.paymentReceipt { width: 100%; border-collapse: collapse; }
+
+div.paymentReceipt div { height: 44px; }
+
+div.paymentReceipt span { padding: 0px 0px 0px 20px; font-size: 14px; }
+
+div.paymentReceipt span div.spacing { float: left; width: 100px; }
+
+.divCol16 { width: 16%; float: left; }
+
+div.jetblue-table span.paymentSummaryValue { padding-bottom: 10px; text-align: right; font-size: 14px; }
+
+div.jetblue-table span.paymentSummaryLabel { padding-bottom: 10px; font-size: 14px; }
+
+div.jetblue-table span.paymentSummaryCompleteLabel { font-size: 14px; padding-bottom: 0px; }
+
+div.jetblue-table span.paymentSummaryComplete { width: 31px; }
+
+div.jetblue-table p.paymentSummaryValue { padding-top: 10px; text-align: right; background-color: rgb(255, 255, 255); font-size: 16px; }
+
+div.jetblue-table span.paymentGrandTotalLabel { font-size: 16px; font-weight: bold; color: rgb(0, 73, 144); width: 585px; }
+
+div.jetblue-table span.paymentGrandTotal { font-size: 20px; font-weight: bold; color: rgb(0, 73, 144); font-family: din-web-jetblue-med2; padding-bottom: 0px; }
+
+div.jetblue-table p.padBottom { padding-bottom: 10px; padding-top: 3px; }
+
+div.jetblue-table p.paymentSummaryLabel { padding-top: 10px; padding-left: 3px; background-color: rgb(255, 255, 255); font-size: 14px; }
+
+div.jetblue-table span.arrowImage { background: url("../images/ToArrow_Flight.png") center center / 39px 39px no-repeat rgb(255, 255, 255) !important; }
+
+div.jetblue-table p.paxName { padding-left: 20px; }
+
+div.jetblue-table span.paxName { padding: 10px 20px; }
+
+div.jetblue-table p.standbyOrder { padding-left: 20px; }
+
+div.jetblue-table span.standbyOrder { padding-top: 10px; padding-bottom: 10px; padding-left: 20px; }
+
+div.jetblue-table span.standbyOrderWithSeat { padding-top: 5px; padding-bottom: 5px; padding-left: 14px; }
+
+div.jetblue-table span.paxPaymentHeadingValue { padding-top: 10px; padding-right: 0px; font-weight: bold !important; color: rgb(0, 73, 144) !important; text-align: right !important; font-size: 16px !important; }
+
+div.jetblue-table div.tblGridAlternateHighlight td.paxPaymentHeadingLabel { color: rgb(0, 73, 144); }
+
+div.jetblue-table div.tblGridAlternateHighlight td.space { border-right: none; }
+
+div.jetblue-table div.tblGridAlternateNotHighlight td.paxPaymentHeadingLabel { width: 210px; color: rgb(65, 65, 65); padding-top: 10px; padding-right: 10px; text-align: right; font-size: 14px; }
+
+div.jetblue-table span.label { color: rgb(255, 255, 255); font-size: 17px; width: 280px; padding-left: 10px; padding-top: 10px; background: none !important; }
+
+div.jetblue-table span.labelBlue { color: rgb(0, 73, 144); font-size: 17px; width: 280px; padding-left: 10px; }
+
+div.jetblue-table span.label label { color: rgb(0, 73, 144); width: 280px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; max-height: 60px; display: inline-block; }
+
+div.jetblue-table div.tblGridAlternateNotHighlight span.noImageArrow { padding: 0px; column-gap: 10px; background: none left center no-repeat; width: 67px !important; }
+
+.linedTopBottom { width: 100%; border-bottom: 1px solid rgb(200, 200, 200); border-top: 1px solid rgb(200, 200, 200); }
+
+.linedTop { border-top: 1px solid rgb(200, 200, 200); }
+
+table.exitRowTable td.heading { height: 40px; }
+
+table.exitRowTable td.description { height: 140px; }
+
+div.exitRowTable { height: 46em; }
+
+div.assistiveBag { height: 26em; }
+
+table.exitRowPopupQuestion { margin-left: 20px !important; }
+
+table.exitRowPopupQuestion td.radio { width: 20px; }
+
+table.exitRowWarning { width: 98%; margin-left: auto; margin-right: auto; padding-bottom: 17px; padding-top: 10px; }
+
+table.exitRowWarning td { font-size: 1.25em; padding: 20px 0px; }
+
+table.exitRowWarning td.note { font-weight: bold; font-size: 1.25em; padding: 1em; }
+
+table.exitRowWarning td.alertQuestion { font-size: 1.5em; color: red; padding: 0.5em 1em; text-align: center; }
+
+table.exitRowWarning tr.spacer { height: 2.5em; }
+
+table.exitRowWarning td.spacer { height: 5em; }
+
+table.exitRowWarning td.question { font-size: 12px; font-weight: bold; color: rgb(214, 0, 0); text-align: left; }
+
+table.upsellEMLTable tr.upsellDesc { height: 100px; }
+
+table.upsellEMLTable td.upsellImg { background: url("../images/EMSpaceLogo2.png") 20px center no-repeat; width: 258px; }
+
+table.upsellEMLTable td.upsellDescHeading { width: 400px; font-weight: bold; font-size: 20px; }
+
+table.upsellEMLTable td.upsellDesc { vertical-align: top; width: 400px; color: rgb(69, 69, 69); }
+
+table.upsellEMLTable td { padding-left: 10px; padding-right: 20px; }
+
+table.upsellEMLTable td.upsellButtons { padding-left: 0px !important; }
+
+table.upsellEMSTable tr.upsellDesc { height: 100px; }
+
+table.upsellEMSTable td.upsellImg { background: url("../images/PrioritySecurityIcon.png") 20px center no-repeat; width: 178px; }
+
+table.upsellEMSTable td.upsellDescHeading { width: 400px; font-weight: bold; font-size: 20px; }
+
+table.upsellEMSTable td.upsellDesc { vertical-align: top; width: 400px; color: rgb(69, 69, 69); line-height: 30px; }
+
+table.upsellEMSTable td { padding-left: 10px; padding-right: 20px; }
+
+table.upsellEMSTable td.upsellButtons { padding-left: 0px !important; }
+
+table.emlInfoTable td.emlInfoSubHeading, table.mintInfoTable td.mintInfoSubHeading { vertical-align: middle; color: rgb(0, 73, 144); font-weight: bold; font-size: 20px; border: 0px none !important; }
+
+table.emlInfoTable td.emlInfoSubHeading { background: url("../images/EMSpaceLogo.png") 20px center no-repeat; width: 100%; height: 58px; text-transform: uppercase; padding: 20px 20px 20px 180px !important; }
+
+table.mintInfoTable td.mintInfoSubHeading { background: url("../images/MintLogo.png") 20px center / 73px 61px no-repeat; width: 100%; height: 61px; padding: 20px 20px 20px 110px !important; }
+
+table.emlInfoTable td.evenMoreSpeed { vertical-align: middle; color: rgb(69, 69, 69); font-size: 14px; background: url("../images/PrioritySecurityIcon.png") 25px 10px / 131px 40px no-repeat; padding: 10px 20px 40px 210px !important; border: 0px none !important; }
+
+table.emlInfoTable td.extraSpace { background: url("../images/EMS_ExtraSpace.png") center center / contain no-repeat; height: 270px; width: 248px; text-align: center; vertical-align: top; z-index: -1; }
+
+table.emlInfoTable td.earlyBoarding { background: url("../images/EMS_EarlyBoarding.png") center center / contain no-repeat; height: 270px; width: 248px; text-align: center; vertical-align: top; }
+
+table.emlInfoTable td.overheadBins { background: url("../images/EMS_Overhead.png") center center / contain no-repeat; height: 270px; width: 248px; text-align: center; vertical-align: top; }
+
+table.mintInfoTable td.extraSpace { text-align: center; vertical-align: top; }
+
+table.mintInfoTable td.earlyBoarding { background: url("../images/EMSOverlay_Earlyboard.png") center center / contain no-repeat; height: 270px; width: 248px; text-align: center; vertical-align: top; }
+
+table.mintInfoTable td.privateSeating { background: url("../images/EMS_Earlyacces.png") center center / contain no-repeat; height: 270px; width: 248px; text-align: center; vertical-align: top; }
+
+table.emlInfoTable td.infoHeading, table.mintInfoTable td.infoHeading { color: rgb(0, 73, 144); font-weight: bold; font-size: 16px; padding: 20px 0px 10px !important; border: 0px none !important; }
+
+table.emlInfoTable td.infoDescription, table.mintInfoTable td.infoDescription { font-size: 14px; color: rgb(69, 69, 69); }
+
+table.mintInfoTable td.mintInfoSection, table.emlInfoTable td.emlInfoSection { vertical-align: top; }
+
+table.mintInfoSubTable, table.emlInfoSubTable { padding-top: 120px; padding-left: 10px; padding-right: 10px; }
+
+li.black { color: rgb(69, 69, 69); }
+
+li.example { width: 8em; height: 75px; font-size: 10px; text-align: center; display: inline; float: left; vertical-align: bottom !important; }
+
+table.premiumSeatTable td.note { font-size: 12px; color: rgb(69, 69, 69); padding-right: 20px; padding-left: 20px !important; }
+
+table.premiumSeatTable td.description li { list-style-position: inside; }
+
+table.premiumSeatTable td.description { line-height: 25px; color: rgb(69, 69, 69); padding-right: 20px; font-size: 14px; padding-left: 20px !important; }
+
+table.premiumSeatTable td.premiumImg { background: url("../images/EMSpaceLogo.png") 20px 20px no-repeat; width: 190px; height: 90px; }
+
+.heading_1 { color: rgb(255, 255, 255); text-align: left; font-size: 18px; font-weight: bold; vertical-align: middle; padding: 0px 20px !important; border: 0px none !important; }
+
+.buttons_1 { height: 50px; margin-left: 20px; padding-left: 20px !important; padding-right: 20px !important; }
+
+.subHeading_1 { height: 6em; padding-top: 3px !important; padding-left: 3px !important; }
+
+.premiumImg_1 { width: 190px; height: 90px; }
+
+.note_1 { font-size: 12px; color: rgb(69, 69, 69); padding-right: 20px; padding-left: 20px !important; }
+
+.description li { list-style-position: inside; }
+
+.description_1 { line-height: 25px; color: rgb(69, 69, 69); padding-right: 20px; font-size: 14px; vertical-align: top; padding-left: 20px !important; }
+
+.divCol001 { width: 58%; float: left; margin-bottom: 10px; }
+
+.divCol002 { width: 27%; float: right; }
+
+.divCol003 { width: 50%; float: left; margin-left: 20px; margin-top: 15px; }
+
+.divCol004 { width: 90%; float: left; margin-left: 20px; margin-bottom: 10px; }
+
+.divCol005 { width: 90%; float: left; margin-left: 20px; }
+
+.divCol006 { width: 15%; float: left; }
+
+.heading_2 { background-color: rgb(0, 73, 144); text-align: left; font-size: 18px; font-weight: bold; vertical-align: middle; height: 4em; padding: 0px 20px !important; border: 0px none !important; }
+
+h1.heading1em_2 { font-size: 1em; color: rgb(255, 255, 255); }
+
+.divCol011 { width: 90%; float: left; margin-left: 2px; }
+
+.btnFloatLeft_1 { float: left; margin-left: 4px; }
+
+.headingSize16_1 { font-size: 16px; margin-left: 20px; }
+
+.PlainBoxNote { }
+
+.PlainBoxNoteIn { padding: 5px 0px; }
+
+.PlainBoxNoteIn ul { margin: 0px; padding: 0px; }
+
+.PlainBoxNoteIn li { list-style-type: none; background: url("../images/bulltet_arrowright1.gif") 0px 6px no-repeat; padding-left: 20px; line-height: 18px; }
+
+.PlainBoxNoteIn p { padding-bottom: 17px; }
+
+table.seatmap-heading td { font-size: 16px; }
+
+table.passengerTable { width: 90%; margin-left: auto; margin-right: auto; font-size: 14px; }
+
+table.passengerTable tr { height: 40px; }
+
+table.passengerTable td { padding: 0px 0px 0px 20px; }
+
+table.passengerTable td.label { width: 40%; }
+
+table.passengerTable td.field { width: 10%; }
+
+table.passengerTable td.space { width: 30%; }
+
+table.passengerTable td.message { width: 100%; }
+
+table.passengerTable td.field2 { width: 60%; }
+
+table.regDocTable { width: 95%; margin-left: auto; margin-right: auto; font-size: 14px; padding-bottom: 5px; padding-top: 5px; }
+
+table.regDocTable tr { height: 70px; }
+
+table.regDocTable tr.heightZero { height: 0px; }
+
+table.regDocTable td.heightZero { height: 0px; }
+
+table.regDocTable td { padding: 0px; }
+
+table.regDocTable td.label { color: rgb(255, 255, 255); font-size: 17px; width: 280px; padding-left: 10px; }
+
+table.regDocTable td.labelComplete { color: rgb(0, 73, 144); font-size: 17px; width: 280px; padding-left: 10px; }
+
+table.regDocTable td.bold { font-weight: bold; }
+
+table.regDocTable td.field { width: 52px; }
+
+table.regDocTable td.gender { width: 72px; }
+
+table.regDocTable td.gender2 { width: 82px; }
+
+table.regDocTable td.field40 { width: 500px; }
+
+table.regDocTable td.fieldPadding { padding-top: 10px; }
+
+table.regDocTable td.fieldLarge { width: 230px; }
+
+table.regDocTable td.fieldExtraLarge { width: 400px; }
+
+table.regDocTable td.complete { width: 100px; color: rgb(58, 119, 40); }
+
+table.regDocTable td.space { }
+
+table.regDocTable td.spacer { width: 60px; }
+
+table.regDocTable td.message { width: 100%; }
+
+table.regDocTable td.field2 { width: 60%; }
+
+table.regDocTable tr.spacer { height: 10px; }
+
+table.regDocTable td.print { width: 300px; float: left; padding-top: 5px; }
+
+table.regDocTable td.send { width: 300px; float: left; }
+
+table.regDocTable td input.email { margin-left: 0px; margin-right: 140px; padding-right: 0px; margin-top: 7px; }
+
+table.regDocTable td input.datefield { border: 1px solid rgb(127, 157, 185); padding: 2px 5px; color: rgb(92, 92, 92); }
+
+table.regDocTable td.topPadding { padding-top: 20px; }
+
+table.regDocTable td.leftPaddingZero { padding-left: 0px; }
+
+table.regDocTable td.topMargin { margin-top: 20px; }
+
+table.regDocTable td.applyToAll { padding-bottom: 7px; padding-top: 7px; font-weight: bold; }
+
+table.regDocTable td.passengerPrompt { font-size: 14px; padding-bottom: 10px; }
+
+div.regDocTable { width: 95%; margin-left: auto; margin-right: auto; font-size: 14px; padding-bottom: 5px; padding-top: 5px; }
+
+div.regDocTable div.heightZero { height: 0px; }
+
+div.regDocTable div.heightZero span { width: 150px; }
+
+div.regDocTable span.heightZero { height: 0px; }
+
+div.regDocTable div.height30 { height: 30px; }
+
+div.regDocTable div.height30 span { position: relative; top: 22%; }
+
+div.regDocTable div.height50 { height: 5em; }
+
+div.regDocTable div.height100 { height: 100px; }
+
+div.regDocTable span { padding: 0px; }
+
+div.regDocTable span.label { color: rgb(255, 255, 255); font-size: 17px; width: 280px; padding-left: 10px; }
+
+div.regDocTable .complete { width: 100px; color: rgb(58, 119, 40); }
+
+div.regDocTable span.leftPaddingZero { padding-left: 0px; }
+
+div.regDocTable span.applyToAll { padding-bottom: 7px; padding-top: 7px; font-weight: bold; }
+
+div.jetblue-table span.label span { color: rgb(255, 255, 255); font-size: 17px; }
+
+div.regDocTable span.fieldLarge { width: 230px; }
+
+div.regDocTable span.space { }
+
+div.regDocTable span.labelComplete { color: rgb(0, 73, 144); font-size: 17px; width: 280px; padding-left: 10px; }
+
+div.jetblue-table div.first { border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+
+table.autocomplete_box div { height: 35px; }
+
+table.bagsQuestionTable { background-color: white; }
+
+table.bagsQuestionTable td.bagQuestionCol { width: 230px; padding-left: 15px; padding-right: 10px; padding-bottom: 15px; text-align: left; font-size: 14px; vertical-align: top; }
+
+table.bagsQuestionTable tr.bannerRow { background: white; }
+
+table.bagsQuestionTable td.topBannerIncluded { border-top-left-radius: 5px; border-top-right-radius: 5px; text-align: center; color: white; background: rgb(117, 193, 71); font-size: 16px; height: 30px; }
+
+table.bagsQuestionTable div.whiteCheckmark { background-image: url("../images/WhiteChk.png"); background-repeat: no-repeat; width: 20px; height: 12px; display: inline-block; }
+
+table.bagsQuestionTable td.topBannerAdditional { border-top-left-radius: 5px; border-top-right-radius: 5px; text-align: center; color: white; background: rgb(77, 143, 204); font-size: 16px; font-weight: normal; height: 30px; }
+
+table.bagsQuestionTable td.borderRight { border-right: 2px solid rgb(198, 214, 229); }
+
+table.bagsQuestionTable th.borderRight { border-right: 2px solid rgb(198, 214, 229); }
+
+table.bagsQuestionTable td.tinySpace { background: white; width: 1%; }
+
+table.bagsQuestionTable th.tinySpace { background: white; width: 1%; }
+
+table.bagsQuestionTable th.bagQuestionCol { width: 230px; padding: 5px 5px 5px 15px; text-align: left; font-size: 18px; font-weight: bold; color: rgb(0, 73, 144); }
+
+table.bagsQuestionTable td.bagQuestionColHeading { width: 230px; padding: 5px 5px 5px 15px; text-align: left; font-size: 18px; font-weight: bold; color: rgb(0, 73, 144); }
+
+table.bagsQuestionTable td.bagQuestionCol p.heading { text-align: left; font-size: 18px; font-weight: bold; color: rgb(0, 73, 144); }
+
+table.bagsQuestionTable td.bagQuestionCol p.subHeading { text-align: left; font-size: 16px; font-weight: bold; color: rgb(65, 65, 65); padding-top: 5px; }
+
+table.bagsQuestionTable td.bagQuestionCol p.regular { color: black; font-size: 13px; padding-top: 15px; padding-bottom: 20px; line-height: 150%; }
+
+table.bagsQuestionTable td.carryOn { background: url("../images/baggage/BagsCarryOn.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+table.bagsQuestionTable td.carryOnCol { padding-left: 15px !important; padding-right: 10px !important; }
+
+table.bagsQuestionTable td.bagImg { padding-left: 15px; height: 110px; }
+
+table.bagsQuestionTable td.additionalBag { background: url("../images/baggage/AddBag.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+table.bagsQuestionTable td.additionalBagCol { text-align: center; }
+
+table.bagsQuestionTable td.overweight { background: url("../images/baggage/Overweightsize.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+table.bagsQuestionTable td.overweightCol { padding-left: 10px; padding-right: 10px; }
+
+table.bagsQuestionTable td.allowance0 { background: url("../images/baggage/Bags0.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+table.bagsQuestionTable td.allowance1 { background: url("../images/baggage/Bags1.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+table.bagsQuestionTable td.allowance2 { background: url("../images/baggage/Bags2.png") 15px center no-repeat rgb(241, 245, 248); height: 110px; }
+
+table.bagsQuestionTable td.allowanceCol { text-align: center; }
+
+table.bagsQuestionTable td.bottomInfo { width: 230px; padding: 0px; text-align: left; font-size: 13px; vertical-align: top; }
+
+table.bagsQuestionTable td.blueBox { background: rgb(191, 217, 242); text-align: center; font-weight: normal; color: black; padding-left: 5px; padding-right: 5px; }
+
+table.bagsQuestionTable td p.padParagraphBottom { padding-bottom: 5px; font-size: 14px; }
+
+table.bagsQuestionTable td p.padParagraphTop { padding-top: 5px; font-size: 14px; }
+
+table.bagsQuestionTable td.spacer { width: 50px; padding-top: 80px; }
+
+table.bpTable { width: 100%; margin-left: auto; margin-right: auto; font-size: 14px; padding-bottom: 5px; padding-top: 5px; }
+
+table.bpTable tr { height: 30px; }
+
+table.bpTable tr.heightZero { height: 0px; }
+
+table.bpTable td.heightZero { height: 0px; }
+
+table.bpTable td { padding: 0px; }
+
+table.bpTable td.print { width: 300px; float: left; padding-top: 5px; }
+
+table.bpTable td.label { width: 780px !important; }
+
+table.bpTable td.send { width: 300px; float: left; }
+
+table.bpTable td input.email { margin-left: 0px; margin-right: 140px; padding-right: 0px; margin-top: 7px; }
+
+table.bpTable td.applyToAll { padding-bottom: 7px; padding-top: 7px; font-weight: bold; }
+
+table.bpTable td.space { }
+
+table.bpTable td.boardingPassCol { padding-left: 20px; }
+
+div.bpTable { width: 100%; margin-left: auto; margin-right: auto; font-size: 14px; padding-bottom: 5px; padding-top: 5px; }
+
+div.bpTable div { height: 30px; }
+
+div.bpTable div.heightZero { height: 0px; }
+
+div.bpTable span.heightZero { height: 0px; }
+
+div.bpTable span { padding: 0px; }
+
+div.bpTable span.print { width: 300px; float: left; padding-top: 5px; }
+
+div.bpTable span.label { width: 780px !important; }
+
+div.bpTable span.send { width: 300px; float: left; }
+
+div.bpTable span input.email { margin-left: 0px; margin-right: 140px; padding-right: 0px; margin-top: 7px; }
+
+div.bpTable span.applyToAll { padding-bottom: 7px; padding-top: 7px; font-weight: bold; }
+
+div.bpTable span.space { }
+
+div.bpTable span.boardingPassCol { padding-left: 20px; }
+
+div.jetblue-table span.label { color: rgb(255, 255, 255); font-size: 17px; width: 280px; padding-left: 10px; padding-top: 10px; background: none !important; }
+
+div.jetblue-table div.tblGridAlternateHighlight span { background: rgb(0, 73, 144); }
+
+div.jetblue-table div.tblGridAlternateHighlight span.label { background: rgb(0, 73, 144) !important; }
+
+div.jetblue-table div.tblGridAlternateHighlight span.arrow { padding: 0px; column-gap: 10px; background: url("../images/But_ExpColSelect.png") left center no-repeat; width: 67px !important; }
+
+div.jetblue-table div.tblGridAlternateHighlight span.arrowPad, div.jetblue-table div.tblGridAlternate span.arrowPad { padding-right: 5px; float: left; height: 100%; }
+
+.divCol10 { width: 10%; float: left; }
+
+div#radioText { width: 100%; }
+
+div#radioText div { height: 30px; }
+
+div#radioText span { margin: 0px; padding: 0px; }
+
+table.boardingPassTable { width: 90%; margin-left: auto; margin-right: auto; font-size: 14px; }
+
+table.boardingPassTable tr { height: 40px; }
+
+table.boardingPassTable tr.spacer { height: 10px; }
+
+table.boardingPassTable td { padding: 0px 0px 0px 20px; }
+
+table.boardingPassTable td.label { width: 40%; }
+
+table.boardingPassTable td.field { width: 10%; }
+
+table.boardingPassTable td.space { width: 30%; }
+
+table.boardingPassTable td.print { width: 90%; }
+
+table.boardingPassTable td.option { width: 100%; }
+
+table.boardingPassTable td.message { width: 100%; }
+
+table.boardingPassTable td.field2 { width: 60%; }
+
+table.boardingPassTable tr.applyToAll { font-size: 14px; }
+
+table.boardingPassTable td.applyToAll { padding-bottom: 0.75em; }
+
+table.boardingPassTable td input.email { margin-left: 50px; }
+
+table.boardingPassTable td div.spacing { float: left; width: 100px; }
+
+table.destinationTypeTable { width: 100%; font-size: 14px; }
+
+table.destinationTypeTable tr { height: 30px; }
+
+table.destinationTypeTable td { padding: 0px 0px 0px 20px; }
+
+table.destinationTypeTable td.label { width: 35%; }
+
+table.destinationTypeTable td.fieldLabel { text-align: right; width: 150px; }
+
+table.destinationTypeTable td.field { width: 350px; }
+
+table.destinationTypeTable tr.heightZero { height: 0px; padding: 0px; }
+
+table.destinationTypeTable td.heightZero { height: 0px; padding: 0px; }
+
+table.destinationTypeTable tr.applyAllRow td { padding-top: 10px; border-top: 1px solid rgb(198, 214, 229); }
+
+table.passengerList { width: 100%; border-collapse: collapse; }
+
+table.passengerList td { padding: 0px; width: 100%; box-sizing: border-box; float: left; clear: left; height: 49px; }
+
+table.passengerList td.first { border-radius: 3px 3px 0px 0px !important; }
+
+table.passengerList td.last { border-radius: 0px 0px 3px 3px !important; }
+
+table.passengerList td.radio { padding: 0px; }
+
+table.passengerList td.name { width: 70%; padding-left: 10px; font-weight: bold; }
+
+table.passengerList td.cost { width: 10px; font-weight: bold; padding-right: 10px; padding-left: 10px; text-align: right; }
+
+table.passengerList tr { height: 49px; }
+
+table.passengerList td.emlPromo { vertical-align: middle; background: url("../images/EMSPromo.png") left bottom no-repeat; width: 231px; height: 98px; padding-top: 20px; margin-top: 20px; }
+
+div.emlPromo { font-size: 9px; height: 92px; vertical-align: middle; padding-left: 65px; }
+
+table.passengerList td.mintPromo { vertical-align: middle; background: url("../images/MintPromo.png") left bottom no-repeat; width: 231px; height: 92px; padding-top: 20px; }
+
+div.mintPromo { font-size: 13px; height: 92px; vertical-align: middle; padding-top: 20px; padding-left: 65px; }
+
+a.learnMore { font-size: 12px; color: rgb(86, 86, 86); text-decoration: underline; cursor: pointer; }
+
+table.passengerList tr.emlPromo { height: 92px !important; }
+
+table.seat-legend td { padding: 2px; font-size: 12px; color: rgb(86, 86, 86); }
+
+table.seat-legend th { padding: 20px 2px 2px; font-size: 12px; font-weight: bold; text-align: left; color: rgb(86, 86, 86); }
+
+table.seatMap { margin-left: auto; margin-right: auto; border-collapse: collapse; border-spacing: 0px; }
+
+table.seatMap td, th { padding: 0px; vertical-align: middle; }
+
+table.seatMap th { font-size: 14px; }
+
+table.seatMap a:focus { display: block; }
+
+table.contactInfo { width: 100%; border-collapse: collapse; }
+
+table.contactInfo tr { height: 44px; }
+
+table.contactInfo td { padding: 0px 0px 0px 20px; }
+
+table.contactInfo td.label { width: 30%; padding-left: 50px; font-size: 14px; }
+
+table.contactInfo td.field { width: 70%; }
+
+table.jetblue-table tbody { width: 90%; clear: both; }
+
+table.jetblue-table tbody td { padding: 3px; font-size: 12px; color: rgb(65, 65, 65); text-align: left; background: rgb(241, 245, 248); }
+
+table.jetblue-table tbody td.tableText { padding: 5px 3px; text-align: left; }
+
+table.jetblue-table tbody th { padding-bottom: 5px; vertical-align: top; color: rgb(1, 74, 142); background: rgb(241, 245, 248); font-size: 16px; }
+
+table.jetblue-table tbody th.itinPaxHeader { background-color: rgb(255, 255, 255); padding: 15px 0px; vertical-align: top; color: rgb(48, 111, 170); font-size: 14px; }
+
+table.jetblue-table tbody th.priorityListPaxHeader { background-color: rgb(255, 255, 255); padding: 15px 0px; vertical-align: top; color: rgb(48, 111, 170); font-size: 14px; }
+
+table.jetblue-table tbody td.paymentSummaryValue { padding-bottom: 10px; text-align: right; font-size: 14px; }
+
+table.jetblue-table tbody td.paymentSummaryLabel { padding-bottom: 10px; font-size: 14px; }
+
+table.jetblue-table tbody td.paymentSummaryCompleteLabel { font-size: 14px; padding-bottom: 0px; }
+
+table.jetblue-table tbody td.paymentSummaryComplete { width: 31px; }
+
+table.jetblue-table tbody th.paymentSummaryValue { padding-top: 10px; text-align: right; background-color: rgb(255, 255, 255); font-size: 16px; }
+
+table.jetblue-table tbody td.paymentGrandTotalLabel { font-size: 16px; font-weight: bold; color: rgb(0, 73, 144); width: 585px; }
+
+table.jetblue-table tbody td.paymentGrandTotal { font-size: 20px; font-weight: bold; color: rgb(0, 73, 144); font-family: din-web-jetblue-med2; padding-bottom: 0px; }
+
+table.jetblue-table tbody th.padBottom { padding-bottom: 10px; padding-top: 3px; }
+
+table.jetblue-table tbody th.paymentSummaryLabel { padding-top: 10px; padding-left: 3px; background-color: rgb(255, 255, 255); font-size: 14px; }
+
+table.jetblue-table tbody td.arrowImage { background: url("../images/ToArrow_Flight.png") center center / 39px 39px no-repeat rgb(255, 255, 255) !important; }
+
+table.jetblue-table tbody th.paxName { padding-left: 20px; }
+
+table.jetblue-table tbody td.paxName { padding: 10px 20px; }
+
+table.jetblue-table tbody th.standbyOrder { padding-left: 20px; }
+
+table.jetblue-table tbody td.standbyOrder { padding-top: 10px; padding-bottom: 10px; padding-left: 20px; }
+
+table.jetblue-table tbody td.standbyOrderWithSeat { padding-top: 5px; padding-bottom: 5px; padding-left: 14px; }
+
+table.jetblue-table tbody td.paxPaymentHeadingValue { padding-top: 10px; padding-right: 0px; font-weight: bold !important; color: rgb(0, 73, 144) !important; text-align: right !important; font-size: 16px !important; }
+
+table.jetblue-table tbody tr.tblGridAlternateHighlight td.paxPaymentHeadingLabel { color: rgb(0, 73, 144); }
+
+table.jetblue-table tbody tr.tblGridAlternateHighlight td.space { border-right: none; }
+
+table.jetblue-table tbody tr.tblGridAlternateNotHighlight td.paxPaymentHeadingLabel { width: 210px; color: rgb(65, 65, 65); padding-top: 10px; padding-right: 10px; text-align: right; font-size: 14px; }
+
+table.jetblue-table tbody td.label { color: rgb(255, 255, 255); font-size: 17px; width: 280px; padding-left: 10px; padding-top: 10px; background: none !important; }
+
+table.jetblue-table tbody td.labelBlue { color: rgb(0, 73, 144); font-size: 17px; width: 280px; padding-left: 10px; }
+
+table.jetblue-table tbody td.label label { color: rgb(0, 73, 144); font-size: 17px; width: 280px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; max-height: 40px; display: inline-block; }
+
+p.truncateName { overflow: hidden; text-overflow: ellipsis; max-width: 270px; white-space: nowrap; }
+
+table.jetblue-table tbody td.labelComplete { color: rgb(0, 73, 144); font-size: 17px; width: 280px; padding-left: 10px; }
+
+table.jetblue-table tbody td.bold { font-weight: bold; }
+
+table.jetblue-table tbody th.thTwoLine { border-right: 1px solid rgb(77, 144, 205); vertical-align: middle; background: url("../images/tbl_titlebgnew.gif") left bottom repeat-x; color: rgb(74, 74, 74); }
+
+table.jetblue-table tbody th.thTxtAlnLft { text-align: left; }
+
+table.jetblue-table tbody tr.thSubTitle th { text-align: left; vertical-align: middle; border-top: 1px solid rgb(198, 214, 229); border-bottom: 1px solid rgb(198, 214, 229); padding: 15px 0px; color: rgb(48, 111, 170); font-size: 14px; }
+
+table.jetblue-table tbody td.AlignCenter { text-align: center; }
+
+table.jetblue-table tbody td.cardInfo { vertical-align: top; padding: 10px 0px 10px 10px; }
+
+table.jetblue-table tbody td.payment { vertical-align: top; padding: 10px 0px; }
+
+table.jetblue-table tbody td.leftPadding { padding-left: 15px; }
+
+table.jetblue-table tbody .SplitCol { background: rgb(255, 255, 255); width: 10px; }
+
+table.jetblue-table tbody .tdTxtAlnCen { text-align: center; padding-left: 0px; }
+
+table.jetblue-table tbody .thBrdTopNone { border-top: none; }
+
+table.jetblue-table tbody .thBrdBtmNone { border-bottom: none; }
+
+table.jetblue-table tbody .BrdBtm { border-bottom: 1px solid rgb(198, 214, 229); }
+
+table.jetblue-table tbody .BrdTop { border-top: 1px solid rgb(198, 214, 229); }
+
+table.jetblue-table tbody .BrdLft { border-left: 1px solid rgb(198, 214, 229); }
+
+table.jetblue-table tbody .BrdRgt { padding-left: 10px; padding-right: 10px; border-right: 1px solid rgb(198, 214, 229); }
+
+table.jetblue-table tbody tr.nextFlightText { height: 10px; }
+
+table.jetblue-table tbody tr.nextFlightText td { padding: 0px; font-size: 11px; color: rgb(0, 73, 144); text-align: center; }
+
+table.jetblue-table tbody tr.tall { height: 88px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.greyOut { background: rgb(128, 128, 128); }
+
+table.jetblue-table tbody tr.tblGridAlternate td { background: rgb(255, 255, 255); }
+
+table.jetblue-table tbody tr.tblGridAlternate td.checkbox { width: 100px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.checkboxSelectPax { width: 60px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.infoComplete { width: 80px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.radio { background: rgb(0, 73, 144); width: 25px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.radioSpace { background: none; width: 15px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.standbySelected { font-weight: bold; color: rgb(0, 73, 144); }
+
+table.jetblue-table tbody tr.tblGridAlternateHighlight td { background: rgb(0, 73, 144); }
+
+table.jetblue-table tbody tr.tblGridAlternateHighlight td.label { background: rgb(0, 73, 144) !important; }
+
+table.jetblue-table tbody tr.tblGridAlternateHighlight td.arrow { padding: 0px; column-gap: 10px; background: url("../images/But_ExpColSelect.png") left center no-repeat; width: 67px !important; }
+
+table.jetblue-table tbody tr.tblGridAlternateHighlight td.gap, table.jetblue-table tbody tr.tblGridAlternateNotHighlight td.gap { background: none; width: 0px; padding: 1px; }
+
+table.jetblue-table tbody tr.tblGridAlternateHighlight td.noImageArrow { padding: 0px; column-gap: 10px; background: none left center no-repeat; width: 67px !important; }
+
+table.jetblue-table tbody tr.tblGridAlternateHighlight td.gap, table.jetblue-table tbody tr.tblGridAlternateNotHighlight td.gap { background: none; width: 0px; padding: 1px; }
+
+table.jetblue-table tbody tr.tblGridAlternateNotHighlight td { background: rgb(255, 255, 255); }
+
+table.jetblue-table tbody tr.tblGridAlternateNotHighlight td.label { color: rgb(0, 73, 144); background: rgb(255, 255, 255) !important; }
+
+table.jetblue-table tbody tr.tblGridAlternateNotHighlight td.arrow { padding: 0px; column-gap: 10px; background: url("../images/But_ExpCol.png") left center no-repeat; width: 67px !important; }
+
+table.jetblue-table tbody tr.tblGridAlternateNotHighlight td.noImageArrow { padding: 0px; column-gap: 10px; background: none left center no-repeat; width: 67px !important; }
+
+table.jetblue-table tbody td.first { border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+
+table.jetblue-table tbody td.last { border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.gap { background: none; width: 0px; padding: 1px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.arrow { background: none; width: 67px !important; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.arrowComplete { background: url("../images/But_ExpColComp.png") left center no-repeat; width: 67px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.fqtvColumn { width: 150px; text-align: left; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.ktColumn { width: 250px; text-align: right; vertical-align: top; padding-top: 36px; padding-right: 10px; }
+
+table.jetblue-table tbody tr.tblGridAlternate td.costColumn { width: 350px; text-align: right; font-size: 17px; font-weight: bold; color: rgb(0, 73, 144); padding-right: 15px; }
+
+table.jetblue-table tbody tr.heightZero { height: 0px; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; }
+
+table.jetblue-table tbody td.heightZero { height: 0px; border: none; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; }
+
+table.jetblue-table tbody td.selectAllCol { width: 170px; padding: 3px 3px 6px 6px; }
+
+table.jetblue-table tbody td.passengerListHeading { font-size: 16px; font-weight: bold; color: rgb(0, 73, 144); vertical-align: top; padding: 3px 3px 6px 6px; }
+
+table.jetblue-table tbody tr.tblGridAlternateBorderless td { background: rgb(255, 255, 255); border: 0px none; }
+
+table.jetblue-table tbody td a { color: rgb(48, 111, 170); text-decoration: none; }
+
+table.jetblue-table tbody td a:hover { color: rgb(0, 73, 144); }
+
+table.jetblue-table tbody td.greyText { color: rgb(69, 69, 69); }
+
+table.jetblue-table tbody td.noPadLeft { padding-left: 0px !important; }
+
+table.jetblue-table tbody td.padLeft40 { padding-left: 40px; }
+
+table.jetblue-table tbody th.padding { background: none; border: 0px none; padding: 0px; }
+
+table.jetblue-table .TblGridCol5 { width: 5%; }
+
+table.jetblue-table .TblGridCol6 { width: 6%; }
+
+table.jetblue-table .TblGridCol7 { width: 7%; }
+
+table.jetblue-table .TblGridCol8 { width: 8%; }
+
+table.jetblue-table .TblGridCol10 { width: 10%; }
+
+table.jetblue-table .TblGridCol12 { width: 12%; }
+
+table.jetblue-table .TblGridCol13 { width: 13%; }
+
+table.jetblue-table .TblGridCol14 { width: 14%; }
+
+table.jetblue-table .TblGridCol15 { width: 15%; }
+
+table.jetblue-table .TblGridCol16 { width: 16%; }
+
+table.jetblue-table .TblGridCol17 { width: 17%; }
+
+table.jetblue-table .TblGridCol18 { width: 18%; }
+
+table.jetblue-table .TblGridCol20 { width: 20%; }
+
+table.jetblue-table .TblGridCol22 { width: 22%; }
+
+table.jetblue-table .TblGridCol23 { width: 23%; }
+
+table.jetblue-table .TblGridCol24-5 { width: 24.5%; }
+
+table.jetblue-table .TblGridCol25 { width: 25%; }
+
+table.jetblue-table .TblGridCol30 { width: 30%; }
+
+table.jetblue-table .TblGridCol34 { width: 34%; }
+
+table.jetblue-table .TblGridCol35 { width: 35%; }
+
+table.jetblue-table .TblGridCol38 { width: 38%; }
+
+table.jetblue-table .TblGridCol40 { width: 40%; }
+
+table.jetblue-table .TblGridCol44 { width: 44%; }
+
+table.jetblue-table .TblGridCol45 { width: 45%; }
+
+table.jetblue-table .TblGridCol50 { width: 50%; }
+
+table.jetblue-table .TblGridCol52 { width: 52%; }
+
+table.jetblue-table .TblGridCol52 { width: 53%; }
+
+table.jetblue-table .TblGridCol54 { width: 53%; }
+
+table.jetblue-table .TblGridCol55 { width: 55%; }
+
+table.jetblue-table .TblGridCol60 { width: 60%; }
+
+table.jetblue-table .TblGridCol65 { width: 65%; }
+
+table.jetblue-table .TblGridCol70 { width: 70%; }
+
+table.jetblue-table .TblGridCol75 { width: 75%; }
+
+table.jetblue-table .TblGridCol80 { width: 80%; }
+
+table.jetblue-table .TblGridCol85 { width: 85%; }
+
+table.jetblue-table .TblGridCol90 { width: 90%; }
+
+table.jetblue-table .TblGridCol95 { width: 95%; }
+
+table.jetblue-table .TblGridCol100 { width: 100%; }
+
+table.jetblue-textTable tbody td { padding: 6px 3px 6px 6px; font-size: 12px; color: rgb(69, 69, 69); text-align: left; background: rgb(241, 245, 248); border: 0px; }
+
+table.jetblue-textTable tbody td.tableText { padding: 6px 3px 6px 6px; font-size: 12px; color: rgb(69, 69, 69); text-align: left; background: rgb(241, 245, 248); }
+
+table.jetblue-textTable tbody td.boldText { padding: 6px 3px 6px 6px; font-weight: bold; color: rgb(0, 73, 144); font-size: 17px; }
+
+table.jetblue-textTable tbody td.greyText { color: rgb(69, 69, 69); }
+
+table.jetblue-textTable tbody td.checkBox { padding: 6px 3px 6px 6px; background: none !important; }
+
+table.jetblue-textTable tbody td.checkBoxShort { padding: 0px 3px 0px 6px; }
+
+table.jetblue-textTable tbody td.checkInAll { padding: 0px 3px 0px 6px; }
+
+table.passport-table tbody { width: 100%; border: none; clear: both; }
+
+table.passport-table tbody td { padding: 0px; text-align: left; }
+
+table.passport-table tbody td input.email { margin-top: 10px; }
+
+table.passport-table tbody td.padTopBottom { padding-top: 10px; padding-bottom: 10px; }
+
+table.passport-table tbody td.topMargin10 { margin-top: 10px; }
+
+table.boardingpass-table tbody { height: 160px; width: 100%; border: none; clear: both; }
+
+table.boardingpass-table tbody td { text-align: left; }
+
+table.boardingpass-table tbody td input.email { margin-top: 10px; }
+
+table.contact-table tbody { border: none; clear: both; }
+
+table.contact-table tbody td { padding: 0px; text-align: left; }
+
+table.popupButtons { }
+
+table.popupButtons td { }
+
+table#radioText { width: 100%; }
+
+table#radioText tr { height: 30px; }
+
+table#radioText td { margin: 0px; padding: 0px; }
+
+table#radioTextEmail td { margin: 0px; padding: 0px; }
+
+table.buttonGreySm:hover { cursor: pointer; height: 35px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); }
+
+table.buttonGreySm:focus { cursor: pointer; height: 35px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); outline: rgb(77, 144, 205) solid 2px; }
+
+button.buttonGreySm { cursor: pointer; font-size: 100%; color: rgb(255, 255, 255); font-weight: bold; height: 2.4em; padding: 0em 1.5em 0.01em; border: 1px solid rgb(0, 73, 144); background: rgb(0, 73, 144); text-transform: uppercase; border-radius: 3px !important; }
+
+button.buttonGreySm:hover { cursor: pointer; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); }
+
+button.buttonGreySm:focus { cursor: pointer; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); outline: rgb(77, 144, 205) solid 2px; }
+
+table.buttonBlueSm { cursor: pointer; font-size: 13px; color: rgb(255, 255, 255); font-weight: bold; height: 35px; width: 120px; border: 1px solid rgb(77, 144, 205); background: rgb(77, 144, 205); border-radius: 3px !important; }
+
+table.buttonBlueSm:hover { cursor: pointer; height: 35px; width: 120px; background: rgb(0, 40, 94); border: 1px solid rgb(0, 40, 94); }
+
+table.buttonBlueSm:focus { cursor: pointer; height: 35px; width: 120px; background: rgb(0, 40, 94); border: 1px solid rgb(0, 40, 94); outline: rgb(77, 144, 205) solid 2px; }
+
+table.buttonWhiteSm { cursor: pointer; font-size: 13px; color: rgb(48, 111, 170); font-weight: bold; height: 35px; width: 120px; border: 1px solid rgb(48, 111, 170); border-radius: 3px !important; }
+
+table.buttonWhiteSm:hover { cursor: pointer; height: 35px; width: 120px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); color: white; }
+
+table.buttonWhiteSm:focus { cursor: pointer; height: 35px; width: 120px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); color: white; outline: rgb(77, 144, 205) solid 2px; }
+
+button.buttonBlueSm { cursor: pointer; font-size: 13px; color: rgb(255, 255, 255); font-weight: bold; height: 35px; border: 1px solid rgb(0, 73, 144); background: rgb(0, 73, 144); text-transform: uppercase; border-radius: 3px !important; }
+
+button.buttonBlueSm:hover { cursor: pointer; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); }
+
+button.buttonBlueSm:focus { cursor: pointer; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); outline: rgb(77, 144, 205) solid 2px; }
+
+button.buttonWhiteSm { cursor: pointer; font-size: 13px; color: rgb(48, 111, 170); font-weight: bold; height: 2.4em; width: 10em; border: 1px solid rgb(48, 111, 170); background: white; text-transform: uppercase; border-radius: 3px !important; }
+
+button.buttonWhiteSm:hover { cursor: pointer; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); color: white; }
+
+button.buttonWhiteSm:focus { cursor: pointer; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); color: white; outline: rgb(77, 144, 205) solid 2px; }
+
+button.buttonClear { cursor: pointer; font-size: 13px; background: white; border: 1px; border-radius: 3px !important; }
+
+#clear-notification { font-weight: bold; font-size: 12px; color: rgb(58, 119, 40) !important; }
+
+input.buttonGreySm { cursor: pointer; font-size: 13px; color: rgb(255, 255, 255); font-weight: bold; height: 24px; width: 96px; border: 1px solid rgb(0, 73, 144); background: rgb(0, 73, 144); }
+
+input.buttonGreySm:hover { cursor: pointer; height: 24px; width: 96px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); }
+
+input.buttonGreySm:focus { cursor: pointer; height: 24px; width: 96px; background: rgb(48, 111, 170); border: 2px solid rgb(77, 144, 205); outline: rgb(77, 144, 205) solid 2px; }
+
+input.buttonGreySm[disabled] { opacity: 0.5; cursor: default; font-size: 13px; color: rgb(255, 255, 255); font-weight: bold; height: 24px; width: 96px; border: 1px solid rgb(0, 73, 144); background: rgb(0, 73, 144); }
+
+table.buttonGreyVerySm { cursor: pointer; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; height: 24px; width: 75px; border: 1px solid rgb(77, 144, 205); background: rgb(77, 144, 205); border-radius: 3px !important; }
+
+table.buttonGreyVerySm:hover { cursor: pointer; height: 24px; width: 75px; background: rgb(0, 61, 125); border: 1px solid rgb(0, 61, 125); border-radius: 3px !important; }
+
+table.buttonGreyVerySm:focus { cursor: pointer; height: 24px; width: 75px; background: rgb(0, 61, 125); border: 1px solid rgb(0, 61, 125); outline: rgb(77, 144, 205) solid 2px; border-radius: 3px !important; }
+
+table.buttonGrey:hover { cursor: pointer; height: 35px; width: 205px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); }
+
+table.buttonGrey:focus { cursor: pointer; height: 35px; width: 205px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); outline: rgb(77, 144, 205) solid 2px; }
+
+table.buttonBlue:hover { cursor: pointer; height: 35px; width: 205px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); }
+
+table.buttonBlue:focus { cursor: pointer; height: 35px; width: 205px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); outline: rgb(77, 144, 205) solid 2px; }
+
+button.buttonGrey { cursor: pointer; font-size: 13px; color: rgb(255, 255, 255); font-weight: bold; padding: 0.6em; border: 1px solid rgb(0, 73, 144); background: rgb(0, 73, 144); text-transform: uppercase; border-radius: 3px !important; }
+
+button.buttonGrey:hover { cursor: pointer; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); }
+
+button.buttonGrey:focus { cursor: pointer; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); outline: rgb(77, 144, 205) solid 2px; }
+
+button.buttonBlueLite { cursor: pointer; font-size: 13px; color: rgb(255, 255, 255); font-weight: bold; padding: 0.6em; width: 225px; border: 1px solid rgb(48, 111, 170); background: rgb(48, 111, 170); text-transform: uppercase; border-radius: 3px !important; }
+
+button.buttonBlueLite:hover { cursor: pointer; background: rgb(0, 73, 144); border: 1px solid rgb(0, 73, 144); }
+
+button.buttonBlueLite:focus { cursor: pointer; background: rgb(0, 73, 144); border: 1px solid rgb(0, 73, 144); outline: rgb(77, 144, 205) solid 2px; }
+
+table.buttonFlight { padding: 0px 2px; background: url("../images/Seat_Flight.png") center top no-repeat; width: 233px; height: 78px; }
+
+table.buttonFlight:hover { background: url("../images/Seat_Flight.png") center top no-repeat; width: 233px; height: 78px; }
+
+table.buttonFlight:focus { background: url("../images/Seat_Flight.png") center top no-repeat; width: 233px; height: 78px; outline: rgb(77, 144, 205) solid 2px; }
+
+table.buttonFlightDis { background: url("../images/Seat_Flight_Select.png") center center no-repeat; width: 233px; height: 78px; }
+
+table.buttonBack { cursor: pointer; background: url("../images/BackArrow.png") left center no-repeat; width: 96px; height: 24px; }
+
+table.buttonBack:hover { cursor: pointer; background: url("../images/BackArrow.png") left center no-repeat; width: 96px; height: 24px; }
+
+table.buttonBack:focus { cursor: pointer; background: url("../images/BackArrow.png") left center no-repeat; width: 96px; height: 24px; outline: rgb(77, 144, 205) solid 2px; }
+
+a.linkBack { cursor: pointer; background: url("../images/BackArrow.png") left center no-repeat; width: 96px; height: 24px; padding-left: 10px; padding-top: 10px; text-transform: uppercase; font-size: 13px; font-weight: bold; vertical-align: middle; }
+
+a.linkSkip { cursor: pointer; width: 50px; height: 24px; padding-top: 10px; text-transform: uppercase; font-size: 13px; font-weight: bold; vertical-align: middle; }
+
+a.linkSkipCustom { cursor: pointer; height: 34px; padding-top: 10px; font-size: 13px; font-weight: bold; vertical-align: middle; }
+
+table.buttonArrow { cursor: pointer; background: url("../images/buttonArrow.png") left center no-repeat; width: 100%; height: 24px; }
+
+table.buttonArrow:hover { background: url("../images/buttonArrow.png") left center no-repeat; cursor: pointer; }
+
+table.buttonArrow:focus { background: url("../images/buttonArrow.png") left center no-repeat; cursor: pointer; outline: rgb(77, 144, 205) solid 2px; }
+
+a.linkArrow { cursor: pointer; height: 24px; padding-left: 32px; display: inline-block; line-height: 25px; font-size: 13px; text-align: left; font-weight: normal; }
+
+a.linkArrow img { margin-left: -32px; margin-right: 8px; }
+
+a.linkNewWindow { cursor: pointer; background: url("../images/But_NewWindow.png") left center no-repeat; width: 100%; height: 24px; padding-left: 32px; display: inline-block; line-height: 25px; font-size: 13px; text-align: left; font-weight: normal; }
+
+a.linkRefresh { font-size: 13px; font-weight: bold; text-align: left; vertical-align: middle; text-transform: uppercase; }
+
+table.buttonArrowNav { cursor: pointer; background: url("../images/buttonArrow.png") left center no-repeat; width: 140px; height: 24px; left: 200px; position: relative; }
+
+table.buttonArrowNav:hover { background: url("../images/buttonArrow.png") left center no-repeat; cursor: pointer; }
+
+table.buttonArrowNav:focus { background: url("../images/buttonArrow.png") left center no-repeat; cursor: pointer; outline: rgb(77, 144, 205) solid 2px; }
+
+table.buttonPlus { cursor: pointer; width: 41px; height: 41px; background-color: transparent; padding: 0px; }
+
+table.buttonMinus { cursor: pointer; width: 41px; height: 41px; background-color: transparent; padding: 0px; }
+
+button.buttonPlus { cursor: pointer; width: 41px; height: 41px; border: 0px; background-color: transparent; padding: 0px; margin-top: 12px; }
+
+button.buttonMinus { cursor: pointer; width: 41px; height: 41px; border: 0px; background-color: transparent; padding: 0px; margin-top: 12px; }
+
+#changeLanguageButton { position: relative; float: right; margin: -40px 0px 0px 15px; cursor: pointer; }
+
+#quitButton { float: right; margin: -53px 50px 0px 15px; position: relative; cursor: pointer; }
+
+#changeLanguageButton:hover, #contactUsButton:hover { cursor: pointer; color: rgb(0, 73, 144); }
+
+#changeLanguageButton:focus, #contactUsButton:focus { cursor: pointer; color: rgb(0, 73, 144); outline: rgb(77, 144, 205) solid 2px; }
+
+#changeLanguageButtonText:hover, #contactUsButtonText:hover { cursor: pointer; text-decoration: underline; color: rgb(0, 73, 144); }
+
+#changeLanguageButtonText:focus, #contactUsButtonText:focus { cursor: pointer; text-decoration: underline; color: rgb(0, 73, 144); outline: rgb(77, 144, 205) solid 2px; }
+
+td#changeLanguageButtonText, td#contactUsButtonText { color: rgb(48, 111, 170); margin: 0px; padding-right: 20px; background-color: transparent; font-size: 14px; font-weight: bold; text-align: center; vertical-align: middle; line-height: 12px; }
+
+td#buttonText { cursor: pointer; margin: 0px; padding: 0px 5px; background-color: transparent; color: rgb(255, 255, 255); font-size: 13px; font-weight: bold; text-align: center; vertical-align: middle; text-transform: uppercase; }
+
+td#buttonFlightText { width: 100px; line-height: 19px; cursor: pointer; margin: 0px; padding: 0px 5px 15px; background-color: transparent; color: rgb(0, 73, 144); font-size: 28px; font-weight: bold; text-align: center; }
+
+td#buttonFlightTextDis { width: 100px; line-height: 19px; cursor: pointer; margin: 0px; padding: 0px 5px 15px; background-color: transparent; color: rgb(255, 255, 255); font-size: 20px; font-weight: bold; text-align: center; }
+
+td#buttonArrowText { cursor: pointer; margin: 0px; padding: 0px 5px 0px 30px; background-color: transparent; color: rgb(93, 152, 208); font-size: 13px; text-align: left; font-weight: normal; }
+
+td#buttonGreyText { cursor: pointer; margin: 0px; padding: 0px; background-color: transparent; color: rgb(0, 45, 98); font-size: 12px; font-weight: bold; text-align: left; vertical-align: middle; line-height: 12px; }
+
+td#buttonGreyBackText-en { cursor: pointer; margin: 0px; padding: 0px 17px 0px 0px; background-color: transparent; color: rgb(0, 45, 98); font-size: 12px; font-weight: bold; text-align: center; vertical-align: middle; line-height: 12px; }
+
+td#buttonGreyBackText-fr { margin: 0px; padding: 0px 12px 0px 0px; background-color: transparent; color: rgb(0, 45, 98); font-size: 12px; font-weight: bold; text-align: center; vertical-align: middle; line-height: 12px; }
+
+td#backArrowButtonCell { cursor: pointer; width: 20px; padding: 5px 0px 0px 12px; vertical-align: top; }
+
+td#buttonTextDis { margin: 0px; padding: 0px 5px; background-color: transparent; color: rgb(255, 255, 255); font-size: 13px; font-weight: bold; text-align: center; }
+
+td#buttonBackText { color: rgb(77, 144, 205); cursor: pointer; margin: 0px; padding: 0px 5px 0px 10px; background-color: transparent; font-size: 13px; font-weight: bold; text-align: left; vertical-align: middle; text-transform: uppercase; }
+
+table.popupWindowTable { width: 100%; height: 100%; }
+
+table.popupWindowTable td.exitRow { padding: 5px 20px !important; }
+
+table.popupWindowTable td.heading { color: rgb(0, 73, 144); font-weight: bold; font-size: 16px; padding: 20px 20px 0px !important; border: 0px none !important; }
+
+table.popupWindowTable td.description li { list-style-position: inside; }
+
+table.popupWindowTable td.description { line-height: 25px; color: rgb(69, 69, 69); padding-right: 20px; font-size: 14px; vertical-align: top; padding-left: 20px !important; }
+
+table.popupWindowTable td.black { color: rgb(69, 69, 69); }
+
+table.popupWindowTable tr.heading { height: 60px; }
+
+table.popupWindowTable tr.subHeading { height: 70px; }
+
+table.popupWindowTable th.heading { background-color: rgb(0, 73, 144); color: rgb(255, 255, 255); text-align: left; font-size: 18px; font-weight: bold; vertical-align: middle; padding: 0px 20px !important; border: 0px none !important; }
+
+table.popupWindowTable td.label { vertical-align: top; padding-top: 10px; padding-bottom: 10px; padding-left: 20px !important; }
+
+table.popupWindowTable td.label li { list-style-position: inside; }
+
+table.popupWindowTable td.exitRowHeading { font-size: 16px; font-weight: bold; }
+
+table.popupWindowTable td.close { padding: 5px 0px !important; }
+
+table.popupWindowTable th.close { padding: 10px !important; }
+
+table.popupWindowTable td.zeroPadding { padding: 0px !important; }
+
+table.popupWindowTable td.fqtvNum { vertical-align: bottom; padding: 5px 20px !important; }
+
+table.popupWindowTable td.ktNum { vertical-align: bottom; padding: 5px 20px !important; }
+
+table.popupWindowTable td.buttons { height: 50px; padding-left: 20px !important; padding-right: 20px !important; }
+
+.popupClose { position: relative; z-index: 1; width: 36px; height: 36px; float: right; margin-right: 0px; padding-top: 6px; text-decoration: none !important; }
+
+.popupCloseImg { position: relative; z-index: 1; width: 30px; height: 30px; float: right; margin-right: 0px; text-decoration: none !important; }
+
+.popupCloseImg:hover { color: rgb(0, 73, 144); text-decoration: none; cursor: pointer; }
+
+.popupCloseImg2 { position: relative; left: 10px; top: 11px; z-index: 1; width: 30px; height: 30px; float: right; margin-right: 0px; text-decoration: none !important; }
+
+.popupCloseImg2:hover { color: rgb(0, 73, 144); text-decoration: none; cursor: pointer; }
+
+.itinArrowImg { color: rgb(255, 255, 255); }
+
+img.closeModal { padding-left: 0px; }
+
+.IconHelp { background: url("../images/icon_help.gif") no-repeat; float: left; width: 18px; height: 18px; }
+
+.DvPopUpContainerAbsolute { width: 200px; clear: both; position: absolute; }
+
+.dvToolTipYellow table.ToolTipClearTable tbody td { border-width: initial; border-style: none; border-color: initial; }
+
+.dvToolTipYellow table.ToolTipClearTable tr.ToolTipClearTableRow { padding: 0px; border-right: none; border-bottom: none; background: none; }
+
+.dvToolTipYellow table.ToolTipClearTable td.ToolTipClearTableData { padding: 0px; border-right: none; border-bottom: none; font-size: 0px; background: none; }
+
+.SubTitleForm td { color: rgb(0, 55, 116); font-size: 15px; font-weight: bold; vertical-align: middle; height: 22px; }
+
+.width-jetblueTable { width: 100%; }
+
+.width-hundred { width: 100%; }
+
+.redSmallFont { font-size: 12px; color: red; padding: 10px 10px 10px 20px; }
+
+.leftPadding10 { padding-left: 10px; }
+
+.seatmap-description { width: 100%; }
+
+.seatmap-gap { width: 240px; height: 20px; }
+
+.seatmap-legend { width: 146px; height: 293px; vertical-align: text-bottom; }
+
+.seatmap-extraSeatCol { width: 250px; text-indent: 21px; }
+
+.seatmap-plane { width: 470px; margin-left: auto; margin-right: auto; }
+
+.buttonCurrentSeat { color: rgb(255, 255, 255) !important; }
+
+.buttonCurrentSeatExtra { }
+
+.paxSeat { color: rgb(86, 86, 86); font-weight: bold; width: 30px; text-align: right; }
+
+.seatSize { color: rgb(86, 86, 86); width: 41px; text-align: center; margin-left: auto; margin-right: auto; font-weight: bold; vertical-align: middle; }
+
+.seatSizeLegend { width: 32px; height: 27px; text-align: center; margin-left: auto; margin-right: auto; line-height: 22px; }
+
+.availableSeat { width: 33px; height: 32px; }
+
+.availableMintSeat { width: 33px; height: 32px; }
+
+.availableSeatLegend { margin-left: -3px; }
+
+.availableMintSeatLegend { margin-left: -3px; }
+
+.companionSeat { width: 33px; height: 32px; z-index: 10; }
+
+.companionSeatLegend { background: url("../images/seatmap/LegendCompanionSeat.png") no-repeat; }
+
+.currentSeat { width: 33px; height: 32px; z-index: 10; }
+
+.currentSeatLegend { margin-left: -3px; }
+
+.exitSeat { width: 33px; height: 32px; }
+
+.exitSeatLegend { background: url("../images/seatmap/LegendEmergencySeat.png") no-repeat; }
+
+.lessDesirableSeat { width: 33px; height: 32px; }
+
+.lessDesirableSeatLegend { margin-left: -3px; }
+
+.lessDesirableExitSeat { width: 33px; height: 32px; }
+
+.lessDesirableExitPremiumSeat { width: 33px; height: 32px; }
+
+.lessDesirableExitSeatLegend { background: url("../images/seatmap/LegendNonRecliningEmergencySeat.png") no-repeat; }
+
+.unavailableSeat { width: 33px; height: 32px; }
+
+.unavailableSeatLegend { margin-left: -3px; }
+
+.bulkheadAisleSeat { width: 33px; height: 32px; }
+
+.premiumSeat { width: 33px; height: 32px; }
+
+.premiumSeatLegend { margin-left: -3px; }
+
+.exitPremiumSeat { width: 33px; height: 32px; }
+
+.lessDesirablePremiumSeat { width: 33px; height: 32px; }
+
+.bulkheadAislePremiumSeat { width: 33px; height: 32px; }
+
+.sideSize { width: 46px; height: 46px; text-align: center; margin-left: auto; margin-right: auto; }
+
+.leftBottomSide { width: 46px; height: 46px; }
+
+.leftMiddleSide { width: 46px; height: 46px; }
+
+.leftTopSide { width: 46px; height: 46px; }
+
+.leftMiddleExitRow { width: 46px; height: 46px; }
+
+.leftTopExitRow { width: 46px; height: 46px; }
+
+.leftBottomExitRow { width: 46px; height: 46px; }
+
+.leftExitRow { width: 46px; height: 46px; }
+
+.rightBottomSide { width: 46px; height: 46px; }
+
+.rightMiddleSide { width: 46px; height: 46px; }
+
+.rightTopSide { }
+
+.rightExitRow { width: 46px; height: 46px; }
+
+.rightSide { width: 46px; height: 46px; }
+
+.rightMiddleExitRow { width: 46px; height: 46px; }
+
+.rightTopExitRow { width: 46px; height: 46px; }
+
+.rightBottomExitRow { width: 46px; height: 46px; }
+
+.leftSide { width: 46px; height: 46px; }
+
+.text-center { text-align: center; }
+
+.text-left { text-align: left; }
+
+.text-right { text-align: right; }
+
+.text-table { }
+
+.width-content { width: 898px; }
+
+table tr.row-content-table { height: 40px; }
+
+div.description { font-size: 11px; height: auto; margin: 0px; padding: 0px; }
+
+div.descriptionGuestSelection { font-size: 12px; height: auto; margin-top: -8px; padding-left: 43px; color: rgb(69, 69, 69); }
+
+div.descriptionGuestSelectionFQTV { font-size: 12px; height: auto; margin-top: -8px; padding-left: 8px; color: rgb(69, 69, 69); }
+
+div.descriptionStayType { font-size: 12px; height: auto; margin-top: 2px; padding-left: 1px; color: rgb(69, 69, 69); font-weight: normal; }
+
+div.descriptionItinerary { display: inline; font-size: 12px; height: auto; margin-top: -8px; color: red; }
+
+.btnFloatLeft { float: left; clear: none; }
+
+.btnFloatRight { float: right; }
+
+.btnFloatFFP { float: left; margin-left: auto; margin-right: auto; }
+
+.btnFloatFFP1 { float: left; margin-left: 3em; margin-right: auto; }
+
+.btnFloatCenter { margin-left: auto; margin-right: auto; }
+
+.hidden { display: none; }
+
+.padTopBottom { padding-top: 10px; padding-bottom: 10px; }
+
+.padTopBottom20 { padding-top: 20px; padding-bottom: 20px; }
+
+.font-description { padding-left: 0px; }
+
+#fadeout { background-color: rgb(0, 0, 0); opacity: 0.7; position: absolute; z-index: 8999; top: 0px; left: 0px; width: 100%; min-height: 100%; display: none; }
+
+#fadeout2 { background-color: rgb(0, 0, 0); opacity: 0.7; position: absolute; z-index: 8997; top: 0px; left: 0px; width: 100%; min-height: 100%; display: none; }
+
+#popup { background-color: rgb(255, 255, 255); position: fixed; width: 640px; height: 360px; z-index: 9001; display: none; }
+
+#popupyesno { background-color: rgb(255, 255, 255); position: absolute; width: 25em; height: 14.5em; z-index: 9001; display: none; overflow: auto; }
+
+#popupSessionTimeout { background-color: rgb(255, 255, 255); position: fixed; width: 25em; height: 12.5em; z-index: 9001; display: none; }
+
+#popupSessionExpired { background-color: rgb(255, 255, 255); position: fixed; width: 25em; height: 12.5em; z-index: 9001; display: none; }
+
+#moreTimePopup { background-color: rgb(255, 255, 255); position: fixed; width: 300px; height: 180px; z-index: 9001; display: none; }
+
+#singleChildWarningPopup { background-color: rgb(255, 255, 255); position: fixed; width: 480px; height: 240px; z-index: 9001; display: none; }
+
+#iropChangeOrCancelFlightPopup { background-color: rgb(255, 255, 255); position: fixed; width: 480px; height: 240px; z-index: 9001; display: none; }
+
+#exitRowWarningHeading { background-color: rgb(255, 255, 255); position: fixed; font-size: 12px; font-weight: bold; width: 460px; padding-left: 5px; }
+
+#exitRowHeading { background-color: rgb(255, 255, 255); position: fixed; font-size: 16px; width: 520px; color: rgb(1, 52, 115); font-weight: bold; height: 50px; }
+
+#exitRowName { background-color: rgb(255, 255, 255); position: fixed; color: rgb(1, 52, 115); font-size: 14px; width: 460px; font-weight: bold; }
+
+#exitRowWarningName { background-color: rgb(255, 255, 255); position: fixed; color: rgb(1, 52, 115); font-size: 14px; width: 460px; font-weight: bold; padding-left: 5px; }
+
+#exitRow { background-color: rgb(255, 255, 255); position: absolute; width: 46em; margin-top: 350px; height: 46em; z-index: 9000; display: none; }
+
+#exitRowWarning { background-color: rgb(255, 255, 255); position: fixed; width: 500px; height: 160px; z-index: 9001; display: none; }
+
+#onlyEML { position: fixed; width: 580px; height: 240px; z-index: 9001; display: none; }
+
+#upsellEML { background-color: rgb(255, 255, 255); position: fixed; width: 680px; height: 420px; z-index: 9001; display: none; }
+
+#upsellEMLItin { background-color: rgb(255, 255, 255); position: fixed; width: 680px; height: 420px; z-index: 9001; display: none; }
+
+#emlInfoPopup { background-color: rgb(255, 255, 255); position: absolute; width: 54em; height: 40em; z-index: 9001; display: none; }
+
+#newEmlInfoPopup { background-color: rgb(255, 255, 255); position: absolute; width: 54em; height: 40em; z-index: 9001; display: none; }
+
+#emlInfoPopupUpsell { background-color: rgb(255, 255, 255); position: absolute; width: 54em; height: 40em; z-index: 9001; display: none; }
+
+#newEmlInfoPopupUpsell { background-color: rgb(255, 255, 255); position: absolute; width: 54em; height: 40em; z-index: 9001; display: none; }
+
+#mintInfoPopup { background-color: rgb(255, 255, 255); position: fixed; width: 770px; height: 550px; z-index: 9001; display: none; }
+
+#bulkHead { background-color: rgb(255, 255, 255); position: fixed; width: 640px; height: 400px; z-index: 9002; display: none; }
+
+#pleaseWaitPopup { width: 640px; height: 400px; position: fixed; z-index: 9001; display: none; }
+
+#pleaseWaitPopupQuit { width: 640px; background-color: rgb(255, 255, 255); height: 400px; position: fixed; z-index: 9001; display: none; }
+
+#departCityPopup { background-color: rgb(255, 255, 255); position: fixed; width: 800px; height: 520px; z-index: 9000; display: none; }
+
+#issuingCountryPopup { background-color: rgb(255, 255, 255); position: fixed; width: 780px; height: 540px; z-index: 9000; display: none; }
+
+#nationalityCountryPopup { background-color: rgb(255, 255, 255); position: fixed; width: 780px; height: 540px; z-index: 9000; display: none; }
+
+#popupFrame { overflow: auto; width: 780px; height: 500px; }
+
+#popupFrameDestination { overflow: auto; width: 800px; height: 530px; }
+
+#residencyCountryPopup { background-color: rgb(255, 255, 255); position: fixed; width: 780px; height: 540px; z-index: 9000; display: none; }
+
+#emergencyCountryPopup { background-color: rgb(255, 255, 255); position: fixed; width: 780px; height: 540px; z-index: 9000; display: none; }
+
+#specialBagsPopup { background-color: rgb(255, 255, 255); position: fixed; width: 640px; height: 360px; z-index: 9002; display: none; }
+
+#bagMinimumPopup { background-color: rgb(255, 255, 255); position: fixed; width: 640px; height: 360px; z-index: 9002; display: none; }
+
+#bagsPaymentDetailsPopup { background-color: rgb(255, 255, 255); position: fixed; width: 800px; height: 400px; z-index: 9002; display: none; }
+
+#changeFlightWarningPopUp { background-color: rgb(255, 255, 255); position: fixed; width: 640px; height: 360px; z-index: 9000; display: none; }
+
+#premiumSeatConfirmationPopup { background-color: rgb(255, 255, 255); position: absolute; width: 46em; margin-top: 100px; height: 32em; z-index: 9000; display: none; }
+
+#newPremiumSeatConfirmationPopup { background-color: rgb(255, 255, 255); position: absolute; width: 46em; margin-top: 100px; height: 32em; z-index: 9000; display: none; }
+
+#returnFlightDiv { background-color: rgb(255, 255, 255); position: fixed; width: 500px; height: 13em; z-index: 9000; display: none; }
+
+#refinementDiv { background-color: rgb(255, 255, 255); position: fixed; width: 600px; height: 250px; z-index: 8998; display: none; }
+
+#flightNotificationDiv { background-color: rgb(255, 255, 255); position: fixed; width: 600px; height: 13em; z-index: 8998; display: none; }
+
+#attestationNotificationDiv { background-color: rgb(255, 255, 255); position: fixed; width: 600px; height: 13em; z-index: 8998; display: none; }
+
+#dhpVerificationNotificationDiv { background-color: rgb(255, 255, 255); position: fixed; width: 640px; height: 13em; z-index: 8998; display: none; }
+
+#irregularOperationDiv { background-color: rgb(255, 255, 255); position: fixed; width: 600px; height: 13em; z-index: 8998; display: none; }
+
+#noExtrasDiv { background-color: rgb(255, 255, 255); position: fixed; width: 600px; height: 250px; z-index: 8998; display: none; }
+
+#merchandiseUpdateErrorDiv { background-color: rgb(255, 255, 255); position: fixed; width: 600px; height: 250px; z-index: 8998; display: none; }
+
+#seatChangeFailedDiv { background-color: rgb(255, 255, 255); position: fixed; width: 600px; height: 250px; z-index: 8998; display: none; }
+
+#knownTravelerDiv { background-color: rgb(255, 255, 255); position: absolute; width: 34em; height: 250px; z-index: 8998; display: none; }
+
+#redressDiv { background-color: rgb(255, 255, 255); position: fixed; width: 600px; height: 250px; z-index: 8998; display: none; }
+
+#cancelCheckinDiv { background-color: rgb(255, 255, 255); position: absolute; width: 46em; z-index: 8998; display: none; }
+
+#petTermsPopup { background-color: rgb(255, 255, 255); position: absolute; width: 46em; height: 32em; z-index: 9001; display: none; }
+
+#assistiveBagPopup { background-color: rgb(255, 255, 255); position: absolute; width: 48em; height: 25em; z-index: 9001; display: none; }
+
+#upsellEMSDiv { background-color: rgb(255, 255, 255); position: fixed; width: 700px; height: 430px; z-index: 8998; display: none; }
+
+#Header { clear: both; width: 100%; margin: auto; }
+
+#Content, #ContentIn { clear: both; width: 100%; margin: auto; }
+
+#Footer, #FooterIn { clear: both; width: 100%; margin: auto; }
+
+#Content { padding-bottom: 10px; padding-top: 0px; min-height: 100%; }
+
+#ContentIn { margin-bottom: 0px; }
+
+#ContentDangerous { padding-top: 0px; min-height: 100%; }
+
+.ContentOut { width: 934px; margin: auto; }
+
+#Footer { width: 100%; bottom: 0px; position: relative; }
+
+.divthclosingRemarksHeading { color: rgb(0, 73, 144); font-size: 18px; font-weight: bold; text-align: left; }
+
+.divtableclosingRemarks { margin: 40px auto; border-collapse: collapse; width: 100%; }
+
+.divtdclosingRemarksbuffer { height: 10px; }
+
+.divtdclosingRemarksmessage { width: 100%; font-size: 12px; }
+
+.divtdclosingRemarkslabel { width: 100%; font-size: 12px; padding-right: 10px; padding-top: 3px; padding-bottom: 3px; }
+
+.divtdclosingRemarksfield { width: 50%; font-weight: bold; }
+
+#FooterOut { margin: auto; width: 100%; max-width: 962px; padding: 0px; clear: both; }
+
+#FooterIn { width: 100%; float: left; padding: 5px 0px; }
+
+#LeftContent { float: left; width: 208px; padding: 20px 0px; margin-left: 5px; text-align: center; font-size: 16px; }
+
+.width-full-buttons { margin: auto; }
+
+.width-full { width: 95%; margin: auto; }
+
+.borderless { border-collapse: collapse; border-spacing: 0px; }
+
+.borderless td { padding-bottom: 0px; padding-top: 0px; }
+
+.borderless td.heading { padding-bottom: 0px; padding-top: 20px; }
+
+.JetLogo { margin: auto; display: block; width: 100%; max-width: 962px; height: 63px; overflow: hidden; }
+
+.FtrBtmBar { border-top: 1px solid rgb(211, 224, 243); width: 100%; max-width: 962px; margin: auto; padding: 10px 0px 0px; font-size: 10px; clear: both; }
+
+.AlignLeft { text-align: left; }
+
+.AlignRight { text-align: right !important; }
+
+.AlignCenter { text-align: center; }
+
+.AlignCenter p.flightInfo { font-size: 18px; font-weight: bold; color: rgb(0, 73, 144); }
+
+.AlignCenter p.dateTime { font-size: 16px; text-transform: uppercase; }
+
+.AlignCenter span.smallText { font-size: 10px; }
+
+.RightBorder { border-right: 1px solid rgb(154, 188, 223); }
+
+.LeftBorder { border-left: 1px solid rgb(154, 188, 223); }
+
+.TopBorder { border-top: 1px solid rgb(154, 188, 223); }
+
+.BottomBorder { border-bottom: 1px solid rgb(154, 188, 223); }
+
+.DisplayNone { display: none; }
+
+.VisibilityHide { visibility: hidden; }
+
+.Clear { clear: both; }
+
+.Bold { font-weight: bold; }
+
+.LeftContent { float: left; padding: 15px 0px; width: 385px; }
+
+.RightContent { float: left; padding: 15px 0px; margin-left: 230px; font-size: 10px; }
+
+.PadLeft40 { padding-left: 40px; }
+
+.PadLeft16 { padding-left: 6px; }
+
+.LeftContent2 { float: left; width: 540px; }
+
+.RightContent2 { padding: 5px 0px 10px; font-size: 10px; width: 490px; }
+
+.RightContentWithRegDoc { float: right; padding: 5px 0px 30px; font-size: 10px; width: 544px; }
+
+.LeftContent2 p { margin: 0px; padding: 0px; line-height: 18px; }
+
+.PadTop { padding-top: 15px; }
+
+.PadLft { padding-left: 0px; }
+
+.TblClpse { width: 70%; max-width: 1000px; min-width: 986px; height: 3.5em; margin: auto; background: url("../images/Navigationbar.png"); }
+
+.TblClpseWithRegDoc { padding-left: 20px; margin-bottom: 3px; }
+
+.TblClpseTextWithRegDoc { padding-left: 0px; margin-bottom: 3px; }
+
+.PadRgt { padding-left: 90px; }
+
+table.progTable { border-collapse: collapse; width: 850px; height: 58px; font-size: 16px; font-weight: bold; margin: auto; }
+
+table.progTable tr { height: 58px; }
+
+table.progTable td.Guest { vertical-align: middle; text-align: center; width: 168px; color: rgb(255, 255, 255); }
+
+table.progTable td.Flight { vertical-align: middle; text-align: center; width: 128px; color: rgb(255, 255, 255); }
+
+table.progTable td.Baggage { vertical-align: middle; text-align: center; width: 113px; color: rgb(255, 255, 255); }
+
+table.progTable td.Payment { vertical-align: middle; text-align: center; width: 108px; color: rgb(255, 255, 255); }
+
+table.progTable td.Search { vertical-align: middle; text-align: center; width: 148px; color: rgb(255, 255, 255); }
+
+table.progTable td.BoardingPass { vertical-align: middle; text-align: center; width: 133px; color: rgb(255, 255, 255); }
+
+div.complete { background: url("../images/GreenChk_ProgressBar.png") left bottom no-repeat; height: 23px; width: 23px; display: inline-block; }
+
+img.completeCheckMark { height: 23px; width: 23px; display: inline-block; }
+
+table.progTable td.current { background: url("../images/Selected.png") center center / 100% 100% no-repeat; }
+
+.ProGrey { background: url("../images/Step1.gif") center bottom no-repeat; height: 25px; width: 466px; }
+
+.ProGreyStepOneWithRegDoc { background: url("../images/RegDocStep1.gif") center bottom no-repeat; height: 25px; width: 505px; }
+
+.ProGreyStepTwoWithRegDoc { background: url("../images/RegDocStep2.gif") center bottom no-repeat; height: 25px; width: 505px; }
+
+.ProGreyStepThreeWithRegDoc { background: url("../images/RegDocStep3.gif") center bottom no-repeat; height: 25px; width: 505px; }
+
+.ProGreyStepFourWithRegDoc { background: url("../images/RegDocStep4.gif") center bottom no-repeat; height: 25px; width: 505px; }
+
+.ProGreyStepFiveWithRegDoc { background: url("../images/RegDocStep5.gif") center bottom no-repeat; height: 25px; width: 505px; }
+
+.ProGreyStepSixWithRegDoc { background: url("../images/RegDocStep6.gif") center bottom no-repeat; height: 25px; width: 505px; }
+
+.ProGreyStepOne { background: url("../images/Selected.png") no-repeat; height: 58px; width: 162px; }
+
+.ProGreyStepTwo { background: url("../images/Selected.png") no-repeat; height: 58px; width: 162px; }
+
+.ProGreyStepThree { background: url("../images/Selected.png") no-repeat; height: 58px; width: 162px; }
+
+.ProGreyStepFour { background: url("../images/Selected.png") no-repeat; height: 58px; width: 162px; }
+
+.ProGreyStepFive { background: url("../images/Selected.png") no-repeat; height: 58px; width: 162px; }
+
+.dvHeadTitle { height: 2.2em; width: 95%; margin: auto; }
+
+.dvHeadTitlright { height: 31px; }
+
+.dvTitleHead { color: rgb(0, 73, 144); font-family: din-web-jetblue; font-weight: bold; font-size: 13px; padding: 0px 0px 0px 10px; line-height: 30px; }
+
+.TitleText { font-family: din-web-jetblue-med2; font-size: 19px; padding: 10px 0px 0px; color: rgb(0, 73, 144); font-weight: bold; }
+
+.TitleTextError { font-family: din-web-jetblue-med2; font-size: 19px; padding: 10px 0px 0px; color: rgb(212, 4, 43); font-weight: bold; }
+
+.TitleText12 { font-size: 14px; padding: 13px 0px 0px 3px; font-weight: bold; }
+
+.TitleRight { float: right; padding: 13px 10px; }
+
+.dvErrorTitleHead { color: rgb(212, 4, 42); padding: 10px 0px 0px 23px; line-height: 30px; }
+
+.FontResize { float: right; margin: -20px 0px 0px; padding: 0px 15px 0px 0px; }
+
+.FontResize11 { margin-top: -9px; }
+
+.FontResize11 sup { font-size: 14px; }
+
+.FontResize16 { font-size: 16px; margin-top: -4px; }
+
+.FontResize16 sup { font-size: 9px; }
+
+div.slider { width: 42px; height: 14px; background: url("../images/Slider.gif") left bottom no-repeat; }
+
+div.slider div.knob { background: url("../images/SliderArrow.gif") no-repeat; width: 5px; height: 9px; }
+
+#slider-bg { width: 42px; height: 14px; background: url("../images/Slider.gif") left bottom no-repeat; }
+
+.Width58 { width: 58%; }
+
+.Width70 { width: 70%; }
+
+.Width90 { width: 90%; }
+
+.Width80 { width: 80%; }
+
+.Width46 { width: 46%; }
+
+.TblAlignCenter { margin: auto; }
+
+.Width50 { width: 50%; }
+
+.Width44 { width: 44.5% !important; }
+
+.dvFrmContent { background: url("../images/formbg_top.gif") left top repeat-x; }
+
+.dvFrmCurLftBtm { background: url("../images/formbgcurv_leftbtm.gif") left bottom no-repeat; }
+
+.dvFrmCurRhtBtm { background: url("../images/formbgcurv_rightbtm.gif") right bottom no-repeat; padding: 30px 25px 10px; }
+
+.dvFrmCurLftRht { background: url("../images/formbgcurv_leftright.gif") right top no-repeat; }
+
+.dvFrmCurRhtLft { background: url("../images/formbgcurv_lefttop.gif") left top no-repeat; }
+
+.dvFrmBotBg { background: url("../images/formbg_btm.gif") left bottom repeat-x; }
+
+.FormInTbl { width: 97%; margin: auto; padding: 8px 0px 10px 5px; }
+
+.FormInTbl td { padding: 4px; vertical-align: top; font-size: 10px; }
+
+.FormInTbl td p { font-weight: bold; }
+
+.FormInTbl td div { margin-bottom: 3px; }
+
+.FormInTbl td td { padding: 0px; vertical-align: middle; }
+
+.FormInTbl .FormTblRdoAlign { margin-left: -5px; }
+
+.FormInTbl span.Bold { font-weight: bold; }
+
+.FormInTbl .TdBtn td { padding-bottom: 6px; }
+
+.FormInTbl .FormInTblCol10 { width: 10%; }
+
+.FormInTbl .FormInTblCol20 { width: 20%; }
+
+.FormInTbl .FormInTblCol30 { width: 30%; }
+
+.FormInTbl .FormInTblCol35 { width: 35%; }
+
+.FormInTbl .FormInTblCol40 { width: 40%; }
+
+.FormInTbl .FormInTblCol45 { width: 45%; }
+
+.FormInTbl .FormInTblCol50 { width: 50%; }
+
+.FormInTbl .FormInTblCol55 { width: 55%; }
+
+.FormInTbl .FormInTblCol60 { width: 60%; }
+
+.FormInTbl .FormInTblCol65 { width: 65%; }
+
+.DvForm { margin-bottom: 15px; }
+
+.IndicatesRqdFld { color: rgb(41, 41, 41); margin-bottom: 5px; font-size: 12px; }
+
+.IndicatesRqdFld span { float: left; padding: 3px 5px 0px 2px; }
+
+.IndicatesStar { color: rgb(255, 0, 0); padding: 0px 5px 0px 0px; font-size: 11px; }
+
+.FormTbl { width: 98%; margin: auto; }
+
+.FormTbl td { width: 98%; padding: 0px 0px 0px 10px; }
+
+.FormTbl td.radio { margin: 0px; padding: 0px; width: 10%; }
+
+.FormTbl td.radioId { margin: 0px; padding: 0px 0px 0px 5px; width: 0.1%; }
+
+.FormTbl td.label { color: rgb(99, 99, 99); font-size: 12px; width: 30%; }
+
+.FormTbl td.field { color: rgb(99, 99, 99); font-size: 12px; font-weight: bold; width: 30%; }
+
+.FormTbl tr { width: 98%; height: 34px; }
+
+.FormTbl td td { padding: 0px; vertical-align: middle; }
+
+.FormTbl td p { font-weight: bold; margin: 0px; padding: 0px; }
+
+.FormTbl .FormTblRdoAlign { margin-left: -5px; }
+
+.FormTbl span.Bold { font-weight: bold; }
+
+.FormTbl .FormTblCol5, .Width5 { width: 5%; }
+
+.FormTbl .FormTblCol10, .Width10 { width: 10%; }
+
+.FormTbl .FormTblCol10, .Width15 { width: 15%; }
+
+.FormTbl .FormTblCol20, .Width20 { width: 20%; }
+
+.FormTbl .FormTblCol25, .Width25 { width: 25%; }
+
+.FormTbl .FormTblCol30, .Width30 { width: 30%; }
+
+.FormTbl .FormTblCol35, .Width35 { width: 35%; }
+
+.FormTbl .FormTblCol40, .Width40 { width: 40%; }
+
+.FormTbl .FormTblCol45, .Width45 { width: 45%; }
+
+.FormTbl .FormTblCol50, .Width50 { width: 50%; }
+
+.FormTbl .FormTblCol55, .Width55 { width: 55%; }
+
+.FormTbl .FormTblCol60, .Width60 { width: 60%; }
+
+.FormTbl .FormTblCol65, .Width65 { width: 65%; }
+
+.FormTbl .FormTblCol70, .Width70 { width: 70%; }
+
+.FormTbl .FormTblCol80, .Width80 { width: 80%; }
+
+.FormTbl .FormTblCol90, .Width90 { width: 90%; }
+
+.FormTbl .FormTblCol100, .Width100 { width: 100%; }
+
+.FormTbl .TdBtn td { padding-bottom: 6px; }
+
+#body-content { position: relative; float: left; margin: 0px auto 10px; width: 100%; }
+
+#table-content { width: 898px; background-repeat: no-repeat; background-position: center top; margin-left: auto; margin-right: auto; text-align: left; }
+
+#titleBar { color: rgb(255, 255, 255); font-size: 18px; font-weight: bold; text-indent: 16px; background: url("../images/nav_TitleBar.png") center top no-repeat; padding: 0px; height: 44px; }
+
+#navBar { background: url("../images/nav_ButtonBackground.png") center top no-repeat; padding: 0px; height: 42px; }
+
+#redAlert { background: url("../images/background_RedAlert.png") center top no-repeat; color: rgb(99, 99, 99); font-size: 13px; font-weight: bold; line-height: 300%; text-indent: 6em; }
+
+#footer { clear: both; width: 1002px; margin: auto; }
+
+#button { padding: 0px; }
+
+#borderTable { background-color: rgb(241, 245, 248); border-spacing: 0px 7px; border-top: 20px solid rgb(241, 245, 248); border-left: 20px solid rgb(241, 245, 248); border-right: 20px solid rgb(241, 245, 248); border-radius: 3px; }
+
+#borderTableDG { background-color: rgb(241, 245, 248); border-spacing: 0px; border-top: 0px solid rgb(241, 245, 248); border-left: 20px solid rgb(241, 245, 248); border-right: 10px solid rgb(241, 245, 248); border-radius: 3px; }
+
+#borderTable th.borderTop { border-top: 1px solid rgb(198, 214, 229); padding-top: 10px; }
+
+#borderTable td.borderTop { border-top: 1px solid rgb(198, 214, 229); padding-top: 10px; padding-bottom: 10px; }
+
+#borderTable th.borderTableEnd { border-bottom: 20px solid rgb(241, 245, 248); }
+
+#borderTable td.borderTableEnd { border-bottom: 20px solid rgb(241, 245, 248); }
+
+#borderTable tr.zeroHeight { height: 0px; }
+
+.guestSelectionBorderTable { margin-top: 10px; margin-bottom: 10px; }
+
+#borderlessTable { border-collapse: collapse; border-spacing: 0px; margin-top: 10px; margin-bottom: 10px; }
+
+#DivTableHeading { background-color: rgb(0, 73, 144); color: rgb(255, 255, 255); text-align: left; font-size: 18px; font-weight: bold; line-height: 2.5em; padding: 0px 20px !important; border: 0px none !important; }
+
+#DivTableHeading1 { color: rgb(0, 73, 144); font-weight: bold; font-size: 16px; padding: 20px 20px 0px !important; border: 0px none !important; }
+
+#DivTableHeading2 { vertical-align: top; padding-top: 0px; padding-bottom: 10px; color: rgb(69, 69, 69); padding-left: 20px !important; }
+
+#DivTableHeading3 { }
+
+#fastPathTable { border-top-left-radius: 3px; border-bottom-left-radius: 3px; padding-left: 20px; width: 10px; background: rgb(255, 255, 255) !important; }
+
+#fastPathTable2 { border-top-right-radius: 3px; border-bottom-right-radius: 3px; width: 410px; padding: 3px; font-size: 12px; color: rgb(65, 65, 65); text-align: left; background: rgb(241, 245, 248); }
+
+div.bagMinimumPopup { margin-top: 15px; margin-left: auto; margin-right: auto; width: 90%; height: 90%; text-align: left; }
+
+div.bagMinimumPopup div.messageRow { height: 70%; }
+
+div.bagMinimumPopup div.footerRow { height: 30%; vertical-align: top; }
+
+div.bagMinimumPopup span { padding: 9px; }
+
+div.bagMinimumPopup span.message { text-align: left; vertical-align: top; line-height: 200%; font-size: 14px; }
+
+div.bagMinimumPopup span.footerCell { width: 100%; text-align: right; }
+
+div.buttonGrey { cursor: pointer; font-size: 13px; color: rgb(255, 255, 255); font-weight: bold; height: 35px; width: 205px; border: 1px solid rgb(0, 73, 144); background: rgb(0, 73, 144); border-radius: 3px !important; }
+
+div.buttonGrey:hover { cursor: pointer; height: 35px; width: 205px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); }
+
+div.buttonGrey:focus { cursor: pointer; height: 35px; width: 205px; background: rgb(48, 111, 170); border: 1px solid rgb(48, 111, 170); outline: rgb(77, 144, 205) solid 2px; }
+
+span#backArrowButtonCell { cursor: pointer; width: 20px; padding: 5px 0px 0px 12px; vertical-align: top; }
+
+div.bagsTable { margin-top: 10px; margin-bottom: 10px; }
+
+div.bagsTable div { height: 42px; }
+
+div.bagsTable span.bagsInput { padding-left: 5px; width: 50px; }
+
+div.bagsTable span.spacer { }
+
+div.bagsTable span.bagsEntryCost { font-size: 17px; font-weight: bold; color: rgb(0, 73, 144); width: 100px; padding-right: 15px; vertical-align: middle; }
+
+div.bagsTable span.bagsDesc { width: 112px; }
+
+div.bagsTable span.assistiveBagCheckbox { width: 20em; vertical-align: top; padding-top: 12px; }
+
+div.bagsTable span.assistiveBagCheckbox label { color: rgb(0, 73, 144); font-size: 12px; }
+
+div.bagsTable span.totalBags { width: 100px; font-weight: bold; font-size: 17px; color: rgb(0, 73, 144); }
+
+div.bagsTable span#totalNumOfBags { font-weight: bold; font-size: 20px; color: rgb(0, 73, 144); font-family: din-web-jetblue-med2; padding-right: 30px; }
+
+div.bagsTable span#totalCosts { font-weight: bold; font-size: 20px; color: rgb(0, 73, 144); font-family: din-web-jetblue-med2; padding-right: 20px; width: 200px; }
+
+div.bagsTable span.totalNumOfBagsPax { font-weight: bold; font-size: 17px; color: rgb(0, 73, 144); width: 270px; }
+
+div.bagsTable span.totalNumOfBagsPaxA { font-weight: bold; font-size: 17px; color: rgb(0, 73, 144); }
+
+div.bagsTable span.totalCostsPax { font-weight: bold; font-size: 17px; color: rgb(0, 73, 144); width: 220px; padding-right: 18px; }
+
+div.bagsTable span.totalCostsPaxA { font-weight: bold; font-size: 17px; color: rgb(0, 73, 144); padding-right: 18px; }
+
+div.bagsTable span.labelCompleteA { color: rgb(0, 73, 144); font-size: 17px; padding-left: 10px; }
+
+.borderless span { padding-bottom: 0px; padding-top: 0px; }
+
+div.jetblue-table span.greyText { color: rgb(69, 69, 69); }
+
+button.buttonMinusA, button.buttonPlusA { cursor: pointer; width: 41px; border: 0px; background-color: transparent; padding: 0px; }
+
+.spanCol25 { float: left; width: 25%; }
+
+.spanCol52 { float: left; width: 52%; }
+
+.spanCol15 { float: left; width: 15%; }
+
+.spanCol20 { float: left; width: 20%; }
+
+.spanCol30 { float: left; width: 30%; }
+
+.spanCol33 { float: left; width: 33%; }
+
+.spanCol35 { float: left; width: 37%; }
+
+.spanCol90 { float: left; width: 90%; }
+
+.spanCol48 { float: left; width: 48%; }
+
+.tallA { min-height: 88px; background: none 0px 0px repeat scroll rgb(255, 255, 255); }
+
+.tallB { min-height: 130px; background: none 0px 0px repeat scroll rgb(255, 255, 255); }
+
+.autocomplete_bags_shortA { text-align: center; font-size: 1.25em; padding-left: 3px; margin: auto; height: 1.4167em; width: 36px; background-color: white; float: left; }
+
+.spanPositionMid { position: relative; top: 30%; }
+
+div.jetblue-table div.tblGridAlternate span.costColumnA { width: 390px; text-align: right; font-size: 17px; font-weight: bold; color: rgb(0, 73, 144); }
+
+.height80 { height: 80px; }
+
+div.jetblue-textTable span.checkBoxA { padding: 6px 3px 6px 6px; line-height: 6em; background: none !important; }
+
+.topMarginZero { margin-top: 0px; }
+
+.paddingTwenty { padding-left: 0px; padding-right: 0px; }
+
+.paddingZero { padding: 0px; }
+
+.paddingTwenty { padding-left: 10px; }
+
+.topMarginTwenty { margin-top: 20px; }
+
+#checkInAllBtn { float: left; margin-left: 20px !important; }
+
+.passengerDiv { width: 100%; background: url("../images/main-1col.png") center top no-repeat; }
+
+.passengerDivFooter { width: 100%; height: 10px; background: url("../images/mainbg_bottomshadow.gif") center top no-repeat; padding-top: 20px; padding-bottom: 20px; }
+
+#guestSelectDiv { width: 82%; margin-left: 20px !important; }
+
+#bagsEntryDiv { width: 95%; margin-left: 20px !important; }
+
+#bagsPaymentSummaryDiv { width: 95%; margin-left: 20px !important; }
+
+#bagsPaymentDetailsPopupDiv { width: 100%; }
+
+#bagsSummaryDiv { width: 90%; margin-left: auto; margin-right: auto; }
+
+#paymentSummaryDiv { width: 60%; margin-left: auto; margin-right: auto; }
+
+.boardingPassDiv { width: 100%; background: url("../images/main-1col.png") center top no-repeat; }
+
+#checkInAllTable { width: 80%; }
+
+.autocomplete { padding-left: 3px; height: 33px; width: 95%; border-image: initial; background-color: white; float: left; margin: auto; line-height: 33px; border-width: 1px; border-style: solid; border-color: rgb(255, 255, 255) rgb(242, 242, 242) rgb(217, 217, 217); }
+
+.autocomplete_short_dropdown { padding-left: 3px; margin: auto; width: 164px; border: 0px; float: left; background: linear-gradient(rgb(255, 255, 255) 20%, rgb(254, 254, 254) 58%, rgb(243, 243, 243) 79%) 0% 0% repeat scroll rgb(254, 254, 254); }
+
+.autocomplete_country_dropdown { padding-left: 3px; margin: auto; width: 180px; border: 0px; float: left; background: linear-gradient(rgb(255, 255, 255) 20%, rgb(254, 254, 254) 58%, rgb(243, 243, 243) 79%) 0% 0% repeat scroll rgb(254, 254, 254); }
+
+.autocomplete_destination_dropdown { padding-left: 3px; margin: auto; height: 17px; width: 164px; border: 0px; float: left; background-color: white; }
+
+.autocomplete_passport { padding-left: 3px; margin: auto; width: 268px; border: 0px; float: left; background-color: white; }
+
+.autocomplete_medium_dropdown { padding-left: 3px; margin: auto; width: 200px; float: left; border: 0px !important; }
+
+.autocomplete_medium { padding-left: 3px; margin: auto; width: 200px; border: 0px; }
+
+.autocomplete_shorter { padding-left: 3px; margin: auto; height: 1.4167em; width: 66px; border: 0px; background-color: white; float: left; }
+
+.autocomplete_bags_short { text-align: center; font-size: 1.25em; padding-left: 3px; margin: auto; height: 1.4167em; width: 36px; border: 0px; background-color: white; float: left; }
+
+.autocomplete_date { background: linear-gradient(rgb(255, 255, 255) 20%, rgb(254, 254, 254) 58%, rgb(243, 243, 243) 79%) 0% 0% repeat scroll white; padding-left: 3px; margin: auto; width: 68px; border: 0px; float: left; }
+
+.autocomplete_bags_dropdown { padding-left: 3px; margin: auto; width: 66px; background-color: white; float: left; border: 0px !important; }
+
+.autocomplete_passport_date { padding-left: 3px; margin: auto; height: 17px; width: 232px; border: 0px; background-color: white; float: left; }
+
+.autocomplete_long { padding-left: 3px; margin: auto; width: 357px; border: 0px; background-color: white; float: left; }
+
+.autocomplete_long_popup { padding-left: 3px; margin: auto; height: 17px; width: 304px; border: 0px; background-color: white; }
+
+.autocomplete_popup_field { float: right; }
+
+.autocomplete_padding { padding: 10px; }
+
+.autocomplete_arrow { height: 35px; width: 20px; float: right; }
+
+.autocomplete_arrow img, .autocomplete_hover img { padding-top: 15px; position: absolute; }
+
+.autocomplete_hover { height: 35px; width: 20px; float: right; border-radius: 0px 0px 3px 3px !important; }
+
+.autocomplete_box { margin-right: 3px; border-collapse: collapse; border-width: 1px; border-style: solid; padding: 10px; margin-top: 11px; border-color: rgb(192, 192, 192) rgb(240, 240, 240) rgb(231, 231, 231) rgb(192, 192, 192); }
+
+.autocomplete1_box { border-collapse: collapse; border-width: 1px; border-style: solid; height: 27px; padding: 10px; margin-top: 11px; border-color: rgb(192, 192, 192) rgb(240, 240, 240) rgb(231, 231, 231) rgb(192, 192, 192); }
+
+.autocomplete_box_bags { margin-right: 3px; border-collapse: collapse; border-width: 1px; border-style: solid; height: 1em; padding: 10px; margin-top: 11px; border-color: rgb(192, 192, 192) rgb(240, 240, 240) rgb(231, 231, 231) rgb(192, 192, 192); }
+
+.autocomplete_box_guest { margin-right: 3px; border-collapse: collapse; border-width: 1px; border-style: solid; height: 1.25em; padding: 10px; margin-top: 11px; border-color: rgb(192, 192, 192) rgb(240, 240, 240) rgb(231, 231, 231) rgb(192, 192, 192); }
+
+select.autocomplete_box { height: 17px; }
+
+table.wideContent td, table.autocomplete_box td, table.wideContent th, table.autocomplete_box th { padding: 0px; background-color: rgb(255, 255, 255) !important; }
+
+table.wideContent td, div.autocomplete_box span, table.wideContent th, div.autocomplete_box p { background: linear-gradient(rgb(255, 255, 255) 20%, rgb(254, 254, 254) 58%, rgb(243, 243, 243) 79%) 0% 0% repeat scroll rgb(254, 254, 254); padding: 0px; }
+
+div.autocomplete_gradient { }
+
+table.autocomplete_box { border-width: 1px; border-style: solid; border-radius: 3px !important; }
+
+div.autocomplete_box { border-width: 1px; border-style: solid; border-radius: 3px !important; }
+
+table.autocomplete_box tr { height: 17px; }
+
+div.autocomplete_box div { height: 17px; }
+
+table.autocomplete_box td { padding: 0px !important; }
+
+div.autocomplete_box span { padding: 0px !important; }
+
+.error { border: 1px solid rgb(212, 4, 43) !important; }
+
+.errorRedText { color: rgb(212, 4, 43); font-size: 12px; font-weight: lighter; float: left; }
+
+div#error { width: 20px; height: 20px; border-width: 2px; border-style: solid; border-image: initial; padding: 1px 1px 1px 0px; border-color: rgb(220, 0, 0) !important; background-color: rgb(255, 246, 246) !important; }
+
+div.ktnErrorDivClass { margin-left: 20px; font-weight: bold; font-size: 12px; padding-top: 5px; color: rgb(212, 4, 42) !important; }
+
+a.errorMsg { color: rgb(212, 4, 42); text-decoration: underline; }
+
+.ON_TIMEText { color: rgb(58, 119, 40); font-weight: bold; }
+
+.DELAYEDText { color: rgb(245, 169, 0); }
+
+.CANCELLEDText { color: rgb(158, 11, 15); }
+
+ul li { background: none; }
+
+div#exitRowMessage { border: 1px solid; height: 180px; width: 100%; overflow: hidden scroll; }
+
+div#exitRowMessage div { padding: 5px; }
+
+div#bulkHeadMessage { border: 1px solid; height: 180px; width: 100%; overflow: hidden scroll; }
+
+div#bulkHeadMessage div { padding: 5px; }
+
+td#boardingPassNote { padding-left: 40px; }
+
+.font-bold { font-weight: bold; }
+
+.fine-print { margin-left: 10px; color: rgb(89, 89, 89); font-size: 11px; font-family: Arial, Helvetica, sans-serif; }
+
+a.tooltip { font-weight: normal; }
+
+.paxButtonNotSelected { padding-top: 5px; padding-bottom: 5px; padding-left: 15px; vertical-align: middle; width: 215px; height: 39px; z-index: 1; top: 0px; background-color: rgb(255, 255, 255); border: 1px solid rgb(222, 222, 222); font-size: 16px; font-weight: bold; }
+
+.paxButtonSelected { padding: 5px 15px; border: none; color: rgb(255, 255, 255); width: 209px; height: 49px; background: url("../images/SeatMap_Paxlist.png") no-repeat; vertical-align: middle; font-size: 11px; font-weight: bold; line-height: 10px; }
+
+.paxButtonNotSelected { width: 215px; height: 49px; font-size: 11px; font-weight: bold; line-height: 10px; }
+
+div.seatCostDiv { text-align: right; width: 50px; }
+
+div.paxButtonNameDiv { margin-top: 1px; vertical-align: middle; width: 140px; height: 43px; overflow: hidden; text-overflow: ellipsis; max-height: 43px; }
+
+.seatmapPaxSelect-radio input[type="radio"] { margin: 1px; position: absolute; z-index: 2; cursor: pointer; outline: none; opacity: 0; }
+
+span.green { font-weight: bold; font-size: 12px; color: rgb(131, 206, 107) !important; }
+
+span.blue { font-weight: bold; color: rgb(0, 73, 144) !important; }
+
+span.lightBlue { color: rgb(48, 111, 170) !important; }
+
+p.infoComplete { background: url("../images/Completecheck.png") left bottom no-repeat; height: 23px; width: 100%; display: inline-block; padding-left: 20px; }
+
+div.infoComplete { background: url("../images/Completecheck.png") right bottom no-repeat; height: 23px; width: 100px; display: inline-block; }
+
+div.infoCompleteImg { height: 23px; width: 100px; display: inline-block; position: relative; top: 6px; }
+
+div.infoCompleteSelectPax { background: url("../images/Completecheck.png") right center no-repeat; height: 23px; width: 50%; display: inline-block; }
+
+div.EMLSeatGroupIcon { background: url("../images/Itin_EvenMoreSpace.png") right center no-repeat; height: 14px; width: 15px; display: inline-block; padding-right: 15px; }
+
+div.EMLSeatGroupIconSelected { background: url("../images/EvenMoreSpaceWhiteIcon.png") right bottom no-repeat; height: 16px; width: 17px; display: inline-block; padding-right: 15px; }
+
+div.MintSeatIcon { background: url("../images/MintIcon.png") right bottom no-repeat; height: 18px; width: 19px; display: inline-block; padding-right: 15px; }
+
+table.flightSegmentButtons { border-collapse: collapse; }
+
+table.flightSegmentButtons td.arrowSpace { width: 22px; }
+
+table.flightSegmentButtons th { width: 239px; }
+
+span.flightTextSmall, span.dobTextSmall { font-size: 12px; }
+
+span.dobTextSmall { font-weight: normal; }
+
+span.dobTextBlack { color: black; }
+
+span.flightTextSmall { display: block; line-height: 15px; text-transform: uppercase; font-weight: normal; font-family: din-web-jetblue-med2; font-size: 9px; width: 100px; text-overflow: ellipsis; overflow: hidden; }
+
+span.fieldsRequired { font-size: 10px; }
+
+a.tooltip { padding-left: 3px; vertical-align: middle; }
+
+a.assistiveBags { padding-left: 3px; vertical-align: middle; }
+
+td.jetWithPetIcon { background: url("../images/JetWithPetIcon.png") center center no-repeat rgb(255, 255, 255) !important; }
+
+td.emSpeedIcon { background: url("../images/PrioritySecurityIcon.png") center center no-repeat rgb(255, 255, 255) !important; }
+
+td.emPointsIcon { background: url("../images/EMPointsIcon.png") center center no-repeat rgb(255, 255, 255) !important; }
+
+tr.fillerRow { height: 21px; }
+
+td.paddedCheckbox { padding-top: 18px !important; padding-left: 15px !important; }
+
+p.extrasTitle { font-size: 18px; font-weight: bold; display: inline; }
+
+p.extrasTitleSmaller { font-size: 17px; font-weight: bold; display: inline; }
+
+p.extrasHeading { font-size: 16px; display: inline; }
+
+p.extrasText { font-size: 14px; }
+
+p.priorityListRed { color: red; font-weight: bold; }
+
+p.extrasLeft { font-size: 14px; font-weight: bold; }
+
+span.extrasLeft { font-size: 14px; font-weight: bold; }
+
+p.extrasLeftSmaller { font-size: 14px; color: black; }
+
+span.extrasLeftSmaller { font-size: 14px; color: black; }
+
+span.largeText { font-size: 20px; }
+
+#priorityListSeatsLabel { padding-bottom: 7px; }
+
+#priorityListSeatsLabelMint { padding-bottom: 7px; padding-left: 25px; background: url("../images/MintIcon.png") 15px 0px no-repeat; }
+
+#priorityListSeatsData { padding-top: 8px; }
+
+#mintAvailable { padding-top: 6px; padding-bottom: 6px; }
+
+#mintCapped { padding-top: 6px; padding-bottom: 6px; }
+
+div.priorityAssignedSeat { background: url("../images/GreenChk_ProgressBar_White.png") left bottom no-repeat; height: 23px; width: 30px; display: inline-block; }
+
+td.checkExplain { background: url("../images/GreenChk_ProgressBar_White.png") 8px center no-repeat; border: 1px solid rgb(192, 192, 192); padding-left: 35px; vertical-align: middle; color: gray; padding-top: 10px; padding-bottom: 10px; }
+
+#priorityListCheckExplain { position: fixed; top: 500px; left: 1000px; width: 290px; z-index: 9001; display: none; pointer-events: none; }
+
+.container { width: 100%; clear: both; }
+
+.cell { width: 50%; float: right; }
+
+#cell1 { float: left; }
+
+#cell2 { float: right; }
+
+#cell3 { float: left; }
+
+#cell4 { float: right; }
+
+#cell5 { float: left; }
+
+#cell6 { float: right; }
+
+#cell7 { float: left; }
+
+#cell8 { float: right; }
+
+h2.dangerousGoodsLabel { font-weight: bold; font-size: 13px; display: inline-block; padding-left: 15px; padding-top: 10px; color: rgb(0, 73, 144) !important; }
+
+p.dangerousGoodsDescription { padding: 5px 25px 5px 80px; }
+
+.dangerousGoodsImg { height: 65px; width: 65px; vertical-align: top; float: left; padding: 0px 0px 15px !important; }
+
+.initiallyHidden { display: none; }
+
+label.jetblue-table { font-size: 12px; color: rgb(65, 65, 65); text-align: left; }
+
+div.jetblue-table div.tall_1 { height: 9.5em; }
+
+div.fastpath { width: 92%; margin-left: auto; margin-right: auto; }
+
+div.fastpath span { font-size: 14px; padding-bottom: 0px; }
+
+div.fastpath span label { }
+
+div.fastpath span.largeText { font-size: 20px; }
+
+.divCol50 { width: 50%; float: left; }
+
+.divCol18 { width: 18%; float: left; }
+
+.divCol7 { width: 7%; float: left; }
+
+.divCol20 { width: 20%; float: left; }
+
+.divCol90 { width: 90%; float: left; }
+
+.divCol88 { width: 88%; float: left; }
+
+.divCol52 { width: 52%; float: left; }
+
+.divCol18 { width: 18%; float: left; }
+
+.divCol19 { width: 19%; float: left; }
+
+.divCol6 { width: 6%; float: left; }
+
+span.emSpeedIcon { background: url("../images/PrioritySecurityIcon.png") center center no-repeat rgb(255, 255, 255) !important; }
+
+div.fillerRow { height: 21px; }
+
+span.paddedCheckbox { padding-top: 18px !important; padding-left: 15px !important; }
+
+span.jetWithPetIcon { background: url("../images/JetWithPetIcon.png") center center no-repeat rgb(255, 255, 255) !important; }
+
+span.emPointsIcon { background: url("../images/EMPointsIcon.png") center center no-repeat rgb(255, 255, 255) !important; }
+
+.spanHeight span { height: 90%; }
+
+div.regDocTable div.resdField { height: 2em; }
+
+.subHeading { padding-top: 3px !important; padding-left: 3px !important; }
+
+div.tblGridAlternateHighlight span.regHeading { width: 91%; height: 58px; display: block; float: left; padding-left: 12px; padding-top: 30px; }
+
+div.jetblue-table div.residDetails { background: none 0px 0px repeat scroll rgb(255, 255, 255); height: 15.5em; margin-left: 69px; margin-top: 5px; padding-left: 9px; padding-top: 20px; border-bottom-right-radius: 3px; border-top-right-radius: 3px; margin-bottom: 8px; }
+
+div.regDocTable div.heightZero span.dateEntry { float: left; display: block; width: 100px; }
+
+div.jetblue-table span.first { border-bottom-left-radius: 3px; border-top-left-radius: 3px; }
+
+div.jetblue-table span.cardInfo { padding: 10px 0px 10px 10px; vertical-align: top; }
+
+div.jetblue-table h1 { font-size: 16px; padding-bottom: 5px; vertical-align: top; }
+
+div.jetblue-table div.tblGridAlternateNotHighlight span.label { color: rgb(0, 73, 144); background: none 0px 0px repeat scroll rgb(255, 255, 255) !important; }
+
+div.jetblue-table div.tblGridAlternateNotHighlight span { background: none 0px 0px repeat scroll rgb(255, 255, 255); }
+
+div.jetblue-table div.tblGridAlternateNotHighlight span.paxPaymentHeadingLabel { color: rgb(65, 65, 65); font-size: 14px; padding-right: 10px; padding-top: 10px; text-align: right; width: 210px; }
+
+#borderTableNew { background-color: rgb(241, 245, 248); border-radius: 3px; border-spacing: 0px 7px; border-top: 20px solid rgb(241, 245, 248); }
+
+.creditCardHeading { float: left; margin-left: -5px; margin-top: -20px; }
+
+.colOne { float: left; width: 64%; margin-left: 34px; height: 20em; }
+
+.brdOne { height: 224px; width: 478px; }
+
+.fieldOne { float: left; clear: both; }
+
+.fieldTwo { margin-left: 48px; }
+
+.fieldThree { float: left; margin-left: 19px; }
+
+.colTow { float: left; width: 30%; }
+
+.colThree { float: left; width: 60%; }
+
+.fieldFour { float: left; }
+
+div.jetblue-table span.firstNew { border-bottom-left-radius: 3px; border-top-left-radius: 3px; float: left; width: 52%; height: 54px; padding-top: 32px; }
+
+div.jetblue-table span.lastNew { border-bottom-right-radius: 3px; border-top-right-radius: 3px; float: left; width: 37%; height: 54px; padding-top: 32px; }
+
+div.creditCardInfo { margin: auto; border-collapse: collapse; }
+
+div.creditCardInfo1 { margin: auto; border-collapse: collapse; width: 30%; float: right; background: rgb(255, 255, 255); }
+
+div.creditCardInfo span { padding: 5px !important; }
+
+.divCol3 { float: left; width: 80%; }
+
+div.creditCardInfo span.spacer { width: 400px; }
+
+.payment-detail-width { padding: 10px 0px; width: 96%; height: 50px; margin: auto; background: rgb(255, 255, 255); }
+
+.payment-detail-widthA { padding: 10px 0px; width: 90.5%; height: 72px; margin: auto auto auto 7.5%; background: rgb(255, 255, 255); }
+
+div.jetblue-table span.paymentNew { vertical-align: top; padding: 10px 0px; }
+
+div.jetblue-table span.paymentSummaryLabelNew { padding: 10px 0px; font-size: 14px; }
+
+div.jetblue-table span.paymentSummaryValueNew { text-align: center; font-size: 14px; }
+
+div.jetblue-table span.heading { background: none 0px 0px repeat scroll rgb(241, 245, 248); color: rgb(1, 74, 142); font-size: 14px; padding-bottom: 0px; vertical-align: top; float: right; font-weight: bold; }
+
+div.jetblue-table h2.passengerListHeading { font-size: 16px; font-weight: bold; color: rgb(0, 73, 144); vertical-align: middle; padding: 3px 3px 6px 6px; }
+
+div.popupWindowTable span.startoverCancel { color: rgb(255, 255, 255); font-weight: bold; font-size: 16px; margin-left: 20px; padding: 20px !important; border: 0px none !important; }
+
+div.footerButtonsEnclosed { width: 100%; padding-top: 20px; }
+
+div.footerButtons { border: none; margin: auto; width: 922px; padding-top: 0px; padding-bottom: 10px; }
+
+div.footerButtonsEnclosed span#left_buttons { padding-left: 0px; padding-right: 20px; padding-bottom: 5px; }
+
+div.footerButtonsEnclosed span#center_buttons { padding-left: 0px; padding-right: 0px; padding-bottom: 5px; }
+
+div.footerButtonsEnclosed span#right_buttons { padding-left: 0px; padding-right: 0px; padding-bottom: 5px; }
+
+div.footerButtonsEnclosed div { height: 18px; }
+
+div.footerButtonsEnclosed div.footerRow { padding-left: 10px; padding-top: 5px; padding-bottom: 10px; }
+
+div.footerButtonsEnclosed span#center_button_skip { padding-bottom: 20px; display: none; }
+
+div.footerButtonsEnclosed span.question { width: 420px; font-size: 14px; font-weight: bold; color: rgb(214, 0, 0); text-align: right; }
+
+div.footerButtonsEnclosed span.questionLeft { padding-left: 5px; padding-right: 5px; font-size: 12px; font-weight: bold; color: rgb(214, 0, 0); text-align: left; }
+
+div.footerButtonsEnclosed span.no { padding-left: 0px !important; padding-right: 0px !important; }
+
+div.footerButtonsEnclosed span.yes { padding-left: 10px !important; padding-right: 70px !important; }
+
+div.footerButtonsEnclosed span.seatNo { padding-left: 20px !important; padding-right: 20px !important; }
+
+div.footerButtonsEnclosed span.seatYes { padding-left: 20px !important; padding-right: 20px !important; }
+
+div.footerButtons span#left_buttons { width: 47%; padding-left: 0px; padding-right: 0px; padding-bottom: 5px; }
+
+div.footerButtons span#center_buttons { width: 6%; padding-left: 0px; padding-right: 0px; padding-bottom: 5px; }
+
+div.footerButtons span#right_buttons { width: auto; padding-left: 0px; padding-right: 0px; padding-bottom: 5px; text-align: center; float: right; }
+
+div.footerButtons div { height: 18px; }
+
+div.footerButtons div.footerRow { padding-left: 10px; padding-top: 5px; padding-bottom: 10px; }
+
+div.footerButtons span#center_button_skip { padding-bottom: 5px; padding-right: 10px; }
+
+div.footerButtons span.question { font-size: 14px; font-weight: bold; color: rgb(214, 0, 0); text-align: center; }
+
+div.footerButtons span.questionLeft { padding-right: 5px; font-size: 12px; font-weight: bold; color: rgb(214, 0, 0); text-align: left; }
+
+div.footerButtons span.no { padding-left: 10px; padding-right: 10px; }
+
+div.footerButtons span.yes { padding-left: 20px; padding-right: 20px; }
+
+.width-full-buttonsfooter { margin: 1em; }
+
+.heading_fqtv { height: 3em; font-size: 18px; line-height: 4em; }
+
+.heading_fqtv1 { background-color: rgb(0, 73, 144); color: rgb(255, 255, 255); text-align: left; font-size: 18px; font-weight: bold; vertical-align: middle; height: 4em; padding: 0px 20px !important; border: 1px solid rgb(0, 73, 144) !important; }
+
+.heading_fqtv2 { color: rgb(0, 73, 144); font-weight: bold; font-size: 16px; padding: 20px 20px 0px !important; border: 0px none !important; }
+
+#borderTable_fqtv { background-color: rgb(241, 245, 248); border-spacing: 0px 7px; border-width: 20px; border-style: solid; border-color: rgb(241, 245, 248); border-radius: 3px; margin-top: 20px; }
+
+.popupWindowTable_fqtv { width: 100%; height: 19em; background-color: white; border-collapse: collapse; border-color: rgb(192, 192, 192) rgb(240, 240, 240) rgb(231, 231, 231) rgb(192, 192, 192); border-style: solid; border-width: 1px; }
+
+.tblGridAlternate_fqtv { background: rgb(255, 255, 255); }
+
+.fqtvTable { margin: auto; width: 95%; }
+
+.tall_fqtv { height: 7em; }
+
+.divColfqtv1 { width: 61%; float: left; }
+
+.divColfqtv2 { width: 60%; float: left; height: 88px; line-height: 7em; }
+
+.divColfqtv4 { width: 30%; float: left; margin-top: 3em; }
+
+.divColfqtv3 { width: 29%; float: left; margin-bottom: 5px; }
+
+.divColfqtv11 { width: 80%; float: left; }
+
+.divColfqtv12 { width: 100%; float: left; margin-left: 20px; }
+
+.divColfqtv13 { width: 40%; margin-left: 20px; margin-top: 20px; }
+
+.divColfqtv14 { width: 60%; float: left; margin-left: 20px; }
+
+.divColfqtv15 { width: 20%; float: left; margin-top: 20px; }
+
+.heading_KTN1 { height: 60px; font-size: 18px; line-height: 4em; }
+
+.heading_KTN { background-color: rgb(0, 73, 144); color: rgb(255, 255, 255); text-align: left; font-size: 18px; font-weight: bold; height: 4em; padding: 0px 20px !important; border: 0px none !important; }
+
+.divColKTN0 { width: 100%; float: left; margin-top: 10px; }
+
+.divColKTN1 { width: 100%; float: left; }
+
+.divColKTN2 { width: 100%; float: left; margin-left: 20px; margin-top: 10px; }
+
+.divColKTN3 { width: 100%; float: left; margin-left: 20px; }
+
+.divColKTN4 { width: 100%; float: left; margin-left: 20px; }
+
+div.jetblue-table div.taller { min-height: 6em; margin-top: 10px; }
+
+.font-description-bp { font-size: 16px; font-weight: bold; margin-bottom: 1em; }
+
+.font-description-bp0 { font-size: 16px; font-weight: bold; }
+
+.note-bp { font-size: 14px; color: rgb(69, 69, 69); }
+
+.Clear-bp { clear: both; margin-top: 2em; }
+
+.divCol1_bp { width: 65em; margin-bottom: 20px; }
+
+.divCol2_bp { line-height: 20px; }
+
+.divCol3_bp { margin-right: 0.5em; margin-top: 1em; float: left; }
+
+.divCol4_bp { width: 70%; }
+
+.divCol5_bp { width: 5%; float: left; }
+
+.divCol6_bp { width: 70%; }
+
+button.buttonGreySm_bp { cursor: pointer; font-size: 100%; color: rgb(0, 73, 144); font-weight: bold; height: 3.7em; width: 14em; padding: 0em 1.5em 0.04em; background: rgb(255, 255, 255); vertical-align: top; border-radius: 3px !important; }
+
+button.buttonGreySm_clicked { cursor: pointer; width: 14.3em; padding: 0em 1.5em 0.01em; background-color: rgb(241, 245, 248); border: 1px dotted rgb(0, 0, 0); }
+
+button.buttonGreySm_bp:hover { background-size: 14em 3.8em; border: 1px dotted rgb(0, 0, 0); }
+
+button.buttonGreySm_bp:focus { border: 1px dotted rgb(0, 0, 0); }
+
+.bp_row { margin-top: 1.5em; margin-bottom: 1.5em; }
+
+.applyToAll_bp { margin-bottom: 1.5em; }
+
+.group_lable { margin-bottom: 10px; }
+
+.abc { font-size: 12px; text-transform: capitalize; margin-top: 1em; }
+
+.BpPhoneNo { font-size: 16px; margin-bottom: 1em; }
+
+.SizeBig { height: 5em; width: 5em; }
+
+.autocomplete_box_bp { border-collapse: collapse; border-width: 1px; border-style: solid; height: 1.25em; padding: 10px; margin-top: 11px; border-color: rgb(192, 192, 192) rgb(240, 240, 240) rgb(231, 231, 231) rgb(192, 192, 192); }
+
+.autocomplete_bp_dropdown { padding-left: 3px; margin: auto; height: 34px; width: 180px; border: 0px; float: left; background: linear-gradient(rgb(255, 255, 255) 20%, rgb(254, 254, 254) 58%, rgb(243, 243, 243) 79%) 0% 0% repeat scroll rgb(254, 254, 254); }
+
+.TermsCheck { margin-top: 1em; }
+
+#show-me1 { margin: 0px 10px 10px; }
+
+#show-me { margin: 0px 10px 10px; }
+
+a.show_hide { background: url("../images/BTN.png"); width: 1em; height: 1em; display: block; color: rgb(255, 255, 255); font-weight: bold; font-size: 25px; text-align: center; line-height: 0.8em; }
+
+a.checkboxImage { display: block; font-size: 25px; text-align: center; line-height: 0.8em; }
+
+.radioImage { margin: 12px 10px 10px; padding-bottom: 2px; float: right; }
+
+.listHead { font-weight: bold; }
+
+.appStoreLink { height: 2em; width: 4em; }
+
+.largerCheckbox { width: 30px; height: 30px; }
+
+.requiredFields { color: rgb(0, 0, 0); margin-top: 10px; }
+
+.bpErrorRed { color: rgb(255, 0, 0); font-size: 12px; }
+
+.FtrBtmBar_bp { width: 100%; max-width: 962px; margin: 10px 0px 20px; font-size: 10px; clear: both; }
+
+#flightNotificationFooterNote { margin-top: 10px; color: rgb(0, 0, 0); }
+
+.PlusMinus { margin-left: 5px; }
+
+.indention_bp { margin-left: 20px; }
+
+div.petTerms { height: 32em; }
+
+.tooltipcvv { float: right; margin-left: 2.1em; margin-top: -1.3em; position: absolute; padding-left: 15px !important; }
+
+.divCol36 { float: left; width: 36%; }
+
+.divCol38 { float: left; width: 64%; }
+
+.divCol37 { float: left; width: 37%; }
+
+.divCol23 { float: left; width: 23%; }
+
+.text { color: rgb(255, 255, 255); cursor: pointer; font-size: 100%; font-weight: bold; }
+
+.Nclicked { display: none; margin-right: 10px; position: relative; right: 1.4em; width: 14em; height: 4em; }
+
+.clicked { display: inline; }
+
+.lefttext { position: absolute; top: 0.97em; left: 4em !important; }
+
+.lefttextGroup { position: absolute; top: 0.97em; left: 5em !important; }
+
+.width61 { width: 61%; }
+
+.plusMinus { background: url("../images/BTN.png"); width: 1em; height: 1em; display: block; color: rgb(255, 255, 255); font-weight: bold; font-size: 25px; text-align: center; line-height: 0.8em; margin-right: 1em; margin-top: -4px; }
+
+.divRowFlexBag { display: flex; }
+
+a.popupClose:focus { border: 1px dotted white; }
+
+a.linkBackPriority { cursor: pointer; font-size: 13px; font-weight: bold; height: 24px; padding-left: 10px; padding-top: 10px; text-transform: uppercase; vertical-align: middle; width: 96px; }
+
+.divcolA1 { background-color: rgb(0, 73, 144); height: 7em; }
+
+.divcolA2 { color: rgb(255, 255, 255); margin-left: 20px; line-height: 3.5em; }
+
+.divcolA3 { margin-top: 20px; }
+
+.divcolA4 { margin-left: 20px; }
+
+.divColMillitaryMsg { margin-left: 40px; font-weight: bold; float: left; width: 41%; }
+
+.divColMillitaryMsg2 { margin-left: 50px; font-weight: bold; float: left; width: 53%; color: rgb(65, 65, 65); }
+
+.divColSkipbags { text-align: left; font-size: 16px; color: rgb(0, 0, 0); font-weight: bold; }
+
+.divColAtpcoUnavailable { text-align: left; font-size: 16px; color: red; font-weight: bold; }
+
+.skipbagsTable { padding: 50px 5px; }
+
+#iropCancelInfoPopup { background-color: rgb(255, 255, 255); position: fixed; top: 35%; left: 35%; z-index: 9001; display: none; }
+
+#iropChangeInfoPopup { background-color: rgb(255, 255, 255); position: fixed; top: 35%; left: 35%; z-index: 9001; display: none; }
+
+.divcolA1_irop { color: rgb(255, 255, 255); line-height: 4.5em; height: auto; margin-left: 20px; font-size: 16px; }
+
+.divcolA5_irop { color: rgb(255, 255, 255); line-height: 1.5em; height: auto; margin-left: 20px; font-size: 16px; }
+
+.divcolA2_irop { margin-left: 20px; }
+
+.divcolA3_irop { padding: 1px; font-size: 12px; color: rgb(65, 65, 65); text-align: left; }
+
+.divcolA4_irop { margin: 20px; }
+
+.divcolA6_irop { margin-left: 20px; margin-bottom: 20px; }
+
+.buttonGreySm_irop { cursor: pointer; font-size: 100%; color: rgb(255, 255, 255); font-weight: bold; height: 2.4em; padding: 0em 1.5em 0.01em; border: 1px solid rgb(248, 154, 3); background: rgb(248, 154, 3); text-transform: uppercase; border-radius: 3px !important; }
+
+.inactiveLink { pointer-events: none; cursor: default; font-size: 12px; color: rgb(65, 65, 65); }
+
+.hazmatContinue { width: 700px; top: 5px; margin-right: 15px; display: inline; position: relative; }
+
+#healthDeclParentUl { padding-inline-start: 20px; }
+
+#healthDeclParentUl > li::before { padding-right: 10px; }
+
+#borderTable_1click { background-color: rgb(241, 245, 248); border-spacing: 0px 7px; border-top: 30px solid rgb(241, 245, 248); border-left: 20px solid rgb(241, 245, 248); border-bottom: 20px solid rgb(241, 245, 248); border-radius: 3px; }
+
+div.jetblue-table span.BTfirstNew { border-bottom-left-radius: 3px; border-top-left-radius: 3px; float: left; width: 89%; height: 54px; padding-top: 32px; }
+
+#borderTableNewBT { background-color: rgb(241, 245, 248); border-radius: 3px; border-spacing: 0px 7px; border-top: 20px solid rgb(241, 245, 248); border-bottom: 20px solid rgb(241, 245, 248); }
+
+.boldPara { font-weight: bold; }
+
+.otherAirlineContainer { margin-top: 25px; margin-left: 25px; }
+
+.logoImageClass { height: 45px; width: auto; margin-left: -5px; margin-top: -5px; }
+
+.textSection { display: inline; color: black; }
+
+.locatorSection { display: inline; }
+
+.textSectionOT { clear: both; margin-top: 10px; }
+
+.locatorSection { border-radius: 2px; padding: 0.25em 5px; }
+
+.locatorTitleText { font-family: din-web-jetblue-med2; font-size: 15px; padding: 10px 0px 0px; color: rgb(0, 73, 144); font-weight: bold; }
+
+.OALcopyButton { cursor: pointer; font-size: 13px; color: rgb(0, 73, 144); font-weight: bold; height: 2.4em; width: 14em; border: 1px solid rgb(0, 73, 144); background: white; font-family: din-web-jetblue2, Arial, Helvetica, sans-serif; text-transform: uppercase; border-radius: 3px !important; }
+
+.OALcopyButton:hover { cursor: pointer; background: rgb(0, 73, 144); border: 1px solid rgb(0, 73, 144); color: white; }
+
+.OALcopiedButton { color: rgb(255, 255, 255); font-weight: bold; background: rgb(0, 73, 144); display: none; cursor: pointer; font-size: 13px; height: 2.4em; width: 14em; border: 1px solid rgb(0, 73, 144); font-family: din-web-jetblue2, Arial, Helvetica, sans-serif; text-transform: uppercase; border-radius: 3px !important; }
+
+.buttonsOAL { margin-left: 10px; }
+
+.textSection2 { margin-bottom: 100px; color: black; margin-top: 20px; }
+
+.urlOALLink { text-decoration: underline; }
+
+.OALContinueButton { float: right; margin-right: 170px; cursor: pointer; font-size: 100%; color: rgb(255, 255, 255); font-weight: bold; height: 2.4em; padding: 0em 1.5em 0.01em; border: 1px solid rgb(0, 73, 144); background: rgb(0, 73, 144); text-transform: uppercase; border-radius: 3px !important; }
+
+.TitleTextOtherAirline { font-family: din-web-jetblue-med2; font-size: 16px; padding: 10px 0px 0px; color: rgb(0, 73, 144); font-weight: bold; }
+
+.margin-top-15 { margin-top: 15px; }
+
+.bpContainerCDCDiv { display: inline-block; border: 0.5px solid rgb(198, 198, 198); margin-top: 5px; margin-bottom: 20px; overflow: hidden; position: relative; width: 100%; padding-bottom: 10px; }
+
+.statusBarCDCNotValid { background-color: rgb(255, 131, 43); width: 25px; float: left; height: 100%; position: absolute; }
+
+.statusBarCDCValid { background-color: rgb(72, 135, 54); width: 25px; float: left; height: 100%; position: absolute; }
+
+.blockContentBP { padding-left: 40px; padding-top: 10px; color: rgb(62, 64, 65); padding-right: 10px; }
+
+.blockHeadingBP { font-weight: bold; font-size: 16px; }
+
+.blockContentBPInner { font-size: 14px; margin-top: 5px; }
+
+.paxNamesBP { margin: 5px 0px; font-weight: bold; }
+
+.margin-top-10 { margin-top: 10px; }
+
+.BPcopyButton { cursor: pointer; font-size: 13px; color: rgb(0, 73, 144); font-weight: bold; height: 2.4em; width: 14em; border: 1px solid rgb(0, 73, 144); background: white; font-family: din-web-jetblue2, Arial, Helvetica, sans-serif; text-transform: uppercase; border-radius: 3px !important; }
+
+.BPcopyButton:hover { cursor: pointer; background: rgb(0, 73, 144); border: 1px solid rgb(0, 73, 144); color: white; }
+
+.BPcopiedButton { color: rgb(255, 255, 255); font-weight: bold; background: rgb(0, 73, 144); cursor: pointer; font-size: 13px; height: 2.4em; width: 14em; border: 1px solid rgb(0, 73, 144); font-family: din-web-jetblue2, Arial, Helvetica, sans-serif; text-transform: uppercase; border-radius: 3px !important; }
+
+.BPconfirmationCode { color: rgb(0, 73, 144); font-size: 16px; font-weight: bold; }
+
+.barIconBP { width: 100%; top: 50%; transform: translateY(-50%); position: relative; }
+
+.barIconBPSuccess { width: 75%; margin-left: 3.5px; top: 50%; transform: translateY(-50%); position: relative; }
+
+.bpPrintBoardingPassButton { width: 252px; }
+
+.inlineBlockDiv { display: inline-block; }
+
+div.jetblue-table span.guestSelectionSubLabel { padding-right: 3px; font-size: 10px; }
+
+div.divAlertBanner { background-color: rgb(246, 246, 246); color: rgb(49, 50, 52); display: flex; margin: auto; width: 986px; height: 50px; }
+
+div.divAlertBanner a:hover { color: rgb(0, 51, 160); border-bottom: 1px solid rgb(0, 51, 160); text-decoration: none !important; }
+
+div.divAlertBanner a, div.divAlertBanner a:active, div.divAlertBanner a:visited { color: rgb(0, 51, 160); text-decoration: none; padding: 2px; }
+
+table.tblPassengerList th { border: 1px solid rgb(221, 221, 221); text-align: left; padding: 8px; background-color: rgb(12, 94, 161); color: rgb(255, 255, 255); font-size: 16px; }
+
+table.tblPassengerList td { text-align: left; padding: 10px; color: rgb(0, 0, 0); font-size: 15px; }
+
+table.tblPassengerList tr { border: 1px solid rgb(221, 221, 221); background-color: rgb(255, 255, 255); }
+
+div.tblPassengerList { display: table; border-collapse: collapse; border: 1px solid rgb(216, 216, 216); width: 94%; margin: auto; }
+
+div.tblPassengerListRow { border: 1px solid rgb(216, 216, 216); background-color: rgb(255, 255, 255); }
+
+div.tblPassengerListCell { display: table-cell; text-align: left; padding: 10px; color: rgb(0, 0, 0); font-size: 15px; }
+
+div.tblPassengerListHead { text-align: left; padding: 8px 24px; background-color: rgb(12, 94, 161); color: rgb(255, 255, 255); font-size: 16px; font-weight: bold; }
+
+div.tblPassengerListCell label.passengerLBL { font-size: 15px; float: left; font-weight: bold; color: rgb(0, 73, 144); }
+
+div.tblPassengerListCell span.extrasIncluded { color: rgb(72, 135, 54); font-weight: bold; font-size: 17px; visibility: hidden; float: right; text-align: right; padding-right: 14px; }
+
+div.tblPassengerListCell span.extrasCost { font-size: 18px; visibility: hidden; float: right; text-align: right; padding-right: 14px; color: rgb(0, 73, 144); }
+
+div.tblPassengerListRow .segmentWiseTotalCost { font-size: 18px; font-weight: bold; text-align: right; padding-right: 24px; color: rgb(0, 73, 144); }
+
+div.tblPassengerListRow .segmentWiseTotal { font-size: 18px; font-weight: bold; color: rgb(0, 73, 144); }
+
+button.buttonExpand { margin-top: 50px; color: rgb(69, 64, 64); border: none; background-color: rgb(241, 245, 248); }
+
+.tblPassengerList label.container { display: block; position: relative; font-size: 22px; user-select: none; }
+
+.tblPassengerList label.container input { opacity: 0; height: 15px; width: 18px; margin-right: 0px; }
+
+.tblPassengerList span.checkmark { position: absolute; top: 0px; left: 0px; height: 16px; width: 16px; border: 1px solid rgb(117, 120, 123); }
+
+.tblPassengerList label.container input:checked ~ .checkmark { background-color: rgb(72, 135, 54); }
+
+.tblPassengerList label.container input:disabled ~ .checkmark { opacity: 0.5; }
+
+.tblPassengerList span.checkmark::after { content: ""; position: absolute; display: none; }
+
+.tblPassengerList label.container input:checked ~ .checkmark::after { display: block; }
+
+.tblPassengerList label.container .checkmark::after { left: 6px; top: 2px; width: 3px; height: 8px; border-style: solid; border-color: white; border-image: initial; border-width: 0px 2px 2px 0px; transform: rotate(45deg); }
+
+.jetblue-table-extras div.tblExtras { font-family: din-web-jetblue2, Arial, Helvetica, sans-serif; font-size: 14px; padding-bottom: 5px; background-color: rgb(241, 245, 248); }
+
+div.tblExtras p.extrasText, span#spanCost { color: rgb(62, 67, 71); }
+
+div.tblExtras p.extrasTitle { color: rgb(21, 21, 21); font-size: 16px; }
+
+div.tblExtras p.extrasHeading { color: rgb(62, 67, 71); font-size: 14px; }
+
+div.tblExtras span.blue { color: rgb(7, 72, 144); }
+
+span#totalCosts { float: right; color: rgb(7, 72, 144); font-weight: bold; font-family: din-web-jetblue2, Arial, Helvetica, sans-serif; }
+
+.tblPassengerListRow div:nth-child(2) { padding-left: 2px; padding-right: 2px; vertical-align: middle; overflow-wrap: anywhere; word-break: break-word; }
+
+.tblPassengerListRow div:first-child { width: 6%; }
+
+.tblPassengerListRow div:last-child { width: 24%; }
+
+div.petTerms span.description li { list-style-position: outside; }

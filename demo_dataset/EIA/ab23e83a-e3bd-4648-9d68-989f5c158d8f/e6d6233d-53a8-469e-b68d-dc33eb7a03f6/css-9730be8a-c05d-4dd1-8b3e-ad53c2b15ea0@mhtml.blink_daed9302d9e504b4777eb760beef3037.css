@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+@keyframes app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonLineShort-styles__shine-lines--115Ua { 
+  0% { background-position: -60% center; }
+  40%, 100% { background-position: 180% center; }
+}
+
+.app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonLineShort-styles__skeletonLineShort--1dCXg { background-color: rgba(204, 204, 204, 0.5); height: 18px; border-radius: 9px; margin: 20px 24px; background-image: linear-gradient(90deg, rgba(211, 211, 211, 0) 0px, rgba(211, 211, 211, 0.8) 50%, rgba(211, 211, 211, 0) 100%); background-size: 40% 100%; animation: 4s ease-in-out 0s infinite normal none running app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonLineShort-styles__shine-lines--115Ua; width: 160px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonLineShort-styles__skeletonLineShort--1dCXg { margin: 20px 0px; }
+}
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RequestARefund-SkeletonLoader-SkeletonLineShort-styles__skeletonLineShort--1dCXg { width: 270px; }
+}

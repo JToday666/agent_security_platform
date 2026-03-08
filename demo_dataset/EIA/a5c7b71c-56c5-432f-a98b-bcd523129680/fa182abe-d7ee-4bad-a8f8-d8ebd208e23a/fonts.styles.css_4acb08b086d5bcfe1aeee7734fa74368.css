@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+@font-face { font-family: WF-Segoe-UI-Light; src: local("Segoe UI Light"), local("Segoe WP Light"), url("segoeui-light.woff") format("woff"), url("segoeui-light.ttf") format("truetype"); font-weight: normal; font-style: normal; }
+
+@font-face { font-family: WF-Segoe-UI-Regular; src: local("Segoe UI"), local("Segoe WP"), url("segoeui-regular.woff") format("woff"), url("segoeui-regular.ttf") format("truetype"); font-weight: normal; font-style: normal; }
+
+@font-face { font-family: WF-Segoe-UI-Semibold; src: local("Segoe UI Semibold"), local("Segoe WP Semibold"), url("segoeui-semibold.woff") format("woff"), url("segoeui-semibold.ttf") format("truetype"); font-weight: normal; font-style: normal; }
+
+@font-face { font-family: WF-Segoe-UI-Semilight; src: local("Segoe UI Semilight"), local("Segoe WP Semilight"), url("segoeui-semilight.woff") format("woff"), url("segoeui-semilight.ttf") format("truetype"); font-weight: normal; font-style: normal; }
+
+@font-face { font-family: WF-Office365Icons; src: url("office365icons.woff") format("woff"), url("office365icons.ttf") format("truetype"); font-weight: normal; font-style: normal; }
+
+@font-face { font-family: Fluent-Office365Icons; src: url("fluent-office365icons.woff") format("woff"), url("fluent-office365icons.ttf") format("truetype"); font-weight: normal; font-style: normal; }

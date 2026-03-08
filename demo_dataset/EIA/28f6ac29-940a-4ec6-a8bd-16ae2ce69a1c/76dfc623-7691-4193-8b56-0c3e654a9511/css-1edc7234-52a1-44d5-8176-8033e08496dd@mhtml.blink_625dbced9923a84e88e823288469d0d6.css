@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+.app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr { margin-bottom: 16px; padding-left: 4px; font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 600; font-style: normal; font-stretch: normal; line-height: 1.71; letter-spacing: normal; font-size: 14px; }
+
+.app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr > a { font-size: 16px; color: rgb(65, 116, 141); text-decoration: underline; }
+
+@media screen and (max-width: 720px) {
+  .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr > a { font-size: 20px; }
+}
+
+.app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__content--1FK72 { font-size: 14px; font-weight: 600; color: rgb(0, 0, 0); line-height: 24px; }
+
+@media screen and (max-width: 720px) {
+  .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__content--1FK72 { font-size: 18px; }
+}
+
+.app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__moreDetails--2Po9c { line-height: 24px; position: relative; color: rgb(0, 96, 128); text-decoration: underline; }
+
+.app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__moreDetails--2Po9c::before { content: "\a "; white-space: pre; }
+
+.app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__moreDetails--2Po9c:hover { color: rgb(0, 96, 128); }
+
+.app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__moreDetails--2Po9c > span { font-size: 14px; }
+
+.app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__moreDetails--2Po9c > svg { width: 10px; height: 10px; margin-top: 5px; pointer-events: none; }
+
+.app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__postDate--1T4jM { font-size: 12px; font-weight: 900; color: rgb(0, 0, 0); line-height: 24px; }
+
+@media screen and (max-width: 720px) {
+  .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__notification--1x5Vr .app-components-NotificationsPopover-NotificationTab-NotificationItem-styles__postDate--1T4jM { font-size: 16px; }
+}

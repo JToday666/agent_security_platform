@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.css-ah6z1m { font-family: Montserrat, sans-serif; font-size: 36px; font-weight: 800; letter-spacing: 0px; color: rgb(0, 0, 0); line-height: 40px; margin: 0px 8px 0px 0px; text-transform: none; display: inline-block; }
+
+@media (min-width: 564px) {
+  .css-ah6z1m { font-family: Montserrat, sans-serif; font-size: 46px; font-weight: 800; letter-spacing: 0px; color: rgb(0, 0, 0); line-height: 48px; text-transform: none; }
+}
+
+@media (max-width: 564px) {
+  .css-ah6z1m { margin-right: 0px; }
+}

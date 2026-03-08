@@ -1,0 +1,46 @@
+@charset "utf-8";
+
+.sf-activity-cards-container { width: 100%; overflow: hidden; position: relative; }
+
+.sf-activity-cards-dots { height: 60px; display: flex; justify-content: center; align-items: center; }
+
+.sf-activity-cards-dots span { width: 14px; height: 14px; margin: 0px 9px; padding: 0px; border-radius: 50%; background: rgb(138, 48, 44); }
+
+.scroll-arrow { position: absolute; font-size: 24px; font-weight: 700; color: rgb(243, 243, 243); text-shadow: rgba(0, 0, 0, 0.3) 0px 1px 1px; cursor: pointer; top: 54%; }
+
+.scroll-left { left: 0px; }
+
+.scroll-right { right: 0px; }
+
+.sf-activity-cards-dots span.sf-activity-cards-dot-hidden { background: rgb(214, 54, 46); }
+
+.sf-activity-cards-scroller { display: flex; flex-wrap: nowrap; overflow-x: scroll; width: 94%; margin: 0px auto; }
+
+.sf-activity-cards-scroller::-webkit-scrollbar { height: 0px; }
+
+.sf-activity-card-placeholder { position: relative; width: 266px; height: 430px; max-width: 266px; min-width: 190px; flex: 0 0 auto; background-position: center center; background-repeat: no-repeat; background-size: cover; border-radius: 10px; overflow: hidden; margin-right: 10px; }
+
+.sf-activity-card-placeholder:last-child { margin-right: 0px; }
+
+.sf-activity-cards-logo { position: absolute; width: 180px; height: 180px; bottom: 26px; margin: 0px auto; border-radius: 50%; overflow: hidden; left: calc(50% - 90px); z-index: 1; }
+
+h2.sf-activity-cards-header { font-size: 25px; font-weight: 700; line-height: 30px; text-align: center; margin-bottom: 30px; margin-top: 24px; }
+
+.sf-activity-cards-description { font-size: 16px; line-height: 22px; display: none; margin-top: 24px; }
+
+.sf-activity-card-placeholder:hover .sf-activity-cards-description { display: block; }
+
+h2.sf-activity-cards-header, .sf-activity-cards-description { color: rgb(255, 255, 255); position: relative; z-index: 100; padding: 0px 15px; }
+
+.sf-activity-card-mask { background-image: linear-gradient(rgba(0, 0, 0, 0.89) 20%, transparent); position: absolute; top: 0px; width: 100%; height: 100%; z-index: 2; border-radius: 10px; }
+
+.sf-activity-card-placeholder:hover .sf-activity-card-mask { background-image: linear-gradient(rgba(0, 0, 0, 0.97) 20%, rgba(0, 0, 0, 0.88) 60%, transparent); }
+
+.sf-activity-cards-tabformore { display: none; font-size: 16px; font-weight: 600; color: rgb(255, 255, 255); position: relative; z-index: 200; padding-left: 15px; }
+
+@media only screen and (max-width: 768px) {
+  .sf-activity-cards-tabformore { display: block; }
+  .sf-activity-card-placeholder:hover .sf-activity-cards-tabformore { display: none; }
+  .scroll-left, .scroll-right { display: none; }
+  .sf-activity-cards-scroller { width: 100%; }
+}

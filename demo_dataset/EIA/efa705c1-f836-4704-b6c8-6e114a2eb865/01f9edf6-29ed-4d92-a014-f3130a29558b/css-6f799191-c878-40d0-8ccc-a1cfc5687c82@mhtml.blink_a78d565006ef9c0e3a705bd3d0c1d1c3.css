@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+.css-1dstgik { box-sizing: border-box; padding: 0px 8px; }
+
+@media (min-width: 564px) {
+  .css-1dstgik { padding: 0px 12px; }
+}
+
+@media (max-width: 563px) {
+  .css-1dstgik { flex-basis: 100%; max-width: 100%; }
+}
+
+@media (min-width: 564px) and (max-width: 767px) {
+  .css-1dstgik { flex-basis: 100%; max-width: 100%; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .css-1dstgik { flex-basis: 100%; max-width: 100%; }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .css-1dstgik { flex-basis: 74.1667%; max-width: 74.1667%; }
+}
+
+@media (min-width: 1280px) {
+  .css-1dstgik { flex-basis: 74.1667%; max-width: 74.1667%; }
+}

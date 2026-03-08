@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.LGLeeN-keyboard-shortcuts-view { display: flex; }
+
+.LGLeeN-keyboard-shortcuts-view table, .LGLeeN-keyboard-shortcuts-view tbody, .LGLeeN-keyboard-shortcuts-view td, .LGLeeN-keyboard-shortcuts-view tr { background: inherit; border: none; margin: 0px; padding: 0px; }
+
+.LGLeeN-keyboard-shortcuts-view table { display: table; }
+
+.LGLeeN-keyboard-shortcuts-view tr { display: table-row; }
+
+.LGLeeN-keyboard-shortcuts-view td { box-sizing: border-box; display: table-cell; color: rgb(0, 0, 0); padding: 6px; vertical-align: middle; white-space: nowrap; }
+
+.LGLeeN-keyboard-shortcuts-view td .VdnQmO-keyboard-shortcuts-view--shortcut-key { background-color: rgb(232, 234, 237); border-radius: 2px; border: none; box-sizing: border-box; color: inherit; display: inline-block; font-family: "Google Sans Text", Roboto, Arial, sans-serif; line-height: 16px; margin: 0px 2px; min-height: 20px; min-width: 20px; padding: 2px 4px; position: relative; text-align: center; }

@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.ie-class .res-selectFld .residencyClass select { width: 135%; }
+
+.ie-class .res-selectFld .ageDrop select { width: 180%; }
+
+.ie-class .res-inputFld .res-inputTime { width: 135%; }

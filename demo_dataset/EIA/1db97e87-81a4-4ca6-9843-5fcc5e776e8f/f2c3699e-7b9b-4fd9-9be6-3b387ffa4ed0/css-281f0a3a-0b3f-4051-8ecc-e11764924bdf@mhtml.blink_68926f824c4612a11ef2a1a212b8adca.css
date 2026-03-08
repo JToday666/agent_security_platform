@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.innerButton-mo_🦑____2_Aoj { display: inline-flex; }
+
+.innerButton-mo_👏🏻____2lsK5 { margin: 0px; border: 0px; padding: 0px; background: none; font-size: 1em; cursor: pointer; display: flex; }
+
+.innerButton-mo_🇯🇪____1fpuo { color: rgb(205, 208, 209); stroke: rgb(205, 208, 209); }
+
+.innerButton-mo_👏🏻____2lsK5:first-child .innerButton-mo_🇯🇪____1fpuo { margin-left: -0.125em; }
+
+.innerButton-mo_👏🏻____2lsK5:last-child .innerButton-mo_🇯🇪____1fpuo { margin-right: -0.125em; }
+
+.innerButton-mo_🦑____2_Aoj:hover .innerButton-mo_🇯🇪____1fpuo { color: rgb(255, 199, 79); opacity: 1; }
+
+.innerButton-mo_👏🏻____2lsK5:hover ~ .innerButton-mo_👏🏻____2lsK5 .innerButton-mo_🇯🇪____1fpuo { color: rgb(205, 208, 209); stroke: rgb(205, 208, 209); }
+
+.innerButton-mo_🇬🇺____2Pmhx .innerButton-mo_👏🏻____2lsK5 { display: inline-block; }

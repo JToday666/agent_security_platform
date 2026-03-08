@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.cp-multiple-select-control { box-sizing: border-box; border-bottom: 2px dotted rgb(187, 202, 218); cursor: pointer; display: inline-block; color: rgb(24, 164, 252); line-height: 26px; min-width: 200px; vertical-align: top; font-size: 14px; }
+
+.cp-multiple-select-control * { box-sizing: border-box; }
+
+.cp-multiple-select-control .selected-values { display: inline-block; width: calc(100% - 12px); }
+
+.cp-multiple-select-control .selected-values .selected-value, .cp-multiple-select-control .selected-values .placeholder { display: inline-block; padding: 0px 5px; height: 100%; }
+
+.cp-multiple-select-control .selected-values .placeholder { color: rgb(207, 217, 225); }
+
+.cp-multiple-select-control .arrow-icon { display: inline-block; vertical-align: bottom; width: 9px; height: 18px; font-size: 11px; color: rgb(24, 164, 252); }

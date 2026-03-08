@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+.smb-uikit__date-picker { box-sizing: border-box; display: flex; flex: 1 1 0%; flex-direction: column; }
+
+.smb-uikit__date-picker > * { box-sizing: border-box; }
+
+.smb-uikit__date-picker[flex-direction="row"] { max-width: 27.5rem; align-items: flex-end; position: relative; width: 100%; }
+
+.smb-uikit__date-picker[flex-direction="column"] { max-width: 100%; align-items: center; min-height: 100%; }
+
+.smb-uikit__date-picker__controls { flex: 1 1 0%; display: flex; }
+
+.smb-uikit__date-picker__controls[flex-direction="row"] { align-items: center; }
+
+.smb-uikit__date-picker__controls[flex-direction="column"] { flex-direction: column; align-items: flex-start; }
+
+.smb-uikit__date-picker__controls-dropdown, .smb-uikit__date-picker__controls-date-inputs { display: flex; align-items: center; }
+
+.smb-uikit__date-picker__controls-dropdown { max-width: 9.5rem; margin-right: 1rem; }
+
+.smb-uikit__date-picker__controls-date-inputs { max-width: 14.25rem; }
+
+.smb-uikit__date-picker__controls-date-inputs--label { margin: 0px 0.5rem; }
+
+.smb-uikit__date-picker__calendars { box-shadow: rgba(58, 83, 119, 0.2) 0px 6px 8px 0px; background-color: rgb(255, 255, 255); display: flex; flex-direction: column; margin: 0px; max-width: 100%; min-width: 100%; border-radius: 3px; padding: 0.5rem; justify-content: space-around; }
+
+.smb-uikit__date-picker__calendars[remove-shadow="true"] { box-shadow: none; }
+
+.smb-uikit__date-picker__calendars[flex-direction="row"] { flex-direction: row; min-width: 26.5rem; max-width: 26.5rem; top: 100%; }
+
+.smb-uikit__date-picker__calendars[flex-direction="column"] { min-width: 13rem; max-width: 13rem; margin-top: 1rem; margin-bottom: 1rem; }

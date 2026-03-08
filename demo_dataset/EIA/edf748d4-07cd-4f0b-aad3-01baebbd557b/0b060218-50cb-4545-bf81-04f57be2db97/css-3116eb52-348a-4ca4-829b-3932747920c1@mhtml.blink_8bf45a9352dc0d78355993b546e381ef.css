@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+.hotel-facilities__container { display: flex; flex-flow: column nowrap; }
+
+.hotel-facilities__container rooms-hotel-facility { padding: 0.25rem 0px; width: 100%; }
+
+@media (min-width: 1024px) {
+  .hotel-facilities__container rooms-hotel-facility { padding: 0.875rem 0px; width: 33.33%; }
+}
+
+.hotel-facilities__container rooms-hotel-facility:nth-child(n+4) { display: none; }
+
+@media (min-width: 1024px) {
+  .hotel-facilities__container rooms-hotel-facility:nth-child(n+4) { display: flex; }
+}
+
+.hotel-facilities__container--open rooms-hotel-facility:nth-child(n+4) { display: flex; }
+
+@media (min-width: 1024px) {
+  .hotel-facilities__container { flex-flow: row wrap; }
+}
+
+.hotel-facilities__details { display: none; line-height: 1.43; margin: 1.4375rem 0px; }
+
+.hotel-facilities__details * + ::before { content: ", "; }
+
+.hotel-facilities__details--open { display: block; }
+
+.hotel-facilities .hotel-facilities__button { font-weight: bold; }

@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.cp-multiple-select-body { box-sizing: border-box; display: flex; flex-direction: column; padding: 5px 10px; min-width: 80px; min-height: 30px; background-color: rgb(255, 255, 255); box-shadow: rgba(179, 190, 206, 0.4) 0px 2px 2px 0px; border-radius: 3px; border: 1.5px solid rgb(187, 202, 218); color: rgb(86, 105, 134); font-size: 14px; }
+
+.cp-multiple-select-body * { box-sizing: border-box; }
+
+.cp-multiple-select-body .search-box { position: relative; margin: 10px 0px; }
+
+.cp-multiple-select-body .search-box .search-value { width: 100%; min-height: 34px; padding-right: 25px; }
+
+.cp-multiple-select-body .search-box .search-button, .cp-multiple-select-body .search-box .delete-button { position: absolute; cursor: pointer; top: 8px; right: 10px; color: rgb(154, 171, 189); font-size: 16px; }
+
+.cp-multiple-select-body .option-list { flex-grow: 1; overflow: auto; }
+
+.cp-multiple-select-body .option-list .option { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 2.4; }
+
+.cp-multiple-select-body .option-list .option .option-value { margin-left: 5px; }
+
+.cp-multiple-select-body .option-list .option-separator { border-bottom: 1.5px solid rgb(187, 202, 218); }
+
+.cp-multiple-select-modal .cp-multiple-select-body { box-shadow: rgba(0, 0, 0, 0.3) 0px 6px 8px 0px; }

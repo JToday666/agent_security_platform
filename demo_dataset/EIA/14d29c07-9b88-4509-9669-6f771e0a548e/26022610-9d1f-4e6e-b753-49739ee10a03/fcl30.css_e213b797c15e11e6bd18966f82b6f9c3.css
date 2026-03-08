@@ -1,0 +1,365 @@
+@charset "utf-8";
+
+#content html, #content body { margin: 0px; padding: 0px; font: 11px Arial, sans-serif; }
+
+form, fieldset { margin: 0px; padding: 0px; font: 11px Arial, sans-serif; }
+
+input, select, textarea { font-size: 100%; }
+
+#content body { font: 11px Arial, sans-serif; width: 760px; }
+
+a { color: rgb(102, 0, 153); text-decoration: underline; outline: none; }
+
+a.img { border: none; text-decoration: none; }
+
+sup { font-size: 70%; }
+
+h1 { color: rgb(102, 0, 153); font-size: 18px; font-weight: normal; margin-bottom: 10px; }
+
+h2 { color: rgb(102, 0, 153); font-size: 15px; }
+
+h2.title { color: rgb(0, 0, 0); font-size: 15px; }
+
+h2.appname { margin: 5px 0px 10px 15px; }
+
+#content h3 { color: rgb(0, 0, 0); font-size: 13px; }
+
+h3.sectionhead, div.sectionhead { border-bottom: 1px solid rgb(0, 0, 0); margin: 0px 0px 5px; padding: 0px 0px 4px; color: rgb(0, 0, 0); font-size: 13px; font-weight: normal; }
+
+p { margin-bottom: 10px; }
+
+th { text-align: left; }
+
+td p { margin-bottom: 5px; }
+
+td { vertical-align: top; }
+
+ol { margin: 0px 0px 8px 24px; }
+
+#content strong { font-weight: bold; }
+
+.bullets { list-style-type: square; margin: 0px 0px 10px; padding: 0px 0px 0px 20px; }
+
+#uberhelp { float: right; position: relative; width: 65px; height: 18px; list-style: none; margin: 0px; }
+
+#uberhelp a, #uberhelp span { display: block; padding: 0px 6px 0px 25px; width: 34px; height: 18px; line-height: 18px; background: url("../images/icon_help_new.gif") 0px 0px no-repeat transparent; text-decoration: none; color: rgb(0, 0, 0); font-size: 11px; cursor: pointer; }
+
+#uberhelp a.on { background-position: 0px -82px; }
+
+#uberhelp ul.showhelpmenu { left: -117px; }
+
+#uberhelp ul.hidehelpmenu { left: -999em; }
+
+#uberhelp ul { position: absolute; top: 18px; left: -999em; border-top: 1px solid rgb(102, 102, 102); border-right: 1px solid rgb(102, 102, 102); border-left: 1px solid rgb(102, 102, 102); border-image: initial; border-bottom: none; background-color: rgb(255, 255, 255); list-style: none; }
+
+#uberhelp li li a { display: block; text-decoration: none; padding: 1px 5px; border-bottom: 1px solid rgb(102, 102, 102); width: 170px; color: rgb(32, 32, 32); background-color: rgb(244, 244, 244); background-image: none; }
+
+#uberhelp li li a:hover { background-color: rgb(102, 0, 153); color: rgb(255, 255, 255); }
+
+#controls { float: right; }
+
+#controls li { padding: 3px 10px 3px 0px; }
+
+#controls .demo { padding: 3px 10px 0px 22px; background: url("../images/icon_demo.gif") no-repeat transparent; height: 19px; }
+
+.morelink, a.more { width: 9px; height: 9px; display: inline; background: url("../images/icon_plus_purple.gif") left center no-repeat transparent; padding-left: 15px; }
+
+.lesslink, a.less { width: 9px; height: 9px; display: inline; background: url("../images/icon_minus_purple.gif") left center no-repeat transparent; padding-left: 15px; }
+
+.formedit, .toggleSubSection { width: 9px; height: 9px; background: url("../images/icon_plus_minus_purple.gif") no-repeat transparent; text-indent: -20000em; text-decoration: none; font-size: 9px; margin-left: 10px; }
+
+.formedit span, .toggleSubSection span { visibility: hidden; }
+
+.express { color: rgb(255, 102, 0); }
+
+.ground { color: rgb(51, 204, 0); }
+
+#content { padding: 20px 10px 10px; }
+
+.appwrap { width: 745px; }
+
+#appnav { height: 20px; list-style: none; margin: 0px; }
+
+#appnav li { float: left; margin: 0px 2px 0px 0px; }
+
+#appnav li.last { margin-right: 0px; }
+
+#appnav li a { font-weight: normal; display: block; width: 160px; padding: 2px 2px 2px 6px; height: 15px; color: rgb(32, 32, 32); background-color: rgb(244, 244, 244); font-size: 11px; border-top: 1px solid rgb(102, 102, 102); border-right: 1px solid rgb(102, 102, 102); border-left: 1px solid rgb(102, 102, 102); border-image: initial; border-bottom: none; text-decoration: none; }
+
+#appnav li a.more { background: url("../images/bg_arrows_appnav.gif") right top no-repeat rgb(244, 244, 244); }
+
+#appnav li a.more:hover { background-position: right bottom; }
+
+#appnav li a:hover { background-color: rgb(102, 0, 153); color: rgb(255, 255, 255); }
+
+#appnav li a:hover li a { color: rgb(32, 32, 32); background-color: rgb(244, 244, 244); }
+
+#appnav li.on a, #appnav li.on a:hover { color: rgb(255, 255, 255); background-color: rgb(102, 102, 102); font-weight: bold; font-size: 12px; }
+
+#appnav li.on a.more { background-image: url("../images/bg_arrows_appnav_on.gif"); }
+
+#appnav li li { float: none; margin: 0px; }
+
+#appnav li ul { position: absolute; left: -999em; border-bottom: 1px solid rgb(102, 102, 102); }
+
+#appnav li ul a { width: 175px; font-size: 11px; }
+
+#appnav li.myfedex a { width: 100px; }
+
+#appnav li.myprofile a { width: 100px; }
+
+.steps { margin: 13px 10px 10px 14px; }
+
+p.denotereqfield { margin-left: 14px; }
+
+.calendarcontainer { position: relative; display: none; }
+
+.calendar { border: 1px solid rgb(187, 187, 187); position: absolute; top: 0px; left: 0px; display: block; }
+
+.calendar th { border-bottom: none; text-align: center; background-color: rgb(255, 255, 255); padding: 3px 5px 2px; }
+
+.calendar td { background-color: rgb(230, 230, 230); padding: 0px; text-align: right; }
+
+.calendar td a { display: block; width: 12px; height: 12px; padding: 3px 5px; text-decoration: none; color: rgb(32, 32, 32); }
+
+.calendar .today a { color: rgb(255, 255, 255); background-color: rgb(153, 153, 153); }
+
+.calendar .inthepast, body.ship table.shipform .calendar .nextmonth { color: rgb(170, 170, 170); width: 12px; height: 12px; padding: 3px 5px; }
+
+.calendar a:hover { background-color: rgb(102, 0, 153); color: rgb(255, 255, 255); }
+
+#theCal .calendarcontainer { position: relative; display: none; }
+
+#theCal .calendar { border: 1px solid rgb(187, 187, 187); position: absolute; top: 0px; left: 0px; display: block; }
+
+#theCal .calendar th { border-bottom: none; text-align: center; background-color: rgb(255, 255, 255); padding: 3px 5px 2px; font-size: 12px !important; font-weight: normal !important; }
+
+#theCal .calendar td { background-color: rgb(230, 230, 230); padding: 0px; text-align: right; }
+
+#theCal .calendar td a { display: block; width: 12px; height: 12px; padding: 3px 5px; text-decoration: none; color: rgb(32, 32, 32); }
+
+#theCal .calendar .today a { color: rgb(255, 255, 255); background-color: rgb(153, 153, 153); }
+
+#theCal .calendar .inthepast, body.ship table.shipform .calendar .nextmonth { color: rgb(170, 170, 170); width: 12px; height: 12px; padding: 3px 5px; }
+
+#theCal .calendar a:hover { background-color: rgb(102, 0, 153); color: rgb(255, 255, 255); }
+
+.tooltip { text-decoration: none; padding-left: 2px; display: inline; }
+
+.tooltip span { cursor: pointer; color: rgb(102, 0, 153); }
+
+.tooltip div { z-index: 10; position: absolute; top: 12px; left: -200000px; padding: 0px; margin: 0px; width: 175px; border: 2px solid rgb(204, 204, 204); line-height: normal; color: rgb(102, 102, 102); font-size: 11px; overflow: hidden; text-decoration: none; background-color: rgb(255, 255, 255) !important; }
+
+.tooltip div p { font-size: 11px; font-weight: normal; display: block; padding: 5px; margin: 0px; background-color: rgb(255, 255, 255) !important; }
+
+.tooltip div h3 { color: rgb(51, 51, 51); font-size: 11px; margin: 0px; padding: 3px 5px; display: block; width: auto; border-bottom: 2px solid rgb(204, 204, 204); font-weight: bold; background-color: rgb(255, 255, 255) !important; }
+
+.tooltip .on { left: 0px; }
+
+.fineprint { font-size: 10px; }
+
+fieldset { padding: 0px 0px 15px; margin: 0px 0px 15px; background-color: rgb(245, 245, 245); border: 1px solid rgb(139, 80, 168); }
+
+fieldset.full { margin-right: 14px; margin-left: 14px; }
+
+fieldset h2 { border-bottom: 2px solid rgb(102, 0, 153); margin: 0px; padding: 4px 7px; color: rgb(102, 0, 153); font-weight: bold; }
+
+fieldset label span { display: block; padding: 0px 3px 0px 0px; float: left; }
+
+fieldset label span.prompt { padding: 4px 3px 0px 16px; width: 100px; }
+
+fieldset label.full { padding: 4px 3px 0px 16px; }
+
+fieldset label span.required { background-image: url("../images/icon_required.gif"); background-repeat: no-repeat; background-position: 6px 6px; }
+
+fieldset label { display: block; clear: both; margin: 0px; padding: 4px 0px 0px; }
+
+fieldset label.inline { display: inline; }
+
+fieldset.buttons { text-align: right; margin-top: -5px; padding: 0px; border: none; background-color: rgb(255, 255, 255); }
+
+fieldset.buttons label { padding-right: 0px; }
+
+fieldset label.buttons { text-align: right; padding-right: 10px; }
+
+fieldset label.buttons input { margin: 0px; }
+
+fieldset.results label { padding: 0px; }
+
+fieldset.results span { padding-top: 0px; }
+
+fieldset span.results { padding-top: 4px; }
+
+fieldset.results span.prompt { padding: 0px 3px 0px 7px; width: 109px; }
+
+fieldset .colleft .textfull, fieldset .colright .textfull { width: 200px; }
+
+fieldset .colleft .selectfull, fieldset .colright .selectfull { width: 205px; }
+
+fieldset.preferences { background-color: rgb(242, 243, 255); border: 1px solid rgb(102, 102, 102); }
+
+fieldset.preferences h2 { border-bottom: 2px solid rgb(102, 0, 153); margin: 0px; padding: 4px 7px; color: rgb(102, 0, 153); font-weight: bold; font-size: 15px; }
+
+fieldset h3 { margin: 5px 7px; color: rgb(0, 0, 0); font-size: 13px; }
+
+fieldset h3.sectionhead { border-bottom: 1px solid rgb(0, 0, 0); margin: 5px 7px; padding: 0px 0px 4px; color: rgb(0, 0, 0); font-size: 13px; }
+
+#content fieldset h3.sectionhead { border-bottom: 1px solid rgb(0, 0, 0); margin: 5px 7px; padding: 0px 0px 4px; color: rgb(0, 0, 0); font-size: 13px; }
+
+fieldset h3.on { font-weight: bold; }
+
+fieldset .colleft h3, fieldset .colright h3, fieldset .colleft h3.sectionhead, fieldset .colright h3.sectionhead { margin: 0px 0px 5px; }
+
+fieldset p { margin: 5px 7px; }
+
+fieldset label.summary { font-weight: bold; }
+
+fieldset div.summary { margin: 5px 7px; font-weight: bold; }
+
+fieldset div.summary p { margin: 8px 0px 5px; }
+
+fieldset div.edit { margin: 8px 0px 5px; }
+
+fieldset.optional { background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); }
+
+fieldset.optional h2 { border-bottom: 2px solid rgb(204, 204, 204); color: rgb(0, 0, 0); font-weight: normal; font-size: 15px; }
+
+fieldset a.help, fieldset h2 a.help { float: right; margin: 3px 0px 0px; text-transform: capitalize; font-size: 12px; font-weight: bold; padding: 0px 0px 0px 15px; background-position: left center; background-repeat: no-repeat; background-image: url("../images/icon_help_small.gif"); color: rgb(0, 0, 0) !important; }
+
+fieldset h2 a.edit, fieldset h2 a.hide, fieldset h3 a.edit, fieldset h3 a.hide { float: right; margin: 3px 0px 0px 10px; color: rgb(0, 0, 0) !important; }
+
+.selectedaccounts { background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); padding: 5px; }
+
+p.checktext, div.checktext, span.checktext { width: 280px; float: left; display: block; padding-bottom: 5px; }
+
+input.checktext { float: left; margin: 0px 0px 0px 12px; }
+
+span.checktext p { width: 280px; float: left; display: block; padding-bottom: 5px; }
+
+span.checktext input { width: 280px; float: left; display: block; padding-bottom: 5px; }
+
+#content .divider { height: 1px; overflow: hidden; border-top: 1px solid rgb(187, 187, 187); border-bottom: 1px solid rgb(255, 255, 255); margin: 5px 7px; clear: both; }
+
+.utility li { margin: 0px; padding: 0px 4px 0px 0px; list-style: none; float: left; }
+
+.utility a { padding-right: 0.4em; }
+
+#apputility { float: right; margin: 13px 5px 10px 10px; }
+
+.colleft { float: left; padding: 0px 15px 0px 14px; margin: 0px; width: 350px; }
+
+.colright { float: left; padding: 0px; margin: 0px; width: 350px; }
+
+.coltripleleft { float: left; padding: 0px 0px 0px 7px; margin: 0px; width: 220px; }
+
+.coltriplemiddle { float: left; padding: 0px; margin: 0px; width: 225px; }
+
+.coltripleright { float: left; padding: 0px; margin: 0px; width: 225px; }
+
+.coltripleleft h3, .coltripleright h3, .coltriplemiddle h3 { }
+
+.coltripleleft input, .coltripleright input, .coltriplemiddle input { margin: 0px; }
+
+fieldset .colleft { width: 335px; }
+
+fieldset .colright { width: 335px; }
+
+fieldset .colright p, fieldset .colleft p, fieldset .colsm p { margin: 5px 0px; }
+
+fieldset .colsm { float: left; padding: 10px 0px 5px 15px; width: 159px; }
+
+fieldset .colright label.buttons, fieldset .colleft label.buttons { text-align: right; padding-right: 0px; padding-top: 15px; }
+
+.note { margin: 0px 14px 15px; }
+
+p.intro { font-size: 12px; }
+
+div.intro { margin: 0px 14px; }
+
+img.upsell { float: right; margin: 0px 14px 15px 15px; }
+
+.notedata { border: 1px solid rgb(204, 204, 204); background-color: rgb(255, 255, 255); padding: 5px; font-size: 13px; }
+
+.capacitychart { margin: 10px 0px 10px 8px; }
+
+.capacitychart p { margin: 0px; background-color: rgb(153, 153, 153); width: 200px; }
+
+.capacitychart img { border: none; width: 190px; height: 6px; }
+
+.paging { float: right; margin: 0px 14px 5px; }
+
+.searchby { display: none; }
+
+#content .alert { margin: 5px; padding: 2px 10px 0px 22px; background: url("../images/icon_alert_trans.gif") no-repeat transparent; font-size: 11px; }
+
+.alert em, #content .alert strong { color: rgb(102, 0, 153); font-weight: bold; font-style: normal; font-size: 13px; display: block; margin-bottom: 4px; }
+
+.alertmsg, .outage, .timeout, .message { background-color: rgb(230, 230, 230); border: 1px solid rgb(187, 187, 187); padding: 6px 6px 0px; color: rgb(0, 0, 0); margin: 0px 0px 14px; }
+
+.alertmsg h2, .outage h2, .timeout h2 { background: url("../images/icon_alert_trans.gif") no-repeat transparent; padding: 2px 10px 0px 22px; height: 20px; }
+
+.alertmsg p, .outage p, .timeout p { margin: 2px 10px 0px 22px; }
+
+.gblerror { background-color: rgb(230, 230, 230); border: 1px solid rgb(187, 187, 187); padding: 6px 6px 0px; margin: 10px 14px 14px; }
+
+.gblerror h2 { background: url("../images/icon_alert_error.gif") no-repeat transparent; padding: 2px 10px 0px 22px; height: 20px; color: rgb(255, 0, 0); }
+
+.gblerror p { margin: 2px 15px 10px 22px; color: rgb(255, 0, 0); }
+
+.cleaner { clear: both; height: 1px; font-size: 1px; border: none; margin: 0px; padding: 0px; background: transparent; }
+
+h2.alt { color: rgb(0, 0, 0); }
+
+h3.alt { font-weight: bold; margin-bottom: 5px; }
+
+.formmodule p { font-size: 11px; }
+
+div.buttons { text-align: right; padding: 14px; border: none; }
+
+fieldset div.buttons { padding: 0px 14px; }
+
+a.clicktip { position: relative; }
+
+a.clicktip span { display: none; position: absolute; top: 20px; left: 0px; z-index: 1000; text-decoration: none; padding: 0px; width: 200px; border: 2px solid rgb(204, 204, 204); line-height: normal; color: rgb(102, 102, 102); background-color: rgb(255, 255, 255); font-size: 11px; overflow: hidden; }
+
+a.clicktip span h3 { font-weight: bold; color: rgb(32, 32, 32); font-size: 11px; padding: 5px; display: block; width: auto; border-bottom: 2px solid rgb(204, 204, 204); }
+
+a.clicktip span p { padding: 5px; }
+
+.survey input { margin-left: 30px; }
+
+table.details { width: 100%; }
+
+table.details td { width: 50%; padding: 2px 10px 3px 0px; }
+
+.toggler { cursor: pointer; }
+
+.shipping-address, .billing-address { display: none; clear: left; }
+
+label.bold { font-weight: bold; }
+
+.myfx-container { position: relative; }
+
+#btn-profile { position: absolute; top: 37px; left: 70px; border: 1px solid rgb(204, 204, 204); display: block; width: 77px; height: 16px; padding: 4px 0px 0px 10px; text-decoration: none; color: rgb(0, 0, 0); }
+
+#btn-home { position: absolute; top: 37px; left: 0px; border: 1px solid rgb(204, 204, 204); display: block; width: 57px; height: 16px; padding: 4px 0px 0px 10px; text-decoration: none; color: rgb(0, 0, 0); }
+
+#myfx-buttons { position: absolute; width: 722px; top: 385px; left: 0px; padding: 0px 0px 0px 14px; text-align: right; }
+
+.account-toggle input { margin: 0px -2px 0px -3px; }
+
+.dynamicgray { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: rgb(0, 0, 0); background: rgb(230, 230, 230); }
+
+.fieldsetborder { border: 1px solid rgb(139, 80, 168); }
+
+.ui-hidden-accessible { height: 1px; width: 1px; overflow: hidden; position: absolute !important; }
+
+* a:focus, * input[type="radio"]:focus, * h1:focus, * input[type="submit"]:focus, * input[type="checkbox"]:focus, * input[type="button"]:focus, * input[type="select"]:focus, #header a:focus { outline: rgb(77, 20, 140) dashed 1px !important; }
+
+.alert:focus, .sectionhead:focus, .ada_creditcardauthorizationMessage:focus, .ada_question:focus, select:focus, .alertmsg:focus, #Information1:focus, #Information2:focus, #Information3:focus, .ada_registrationPageRadio:focus, .moduleHeaderTitle:focus { outline: rgb(102, 0, 153) dashed 1px !important; }
+
+.adaChange { float: left; font-size: 15px; padding: 4px 7px; color: rgb(102, 0, 153) !important; }
+
+.adaBoldFont { font-weight: 700 !important; }
+
+.adaH3 { font-size: 12px !important; }

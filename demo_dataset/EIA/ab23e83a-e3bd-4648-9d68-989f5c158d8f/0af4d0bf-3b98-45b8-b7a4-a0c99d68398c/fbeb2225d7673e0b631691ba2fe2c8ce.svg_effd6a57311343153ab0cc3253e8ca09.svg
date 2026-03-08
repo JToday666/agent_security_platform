@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>ui-16px-3_select</title>
+    <desc></desc>
+    <defs></defs>
+    <g id="35-Content---our-fleet-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-805.000000, -504.000000)">
+        <g id="Group" transform="translate(0.000000, -1573.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="FOOTER" transform="translate(0.000000, 1649.000000)">
+                <g id="Bottom-part">
+                    <g transform="translate(0.000000, 2.000000)">
+                        <g id="ui-16px-3_select" transform="translate(810.000000, 431.000000) scale(1, -1) translate(-810.000000, -431.000000) translate(805.000000, 426.000000)">
+                            <polygon id="Shape" transform="translate(7.352941, 7.352941) scale(-1, 1) rotate(-90.000000) translate(-7.352941, -7.352941) " points="9.16823529 10 6.93705882 7.76882353 5.88235294 9.41176471 4.70588235 4.70588235 9.41176471 5.88235294 7.76882353 6.93705882 10 9.16823529"></polygon>
+                            <path d="M4.11764706,9.41176471 L0.588235294,9.41176471 C0.263529412,9.41176471 0,9.14823529 0,8.82352941 L0,0.588235294 C0,0.263529412 0.263529412,0 0.588235294,0 L8.82352941,0 C9.14823529,0 9.41176471,0.263529412 9.41176471,0.588235294 L9.41176471,4.11764706 L8.23529412,4.11764706 L8.23529412,1.17647059 L1.17647059,1.17647059 L1.17647059,8.23529412 L4.11764706,8.23529412 L4.11764706,9.41176471 Z" id="Shape"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
+

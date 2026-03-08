@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.cp-page-layout { display: flex; flex-direction: column; min-height: 92vh; background-color: rgb(252, 253, 255); font-family: "Proxima Nova"; }
+
+.cp-page-layout a, .cp-page-layout abbr, .cp-page-layout acronym, .cp-page-layout address, .cp-page-layout blockquote, .cp-page-layout button, .cp-page-layout caption, .cp-page-layout cite, .cp-page-layout code, .cp-page-layout dd, .cp-page-layout div, .cp-page-layout dl, .cp-page-layout dt, .cp-page-layout fieldset, .cp-page-layout form, .cp-page-layout h1, .cp-page-layout h2, .cp-page-layout h3, .cp-page-layout h4, .cp-page-layout h5, .cp-page-layout h6, .cp-page-layout img, .cp-page-layout label, .cp-page-layout legend, .cp-page-layout li, .cp-page-layout ol, .cp-page-layout p, .cp-page-layout pre, .cp-page-layout small, .cp-page-layout strike, .cp-page-layout sub, .cp-page-layout sup, .cp-page-layout table, .cp-page-layout tbody, .cp-page-layout td, .cp-page-layout tfoot, .cp-page-layout th, .cp-page-layout thead, .cp-page-layout tr, .cp-page-layout tt, .cp-page-layout ul { line-height: normal; }
+
+.cp-page-layout * { box-sizing: border-box; }
+
+.cp-page-layout ul { list-style: none; margin: 0px; padding: 0px; }
+
+.cp-page-layout a:hover, .cp-page-layout a:focus { text-decoration: none; }
+
+.cp-page-layout .cp-page-layout__header { display: flex; justify-content: space-between; align-items: center; margin: 0px 45px 0px 32px; height: 100px; background-color: rgb(252, 253, 255); }
+
+.cp-page-layout .cp-page-layout__header.cp-page-layout__header__with-back-button { height: 120px; }
+
+.cp-page-layout .cp-page-layout__header .cp-page-layout__header-left .cp-page-layout__back-button { margin-bottom: 5px; }
+
+.cp-page-layout .cp-page-layout__header .cp-page-layout__header-left .cp-page-layout__header-title { color: rgb(53, 81, 100); font-size: 38px; font-weight: 300; }
+
+.cp-page-layout .cp-page-layout__header .cp-page-layout__header-right .cp-page-layout__header-buttons > * { margin-left: 16px; }
+
+.cp-page-layout .cp-page-layout__body { flex-grow: 1; }

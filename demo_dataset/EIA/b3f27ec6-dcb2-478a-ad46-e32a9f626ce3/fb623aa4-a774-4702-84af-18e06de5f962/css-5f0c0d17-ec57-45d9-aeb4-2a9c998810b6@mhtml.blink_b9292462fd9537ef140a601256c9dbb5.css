@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+.smb-uikit__switch { box-sizing: border-box; margin-right: 1rem; }
+
+.smb-uikit__switch > * { box-sizing: border-box; }
+
+.smb-uikit__switch .smb-uikit__checkbox { display: none; }
+
+.smb-uikit__switch .smb-uikit__checkbox + .smb-uikit__toggle { cursor: pointer; display: block; margin: 0.5rem; outline: 0px; position: relative; user-select: none; }
+
+.smb-uikit__switch .smb-uikit__checkbox + .smb-uikit__toggle::after, .smb-uikit__switch .smb-uikit__checkbox + .smb-uikit__toggle::before { background-color: rgb(252, 253, 255); border-radius: 3px; content: ""; display: block; height: 100%; position: relative; width: calc(50% - 1px); box-shadow: rgba(167, 177, 188, 0.75) 0px 3px 6px 0px; }
+
+.smb-uikit__switch .smb-uikit__checkbox + .smb-uikit__toggle::after { left: 0px; transition: left 0.25s ease 0s; }
+
+.smb-uikit__switch .smb-uikit__checkbox + .smb-uikit__toggle .smb-uikit__toggle-icon, .smb-uikit__switch .smb-uikit__checkbox + .smb-uikit__toggle .smb-uikit__toggle-text { color: rgb(252, 253, 255); font-size: 0.625rem; font-style: normal; position: absolute; top: 50%; transform: translateY(-50%) translateX(-12.5%); width: calc(1.125rem - 2px); }
+
+.smb-uikit__switch .smb-uikit__checkbox + .smb-uikit__toggle .smb-uikit__toggle-text { right: 12.5%; text-align: center; }
+
+.smb-uikit__switch .smb-uikit__checkbox + .smb-uikit__toggle::before { display: none; }
+
+.smb-uikit__switch .smb-uikit__checkbox:checked + .smb-uikit__toggle::after { left: calc(50% + 1px); }
+
+.smb-uikit__switch .smb-uikit__checkbox:checked + .smb-uikit__toggle .smb-uikit__toggle-text { left: 12.5%; right: initial; }
+
+.smb-uikit__switch .smb-uikit__checkbox.smb-uikit__switch-box + .smb-uikit__toggle { background-color: rgb(244, 88, 76); border-radius: 3px; height: 1.5rem; padding: 1px; width: 3.125rem; }
+
+.smb-uikit__switch .smb-uikit__checkbox.smb-uikit__switch-box:checked + .smb-uikit__toggle { background: rgb(8, 182, 4); }
+
+.smb-uikit__switch .smb-uikit__checkbox:disabled + .smb-uikit__toggle, .smb-uikit__switch .smb-uikit__checkbox.smb-uikit__switch-box:disabled + .smb-uikit__toggle { background: rgb(188, 200, 214); cursor: not-allowed; }

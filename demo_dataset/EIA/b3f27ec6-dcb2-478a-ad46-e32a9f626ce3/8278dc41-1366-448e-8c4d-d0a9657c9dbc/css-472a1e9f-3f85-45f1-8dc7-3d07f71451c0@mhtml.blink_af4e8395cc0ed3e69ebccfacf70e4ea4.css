@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.cp-modal.ib-booking-confirm-modal { height: auto; }
+
+.cp-modal.ib-booking-confirm-modal .ib-booking-confirm-modal-header { margin: 35px 0px 25px; padding: 0px; font-size: 22px; font-weight: 400; line-height: 34px; color: var(--ib-booking-app-main-color); }
+
+.cp-modal.ib-booking-confirm-modal .ib-booking-confirm-modal-article { margin: auto 44px; font-weight: 400; text-align: left; color: rgb(51, 49, 50); font-size: 14px; line-height: 17px; }
+
+.cp-modal.ib-booking-confirm-modal .confirm-modal-footer button:first-child { display: none; }
+
+.cp-modal.ib-booking-confirm-modal .confirm-modal-footer button.cp-button_primary { background-color: var(--ib-booking-app-primary-button-bg); border-color: var(--ib-booking-app-primary-button-bg); }
+
+@media screen and (max-width: 1024px) {
+  .cp-modal.ib-booking-confirm-modal { height: auto; width: auto; max-width: 32rem; min-height: 22rem; }
+}

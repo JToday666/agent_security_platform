@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.selected-wallet-item .navigate-back { left: 0px; position: absolute; top: 0px; }
+
+.selected-wallet-item .wallet-item { margin-bottom: 32px; }

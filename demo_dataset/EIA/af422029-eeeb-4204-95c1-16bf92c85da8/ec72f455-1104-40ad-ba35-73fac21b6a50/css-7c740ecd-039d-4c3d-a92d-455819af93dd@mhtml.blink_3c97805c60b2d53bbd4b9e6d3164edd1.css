@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.gm-ui-hover-effect { opacity: 0.6; }
+
+.gm-ui-hover-effect:hover { opacity: 1; }
+
+.gm-ui-hover-effect > span { background-color: rgb(0, 0, 0); }
+
+@media (forced-colors: active), (prefers-contrast: more) {
+  .gm-ui-hover-effect > span { background-color: buttontext; }
+}
+
+sentinel { }

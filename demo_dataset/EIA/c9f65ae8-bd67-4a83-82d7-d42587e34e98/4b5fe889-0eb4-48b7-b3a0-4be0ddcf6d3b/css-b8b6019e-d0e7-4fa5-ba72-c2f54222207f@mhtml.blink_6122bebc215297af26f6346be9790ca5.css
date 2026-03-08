@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-dez7l9 { line-height: 1.5; font-weight: 600; font-size: 1rem; }
+
+@media screen and (min-width: 64rem) {
+  .css-dez7l9 { font-size: 1rem; }
+}

@@ -1,0 +1,280 @@
+@charset "utf-8";
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinContainer--20R8J { }
+
+@supports (display: grid) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinContainer--20R8J { display: grid; grid-template-columns: repeat(12, 1fr); }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinHeader--1Tgqt { line-height: 32px; font-size: 20px; }
+
+@supports (display: grid) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinHeader--1Tgqt { grid-area: 1 / 2 / 2 / 12; }
+}
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinHeader--1Tgqt { font-size: 24px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__buttonContainer--3ceDD { text-align: left; width: 100%; padding: 0px 2px 0px 0px; margin: 2px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__buttonContainer--3ceDD { border-bottom: 1px solid rgb(102, 102, 102); background: rgb(255, 255, 255); }
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__buttonContainer--3ceDD:last-child { margin-bottom: 4px; }
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__buttonContainer--3ceDD:nth-child(2n+1) { background: rgb(247, 247, 247); }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__selectedBorder--3nglA { border-right: 8px solid rgb(0, 57, 100); }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__notSelectedBorder--JH7Mo { border-right: 8px solid rgba(0, 0, 0, 0); }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinSegmentContainer--1JAv0 { overflow: hidden auto; height: 300px; margin-top: 20px; }
+
+@supports (display: grid) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinSegmentContainer--1JAv0 { grid-area: 2 / 2 / 3 / 12; }
+}
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinSegmentContainer--1JAv0 { text-align: left; }
+  @supports (display: grid) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinSegmentContainer--1JAv0 { grid-area: 2 / 1 / 3 / 13; }
+}
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinSegmentContainer--1JAv0::-webkit-scrollbar { width: 10px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckinSegmentContainer--1JAv0::-webkit-scrollbar-thumb { background-color: rgb(102, 102, 102); }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinAnotherTripLink--wNq74 { padding: 16px 0px; }
+
+@supports (display: grid) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinAnotherTripLink--wNq74 { grid-area: 3 / 2 / 4 / 12; }
+}
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinAnotherTripLink--wNq74 { margin-left: -36px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinAnotherTripLink--wNq74 button { font-size: 16px; color: rgb(33, 114, 186); transition: color 0.4s ease 0s; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinAnotherTripLink--wNq74 button:hover, .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinAnotherTripLink--wNq74 button:focus { text-decoration: underline; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinAnotherTripLink--wNq74 button::after { content: ""; display: inline-block; border-style: solid; border-color: rgb(33, 114, 186); border-image: initial; border-width: 0px 2px 2px 0px; transform: rotate(315deg); width: 8px; height: 8px; transition: border-color 0.4s ease 0s; margin-left: 4px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinAnotherTripLink--wNq74 button:hover::after { border-color: rgb(33, 114, 186); }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinSegmentDetail--8eWnB { display: flex; flex-flow: column; padding: 16px 0px 0px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinSegmentDetail--8eWnB:last-child { padding-bottom: 17px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinSegmentDetail--8eWnB:last-child { padding-bottom: 24px; }
+}
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__checkinSegmentDetail--8eWnB { margin-right: 0px; padding: 24px 32px 32px 47px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckIn--2OcUR { line-height: 32px; font-size: 16px; font-weight: bold; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightCheckIn--2OcUR { font-size: 18px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightSegment--2wAR- { display: flex; flex-flow: row; padding-top: 8px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__departureColumn--1cTWz { flex: 1 1 0%; display: flex; flex-flow: column; text-align: left; }
+
+@media (min-width: 720px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__departureColumn--1cTWz .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__weatherIconTemperature--1UL5f { margin-left: -32px; }
+}
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__departureColumn--1cTWz .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__weatherIconTemperature--1UL5f { margin-left: auto; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightColumn--13Ykp { text-align: center; display: flex; flex-direction: column; width: 18%; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ { flex: 1 1 0%; display: flex; flex-flow: column; text-align: right; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportDataBlock--C0_Su { text-align: right; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__temperature--1JOeH { text-align: right; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconWeather--3ZklJ { text-align: right; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportCodeCityName--1tUsI { text-align: right; float: left; width: 70%; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportCodeCityName--1tUsI { width: 88%; float: left; word-break: inherit; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__weatherIconTemperature--1UL5f { padding: 0px 8px; }
+
+@media (min-width: 720px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__weatherIconTemperature--1UL5f { margin-left: 56px; }
+}
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__weatherIconTemperature--1UL5f { margin-left: auto; }
+}
+
+@media (min-width: 414px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__arrivalColumn--2xdFZ .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__weatherIconTemperature--1UL5f { width: 56%; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportCodeCityName--1tUsI { display: flex; flex-flow: column; width: 65%; word-break: break-word; }
+
+@media (min-width: 414px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportCodeCityName--1tUsI { width: 55%; }
+}
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportCodeCityName--1tUsI { width: 64%; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportDataBlock--C0_Su { display: flex; flex-flow: row; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportDataBlock--C0_Su { padding-top: 8px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__weatherIconTemperature--1UL5f { display: flex; flex-flow: column; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__weatherIconTemperature--1UL5f { float: right; width: 34%; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__departure--2mU4x { font-weight: bold; line-height: 24px; font-size: 12px; letter-spacing: 1.08px; text-transform: uppercase; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__date--3QE4s { line-height: 24px; font-size: 13px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__date--3QE4s { font-size: 16px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__time--2ZijY { line-height: 24px; font-size: 14px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__time--2ZijY { font-size: 16px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportCode--2-7TW { line-height: 40px; font-size: 24px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__airportCode--2-7TW { font-size: 32px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__cityName--154LA { line-height: 16px; font-size: 12px; padding-right: 5px; word-break: inherit; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__cityName--154LA { font-size: 14px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__temperature--1JOeH { line-height: 16px; font-size: 12px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__temperature--1JOeH { text-align: center; font-size: 14px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__dayCount--LS9Qi { line-height: 24px; font-size: 12px; letter-spacing: 1.08px; font-weight: bold; text-transform: uppercase; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__dayCountBlock--1LVUy { height: 30%; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__dayCountBlock--1LVUy { height: auto; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__onlyFlightIcon--3sv5L { min-height: 18%; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightIconDuration--k8Hnq { display: flex; flex-direction: column; min-height: 38%; padding-bottom: 20px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightIconDuration--k8Hnq { padding-bottom: 16px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__stopCountCityName--zArOe { display: flex; flex-direction: column; height: auto; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__stopCount--2Lxbt { font-weight: bold; line-height: 24px; font-size: 12px; letter-spacing: 1.08px; text-transform: uppercase; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__timeDuration--2gMmA { font-size: 12px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__timeDuration--2gMmA { margin-top: 6px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__stopCityName--33Zpy { line-height: 16px; font-size: 12px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__horizontalLine--36j0T { border: 1px solid rgb(151, 151, 151); margin: 24px 0px 8px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__horizontalLine--36j0T { border: none; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__viewDetailBtn--3tf6F { text-align: right; font-size: 16px; margin-top: 16px; line-height: 24px; color: rgb(33, 114, 186); }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__viewDetailBtn--3tf6F button { font-size: 14px; padding-right: 0px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__viewDetailBtn--3tf6F button:hover, .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__viewDetailBtn--3tf6F button:focus { text-decoration: underline; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__viewDetailBtn--3tf6F::after { content: ""; display: inline-block; margin-left: 4px; border-style: solid; border-color: rgb(33, 114, 186); border-image: initial; border-width: 0px 2px 2px 0px; transform: rotate(315deg); width: 8px; height: 8px; transition: border-color 0.4s ease 0s; margin-bottom: 2px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__viewDetailBtn--3tf6F { display: none; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__icon--2VHYI { display: inline-block; text-align: center; margin-left: 5px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__icon--2VHYI img { margin: 0px; width: 8px; height: 8px; padding-bottom: 1px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconCheckin--2DfTl { display: inline-block; text-align: center; margin-left: 5px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconCheckin--2DfTl img { margin: 0px; width: 24px; height: 24px; padding-bottom: 1px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconWeather--3ZklJ { display: inline-block; text-align: left; margin-left: 5px; line-height: 40px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconWeather--3ZklJ { text-align: center; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconWeather--3ZklJ img { margin: 0px; height: 26px; padding-bottom: 1px; }
+
+@media (min-width: 944px) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconWeather--3ZklJ img { height: 32px; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightIcon--1Llfs { display: inline-block; text-align: center; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__flightIcon--1Llfs img { margin: 0px; width: 24px; padding-bottom: 1px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__bottomAppImage--zVVVV { margin-left: 24px; margin-bottom: 24px; }
+
+@supports (display: grid) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__bottomAppImage--zVVVV { grid-area: 4 / 1 / 5 / 5; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__appTxtStyle--1s6ej { margin-right: 24px; margin-top: 16px; font-size: 12px; color: rgb(0, 57, 100); letter-spacing: 0px; line-height: 16px; }
+
+@supports (display: grid) {
+  .app-components-FlightCheckinSegmentList-flightCheckinSegmentList__appTxtStyle--1s6ej { grid-area: 4 / 5 / 5 / 13; }
+}
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__appLinkStyle--34lx4 { position: absolute; font-size: 12px; color: rgb(33, 114, 186); letter-spacing: 0px; line-height: 9px; margin-top: 16px; right: 32px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__appLinkStyle--34lx4::after { content: ""; display: inline-block; margin-left: 4px; border-style: solid; border-color: rgb(33, 114, 186); border-image: initial; border-width: 0px 2px 2px 0px; transform: rotate(315deg); width: 8px; height: 8px; transition: border-color 0.4s ease 0s; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__appIcon--1847U { height: 112px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__srOnly--2vfg1 { width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); text-transform: none; font-size: 0.5px; line-height: 0; height: 0px; position: absolute !important; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconFlightTitle--GSHg2 { position: relative; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconFlightTitleMobile--nLoqs { position: relative; left: 20px; padding-left: 5px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconError--UpK43 { width: 24px; height: 24px; position: absolute; right: calc(100% + 6px); color: rgb(213, 0, 50); }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__iconErrorMobile--QMlan { width: 18px; height: 18px; position: absolute; top: 5px; right: calc(100% + 4px); color: rgb(213, 0, 50); }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__contentMessageTRH--2TzNB { margin: 10px 0px; font-weight: 400; font-size: 14px; }
+
+.app-components-FlightCheckinSegmentList-flightCheckinSegmentList__optionLink--3F_yG { font-size: 14px; }

@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.message[data-v-e6b4c236], .message-bubble-column[data-v-e6b4c236] { flex: 0 0 auto; }
+
+.message[data-v-e6b4c236], .message-bubble-row[data-v-e6b4c236] { max-width: 80vw; }
+
+.message-bubble[data-v-e6b4c236] { border-radius: 24px; display: inline-flex; font-size: calc(1em + 0.25vmin); padding: 0px 12px; width: fit-content; align-self: center; }
+
+.message-bot .message-bubble[data-v-e6b4c236] { background-color: rgb(255, 235, 238); }

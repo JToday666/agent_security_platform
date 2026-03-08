@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+div.app-components-Refunds-components-FlightAccordion-styles__accordionContainer--AqPcV .app-components-Refunds-components-FlightAccordion-styles__disabled--wUurE { background-color: rgb(242, 242, 242); border-radius: 5px; }
+
+dl.app-components-Refunds-components-FlightAccordion-styles__accordionContainer--AqPcV { border-radius: 0px; }
+
+@media screen and (min-width: 720px) {
+  dl.app-components-Refunds-components-FlightAccordion-styles__accordionContainer--AqPcV { border-radius: 5px; margin-left: 0px; margin-right: 0px; }
+}

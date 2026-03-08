@@ -1,0 +1,41 @@
+<svg width="256" height="320" viewBox="0 0 256 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>.Rectangle_9_176 {
+	animation: 0.75s linear 0s infinite normal forwards running Rectangle_9_176;
+}
+@keyframes Rectangle_9_176 {
+	0% {
+		width: 1px;
+	}
+	100% {
+		width: 512px;
+	}
+}
+</style><g clip-path="url(#clip_0_482)">
+<rect width="256" height="320" fill="white"/>
+<g filter="url(#filter0_f)">
+<rect width="256" height="320" fill="#F7F7F7"/>
+</g>
+
+<g filter="url(#filter0_f)" class="Rectangle_9_176">
+<rect width="1" height="320" fill="url(#paint0_linear)" class="Rectangle_9_176"/>
+</g>
+</g>
+<defs><clipPath id="clip_0_482"><rect width="256" height="320"/></clipPath>
+<filter id="filter0_f" x="0" y="0" width="264" height="328" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur"/>
+</filter>
+
+<filter id="filter0_f" x="0" y="0" width="9" height="328" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur"/>
+</filter>
+<linearGradient id="paint0_linear" x1="4.02148" y1="164" x2="4.67383" y2="164" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F7F7F7" stop-opacity="0.790475"/>
+<stop offset="0.914001" stop-color="#F0F0F0"/>
+</linearGradient>
+
+</defs>
+</svg>

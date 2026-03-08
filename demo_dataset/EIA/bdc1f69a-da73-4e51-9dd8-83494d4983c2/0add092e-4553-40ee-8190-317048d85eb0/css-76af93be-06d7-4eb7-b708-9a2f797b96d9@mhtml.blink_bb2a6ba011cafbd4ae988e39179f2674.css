@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+#scrollbarCss::-webkit-scrollbar-track { box-shadow: rgba(0, 0, 0, 0) 0px 0px 6px inset; border-radius: 10px; background-color: rgb(255, 255, 255); }
+
+#scrollbarCss::-webkit-scrollbar { width: 6px; background-color: rgb(246, 246, 245); }
+
+#scrollbarCss::-webkit-scrollbar-thumb { border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px inset; background-color: rgb(246, 246, 245); }

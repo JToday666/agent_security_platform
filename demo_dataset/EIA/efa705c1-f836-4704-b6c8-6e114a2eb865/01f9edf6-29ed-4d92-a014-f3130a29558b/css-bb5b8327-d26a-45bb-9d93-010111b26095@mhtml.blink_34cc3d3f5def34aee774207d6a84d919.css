@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.css-1yswjpl { display: flex; flex-direction: row; -webkit-box-align: center; align-items: center; -webkit-box-pack: center; justify-content: center; min-width: 48px; height: 32px; border-radius: 4px; padding: 8px; cursor: pointer; color: rgb(80, 80, 80); font-weight: 600; }
+
+.css-1yswjpl > * { margin: 4px; }

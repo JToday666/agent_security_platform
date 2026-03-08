@@ -1,0 +1,199 @@
+@charset "utf-8";
+
+.aaMaterialCountryCodes, .aaPhoneCountryCode { position: relative; }
+
+.aaMaterialCountryCodes .selectbox-overlay, .aaPhoneCountryCode .selectbox-overlay { position: absolute; inset: 0px; }
+
+.aaMaterialCountryCodes .selectbox-label, .aaPhoneCountryCode .selectbox-label { position: absolute; bottom: 22px; left: 5px; z-index: -1; }
+
+.aaMaterialCountryCodes select[readonly], .aaPhoneCountryCode select[readonly] { background-color: rgb(255, 255, 255); border-color: rgb(157, 166, 171); }
+
+.aaMaterialCountryCodes select[size], .aaPhoneCountryCode select[size] { position: absolute; top: 0px; left: 0px; width: 0px; height: 0px; z-index: -1; }
+
+.aaMaterialCountryCodes .is-error select[readonly], .aaPhoneCountryCode .is-error select[readonly] { border-color: rgb(195, 0, 25); }
+
+.aaMaterialCountryCodes.-active, .aaPhoneCountryCode.-active { overflow: initial; }
+
+.aaMaterialCountryCodes.-active .selectbox-label, .aaPhoneCountryCode.-active .selectbox-label { z-index: 1; bottom: 0px; left: 0px; }
+
+.aaMaterialCountryCodes.-active select[size], .aaPhoneCountryCode.-active select[size] { width: auto; height: auto; }
+
+.aaMaterialCountryCodes.-focus select[readonly], .aaPhoneCountryCode.-focus select[readonly] { outline: rgb(0, 120, 210) solid 1px; border-color: rgb(0, 120, 210); }
+
+.aaMaterialCountryCodes.-focus select[size], .aaPhoneCountryCode.-focus select[size] { border-color: inherit; outline: none; }
+
+.aaMaterialCountryCodes select[readonly] { position: relative; border-color: rgb(208, 218, 224); }
+
+.aaMaterialCountryCodes select[size]:disabled { opacity: 0; }
+
+.aaMaterialCountryCodes.-active select[size] { color: rgb(54, 73, 90); top: 52px; bottom: auto; }
+
+.full-screen-dialog { margin-bottom: 0px; border: none; top: 0px !important; width: 100% !important; max-width: none !important; }
+
+.full-screen-dialog .ui-dialog-titlebar { background: none; padding-bottom: 0px; }
+
+.full-screen-dialog .ui-dialog-titlebar .ui-dialog-title { color: rgb(0, 70, 127); font-size: 1.92857rem; }
+
+.full-screen-dialog .ui-dialog-buttonpane { padding-top: 0px; margin-bottom: 50px; margin-top: 14px; }
+
+.full-screen-dialog ul.list-select-mobile li { position: relative; height: 60px; border-radius: 3px; margin-bottom: 5px; padding: 15px 40px 15px 15px; }
+
+.full-screen-dialog ul.list-select-mobile li.selected-option { background-color: rgb(0, 70, 127); }
+
+.full-screen-dialog ul.list-select-mobile li.selected-option a { color: rgb(255, 255, 255); }
+
+.full-screen-dialog ul.list-select-mobile li.selected-option::after { content: "􎁉"; position: absolute; top: 15px; right: 15px; color: rgb(255, 255, 255); font-size: 1.5rem; line-height: 27px; font-family: "American Icons"; }
+
+.full-screen-dialog ul.list-select-mobile li a { font-family: AmericanSansLight, Helvetica, Arial, sans-serif; color: rgb(0, 97, 171); font-size: 1.5rem; line-height: 27px; text-decoration: none; display: block; width: 100%; height: 100%; }
+
+.table-basic, table { width: 100%; margin: 20px 0px; }
+
+.table-basic .table-column, .table-basic td, .table-basic th, table .table-column, table td, table th { padding: 10px; font-weight: 400; text-align: left; vertical-align: middle; font-family: AmericanSansLight, Helvetica, Arial, sans-serif; }
+
+.table-basic tr.align-top td, table tr.align-top td { vertical-align: top !important; }
+
+.table-basic .table-header, .table-basic thead, table .table-header, table thead { border-bottom: 1px solid rgb(208, 218, 224); background-color: rgb(235, 239, 240); background-size: auto; }
+
+.table-basic .table-header .table-column, .table-basic .table-header th, .table-basic thead .table-column, .table-basic thead th, table .table-header .table-column, table .table-header th, table thead .table-column, table thead th { color: rgb(54, 73, 90); font-family: AmericanSansMedium, Calibri, Helvetica, Arial, sans-serif; font-size: 1.07143rem; }
+
+.table-basic .table-body .table-row, .table-basic .table-body tr, .table-basic tbody .table-row, .table-basic tbody tr, table .table-body .table-row, table .table-body tr, table tbody .table-row, table tbody tr { padding: 5px 0px; border-bottom: 1px solid rgb(208, 218, 224); }
+
+.table-basic .table-body .table-row.disabled, .table-basic .table-body tr.disabled, .table-basic tbody .table-row.disabled, .table-basic tbody tr.disabled, table .table-body .table-row.disabled, table .table-body tr.disabled, table tbody .table-row.disabled, table tbody tr.disabled { color: rgb(157, 166, 171); }
+
+.table-basic .table-body .table-row.no-border, .table-basic .table-body tr.no-border, .table-basic tbody .table-row.no-border, .table-basic tbody tr.no-border, table .table-body .table-row.no-border, table .table-body tr.no-border, table tbody .table-row.no-border, table tbody tr.no-border { border-bottom: 0px; }
+
+.table-basic .table-body .table-row .table-column, .table-basic .table-body .table-row td, .table-basic .table-body tr .table-column, .table-basic .table-body tr td, .table-basic tbody .table-row .table-column, .table-basic tbody .table-row td, .table-basic tbody tr .table-column, .table-basic tbody tr td, table .table-body .table-row .table-column, table .table-body .table-row td, table .table-body tr .table-column, table .table-body tr td, table tbody .table-row .table-column, table tbody .table-row td, table tbody tr .table-column, table tbody tr td { padding: 10px; }
+
+.table-basic .table-body .table-row.-thicker, .table-basic .table-body tr.-thicker, .table-basic tbody .table-row.-thicker, .table-basic tbody tr.-thicker, table .table-body .table-row.-thicker, table .table-body tr.-thicker, table tbody .table-row.-thicker, table tbody tr.-thicker { border-bottom-width: 2px; }
+
+.table-basic .table-body .table-row.-header, .table-basic .table-body tr.-header, .table-basic tbody .table-row.-header, .table-basic tbody tr.-header, table .table-body .table-row.-header, table .table-body tr.-header, table tbody .table-row.-header, table tbody tr.-header { background-color: rgb(243, 245, 246); }
+
+.table-basic .table-body .table-row.-header td, .table-basic .table-body .table-row.-header th, .table-basic .table-body tr.-header td, .table-basic .table-body tr.-header th, .table-basic tbody .table-row.-header td, .table-basic tbody .table-row.-header th, .table-basic tbody tr.-header td, .table-basic tbody tr.-header th, table .table-body .table-row.-header td, table .table-body .table-row.-header th, table .table-body tr.-header td, table .table-body tr.-header th, table tbody .table-row.-header td, table tbody .table-row.-header th, table tbody tr.-header td, table tbody tr.-header th { font-weight: 700; background-color: rgb(243, 245, 246); }
+
+.table-basic .table-footer, .table-basic tfoot, table .table-footer, table tfoot { border-top: 1px solid rgb(208, 218, 224); }
+
+.table-basic .table-footer .table-column, .table-basic .table-footer td, .table-basic tfoot .table-column, .table-basic tfoot td, table .table-footer .table-column, table .table-footer td, table tfoot .table-column, table tfoot td { padding-left: 0px; padding-right: 0px; }
+
+.flightschedule table, .flightschedule tbody, .flightschedule td, .flightschedule tr { border-bottom: none; }
+
+.flightschedule td { padding: 25px 10px 20px; vertical-align: top; border-bottom: none; }
+
+.flightschedule .firstSegment td { padding-bottom: 10px; }
+
+.flightschedule .nextSegment td { padding-top: 13px; padding-bottom: 10px; }
+
+.flightschedule .lastSegment td { padding-top: 13px; }
+
+.flightschedule .divider { border-bottom: 2px solid rgb(208, 218, 224); }
+
+.flightschedule .divider td { padding: 0px; margin: 0px; }
+
+.flightschedule .time { font-size: 1.71429rem; }
+
+.flightschedule .time .icon-arrow-right { display: none; }
+
+.flightschedule .airport { margin-top: 7px; font-size: 1.14286rem; }
+
+.flightschedule .bottom-link { display: none; }
+
+.is-btn-mobile { display: none !important; }
+
+.carrierIcon { width: 40px; padding-left: 10px; }
+
+.flightno { font-size: 1.64286rem; display: inline-block; width: 55px; }
+
+.carrier, .flightno { vertical-align: text-top; }
+
+.carrier { font-family: Arial, sans-serif; font-size: 1.07143rem; text-transform: capitalize; }
+
+.carrierInfo { display: none; }
+
+.operatedBy { font-family: Arial, sans-serif; margin-top: 8px; font-size: 0.85714rem; color: rgb(98, 122, 136); }
+
+@media screen and (min-width: 767px) {
+  .operatedBy { margin-left: 40px; }
+}
+
+.flightInfo { width: 340px; padding-left: 0px; }
+
+.aircraft { font-family: Arial, sans-serif; font-size: 1.14286rem; }
+
+.flightIcon { width: 20px; margin-right: 20px; float: left; }
+
+.origindesticity { margin-bottom: 0px; }
+
+.createFSNLink { margin-top: 7px; }
+
+.divider, .dividerSegment { padding: 0px; margin: 0px; }
+
+.dividerSegment, .dividerSegment tr { border-bottom: none; }
+
+.dividerSegment td { padding: 0px 0px 0px 10px; margin: 0px; border-bottom: none; }
+
+.dividerSegment div { overflow: hidden; white-space: nowrap; color: rgb(209, 73, 4); }
+
+.dividerSegment hr { display: inline-block; width: 100%; margin: 8px 10px 4px; border-top: 1px dashed rgb(208, 218, 224); }
+
+.arrivesNextDayAlert, .departNextDayAlert { font-family: AmericanSans, Helvetica, Arial, sans-serif; color: rgb(209, 73, 4); font-size: 1rem; margin-top: 7px; }
+
+tr:focus { border: 2px solid rgb(0, 120, 210); }
+
+table.airport .airport-city { width: 25%; }
+
+table.airport .airport-name { width: 50%; }
+
+table.airport .airport-code { width: 25%; text-align: center; }
+
+@media screen and (max-width: 767px) {
+  .aaAirportLookup { display: none; }
+}
+
+@media screen and (max-width: 767px) {
+  #main { padding-left: 0px; padding-right: 0px; }
+  footer { margin-top: 0px; }
+  .btn { font-size: 1.71429rem; }
+  #result .header { padding: 0px 3%; }
+  #result .header > h1 { margin-top: 0px; margin-bottom: 15px; }
+  #result .cityTravelDate { padding: 0px 3%; border-bottom: 1px solid rgb(183, 193, 199); }
+  #showMoreFlightsButtonSection { background-color: rgb(235, 238, 240); padding-left: 3%; padding-right: 3%; padding-bottom: 40px; }
+  #showMoreFlightsButtonSection::after { clear: both; }
+  .flightschedule { background-color: rgb(235, 238, 240); margin: 0px; }
+  .flightschedule thead { display: none; }
+  .flightschedule td, .flightschedule tr { display: block; background-color: rgb(255, 255, 255); }
+  .flightschedule td { padding-top: 15px; padding-bottom: 15px; }
+  .flightschedule td.carrierIcon, .flightschedule td.flightInfo { display: none; }
+  .flightschedule td.departure { float: left; width: 55%; }
+  .flightschedule td.arrival { float: left; width: 45%; }
+  .flightschedule td.arrival::after { clear: both; }
+  .flightschedule td.carrierInfo { display: block; padding: 0px 10px 10px; clear: both; }
+  .flightschedule td.carrierInfo .icon { vertical-align: bottom; }
+  .flightschedule td.aircraft { padding: 0px 10px; }
+  .flightschedule td.aircraft::before { content: attr(data-th) ": "; margin-right: 7px; display: inline-block; }
+  .flightschedule td.checkStatusLink { padding: 5px 10px; }
+  .flightschedule tr { margin: 22px 3%; }
+  .flightschedule tr::after { clear: both; }
+  .flightschedule tr .top-link { display: none; }
+  .flightschedule tr.oneSegment { border: 1px solid rgb(183, 193, 199) !important; }
+  .flightschedule tr.oneSegment .top-link { display: block; }
+  .flightschedule .time { font-size: 1.92857rem; line-height: 25px; }
+  .flightschedule .time .icon-arrow-right { display: block; }
+  .flightschedule .airport { margin-top: 0px; }
+  .flightschedule .firstSegment { border-top: 1px solid rgb(183, 193, 199); }
+  .flightschedule .firstSegment, .flightschedule .nextSegment { border-left: 1px solid rgb(183, 193, 199); border-right: 1px solid rgb(183, 193, 199); margin-bottom: 0px; }
+  .flightschedule .nextSegment { margin-top: 0px; }
+  .flightschedule .lastSegment { margin-top: 0px; border-left: 1px solid rgb(183, 193, 199); border-right: 1px solid rgb(183, 193, 199); border-bottom: 1px solid rgb(183, 193, 199); }
+  .flightschedule .lastSegment .bottom-link { display: block; }
+  .flightschedule .dividerSegment { margin: 0px 3%; border-left: 1px solid rgb(183, 193, 199); border-right: 1px solid rgb(183, 193, 199); clear: both; }
+  .flightschedule .dividerSegment .stop-spacer { display: none; }
+  .flightschedule .dividerSegment .stop { padding: 7px 10px 3px 23%; }
+  .flightschedule .flightno { display: inline; width: auto; margin-right: 3px; }
+  h2.origindesticity { font-size: 1.92857rem; }
+  h2.travelDate { font-size: 1.42857rem; margin-bottom: 13px; }
+  .divider { display: none !important; }
+  .is-desktop { display: none; }
+  .is-btn-mobile { display: inline-block !important; }
+  .noSeatMap { margin: 0px; padding: 0px !important; }
+  .arrivesNextDayAlert > span { white-space: nowrap; }
+  .createFSNLink { margin-top: 10px; }
+  .createFSNLink::after { clear: both; }
+}

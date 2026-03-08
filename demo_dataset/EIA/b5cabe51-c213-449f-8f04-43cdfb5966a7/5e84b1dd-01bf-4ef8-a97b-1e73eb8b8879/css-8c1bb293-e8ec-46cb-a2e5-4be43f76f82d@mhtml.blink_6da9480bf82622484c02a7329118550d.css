@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+#use-cookie { width: 100%; background-color: rgb(245, 246, 247); border-bottom: 1px solid rgb(204, 204, 204); height: 40px; }
+
+@media screen and (max-width: 768px) {
+  #use-cookie { height: inherit; box-sizing: border-box; padding: 6px; }
+}
+
+#use-cookie .wrap { position: relative; max-width: 1180px; overflow: hidden; margin: 0px auto; }
+
+#use-cookie .wrap table { width: 100%; }
+
+#use-cookie .wrap table td:first-child { width: auto; text-align: left; }
+
+#use-cookie .wrap table .online-close-icon { display: block; width: 16px; height: 16px; background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAixJREFUWAm92LtOAkEUBmAGAj1P4RNQWdEQEwwFGhJJKDQEngkKKU0IWhhpbKysbH0PCjss8P8nHsJldnduO5Msy57dnfNxdthZUBW0+Xzew2q02+2G0+n0l7FUDbmvkfe+2WzeDQaDrSIGgRUAdaXUK97fpkIRg7zPyNnAeg1Uv4o3I2KwVLCjB9RqNpvpbcbKaicYpuluNpunKhBDVkYSp0DhA3eRTyqjU8OwxbJQ3GJFWBli9F68EInt6JePGPT9gr55mXTD9hZvbiaTyZsGMZoCVYShg2NINw5kVoSVkRgrhu0oYyoLgxx9VkZy7iskgTIqlYdBIdaSm+szEIMxUS6YTFAslCsmFxSK8sEUgnxRvhgrkCsqBGMNskWFYpxARSjs75juwLzPnH612VdWM37tsw5mHFUwTTOf2NVC8qPpwBXD/p1BPMmEYlwa5yYfDM/3AvHEf9QHEl9yW1oIhn3s5zLp0GHdwbEtw/FfiL0b4lYhL5Dp2yTZWLGQCdkZZMLwMmHhwNYNKO+nBCdQFgaAPpY2UMGPLtaDOg8j9xkcY7olOD15WoFsMHK5QlGFIBdMDFQuyAcTisoEhWBCUEZQDIwv6gwUE+ODOgKVgXFF7UFlYlxQGpQCY4tSKTE2KM5lD5iHgp/0JJnN2vSzHee1a7XaRZX/XGFD/5zlrM2JUuYmm859jzlEIe8P+rkaj8ffegwtl8sG/yxC8DEF5vBDYMjUWRliGP8Dn0XL5i+AXrwAAAAASUVORK5CYII=") 50% center / 16px 16px no-repeat; cursor: pointer; }
+
+#use-cookie .wrap table .word-cookie { line-height: 40px; display: inline; }
+
+#use-cookie .wrap table .word-cookie a { cursor: pointer; border-bottom: 1px solid rgb(70, 70, 70); text-decoration: none; }
+
+#use-cookie .wrap table .word-cookie a:hover { text-decoration: none; color: rgb(51, 51, 51); }
+
+@media screen and (max-width: 768px) {
+  #use-cookie .wrap table .word-cookie { line-height: 20px; }
+}
+
+#use-cookie .wrap table .ok-btn { padding: 2px 15px; margin-left: 20px; border-radius: 4px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); cursor: pointer; border: 1px solid rgb(70, 70, 70); }
+
+#use-cookie .wrap table .ok-btn:focus { outline: none; }

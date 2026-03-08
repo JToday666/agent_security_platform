@@ -1,0 +1,78 @@
+@charset "utf-8";
+
+.main_card_gr { background-color: rgb(255, 255, 255); border: 1px solid rgb(227, 227, 227); margin: 10px; padding: 21px 15px; text-align: center; }
+
+.main_card_gr .main-card__header { display: flex; }
+
+.main_card_gr .card_title_gr { min-height: 70px; display: flex; justify-content: center; align-items: center; padding: 10px 30px; border-radius: 5px; width: 100%; }
+
+.main_card_gr .card_title_gr.background--red { background-color: rgb(216, 0, 0); }
+
+.main_card_gr .card_title_gr.background--orange { background-color: rgb(242, 124, 33); }
+
+.main_card_gr .card_title_gr.background--purple { background-color: rgb(149, 97, 175); }
+
+.main_card_gr .card_title_gr.background--blue { background-color: rgb(0, 90, 161); }
+
+.main_card_gr .card_title_gr.background--green { background-color: rgb(106, 189, 70); }
+
+.main_card_gr .card_title_gr .card-subhead { font-size: 1.25rem; margin-bottom: 5px; font-family: "open sans"; }
+
+.background--red .card-title, .background--orange .card-title, .background--purple .card-title, .background--blue .card-title, .background--green .card-title { color: rgb(255, 255, 255); }
+
+.card_title_gr .card-title { margin: 0px; }
+
+.card_description_gr { margin-bottom: 20px; }
+
+.btn_show_hide { border-radius: 0px; background: rgb(255, 255, 255); color: rgb(0, 0, 0); padding-left: 10px; padding-right: 0px; margin-top: 10px; font-size: 1.5rem; }
+
+.btn_show_hide:hover { background: rgb(255, 255, 255); color: rgb(0, 0, 0); }
+
+.btn_show_hide:focus { background: rgb(255, 255, 255); color: rgb(0, 0, 0); }
+
+.info_gr .divider-line { background-color: rgb(204, 204, 204); margin-top: 25px; margin-bottom: 30px; height: 1px; width: 100%; }
+
+@media only screen and (min-width: 767px) {
+  .centered-card_container .elementor-row:first-child { justify-content: center; align-items: center; }
+  .centered-card_container .centered-card_item { width: 50%; }
+}
+
+.info_gr { display: none; }
+
+.card_footer_gr .btn--success .btn { min-width: 70%; background-color: rgb(8, 121, 0); margin: 15px 0px; }
+
+.card_footer_gr .btn--info .btn { min-width: 70%; background-color: rgb(27, 103, 236); margin: 15px 0px; }
+
+@media only screen and (min-width: 767px) {
+  .card_footer_gr .btn--success .btn, .card_footer_gr .btn--info .btn { min-width: 170px; }
+}
+
+.card_footer_gr .text--request-info .btn { color: rgb(27, 103, 236); text-decoration: underline; }
+
+.card_footer_gr .text--request-info .btn:hover { color: rgb(27, 103, 236); text-decoration: none; }
+
+.modal-window { position: fixed; background-color: rgba(0, 0, 0, 0.475); inset: 0px; z-index: 999; visibility: hidden; opacity: 0; pointer-events: none; transition: all 0.3s ease 0s; }
+
+.modal-window:target { visibility: visible; opacity: 1; pointer-events: auto; }
+
+.modal-window > div { height: 575px; width: 500px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 2em; background: rgb(255, 255, 255); }
+
+.modal-close { color: rgb(170, 170, 170); line-height: 50px; font-size: 80%; position: absolute; right: 0px; text-align: center; top: 0px; width: 70px; text-decoration: none; }
+
+.modal-close:hover { color: rgb(0, 0, 0); }
+
+.modal-window div:not(:last-of-type) { margin-bottom: 15px; }
+
+.main-inner-groups .mb { margin-bottom: 12px; }
+
+.main-inner-groups .mt { margin-top: 12px; }
+
+.main-inner-groups .elementor-widget-sf-groups-cards, .main-inner-groups .elementor-widget-sf-groups-cards .elementor-widget-container { height: 100% !important; }
+
+@media only screen and (min-width: 767px) and (max-width: 1023px) {
+  .main-inner-groups .elementor-column { width: 100% !important; }
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1125px) {
+  .main_card_gr .elementor-button { width: 100% !important; min-width: inherit !important; }
+}

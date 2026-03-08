@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+.atm-c-text-passage p { margin-bottom: 1.5rem; }
+
+.atm-c-text-passage a { color: rgb(0, 96, 128); text-decoration: underline; font-weight: normal; }
+
+.atm-c-text-passage a:hover { color: rgb(0, 51, 160); }
+
+.atm-c-text-passage a:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+.atm-c-text-passage h1 { font-size: 2.5rem; line-height: 1.2; margin-bottom: 1.5rem; font-weight: 600; }
+
+@media screen and (max-width: 47em) {
+  .atm-c-text-passage h1 { font-size: 2rem; line-height: 1.25; }
+}
+
+.atm-c-text-passage h2 { font-size: 2rem; line-height: 1.25; margin-bottom: 1.5rem; font-weight: 600; margin-top: 2.5rem; }
+
+@media screen and (max-width: 47em) {
+  .atm-c-text-passage h2 { font-size: 1.5rem; line-height: 1.33333; }
+}
+
+.atm-c-text-passage h3 { font-size: 1.5rem; line-height: 1.33333; margin-bottom: 1.5rem; font-weight: 600; margin-top: 2.5rem; }
+
+@media screen and (max-width: 47em) {
+  .atm-c-text-passage h3 { font-size: 1.25rem; line-height: 1.6; }
+}
+
+.atm-c-text-passage h4 { font-size: 1.25rem; line-height: 1.6; margin-bottom: 1.5rem; font-weight: 600; margin-top: 2.5rem; }
+
+@media screen and (max-width: 47em) {
+  .atm-c-text-passage h4 { font-size: 1rem; line-height: 1.5; }
+}
+
+.atm-c-text-passage h5 { font-size: 1rem; line-height: 1.5; margin-bottom: 1.5rem; font-weight: 600; margin-top: 2.5rem; }
+
+@media screen and (max-width: 47em) {
+  .atm-c-text-passage h5 { font-size: 0.875rem; line-height: 1.5; }
+}
+
+.atm-c-text-passage h6 { font-size: 1rem; line-height: 1.5; margin-bottom: 1.5rem; font-weight: 600; margin-top: 2.5rem; }
+
+.atm-c-text-passage ul { margin: 0px 0px 1.5rem 1rem; padding: 0px; list-style: disc; }
+
+.atm-c-text-passage ol { margin: 0px 0px 1.5rem 1rem; padding: 0px; list-style: decimal; }
+
+.atm-c-text-passage li { margin-bottom: 0.5rem; }
+
+.atm-c-text-passage blockquote { font-style: italic; border-left: 1px solid rgb(148, 148, 148); color: rgb(148, 148, 148); padding-left: 1rem; margin-left: 0px; margin-bottom: 1.5rem; }
+
+.atm-c-text-passage hr { border: 0px; height: 1px; background: rgb(230, 230, 230); margin: 1.5rem 0px; }
+
+.atm-c-text-passage :first-child { margin-top: 0px; }
+
+.atm-c-text-passage :last-child { margin-bottom: 0px; }
+
+.atm-c-text-passage--small { font-size: 0.75rem; font-weight: 300; line-height: 1.66667; }
+
+.atm-c-text-passage--small li { margin-bottom: 0px; }
+
+.atm-c-text-passage--large { font-size: 1.5rem; font-weight: 300; line-height: 1.33333; margin-bottom: 0px; }
+
+.atm-c-text-passage--large ul { margin-left: 1.5rem; }
+
+.atm-c-text-passage--large ol { margin-left: 1.5rem; }

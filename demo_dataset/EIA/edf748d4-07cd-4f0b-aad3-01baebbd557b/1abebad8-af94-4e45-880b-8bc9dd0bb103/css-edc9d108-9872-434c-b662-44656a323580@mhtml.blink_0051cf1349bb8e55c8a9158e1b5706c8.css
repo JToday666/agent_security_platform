@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.payment-method__header[_ngcontent-iyw-c296] { position: relative; }
+
+.r-form-field[_ngcontent-iyw-c296] { margin: 0.875rem 0px 0px; }
+
+.payment-method__error[_ngcontent-iyw-c296] { background-color: var(--error-red-bg, #fdeeec); border: solid 2px var(--error-red, #cf2e1d); display: flex; margin-bottom: 1.5rem; margin-top: 0.7rem; padding: 0.71875rem; position: relative; }
+
+.payment-method__error[_ngcontent-iyw-c296] icon[_ngcontent-iyw-c296] { margin-right: 0.5rem; }
+
+.payment-method__error[_ngcontent-iyw-c296] span[_ngcontent-iyw-c296] { flex: 1 1 auto; }
+
+.payment-method__error[_ngcontent-iyw-c296]::before, .payment-method__error[_ngcontent-iyw-c296]::after { display: none; }
+
+.payment-method__options[_ngcontent-iyw-c296] { align-items: center; display: flex; flex-direction: row; justify-content: flex-start; }
+
+.payment-method__options__item[_ngcontent-iyw-c296] { margin: 1rem 1rem 0px 0px; }
+
+@media (min-width: 1024px) {
+  .payment-method__options__item[_ngcontent-iyw-c296] { margin: 1.5rem 1rem 0px 0px; }
+}
+
+.payment-method__options__item[_ngcontent-iyw-c296] input[_ngcontent-iyw-c296] { height: auto; margin: 0px 0.5rem 0px 0px; }
+
+.payment-method__verisign-icon[_ngcontent-iyw-c296] { height: 38px; position: absolute; right: 0px; top: -10px; }

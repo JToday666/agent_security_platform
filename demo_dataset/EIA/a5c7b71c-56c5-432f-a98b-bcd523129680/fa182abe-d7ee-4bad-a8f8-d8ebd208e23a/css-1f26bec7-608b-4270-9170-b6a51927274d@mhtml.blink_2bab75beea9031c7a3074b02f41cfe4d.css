@@ -1,0 +1,145 @@
+@charset "utf-8";
+
+body { color: rgb(51, 51, 51); background-color: rgb(244, 244, 244); }
+
+input, select, textarea { border-color: rgb(234, 234, 234); color: inherit; }
+
+input:hover, input:active, select:hover, select:active, textarea:hover, textarea:active { border-color: rgb(200, 200, 200); }
+
+button.secondary { background-color: rgb(255, 255, 255); color: rgb(22, 92, 150); border-color: rgb(22, 92, 150); }
+
+button, button.secondary:hover, button.secondary:active { color: rgb(255, 255, 255); background-color: rgb(22, 92, 150); }
+
+button:hover, button:active { background-color: rgb(22, 92, 150); }
+
+button.deemphasized { color: rgb(51, 51, 51); background-color: rgb(244, 244, 244); }
+
+button.deemphasized:hover, button.deemphasized:active { background-color: rgb(234, 234, 234); }
+
+button.link { background-color: transparent; color: rgb(22, 92, 150); border-color: transparent; }
+
+a { color: inherit; }
+
+a:hover { color: rgb(255, 255, 255); }
+
+input[type="checkbox"]:disabled + label { color: rgb(170, 170, 170); }
+
+.charm { color: rgb(255, 255, 255); background-color: rgb(22, 92, 150); }
+
+.error { background-color: rgb(206, 75, 40); }
+
+.spinner { background: transparent; border-color: rgb(234, 234, 234) rgb(234, 234, 234) rgb(22, 92, 150); }
+
+.overlay { background-color: rgba(0, 0, 0, 0.4); }
+
+.dialog .container { background-color: rgb(255, 255, 255); }
+
+.dialog h3 ~ small, .dialog .description { color: rgb(102, 102, 102); }
+
+.dialog small.verificationError { color: rgb(206, 75, 40); }
+
+.dialog .termsLink, .dialog .termsLink:hover { color: rgb(0, 0, 238); }
+
+.mainContent, .bookingForm, .bookingSummaryForm, .bookButtonContainer { background-color: rgb(255, 255, 255); }
+
+.headerSection { color: rgb(102, 102, 102); background-color: rgb(255, 255, 255); }
+
+.bookingSummaryServiceName > span { color: rgb(102, 102, 102); }
+
+.timeZonePicker select:hover { color: rgb(51, 51, 51); background-color: rgb(244, 244, 244); }
+
+.timeZonePicker select:focus, .timeZonePicker select:active { color: rgb(22, 92, 150); background-color: rgb(244, 244, 244); }
+
+.timeZonePicker select:disabled { color: rgb(170, 170, 170); background: transparent; }
+
+.timeZonePicker option { color: rgb(51, 51, 51); background-color: rgb(255, 255, 255); }
+
+.footerSection { color: rgb(198, 198, 198); background-color: rgb(48, 48, 48); }
+
+.servicePicker label, .appointmentTypePicker label { border-color: rgb(234, 234, 234); }
+
+.servicePicker label:hover, .appointmentTypePicker label:hover { background-color: rgb(244, 244, 244); }
+
+.servicePicker label.selected, .appointmentTypePicker label.selected, .staffPicker label.selected, .timePicker label.selected { color: rgb(255, 255, 255); background-color: rgb(22, 92, 150); border-color: rgb(22, 92, 150); }
+
+.servicePicker button.infoCircleButton, .appointmentTypePicker button.infoCircleButton { background-color: rgba(0, 0, 0, 0.25); }
+
+.servicePicker button.infoCircleButton:hover, .appointmentTypePicker button.infoCircleButton:hover { background-color: rgba(0, 0, 0, 0.4); }
+
+.datePicker .navigator.disabled { color: rgb(170, 170, 170); }
+
+.datePicker .loading { background-color: rgba(255, 255, 255, 0.75); }
+
+.datePicker .date { color: rgb(170, 170, 170); }
+
+.datePicker .date:hover { background-color: rgb(244, 244, 244); }
+
+.datePicker .empty, .datePicker .empty:hover { background: transparent; }
+
+.datePicker .bookable { color: inherit; }
+
+.datePicker .not-bookable { color: rgb(170, 170, 170); }
+
+.datePicker .selected { color: rgb(255, 255, 255); }
+
+.datePicker .selected, .datePicker .selected:hover { background-color: rgb(22, 92, 150); }
+
+.datePicker .selected.not-bookable { background-color: rgb(170, 170, 170); }
+
+.staffPicker button { color: inherit; background-color: rgb(255, 255, 255); border-color: rgb(234, 234, 234); }
+
+.staffPicker button:hover { color: inherit; background-color: rgb(244, 244, 244); border-color: rgb(200, 200, 200); }
+
+.staffPicker .doughboy { color: rgb(200, 200, 200); }
+
+.staffPicker .doughboy.selected { color: rgb(22, 92, 150); }
+
+.staffPicker ul { background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); }
+
+.staffPicker li { background-color: rgb(255, 255, 255); }
+
+.staffPicker li:hover { background-color: rgb(244, 244, 244); }
+
+.staffPicker li var.not-bookable { color: rgb(206, 75, 40); }
+
+.staffPicker label.selected var.not-bookable { color: rgba(255, 255, 255, 0.7); }
+
+.staffPicker label.selected:hover { background-color: rgb(22, 92, 150); }
+
+.timePicker li:hover { background-color: rgb(244, 244, 244); }
+
+.timePicker span.message { color: rgb(102, 102, 102); background-color: rgb(244, 244, 244); }
+
+.bookingSummaryHeader, .bookingDetailsRow .separator { border-bottom-color: rgb(234, 234, 234); }
+
+.timeZonePicker .image, .timeZoneInfo .image, .bookingDetails .image, .bookingInfoDialog .image { color: rgb(22, 92, 150); }
+
+.bookingDetails .image.circle { color: rgb(255, 255, 255); }
+
+.bookingInfoDialog, .serviceSection .dialog { color: rgb(51, 51, 51); }
+
+.agreement a, .agreement a:hover { color: rgb(0, 98, 175); }
+
+@media (min-width: 1021px) {
+  .bookingSummaryLine { border-right-color: rgb(234, 234, 234); }
+}
+
+@media (max-width: 1020px) {
+  .headerSection button { background-color: rgba(0, 0, 0, 0.1); }
+  .headerSection button:hover { background-color: rgba(0, 0, 0, 0.2); }
+}
+
+@media screen and (-ms-high-contrast: active) {
+  .boldInHighContrast { font-weight: 700; }
+  button { border: 1px solid; }
+}
+
+@media screen and (-ms-high-contrast: white-on-black) {
+  .datePicker .not-bookable, .datePicker .navigator.disabled { color: rgb(63, 242, 63); }
+  .datePicker .selected, .datePicker .selected:hover { background-color: rgb(26, 235, 255); }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+  .datePicker .not-bookable, .datePicker .navigator.disabled { color: rgb(96, 0, 0); }
+  .datePicker .selected, .datePicker .selected:hover { background-color: rgb(55, 0, 110); }
+}

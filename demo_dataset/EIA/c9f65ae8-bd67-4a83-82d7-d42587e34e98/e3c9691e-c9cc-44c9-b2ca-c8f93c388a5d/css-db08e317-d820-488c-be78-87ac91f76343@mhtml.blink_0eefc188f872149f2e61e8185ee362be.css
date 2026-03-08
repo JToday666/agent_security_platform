@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.css-e3ekxw { width: var(--chakra-sizes-14); height: var(--chakra-sizes-14); display: inline-block; line-height: 1em; flex-shrink: 0; color: currentcolor; position: absolute; top: 50%; transform: translate(0px, -50%); left: var(--chakra-space-4); fill: var(--chakra-colors-white); }
+
+@media screen and (min-width: 48rem) {
+  .css-e3ekxw { left: var(--chakra-space-10); }
+}
+
+@media screen and (min-width: 64rem) {
+  .css-e3ekxw { left: var(--chakra-space-2-5); }
+}

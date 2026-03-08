@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__srOnly--3xBom { width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); text-transform: none; font-size: 0px; line-height: 0; height: 0px; position: absolute !important; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__inputFieldErrorMsg--2bvVx, .app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__customErrorMsg--1z4Tl { position: absolute; left: 0px; color: rgb(213, 0, 50); letter-spacing: 0px; width: 100%; font-size: 13px; line-height: 1.5; padding: 4px 0px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__inputFieldErrorMsg--2bvVx, .app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__customErrorMsg--1z4Tl { font-size: 11px; }
+}
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__inputFieldWithErrorIcon--3nsK2 { color: rgb(213, 0, 50); letter-spacing: 0px; width: 100%; font-size: 13px; line-height: 1.5; padding: 4px 0px; }
+
+@media screen and (min-width: 944px) {
+  .app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__inputFieldWithErrorIcon--3nsK2 { font-size: 11px; top: inherit; }
+}
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__customErrorMsg--1z4Tl { top: 100%; left: 0px; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__keyboardUser--3vl1A { margin: 8px 0px 0px; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__infoPanel--2stZr { font-size: 12px; color: rgb(0, 29, 72); transition: height 0.4s ease 0s; line-height: 1.5; padding: 0px 30px 25px; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(102, 102, 102); width: 100%; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__infoPanel--2stZr.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__isMobile--3q46w { position: fixed; bottom: 52px; left: 0px; right: 0px; padding-top: 8px; padding-bottom: 8px; border-top: none; border-bottom: 1px solid rgb(102, 102, 102); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 2px; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__infoPanel--2stZr.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__isEmpty--3isVa { border: none; margin: 0px; padding: 0px; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__calendarContainer--M8lpG { position: relative; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__calendarContainer--M8lpG::after { content: ""; position: absolute; bottom: 0px; left: 0px; width: 100%; height: 2px; border-bottom: 1px solid rgb(102, 102, 102); transition: border-color 0.4s ease 0s; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__calendarContainer--M8lpG:hover::after { border-bottom: 2px solid rgb(33, 114, 186); }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__calendarContainerWithErrorIcon--2OhS2 { position: relative; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__calendarContainerWithErrorIcon--2OhS2::after { content: ""; position: absolute; left: 0px; top: 46px; width: 100%; border-bottom: 1px solid rgb(102, 102, 102); transition: border-color 0.4s ease 0s; padding-bottom: 2px; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__calendarContainerWithErrorIcon--2OhS2:hover::after { border-bottom: 2px solid rgb(33, 114, 186); }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__calendarContainerWithErrorIcon--2OhS2 .app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__errorIcon--3M_h4 { margin-right: 0.5rem; fill: rgb(213, 0, 50); display: inline; }
+
+.app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__calendarContainerWithErrorIcon--2OhS2 .app-components-BookCalendarRoundtrip-bookCalendarRoundtrip__errorMsg--3ZScN { color: rgb(213, 0, 50); }

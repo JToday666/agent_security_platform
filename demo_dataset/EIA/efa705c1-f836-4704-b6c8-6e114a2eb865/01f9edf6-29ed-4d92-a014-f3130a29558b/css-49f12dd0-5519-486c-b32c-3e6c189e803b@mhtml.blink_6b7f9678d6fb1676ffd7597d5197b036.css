@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.css-6icdca { height: 48px; appearance: none; width: 100%; border-radius: 3px; padding: 0px 40px 0px 16px; z-index: 1; border: 1px solid rgb(220, 220, 220); font-family: "Open Sans", sans-serif, Tahoma, Arial; font-weight: 400; letter-spacing: 0px; line-height: 24px; background-color: rgb(255, 255, 255); font-size: 16px; color: rgb(0, 0, 0); box-sizing: border-box !important; }
+
+.css-6icdca:hover { border: 1px solid rgb(147, 147, 147); }
+
+.css-6icdca:focus { box-shadow: none; outline: 0px; border: 1px solid rgb(0, 107, 194); }
+
+.css-6icdca:focus + .placeholder-label { color: rgb(0, 107, 194); }
+
+.css-6icdca:disabled { pointer-events: none; background-color: rgb(242, 242, 242); color: rgb(192, 192, 192); opacity: 1; }
+
+.css-6icdca .iphone8Fix { display: none; }
+
+@media screen and (max-width: 600px) {
+  .css-6icdca .iphone8Fix { display: block; }
+}

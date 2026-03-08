@@ -1,0 +1,1831 @@
+@charset "utf-8";
+
+.u-clearfix { }
+
+.u-clearfix::before, .u-clearfix::after { content: ""; display: table; }
+
+.u-clearfix::after { clear: both; }
+
+.u-clickable { cursor: pointer; }
+
+.u-overflow-hidden { overflow: hidden; }
+
+.u-hide { display: none; }
+
+.l-tile, .l-tile_half-spacing, .l-tile_half-spacing_col-2, .l-tile_half-spacing_col-3, .l-tile_col-2, .l-tile_col-3, .l-tile_col-3-fixed, .l-tile_col-3-fixed-strip, .l-tile_col-4, .l-tile_col-4-fixed, .l-tile_col-4-fixed-strip, .l-tile_col-5, .l-tile_col-6 { margin: 0px -10px; padding: 0px; }
+
+.l-tile__item, .l-tile_col-2 .l-tile__item, .l-tile_half-spacing_col-2 .l-tile__item, .l-tile_col-3 .l-tile__item, .l-tile_half-spacing_col-3 .l-tile__item, .l-tile_col-3-fixed .l-tile__item, .l-tile_col-3-fixed-strip .l-tile__item, .l-tile_col-4 .l-tile__item, .l-tile_col-4-fixed .l-tile__item, .l-tile_col-4-fixed-strip .l-tile__item, .l-tile_col-5 .l-tile__item, .l-tile_col-6 .l-tile__item { float: left; padding: 0px 10px 18px; box-sizing: border-box; }
+
+.l-tile_half-spacing, .l-tile_half-spacing_col-2, .l-tile_half-spacing_col-3 { margin: 0px -5px; }
+
+.l-tile_half-spacing .l-tile__item, .l-tile_half-spacing_col-2 .l-tile__item, .l-tile_half-spacing_col-3 .l-tile__item { padding: 0px 5px 10px; }
+
+.l-tile_col-2 .l-tile__item, .l-tile_half-spacing_col-2 .l-tile__item { width: 50%; }
+
+.l-tile_col-2 .l-tile__item:nth-child(2n+1), .l-tile_half-spacing_col-2 .l-tile__item:nth-child(2n+1) { clear: left; }
+
+.l-tile_col-3 .l-tile__item, .l-tile_half-spacing_col-3 .l-tile__item { width: 33.33%; }
+
+.l-tile_col-3 .l-tile__item:nth-child(3n+1), .l-tile_half-spacing_col-3 .l-tile__item:nth-child(3n+1) { clear: left; }
+
+.l-tile_col-3-fixed .l-tile__item { width: 400px; }
+
+.l-tile_col-3-fixed .l-tile__item:nth-child(3n+1) { clear: left; }
+
+@media screen and (max-width: 1220px) {
+  .l-tile_col-3-fixed { width: 800px; margin-left: auto; margin-right: auto; }
+  .l-tile_col-3-fixed .l-tile__item:nth-child(3n+1) { clear: none; }
+  .l-tile_col-3-fixed .l-tile__item:nth-child(2n+1) { clear: left; }
+}
+
+@media screen and (max-width: 850px) {
+  .l-tile_col-3-fixed { width: 700px; }
+  .l-tile_col-3-fixed .l-tile__item { width: 350px; }
+}
+
+.l-tile_col-3-fixed-strip .l-tile__item { width: 400px; }
+
+@media screen and (max-width: 850px) {
+  .l-tile_col-3-fixed-strip .l-tile__item { width: 350px; }
+}
+
+.l-tile_col-4 .l-tile__item { width: 25%; }
+
+.l-tile_col-4 .l-tile__item:nth-child(4n+1) { clear: left; }
+
+.l-tile_col-4-fixed .l-tile__item { width: 300px; }
+
+.l-tile_col-4-fixed .l-tile__item:nth-child(4n+1) { clear: left; }
+
+@media screen and (max-width: 1220px) {
+  .l-tile_col-4-fixed { width: 900px; margin-left: auto; margin-right: auto; }
+  .l-tile_col-4-fixed .l-tile__item:nth-child(4n+1) { clear: none; }
+  .l-tile_col-4-fixed .l-tile__item:nth-child(3n+1) { clear: left; }
+}
+
+@media screen and (max-width: 950px) {
+  .l-tile_col-4-fixed { width: 600px; }
+  .l-tile_col-4-fixed .l-tile__item:nth-child(3n+1) { clear: none; }
+  .l-tile_col-4-fixed .l-tile__item:nth-child(2n+1) { clear: left; }
+}
+
+.l-tile_col-4-fixed-strip .l-tile__item { width: 300px; }
+
+.l-tile_col-5 .l-tile__item { width: 20%; }
+
+.l-tile_col-5 .l-tile__item:nth-child(5n+1) { clear: left; }
+
+.l-tile_col-6 .l-tile__item { width: 16.67%; }
+
+.l-tile_col-6 .l-tile__item:nth-child(6n+1) { clear: left; }
+
+.l-image-text .l-image-text__image { float: left; margin-right: 20px; }
+
+.l-image-text .l-image-text__text { overflow: auto; }
+
+.l-image-text .l-image-text__image-con { float: left; margin-right: 20px; }
+
+.l-image-text .l-image-text__text-con { overflow: auto; }
+
+.l-inner { width: 1180px; margin-left: auto; margin-right: auto; }
+
+@media screen and (max-width: 1200px) {
+  .l-inner { width: 100%; box-sizing: border-box; padding-left: 10px; padding-right: 10px; }
+}
+
+.o-icon-star-diam, .o-icon-star, .o-icon-star_1, .o-icon-star_2, .o-icon-star_3, .o-icon-star_4, .o-icon-star_5, .o-icon-diam, .o-icon-diam_1, .o-icon-diam_0-half, .o-icon-diam_2, .o-icon-diam_1-half, .o-icon-diam_3, .o-icon-diam_2-half, .o-icon-diam_4, .o-icon-diam_3-half, .o-icon-diam_5, .o-icon-diam_4-half, .o-icon-diam_6, .o-icon-diam_5-half { font-size: 0px; background-image: url("//pic.tripcdn.com/common_v3/global-sprite.png"); display: inline-block; vertical-align: middle; }
+
+.o-icon-star, .o-icon-star_1, .o-icon-star_2, .o-icon-star_3, .o-icon-star_4, .o-icon-star_5 { width: 0px; height: 16px; background-position: 0px -367px; }
+
+.o-icon-diam, .o-icon-diam_1, .o-icon-diam_0-half, .o-icon-diam_2, .o-icon-diam_1-half, .o-icon-diam_3, .o-icon-diam_2-half, .o-icon-diam_4, .o-icon-diam_3-half, .o-icon-diam_5, .o-icon-diam_4-half, .o-icon-diam_6, .o-icon-diam_5-half { width: 0px; height: 16px; background-position: 0px -349px; }
+
+.o-icon-diam_1 { width: 16px; }
+
+.o-icon-diam_0-half { width: 16px; background-position-x: -80px; }
+
+.o-icon-star_1 { width: 16px; }
+
+.o-icon-diam_2 { width: 32px; }
+
+.o-icon-diam_1-half { width: 32px; background-position-x: -64px; }
+
+.o-icon-star_2 { width: 32px; }
+
+.o-icon-diam_3 { width: 48px; }
+
+.o-icon-diam_2-half { width: 48px; background-position-x: -48px; }
+
+.o-icon-star_3 { width: 48px; }
+
+.o-icon-diam_4 { width: 64px; }
+
+.o-icon-diam_3-half { width: 64px; background-position-x: -32px; }
+
+.o-icon-star_4 { width: 64px; }
+
+.o-icon-diam_5 { width: 80px; }
+
+.o-icon-diam_4-half { width: 80px; background-position-x: -16px; }
+
+.o-icon-star_5 { width: 80px; }
+
+.o-icon-diam_6, .o-icon-diam_5-half { width: 96px; }
+
+.o-block-tit, .o-block-tit_lv1 { font-size: 24px; font-weight: normal; margin-bottom: 10px; }
+
+@media screen and (max-width: 640px) {
+  .o-block-tit, .o-block-tit_lv1 { font-size: 18px; }
+}
+
+.o-block-tit_lv2 { font-size: 18px; font-weight: normal; }
+
+@media screen and (max-width: 640px) {
+  .o-block-tit_lv2 { font-size: 16px; }
+}
+
+.o-price { font-size: 14px; }
+
+.o-price__from { color: rgb(153, 153, 153); }
+
+.o-price__currency { color: rgb(255, 102, 0); font-size: 14px; }
+
+.o-price__num { color: rgb(255, 102, 0); font-size: 22px; line-height: 1.1; }
+
+.o-btn, .o-btn_default, .o-btn_default-2x, .o-btn_default-3x, .o-btn_default-block, .o-btn_primary, .o-btn_primary-2x, .o-btn_primary-3x, .o-btn_primary-block, .o-btn_key, .o-btn_key-2x, .o-btn_key-3x { min-width: 80px; text-align: center; height: 36px; line-height: 36px; border-radius: 4px; box-sizing: border-box; padding: 0px 1em; display: inline-block; vertical-align: middle; white-space: nowrap; cursor: pointer; }
+
+.o-btn:hover, .o-btn_default:hover, .o-btn_default-2x:hover, .o-btn_default-3x:hover, .o-btn_default-block:hover, .o-btn_primary:hover, .o-btn_primary-2x:hover, .o-btn_primary-3x:hover, .o-btn_primary-block:hover, .o-btn_key:hover, .o-btn_key-2x:hover, .o-btn_key-3x:hover { text-decoration: none; color: rgb(255, 255, 255); }
+
+.o-btn_default, .o-btn_default-2x, .o-btn_default-3x, .o-btn_default-block { border: 1px solid rgb(34, 119, 238); color: rgb(34, 119, 238); }
+
+.o-btn_default:hover, .o-btn_default-2x:hover, .o-btn_default-3x:hover, .o-btn_default-block:hover { background: rgb(34, 119, 238); }
+
+.o-btn_default-2x { min-width: 160px; }
+
+.o-btn_default-3x { min-width: 240px; height: 44px; line-height: 44px; font-size: 16px; }
+
+.o-btn_default-block { min-width: 100%; }
+
+.o-btn_primary, .o-btn_primary-2x, .o-btn_primary-3x, .o-btn_primary-block, .o-btn_key, .o-btn_key-2x, .o-btn_key-3x { border: 0px none; background: rgb(34, 119, 238); color: rgb(255, 255, 255); }
+
+.o-btn_primary:hover, .o-btn_primary-2x:hover, .o-btn_primary-3x:hover, .o-btn_primary-block:hover, .o-btn_key:hover, .o-btn_key-2x:hover, .o-btn_key-3x:hover { background: rgb(26, 93, 186); }
+
+.o-btn_primary-2x { min-width: 160px; }
+
+.o-btn_primary-3x { min-width: 240px; height: 44px; line-height: 44px; font-size: 16px; }
+
+.o-btn_primary-block { min-width: 100%; }
+
+.o-btn_key, .o-btn_key-2x, .o-btn_key-3x { background: rgb(255, 169, 0); }
+
+.o-btn_key:hover, .o-btn_key-2x:hover, .o-btn_key-3x:hover { background: rgb(240, 136, 0); }
+
+.o-btn_key-2x { min-width: 160px; }
+
+.o-btn_key-3x { min-width: 240px; height: 44px; line-height: 44px; font-size: 16px; }
+
+.o-checkbox { cursor: pointer; }
+
+.o-checkbox__box { border: 1px solid rgb(131, 155, 172); width: 12px; height: 12px; display: inline-block; vertical-align: middle; border-radius: 2px; margin-right: 4px; line-height: 12px; }
+
+.o-checkbox__hide-box { display: none; }
+
+.o-checkbox__label { font-size: 12px; vertical-align: middle; display: inline-block; }
+
+.o-checkbox .o-icon-check-tick { display: none; }
+
+.is-checked .o-checkbox__box { border: 1px solid rgb(34, 119, 238); background-color: rgb(34, 119, 238); }
+
+.is-checked .o-checkbox__label { color: rgb(34, 119, 238); }
+
+.is-checked .o-icon-check-tick { display: inline-block; }
+
+.is-disabled { cursor: default; }
+
+.is-disabled .o-checkbox__box { border: 1px solid rgb(177, 191, 201); background-color: transparent; }
+
+.is-disabled .o-checkbox__label { color: rgb(187, 198, 210); }
+
+.is-disabled.is-checked { cursor: default; }
+
+.is-disabled.is-checked .o-checkbox__box { border: 1px solid rgb(204, 204, 204); background-color: rgb(204, 204, 204); }
+
+.is-disabled.is-checked .o-checkbox__label { color: rgb(187, 198, 210); }
+
+.o-radiobox { cursor: pointer; }
+
+.o-radiobox__box { border: 1px solid rgb(131, 155, 172); width: 12px; height: 12px; display: inline-block; vertical-align: middle; border-radius: 14px; margin-right: 4px; line-height: 12px; }
+
+.o-radiobox__hide-box { display: none; }
+
+.o-radiobox__label { font-size: 12px; vertical-align: middle; display: inline-block; }
+
+.is-checked .o-radiobox__box { border: 4px solid rgb(34, 119, 238); width: 6px; height: 6px; background-color: rgb(242, 242, 242); }
+
+.is-checked .o-radiobox__label { color: rgb(34, 119, 238); }
+
+.is-disabled { cursor: default; }
+
+.is-disabled .o-radiobox__box { border: 1px solid rgb(177, 191, 201); background-color: transparent; }
+
+.is-disabled .o-radiobox__label { color: rgb(187, 198, 210); }
+
+.is-disabled.is-checked { cursor: default; }
+
+.is-disabled.is-checked .o-radiobox__box { border: 4px solid rgb(196, 196, 196); background-color: rgb(242, 242, 242); }
+
+.o-icon-check-tick { display: inline-block; font-size: 0px; vertical-align: middle; background-image: url("//pic.tripcdn.com/common_v3/global-sprite.png?20170331"); background-repeat: no-repeat; background-position: 1024px 1024px; }
+
+.o-icon-check-tick { background-position: 0px -408px; width: 11px; height: 11px; }
+
+.o-input { font-size: 14px; border: 1px solid rgb(180, 196, 214); box-sizing: border-box; line-height: 36px; height: 36px; padding: 0px 10px; }
+
+.o-input:hover { border-color: rgb(34, 119, 238); }
+
+.o-input:focus { outline: none; }
+
+.o-input.error { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.o-overlay { position: absolute; z-index: 1000; border: 1px solid rgb(34, 119, 238); background-color: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 8px; max-width: 800px; }
+
+.o-overlay__padding { padding: 10px 12px; }
+
+.o-loading-circle { animation-duration: 1s; animation-iteration-count: infinite; animation-name: loadingCircle; animation-timing-function: ease; }
+
+@keyframes loadingCircle { 
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.o-search-no-result { display: none; overflow-x: hidden; min-width: 198px; position: absolute; border: 1px solid rgb(180, 196, 214); height: 36px; line-height: 36px; background: rgb(255, 255, 255); z-index: 10; box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 8px; color: rgb(132, 168, 229); text-indent: 10px; }
+
+.o-search-no-result.active { display: block; }
+
+body { background: rgb(233, 239, 242); color: rgb(34, 51, 68); }
+
+.l-top-nav { background-color: rgb(255, 255, 255); width: 100%; }
+
+.c-train-info-card { margin-bottom: 4px; width: 820px; background-color: rgb(250, 253, 255); }
+
+@media only screen and (max-width: 1200px) {
+  .c-train-info-card { width: 100%; }
+}
+
+.c-train-info-card__cnt { box-sizing: border-box; padding: 20px; background: rgb(255, 255, 255); }
+
+.c-train-info-card__cnt__table { width: 100%; table-layout: fixed; }
+
+.c-train-info-card__cnt__table__from, .c-train-info-card__cnt__table__to, .c-train-info-card__cnt__table__plus { text-align: left; position: relative; }
+
+.c-train-info-card__cnt__table__from .time, .c-train-info-card__cnt__table__to .time, .c-train-info-card__cnt__table__plus .time { display: block; margin-bottom: 2px; font-size: 20px; line-height: 22px; font-weight: bold; letter-spacing: 0px; color: rgb(34, 51, 68); }
+
+.c-train-info-card__cnt__table__from .place, .c-train-info-card__cnt__table__to .place, .c-train-info-card__cnt__table__plus .place { display: block; font-size: 12px; line-height: 14px; letter-spacing: 0px; color: rgb(107, 130, 153); }
+
+.c-train-info-card__cnt__table__from .plus-day, .c-train-info-card__cnt__table__to .plus-day, .c-train-info-card__cnt__table__plus .plus-day { display: none; font-size: 12px; line-height: 12px; letter-spacing: 0px; color: rgb(255, 102, 0); right: 20px; top: 5px; }
+
+.c-train-info-card__cnt__table__from .plus-day.show, .c-train-info-card__cnt__table__to .plus-day.show, .c-train-info-card__cnt__table__plus .plus-day.show { display: block; }
+
+.c-train-info-card__cnt__table__to { text-align: right; }
+
+.c-train-info-card__cnt__table__plus { text-align: center; }
+
+.c-train-info-card__cnt__table__arrow i { display: block; margin: 7px auto auto; width: 148px; height: 6px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") 0px 0px / 210px 210px no-repeat; }
+
+@media only screen and (max-width: 1200px) {
+  .c-train-info-card__cnt__table__arrow i { width: 100%; }
+}
+
+.c-train-info-card__cnt__table__arrow span { display: none; font-size: 12px; color: rgb(34, 119, 238); text-align: center; cursor: default; }
+
+.c-train-info-card__cnt__table__arrow span:hover { text-decoration: underline; }
+
+.c-train-info-card__cnt__table__detail .during-time { position: relative; display: block; margin-bottom: 4px; font-size: 12px; line-height: 14px; letter-spacing: 0px; padding-left: 17px; color: rgb(107, 130, 153); }
+
+.c-train-info-card__cnt__table__detail .during-time i { display: block; width: 14px; height: 13px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -58px -55px / 210px 210px no-repeat; position: absolute; left: 0px; }
+
+.c-train-info-card__cnt__table__detail a { color: rgb(34, 119, 238); font-size: 12px; letter-spacing: 0px; cursor: default; }
+
+.c-train-info-card__cnt__table__detail a:hover { color: rgb(34, 119, 238); }
+
+.c-train-info-card__cnt__table__no .icon-fli-com { display: block; float: left; width: 77px; height: 24px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/transdev-2x.a9e31503.png") 0% 0% / 77px 24px no-repeat; }
+
+.c-train-info-card__cnt__table__no .icon-fli-com.hide { display: none; }
+
+.c-train-info-card__cnt__table__no .fli-no { display: block; float: left; margin-left: 10px; height: 24px; font-size: 14px; line-height: 24px; font-weight: normal; }
+
+.c-train-info-card__cnt__table__no .company-name { display: block; float: left; height: 24px; font-size: 14px; line-height: 24px; }
+
+.c-train-info-card__cnt__table__no.kor .fli-no, .c-train-info-card__cnt__table__no.kor .company-name { font-weight: bold; }
+
+.c-train-info-card__cnt__table__price { text-align: right; }
+
+.c-train-info-card__cnt__table__price .psg-no { font-size: 12px; line-height: 13px; height: 13px; }
+
+.c-train-info-card__cnt__table__price .psg-no .icon-psg { display: block; float: right; width: 13px; height: 13px; background: url("//pic.tripcdn.com/common_v3/train-sprite-2x.png") -78.5px -157px / 240px 240px no-repeat; margin-right: 5px; }
+
+.c-train-info-card__cnt__table__price .psg-no span { display: block; float: right; margin-left: 10px; color: rgb(107, 130, 153); }
+
+.c-train-info-card__cnt__table__price .psg-no .no { color: rgb(34, 51, 68); margin-left: 0px; }
+
+.c-train-info-card__cnt__table__price .psg-pri { vertical-align: bottom; color: rgb(34, 119, 238); }
+
+.c-train-info-card__cnt__table__price .psg-pri .country { font-size: 12px; }
+
+.c-train-info-card__cnt__table__price .psg-pri .price-no { font-size: 20px; font-weight: bold; }
+
+.c-train-info-card__cnt__table__button { position: relative; }
+
+.c-train-info-card__cnt__table__button.down:hover .icon-tab { background-color: rgb(240, 136, 0); }
+
+.c-train-info-card__cnt__table__button.down .icon-tab { background-color: rgb(255, 169, 0); box-shadow: rgba(255, 143, 0, 0.6) 0px 1px 4px 0px; }
+
+.c-train-info-card__cnt__table__button.down .icon-tab .icon-arrow { background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -124px -55px / 210px 210px no-repeat; }
+
+.c-train-info-card__cnt__table__button.up .icon-tab { background-color: rgb(255, 255, 255); box-shadow: rgba(255, 143, 0, 0.6) 0px 1px 4px; border: 1px solid rgb(255, 169, 0); }
+
+.c-train-info-card__cnt__table__button.up .icon-tab:hover { background-color: rgb(255, 238, 204); }
+
+.c-train-info-card__cnt__table__button.up .icon-tab .icon-arrow { background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -140.5px -55px / 210px 210px no-repeat; }
+
+.c-train-info-card__cnt__table__button .icon-tab { box-sizing: border-box; float: right; width: 32px; height: 32px; border-radius: 2px; cursor: pointer; position: relative; }
+
+.c-train-info-card__cnt__table__button .icon-tab .icon-arrow { display: block; position: absolute; right: 9px; top: 13px; width: 14px; height: 8px; background-size: 14px 8px; }
+
+.c-train-info-card__cnt__table__tips { visibility: hidden; }
+
+.c-train-info-card__cnt__table__tips div { float: left; box-sizing: border-box; width: 92px; height: 20px; font-size: 12px; color: rgb(107, 130, 153); line-height: 20px; background: rgb(255, 249, 235); border: 1px solid rgb(255, 224, 153); border-radius: 2px; margin-right: 8px; text-align: center; }
+
+.c-train-info-card__cnt__table__transfer { visibility: hidden; }
+
+.c-train-info-card__cnt__table__transfer .icon-transfer { display: block; float: left; margin-left: 10px; margin-top: -5px; width: 22px; height: 18px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -80.5px -22px / 210px 210px no-repeat; }
+
+.c-train-info-card__cnt__table__transfer .transfer-cnt { display: block; float: left; font-size: 12px; color: rgb(34, 119, 238); margin-left: 10px; cursor: default; }
+
+.c-train-info-card__cnt__table__transfer .transfer-cnt:hover { text-decoration: underline; }
+
+.c-train-info-card__cnt__table__transfer .transfer-no { display: block; float: left; font-size: 12px; color: rgb(34, 119, 238); margin-left: 5px; cursor: default; }
+
+.c-train-info-card__cnt:hover { box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px; }
+
+.c-train-info-card.with-tips .c-train-info-card__cnt__table__tips { visibility: visible; }
+
+.c-train-info-card.transfer .c-train-info-card__cnt__table__transfer { visibility: visible; }
+
+.c-train-info-card.transfer .c-train-info-card__cnt__table__arrow span { display: block; position: relative; top: -5px; }
+
+.c-train-info-card.transfer .c-train-info-card__cnt__table__arrow i { width: 148px; height: 10px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") 0px -8px / 210px 210px no-repeat; margin-top: -5px; }
+
+@media only screen and (max-width: 1200px) {
+  .c-train-info-card.transfer .c-train-info-card__cnt__table__arrow i { width: 100%; }
+}
+
+.c-train-info-card__tab { display: none; background: rgb(250, 253, 255); }
+
+.c-train-info-card__tab__table { position: relative; }
+
+.c-train-info-card__tab__table tr { background: rgb(250, 253, 255); }
+
+.c-train-info-card__tab__table__2nd-seat { height: 71px; border-bottom: 1px solid rgb(233, 239, 242); }
+
+.c-train-info-card__tab__table__2nd-seat .seat-name { font-size: 14px; padding-left: 20px; }
+
+.c-train-info-card__tab__table__2nd-seat .seat-detail { padding-bottom: 10px; }
+
+.c-train-info-card__tab__table__2nd-seat .seat-detail .tit { display: block; font-size: 14px; }
+
+.c-train-info-card__tab__table__2nd-seat .seat-detail .tit.active { color: rgb(34, 119, 238); cursor: default; }
+
+.c-train-info-card__tab__table__2nd-seat .seat-detail .tit.active:hover { text-decoration: underline; }
+
+.c-train-info-card__tab__table__2nd-seat .seat-detail .cnt { display: block; font-size: 12px; color: rgb(107, 130, 153); }
+
+.c-train-info-card__tab__table__2nd-seat .seat-price { vertical-align: middle; text-align: right; padding-right: 10px; color: rgb(34, 119, 238); }
+
+.c-train-info-card__tab__table__2nd-seat .seat-price .country { font-size: 12px; }
+
+.c-train-info-card__tab__table__2nd-seat .seat-price .price-no { font-size: 20px; font-weight: bold; padding-left: 5px; }
+
+.c-train-info-card__tab__table__2nd-seat .seat-book .btn-book { display: block; float: right; margin-right: 20px; padding: 0px 10px; height: 38px; background: rgb(255, 169, 0); box-shadow: rgba(255, 143, 0, 0.6) 0px 1px 4px 0px; border-radius: 4px; color: rgb(255, 255, 255); text-decoration: none; font-weight: bold; font-size: 16px; text-align: center; line-height: 38px; }
+
+.c-train-info-card__tab__table__2nd-seat .seat-book .btn-book:hover { background-color: rgb(240, 136, 0); }
+
+.c-train-info-card__tab__table__2nd-seat .seat-book .btn-book.disable { cursor: default; opacity: 0.5; }
+
+.c-train-info-card__tab__table__2nd-seat .seat-book .btn-book.disable:hover { background: rgb(255, 169, 0); }
+
+.c-train-info-card__tab__table__1st-seat { height: 140px; }
+
+.c-train-info-card__tab__table__1st-seat__cnt { box-sizing: border-box; }
+
+.c-train-info-card__tab__table__1st-seat__cnt__border { border-top: 1px dashed rgb(204, 222, 240); }
+
+.c-train-info-card__tab__table__1st-seat .seat-name { font-size: 14px; padding-left: 20px; }
+
+.c-train-info-card__tab__table__1st-seat .seat-detail .tit { display: block; font-size: 14px; }
+
+.c-train-info-card__tab__table__1st-seat .seat-detail .tit.active { color: rgb(34, 119, 238); cursor: default; }
+
+.c-train-info-card__tab__table__1st-seat .seat-detail .tit.active:hover { text-decoration: underline; }
+
+.c-train-info-card__tab__table__1st-seat .seat-detail .cnt { display: block; font-size: 12px; color: rgb(107, 130, 153); }
+
+.c-train-info-card__tab__table__1st-seat .seat-price { vertical-align: middle; text-align: right; padding-right: 10px; color: rgb(34, 119, 238); }
+
+.c-train-info-card__tab__table__1st-seat .seat-price .country { font-size: 12px; }
+
+.c-train-info-card__tab__table__1st-seat .seat-price .price-no { font-size: 20px; font-weight: bold; padding-left: 5px; }
+
+.c-train-info-card__tab__table__1st-seat .seat-book .btn-book { display: block; float: right; margin-right: 20px; padding: 0px 10px; height: 38px; background: rgb(255, 169, 0); box-shadow: rgba(255, 143, 0, 0.6) 0px 1px 4px 0px; border-radius: 4px; color: rgb(255, 255, 255); text-decoration: none; font-weight: bold; font-size: 16px; text-align: center; line-height: 38px; }
+
+.c-train-info-card__tab__table__1st-seat .seat-book .btn-book:hover { background-color: rgb(240, 136, 0); }
+
+.c-train-info-card__tab__table__1st-seat .seat-book .btn-book.disable { cursor: default; opacity: 0.5; }
+
+.c-train-info-card__tab__table__1st-seat .seat-book .btn-book.disable:hover { background: rgb(255, 169, 0); }
+
+.c-train-info-card__tab__table .top, .c-train-info-card__tab__table .bottom { position: relative; border-bottom: 1px solid rgb(218, 233, 243); min-height: 70px; }
+
+.c-train-info-card__tab__table .top .seat-detail, .c-train-info-card__tab__table .bottom .seat-detail { width: 560px; float: left; padding-left: 20px; margin: 15px 0px; }
+
+.c-train-info-card__tab__table .top .seat-detail .tit, .c-train-info-card__tab__table .bottom .seat-detail .tit { display: block; font-size: 14px; color: rgb(51, 51, 51); letter-spacing: 0px; }
+
+.c-train-info-card__tab__table .top .seat-detail .cnt, .c-train-info-card__tab__table .bottom .seat-detail .cnt { position: relative; display: block; font-size: 12px; color: rgb(34, 119, 238); cursor: pointer; }
+
+.c-train-info-card__tab__table .top .seat-detail .cnt:hover, .c-train-info-card__tab__table .bottom .seat-detail .cnt:hover { text-decoration: underline; }
+
+.c-train-info-card__tab__table .top .seat-detail .cnt .icon-tip, .c-train-info-card__tab__table .bottom .seat-detail .cnt .icon-tip { display: inline-block; vertical-align: text-top; margin-left: 5px; width: 15px; height: 14px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -73.5px -55px / 210px 210px no-repeat; }
+
+.c-train-info-card__tab__table .top .seat-price, .c-train-info-card__tab__table .bottom .seat-price { position: absolute; right: 0px; top: 50%; margin-top: -20px; text-align: right; color: rgb(34, 119, 238); }
+
+.c-train-info-card__tab__table .top .seat-price .country, .c-train-info-card__tab__table .bottom .seat-price .country { font-size: 12px; display: inline-block; margin-top: 5px; }
+
+.c-train-info-card__tab__table .top .seat-price .price-no, .c-train-info-card__tab__table .bottom .seat-price .price-no { font-size: 20px; font-weight: bold; padding-left: 5px; padding-right: 15px; }
+
+.c-train-info-card__tab__table .top .seat-price .btn-book, .c-train-info-card__tab__table .bottom .seat-price .btn-book { display: block; float: right; margin-right: 20px; padding: 0px 10px; height: 38px; background: rgb(255, 169, 0); box-shadow: rgba(255, 143, 0, 0.6) 0px 1px 4px 0px; border-radius: 4px; color: rgb(255, 255, 255); text-decoration: none; font-weight: bold; font-size: 16px; text-align: center; line-height: 38px; }
+
+.c-train-info-card__tab__table .top .seat-price .btn-book:hover, .c-train-info-card__tab__table .bottom .seat-price .btn-book:hover { background-color: rgb(240, 136, 0); }
+
+.c-train-info-card__tab__table .top .seat-price .btn-book.disable, .c-train-info-card__tab__table .bottom .seat-price .btn-book.disable { cursor: default; opacity: 0.5; }
+
+.c-train-info-card__tab__table .top .seat-price .btn-book.disable:hover, .c-train-info-card__tab__table .bottom .seat-price .btn-book.disable:hover { background: rgb(255, 169, 0); }
+
+.c-train-info-card__tab__table .bottom { border-bottom: none; }
+
+.c-train-info-card.active .c-train-info-card__cnt { box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 4px 0px; margin-bottom: 10px; }
+
+.c-train-info-card.active .c-train-info-card__cnt.kor { margin-bottom: 0px; position: relative; }
+
+.c-train-info-card.active .c-train-info-card__tab { display: block; }
+
+.c-train-info-loading { width: 820px; margin: 20px auto; text-align: center; }
+
+@media only screen and (max-width: 1200px) {
+  .c-train-info-loading { width: 100%; }
+}
+
+.c-train-info-loading .o-loading-circle { margin: auto; width: 24px; height: 24px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/loading.107fe5ff.gif"); animation: 0s ease 0s 1 normal none running none; }
+
+.c-train-info-loading .msg-loading { margin-top: 10px; font-size: 14px; color: rgb(107, 130, 153); }
+
+.c-train-info-loading.white { margin: 24px auto; }
+
+.c-train-info-loading.white .o-loading-circle { background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/loading-white.df2272a1.gif"); }
+
+.c-train-info-searching .loading-info { text-align: center; }
+
+.c-train-info-searching .loading-info .planet-loading { position: relative; width: 140px; height: 103px; margin: 0px auto; background: url("//pic.tripcdn.com/common_v3/eurorail-loading.gif") no-repeat; }
+
+.c-train-info-searching .loading-info .loading-tips { font-size: 16px; line-height: 16px; color: rgb(34, 51, 68); font-weight: bold; margin: 20px auto 10px; text-align: center; }
+
+.c-train-info-searching .loading-info .loading-tips .icon-arrow-l { display: inline-block; width: 20px; height: 10px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -58px -22px / 210px 210px no-repeat; margin: 0px auto; }
+
+.c-train-info-searching .loading-info .flight-info p { font-size: 14px; line-height: 14px; }
+
+.c-train-info-searching .loading-info .loading-time { font-size: 14px; line-height: 14px; }
+
+.c-train-info-searching .loading-info .loading-words { font-size: 14px; color: rgb(107, 130, 153); margin-top: 20px; }
+
+.c-train-info-no-res { text-align: center; }
+
+.c-train-info-no-res .icon-planet { width: 103px; height: 122px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/planet-gray-2x.9fc3f886.png") 0% 0% / 103px 122px no-repeat; margin: auto; }
+
+.c-train-info-no-res .msg { margin-top: 20px; }
+
+.c-train-info-no-res .msg p { font-size: 14px; color: rgb(107, 130, 153); line-height: 20px; }
+
+.c-train-info-bad-net { text-align: center; }
+
+.c-train-info-bad-net .icon-planet { width: 103px; height: 122px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/planet-gray-2x.9fc3f886.png") 0% 0% / 103px 122px no-repeat; margin: auto; }
+
+.c-train-info-bad-net .msg { margin-top: 20px; }
+
+.c-train-info-bad-net .msg p { font-size: 14px; color: rgb(107, 130, 153); line-height: 20px; margin-bottom: 30px; }
+
+.c-book-header { float: left; font-size: 14px; }
+
+.c-book-header__icon { margin-left: 10px; width: 22px; height: 22px; line-height: 22px; background-color: rgb(221, 221, 221); border-radius: 50%; color: rgb(255, 255, 255); float: left; text-align: center; }
+
+.c-book-header__line { width: 258px; height: 1px; float: left; margin-top: 10px; margin-left: 10px; }
+
+.c-book-header__line--gray { background-color: rgb(221, 221, 221); }
+
+.c-book-header__line--orange { background-color: rgb(255, 169, 0); }
+
+.c-book-header__msg { color: rgb(153, 153, 153); float: left; height: 22px; line-height: 22px; margin-left: 5px; }
+
+.c-book-header__booking { margin-top: 11px; margin-left: 20px; }
+
+.c-book-header__booking__icon--booking { background-color: rgb(255, 169, 0); color: rgb(255, 255, 255); }
+
+.c-book-header__booking__msg--booking { color: rgb(255, 169, 0); }
+
+.c-book-header__payment { margin-top: 11px; margin-left: 20px; }
+
+.c-book-header__payment__icon--booking, .c-book-header__payment__icon--payment { background-color: rgb(255, 169, 0); color: rgb(255, 255, 255); }
+
+.c-book-header__payment__msg--booking, .c-book-header__payment__msg--payment { color: rgb(255, 169, 0); }
+
+.c-book-header__completed { margin-top: 11px; margin-left: 20px; }
+
+.c-book-header__completed__icon--booking, .c-book-header__completed__icon--payment, .c-book-header__completed__icon--completed { background-color: rgb(255, 169, 0); color: rgb(255, 255, 255); }
+
+.c-book-header__completed__msg--booking, .c-book-header__completed__msg--payment, .c-book-header__completed__msg--completed { color: rgb(255, 169, 0); }
+
+.c-book-detail { width: 380px; padding-bottom: 20px; }
+
+.c-book-detail .date { font-weight: bold; font-size: 14px; color: rgb(34, 51, 68); letter-spacing: 0px; padding: 20px 20px 15px; }
+
+.c-book-detail .date a { font-weight: normal; font-size: 14px; color: rgb(34, 119, 238); letter-spacing: 0px; float: right; }
+
+.c-book-detail .station { color: rgb(34, 51, 68); font-size: 16px; line-height: 16px; position: relative; padding: 0px 20px; }
+
+.c-book-detail .station .station-l { float: left; position: relative; width: 84px; text-align: center; }
+
+.c-book-detail .station .station-l span { display: block; }
+
+.c-book-detail .station .station-l span.arrive-date { display: none; width: 100%; position: absolute; top: -16px; font-size: 12px; color: rgb(255, 102, 0); }
+
+.c-book-detail .station .station-r { float: left; width: 223px; padding-left: 33px; }
+
+.c-book-detail .station .icon-circle { width: 6px; height: 6px; border-radius: 50%; border: 3px solid rgb(34, 119, 238); position: absolute; top: 2px; left: 104px; }
+
+.c-book-detail .station .icon-circle.orange { border: 3px solid rgb(255, 169, 0); }
+
+.c-book-detail .station .icon-circle.gray { border: 3px solid rgb(187, 187, 187); }
+
+.c-book-detail .station-info { margin: 17px 0px; color: rgb(107, 130, 153); font-size: 12px; line-height: 12px; }
+
+.c-book-detail .station-info.dashed { background: rgb(243, 247, 249); }
+
+.c-book-detail .station-info.dashed .station-info-l { border-right: 4px dashed rgba(107, 130, 153, 0.2); }
+
+.c-book-detail .station-info.gray .station-info-l { border-right: 4px solid rgba(187, 187, 187, 0.6); }
+
+.c-book-detail .station-info .station-info-l { float: left; position: relative; width: 88px; text-align: center; padding-left: 20px; padding-top: 19px; padding-bottom: 19px; margin-top: -19px; margin-bottom: -19px; border-right: 4px solid rgba(34, 119, 238, 0.6); }
+
+.c-book-detail .station-info .station-info-l .fi, .c-book-detail .station-info .station-info-l .fi_train, .c-book-detail .station-info .station-info-l .fi-on-foot, .c-book-detail .station-info .station-info-l .fi-seat, .c-book-detail .station-info .station-info-l .fi-ferry { display: block; font-size: 18px; line-height: 26px; color: rgba(116, 137, 159, 0.8); }
+
+.c-book-detail .station-info .station-info-l .during { padding: 10px 0px; width: 340px; text-align: left; }
+
+.c-book-detail .station-info .station-info-l .during .time { display: inline-block; width: 88px; text-align: center; vertical-align: top; }
+
+.c-book-detail .station-info .station-info-l .during .text { display: inline-block; width: 223px; padding-left: 29px; }
+
+.c-book-detail .station-info .station-info-l .station-info-r { display: block; position: absolute; left: 100%; top: 45%; width: 223px; padding-left: 29px; text-align: left; }
+
+.c-passenger-info-card { background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 2px 0px; border-radius: 4px; box-sizing: border-box; padding: 20px 40px; position: relative; margin-bottom: 10px; }
+
+.c-passenger-info-card.active { }
+
+.c-passenger-info-card .card-no { position: absolute; left: 10px; top: 0px; font-size: 21px; font-style: italic; color: rgb(180, 196, 214); }
+
+.c-passenger-info-card .card-remove { position: absolute; right: 10px; top: 10px; font-size: 14px; line-height: 16px; color: rgb(34, 119, 238); }
+
+.c-passenger-info-card .card-remove .clo { display: block; float: left; margin-top: 3px; margin-right: 2px; width: 10px; height: 10px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -185.5px -55px / 210px 210px no-repeat; }
+
+.c-passenger-info-card .passenger-info-form { display: block; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id { margin-top: 10px; position: relative; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .nationality { float: left; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .nationality .c-select { width: 380px; height: 32px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .nationality .c-select .select-cnt { font-weight: bold; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .nationality.error .select-cnt { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-type { float: left; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-type .c-select { width: 130px; height: 32px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-type .c-select .select-cnt { font-weight: bold; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-type.error .select-cnt { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-num { position: relative; float: left; padding-left: 10px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-num .o-input { display: block; width: 240px; height: 32px; font-weight: bold; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-num .o-input::-webkit-input-placeholder { color: rgb(187, 187, 187); }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-num .input-zoomer { border-radius: 2px; background: rgb(255, 255, 255); position: absolute; left: 10px; top: -22px; font-size: 24px; font-weight: bold; color: rgb(34, 51, 68); line-height: 1; padding: 6px 10px; border: 1px solid rgb(180, 196, 214); }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-num .input-zoomer::before { content: ""; position: absolute; left: 10px; border-width: 8px; border-style: solid; border-color: rgb(180, 196, 214) transparent transparent; border-image: initial; bottom: -16px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-num .input-zoomer::after { content: ""; position: absolute; left: 10px; border-width: 8px; border-style: solid; border-color: rgb(255, 255, 255) transparent transparent; border-image: initial; bottom: -14.5px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .id-num.error .o-input { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.c-passenger-info-card .passenger-info-form .passenger-id .guidelines { display: block; float: left; margin-left: 10px; margin-top: 25px; font-size: 12px; color: rgb(34, 119, 238); }
+
+.c-passenger-info-card .passenger-info-form .passenger-name { margin-bottom: 10px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .surname { position: relative; float: left; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .surname .o-input { display: block; width: 185px; height: 32px; font-weight: bold; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .surname .o-input::-webkit-input-placeholder { color: rgb(187, 187, 187); }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .surname.error .o-input { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .given-name { position: relative; float: left; padding-left: 10px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .given-name .o-input { display: block; width: 185px; height: 32px; font-weight: bold; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .given-name .o-input::-webkit-input-placeholder { color: rgb(187, 187, 187); }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .given-name.error .o-input { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .guidelines { display: block; float: left; margin-left: 10px; margin-top: 25px; font-size: 12px; color: rgb(34, 119, 238); }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance { display: none; border-radius: 4px; position: absolute; left: 0px; top: 70px; background: rgba(0, 0, 0, 0.85); color: rgb(255, 255, 255); padding: 15px 20px 20px; font-size: 14px; z-index: 10; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance::after { content: ""; position: absolute; left: 100px; top: -20px; border-width: 10px; border-style: solid; border-color: transparent transparent rgba(0, 0, 0, 0.85); border-image: initial; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance .desc { margin-bottom: 12px; line-height: 1.4; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance .card-con { color: rgb(153, 153, 153); border-radius: 4px; width: 350px; min-height: 210px; background: url("//pic.tripcdn.com/common_v3/bg-id-card.jpg") 0px 0px no-repeat rgb(255, 255, 255); }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance .card-con .card-type { font-size: 24px; float: right; margin: 5px 10px 0px 0px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance .card-con .field { width: 248px; float: right; clear: right; padding: 8px; margin-right: 10px; word-break: break-all; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance .card-con .field .label { font-size: 14px; display: block; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance .card-con .field .name { font-size: 24px; line-height: 1.1; }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance .card-con .field-filled .name { color: rgb(34, 51, 68); }
+
+.c-passenger-info-card .passenger-info-form .passenger-name .input-instance .card-con .field-active { border: 2px solid rgb(24, 153, 242); border-radius: 8px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender { margin-bottom: 10px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender label { display: block; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender { position: relative; float: left; box-sizing: border-box; width: 120px; height: 32px; margin-right: 10px; border: 1px solid rgb(180, 196, 214); line-height: 32px; cursor: pointer; font-weight: bold; font-size: 14px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender span { margin-left: 30px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender:hover { border: 1px solid rgb(34, 119, 238); }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender.active { border: 1px solid rgb(34, 119, 238); }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender.active .triangle-bottom-right { display: block; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender.error { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender .triangle-bottom-right { display: none; position: absolute; right: 0px; bottom: 0px; width: 0px; height: 0px; border-bottom: 20px solid rgb(34, 119, 238); border-left: 20px solid transparent; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender .triangle-bottom-right .icon-check { display: block; width: 10px; height: 9px; position: absolute; right: 1px; top: 10px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") 0px -55px / 210px 210px no-repeat; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender.female .icon-gender { position: absolute; left: 10px; top: 8px; display: block; width: 11px; height: 14px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -157px -55px / 210px 210px no-repeat; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender.male i { position: absolute; left: 10px; top: 8px; display: block; width: 13px; height: 15px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -170px -55px / 210px 210px no-repeat; }
+
+.c-passenger-info-card .passenger-info-form .passenger-gender .gender.male .icon-check { left: -11px; }
+
+.c-passenger-info-card .passenger-info-form .passenger-birthday { position: relative; }
+
+.c-passenger-info-card .passenger-info-form .passenger-birthday label { display: block; }
+
+.c-passenger-info-card .passenger-info-form .passenger-birthday .c-select { width: 120px; margin-right: 7px; font-weight: bold; position: relative; display: inline-block; }
+
+.c-passenger-info-card .passenger-info-form .passenger-birthday .c-select .select-cnt { z-index: 0; }
+
+.c-passenger-info-card .passenger-info-form .passenger-birthday .c-select.error .select-cnt { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.c-passenger-info-card .passenger-info-form .passenger-birthday .c-select.disable .select-cnt:hover { border-bottom: 1px solid rgb(180, 196, 214); }
+
+.c-select { width: 96px; height: 32px; box-sizing: border-box; font-size: 14px; position: relative; cursor: pointer; }
+
+.c-select .select-cnt { position: relative; width: 100%; height: 100%; box-sizing: border-box; border: 1px solid rgb(180, 196, 214); line-height: 32px; }
+
+.c-select .select-cnt span { margin-left: 10px; }
+
+.c-select .select-cnt .triangle { position: absolute; right: 6px; top: 13px; width: 0px; height: 0px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid rgb(34, 51, 68); border-bottom: none; }
+
+.c-select .select-cnt:hover { border: 1px solid rgb(34, 119, 238); }
+
+.c-select.active .select-list { display: block; }
+
+.c-select.active .triangle { border-bottom: 5px solid rgb(34, 51, 68); border-top: none; }
+
+.c-select .select-list { max-height: 386px; overflow-y: auto; box-sizing: border-box; min-width: 100%; position: absolute; z-index: 10; background-color: rgb(255, 255, 255); top: 32px; left: 0px; display: none; border: 1px solid rgb(34, 119, 238); box-shadow: rgba(0, 0, 0, 0.3) 1px 2px 8px 0px; }
+
+.c-select .select-list li { white-space: nowrap; box-sizing: border-box; font-size: 14px; font-weight: bold; line-height: 32px; padding-left: 10px; padding-right: 10px; }
+
+.c-select .select-list li:hover { background-color: rgb(235, 247, 255); }
+
+.c-select .select-list li.active { background: rgb(34, 119, 238); color: rgb(255, 255, 255); }
+
+.c-select.disable { cursor: default; }
+
+.c-select.disable .select-cnt { position: relative; border: 1px solid rgb(180, 196, 214); color: rgb(187, 187, 187); }
+
+.c-select.disable .select-cnt:hover { border: 1px solid rgb(180, 196, 214); }
+
+.c-select.disable .select-cnt .triangle { position: absolute; top: 13px; right: 6px; width: 0px; height: 0px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid rgb(187, 187, 187); border-bottom: none; }
+
+.c-select.error .select-cnt { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.c-error-msg { display: none; font-size: 12px; line-height: 16px; color: rgb(231, 76, 60); height: 16px; font-weight: normal; }
+
+.c-error-msg.show { display: block; }
+
+.c-tip-msg { display: none; font-size: 12px; line-height: 12px; letter-spacing: 0px; color: rgb(107, 130, 153); height: 12px; font-weight: normal; margin-top: 6px; }
+
+.c-tip-msg.show { display: block; }
+
+.c-progress-loading { background-color: rgb(221, 221, 221); margin-bottom: 8.5px; height: 3px; width: 100%; }
+
+.c-progress-loading .loading-bar { height: 3px; background-color: rgb(255, 169, 0); }
+
+.c-progress-loading.hidden { visibility: hidden; }
+
+.m-search-nav { position: relative; z-index: 2; padding-bottom: 20px; }
+
+.m-search-nav form { display: block; }
+
+.m-search-nav form .m-search-nav__items { display: block; }
+
+.m-search-nav form .m-search-nav__items li { display: block; float: left; }
+
+.m-search-nav form .m-search-nav__items li label { display: block; height: 20px; margin-top: 3px; font-size: 12px; line-height: 20px; color: rgb(107, 130, 153); }
+
+.m-search-nav form .m-search-nav__items li input { box-sizing: border-box; height: 36px; border: 1px solid rgb(180, 196, 214); width: 200px; padding-left: 10px; font-size: 14px; }
+
+.m-search-nav form .m-search-nav__items li input:hover { border: 1px solid rgb(34, 119, 238); }
+
+.m-search-nav form .m-search-nav__items li.m-search-nav__items__search { float: right; }
+
+@media only screen and (max-width: 1180px) {
+  .m-search-nav form .m-search-nav__items li.m-search-nav__items__search { float: left; }
+}
+
+.m-search-nav form .m-search-nav__items__from, .m-search-nav form .m-search-nav__items__to { }
+
+.m-search-nav form .m-search-nav__items__switch a { display: block; width: 50px; height: 33px; margin-top: 9px; }
+
+.m-search-nav form .m-search-nav__items__switch a .i-dir-switch { display: block; width: 28px; height: 28px; margin: 26px auto auto; position: relative; }
+
+.m-search-nav form .m-search-nav__items__switch a .i-dir-switch-circle { position: absolute; display: block; width: 28px; height: 28px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -131.5px -22px / 210px 210px no-repeat; }
+
+.m-search-nav form .m-search-nav__items__switch a .i-dir-switch-circle.o-loading-circle { animation-iteration-count: 1; }
+
+.m-search-nav form .m-search-nav__items__switch a .i-dir-switch-train { position: absolute; display: block; width: 15px; height: 10px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -106.5px -55px / 210px 210px no-repeat; left: 7px; top: 9px; }
+
+.m-search-nav form .m-search-nav__items__to { padding-right: 40px; }
+
+.m-search-nav form .m-search-nav__items__depart { padding-right: 20px; }
+
+.m-search-nav form .m-search-nav__items__depart input { display: block; float: left; margin-right: 4px; }
+
+.m-search-nav form .m-search-nav__items__depart div { float: left; }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time { width: 96px; height: 36px; box-sizing: border-box; font-size: 14px; position: relative; }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time div { width: 100%; height: 100%; box-sizing: border-box; border: 1px solid rgb(180, 196, 214); line-height: 36px; position: relative; }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time div span { margin-left: 10px; }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time div .triangle, .m-search-nav form .m-search-nav__items__depart div.sel-time div .triangle:hover { width: 0px; height: 0px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid rgb(9, 99, 189); border-bottom: none; position: absolute; top: 15px; right: 6px; }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time div:hover { border: 1px solid rgb(34, 119, 238); }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time.active .sel-time-list { display: block; }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time.active .triangle, .m-search-nav form .m-search-nav__items__depart div.sel-time.active .triangle:hover { border-bottom: 5px solid rgb(9, 99, 189); border-top: none; }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time .sel-time-list { z-index: 1; position: absolute; left: 0px; width: 100%; background-color: rgb(255, 255, 255); top: 36px; display: none; border: 1px solid rgb(34, 119, 238); box-shadow: rgba(0, 0, 0, 0.3) 1px 2px 8px 0px; max-height: 150px; overflow-y: auto; }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time .sel-time-list li { box-sizing: border-box; width: 100%; font-size: 14px; line-height: 24px; padding-left: 10px; }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time .sel-time-list li:hover { background-color: rgb(235, 247, 255); }
+
+.m-search-nav form .m-search-nav__items__depart div.sel-time .sel-time-list li.active { background: rgb(34, 119, 238); color: rgb(255, 255, 255); }
+
+.m-search-nav form .m-search-nav__items__passengers { box-sizing: border-box; width: 200px; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger { position: relative; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no { border: 1px solid rgb(180, 196, 214); box-sizing: border-box; padding-left: 9px; line-height: 34px; position: relative; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no i { display: block; width: 21px; height: 13px; background: url("//pic.tripcdn.com/common_v3/train-sprite-2x.png") -104px -157px / 240px 240px no-repeat; position: absolute; top: 11px; right: 11px; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no:hover { border: 1px solid rgb(34, 119, 238); }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger.active .passenger-no-list { display: block; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger.active .passenger-no i { background-position: -78px -157px; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list { min-width: 198px; position: absolute; background-color: rgb(255, 255, 255); font-size: 14px; display: none; border: 1px solid rgb(34, 119, 238); box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list tr { height: 24px; line-height: 24px; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list tr .msg { white-space: nowrap; padding: 0px 10px; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list tr .btn { text-align: right; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list tr .btn i { display: block; float: left; width: 14px; height: 14px; line-height: 14px; background: rgb(238, 238, 238); text-align: center; cursor: pointer; user-select: none; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list tr .btn .minus, .m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list tr .btn .plus { padding-right: 10px; padding-left: 10px; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list tr .btn .minus.disable i, .m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list tr .btn .plus.disable i { cursor: default; color: rgb(204, 204, 204); }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list .age-detail { padding-left: 10px; line-height: normal; margin-bottom: 5px; background: rgb(255, 255, 255); }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list .age-detail a { color: rgb(34, 119, 238); text-decoration: none; cursor: default; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list .age-detail a:hover { text-decoration: underline; }
+
+.m-search-nav form .m-search-nav__items__passengers .passenger .passenger-no-list .age-detail .kor-cnt { font-size: 12px; color: rgb(107, 130, 153); }
+
+.m-search-nav form .m-search-nav__items__search { margin-top: 23px; }
+
+.m-search-nav form .m-search-nav__items__search .o-btn_default, .m-search-nav form .m-search-nav__items__search .o-btn_default-2x, .m-search-nav form .m-search-nav__items__search .o-btn_default-3x, .m-search-nav form .m-search-nav__items__search .o-btn_default-block { font-size: 14px; color: rgb(255, 255, 255); min-width: 130px; background-color: rgb(34, 119, 238); }
+
+.m-search-nav form .m-search-nav__items__search .o-btn_default:hover, .m-search-nav form .m-search-nav__items__search .o-btn_default-2x:hover, .m-search-nav form .m-search-nav__items__search .o-btn_default-3x:hover, .m-search-nav form .m-search-nav__items__search .o-btn_default-block:hover { background-color: rgb(25, 103, 213); }
+
+.s-tab-recommend { min-width: 198px; }
+
+.s-tab-recommend .s-tab-table.last { margin-bottom: 20px; }
+
+.s-tab-associate { max-height: 800px; overflow-y: auto; min-width: 198px; }
+
+.s-tab-associate li { float: none; }
+
+.m-calender { width: 820px; float: left; margin-top: 10px; overflow: hidden; position: relative; }
+
+@media only screen and (max-width: 1200px) {
+  .m-calender { width: 69.4915%; }
+}
+
+.m-calender::after { content: ""; display: block; width: 100%; height: 1px; position: absolute; background-color: rgb(34, 119, 238); bottom: 0px; }
+
+.m-calender ul { position: relative; float: left; margin-left: 1px; }
+
+@media only screen and (max-width: 1200px) {
+  .m-calender ul { width: 90.2439%; margin-left: 2px; }
+}
+
+.m-calender ul::after { content: ""; display: block; width: 100%; height: 1px; position: absolute; background-color: rgb(34, 119, 238); bottom: 0px; }
+
+.m-calender ul li { position: relative; z-index: 1; background-color: rgb(255, 255, 255); float: left; width: 104px; height: 55px; text-align: center; cursor: pointer; margin-left: 1px; margin-right: 1px; border-bottom: 1px solid rgb(34, 119, 238); }
+
+@media only screen and (max-width: 1200px) {
+  .m-calender ul li { box-sizing: border-box; height: 56px; width: 14.2857%; border-left: 1px solid rgb(233, 239, 242); border-right: 1px solid rgb(233, 239, 242); margin-left: 0px; margin-right: 0px; }
+}
+
+.m-calender ul li:hover { background-color: rgb(34, 119, 238); }
+
+.m-calender ul li:hover a { border-top: 3px solid rgb(34, 119, 238); border-left: 1px solid rgb(34, 119, 238); border-right: 1px solid rgb(34, 119, 238); color: rgb(255, 255, 255); }
+
+.m-calender ul li.active { border-bottom: 1px solid rgb(255, 255, 255); box-shadow: rgba(43, 128, 247, 0.1) 4px -2px 4px 0px, rgba(47, 132, 251, 0.1) -4px -2px 4px 0px; }
+
+.m-calender ul li.active a { border-top: 3px solid rgb(34, 119, 238); border-left: 1px solid rgb(34, 119, 238); border-right: 1px solid rgb(34, 119, 238); }
+
+.m-calender ul li.active:hover { border-bottom: 1px solid rgb(34, 119, 238); }
+
+.m-calender ul li a { padding-top: 7px; height: 100%; display: block; box-sizing: border-box; color: rgb(34, 51, 68); text-decoration: none; border-top: 3px solid rgb(255, 255, 255); border-left: 1px solid rgb(255, 255, 255); border-right: 1px solid rgb(255, 255, 255); }
+
+.m-calender ul li a span { display: block; font-size: 14px; line-height: 18px; }
+
+.m-calender .con-week { width: 38px; height: 55px; background: rgb(255, 255, 255); border-bottom: 1px solid rgb(34, 119, 238); cursor: pointer; }
+
+@media only screen and (max-width: 1200px) {
+  .m-calender .con-week { width: 4.63415%; }
+}
+
+.m-calender .con-week.pre { float: left; }
+
+.m-calender .con-week.pre i { display: block; width: 12px; height: 20px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -29px -22px / 210px 210px no-repeat; margin: 17px auto auto; }
+
+.m-calender .con-week.next { float: right; }
+
+.m-calender .con-week.next i { display: block; width: 12px; height: 20px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") 0px -22px / 210px 210px no-repeat; margin: 17px auto auto; }
+
+.m-calender .con-week:hover { background: rgb(34, 119, 238); }
+
+.m-calender .con-week:hover.pre i { background-position: -43.5px -22px; }
+
+.m-calender .con-week:hover.next i { background-position: -14.5px -22px; }
+
+.m-calender .con-week.disable { cursor: default; }
+
+.m-calender .con-week.disable.pre i { background-position: -177.5px -22px; }
+
+.m-calender .con-week.disable.next i { background-position: -162.5px -22px; }
+
+.m-calender .con-week.disable:hover { background: rgb(255, 255, 255); }
+
+.m-calender .con-week.disable:hover.pre i { background-position: -177.5px -22px; }
+
+.m-calender .con-week.disable:hover.next i { background-position: -162.5px -22px; }
+
+.m-list { width: 820px; float: left; margin-top: 8.5px; margin-bottom: 100px; }
+
+@media only screen and (max-width: 1200px) {
+  .m-list { width: 69.4915%; }
+}
+
+.m-list .train-info-loaded { display: none; font-size: 14px; color: rgb(107, 130, 153); line-height: 14px; padding: 20px 0px; text-align: center; }
+
+.m-list .train-info-loaded.show { display: block; }
+
+.m-list .o-btn_default-block { font-size: 14px; display: none; }
+
+.m-list .o-btn_default-block.disable { color: rgb(166, 180, 194); border: 1px solid rgb(166, 180, 194); }
+
+.m-list .o-btn_default-block.disable:hover { background: transparent; cursor: default; }
+
+.m-list .o-btn_default-block.show { display: inline-block; }
+
+.m-pop__transfer { padding: 10px 10px 0px; }
+
+.m-pop__transfer__item { margin-bottom: 10px; font-size: 12px; }
+
+.m-pop__transfer .title { color: rgb(0, 0, 0); }
+
+.m-pop__transfer .content { color: rgb(107, 130, 153); }
+
+.m-pop__transfer .content .place { margin-right: 10px; }
+
+.m-pop__transfer .content .stay { margin-right: 5px; }
+
+.m-pop__company { padding: 10px 10px 0px; }
+
+.m-pop__company__item { margin-bottom: 10px; font-size: 12px; }
+
+.m-pop__company .title { color: rgb(0, 0, 0); }
+
+.m-pop__company .content { color: rgb(107, 130, 153); }
+
+.m-pop__company .content .icon-company { display: block; float: left; width: 65px; height: 20px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/transdev-2x.a9e31503.png") 0% 0% / 65px 20px no-repeat; }
+
+.m-pop__company .content .flight { margin-left: 5px; height: 20px; line-height: 20px; font-size: 12px; }
+
+.m-pop__price { padding: 10px 10px 0px; }
+
+.m-pop__price__item { vertical-align: bottom; margin-bottom: 10px; }
+
+.m-pop__price__item .title { display: block; float: left; font-size: 12px; height: 16px; line-height: 22px; color: rgb(107, 130, 153); }
+
+.m-pop__price__item .o-price { float: right; height: 16px; vertical-align: bottom; }
+
+.m-pop__price__item .o-price__currency { font-size: 10px; color: rgb(0, 0, 0); }
+
+.m-pop__price__item .o-price__num { font-size: 14px; color: rgb(0, 0, 0); }
+
+.m-pop__price__total { vertical-align: bottom; margin-bottom: 10px; border-top: 1px solid rgb(221, 221, 221); }
+
+.m-pop__price__total .title { display: block; float: left; font-size: 12px; height: 22px; line-height: 37px; color: rgb(107, 130, 153); margin-right: 100px; }
+
+.m-pop__price__total .o-price { float: right; height: 22px; vertical-align: bottom; }
+
+.m-pop__price__total .o-price__currency { font-size: 12px; color: rgb(34, 119, 238); }
+
+.m-pop__price__total .o-price__num { font-size: 20px; font-weight: bold; color: rgb(34, 119, 238); }
+
+.m-pop__desc { width: 162px; padding: 10px; font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; }
+
+.m-pop__desc.kor { width: 324px; font-size: 12px; color: rgb(51, 51, 51); letter-spacing: 0px; }
+
+.m-pop__desc.kor .title { font-weight: bold; }
+
+.m-pop .loading-icon { display: block; width: 24px; height: 24px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/loading-pop.df2272a1.gif"); margin: auto; }
+
+.m-pop .loading-icon.hide { display: none; }
+
+.m-eurorail-seo { background: rgb(249, 250, 252); }
+
+.m-book-accept { display: flex; font-size: 12px; margin-bottom: 40px; }
+
+.m-book-accept #accept-terms-input { width: 13px; height: 13px; }
+
+.m-book-accept label { flex: 1 1 0%; display: inline-block; color: rgb(108, 130, 145); margin-top: -2px; padding-left: 10px; }
+
+.m-book-accept label a { color: rgb(34, 119, 238); }
+
+.m-book-contact-way { width: 780px; margin-bottom: 20px; }
+
+.m-book-contact-way .contact-title { font-size: 22px; color: rgb(34, 51, 68); }
+
+.m-book-contact-way .contact-box { background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 2px 0px; border-radius: 4px; padding: 20px 30px; box-sizing: border-box; }
+
+.m-book-contact-way .contact-box label { display: block; }
+
+.m-book-contact-way .contact-box .o-input { box-sizing: border-box; width: 200px; height: 32px; line-height: 32px; font-weight: bold; }
+
+.m-book-contact-way .contact-box .person { float: left; width: 200px; margin-right: 10px; }
+
+.m-book-contact-way .contact-box .person .c-select { min-width: 100%; }
+
+.m-book-contact-way .contact-box .person.error .o-input { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.m-book-contact-way .contact-box .mobile { float: left; margin-right: 10px; }
+
+.m-book-contact-way .contact-box .mobile .c-select { font-weight: bold; float: left; margin-right: 2px; }
+
+.m-book-contact-way .contact-box .mobile.error .o-input { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.m-book-contact-way .contact-box .mobile.error .select-cnt { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.m-book-contact-way .contact-box .mobile .o-input::-webkit-input-placeholder { color: rgb(187, 187, 187); }
+
+.m-book-contact-way .contact-box .email { float: left; width: 200px; }
+
+.m-book-contact-way .contact-box .email .c-select { min-width: 100%; }
+
+.m-book-contact-way .contact-box .email.error .o-input { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.m-book-contact-way .contact-box .email .o-input::-webkit-input-placeholder { color: rgb(187, 187, 187); }
+
+.m-book-contact-way .contact-box .contact-tip { font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; line-height: 12px; margin-top: 5px; }
+
+.m-book-contact-way .contact-box .passenger-name { margin-bottom: 10px; }
+
+.m-book-contact-way .contact-box .passenger-name .surname { position: relative; display: inline-block; }
+
+.m-book-contact-way .contact-box .passenger-name .surname .o-input { display: block; width: 185px; height: 32px; font-weight: bold; }
+
+.m-book-contact-way .contact-box .passenger-name .surname .o-input::-webkit-input-placeholder { color: rgb(187, 187, 187); }
+
+.m-book-contact-way .contact-box .passenger-name .surname.error .o-input { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.m-book-contact-way .contact-box .passenger-name .given-name { position: relative; display: inline-block; margin-left: 10px; }
+
+.m-book-contact-way .contact-box .passenger-name .given-name .o-input { display: block; width: 185px; height: 32px; font-weight: bold; }
+
+.m-book-contact-way .contact-box .passenger-name .given-name .o-input::-webkit-input-placeholder { color: rgb(187, 187, 187); }
+
+.m-book-contact-way .contact-box .passenger-name .given-name.error .o-input { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance { display: none; border-radius: 4px; position: absolute; left: 0px; top: 70px; background: rgba(0, 0, 0, 0.85); color: rgb(255, 255, 255); padding: 15px 20px 20px; font-size: 14px; z-index: 2; }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance::after { content: ""; position: absolute; left: 100px; top: -20px; border-width: 10px; border-style: solid; border-color: transparent transparent rgba(0, 0, 0, 0.85); border-image: initial; }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance .desc { margin-bottom: 12px; line-height: 1.4; }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance .card-con { color: rgb(153, 153, 153); border-radius: 4px; width: 350px; min-height: 210px; background: url("//pic.tripcdn.com/common_v3/bg-id-card.jpg") 0px 0px no-repeat rgb(255, 255, 255); }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance .card-con .card-type { font-size: 24px; float: right; margin: 5px 10px 0px 0px; }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance .card-con .field { width: 248px; float: right; clear: right; padding: 8px; margin-right: 10px; word-break: break-all; }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance .card-con .field .label { font-size: 14px; display: block; }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance .card-con .field .name { font-size: 24px; line-height: 1.1; }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance .card-con .field-filled .name { color: rgb(34, 51, 68); }
+
+.m-book-contact-way .contact-box .passenger-name .input-instance .card-con .field-active { border: 2px solid rgb(24, 153, 242); border-radius: 8px; }
+
+.m-book-notice { width: 780px; font-size: 12px; margin-bottom: 35px; }
+
+.m-book-notice p { color: rgb(107, 130, 153); }
+
+.m-book-notice .notice-title { color: rgb(108, 130, 145); font-weight: bold; }
+
+.m-book-passenger { margin-right: 20px; float: left; width: 780px; }
+
+.m-book-passenger .title { font-size: 22px; color: rgb(34, 51, 68); height: 30px; margin-bottom: 5px; }
+
+.m-book-passenger .passenger-cards { position: relative; overflow-y: auto; min-height: 54px; max-height: 108px; }
+
+.m-book-passenger .passenger-cards .passenger-card { overflow: hidden; position: relative; cursor: pointer; float: left; width: 142px; height: 28px; margin-right: 10px; margin-bottom: 10px; border-radius: 4px; background: rgb(255, 255, 255); box-sizing: border-box; border: 1px solid rgb(209, 219, 228); }
+
+.m-book-passenger .passenger-cards .passenger-card.active { border: 1px solid rgb(34, 119, 238); }
+
+.m-book-passenger .passenger-cards .passenger-card.active .triangle-bottom-right { display: block; }
+
+.m-book-passenger .passenger-cards .passenger-card.disable { background: rgb(209, 219, 228); }
+
+.m-book-passenger .passenger-cards .passenger-card.disable:hover { border: 1px solid rgb(209, 219, 228); }
+
+.m-book-passenger .passenger-cards .passenger-card:hover { border: 1px solid rgb(34, 119, 238); }
+
+.m-book-passenger .passenger-cards .passenger-card .name { display: block; font-size: 12px; line-height: 17px; color: rgb(34, 51, 68); padding-left: 10px; padding-right: 10px; padding-top: 5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.m-book-passenger .passenger-cards .passenger-card .passport-words { font-size: 12px; color: rgb(107, 130, 153); padding-left: 10px; padding-right: 10px; line-height: 17px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.m-book-passenger .passenger-cards .passenger-card .triangle-bottom-right { display: none; position: absolute; right: 0px; bottom: 0px; width: 0px; height: 0px; border-bottom: 20px solid rgb(34, 119, 238); border-left: 20px solid transparent; }
+
+.m-book-passenger .passenger-cards .passenger-card .triangle-bottom-right .icon-check { display: block; width: 10px; height: 9px; position: absolute; right: 1px; top: 10px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") 0px -55px / 210px 210px no-repeat; }
+
+.m-book-passenger .passenger-info { margin-top: 10px; position: relative; z-index: 2; }
+
+.m-book-passenger .passenger-tips { }
+
+.m-book-passenger .passenger-tips .tip-box { position: relative; margin-bottom: 10px; }
+
+.m-book-passenger .passenger-tips .tip-box .icon-tip { display: block; position: absolute; left: 0px; width: 15px; height: 14px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -73.5px -55px / 210px 210px no-repeat; }
+
+.m-book-passenger .passenger-tips .tip-box .tip-cnt { margin-left: 24px; font-size: 12px; color: rgb(107, 130, 153); line-height: 16px; letter-spacing: 0px; }
+
+.m-book-passenger .passenger-tips .tip-box .tip-cnt a { color: rgb(34, 119, 238); }
+
+.m-book-pay-button { width: 780px; margin-bottom: 20px; }
+
+.m-book-pay-button .o-btn_primary-block { height: 52px; line-height: 52px; background: rgb(255, 169, 0); font-size: 22px; color: rgb(255, 255, 255); }
+
+.m-book-pay-button .o-btn_primary-block:hover { background-color: rgb(240, 136, 0); }
+
+.m-book-side-bar { float: right; width: 380px; box-sizing: border-box; padding-bottom: 10px; background: rgb(250, 253, 255); margin-top: 20px; margin-bottom: 20px; }
+
+.m-book-side-bar .c-book-detail-side { margin-bottom: 40px; }
+
+.m-book-side-bar .seat-info { padding-left: 20px; padding-right: 20px; margin-bottom: 20px; }
+
+.m-book-side-bar .seat-info .seat-info-msg { font-size: 14px; line-height: 24px; color: rgb(107, 130, 153); }
+
+.m-book-side-bar .seat-info .seat-info-msg a { color: rgb(34, 119, 238); }
+
+.m-book-side-bar .seat-info .seat-info-msg.kor { font-weight: bold; color: rgb(51, 51, 51); }
+
+.m-book-side-bar .seat-price { padding-left: 20px; padding-right: 20px; padding-top: 20px; border-top: 1px solid rgb(234, 240, 243); color: rgb(107, 130, 153); }
+
+.m-book-side-bar .seat-price .price-info { margin-bottom: 10px; }
+
+.m-book-side-bar .seat-price .price-info .price-kinds { float: left; font-size: 14px; }
+
+.m-book-side-bar .seat-price .price-info .price-kinds span { font-size: 12px; }
+
+.m-book-side-bar .seat-price .price-info .o-price { float: right; }
+
+.m-book-side-bar .seat-price .price-info .o-price__currency { font-size: 10px; color: rgb(107, 130, 153); }
+
+.m-book-side-bar .seat-price .price-info .o-price__num { font-size: 14px; color: rgb(107, 130, 153); }
+
+.m-book-side-bar .seat-price .price-info .fee { font-size: 14px; color: rgb(34, 119, 238); float: left; }
+
+.m-book-side-bar .seat-price .price-info.total { margin-top: 20px; }
+
+.m-book-side-bar .seat-price .price-info.total .o-price__currency { color: rgb(34, 119, 238); }
+
+.m-book-side-bar .seat-price .price-info.total .o-price__num { color: rgb(34, 119, 238); }
+
+.m-book-side-bar .seat-total { padding-left: 20px; padding-right: 20px; margin-top: 20px; border-top: 1px solid rgb(234, 240, 243); padding-top: 10px; }
+
+.m-book-side-bar .seat-total .price-info .total { float: left; font-size: 14px; line-height: 46px; height: 42px; font-weight: bold; color: rgb(107, 130, 153); }
+
+.m-book-side-bar .seat-total .price-info .o-price { float: right; height: 28px; }
+
+.m-book-side-bar .seat-total .price-info .o-price__currency { font-size: 14px; color: rgb(34, 119, 238); }
+
+.m-book-side-bar .seat-total .price-info .o-price__num { font-size: 28px; color: rgb(34, 119, 238); font-weight: bold; }
+
+.m-book-tips { width: 780px; float: left; margin-top: 20px; margin-right: 20px; margin-bottom: 0px; }
+
+.m-book-tips .tip-info-box { border-radius: 4px; background-color: rgb(255, 249, 235); padding-bottom: 10px; margin-bottom: 20px; }
+
+.m-book-tips .tip-info-box .tip-info .tip-info-icon { padding: 10px 10px 0px; vertical-align: top; }
+
+.m-book-tips .tip-info-box .tip-info .tip-info-icon i { display: block; width: 14px; height: 14px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -90px -55px / 210px 210px no-repeat; }
+
+.m-book-tips .tip-info-box .tip-info .tip-info-msg { display: inline-block; font-size: 12px; color: rgb(108, 130, 145); line-height: 18px; margin-top: 10px; }
+
+.m-book-pop.o-overlay { border: none; box-shadow: none; background: rgb(255, 255, 255); border-radius: 4px; }
+
+.m-book-pop.o-overlay .m-pop { box-sizing: border-box; max-width: 550px; padding: 20px 20px 0px; }
+
+.m-book-pop.o-overlay .m-pop img { display: block; margin: auto auto 20px; }
+
+.m-book-pop.o-overlay .m-pop .pop-txt { position: relative; font-size: 12px; color: rgb(34, 51, 68); margin-bottom: 10px; }
+
+.m-book-pop.o-overlay .m-pop .pop-txt span { position: absolute; }
+
+.m-book-pop.o-overlay .m-pop .pop-txt p { padding-left: 15px; }
+
+.m-book-pop.o-overlay .m-pop .card-con { margin: 0px auto 20px; color: rgb(153, 153, 153); border-radius: 4px; width: 350px; min-height: 210px; background: url("//pic.tripcdn.com/common_v3/bg-id-card.jpg") 0px 0px no-repeat rgb(255, 255, 255); }
+
+.m-book-pop.o-overlay .m-pop .card-con .card-type { font-size: 14px; float: right; margin: 5px 10px 0px 0px; color: rgb(34, 51, 68); font-weight: normal; }
+
+.m-book-pop.o-overlay .m-pop .card-con .field { width: 248px; float: right; clear: right; padding: 8px; margin-right: 10px; word-break: break-all; }
+
+.m-book-pop.o-overlay .m-pop .card-con .field .label { font-size: 12px; display: block; color: rgb(34, 51, 68); }
+
+.m-book-pop.o-overlay .m-pop .card-con .field .name { font-size: 18px; color: rgb(34, 51, 68); }
+
+.m-book-pop.o-overlay .m-pop .card-con .field-filled .name { color: rgb(34, 51, 68); }
+
+.m-book-pop.o-overlay .m-pop .card-con .field-active { border: 2px solid rgb(24, 153, 242); border-radius: 8px; }
+
+.m-book-pop.o-overlay .m-pop .pop-clo { width: 12px; height: 12px; position: absolute; right: 10px; top: 10px; cursor: pointer; background: url("//pic.tripcdn.com/common_v3/train-sprite-2x.png") 0px -157px / 240px 240px no-repeat; }
+
+.m-book-pop.o-overlay .m-pop .pop-clo:hover { background-position: -20px -157px; }
+
+.m-book-ticket-collection { width: 780px; margin-bottom: 20px; }
+
+.m-book-ticket-collection .title { font-size: 22px; color: rgb(34, 51, 68); }
+
+.m-book-ticket-collection .content-box { background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 2px 0px; border-radius: 4px; padding: 20px 30px; box-sizing: border-box; }
+
+.m-book-ticket-collection .content-box .o-checkbox .o-checkbox__label { font-weight: bold; font-size: 14px; color: rgb(51, 51, 51); letter-spacing: 0px; }
+
+.m-book-ticket-collection .content-box .o-checkbox.is-checked .o-checkbox__label { color: rgb(51, 51, 51); }
+
+.m-book-ticket-collection .content-box .tip { padding-left: 22px; font-size: 12px; color: rgb(51, 51, 51); letter-spacing: 0px; line-height: 18px; }
+
+.m-book-ticket-collection .content-box p { padding-left: 22px; }
+
+.m-book-ticket-collection .content-box p a { color: rgb(34, 119, 238); }
+
+.m-book-ticket-collection .content-box p a:hover { color: rgb(34, 119, 238); }
+
+.m-book-coupon { width: 780px; margin-bottom: 20px; }
+
+.m-book-coupon * { box-sizing: border-box; }
+
+.m-book-coupon .title { font-size: 22px; color: rgb(34, 51, 68); }
+
+.m-book-coupon .content-box { background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 2px 0px; border-radius: 4px; padding: 24px 0px 24px 30px; box-sizing: border-box; }
+
+.m-book-coupon .coupon-ipt { box-sizing: border-box; line-height: 32px; font-weight: bold; float: left; width: 400px; height: 40px; }
+
+.m-book-coupon .coupon-ipt.error { border-bottom: 2px solid rgb(231, 76, 60); }
+
+.m-book-coupon .coupon-ipt::-webkit-input-placeholder { color: rgb(187, 187, 187); }
+
+.m-book-coupon .coupon-tip { font-size: 12px; line-height: 16px; margin-top: 6px; font-weight: normal; color: rgb(29, 163, 138); }
+
+.m-book-coupon .coupon-tip.error { color: rgb(231, 76, 60); }
+
+.m-book-coupon .coupon-btn { height: 40px; margin-left: 24px; padding: 12px 20px; color: rgb(34, 119, 238); background: rgb(255, 255, 255); border: 1px solid rgb(34, 119, 238); }
+
+.m-book-coupon .coupon-btn:hover { color: rgb(255, 255, 255); background: rgb(34, 119, 238); }
+
+.m-book-coupon .coupon-btn[disabled] { color: rgb(102, 102, 102); background: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); cursor: not-allowed; }
+
+.m-book-coupon .coupon_list { position: relative; margin-top: 24px; }
+
+.m-book-coupon .show_more.down + .coupon_list_cnt { max-height: 80px; overflow: hidden; }
+
+.m-book-coupon .show_more.up + .coupon_list_cnt { max-height: 260px; overflow: hidden scroll; }
+
+.m-book-coupon .coupon_item { position: relative; float: left; background: rgb(255, 255, 255); width: 340px; height: 80px; color: rgb(51, 51, 51); margin-top: 10px; border-radius: 5px; user-select: none; }
+
+.m-book-coupon .coupon_item.disabled { background: rgb(247, 247, 251); }
+
+.m-book-coupon .coupon_item:nth-child(-n+2) { margin-top: 0px; }
+
+.m-book-coupon .show_more.down + .coupon_list_cnt .coupon_item:nth-child(n+3) { display: none; }
+
+.m-book-coupon .coupon_item.selected::after { content: " "; color: rgb(255, 255, 255); display: block; position: absolute; right: 0px; bottom: 0px; width: 22px; height: 22px; background-image: url("//pic.tripcdn.com/common_v3/trains-sprite.png"); background-repeat: no-repeat; background-position: -103px -24px; }
+
+.m-book-coupon .coupon_item.recent::before { content: " "; background-color: rgb(255, 176, 0); display: block; position: absolute; top: 5px; right: 5px; width: 5px; height: 5px; border-radius: 2px; }
+
+.m-book-coupon .coupon_item:nth-child(2n+1) { margin-right: 16px; }
+
+.m-book-coupon .coupon_item .amount { float: left; position: relative; width: 115px; height: 80px; border-top: 1px solid rgb(226, 231, 235); border-bottom: 1px solid rgb(226, 231, 235); border-left: 1px solid rgb(226, 231, 235); border-image: initial; border-right: none; font-size: 16px; font-weight: bold; border-top-left-radius: 5px; border-bottom-left-radius: 5px; }
+
+.m-book-coupon .coupon_item.disabled .amount { border-top: 1px solid rgb(226, 231, 235); border-bottom: 1px solid rgb(226, 231, 235); border-left: 1px solid rgb(226, 231, 235); border-image: initial; border-right: none; color: rgb(204, 204, 204); }
+
+.m-book-coupon .coupon_item.selected .amount { border-top: 2px solid rgb(34, 119, 238); border-bottom: 2px solid rgb(34, 119, 238); border-left: 2px solid rgb(34, 119, 238); border-image: initial; border-right: none; }
+
+.m-book-coupon .coupon_item .price { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); white-space: nowrap; }
+
+.m-book-coupon .coupon_item .splitter { float: left; width: 12px; height: 80px; position: relative; }
+
+.m-book-coupon .coupon_item .splitter .circle_up, .m-book-coupon .coupon_item .splitter .circle_down { position: absolute; width: 12px; height: 6px; border: 1px solid rgb(226, 231, 235); background: rgb(255, 255, 255); left: 0px; }
+
+.m-book-coupon .coupon_item.disabled .splitter .circle_up, .m-book-coupon .coupon_item.disabled .splitter .circle_down { border: 1px solid rgb(226, 231, 235); }
+
+.m-book-coupon .coupon_item.selected .splitter .circle_up, .m-book-coupon .coupon_item.selected .splitter .circle_down { border: 2px solid rgb(34, 119, 238); }
+
+.m-book-coupon .coupon_item .splitter .circle_up { top: 0px; border-top: none; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; }
+
+.m-book-coupon .coupon_item.disabled .splitter .circle_up { border-top: none; }
+
+.m-book-coupon .coupon_item.selected .splitter .circle_up { border-top: none; }
+
+.m-book-coupon .coupon_item .splitter .circle_down { bottom: 0px; border-bottom: none; border-top-left-radius: 6px; border-top-right-radius: 6px; }
+
+.m-book-coupon .coupon_item.disabled .splitter .circle_down { border-bottom: none; }
+
+.m-book-coupon .coupon_item.selected .splitter .circle_down { border-bottom: none; }
+
+.m-book-coupon .coupon_item .splitter .split_line { position: absolute; top: 10px; bottom: 10px; left: 50%; border-right: 1px dashed rgb(226, 231, 235); }
+
+.m-book-coupon .coupon_item.selected .splitter .split_line { border-right: 1px dashed rgb(34, 119, 238); }
+
+.m-book-coupon .coupon_item .detail { float: left; width: 213px; height: 80px; padding: 10px; border-top: 1px solid rgb(226, 231, 235); border-right: 1px solid rgb(226, 231, 235); border-bottom: 1px solid rgb(226, 231, 235); border-image: initial; border-left: none; border-top-right-radius: 5px; border-bottom-right-radius: 5px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; }
+
+.m-book-coupon .coupon_item.disabled .detail { border-top: 1px solid rgb(226, 231, 235); border-right: 1px solid rgb(226, 231, 235); border-bottom: 1px solid rgb(226, 231, 235); border-image: initial; border-left: none; color: rgb(204, 204, 204); }
+
+.m-book-coupon .coupon_item.selected .detail { border-top: 2px solid rgb(34, 119, 238); border-right: 2px solid rgb(34, 119, 238); border-bottom: 2px solid rgb(34, 119, 238); border-image: initial; border-left: none; }
+
+.m-book-coupon .coupon_item .detail .detail_label { font-size: 12px; color: rgb(34, 119, 238); cursor: pointer; }
+
+.m-book-coupon .coupon_item .detail .validate { color: rgb(153, 153, 153); }
+
+.m-book-coupon .coupon_item.disabled .detail .validate { color: rgb(204, 204, 204); }
+
+.m-book-coupon .show_more { position: absolute; top: 0px; right: 24px; width: 14px; height: 14px; }
+
+.m-book-coupon .show_more.up { background-position: 0px -6px; }
+
+.m-book-coupon .show_more.down { background-position: 0px 5px; }
+
+.m-book-coupon .show_more.disabled { cursor: not-allowed; }
+
+.m-return-change-rules.pop-con { width: 440px; padding: 20px; }
+
+.m-return-change-rules.pop-con .rules-title { text-align: left; margin-bottom: 20px; }
+
+.m-return-change-rules.pop-con .rules-title__tit { font-size: 14px; color: rgb(34, 51, 68); font-weight: bold; }
+
+.m-return-change-rules.pop-con .rules-title__txt { font-size: 12px; color: rgb(107, 130, 153); }
+
+.m-return-change-rules.pop-con .rules-tab { margin-bottom: 20px; }
+
+.m-return-change-rules.pop-con .rules-tab__tit { font-size: 12px; line-height: 12px; font-weight: bold; color: rgb(34, 51, 68); margin-bottom: 15px; }
+
+.m-return-change-rules.pop-con .rules-tab__box a { color: rgb(17, 113, 183); }
+
+.m-return-change-rules.pop-con .rules-tab__box tr { padding-bottom: 15px; vertical-align: top; }
+
+.m-return-change-rules.pop-con .rules-tab__box__tit { white-space: nowrap; }
+
+.m-return-change-rules.pop-con .rules-tab__box__tit.blue { color: rgb(17, 113, 183); }
+
+.m-return-change-rules.pop-con .rules-tab__box__txt { padding-left: 10px; }
+
+.m-complete { padding: 50px 70px; height: 100%; position: relative; }
+
+.m-complete .icon-right { position: absolute; left: 0px; top: 42px; width: 49px; height: 49px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -123px -76px / 210px 210px no-repeat; }
+
+.m-complete .complete-title { font-size: 24px; color: rgb(102, 102, 102); margin-bottom: 5px; }
+
+.m-complete .complete-text { font-size: 14px; color: rgb(102, 102, 102); margin-bottom: 15px; }
+
+.m-complete .o-btn_default, .m-complete .o-btn_default-2x, .m-complete .o-btn_default-3x, .m-complete .o-btn_default-block { font-size: 14px; font-weight: bold; color: rgb(17, 113, 183); border: 1px solid rgb(17, 113, 183); }
+
+.m-complete .o-btn_default:hover, .m-complete .o-btn_default-2x:hover, .m-complete .o-btn_default-3x:hover, .m-complete .o-btn_default-block:hover { background: rgb(17, 113, 183); color: rgb(255, 255, 255); }
+
+.m-error { padding: 50px 70px; height: 100%; position: relative; }
+
+.m-error .icon-cry { position: absolute; left: 0px; top: 42px; width: 49.5px; height: 49px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -65.5px -76px / 210px 210px no-repeat; }
+
+.m-error .complete-title { font-size: 24px; color: rgb(102, 102, 102); margin-bottom: 5px; }
+
+.m-error .complete-text { font-size: 14px; color: rgb(102, 102, 102); margin-bottom: 15px; }
+
+.m-error .o-btn_default, .m-error .o-btn_default-2x, .m-error .o-btn_default-3x, .m-error .o-btn_default-block { font-size: 14px; min-width: 140px; }
+
+.m-subcribe { position: relative; }
+
+.m-subcribe .txt { display: block; font-size: 14px; color: rgb(102, 102, 102); }
+
+.m-subcribe .btn { position: relative; }
+
+.m-subcribe .o-btn_primary { display: inline-block; vertical-align: middle; margin-top: 8px; min-width: 60px; height: 30px; line-height: 30px; padding: 0px 1rem; text-align: center; border-radius: 4px; background: rgb(34, 119, 238); font-size: 14px; color: rgb(255, 255, 255); cursor: pointer; box-sizing: border-box; }
+
+.m-subcribe .btn #btn-subcribed { display: none; }
+
+.m-subcribe .o-btn_primary:hover { text-decoration: none; background: rgb(26, 93, 186); }
+
+.m-subcribe .o-btn_primary.gray { background: rgb(187, 187, 187); cursor: default; }
+
+.m-subcribe .toast, .m-subcribe .unsubscribe { display: none; color: rgb(255, 255, 255); font-size: 14px; line-height: 16px; min-height: 16px; position: absolute; background: rgb(0, 0, 0); border-radius: 3px; padding: 7px 1em; max-width: 160px; white-space: pre-wrap; top: 50px; left: 0px; cursor: default; }
+
+.m-subcribe .btn .toast::before, .m-subcribe .btn .unsubscribe::before { width: 0px; height: 0px; content: ""; border-width: 6px 2px; border-style: solid; border-color: transparent transparent rgb(76, 76, 76); position: absolute; top: -12px; left: 15px; }
+
+.m-order-crumb { font-size: 14px; color: rgb(34, 51, 68); margin: 20px 0px; }
+
+.m-order-crumb a { color: rgb(34, 119, 238); }
+
+.m-order-crumb h1 { display: inline; }
+
+.m-order-contact { background: rgb(255, 255, 255); border-radius: 4px; padding: 17px 22px; }
+
+.m-order-contact p { font-weight: bold; font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; line-height: 12px; margin-bottom: 10px; }
+
+.m-order-contact span { display: block; float: left; font-size: 14px; line-height: 14px; color: rgb(34, 51, 68); margin-right: 40px; }
+
+.m-order-passenger { background: rgb(255, 255, 255); border-radius: 4px; padding: 17px 22px 10px; margin-bottom: 10px; }
+
+.m-order-passenger p { font-weight: bold; font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; line-height: 12px; margin-bottom: 10px; }
+
+.m-order-passenger span { display: block; font-size: 12px; line-height: 12px; color: rgb(34, 51, 68); margin-bottom: 10px; }
+
+.m-order-card { margin-bottom: 10px; display: flex; }
+
+.m-order-header { background: rgb(255, 255, 255); border-radius: 4px; margin-bottom: 10px; display: table; }
+
+.m-order-questions { font-size: 12px; line-height: 12px; color: rgb(107, 130, 153); margin-top: 40px; }
+
+.m-order-questions p { margin-bottom: 30px; }
+
+.m-order-questions__title { font-weight: bold; }
+
+.m-order-header-detail { box-sizing: border-box; padding: 20px; float: left; width: 720px; }
+
+.m-order-header-detail .bottom { display: table; }
+
+.m-order-header-detail .bottom .left { display: table-cell; width: 100%; padding-right: 20px; }
+
+.m-order-header-detail .bottom .right { display: table-cell; }
+
+.m-order-header-detail .bottom .right .order-price { white-space: nowrap; }
+
+.m-order-header-detail .bottom .right .order-price .o-price { padding: 5px 0px; }
+
+.m-order-header-detail .bottom .right .order-price .o-price .total { color: rgb(107, 130, 153); }
+
+.m-order-header-detail .bottom .right .order-price .o-price__currency { font-size: 14px; color: rgb(34, 119, 238); padding-left: 10px; }
+
+.m-order-header-detail .bottom .right .order-price .o-price__num { font-size: 28px; line-height: 28px; font-weight: bold; color: rgb(34, 119, 238); }
+
+.m-order-header-detail .bottom .right .order-price a { display: block; text-align: right; font-size: 12px; color: rgb(34, 119, 238); line-height: 12px; }
+
+.m-order-header-detail .order-no, .m-order-header-detail .order-time { display: inline-block; color: rgb(107, 130, 153); font-size: 12px; line-height: 12px; margin-right: 20px; }
+
+.m-order-header-detail .order-status { font-size: 22px; line-height: 22px; font-weight: bold; margin: 10px 0px; }
+
+.m-order-header-detail .order-status.success { color: rgb(34, 119, 238); }
+
+.m-order-header-detail .order-status.fail { color: rgb(254, 103, 86); }
+
+.m-order-header-detail .order-status.process { color: rgb(34, 51, 68); }
+
+.m-order-header-detail .order-tip { font-size: 12px; color: rgb(34, 51, 68); line-height: 16px; }
+
+.m-order-header-detail .order-tip__time { color: rgb(255, 169, 0); }
+
+.m-order-header-detail .order-process { width: 400px; height: 16px; background: rgb(230, 242, 255); border-radius: 8px; }
+
+.m-order-header-detail .order-process__bar { position: relative; width: 37%; height: 16px; border-radius: 8px; background: rgb(34, 119, 238); }
+
+.m-order-header-detail .order-process__bar span { position: absolute; display: block; right: -35px; color: rgb(34, 119, 238); font-size: 12px; line-height: 16px; }
+
+.m-order-header-operate { width: 270px; padding: 20px 0px; box-sizing: border-box; text-align: center; display: table-cell; vertical-align: middle; }
+
+.m-order-header-operate .o-btn_default-2x { margin: 0px auto; font-size: 14px; }
+
+.m-order-header-operate .ticket-success .o-btn_default-2x.print { margin-bottom: 10px; }
+
+.m-order-header-operate .book-success .o-btn_default-2x.pay { margin-bottom: 10px; background: rgb(255, 169, 0); border: 1px solid rgb(255, 169, 0); color: rgb(255, 255, 255); }
+
+.m-order-header-operate .book-success .o-btn_default-2x.pay:hover { background: rgb(240, 136, 0); border: 1px solid rgb(240, 136, 0); }
+
+.m-order-header-operate .book-fail .o-btn_default-2x.rebook { margin-bottom: 10px; }
+
+.m-order-card-detail { width: 720px; float: left; background: rgb(255, 255, 255); border-radius: 4px 0px 0px 4px; padding: 20px 0px 10px; position: relative; }
+
+.m-order-card-detail .corner-r-t { width: 4px; height: 4px; border-radius: 0px 0px 0px 4px; background: rgb(234, 240, 243); position: absolute; top: 0px; right: 0px; }
+
+.m-order-card-detail .corner-r-b { width: 4px; height: 4px; border-radius: 4px 0px 0px; background: rgb(234, 240, 243); position: absolute; bottom: 0px; right: 0px; }
+
+.m-order-card-detail .card-title { padding: 0px 20px; font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; line-height: 12px; }
+
+.m-order-card-detail .card-title a { color: rgb(34, 119, 238); padding-left: 10px; }
+
+.m-order-card-detail .card-title .during { float: right; font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; line-height: 14px; }
+
+.m-order-card-detail .card-title .during span { position: relative; padding-left: 18px; }
+
+.m-order-card-detail .card-title .during .icon-time { display: block; width: 14px; height: 14px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") -58px -55px / 210px 210px no-repeat; position: absolute; left: 0px; top: 0px; }
+
+.m-order-card-detail .train-info { margin-top: 20px; }
+
+.m-order-card-detail .train-info .leave { text-align: left; padding-left: 20px; padding-right: 40px; }
+
+.m-order-card-detail .train-info .leave .date { font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; line-height: 12px; margin-bottom: 6px; }
+
+.m-order-card-detail .train-info .leave .time { font-weight: bold; font-size: 24px; color: rgb(34, 51, 68); letter-spacing: 0px; line-height: 28px; }
+
+.m-order-card-detail .train-info .line .circle { font-size: 12px; color: rgb(34, 119, 238); letter-spacing: 0px; line-height: 12px; text-align: center; }
+
+.m-order-card-detail .train-info .line .circle a { color: rgb(34, 119, 238); }
+
+.m-order-card-detail .train-info .line .circle.kor { color: rgb(107, 130, 153); }
+
+.m-order-card-detail .train-info .line .arrow { margin-top: 5px; border-bottom: 2px solid rgb(204, 226, 239); position: relative; }
+
+.m-order-card-detail .train-info .line .arrow .triangle { position: absolute; width: 0px; height: 0px; border-bottom: 6px solid rgb(204, 226, 239); border-right: 6px solid transparent; right: -6px; bottom: -2px; }
+
+.m-order-card-detail .train-info .line .arrow .circle { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: rgb(255, 255, 255); border: 2px solid rgb(204, 226, 239); left: 49.1%; top: -3px; }
+
+.m-order-card-detail .train-info .arrive { text-align: right; padding-left: 40px; padding-right: 20px; position: relative; }
+
+.m-order-card-detail .train-info .arrive .date { font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; line-height: 12px; margin-bottom: 6px; }
+
+.m-order-card-detail .train-info .arrive .time { font-weight: bold; font-size: 24px; color: rgb(34, 51, 68); letter-spacing: 0px; line-height: 28px; }
+
+.m-order-card-detail .train-info .arrive .plus-day { font-size: 12px; color: rgb(255, 102, 0); letter-spacing: 0px; line-height: 12px; position: absolute; padding-right: 20px; right: 0px; top: -15px; }
+
+.m-order-card-detail .station-name { font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; margin-top: 5px; }
+
+.m-order-card-detail .station-name .leave-station { box-sizing: border-box; float: left; padding-left: 20px; width: 50%; }
+
+.m-order-card-detail .station-name .arrive-station { box-sizing: border-box; float: right; text-align: right; padding-right: 20px; width: 50%; }
+
+.m-order-card-detail .passenger-info { font-size: 12px; line-height: 14px; color: rgb(34, 51, 68); letter-spacing: 0px; padding-left: 20px; margin-top: 10px; }
+
+.m-order-card-detail .passenger-info p { margin-bottom: 10px; }
+
+.m-order-card-detail .passenger-info p span { line-height: 14px; }
+
+.m-order-card-detail .passenger-info p .title { font-weight: bold; font-size: 12px; color: rgb(34, 51, 68); letter-spacing: 0px; margin-right: 5px; }
+
+.m-order-card-detail .passenger-info p .fi, .m-order-card-detail .passenger-info p .fi_train, .m-order-card-detail .passenger-info p .fi-on-foot, .m-order-card-detail .passenger-info p .fi-seat, .m-order-card-detail .passenger-info p .fi-ferry { width: 12px; height: 14px; vertical-align: text-top; margin-right: 5px; color: rgb(153, 153, 153); font-size: 14px; }
+
+.m-order-card-detail .passenger-info p .detail { padding-right: 10px; }
+
+.m-order-card-operate { float: right; width: 269px; border-left: 1px dashed rgb(204, 222, 240); background: rgb(244, 252, 255); border-radius: 0px 4px 4px 0px; box-sizing: border-box; position: relative; }
+
+.m-order-card-operate .corner-l-t { width: 5px; height: 4px; border-radius: 0px 0px 4px; background: rgb(234, 240, 243); position: absolute; top: 0px; left: -1px; }
+
+.m-order-card-operate .corner-l-b { width: 5px; height: 4px; border-radius: 0px 4px 0px 0px; background: rgb(234, 240, 243); position: absolute; bottom: 0px; left: -1px; }
+
+.m-order-card-operate__disable, .m-order-card-operate__process { text-align: center; }
+
+.m-order-card-operate__disable .cnt, .m-order-card-operate__process .cnt { font-size: 18px; color: rgb(132, 155, 171); letter-spacing: 0px; font-weight: bold; position: absolute; top: 50%; width: 100%; margin-top: -10px; }
+
+.m-order-card-operate__no { margin-top: 76px; text-align: center; }
+
+.m-order-card-operate__no .order-no { font-size: 12px; }
+
+.m-order-card-operate__no .order-no span { font-size: 20px; font-weight: bold; }
+
+.m-order-card-operate__no a { color: rgb(34, 119, 238); font-size: 12px; }
+
+.m-order-card-operate__print { margin-top: 79px; text-align: center; }
+
+.m-order-card-operate__print .o-btn_default, .m-order-card-operate__print .o-btn_default-2x, .m-order-card-operate__print .o-btn_default-3x, .m-order-card-operate__print .o-btn_default-block { font-size: 14px; width: 150px; }
+
+.m-order-card-operate__print a { display: block; margin-top: 10px; color: rgb(34, 119, 238); font-size: 12px; }
+
+.m-order-tickets-collection { background: rgb(255, 255, 255); border-radius: 4px; margin-bottom: 10px; display: table; }
+
+.m-order-tickets-collection .left { box-sizing: border-box; padding: 20px; float: left; width: 720px; }
+
+.m-order-tickets-collection .left .title { font-size: 12px; color: rgb(107, 130, 153); line-height: 12px; margin-bottom: 12px; }
+
+.m-order-tickets-collection .left .content { font-size: 22px; color: rgb(51, 51, 51); line-height: 22px; font-weight: bold; margin-bottom: 7px; }
+
+.m-order-tickets-collection .left .tips { font-size: 12px; color: rgb(34, 51, 68); line-height: 18px; }
+
+.m-order-tickets-collection .left .tips a { display: inline-block; color: rgb(34, 119, 238); padding-left: 5px; }
+
+.m-order-tickets-collection .right { width: 270px; padding: 20px 0px; box-sizing: border-box; text-align: center; display: table-cell; vertical-align: middle; }
+
+.m-order-tickets-collection .right .btn { position: relative; margin: 0px auto; font-size: 14px; }
+
+.m-order-tickets-collection .right .btn .print-pop { display: none; position: absolute; box-sizing: border-box; min-width: 160px; top: 40px; left: 50%; margin-left: -80px; border: 1px solid rgb(34, 119, 238); background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.3) 1px 2px 8px 0px; }
+
+.m-order-tickets-collection .right .btn .print-pop .print-btn { text-align: center; height: 36px; line-height: 36px; vertical-align: middle; white-space: nowrap; cursor: pointer; }
+
+.m-order-tickets-collection .right .btn .print-pop .print-btn:hover { background: rgb(235, 247, 255); }
+
+.m-order-tickets-collection .right .btn .print-pop .print-btn.active { color: rgb(255, 255, 255); background: rgb(34, 119, 238); }
+
+.m-pop-refund .pop-con { max-width: 486px; box-sizing: border-box; padding: 0px; text-align: center; }
+
+.m-pop-refund .pop-con .title { font-size: 14px; color: rgb(34, 51, 68); letter-spacing: 0px; line-height: 14px; font-weight: bold; text-align: center; margin: 20px 0px; }
+
+.m-pop-refund .pop-con .passenger-cards { overflow-y: auto; max-height: 162px; margin-left: 20px; }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card { overflow: hidden; position: relative; cursor: pointer; float: left; width: 142px; height: 28px; margin-right: 10px; margin-bottom: 10px; border-radius: 4px; background: rgb(255, 255, 255); box-sizing: border-box; border: 1px solid rgb(209, 219, 228); }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card.active { border: 1px solid rgb(34, 119, 238); }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card.active .triangle-bottom-right { display: block; }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card.disable { background: rgb(209, 219, 228); }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card.disable:hover { border: 1px solid rgb(209, 219, 228); }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card:hover { border: 1px solid rgb(34, 119, 238); }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card .name { display: block; font-size: 12px; line-height: 17px; color: rgb(34, 51, 68); padding-left: 10px; padding-top: 5px; }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card .passport-words { font-size: 12px; color: rgb(107, 130, 153); padding-left: 10px; padding-right: 10px; line-height: 17px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card .triangle-bottom-right { display: none; position: absolute; right: 0px; bottom: 0px; width: 0px; height: 0px; border-bottom: 20px solid rgb(34, 119, 238); border-left: 20px solid transparent; }
+
+.m-pop-refund .pop-con .passenger-cards .passenger-card .triangle-bottom-right .icon-check { display: block; width: 10px; height: 9px; position: absolute; right: 1px; top: 10px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") 0px -55px / 210px 210px no-repeat; }
+
+.m-pop-refund .pop-con .fee { font-size: 12px; line-height: 12px; color: rgb(34, 51, 68); margin: 10px 20px; text-align: left; }
+
+.m-pop-refund .pop-con .fee .currency, .m-pop-refund .pop-con .fee .num { color: rgb(34, 119, 238); }
+
+.m-pop-refund .pop-con .fee .num { font-weight: bold; }
+
+.m-pop-refund .pop-con .btn { margin: 20px auto; }
+
+.m-pop-refund .pop-con .btn .o-btn_default, .m-pop-refund .pop-con .btn .o-btn_default-2x, .m-pop-refund .pop-con .btn .o-btn_default-3x, .m-pop-refund .pop-con .btn .o-btn_default-block { width: 120px; font-size: 14px; margin: 0px auto; }
+
+.m-pop-refund .pop-con .btn .o-btn_default.cancel, .m-pop-refund .pop-con .btn .cancel.o-btn_default-2x, .m-pop-refund .pop-con .btn .cancel.o-btn_default-3x, .m-pop-refund .pop-con .btn .cancel.o-btn_default-block { margin-right: 20px; }
+
+.m-pop-refund .pop-con .refund-fee { text-align: center; font-size: 14px; line-height: 14px; }
+
+.m-pop-refund .pop-con .refund-fee .currency, .m-pop-refund .pop-con .refund-fee .num { color: rgb(34, 119, 238); }
+
+.m-pop-refund .pop-con .refund-fee .num { font-weight: bold; }
+
+.m-pop-refund .pop-con .refund-txt, .m-pop-refund .pop-con .refund-txt-center { font-size: 12px; line-height: 24px; color: rgb(107, 130, 153); padding: 0px 20px; text-align: left; }
+
+.m-pop-refund .pop-con .refund-txt-center { text-align: center; }
+
+.m-mod-tit { width: 820px; float: left; margin-top: 20px; font-size: 18px; color: rgb(51, 51, 51); text-align: left; font-weight: normal; }
+
+@media only screen and (max-width: 1200px) {
+  .m-mod-tit { width: 69.4915%; }
+}
+
+.m-list-crumb { text-align: right; font-size: 14px; padding: 15px 0px; }
+
+.m-list-crumb a { color: rgb(34, 119, 238); }
+
+.m-list-crumb h1 { display: inline; color: rgb(102, 102, 102); font-weight: normal; font-size: 14px; }
+
+.m-list-crumb.hidden { visibility: hidden; }
+
+.m-selling-point { float: right; margin-top: 10px; margin-left: 20px; margin-bottom: 20px; width: 300px; background-color: rgb(250, 253, 255); padding: 20px 20px 0px; }
+
+@media only screen and (max-width: 1200px) {
+  .m-selling-point { width: 25.4237%; margin-left: 0.84746%; }
+}
+
+.m-selling-point .selling-point-box { margin: 5px 0px 30px 5px; }
+
+.m-selling-point .selling-point-box .icon { width: 36px; height: 36px; float: left; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") 0% 0% / 210px 210px no-repeat; margin-right: 15px; }
+
+.m-selling-point .selling-point-box .icon.quality { background-position: 0px -143px; }
+
+.m-selling-point .selling-point-box .icon.ticket { background-position: -36px -143px; }
+
+.m-selling-point .selling-point-box .icon.pay { background-position: -72px -143px; }
+
+.m-selling-point .selling-point-box .icon.service { background-position: -109px -143px; }
+
+.m-selling-point .selling-point-box .icon.ensure { background-position: -144px -143px; }
+
+.m-selling-point .selling-point-box .desc { overflow: auto; }
+
+.m-selling-point .selling-point-box .desc .tit { font-weight: bold; font-size: 14px; color: rgb(51, 51, 51); letter-spacing: 0px; line-height: 14px; margin-bottom: 5px; }
+
+.m-selling-point .selling-point-box .desc .cnt { font-size: 12px; color: rgb(107, 130, 153); letter-spacing: 0px; line-height: 18px; }
+
+.m-subscribe .txt { font-size: 14px; color: rgb(102, 102, 102); }
+
+.m-subscribe .btn { position: relative; margin-top: 8px; }
+
+.m-subscribe .btn .o-btn_primary, .m-subscribe .btn .o-btn_primary-2x, .m-subscribe .btn .o-btn_primary-3x, .m-subscribe .btn .o-btn_primary-block, .m-subscribe .btn .o-btn_key, .m-subscribe .btn .o-btn_key-2x, .m-subscribe .btn .o-btn_key-3x { font-size: 14px; padding: 0px 1em; height: 30px; line-height: 30px; min-width: 60px; }
+
+.m-subscribe .btn .o-btn_primary.gray, .m-subscribe .btn .gray.o-btn_primary-2x, .m-subscribe .btn .gray.o-btn_primary-3x, .m-subscribe .btn .gray.o-btn_primary-block, .m-subscribe .btn .gray.o-btn_key, .m-subscribe .btn .gray.o-btn_key-2x, .m-subscribe .btn .gray.o-btn_key-3x { background: rgb(187, 187, 187); cursor: default; }
+
+.m-subscribe .btn .toast { color: rgb(255, 255, 255); font-size: 14px; line-height: 16px; min-height: 16px; position: absolute; background: rgba(0, 0, 0, 0.7); border-radius: 3px; padding: 7px 1em; max-width: 160px; white-space: pre-wrap; top: 40px; cursor: default; }
+
+.m-subscribe .btn .toast::before { width: 0px; height: 0px; content: ""; border-width: 6px 2px; border-style: solid; border-color: transparent transparent rgb(76, 76, 76); position: absolute; top: -12px; left: 15px; }
+
+.p-pop { background: rgba(0, 0, 0, 0.5); }
+
+.pop-refresh .pop-con { box-sizing: border-box; width: 380px; padding: 30px; border-radius: 4px; background-color: rgb(255, 255, 255); text-align: center; }
+
+.pop-refresh .pop-con .icon { position: absolute; width: 58px; height: 58px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/train-europe-sprite-2x.69e1ef21.png") 0px -76px / 210px 210px no-repeat; left: 161px; top: -29px; }
+
+.pop-refresh .pop-con .title { font-size: 16px; line-height: 18px; color: rgb(34, 51, 68); margin-top: 20px; margin-bottom: 10px; }
+
+.pop-refresh .pop-con .msg { font-size: 12px; color: rgb(107, 130, 153); margin-bottom: 20px; overflow-wrap: break-word; }
+
+.pop-refresh .pop-con .o-btn_primary-2x { width: 100%; }
+
+.mod-account-check { line-height: 24px; font-size: 14px; margin-bottom: 10px; border-radius: 22px; border: 1px solid rgb(17, 113, 183); background: rgb(255, 255, 255); }
+
+.mod-account-check .icon-double-angle-arrow { float: right; margin: 11px; }
+
+.func-sign-in { display: block; padding: 4px; line-height: 34px; border-radius: 22px; }
+
+.func-sign-in:hover { color: rgb(51, 51, 51); text-decoration: none; }
+
+.func-sign-in:hover { background: rgb(241, 249, 255); }
+
+.func-sign-in:hover .icon-double-angle-arrow span { border-top: 8px solid rgb(17, 113, 183); }
+
+.func-sign-in:hover .icon-double-angle-arrow span + span { border-top: 8px solid rgb(241, 249, 255); }
+
+.func-sign-in:hover .icon-double-angle-arrow span + span + span { border-top: 8px solid rgb(17, 113, 183); }
+
+.func-sign-in:hover .icon-double-angle-arrow span + span + span + span { border-top: 8px solid rgb(241, 249, 255); }
+
+.func-sign-in em { color: rgb(17, 113, 183); font-weight: bold; }
+
+.func-sign-in .icon-account-app { margin-right: 10px; }
+
+.mod-account-check .login-frame { border-radius: 0px 0px 22px 22px; display: none; }
+
+.mod-account-check .login-frame iframe { border-radius: 0px 0px 22px 22px; }
+
+.mod-account-check-open .login-frame { display: block; }
+
+.mod-account-check-open .func-sign-in { border-radius: 22px 22px 0px 0px; }
+
+.mod-account-check-open .func-sign-in .icon-double-angle-arrow span { position: absolute; bottom: auto; left: -1px; top: -8px; border-width: 8px; border-style: solid; border-color: transparent transparent rgb(17, 113, 183); border-image: initial; }
+
+.mod-account-check-open .func-sign-in .icon-double-angle-arrow span + span { position: absolute; bottom: auto; left: -1px; top: -5px; border-width: 8px; border-style: solid; border-color: transparent transparent rgb(255, 255, 255); border-image: initial; }
+
+.mod-account-check-open .func-sign-in .icon-double-angle-arrow span + span + span { position: absolute; bottom: auto; left: -1px; top: -2px; border-width: 8px; border-style: solid; border-color: transparent transparent rgb(17, 113, 183); border-image: initial; }
+
+.mod-account-check-open .func-sign-in .icon-double-angle-arrow span + span + span + span { position: absolute; bottom: auto; left: -1px; top: 1px; border-width: 8px; border-style: solid; border-color: transparent transparent rgb(255, 255, 255); border-image: initial; }
+
+.mod-account-check-open .func-sign-in:hover .icon-double-angle-arrow span { border-bottom: 8px solid rgb(17, 113, 183); }
+
+.mod-account-check-open .func-sign-in:hover .icon-double-angle-arrow span + span { border-bottom: 8px solid rgb(241, 249, 255); }
+
+.mod-account-check-open .func-sign-in:hover .icon-double-angle-arrow span + span + span { border-bottom: 8px solid rgb(17, 113, 183); }
+
+.mod-account-check-open .func-sign-in:hover .icon-double-angle-arrow span + span + span + span { border-bottom: 8px solid rgb(241, 249, 255); }
+
+.pop-booking .pop-con { padding-bottom: 10px; border-radius: 4px 4px 0px 0px; }
+
+.pop-booking .payment-route { padding: 15px 0px 0px; }
+
+.pop-booking .train-route { box-sizing: border-box; }
+
+.pop-booking .train-from, .pop-booking .train-to, .pop-booking .train-line { position: relative; float: left; }
+
+.pop-booking .train-from { padding-bottom: 3px; width: 24%; }
+
+.pop-booking .train-line { width: 52%; vertical-align: middle; margin-top: 10px; }
+
+.pop-booking .line { float: left; display: inline-block; width: 88%; border-top: 1px solid rgb(204, 226, 239); margin-top: 10px; position: relative; }
+
+.pop-booking .line-start, .mod-payment-summary-train .line-end { float: left; display: inline-block; }
+
+.pop-booking .line-start .icon-start-point, .pop-booking .line-transfer .icon-start-point, .pop-booking .line-end .icon-end-point { width: 9px; height: 9px; background: rgb(204, 226, 239); border-radius: 50%; }
+
+.pop-booking .line-transfer { position: absolute; left: 48%; display: none; }
+
+.pop-booking .line-transfer.show { position: absolute; left: 48%; display: block; }
+
+.pop-booking .train-time { display: block; }
+
+.pop-booking .train-station { width: 80%; display: inline-block; vertical-align: top; }
+
+.pop-booking .train-to { width: 24%; text-align: right; }
+
+.pop-booking .train-to .train-time { vertical-align: top; }
+
+.pop-booking .train-to .train-station { vertical-align: top; }
+
+.pop-booking .train-route .day-plus { font-size: 12px; color: rgb(102, 102, 102); }
+
+.pop-booking .train-hour { font-size: 22px; line-height: 1.2; }
+
+.pop-booking .train-stations .station-from { float: left; width: 50%; }
+
+.pop-booking .train-stations .station-to { float: right; width: 50%; text-align: right; }
+
+.pop-booking .train-no { display: block; line-height: 12px; text-align: center; }
+
+.pop-booking .payment-route .tips { margin-top: 10px; }
+
+.progress-bar { background-color: rgb(238, 238, 238); height: 32px; overflow: hidden; position: relative; }
+
+.progress-bar .loading-bar { height: 32px; background-color: rgb(192, 233, 255); position: relative; }
+
+.progress-bar .loading-txt { line-height: 32px; padding: 0px 20px; position: absolute; top: 0px; left: 0px; }
+
+.progress-bar .percentage { position: absolute; top: 8px; right: 20px; }
+
+.t-icons { display: inline-block; font-size: 0px; vertical-align: middle; background-image: url("//pic.tripcdn.com/common_v3/trains-sprite.png"); background-repeat: no-repeat; background-position: 1024px 1024px; }
+
+.icon-closed { width: 14px; height: 14px; background-position: -24px 0px; }
+
+.icon-closed:hover { background-position: -48px 0px; }
+
+.pop-loading { background: rgba(221, 221, 221, 0.8); }
+
+.pop-loading .loading-item .loading-brick .icon-loading { width: 110px; height: 68.75px; background: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/images/loading-blue.2f66560d.gif") 0% 0% / cover no-repeat; }
+
+@font-face { font-family: fi-train; src: url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/font/fi_train.01b3c635.woff") format("woff"), url("//pic.tripcdn.com/picaresenglish/ibu/korail/src/font/fi_train.75fe314e.ttf") format("truetype"); }
+
+.fi_train, .fi-on-foot, .fi-seat, .fi-ferry { font-family: fi-train, sans-serif; font-style: normal; font-weight: normal; font-size: 12px; -webkit-font-smoothing: antialiased; }
+
+.fi-on-foot::before { content: ""; }
+
+.fi-seat::before { content: ""; }
+
+.fi-ferry::before { content: ""; }

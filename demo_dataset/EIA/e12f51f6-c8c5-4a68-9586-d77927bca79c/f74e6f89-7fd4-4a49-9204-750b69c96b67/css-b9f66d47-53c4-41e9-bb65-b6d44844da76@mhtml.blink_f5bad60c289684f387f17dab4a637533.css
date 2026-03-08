@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.payment-method-message .content + .payment-actions { margin-block-start: 24px; }
+
+.payment-method-message .content:last-child { margin-block-end: 48px; }

@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.app-components-Refunds-tabs-RefundsPolicies-styles__policiesWrapper--2MpT5 { padding: 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Refunds-tabs-RefundsPolicies-styles__policiesWrapper--2MpT5 { padding: 0px; }
+}
+
+.app-components-Refunds-tabs-RefundsPolicies-styles__policiesHeader--3CBE8 { font-size: 32px; font-weight: 600; line-height: 40px; }
+
+.app-components-Refunds-tabs-RefundsPolicies-styles__policiesList--1S6tG { list-style-type: none; padding-left: 0px; }
+
+.app-components-Refunds-tabs-RefundsPolicies-styles__policiesListItem--1y3V- { font-size: 16px; line-height: 24px; margin: 10px 0px; }
+
+.app-components-Refunds-tabs-RefundsPolicies-styles__policiesListItem--1y3V- > :first-child { margin-right: 5px; }

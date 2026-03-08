@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__formContent--2Dhre { display: flex; flex-direction: column; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__formContent--2Dhre > * { margin-bottom: 24px; }
+
+@media screen and (min-width: 720px) {
+  .app-containers-BaggageCalculator-Forms-MyFlights-styles__formContent--2Dhre { flex-direction: row; align-items: flex-start; }
+  .app-containers-BaggageCalculator-Forms-MyFlights-styles__formContent--2Dhre input { width: 100%; max-width: 300px; }
+  .app-containers-BaggageCalculator-Forms-MyFlights-styles__formContent--2Dhre > * { margin-right: 20px; }
+}
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__formContent--2Dhre input[type="text"] { font-size: 1rem; line-height: 1.5; font-family: inherit; width: 100%; border: 1px solid gray; border-radius: 4px; padding: 0.5rem; color: rgb(0, 0, 0); transition: box-shadow 0.15s ease-out 0s, border-color 0.15s ease-out 0s; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__manualSearchButton--3An5C { margin-top: 24px; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__mb40--36sHK { margin-bottom: 40px; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__calculator--2jZGt { padding: 32px 0px; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__input--3PNsV input[type="text"] { font-size: 1rem; line-height: 1.5; font-family: inherit; width: 100%; border: 1px solid gray; border-radius: 4px; padding: 0.5rem; color: rgb(0, 0, 0); transition: box-shadow 0.15s ease-out 0s, border-color 0.15s ease-out 0s; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__flightRoute--2GhdZ p { margin: 0px; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__breatheInAndOut--1gSq_ { margin-bottom: 40px; margin-top: 40px; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__breathe--1j57H { margin-bottom: 40px; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__disclaimerContainer--1wORf:not(:empty) { margin-bottom: 32px; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__disclaimerContainer--1wORf .app-containers-BaggageCalculator-Forms-MyFlights-styles__disclaimer--1vhbr { margin-top: 0px; }
+
+.app-containers-BaggageCalculator-Forms-MyFlights-styles__disclaimerContainer--1wORf .app-containers-BaggageCalculator-Forms-MyFlights-styles__disclaimer--1vhbr:last-child { margin-bottom: 0px; }

@@ -1,0 +1,87 @@
+@charset "utf-8";
+
+#showAccountModal .modal-dialog .modal-content .header-account-body .header-account-links .header-item-container .modal-item:nth-of-type(3) { display: none; }
+
+.modal-dialog.in-store-inventory-dialog.store-invetory-dialog-redesign .form-group select.form-control { padding: 1rem; }
+
+@media (min-width: 1024px) {
+  .card-bg-container.pur-product-line-item .item-qty-price { padding-left: 0px; }
+}
+
+.product-detail-redesign .primary-images .primary-images-row { height: 100%; margin: 0px; display: none; }
+
+.product-detail-redesign #product-questions-accordion #BVQAContainer .bv-action-bar-header { display: none !important; }
+
+.console-landing-hero-banner.updated-console-landing-hero-banner { max-width: 1280px; margin: 0px auto; width: 100%; }
+
+@media (max-width: 736px) {
+  .trade-product-details .thumbs .product-carousel .slide { display: block; }
+}
+
+@media (max-width: 767.98px) {
+  .page-designer.home-page-redesign .product-tile .price .badge-container-redesign.multiline-badge { height: auto; }
+}
+
+.amplience-carousel picture { display: block !important; }
+
+.nav.level-1 .nav-link.l1 { text-transform: none; }
+
+.multilevel-dropdown .dropdown-item .dropdown-link { display: block; padding: 0.425em 0px; text-transform: none; }
+
+.navbar.navigation-redesign .dropdown-item.top-category .back a { font-size: 0.875rem; text-transform: none; }
+
+.navbar.navigation-redesign .dropdown-item.top-category .view-link-mobile { padding: 10px 0px 0px 16px; font-weight: 400; text-transform: none; }
+
+.navbar.navigation-redesign .other-nav-item .nav-link .extra.user-message { text-transform: none; }
+
+.badge.badge-accent-trade-in-required { background-color: rgb(238, 49, 36); color: white; }
+
+.badge.badge-accent-pro-early-access { background-color: rgb(238, 49, 36); color: white; }
+
+.navbar.navigation-redesign .hamburger-list .hamburger-list-item span { text-transform: none; }
+
+.navbar.navigation-redesign .nav.level-1 .nav-item .nav-link.l1 .category-name[data-catname1="Deals"] { color: red; }
+
+.redesign-atcmodal #addedToCartModal .recommendations.recommendations-redesign .product-tile .default-pricing .price .selling-price-redesign .strike-through.strike-redesign .value { color: inherit; font-size: inherit; }
+
+.redesign-atcmodal #addedToCartModal .modal-content .top.redesign-top .product-line-item .line-item-product-quantity .line-item-total-price > strong > div .price .value { color: inherit; }
+
+.in-grid-slot .category-grid-slot.grid-theme-light, .in-grid-slot .category-grid-slot.grid-theme-light .content-container, .in-grid-slot .category-grid-slot.grid-theme-light .content-container > .row { height: 100%; }
+
+.in-grid-slot .category-grid-slot.grid-theme-light .block-content-inner { color: rgb(255, 255, 255); }
+
+.search-results.redesign-plp .refinement-availability + .refinement-availability .card-header { display: none !important; }
+
+.last-visited-redesign .grid-tile .product-tile .conditions-pricing-on-plp .variant-type, .recommendations.recommendations-redesign span.variant-type { text-decoration: none !important; }
+
+.product-detail-redesign .size .size-attribute .select-size.custom-select.form-control { margin-bottom: 12px; }
+
+.trade-detail-top-section .primary-details { flex: 0 0 100%; max-width: 100%; position: relative; width: 100%; padding-right: 12px; padding-left: 12px; }
+
+@media screen and (min-width: 576px) {
+  .trade-detail-top-section .primary-details { flex: 0 0 100%; max-width: 100%; }
+}
+
+@media screen and (min-width: 768px) {
+  .trade-detail-top-section .primary-details { flex: 0 0 41.6667%; max-width: 41.6667%; }
+}
+
+@media screen and (min-width: 1024px) {
+  .trade-detail-top-section .primary-details { flex: 0 0 33.3333%; max-width: 33.3333%; }
+}
+
+.trade-detail-top-section .primary-images { flex: 0 0 100%; max-width: 100%; position: relative; width: 100%; padding-right: 12px; padding-left: 12px; }
+
+@media screen and (min-width: 576px) {
+  .trade-detail-top-section .primary-images { flex: 0 0 100%; max-width: 100%; }
+}
+
+@media screen and (min-width: 768px) {
+  .trade-detail-top-section .primary-images { flex: 0 0 58.3333%; max-width: 58.3333%; }
+}
+
+@media screen and (min-width: 1024px) {
+  .trade-detail-top-section .primary-images { flex: 0 0 66.6667%; max-width: 66.6667%; }
+}
+
+.trade-detail-top-section .thumbs .primary-images-row { justify-content: end; }

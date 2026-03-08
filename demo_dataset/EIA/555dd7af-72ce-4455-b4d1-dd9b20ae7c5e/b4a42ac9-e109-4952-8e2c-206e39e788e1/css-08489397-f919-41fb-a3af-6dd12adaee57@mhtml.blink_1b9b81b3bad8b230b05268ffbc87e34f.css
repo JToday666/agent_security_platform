@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+[_nghost-nke-c93] { display: flex; flex-direction: column; }
+
+[disabled][_nghost-nke-c93] { opacity: 0.5; }
+
+label[_ngcontent-nke-c93] { color: var(--standard-grey, #6c7079); order: 1; padding-bottom: 0.25rem; }
+
+._input-container[_ngcontent-nke-c93] { margin-bottom: 0.25rem; max-width: 100%; order: 2; position: relative; }
+
+input[_ngcontent-nke-c93] { appearance: none; border: 0.0625rem solid var(--light-grey, #c3c7cc); border-radius: 0.25rem; color: var(--very-dark-grey, #2e2e2e); flex-grow: 1; font-family: inherit; height: 2.5rem; padding: 0.875rem 0.5rem 0.75rem; vertical-align: bottom; width: 100%; }
+
+input[_ngcontent-nke-c93]:focus { border-color: var(--light-blue, #166bc8); }
+
+input[_ngcontent-nke-c93]:focus + label[_ngcontent-nke-c93] { color: var(--light-blue, #166bc8); }
+
+input.date-placeholder[_ngcontent-nke-c93] { color: var(--standard-grey, #6c7079); }
+
+input.invisible-background[_ngcontent-nke-c93] { background: 0px 0px; }
+
+._icon[_ngcontent-nke-c93]:not(:empty) { position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); }
+
+._icon[_ngcontent-nke-c93]:not(:empty) + input[_ngcontent-nke-c93] { padding-right: 2.5rem; }
+
+input[type="date"][_ngcontent-nke-c93]::-webkit-calendar-picker-indicator { display: none; }
+
+span[_ngcontent-nke-c93] { display: none; }
+
+span._helper[_ngcontent-nke-c93] { color: var(--standard-grey, #6c7079); display: initial; order: 3; }
+
+span._error[_ngcontent-nke-c93] { order: 4; }
+
+.ng-invalid[_nghost-nke-c93] ._error[_ngcontent-nke-c93] { border-color: var(--error-red, #cf2e1d); color: var(--error-red, #cf2e1d); }
+
+.ng-invalid[_nghost-nke-c93] span._error[_ngcontent-nke-c93] { display: block; }

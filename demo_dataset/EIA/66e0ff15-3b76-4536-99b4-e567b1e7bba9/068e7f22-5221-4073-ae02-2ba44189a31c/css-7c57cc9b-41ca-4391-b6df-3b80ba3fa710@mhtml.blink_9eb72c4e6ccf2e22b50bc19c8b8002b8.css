@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+#__tealiumImplicitmodal { display: none; }
+
+@media (min-width: 768px) {
+  .implicit_privacy_prompt.implicit_consent { position: fixed; width: 75%; left: 50%; text-align: left; background-color: rgb(247, 246, 245); font-size: 1.3rem; z-index: 99998; font-family: Tahoma, helvetica, arial, sans-serif; color: rgb(36, 36, 36); border: 1px solid rgb(117, 117, 117); transform: translate(-50%, 0px); bottom: 0px; max-width: 1400px; box-shadow: rgba(0, 0, 0, 0.333) 0px 0px 15px; }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .implicit_privacy_prompt.implicit_consent { position: fixed; width: 100%; left: 0%; text-align: left; background-color: rgb(247, 246, 245); font-size: 1.3rem; z-index: 99998; font-family: Tahoma, helvetica, arial, sans-serif; color: rgb(36, 36, 36); border: 1px solid rgb(117, 117, 117); transform: none; bottom: 0px; max-width: 1400px; box-shadow: rgba(0, 0, 0, 0.333) 0px 0px 15px; }
+}
+
+.ups-readerTxt { clip: rect(1px, 1px, 1px, 1px); overflow: hidden; position: absolute !important; padding: 0px !important; border: 0px !important; height: 1px !important; width: 1px !important; }
+
+.__tealiumPrivacyBackdrop { display: block !important; }
+
+.implicit_privacy_prompt.implicit_consent .implicit_privacy_prompt_content { width: 100%; max-width: 85%; margin: 0px auto; padding: 10px; font-size: 14px; position: relative; }
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .implicit_privacy_prompt.implicit_consent .implicit_privacy_prompt_content { max-width: 100%; padding: 15px; }
+}
+
+.implicit_privacy_prompt.implicit_consent .implicit_consent_title { font-size: 1.1em; font-weight: bold; line-height: 1.25; margin: 0px; }
+
+.implicit_privacy_prompt.implicit_consent .implicit_consent__inner { display: table; width: 100%; }
+
+.implicit_privacy_prompt.implicit_consent .implicit_consent__inner-left, .implicit_privacy_prompt.implicit_consent .implicit_consent__inner-right { display: table-cell; }
+
+.implicit_privacy_prompt.implicit_consent .implicit_consent__inner-left p { margin: 0px 0px 10px; font-size: 14px; line-height: 1.25; }
+
+.implicit_privacy_prompt.implicit_consent .implicit_consent__inner-left a, .implicit_privacy_prompt.implicit_consent .implicit_consent__inner-right a { text-decoration: underline; color: rgb(66, 109, 169); }
+
+.implicit_privacy_prompt.implicit_consent .implicit_consent__inner-right { width: 100px; padding-left: 0.5rem; text-align: center; vertical-align: middle; }
+
+.implicit_privacy_prompt #implicit_consent_prompt_submit:hover { transition: background-color 0.2s ease 0s; background-color: rgb(1, 104, 98); }
+
+#__tealiumImplicitmodal .implicit_privacy_prompt > .close_btn_thick { position: absolute; display: block; top: 13px; right: 10px; text-decoration: none; text-shadow: none; color: rgb(74, 74, 74); font-size: 13px; line-height: 100%; font-weight: bold; cursor: pointer; background: none; padding-left: 5px; padding-right: 5px; border: 0px solid rgb(0, 0, 0); z-index: 99; }

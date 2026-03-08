@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.css-1ojibjr { padding-inline-start: var(--chakra-space-4); padding-inline-end: var(--chakra-space-4); margin-inline: auto; max-width: var(--chakra-sizes-container-base); position: relative; }
+
+@media screen and (min-width: 48rem) {
+  .css-1ojibjr { max-width: var(--chakra-sizes-container-tablet); }
+}
+
+@media screen and (min-width: 64rem) {
+  .css-1ojibjr { max-width: var(--chakra-sizes-container-desktop); }
+}

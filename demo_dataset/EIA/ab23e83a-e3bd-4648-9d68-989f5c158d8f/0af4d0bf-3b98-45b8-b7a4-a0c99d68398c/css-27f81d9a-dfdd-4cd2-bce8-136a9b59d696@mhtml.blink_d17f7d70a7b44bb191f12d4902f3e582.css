@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+.app-components-Accordion-AccordionSection-accordionSection__wrapper--3nBnH.app-components-Accordion-AccordionSection-accordionSection__link--1bovm .app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_ { min-height: 0px; color: rgb(33, 114, 186); height: 20px; }
+
+.app-components-Accordion-AccordionSection-accordionSection__wrapper--3nBnH.app-components-Accordion-AccordionSection-accordionSection__link--1bovm .app-components-Accordion-AccordionSection-accordionSection__accordionPanel--2Umv8 { margin: 20px 0px; }
+
+.app-components-Accordion-AccordionSection-accordionSection__wrapper--3nBnH.app-components-Accordion-AccordionSection-accordionSection__link--1bovm.app-components-Accordion-AccordionSection-accordionSection__shrink--1_9nQ .app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_ { width: auto; font-size: 12px; padding: 0px; }
+
+.app-components-Accordion-AccordionSection-accordionSection__wrapper--3nBnH.app-components-Accordion-AccordionSection-accordionSection__link--1bovm.app-components-Accordion-AccordionSection-accordionSection__shrink--1_9nQ .app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_ > img { width: 12px; margin-left: 10px; }
+
+.app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_ { background: none; border: 0px; color: rgb(0, 34, 68); display: flex; justify-content: space-between; align-items: center; font-size: 20px; min-height: 64px; padding: 0px 10px; width: 100%; }
+
+.app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_ .app-components-Accordion-AccordionSection-accordionSection__accordionTitle--1_d-b { width: 100%; text-align: left; pointer-events: none; }
+
+.app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_ .app-components-Accordion-AccordionSection-accordionSection__arrow--3N8CJ { transition: transform 0.3s ease 0s; }
+
+.app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_ .app-components-Accordion-AccordionSection-accordionSection__arrow--3N8CJ.app-components-Accordion-AccordionSection-accordionSection__noVisible--3uWTh { visibility: hidden; }
+
+.app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_ .app-components-Accordion-AccordionSection-accordionSection__arrow--3N8CJ.app-components-Accordion-AccordionSection-accordionSection__smallArrow--3oMKn { width: 16px; }
+
+.app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_[aria-expanded="true"] .app-components-Accordion-AccordionSection-accordionSection__arrow--3N8CJ { transform: rotateX(180deg); }
+
+.app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_.app-components-Accordion-AccordionSection-accordionSection__updatedStyles--2F-KD { padding: 0px 30px; font-size: 16px; }
+
+@media (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .app-components-Accordion-AccordionSection-accordionSection__accordionTrigger--1oNZ_::after { content: ""; min-height: inherit; font-size: 0px; }
+}
+
+.app-components-Accordion-AccordionSection-accordionSection__noContent--gP2CV { cursor: inherit; }
+
+.app-components-Accordion-AccordionSection-accordionSection__accordionPanel--2Umv8 { margin-left: 0px; }
+
+.app-components-Accordion-AccordionSection-accordionSection__accordionPanel--2Umv8[hidden] { display: none; }
+
+.app-components-Accordion-AccordionSection-accordionSection__loadingContainer--1HSWn { height: 200px; display: flex; justify-content: center; align-items: center; }
+
+@media screen and (min-width: 720px) {
+  .app-components-Accordion-AccordionSection-accordionSection__wrapper--3nBnH .app-components-Accordion-AccordionSection-accordionSection__accordionPanel--2Umv8 { margin-left: 10px; }
+  .app-components-Accordion-AccordionSection-accordionSection__wrapper--3nBnH .app-components-Accordion-AccordionSection-accordionSection__isMarginDisabled--3e-0i { margin-left: 0px; }
+}
+
+.app-components-Accordion-AccordionSection-accordionSection__updatedTitle--jzCw4 { font-size: 20px; font-weight: 300; line-height: 1.6; color: rgb(0, 0, 0); }

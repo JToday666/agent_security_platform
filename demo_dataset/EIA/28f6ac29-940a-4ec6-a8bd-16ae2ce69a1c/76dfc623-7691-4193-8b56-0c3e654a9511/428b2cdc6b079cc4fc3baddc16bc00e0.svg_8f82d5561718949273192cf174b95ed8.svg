@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>exclamation icon</title>
+    <desc></desc>
+    <defs>
+        <polygon id="path-1" points="8.00005 0 16 0 16 16 8.00005 16 0.0001 16 0.0001 0"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="35-Content---our-fleet-Copy" transform="translate(-1104.000000, -214.000000)">
+            <g id="exclamation-icon" transform="translate(1104.000000, 214.000000)">
+                <g id="Group-3">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M8.0006,15 C4.1401,15 1.0001,11.859 1.0001,7.999 C1.0001,4.1395 4.1401,1 8.0006,1 C11.8601,1 15.0001,4.1395 15.0001,7.999 C15.0001,11.859 11.8601,15 8.0006,15 M8.0006,16 C12.4186,16 16.0001,12.417 16.0001,7.999 C16.0001,3.5805 12.4186,0 8.0006,0 C3.5826,0 0.0001,3.5805 0.0001,7.999 C0.0001,12.417 3.5826,16 8.0006,16" id="Fill-1" stroke="#FFFFFF" stroke-width="0.5" fill="#FFFFFF" mask="url(#mask-2)"></path>
+                </g>
+                <path d="M7,12 C7,11.4481766 7.44817658,11 8,11 C8.55182342,11 9,11.4481766 9,12 C9,12.5518234 8.55182342,13 8,13 C7.44817658,13 7,12.5518234 7,12 Z M7,9.5 L8.5,9.5 L8.5,3.5 L7,3.5 L7,9.5 Z" id="Fill-4" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>
+

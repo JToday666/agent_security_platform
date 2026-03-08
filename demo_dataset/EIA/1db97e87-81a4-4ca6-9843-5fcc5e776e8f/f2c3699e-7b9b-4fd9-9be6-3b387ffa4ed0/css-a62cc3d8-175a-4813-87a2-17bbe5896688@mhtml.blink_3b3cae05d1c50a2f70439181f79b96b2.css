@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+@media (min-width: 1200px) {
+  .body--scroll-lock-lg { overflow: initial; position: initial; }
+  .search-container--break-lg { position: relative; background: transparent; z-index: inherit; transition: none 0s ease 0s; }
+  .search-container--break-lg.search-container--closed .search-controls__autosuggester:nth-of-type(2) { opacity: 1; visibility: visible; position: relative; width: auto; height: auto; margin: 0px; overflow: visible; clip: initial; }
+  .search-container--break-lg .search-container__search-controls { grid-template-columns: 1fr 1fr auto; column-gap: 0.5rem; align-items: end; background: transparent; padding: 0px; transition: none 0s ease 0s; }
+  .search-container--break-lg .autosuggester { position: relative; }
+  .search-container--break-lg .autosuggester .--layout-top-label { grid-template-rows: auto auto; }
+  .search-container--break-lg .autosuggester__suggestions { max-height: 35vh; height: inherit; border: 1px solid rgb(227, 227, 227); }
+  .search-container--break-lg .search-input-group__search-label { font-size: inherit; }
+  .search-container--break-lg .search-input-group__search-input.--size-md { height: 2.5em; }
+  .search-container--break-lg .search-input-group__search-input.--size-lg { height: 3.5em; }
+  .search-container--break-lg .search-controls__autosuggester { margin: 0px; }
+  .search-container--break-lg .search-controls__search-control-btns { position: relative; align-items: flex-end; padding: 0px; }
+  .search-container--break-lg .search-controls__mobile-click-target { display: none; }
+  .search-container--break-lg .search-control-btns__close-search { display: none; }
+  .search-container--break-lg .search-control-btns__search-btn { flex: 1 1 0%; margin-top: 0px; font-size: 1rem; }
+  .search-container--break-lg .search-control-btns__search-btn.--size-md { height: 2.5em; padding-left: 1.25em; padding-right: 1.25em; }
+  .search-container--break-lg .search-control-btns__search-btn.--size-lg { height: 3.5em; padding-left: 2em; padding-right: 2em; }
+}

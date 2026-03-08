@@ -1,0 +1,96 @@
+@charset "utf-8";
+
+.toolbar__title { line-height: 20pt; font-size: 1.3em; margin-top: 20px; white-space: break-spaces; color: rgb(255, 255, 255) !important; }
+
+.btn__content::before { background-color: transparent !important; }
+
+.message-bot .message-bubble { background-color: rgb(240, 241, 244) !important; }
+
+.message-human .message-bubble { background-color: rgb(244, 250, 250) !important; }
+
+.message-text { color: rgb(7, 20, 44); width: 100%; }
+
+.card__actions .btn { margin: 4px !important; font-size: 1em !important; min-width: 44px !important; }
+
+.card__actions .btn:hover { background-color: rgb(213, 233, 233) !important; }
+
+.card__actions .btn:focus { background-color: rgb(213, 233, 233) !important; }
+
+.btn.btn--outline { border: 0.125rem solid rgb(8, 111, 114); background-color: rgb(255, 255, 255) !important; color: rgb(8, 111, 114) !important; }
+
+.btn.btn--disabled { pointer-events: none; background-color: rgb(240, 241, 244); color: rgb(86, 92, 113); border: rgb(240, 241, 244); box-shadow: none !important; }
+
+button.min-button { font-size: 20px; font-weight: 700; border-radius: 60px; text-transform: none; }
+
+.message-button { display: none; }
+
+.toolbar.toolbar--dense.white { margin-left: 10px; margin-right: 10px; margin-bottom: 10px; border-radius: 5px; background-color: rgb(255, 255, 255) !important; border-color: rgb(255, 255, 255) !important; }
+
+.theme--dark .toolbar, .application .theme--dark.toolbar { height: 66px; }
+
+@media only screen and (min-width: 241px) and (max-width: 480px) {
+  .toolbar__title { line-height: 20pt; font-size: 1em; margin-top: 25px; white-space: break-spaces; color: rgb(255, 255, 255) !important; }
+  .toolbar .toolbar__content > .btn:last-child, .toolbar .toolbar__extension > .btn:last-child { margin-top: 25px; }
+}
+
+.toolbar__content > .btn:last-child, .toolbar__extension > .btn:last-child, .toolbar__content > .menu:first-child, .toolbar__extension > .menu:first-child { margin-top: 25px; }
+
+@media only screen and (max-width: 280px) {
+  .toolbar__title { line-height: 15pt; font-size: 0.9em; margin-top: 25px; white-space: break-spaces; color: rgb(255, 255, 255) !important; }
+  .toolbar .toolbar__content > .btn:last-child, .toolbar .toolbar__extension > .btn:last-child { margin-top: 25px; }
+  .theme--dark .btn:not(.btn--icon):not(.btn--flat), .application .theme--dark.btn:not(.btn--icon):not(.btn--flat) { height: auto; width: 300px; right: 0.05px; line-height: 12pt; }
+}
+
+@media only screen and (max-width: 320px) {
+  .message-list-container.toolbar-height-md { height: calc(100% - 160px) !important; }
+}
+
+a.help-link { text-align: center; display: flex; cursor: pointer; margin-bottom: 10px; margin-left: 10px; margin-right: 10px; justify-content: center; color: rgb(0, 95, 204) !important; }
+
+.message-list-container.toolbar-height-md { top: 48px; height: calc(100% - 140px); }
+
+.message-list-container.toolbar-height-sm { top: 48px; height: calc(100% - 140px); }
+
+.message-list-container.toolbar-height-lg { top: 48px; height: calc(100% - 140px); }
+
+.fas.fa-paper-plane { font-size: 20px; margin-top: 1em; }
+
+.micClass { color: rgb(8, 111, 114) !important; }
+
+.micmuted { display: none; }
+
+.micClass:active { background-color: rgb(8, 111, 114) !important; }
+
+.fas.fa-comments { font-size: 25px; }
+
+.theme--dark .btn:not(.btn--icon):not(.btn--flat), .application .theme--dark.btn:not(.btn--icon):not(.btn--flat) { height: auto; width: fit-content; max-width: 292px; right: 0.05px; }
+
+.btn__content { justify-content: center; width: fit-content; white-space: break-spaces; }
+
+@media print {
+  .noprint { display: none; }
+}
+
+#lex-web > div.application--wrap > div:nth-child(4) > div > nav > div > button { margin-bottom: 25px; }
+
+.secondary-css-chatbot:hover { background-color: rgb(255, 255, 255) !important; color: rgb(255, 85, 66) !important; border: 0.125rem solid rgb(255, 85, 66) !important; }
+
+.secondary-css-chatbot:focus { background-color: rgb(255, 255, 255) !important; color: rgb(255, 85, 66) !important; border: 0.125rem solid rgb(255, 85, 66) !important; }
+
+.secondary-css-chatbot:active { background-color: rgb(153, 15, 0) !important; color: rgb(255, 255, 255) !important; border: 0.125rem solid rgb(255, 255, 255) !important; }
+
+button.min-max-toggle.btn.btn--icon:hover { background-color: rgb(255, 255, 255) !important; color: rgb(255, 85, 66) !important; border: 0.125rem solid rgb(255, 85, 66) !important; }
+
+button.min-max-toggle.btn.btn--icon:focus { background-color: rgb(255, 255, 255) !important; color: rgb(255, 85, 66) !important; border: 0.125rem solid rgb(255, 85, 66) !important; }
+
+button.min-max-toggle.btn.btn--icon:active { background-color: rgb(153, 15, 0) !important; color: rgb(255, 255, 255) !important; border: 0.125rem solid rgb(255, 255, 255) !important; }
+
+.theme--light .input-group:not(.input-group--error) .input-group__details::before, .application .theme--light.input-group:not(.input-group--error) .input-group__details::before { background-color: rgba(0, 0, 0, 0.42) !important; }
+
+button.icon-color.input-button.btn.btn--icon:hover { background-color: rgb(239, 239, 239) !important; }
+
+button.icon-color.input-button.btn.btn--icon:focus { background-color: rgb(239, 239, 239) !important; }
+
+.mic.btn.btn--icon { background-color: rgb(8, 111, 114) !important; color: rgb(255, 255, 255) !important; }
+
+.mic.btn.btn--icon:hover { color: rgb(8, 111, 114) !important; background-color: rgb(255, 255, 255) !important; }

@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.css-a1yx53 { display: inline-flex; appearance: none; -webkit-box-align: center; align-items: center; -webkit-box-pack: center; justify-content: center; user-select: none; position: relative; white-space: nowrap; vertical-align: middle; outline: transparent solid 2px; outline-offset: 2px; width: auto; line-height: 1; border-radius: unset; font-weight: var(--chakra-fontWeights-semibold); transition-property: var(--chakra-transition-property-common); transition-duration: var(--chakra-transition-duration-normal); padding-inline-start: var(--chakra-space-8); padding-inline-end: var(--chakra-space-8); font-size: var(--chakra-fontSizes-base); font-family: var(--chakra-fonts-body); border-style: solid; text-transform: capitalize; background: none; color: var(--chakra-colors-primary-default); height: unset; margin: unset; min-width: unset; padding: unset; }
+
+.css-a1yx53:focus, .css-a1yx53[data-focus] { box-shadow: var(--chakra-shadows-outline); z-index: 1; }
+
+.css-a1yx53[disabled], .css-a1yx53[aria-disabled="true"], .css-a1yx53[data-disabled] { opacity: 1; cursor: not-allowed; box-shadow: var(--chakra-shadows-none); background: none; border-color: var(--chakra-colors-gray-medium); color: var(--chakra-colors-gray-dark); }
+
+.css-a1yx53:hover, .css-a1yx53[data-hover] { color: var(--chakra-colors-primary-600); }
+
+.css-a1yx53:hover[disabled], .css-a1yx53[data-hover][disabled], .css-a1yx53:hover[aria-disabled="true"], .css-a1yx53[data-hover][aria-disabled="true"], .css-a1yx53:hover[data-disabled], .css-a1yx53[data-hover][data-disabled] { background: initial; color: var(--chakra-colors-gray-dark); }
+
+.css-a1yx53 svg { display: block; }

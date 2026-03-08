@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+.smb-uikit__dropdown-menu-trigger { box-sizing: border-box; display: inline-flex; width: 100%; position: relative; }
+
+.smb-uikit__dropdown-menu-trigger > * { box-sizing: border-box; }
+
+.smb-uikit__dropdown-menu-trigger.smb-uikit__has-icon .smb-uikit__dropdown-menu-trigger__element { padding-right: 2rem; }
+
+.smb-uikit__dropdown-menu-trigger.smb-uikit__has-error .smb-uikit__dropdown-menu-trigger__element { border-color: rgb(244, 88, 76); }
+
+.smb-uikit__dropdown-menu-trigger__element { border: 0px; cursor: pointer; display: flex; flex-direction: row; font-size: 0.875rem; height: 2.25rem; letter-spacing: 0.025rem; max-width: 100%; min-height: 2.25rem; padding: 0.5rem 0.75rem; transition: all 0.25s ease 0s; box-sizing: border-box; color: rgb(53, 81, 100); flex: 1 1 0%; width: 100%; }
+
+.smb-uikit__dropdown-menu-trigger__element:hover { background-color: rgb(241, 246, 251); }
+
+.smb-uikit__dropdown-menu-trigger__element:focus { outline-offset: 0px; }
+
+.smb-uikit__dropdown-menu-trigger__element:disabled { color: rgb(195, 204, 212); cursor: not-allowed; }
+
+.smb-uikit__dropdown-menu-trigger__element::placeholder { color: rgb(207, 217, 225); }
+
+.smb-uikit__dropdown-menu-trigger__element:focus { outline: none; }
+
+.smb-uikit__dropdown-menu-trigger__element:disabled { cursor: not-allowed; color: rgb(195, 204, 212) !important; }
+
+.smb-uikit__dropdown-menu-trigger__icon { position: absolute; top: 50%; transform: translateY(-50%); height: 1rem; right: 0.5rem; }
+
+.smb-uikit__dropdown-menu-trigger__element[trigger-type="default"] { box-shadow: rgba(179, 190, 206, 0.2) 0px 2px 2px 0px; border: 2px solid rgb(208, 217, 228); color: rgb(86, 105, 134); border-radius: 3px; }
+
+.smb-uikit__dropdown-menu-trigger__element[trigger-type="default"]:hover { border: 2px solid rgb(165, 180, 199); background-color: rgb(255, 255, 255); }
+
+.smb-uikit__dropdown-menu-trigger__element[trigger-type="default"]:focus, .smb-uikit__dropdown-menu-trigger__element[trigger-type="default"]:active { box-shadow: rgb(159, 178, 200) 0px 1px 4px 0px inset; }
+
+.smb-uikit__dropdown-menu-trigger__element[trigger-type="ghost"] { border-bottom: 2px dotted rgb(208, 217, 228); border-image: initial; color: rgb(24, 164, 252); border-top: none transparent; border-left: none transparent; border-right: none transparent; margin-right: 2px; margin-left: 2px; background-color: transparent; }
+
+.smb-uikit__dropdown-menu-trigger__element + .smb-uikit__dropdown-menu-trigger__icon { color: rgb(86, 105, 134); }

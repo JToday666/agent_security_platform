@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.smb-uikit__status-notification { color: rgb(255, 255, 255); display: flex; min-height: 35px; height: 35px; flex: 1 1 0%; position: relative; }
+
+.smb-uikit__status-notification[notification-fixed="true"] { left: 0px; right: 0px; top: 0px; z-index: 900; position: fixed; }
+
+.smb-uikit__status-notification[notification-label="general"] { background-color: rgb(24, 164, 252); }
+
+.smb-uikit__status-notification[notification-label="confirmation"] { background-color: rgb(8, 182, 4); }
+
+.smb-uikit__status-notification[notification-label="error"] { background-color: rgb(236, 77, 60); }
+
+.smb-uikit__status-notification__message-container { align-items: center; display: flex; justify-content: center; text-align: center; width: 100%; padding: 0px 1rem; }
+
+.smb-uikit__status-notification__message { margin: 0px; font-size: 0.8rem; font-weight: 600; }
+
+.smb-uikit__status-notification__message-icon { margin-right: 0.5rem; }
+
+.smb-uikit__status-notification__dismiss { border: 0px; border-radius: 0px; margin: 0px; padding: 0px; right: 0px; position: absolute; height: 100%; min-width: 2.75rem; display: flex; align-items: center; justify-content: center; }
+
+.smb-uikit__status-notification__dismiss-action { background-color: rgba(0, 0, 0, 0.1); cursor: pointer; height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; }

@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.ib-booking-app__main .ib_booking_app_for { margin-top: 10%; }
+
+.ib-booking-app__main .ib-booking_footer-fixed { height: 44px; width: 100%; position: fixed; bottom: 0px; z-index: 2; background: rgb(250, 250, 250); }
+
+.ib-booking-app__main .ib-booking_patient-portal-button { height: 44px; line-height: 44px; font-size: 18px; text-align: center; cursor: pointer; min-width: 240px; padding: 0px 40px; color: rgb(255, 255, 255); font-weight: bold; letter-spacing: 0.075em; text-decoration: none; background: var(--ib-booking-app-primary-button-bg); box-shadow: var(--ib-booking-app-primary-button-shadow); position: absolute; right: 0px; display: inline-block; }
+
+.ib-booking-app__main .ib-booking_patient-portal-button:hover { background: var(--ib-booking-app-primary-button-hover-bg); }
+
+.ib-booking-app__main .ib-booking_patient-portal-button.ib-booking-disabled { color: rgb(255, 255, 255); opacity: 0.5; }

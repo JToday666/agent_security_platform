@@ -1,0 +1,3 @@
+@charset "utf-8";
+
+.fusejs [data-fuse] { opacity: 0; }

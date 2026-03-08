@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+.css-n134z4 { box-sizing: border-box; padding: 0px 8px; }
+
+@media (min-width: 564px) {
+  .css-n134z4 { padding: 0px 12px; }
+}
+
+@media (max-width: 563px) {
+  .css-n134z4 { flex-basis: 100%; max-width: 100%; }
+}
+
+@media (min-width: 564px) and (max-width: 767px) {
+  .css-n134z4 { flex-basis: 100%; max-width: 100%; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .css-n134z4 { flex-basis: 25%; max-width: 25%; }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .css-n134z4 { flex-basis: 25.8333%; max-width: 25.8333%; }
+}
+
+@media (min-width: 1280px) {
+  .css-n134z4 { flex-basis: 25.8333%; max-width: 25.8333%; }
+}

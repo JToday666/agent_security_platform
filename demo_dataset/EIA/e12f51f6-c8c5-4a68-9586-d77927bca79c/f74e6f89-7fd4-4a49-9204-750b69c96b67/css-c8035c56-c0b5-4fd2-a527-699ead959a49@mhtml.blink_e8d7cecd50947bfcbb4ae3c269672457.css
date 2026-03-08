@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.payment-method-summary { display: flex; flex-direction: column; }
+
+.payment-method-summary .summary-contents { align-items: center; display: flex; }
+
+.payment-method-summary .summary-contents .card-icon { border-radius: 3px; height: 20px; margin-inline-end: 8px; width: 30px; }

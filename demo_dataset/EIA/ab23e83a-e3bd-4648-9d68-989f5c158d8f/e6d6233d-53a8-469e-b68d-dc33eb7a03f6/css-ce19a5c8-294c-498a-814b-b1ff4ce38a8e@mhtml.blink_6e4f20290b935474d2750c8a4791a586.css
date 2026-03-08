@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+.app-containers-NewWebsiteSearch-components-CoveoSearch-styles__searchContainer--3bdLp { position: relative; }
+
+@media screen and (min-width: 944px) {
+  .app-containers-NewWebsiteSearch-components-CoveoSearch-styles__searchContainer--3bdLp .app-containers-NewWebsiteSearch-components-CoveoSearch-styles__searchLabel--2Ty_Q { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+}
+
+.app-containers-NewWebsiteSearch-components-CoveoSearch-styles__mobileModalTrigger--3omj3 { padding: 12px 112px 12px 12px; font-size: 1rem; font-weight: 600; line-height: 1.5; margin: 0px; text-align: left; border: 1px solid rgb(102, 102, 102); }
+
+.app-containers-NewWebsiteSearch-components-CoveoSearch-styles__mobilePlaceholder--30Q_o { font-style: italic; color: rgb(153, 153, 153); }
+
+.app-containers-NewWebsiteSearch-components-CoveoSearch-styles__mobileContainer--2QC3j { display: flex; flex-direction: column; }
+
+.app-containers-NewWebsiteSearch-components-CoveoSearch-styles__coveoModal--jRM6N { align-items: stretch; z-index: 999997; }
+
+.app-containers-NewWebsiteSearch-components-CoveoSearch-styles__coveoModal--jRM6N > div { max-height: 100vh; max-width: 100%; width: 100%; }
+
+.app-containers-NewWebsiteSearch-components-CoveoSearch-styles__coveoModalContent--2nRBH { padding: 20px 0px; }

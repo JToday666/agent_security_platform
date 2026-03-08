@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+.paypal-animation-content-expanded { }
+
+#paypal-other-options > .arrow { border-style: solid; border-color: rgb(0, 99, 180); border-image: initial; border-width: 0px 1px 1px 0px; display: inline-block; padding: 4px; margin: 0px 0px 2px 2px; }
+
+#paypal-other-options { position: fixed; z-index: 1000; float: left; width: 100%; left: 0px; padding-top: 10px; font-family: PayPal-Sans, HelveticaNeue, sans-serif; font-weight: normal; font-style: normal; font-stretch: normal; line-height: normal; letter-spacing: normal; text-align: left; height: 20px; color: rgb(0, 99, 180); font-size: 13px; display: none; }
+
+.paypal-animation-container-expanded > #paypal-other-options { opacity: 0; display: none; }
+
+.paypal-animation-container-expanded > #paypal-other-options > .arrow { transform: rotate(-135deg); }
+
+.paypal-animation-container-collapsed > #paypal-other-options { opacity: 1; display: block; }
+
+.paypal-animation-container-collapsed > #paypal-other-options > .arrow { transform: rotate(45deg); }
+
+.paypal-animation-container-collapsed #cardExp { display: block; }
+
+.paypal-animation-container-expanded #cardExp { display: none; }
+
+.paypal-animation-container-collapsed > #paypal-other-options { opacity: 1; }
+
+.paypal-animation-container-expanded .spinner-wrapper { display: none; }
+
+.paypal-animation-container-collapsed .spinner-wrapper { display: block; }
+
+#cardExp .xcomponent-outlet { transition: all 0.7s ease-in-out 0s; }
+
+#cardExp { position: relative; width: 100%; height: 100%; overflow: hidden; top: 0px; left: 0px; margin: 0px; text-align: center; }
+
+.spinner { position: absolute; max-height: 60vmin; max-width: 60vmin; height: 40px; width: 40px; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%); z-index: 10; }
+
+.spinner .loader { height: 100%; width: 100%; box-sizing: border-box; border-width: 3px; border-style: solid; border-color: rgba(33, 128, 192, 0.8) rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2); border-image: initial; border-radius: 100%; animation: 0.7s linear 0s infinite normal none running rotation; }
+
+.paypal-button { transition: opacity 0.25s ease-in-out 0s; }
+
+.paypal-button .paypal-button-card { transition: opacity 0.25s ease-in-out 0s; }
+
+@keyframes rotation { 
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(359deg); }
+}
+
+#paypal-animation-content { transition: all 0.7s ease-in-out 0s; position: relative; }

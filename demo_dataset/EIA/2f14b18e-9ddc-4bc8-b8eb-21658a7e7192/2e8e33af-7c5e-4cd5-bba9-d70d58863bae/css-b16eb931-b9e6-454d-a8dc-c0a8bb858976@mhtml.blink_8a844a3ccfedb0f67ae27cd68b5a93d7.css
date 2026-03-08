@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.atm-c-advertisement { display: block; position: relative; cursor: pointer; }
+
+.atm-c-advertisement:focus { outline: rgb(98, 68, 187) solid 4px; }
+
+.atm-c-megamenu .atm-c-advertisement:focus { outline: rgb(179, 165, 223) solid 4px; }
+
+.atm-c-advertisement__img { display: block; }
+
+.atm-c-advertisement__icon { position: absolute; bottom: 0px; right: 0px; z-index: 1; background: rgb(0, 34, 68); fill: rgb(255, 255, 255); color: rgb(255, 255, 255); padding: 0.0625rem; opacity: 0; transition: opacity 0.15s ease-out 0s; }
+
+.atm-c-advertisement:hover .atm-c-advertisement__icon, .atm-c-advertisement:focus .atm-c-advertisement__icon { opacity: 1; }

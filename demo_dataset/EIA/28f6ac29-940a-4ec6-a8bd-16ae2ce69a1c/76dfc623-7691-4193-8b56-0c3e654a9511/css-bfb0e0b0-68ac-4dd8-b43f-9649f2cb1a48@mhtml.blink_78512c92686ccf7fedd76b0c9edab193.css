@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.app-components-CalloutMessage-styles__calloutBoxContainer--3hDqu { border: 1px solid rgb(204, 204, 204); border-radius: 5px; margin-bottom: 32px; margin-top: 32px; background: rgb(255, 255, 255); }
+
+.app-components-CalloutMessage-styles__calloutBoxWrapper--FpyYk { display: flex; flex-direction: row; border-left: 8px solid rgb(213, 0, 50); border-right: 8px solid rgb(255, 255, 255); border-radius: 5px; padding: 16px; }
+
+.app-components-CalloutMessage-styles__calloutContent---AkJQ { width: 100%; }
+
+.app-components-CalloutMessage-styles__calloutIcon--1X5Uv { margin-right: 16px; width: 24px; }
+
+.app-components-CalloutMessage-styles__title--Fwqa0 { font-size: 16px; margin: 0px 0px 8px; color: rgb(0, 0, 0); font-weight: bold; }
+
+.app-components-CalloutMessage-styles__icon--2rmLT { min-width: 24px; }

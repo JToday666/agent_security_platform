@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.css-9hxmak { grid-column: span 12 / span 12; }
+
+@media screen and (min-width: 64rem) {
+  .css-9hxmak { grid-column: 2 / span 10; }
+}

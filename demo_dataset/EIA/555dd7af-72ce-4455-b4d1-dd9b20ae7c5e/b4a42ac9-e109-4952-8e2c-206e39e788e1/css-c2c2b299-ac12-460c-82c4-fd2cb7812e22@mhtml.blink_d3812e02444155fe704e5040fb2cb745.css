@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+body.content--stretch[_nghost-men-c51], body.content--stretch [_nghost-men-c51] { display: flex; flex-direction: column; justify-items: stretch; }
+
+[_nghost-men-c51] { display: block; flex: 1 0 auto; }

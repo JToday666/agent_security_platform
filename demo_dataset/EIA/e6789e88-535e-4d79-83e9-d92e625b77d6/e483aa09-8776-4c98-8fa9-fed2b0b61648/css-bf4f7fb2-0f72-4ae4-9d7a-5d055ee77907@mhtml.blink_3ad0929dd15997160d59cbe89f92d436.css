@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+.find-trip-modal__header[_ngcontent-noc-c297] { min-height: 4.45rem; }
+
+.find-trip-modal__header--small[_ngcontent-noc-c297] { min-height: 4rem; }
+
+.find-trip-modal__back_icon[_ngcontent-noc-c297] { width: 0.9rem; height: 1.6rem; }
+
+.find-trip-modal[_ngcontent-noc-c297] .modal-header[_ngcontent-noc-c297] .find-trip-modal__close-btn.close[_ngcontent-noc-c297] { padding: 0.7rem 1.2rem; }
+
+.find-trip-modal__close-icon[_ngcontent-noc-c297] { width: 1.5rem; height: 1.5rem; }
+
+.cancel__title[_ngcontent-noc-c297] { font-size: 1.6rem; line-height: 2.2rem; }
+
+.cancel__desc[_ngcontent-noc-c297] { font-size: 1.4rem; line-height: 1.9rem; }
+
+.view-details__rp-reciept[_ngcontent-noc-c297] { margin-top: -2.5rem; }
+
+.view-details__title[_ngcontent-noc-c297] { font-size: 1.6rem; line-height: 2.2rem; }
+
+.view-details__receipt-copy-title[_ngcontent-noc-c297] { font-size: 1.4rem; line-height: 1.9rem; }
+
+.view-details__receipt-copy-text[_ngcontent-noc-c297] { font-size: 1.2rem; line-height: 1.6rem; letter-spacing: 0.33px; }
+
+.view-details__receipt-copy-text[_ngcontent-noc-c297] a { font-size: 1.2rem; line-height: 1.6rem; text-decoration: none; color: rgb(22, 127, 166); }
+
+.view-details__receipt-copy-text[_ngcontent-noc-c297] a:hover { text-decoration: underline; }
+
+@media (min-width: 768px) {
+  .cancel__title[_ngcontent-noc-c297] { font-size: 1.4rem; line-height: 1.9rem; }
+}
+
+.am-modal.modal-body--noscroll .modal-content { max-height: none; }
+
+.am-modal.modal-body--noscroll .modal-body { overflow-y: visible; }
+
+.trip-status-action-msg[_ngcontent-noc-c297] { color: rgb(0, 38, 72); font-size: 1.12rem; letter-spacing: 0px; line-height: 1.6rem; }
+
+@media (min-width: 768px) {
+  .am-modal .modal-content { max-height: 65rem; }
+}

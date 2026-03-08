@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+.atm-c-popupmodal_modal { position: absolute; box-sizing: border-box; z-index: 20; background-color: rgb(255, 255, 255); border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 5px; }
+
+@media (max-width: 47em) {
+  .atm-c-popupmodal_modal { overflow: hidden; pointer-events: auto; height: 100%; width: 100%; position: fixed; top: 0px !important; left: 0px !important; }
+}
+
+.atm-c-popupmodal_btn_container { z-index: 5; }
+
+.atm-c-popupmodal_container { box-sizing: border-box; }
+
+@media (max-width: 47em) {
+  .atm-c-popupmodal_container { position: relative; padding-top: 3.5rem; }
+}
+
+.atm-c-popupmodal_body { overflow: auto; box-sizing: border-box; }
+
+@media (max-width: 47em) {
+  .atm-c-popupmodal_body { height: calc(100vh - 3.5rem); width: 100vw; }
+  .atm-c-popupmodal_body::after { content: ""; display: block; height: 2rem; }
+}
+
+@media (max-width: 47em) {
+  .atm-popupmodal-body_disabled { overflow: hidden; }
+}

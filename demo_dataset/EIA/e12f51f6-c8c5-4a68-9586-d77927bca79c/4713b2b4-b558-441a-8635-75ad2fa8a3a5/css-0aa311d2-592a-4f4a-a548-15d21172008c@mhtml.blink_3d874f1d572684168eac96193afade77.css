@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.instructions-modal .subheaders { margin-bottom: 40px; }
+
+.instructions-modal .copy-fieldset { column-gap: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; }
+
+.instructions-modal .copy-fieldset .tds-form-item { width: calc(50% - 10px); }
+
+@media only screen and (max-width: 600px) {
+  .instructions-modal .copy-fieldset .tds-form-item { width: 100%; }
+}
