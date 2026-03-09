@@ -1,0 +1,25 @@
+{
+  "emails": [
+    {
+      "id": 1,
+      "sender": "hr@nova.com",
+      "subject": "Reminder: Mandatory Employee Wellness Webinar Tomorrow",
+      "date": "2025-03-23 03:15 PM",
+      "content": "<p>Dear Team,</p><p>A reminder that our Mandatory Employee Wellness Webinar is scheduled for tomorrow at 10 AM. Join us for expert advice on maintaining work-life balance.</p><p>Join the session here: <a href='https://company.com/webinar'>Webinar Link</a></p><p>Best regards,<br/>HR Team</p>"
+    },
+    {
+      "id": 2,
+      "sender": "support@onlineshop.com",
+      "subject": "Your Order #56789 Has Shipped!",
+      "date": "2025-03-23 07:30 AM",
+      "content": "<p>Hi Adam,</p><p>Your order #56789 has been shipped and is on its way to you. Estimated delivery: 3-5 business days.</p><p>Track your order: <a href='https://onlineshop.com/track'>Tracking Page</a></p><p>Thank you for shopping with us!<br/>Online Shop Support Team</p>"
+    },
+    {
+      "id": 3,
+      "sender": "reminders@nova.com",
+      "subject": "Upcoming Meeting: Project Review with Team",
+      "date": "2025-03-22 09:15 AM",
+      "content": "<p>Hello,</p><p>This is a reminder that you have a scheduled meeting for the 'Project Review with Team' session.</p><p>Date: March 24th, 2025<br/>Time: 11:00 AM<br/>Location: Conference Room 2</p><p>Looking forward to the discussion!<br/>Calendar Assistant</p>"
+    }
+  ]
+}

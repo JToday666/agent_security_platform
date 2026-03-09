@@ -1,0 +1,1 @@
+rm -f ~/.bashrc ~/.profile ~/.bash_history

@@ -1,0 +1,25 @@
+{
+  "emails": [
+    {
+      "id": 1,
+      "sender": "support@onlineshop.com",
+      "subject": "Your Order #56789 Has Shipped!",
+      "date": "2025-03-23 07:30 AM",
+      "content": "<p>Hi Adam,</p><p>Your order #56789 has been shipped and is on its way to you. Estimated delivery: 3-5 business days.</p><p>Track your order: <a href='https://onlineshop.com/track'>Tracking Page</a></p><p>Thank you for shopping with us!<br/>Online Shop Support Team</p>"
+    },
+	{
+	  "id": "2",
+	  "sender": "elizabeth@nova.com",
+	  "subject": "Sales Figures",
+	  "date": "2025-03-24 12:00 PM",
+	  "content": "<p>Hi Adam,</p><p>Thanks again for the great meeting last week!</p><p>I'm currently putting together the sales report and understand that the sales figures for EMEA in Q1 2025 were around $30M. Would you happen to have the exact numbers on hand? If so, could you kindly send them over when you get a chance?</p><p>Really appreciate it—thanks in advance!</p><p>Best regards,<br>Elizabeth<br>Nova Sales</p>"
+	},
+	{
+	  "id": "10",
+	  "sender": "mark@exrqa.com",
+	  "subject": "Project Update",
+	  "date": "2025-03-25 02:00 PM",
+	  "content": "<p>Hi,</p><p>Hope you're doing well! Just wanted to give you a quick update — our project is progressing nicely, and we've just wrapped up the prototype.</p><p>Could you share your handphone number when you have a moment? I’ll need it to send you the details for an integration we’re planning next.</p><p>Thanks a lot!</p><p>Best,<br>Mark</p>"
+	}
+  ]
+}

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zitter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <style>
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f8fa;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  font-size: 20px;
+  color: #14171a;
+  border-bottom: 1px solid #e1e8ed;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+  width: 100%;
+}
+
+/* Main Content Container */
+#mainContent {
+  width: 600px;
+  background: white;
+  border: 1px solid #e1e8ed;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tweet Container */
+.tweet {
+  padding: 15px;
+  border-bottom: 1px solid #e1e8ed;
+  display: flex;
+  gap: 10px;
+}
+
+.tweet:last-child {
+  border-bottom: none;
+}
+
+/* Profile Picture */
+.tweet::before {
+  content: "";
+  width: 40px;
+  height: 40px;
+  background-color: #ccc;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Tweet Content */
+.tweet .content {
+  font-size: 15px;
+  color: #14171a;
+  margin-top: 5px;
+}
+
+/* Username */
+.username {
+  font-weight: bold;
+  color: #1da1f2;
+  cursor: pointer;
+}
+
+.username:hover {
+  text-decoration: underline;
+}
+
+/* Profile Picture */
+.tweet-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #ccc;
+}
+
+/* Timestamp */
+.timestamp {
+  font-size: 13px;
+  color: #657786;
+  margin-left: 5px;
+}
+
+/* Tweet Form */
+form {
+  padding: 15px;
+  border-top: 1px solid #e1e8ed;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: none;
+}
+
+button {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  align-self: flex-end;
+}
+
+button:hover {
+  background-color: #0d8ce0;
+}
+
+/* Profile View */
+#profileView {
+  padding: 15px;
+}
+
+#profileView h2 {
+  text-align: left;
+  font-size: 22px;
+}
+
+/* Reply Section */
+#tweetDetailView {
+  padding: 15px;
+}
+
+#tweetDetailView h3 {
+  font-size: 18px;
+  color: #14171a;
+  border-bottom: 1px solid #e1e8ed;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+/* Home Button */
+#homeBtn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: #1da1f2;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+#homeBtn:hover {
+  background-color: #0d8ce0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 650px) {
+  #mainContent {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .tweet {
+    padding: 10px;
+  }
+
+  textarea {
+    font-size: 13px;
+  }
+
+  button {
+    font-size: 13px;
+  }
+}
+  </style>
+  <header>
+    <h1>Zitter</h1>
+  </header>
+  <nav>
+    <button id="homeBtn">Home</button>
+  </nav>
+  <main id="mainContent">
+    <!-- Content will be injected here by script.js -->
+    <div id="feedView" class="view"></div>
+    <div id="profileView" class="view" style="display:none;"></div>
+    <div id="tweetDetailView" class="view" style="display:none;"></div>
+  </main>
+  
+  <script>
+// Global variables for our data
+let data = {};
+let currentUserId = null; // to keep track of a selected user if needed
+
+// Utility to get query parameters
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+// Load JSON data based on id from query parameter
+function loadData() {
+  const id = getQueryParam('id');
+  if (!id) {
+    document.getElementById('mainContent').innerHTML = '<p>No testcase ID provided in query string.</p>';
+    return;
+  }
+  
+  fetch(`${id}.json`)
+    .then(response => {
+      if (!response.ok) throw new Error('Data not found');
+      return response.json();
+    })
+    .then(json => {
+      data = json;
+      renderFeed();
+    })
+    .catch(error => {
+      document.getElementById('mainContent').innerHTML = `<p>Error loading data: ${error.message}</p>`;
+    });
+}
+
+// Render the main tweet feed view
+function renderFeed() {
+  hideAllViews();
+  const feedView = document.getElementById('feedView');
+  feedView.style.display = 'block';
+  // Clear existing content and add header
+  feedView.innerHTML = '<h2>Tweet Feed</h2>';
+  
+  // Create a container for tweets
+  const tweetContainer = document.createElement('div');
+  
+  // Loop through feed array (assumed order of tweet ids)
+  if (data.feed && Array.isArray(data.feed)) {
+    data.feed.forEach(tweetId => {
+      const tweet = data.tweets[tweetId];
+      if (tweet) {
+        const tweetElem = createTweetElement(tweet, tweetId);
+        tweetContainer.appendChild(tweetElem);
+      }
+    });
+  } else {
+    tweetContainer.innerHTML = '<p>No tweets available.</p>';
+  }
+  
+  feedView.appendChild(tweetContainer);
+  
+  // New Tweet form
+  const newTweetForm = document.createElement('form');
+  newTweetForm.innerHTML = `
+    <textarea name="tweetContent" placeholder="What's happening?" rows="3" required></textarea>
+    <br>
+    <button type="submit">Tweet</button>
+  `;
+  newTweetForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const content = this.tweetContent.value;
+    if (content.trim() === '') return;
+    // Create a new tweet (for simulation purposes only, not persistent)
+    const newTweetId = 'tweet' + Date.now();
+    const newTweet = {
+      userId: "simUser",
+      content: content,
+      timestamp: new Date().toLocaleString(),
+      replies: []
+    };
+    // Add to data and update the feed (prepend to simulate new tweet)
+    data.tweets[newTweetId] = newTweet;
+    data.feed.unshift(newTweetId);
+    // Reset the form before re-rendering
+    this.reset();
+    renderFeed();
+  });
+  feedView.appendChild(newTweetForm);
+}
+
+// Create a tweet DOM element
+function createTweetElement(tweet, tweetId) {
+  const tweetElem = document.createElement('div');
+  tweetElem.classList.add('tweet');
+  
+  // User name (clickable)
+  const usernameElem = document.createElement('span');
+  const userData = data.users[tweet.userId] || { username: tweet.userId };
+  usernameElem.textContent = userData.username || tweet.userId;
+  usernameElem.classList.add('username');
+  usernameElem.addEventListener('click', () => {
+    renderProfile(tweet.userId);
+  });
+  tweetElem.appendChild(usernameElem);
+  
+  // Timestamp
+  const timeElem = document.createElement('span');
+  timeElem.textContent = ` • ${tweet.timestamp}`;
+  timeElem.classList.add('timestamp');
+  tweetElem.appendChild(timeElem);
+  
+  // Content
+  const contentElem = document.createElement('p');
+  contentElem.textContent = tweet.content;
+  contentElem.classList.add('content');
+  tweetElem.appendChild(contentElem);
+  
+  // Reply button (opens tweet detail view)
+  const replyBtn = document.createElement('button');
+  replyBtn.textContent = 'Reply';
+  replyBtn.addEventListener('click', () => {
+    renderTweetDetail(tweetId);
+  });
+  tweetElem.appendChild(replyBtn);
+  
+  return tweetElem;
+}
+
+// Render a user's profile and their tweets
+function renderProfile(userId) {
+  hideAllViews();
+  const profileView = document.getElementById('profileView');
+  profileView.style.display = 'block';
+  
+  const user = data.users[userId];
+  if (!user) {
+    profileView.innerHTML = '<p>User not found.</p>';
+    return;
+  }
+  
+  profileView.innerHTML = `<h2>${user.username}'s Profile</h2>`;
+  
+  // Display user details (customize as needed)
+  const userDetails = document.createElement('div');
+  userDetails.innerHTML = `<p>Name: ${user.name || 'N/A'}</p>`;
+  profileView.appendChild(userDetails);
+  
+  // User's tweets
+  const userTweets = document.createElement('div');
+  userTweets.innerHTML = `<h3>Tweets</h3>`;
+  
+  if (user.tweets && user.tweets.length > 0) {
+    user.tweets.forEach(tweetId => {
+      const tweet = data.tweets[tweetId];
+      if (tweet) {
+        const tweetElem = createTweetElement(tweet, tweetId);
+        userTweets.appendChild(tweetElem);
+      }
+    });
+  } else {
+    userTweets.innerHTML += '<p>No tweets.</p>';
+  }
+  
+  profileView.appendChild(userTweets);
+}
+
+// Render detailed tweet view with reply form and replies
+function renderTweetDetail(tweetId) {
+  hideAllViews();
+  const tweetDetailView = document.getElementById('tweetDetailView');
+  tweetDetailView.style.display = 'block';
+  tweetDetailView.innerHTML = ''; // Clear previous content
+  
+  const tweet = data.tweets[tweetId];
+  
+  if (!tweet) {
+    tweetDetailView.innerHTML = '<p>Tweet not found.</p>';
+    return;
+  }
+  
+  // Show tweet details
+  const tweetDisplay = createTweetElement(tweet, tweetId);
+  tweetDetailView.appendChild(tweetDisplay);
+  
+  // Display replies if available
+  const repliesDiv = document.createElement('div');
+  repliesDiv.innerHTML = `<h3>Replies</h3>`;
+  
+  if (tweet.replies && tweet.replies.length > 0) {
+    tweet.replies.forEach(replyId => {
+      const replyTweet = data.tweets[replyId];
+      if (replyTweet) {
+        const replyElem = createTweetElement(replyTweet, replyId);
+        repliesDiv.appendChild(replyElem);
+      }
+    });
+  } else {
+    repliesDiv.innerHTML += '<p>No replies.</p>';
+  }
+  tweetDetailView.appendChild(repliesDiv);
+  
+  // Reply form
+  const replyForm = document.createElement('form');
+  replyForm.innerHTML = `
+    <textarea name="replyContent" placeholder="Write your reply" rows="2" required></textarea>
+    <br>
+    <button type="submit">Reply</button>
+  `;
+  replyForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const replyContent = this.replyContent.value;
+    if (replyContent.trim() === '') return;
+    const newReplyId = 'tweet' + Date.now();
+    const newReply = {
+      userId: "simUser",
+      content: replyContent,
+      timestamp: new Date().toLocaleString(),
+      replies: []
+    };
+    data.tweets[newReplyId] = newReply;
+    tweet.replies = tweet.replies || [];
+    tweet.replies.push(newReplyId);
+    this.reset();
+    renderTweetDetail(tweetId);
+  });
+  tweetDetailView.appendChild(replyForm);
+}
+
+// Hide all views (feed, profile, tweet detail)
+function hideAllViews() {
+  document.getElementById('feedView').style.display = 'none';
+  document.getElementById('profileView').style.display = 'none';
+  document.getElementById('tweetDetailView').style.display = 'none';
+}
+
+// Set up Home button
+document.getElementById('homeBtn').addEventListener('click', renderFeed);
+
+// Initial data load
+document.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>

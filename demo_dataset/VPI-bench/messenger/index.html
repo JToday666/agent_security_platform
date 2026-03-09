@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Messenger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Reset and basic styling */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #e5e5e5; }
+    .container { display: flex; height: 100vh; overflow: hidden; }
+
+    /* Sidebar */
+    .sidebar { flex: 0 0 320px; background: #fff; border-right: 1px solid #ddd; display: flex; flex-direction: column; }
+    .sidebar-header { background: #0088cc; padding: 15px; color: #fff; font-size: 1.2em; display: flex; align-items: center; justify-content: space-between; }
+    #new-chat-btn { background: transparent; border: none; color: #fff; font-size: 1.2em; cursor: pointer; }
+    #chats-list { list-style: none; flex-grow: 1; overflow-y: auto; }
+    #chats-list li { display: flex; align-items: center; padding: 10px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; }
+    #chats-list li:hover { background: #f9f9f9; }
+    .contact-img { width: 45px; height: 45px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
+    .contact-name { font-size: 1em; color: #333; }
+
+    /* Chat area */
+    .chat { flex-grow: 1; display: flex; flex-direction: column; background: #f4f7f9; }
+    .chat-header { background: #0088cc; color: #fff; padding: 15px; display: flex; align-items: center; border-bottom: 1px solid #007ab8; }
+    .chat-header img { width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
+    .chat-header h2 { font-size: 1.1em; margin-bottom: 4px; }
+    .chat-header .user-id { font-size: 0.9em; color: rgba(255,255,255,0.8); }
+    #chat-history { flex-grow: 1; padding: 20px; overflow-y: auto; }
+    .message { position: relative; margin-bottom: 15px; padding: 10px 15px; border-radius: 20px; max-width: 70%; line-height: 1.4; clear: both; word-wrap: break-word; }
+    .message.you { background: #dff9fb; margin-left: auto; }
+    .message.contact { background: #fff; border: 1px solid #ddd; margin-right: auto; }
+    .timestamp { display: block; font-size: 0.75em; color: #666; margin-top: 5px; text-align: right; }
+
+    /* Cleaned-up input area */
+    .chat-input { display: flex; align-items: center; padding: 15px; background: #fff; border-top: 1px solid #ddd; }
+    .attach-icon { cursor: pointer; font-size: 1.2em; margin-right: 10px; color: #555; }
+    .file-name { margin-right: 10px; font-size: 0.9em; color: #555; }
+    .clear-file { cursor: pointer; font-size: 1.2em; color: #555; margin-right: 10px; }
+    .chat-input textarea { flex-grow:1; padding:10px 15px; font-size:1em; border:1px solid #ccc; border-radius:20px; outline:0; resize:none; overflow-y:auto; max-height:150px; line-height:1.4 }
+    .chat-input button { margin-left: 10px; padding: 10px 15px; border: none; background: #0088cc; color: #fff; border-radius: 20px; cursor: pointer; font-size: 1em; transition: background 0.2s; }
+    .chat-input button:hover { background: #007ab8; }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container { flex-direction: column; }
+      .sidebar { width: 100%; height: 200px; border-right: none; border-bottom: 1px solid #ddd; }
+      .chat { height: calc(100vh - 200px); }
+    }
+
+    /* message attachments */
+    .attachment-link { display: block; margin-top: 5px; color: #007bff; text-decoration: none; font-size: 0.95em; }
+    .attachment-link:hover { text-decoration: underline; }
+    .message img { max-width: 200px; display: block; margin-top: 5px; border-radius: 8px; }
+
+    /* Deleted message tombstone */
+    .deleted-message { display: flex; align-items: center; clear: both; max-width: 70%; background: #f0f0f0; color: #888; font-style: italic; padding: 6px 12px; border-radius: 16px; margin-bottom: 15px; }
+    .deleted-message.you { margin-left: auto; }
+    .deleted-message.contact { margin-right: auto; }
+    .deleted-message .icon { margin-right: 6px; }
+    .deleted-message .timestamp { margin-left: auto; font-size: 0.7em; color: #666; }
+
+    /* Unknown contact banner */
+    .unknown-banner { background: #fff3cd; color: #856404; padding: 10px 15px; border: 1px solid #ffeeba; border-radius: 8px; margin-bottom: 15px; font-size: 0.9em; }
+
+    /* Mentions */
+    .mention { color: #0088cc; cursor: pointer; text-decoration: none; }
+    .mention:hover { text-decoration: underline; }
+
+    /* New Chat Modal */
+    .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index:1000; }
+    .modal { background:#fff; padding:20px; border-radius:8px; width:300px; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+    .modal h3 { margin-bottom:10px; }
+    .modal input { width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; }
+    .modal .error { color:red; font-size:0.9em; margin-top:5px; display:none; }
+    .modal-actions { display:flex; justify-content:flex-end; margin-top:15px; }
+    .modal-actions button { margin-left:10px; padding:6px 12px; border:none; border-radius:4px; cursor:pointer; }
+    #new-chat-cancel { background:#ccc; color:#333; }
+    #new-chat-confirm { background:#0088cc; color:#fff; }
+
+    /* Delete Tooltip */
+    .tooltip-confirm { position: absolute; display: flex; align-items: center; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 8px; z-index: 1000; animation: fadeIn 0.2s ease-out; }
+    .tooltip-confirm::before { content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%); border-width: 6px; border-style: solid; border-color: transparent transparent #fff transparent; }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    .tooltip-confirm button { margin: 0 4px; padding: 6px 14px; border: none; border-radius: 4px; font-size: 0.9em; cursor: pointer; transition: background 0.2s; }
+    .tooltip-confirm .yes { background: #e74c3c; color: #fff; }
+    .tooltip-confirm .yes:hover { background: #c0392b; }
+    .tooltip-confirm .no { background: #bdc3c7; color: #2c3e50; }
+    .tooltip-confirm .no:hover { background: #95a5a6; }
+
+    /* Group chat message */
+    .group-message { display:flex; align-items:flex-start; margin-bottom:15px; }
+    .group-message .avatar { width:30px; height:30px; border-radius:50%; margin-right:10px; object-fit:cover; }
+    .group-message .message { max-width: calc(70% - 40px); }
+    .sender-name { font-size:0.75em; color:#555; margin-bottom:3px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <span>Chats</span>
+        <button id="new-chat-btn" title="New Chat">＋</button>
+      </div>
+      <ul id="chats-list"></ul>
+    </div>
+
+    <div class="chat">
+      <div class="chat-header" id="chat-header">
+        <h2>Select a chat</h2>
+      </div>
+      <div id="chat-history"></div>
+      <div class="chat-input">
+        <span id="attach-btn" class="attach-icon">📎</span>
+        <span id="file-name" class="file-name" style="display:none;"></span>
+        <span id="clear-file" class="clear-file" style="display:none;">×</span>
+        <textarea id="message-input" placeholder="Type a message" rows="1"></textarea>
+        <button id="send-btn">Send</button>
+        <input type="file" id="file-input" style="display:none;">
+      </div>
+    </div>
+  </div>
+
+  <!-- New Chat Modal -->
+  <div id="new-chat-modal" class="modal-overlay">
+    <div class="modal">
+      <h3>Start New Chat</h3>
+      <input type="text" id="new-chat-input" placeholder="@username">
+      <div id="new-chat-error" class="error"></div>
+      <div class="modal-actions">
+        <button id="new-chat-cancel">Cancel</button>
+        <button id="new-chat-confirm">Start</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function getQueryParam(param) { return new URLSearchParams(window.location.search).get(param); }
+    let data = null, currentChat = null, currentTooltip = null;
+    const currentId = getQueryParam('id');
+    function getUserById(id) {
+      const u = data.users.find(u => u.id === id);
+      if (u) return { ...u, known: u.known !== false };
+      return { id, name: id, profilePicture: 'https://via.placeholder.com/45', known: false };
+    }
+    function formatTime(ts) { const d = new Date(ts); return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+
+    function loadData() {
+      if (!currentId) {
+        document.getElementById('chat-header').innerText = 'No ID provided';
+        return;
+      }
+      const loadParam = getQueryParam('load');
+      fetch(`${currentId}.json`)
+        .then(r => r.ok ? r.json() : Promise.reject('Failed to load'))
+        .then(json => {
+          data = json;
+          populateChats();
+          // if ?load=<chatId> is present, auto-select that chat
+          if (loadParam) {
+            const chatToLoad = data.chats.find(c => c.id === loadParam);
+            if (chatToLoad) selectChat(chatToLoad);
+          }
+        })
+        .catch(e => {
+          console.error(e);
+          document.getElementById('chat-header').innerText = e;
+        });
+    }
+
+    function populateChats() {
+      const ul = document.getElementById('chats-list'); ul.innerHTML = '';
+      data.chats.forEach(chat => {
+        const li = document.createElement('li');
+        if (chat.type === 'private') {
+          const otherId = chat.participants.find(pid => pid !== data.currentUserId);
+          const other = getUserById(otherId);
+          li.innerHTML = `<img class="contact-img" src="${other.profilePicture}"/><span class="contact-name">${other.name}</span>`;
+        } else {
+          const icon = chat.groupIcon || 'https://via.placeholder.com/45?text=👥';
+          li.innerHTML = `<img class="contact-img" src="${icon}"/><span class="contact-name">${chat.name}</span>`;
+        }
+        li.onclick = () => selectChat(chat);
+        ul.appendChild(li);
+      });
+    }
+
+    function selectChat(chat) {
+      currentChat = chat;
+      const hdr = document.getElementById('chat-header');
+      if (chat.type === 'private') {
+        const otherId = chat.participants.find(pid => pid !== data.currentUserId);
+        const other = getUserById(otherId);
+        hdr.innerHTML = `<img src="${other.profilePicture}"/><div><h2>${other.name}</h2><div class="user-id">@${other.id}</div></div>`;
+      } else {
+        const icon = chat.groupIcon || 'https://via.placeholder.com/40?text=👥';
+        // count how many people are in the group
+        const participantCount = chat.participants.length;
+      
+        hdr.innerHTML = `
+          <img src="${icon}"/>
+          <div>
+            <h2>${chat.name}</h2>
+            <div class="user-id">${participantCount} participants</div>
+          </div>
+        `;
+      }
+
+      const hist = document.getElementById('chat-history'); hist.innerHTML = '';
+      // Unknown contact warning
+      if (chat.type === 'private') {
+        const otherId = chat.participants.find(pid => pid !== data.currentUserId);
+        const other = getUserById(otherId);
+        if (!other.known) {
+          const banner = document.createElement('div');
+          banner.className = 'unknown-banner';
+          banner.innerHTML = `⚠️ <strong>${other.name}</strong> is not in your contact list.`;
+          hist.appendChild(banner);
+        }
+      }
+      chat.history.forEach(msg => displayMessage(msg));
+      hist.scrollTop = hist.scrollHeight;
+    }
+
+    function parseMentions(text) {
+      // 1) linkify any http(s)://… substrings
+      const urlPattern = /(https?:\/\/[^\s]+)/g;
+      const textWithLinks = text.replace(urlPattern, (url) =>
+        `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
+      );
+
+      // 2) then parse @‑mentions as before
+      return textWithLinks.replace(/@(\w+)/g, (match, username) => {
+        const user = data.users.find(u => u.id.toLowerCase() === username.toLowerCase());
+        return user
+          ? `<span class="mention" data-username="${user.id}">@${username}</span>`
+          : match;
+      });
+    }
+
+    function displayMessage(msg) {
+      const hist = document.getElementById('chat-history');
+      const isYou = msg.senderId === data.currentUserId;
+      if (currentTooltip) { currentTooltip.remove(); currentTooltip = null; }
+      // Deleted message
+      if (msg.deleted) {
+        const tomb = document.createElement('div');
+        tomb.className = 'deleted-message ' + (isYou ? 'you' : 'contact');
+        const icon = document.createElement('span'); icon.className = 'icon'; icon.textContent = '🗑️';
+        const txt = document.createElement('span'); txt.textContent = 'Message deleted';
+        const ts = document.createElement('span'); ts.className = 'timestamp'; ts.textContent = formatTime(msg.timestamp);
+        tomb.appendChild(icon); tomb.appendChild(txt); tomb.appendChild(ts);
+        hist.appendChild(tomb);
+        hist.scrollTop = hist.scrollHeight;
+        return;
+      }
+      // Group chat layout
+      if (currentChat.type === 'group' && !isYou) {
+        const wrapper = document.createElement('div'); wrapper.className = 'group-message';
+        const avatar = document.createElement('img'); avatar.className = 'avatar'; avatar.src = getUserById(msg.senderId).profilePicture;
+        const bubble = document.createElement('div'); bubble.className = 'message contact';
+        const nameDiv = document.createElement('div'); nameDiv.className = 'sender-name'; nameDiv.textContent = getUserById(msg.senderId).name;
+        bubble.appendChild(nameDiv);
+        if (msg.message) { const p = document.createElement('div'); p.innerHTML = parseMentions(msg.message); bubble.appendChild(p); }
+        if (msg.attachment) {
+          const { filename, url } = msg.attachment;
+          if (/^data:image\//i.test(url) || /\.(jpe?g|png|gif|svg)(\?.*)?$/i.test(url)) {
+            const img = document.createElement('img'); img.src = url; img.alt = filename; bubble.appendChild(img);
+          } else {
+            const a = document.createElement('a'); a.href = url; a.download = filename; a.className = 'attachment-link'; a.innerHTML = `📥 ${filename}`; bubble.appendChild(a);
+          }
+        }
+        const ts = document.createElement('span'); ts.className = 'timestamp'; ts.textContent = formatTime(msg.timestamp); bubble.appendChild(ts);
+        wrapper.appendChild(avatar); wrapper.appendChild(bubble);
+        wrapper.addEventListener('contextmenu', e => showDeleteTooltip(e, msg, wrapper));
+        hist.appendChild(wrapper);
+        hist.scrollTop = hist.scrollHeight;
+      } else {
+        const div = document.createElement('div'); div.classList.add('message', isYou ? 'you' : 'contact');
+        if (msg.message) { const p = document.createElement('div'); p.innerHTML = parseMentions(msg.message); div.appendChild(p); }
+        if (msg.attachment) {
+          const { filename, url } = msg.attachment;
+          if (/^data:image\//i.test(url) || /\.(jpe?g|png|gif|svg)(\?.*)?$/i.test(url)) {
+            const img = document.createElement('img'); img.src = url; img.alt = filename; div.appendChild(img);
+          } else {
+            const a = document.createElement('a'); a.href = url; a.download = filename; a.className = 'attachment-link'; a.innerHTML = `📥 ${filename}`; div.appendChild(a);
+          }
+        }
+        const ts = document.createElement('span'); ts.className = 'timestamp'; ts.textContent = formatTime(msg.timestamp); div.appendChild(ts);
+        div.addEventListener('contextmenu', e => showDeleteTooltip(e, msg, div));
+        hist.appendChild(div);
+        hist.scrollTop = hist.scrollHeight;
+      }
+    }
+
+    function showDeleteTooltip(e, msg, element) {
+      e.preventDefault(); if (currentTooltip) { currentTooltip.remove(); }
+      const tooltip = document.createElement('div'); tooltip.className = 'tooltip-confirm';
+      tooltip.style.top = `${e.pageY}px`; tooltip.style.left = `${e.pageX}px`;
+      const yes = document.createElement('button'); yes.className = 'yes'; yes.textContent = 'Delete';
+      const no = document.createElement('button'); no.className = 'no'; no.textContent = 'Cancel';
+      tooltip.appendChild(yes); tooltip.appendChild(no); document.body.appendChild(tooltip); currentTooltip = tooltip;
+      yes.onclick = () => { msg.deleted = true; const hist = document.getElementById('chat-history'); hist.innerHTML = ''; currentChat.history.forEach(m => displayMessage(m)); tooltip.remove(); currentTooltip = null; };
+      no.onclick = () => { tooltip.remove(); currentTooltip = null; };
+    }
+
+    document.addEventListener('click', e => {
+      if (currentTooltip && !currentTooltip.contains(e.target)) { currentTooltip.remove(); currentTooltip = null; }
+      if (e.target.classList.contains('mention')) {
+        const uname = e.target.dataset.username;
+        let chat = data.chats.find(c => c.type === 'private' && c.participants.includes(data.currentUserId) && c.participants.includes(uname));
+        if (!chat) { const user = data.users.find(u => u.id === uname); if (!user) return; chat = { id: 'chat_' + Date.now(), type: 'private', participants: [data.currentUserId, uname], history: [] }; data.chats.unshift(chat); populateChats(); }
+        selectChat(chat);
+      }
+    });
+
+    function sendMessage() {
+      if (!currentChat) return;
+      const txt = document.getElementById('message-input'), fileInput = document.getElementById('file-input'), file = fileInput.files[0];
+      const base = { senderId: data.currentUserId, message: txt.value.trim(), timestamp: new Date().toISOString() };
+      if (file) { const reader = new FileReader(); reader.onload = () => { const attachment = { filename: file.name, url: reader.result }; const msg = { ...base, attachment }; currentChat.history.push(msg); displayMessage(msg); scrollAndClear(); }; reader.readAsDataURL(file);
+      } else if (base.message) { currentChat.history.push(base); displayMessage(base); scrollAndClear(); }
+    }
+
+    function scrollAndClear() { const hist = document.getElementById('chat-history'); hist.scrollTop = hist.scrollHeight; document.getElementById('message-input').value = ''; document.getElementById('file-input').value = ''; document.getElementById('file-name').style.display = 'none'; document.getElementById('clear-file').style.display = 'none'; }
+
+    // New Chat Modal logic
+    function showNewChatModal() { document.getElementById('new-chat-modal').style.display = 'flex'; }
+    function hideNewChatModal() { document.getElementById('new-chat-modal').style.display = 'none'; document.getElementById('new-chat-error').style.display = 'none'; document.getElementById('new-chat-input').value = ''; }
+    function startChatFromModal() { const raw = document.getElementById('new-chat-input').value.trim(); if (!raw) { const err = document.getElementById('new-chat-error'); err.textContent = 'Please enter a username.'; err.style.display = 'block'; return; } const uname = raw.startsWith('@') ? raw.slice(1) : raw; const user = data.users.find(u => u.id === uname); if (!user) { const err = document.getElementById('new-chat-error'); err.textContent = `User "${uname}" not found.`; err.style.display = 'block'; return; } const exists = data.chats.find(c => c.type === 'private' && c.participants.includes(data.currentUserId) && c.participants.includes(uname)); hideNewChatModal(); if (exists) { selectChat(exists); return; } const chatObj = { id: 'chat_' + Date.now(), type: 'private', participants: [data.currentUserId, uname], history: [] }; data.chats.unshift(chatObj); populateChats(); selectChat(chatObj); }
+
+    // Wire up
+    window.addEventListener('load', loadData);
+    document.getElementById('new-chat-btn').onclick = showNewChatModal;
+    document.getElementById('new-chat-cancel').onclick = hideNewChatModal;
+    document.getElementById('new-chat-confirm').onclick = startChatFromModal;
+    const attachBtn = document.getElementById('attach-btn'), fileInput = document.getElementById('file-input'), fileNameSpan = document.getElementById('file-name'), clearBtn = document.getElementById('clear-file');
+    document.getElementById('send-btn').onclick = sendMessage;
+    document.getElementById('message-input').addEventListener('keyup', e => e.key === 'Enter' && sendMessage());
+    const messageInput = document.getElementById('message-input');
+    messageInput.addEventListener('input', () => {
+      messageInput.style.height = 'auto';
+      messageInput.style.height = messageInput.scrollHeight + 'px';
+    });
+    attachBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => { if (fileInput.files.length) { fileNameSpan.textContent = fileInput.files[0].name; fileNameSpan.style.display = 'inline'; clearBtn.style.display = 'inline'; } else { fileNameSpan.style.display = 'none'; clearBtn.style.display = 'none'; } });
+    clearBtn.addEventListener('click', () => { fileInput.value = ''; fileNameSpan.style.display = 'none'; clearBtn.style.display = 'none'; });
+  </script>
+</body>
+</html>

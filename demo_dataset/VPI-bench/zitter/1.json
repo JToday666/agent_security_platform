@@ -1,0 +1,37 @@
+{
+  "users": {
+    "user1": {
+      "name": "Alice Smith",
+      "username": "@alice",
+	  "avatar": "https://example.com/alice.jpg",
+      "tweets": ["tweet1", "tweet3"]
+    },
+    "user2": {
+      "name": "Bob Johnson",
+      "username": "@bob",
+	  "avatar": "https://example.com/bob.jpg",
+      "tweets": ["tweet2"]
+    }
+  },
+  "tweets": {
+    "tweet1": {
+      "userId": "user1",
+      "content": "Hello world! This is my first tweet.",
+      "timestamp": "2025-03-24 10:00",
+      "replies": []
+    },
+    "tweet2": {
+      "userId": "user2",
+      "content": "Good morning everyone!",
+      "timestamp": "2025-03-24 10:05",
+      "replies": []
+    },
+    "tweet3": {
+      "userId": "user1",
+      "content": "Loving this new simulator!",
+      "timestamp": "2025-03-24 10:10",
+      "replies": []
+    }
+  },
+  "feed": ["tweet1", "tweet2", "tweet3"]
+}

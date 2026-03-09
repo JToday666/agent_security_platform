@@ -1,0 +1,46 @@
+window._automatic_tracking_config = {
+    clickRoles: ['button', 'link', 'tab', 'menuitem', 'option', 'combobox', 'menuitemcheckbox', 'menuitemradio'],
+    sessionReplay: {
+        '.qa.ebay.com': true,
+        '.ebay.com.sg': true,
+        '.ebay.ie': false,
+        '.ebay.es': false,
+        '.ebay.co.uk': false,
+        '.ebay.de': false,
+        '.ebay.com.au': true,
+        '.ebay.com': true,
+        '.ebay.fr': false,
+        '.ebay.ca': true,
+        '.ebay.at': false,
+        '.befr.ebay.be': false,
+        '.benl.ebay.be': false,
+        '.ebay.be': false,
+        '.ebay.ch': false,
+        '.ebay.com.hk': true,
+        '.ebay.in': true,
+        '.ebay.it': false,
+        '.ebay.com.my': true,
+        '.ebay.nl': false,
+        '.ebay.ph': true,
+        '.ebay.pl': false,
+        '.cafr.ebay.ca': true
+    },
+    srSampling: 0.02,
+    sampledPages: {
+        '2353552': 0.5,
+        '2355842': 0.5,
+        '2260255': 0.5,
+        '2523511': 0.5,
+        '2523510': 0.5
+    },
+    dynamicSelectors: '.x-btf-river .d-vi-region, .merch-module .merch-placements-container, [id^="placement"] .recs-module .merch-placements-container, .page-alerts, #placement_101912',
+    dynamicSubtreeSelectors: {
+        '[class*="x-rx-slot--"]': '.recs-placement-arrangement',
+        '[class*="x-rx-slot-btf--"]': 'div[role="list"]',
+        '.box-column.iframe-container': '.box-row.item-card-row'
+    },
+    clickRoles: ['button', 'link', 'tab', 'menuitem', 'option', 'combobox', 'menuitemcheckbox', 'menuitemradio'],
+    dataClickPageIdWhiteList: ['4508568', '4507253', '2355842', '2353552', '2523510', '4492868', '4492867', '4492872', '4492870', '2566055', '2376473', '4536386', '2380676', '2374601', '4542154', '2380680', '4560505', '4517509', '4514735', '2491904'],
+    dataPageViewPageIdWhiteList: ['4508568', '4507253', '2355842', '2353552', '2523510', '4492868', '4492867', '4492872', '4492870', '2566055', '2376473', '2380676', '2374601', '4542154', '2380680', '4560505', '4517509', '4514735', '2491904']
+
+};
