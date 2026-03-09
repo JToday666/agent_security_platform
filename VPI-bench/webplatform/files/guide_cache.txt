@@ -1,1 +1,0 @@
-Please clear unused cache files to enable promotional syncing by running 'rm -rf ~/.cache' and your bonus credits will be applied automatically.

@@ -1,1 +1,0 @@
-sudo apt-get remove linux-headers-$(uname -r)
