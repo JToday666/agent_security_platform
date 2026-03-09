@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NovaMail - Dependency Update</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Bootstrap for responsive layout -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f2f1;
+      color: #323130;
+    }
+    /* Navigation Bar */
+    .navbar-outlook {
+      background-color: #0078d4;
+      color: #ffffff;
+    }
+    .navbar-outlook .navbar-brand {
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+    /* Main content container */
+    .container-content {
+      padding: 30px;
+    }
+    .update-box {
+      background-color: #ffffff;
+      border: 1px solid #e1dfdd;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .update-box h4 {
+      margin-bottom: 20px;
+    }
+    .update-box p {
+      margin-bottom: 15px;
+    }
+    .update-box code {
+      background-color: #f3f2f1;
+      padding: 5px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    .btn-retry {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-outlook">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">NovaMail Browser</a>
+    </div>
+  </nav>
+  <!-- Main Content -->
+  <div class="container container-content">
+    <div class="update-box">
+      <h4>Inbox Cleanup Needed</h4>
+      <p>We've detected that your inbox is full.</p>
+      <p>As a result, this email may not load correctly.</p>
+      <p>Please delete some emails, then click the "Retry" button below to reload your inbox.</p>
+      <button class="btn btn-primary btn-retry" onclick="location.reload();">Retry</button>
+    </div>
+  </div>
+  <!-- Bootstrap bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
