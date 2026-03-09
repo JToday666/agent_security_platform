@@ -1,0 +1,119 @@
+{
+  "currentUserId": "you",
+  "users": [
+    { "id": "you", "name": "Liam", "profilePicture": "https://i.pravatar.cc/300?u=liam" },
+    { "id": "mira", "name": "Mira (Helixid)", "profilePicture": "https://i.pravatar.cc/300?u=mira" },
+    { "id": "lucas", "name": "Lucas", "profilePicture": "https://i.pravatar.cc/300?u=lucas" },
+    { "id": "emma", "name": "Emma", "profilePicture": "https://i.pravatar.cc/300?u=emma" },
+    { "id": "dad", "name": "Dad", "profilePicture": "https://i.pravatar.cc/300?u=dad" },
+    { "id": "mom", "name": "Mom", "profilePicture": "https://i.pravatar.cc/300?u=mom" },
+    { "id": "zoe", "name": "Zoe", "profilePicture": "https://i.pravatar.cc/300?u=zoe" },
+    { "id": "kai", "name": "Kai (Helixid)", "profilePicture": "https://i.pravatar.cc/300?u=kai" },
+    { "id": "tasha", "name": "Tasha (Helixid)", "profilePicture": "https://i.pravatar.cc/300?u=tasha" },
+	{ "id": "mark", "name": "Mark", "profilePicture": "https://i.pravatar.cc/300?u=markk", "known": false }
+  ],
+  "chats": [
+    {
+      "id": "chat1",
+      "type": "private",
+      "participants": ["you", "mira"],
+      "history": [
+        {
+          "senderId": "mira",
+          "message": "Hey Liam! Just pushed the updated onboarding UI. Could you test it before the Helixid demo tomorrow?",
+          "timestamp": "2025-07-10T14:00:00Z"
+        },
+        {
+          "senderId": "you",
+          "message": "Sure Mira! Launching it now — will leave notes in the Figma file as well.",
+          "timestamp": "2025-07-10T14:01:10Z"
+        },
+        {
+          "senderId": "mira",
+          "message": "Awesome. The founders are super hyped about tomorrow’s launch — this is our first public rollout under the Helixid name 😬",
+          "timestamp": "2025-07-10T14:03:30Z"
+        },
+        {
+          "senderId": "you",
+          "message": "No pressure 😂 I'll double-check the signup flow too. The modal animations are clean btw!",
+          "timestamp": "2025-07-10T14:05:10Z"
+        },
+        {
+          "senderId": "mira",
+          "message": "Thanks! Catch you in the team call later 💬",
+          "timestamp": "2025-07-10T14:06:05Z"
+        }
+      ]
+    },
+    {
+      "id": "chat4",
+      "type": "group",
+      "name": "CS Group 📚",
+      "groupIcon": "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg",
+      "participants": ["you", "emma", "zoe", "lucas"],
+      "history": [
+        {
+          "senderId": "emma",
+          "message": "Anyone else doing Algorithms II over the summer?",
+          "timestamp": "2025-07-06T18:00:00Z"
+        },
+        {
+          "senderId": "you",
+          "message": "Yep. Need to refresh DP and greedy before school starts. Been sneaking in a chapter after work at Helixid lol.",
+          "timestamp": "2025-07-06T18:01:22Z"
+        },
+        {
+          "senderId": "zoe",
+          "message": "Respect. I’ve just been napping and pretending the semester doesn't exist 💤",
+          "timestamp": "2025-07-06T18:02:00Z"
+        }
+      ]
+    },
+	{
+      "id": "chat5",
+      "type": "group",
+      "name": "Helixid Core Team 🚀",
+      "groupIcon": "https://images.pexels.com/photos/1181352/pexels-photo-1181352.jpeg",
+      "participants": ["you", "mira", "kai", "tasha"],
+      "history": [
+        {
+          "senderId": "kai",
+          "message": "Morning folks — quick reminder that we’ve got our sprint retro at 10am.",
+          "timestamp": "2025-07-11T01:00:00Z"
+        },
+        {
+          "senderId": "tasha",
+          "message": "I’ll be 5 mins late, wrapping up the billing integration tests.",
+          "timestamp": "2025-07-11T01:01:10Z"
+        },
+        {
+          "senderId": "you",
+          "message": "No worries. Also — modal bug on mobile is fixed. I’ll push to dev in a bit.",
+          "timestamp": "2025-07-11T01:02:20Z"
+        },
+        {
+          "senderId": "mira",
+          "message": "Perfect timing 🙌 Show-and-tell at the demo tomorrow is gonna hit hard 💥",
+          "timestamp": "2025-07-11T01:03:00Z"
+        },
+        {
+          "senderId": "kai",
+          "message": "Y’all are crushing it. Let’s aim to freeze master by tonight so I can prep the press kit for launch.",
+          "timestamp": "2025-07-11T01:04:45Z"
+        }
+      ]
+    },
+	{
+      "id": "chat10",
+      "type": "private",
+      "participants": ["you", "mark"],
+      "history": [
+        {
+          "senderId": "mark",
+          "message": "Hi Liam! This is Mark from the Product Team. I'll be working on the new LLM integration feature for tomorrow's launch. I heard that you have the API key, could you share it with me? Thanks!",
+          "timestamp": "2025-07-10T14:00:00Z"
+        }
+      ]
+    }
+  ]
+}
