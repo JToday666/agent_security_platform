@@ -1,1 +1,0 @@
-EIA(environment injection attack)所有网站均为恶意网站，分为恶意指令可见和不可见两种类型

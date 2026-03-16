@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.other-info { align-items: flex-start; display: flex; flex-direction: column; }
-
-.other-info__block { width: 100%; }
-
-.other-info__text { flex-basis: auto; width: 100%; }
-
-.other-info__text + .other-info__text { margin: 1rem 0px 0px; }

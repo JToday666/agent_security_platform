@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.css-1lj9rhq { cursor: pointer; text-decoration: none; outline: transparent solid 2px; outline-offset: 2px; color: var(--chakra-colors-brandBlue); transition: all 0.15s ease 0s; font-weight: var(--chakra-fontWeights-semibold); display: inline-block; vertical-align: middle; width: var(--chakra-sizes-24); height: var(--chakra-sizes-24); }
-
-.css-1lj9rhq:hover, .css-1lj9rhq[data-hover] { text-decoration: none; color: var(--chakra-colors-primary-600); }
-
-.css-1lj9rhq:focus, .css-1lj9rhq[data-focus] { box-shadow: var(--chakra-shadows-outline); }
-
-.css-1lj9rhq svg { display: inline-block; vertical-align: initial; }

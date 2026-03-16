@@ -1,7 +1,0 @@
-启动网页：py -3 -m http.server 8000
-启动后端：安装node.js
-node text_server/server.js --port 3000 --behavior_id 0 --llm_name gpt-4o --agent_name local_test
-打开示例：
-http://localhost:8000/email/index.html
-
-后续考虑将输入内容保存起来

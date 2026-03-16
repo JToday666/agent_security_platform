@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.css-ioddki { cursor: pointer; text-decoration: none; outline: transparent solid 2px; outline-offset: 2px; color: var(--chakra-colors-black); transition: all 0.15s ease 0s; font-weight: var(--chakra-fontWeights-normal); }
-
-.css-ioddki:hover, .css-ioddki[data-hover] { color: var(--chakra-colors-black); }
-
-.css-ioddki:focus, .css-ioddki[data-focus] { box-shadow: var(--chakra-shadows-outline); }
-
-.css-ioddki svg { display: inline-block; vertical-align: initial; }

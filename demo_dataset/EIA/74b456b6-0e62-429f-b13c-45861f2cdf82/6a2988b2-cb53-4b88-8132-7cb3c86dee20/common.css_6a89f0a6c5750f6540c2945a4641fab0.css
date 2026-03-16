@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-a#containerLinkedin { display: none !important; }
-
-a#containerGoogle { display: none !important; }
-
-form#cmsForm .options-block .cloud-options ul li { margin: 0px !important; }
-
-form#cmsForm .options-block .cloud-options ul li a { margin: 0px 5px !important; }

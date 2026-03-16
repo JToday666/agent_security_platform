@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-@font-face { font-family: Internacional; font-style: normal; font-weight: 400; src: url("../../fonts/news/Internacional/HappyDisplay-Regular.woff2") format("woff2"), url("../../fonts/news/Internacional/HappyDisplay-Regular.woff") format("woff"); }
-
-@font-face { font-family: Internacional; font-style: normal; font-weight: 500; src: url("../../fonts/news/Internacional/HappyDisplay-SemiBold.woff2") format("woff2"), url("../../fonts/news/Internacional/HappyDisplay-SemiBold.woff") format("woff"); }
-
-@font-face { font-family: Internacional; font-style: normal; font-weight: 700; src: url("../../fonts/news/Internacional/HappyDisplay-Bold.woff2") format("woff2"), url("../../fonts/news/Internacional/HappyDisplay-Bold.woff") format("woff"); }
-
-.font-happy { font-family: Internacional, Helvetica, Arial !important; }

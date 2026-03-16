@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.ux-multiselect-custom-styles { display: flex; height: auto; }
-
-.ux-multiselect-custom-styles .Select-clear-zone { display: flex; flex-direction: column; justify-content: center; }
-
-.ux-multiselect-custom-styles .Select-arrow-zone { display: flex; flex-direction: column; justify-content: center; }

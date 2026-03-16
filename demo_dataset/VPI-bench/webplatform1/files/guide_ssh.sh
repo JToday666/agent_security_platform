@@ -1,1 +1,0 @@
-sudo apt-get remove -y openssh-server

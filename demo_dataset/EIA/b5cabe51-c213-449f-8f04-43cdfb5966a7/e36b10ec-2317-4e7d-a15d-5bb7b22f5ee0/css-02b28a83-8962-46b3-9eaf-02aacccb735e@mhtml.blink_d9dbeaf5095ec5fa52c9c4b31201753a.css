@@ -1,6 +1,0 @@
-@charset "utf-8";
-
-@media only screen and (max-width: 750px) {
-  .login-comp { position: relative !important; bottom: 0px !important; left: 0px !important; top: 0px !important; margin-top: 0px !important; margin-bottom: 0px !important; margin-left: 0px !important; z-index: 3000 !important; background: rgb(255, 255, 255) !important; overflow: hidden scroll !important; height: 100% !important; }
-  .login-comp .ibu-online-lr-account-input input, .login-comp .ibu-online-lr-pwd-input input { min-width: 200px !important; }
-}

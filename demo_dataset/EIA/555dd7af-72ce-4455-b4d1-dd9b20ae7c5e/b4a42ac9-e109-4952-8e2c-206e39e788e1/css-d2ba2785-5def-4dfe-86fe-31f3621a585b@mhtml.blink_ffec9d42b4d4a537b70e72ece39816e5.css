@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-[_nghost-nke-c63] { display: flex; }
-
-.action-element[_ngcontent-nke-c63] + .action-element[_ngcontent-nke-c63] { margin-left: 1.1875rem; padding-left: 1.1875rem; position: relative; }
-
-.action-element[_ngcontent-nke-c63] + .action-element[_ngcontent-nke-c63]::before { background-color: var(--light-base, #fff); content: ""; height: 1rem; left: 0px; position: absolute; top: 50%; transform: translateY(-50%); width: 0.0625rem; }

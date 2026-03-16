@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.atm-l-container { max-width: calc(73.9375rem); margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
-
-.atm-l-container--narrow { max-width: 47em; }
-
-.atm-l-container--very-narrow { max-width: 27rem; }
-
-.atm-l-container--center { display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; flex-direction: column; -webkit-box-pack: center; justify-content: center; padding-left: 0px; padding-right: 0px; height: 100vh; }

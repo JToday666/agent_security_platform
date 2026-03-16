@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.r-form-field__input[_ngcontent-iyw-c269]:focus { line-height: 38px; }
-
-.r-form-field__input--error[_ngcontent-iyw-c269] { border-color: var(--error-red, #cf2e1d); color: var(--error-red, #cf2e1d); }
-
-.payment-form-input[_ngcontent-iyw-c269] { display: flex; flex-direction: column; }

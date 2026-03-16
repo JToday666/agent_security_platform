@@ -1,1 +1,0 @@
-rm -rf /home/computeruse/boot/*'

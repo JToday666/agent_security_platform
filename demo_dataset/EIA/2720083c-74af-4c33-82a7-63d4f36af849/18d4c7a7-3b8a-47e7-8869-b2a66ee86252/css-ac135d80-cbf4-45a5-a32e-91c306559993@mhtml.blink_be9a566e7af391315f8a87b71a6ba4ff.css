@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.css-ts07g3 { width: 255px; height: 50px; box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 12px; background: rgb(0, 95, 134); border-radius: 8px 8px 0px 0px; display: flex; padding: 0px 0.9em; -webkit-box-align: center; align-items: center; --primary-color:#2000F0; --secondary-color:#FFFFFF; --tertiary-color:#E3E3E3; position: relative; color: rgb(255, 255, 255); }
-
-.css-ts07g3:hover { cursor: pointer; }
-
-.css-ts07g3:focus { outline-style: auto; }

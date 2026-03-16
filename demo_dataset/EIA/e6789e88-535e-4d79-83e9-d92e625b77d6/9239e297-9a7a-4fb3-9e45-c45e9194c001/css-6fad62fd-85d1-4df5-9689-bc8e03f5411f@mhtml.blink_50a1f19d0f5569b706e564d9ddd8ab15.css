@@ -1,5 +1,0 @@
-@charset "utf-8";
-
-.video-responsive { overflow: hidden; padding-bottom: 56.25%; position: relative; height: 0px; }
-
-.video-responsive iframe { left: 0px; top: 0px; height: 100%; width: 100%; position: absolute; }

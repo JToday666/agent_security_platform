@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-@media only screen and (max-width: 750px) {
-  #ibu-online-lr-forgotpwd-container, #ibu-online-lr-login-container, #ibu-online-lr-register-container, #ibu-online-lr-thirdparty-container { height: 100% !important; }
-  .ibu-online-lr-thirdparty.third-p-three .third-p-three-icon { text-align: center !important; }
-  .ibu-online-lr-thirdparty.third-p-three .third-p-kakao-korea-icon, .ibu-online-lr-thirdparty.third-p-three .third-p-naver-korea-icon { margin-left: 40px !important; }
-  .ibu-online-lr-thirdparty.third-p-three .third-p-fb-korea-icon, .thirdparty-comp { margin-left: 0px !important; }
-  .thirdparty-comp { position: relative !important; top: 0px !important; bottom: 0px !important; left: 0px !important; margin-top: 0px !important; margin-bottom: 0px !important; z-index: 3000 !important; background-color: rgb(255, 255, 255) !important; overflow: hidden scroll !important; height: 100% !important; }
-}

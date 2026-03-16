@@ -1,5 +1,0 @@
-@charset "utf-8";
-
-.price { display: inline-flex; white-space: nowrap; }
-
-.price--strike-through { text-decoration: line-through; }

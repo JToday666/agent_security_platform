@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.pickerText_1c5160f7 { display: flex; flex-wrap: wrap; -webkit-box-align: center; align-items: center; box-sizing: border-box; border: 1px solid rgb(161, 159, 157); min-width: 180px; padding: 1px; min-height: 32px; }
-
-.pickerText_1c5160f7:hover { border-color: rgb(199, 224, 244); }
-
-.pickerInput_1c5160f7 { height: 34px; border: none; -webkit-box-flex: 1; flex-grow: 1; outline: 0px; padding: 0px 6px; margin: 1px; }
