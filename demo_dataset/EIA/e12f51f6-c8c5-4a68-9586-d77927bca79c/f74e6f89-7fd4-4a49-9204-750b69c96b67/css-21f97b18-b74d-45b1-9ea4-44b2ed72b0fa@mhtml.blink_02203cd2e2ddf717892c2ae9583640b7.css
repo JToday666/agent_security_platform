@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.spacer-wrapper { display: flex; width: 100%; }
-
-.spacer-wrapper .contents { width: 100%; }
-
-.spacer-wrapper .spacer { visibility: hidden; width: 0px; }

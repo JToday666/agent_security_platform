@@ -1,8 +1,0 @@
-@charset "utf-8";
-
-@media screen and (max-width: 767px) {
-  .navbar-signup-header .navbar-header { display: block; float: left; border: none; }
-  .navbar-signup-header .collapse { display: block; }
-  #header_container .container > .navbar-collapse { background-color: rgb(255, 255, 255); border: none; }
-  #header_outer .navbar-signup-header .navbar-collapse .navbar-right { float: right; margin-top: 4px; }
-}

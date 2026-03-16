@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.smb-uikit__link { box-sizing: border-box; color: rgb(24, 164, 252); }
-
-.smb-uikit__link > * { box-sizing: border-box; }
-
-.smb-uikit__link:hover { color: rgb(12, 152, 241); text-decoration: underline; cursor: pointer; }
-
-.smb-uikit__link:disabled, .smb-uikit__link[disabled] { color: rgb(68, 104, 132); cursor: not-allowed; }

@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.cp-confirm-modal { display: flex; flex-direction: column; width: 510px; }
-
-.cp-confirm-modal .confirm-modal-body { flex-grow: 1; margin: 30px auto; text-align: center; }
-
-.cp-confirm-modal .confirm-modal-footer { height: 75px; border-top: 1px solid rgb(205, 205, 205); padding: 20px; text-align: right; }
-
-.cp-confirm-modal .confirm-modal-footer > * { margin-left: 17px; }

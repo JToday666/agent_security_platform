@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.qr-details .qr-code-url { display: none; }
-
-.qr-details .qr-code { display: flex; height: 300px; justify-content: center; width: 100%; }
-
-.qr-details .qr-code svg { height: 100%; width: 100%; }
-
-.qr-details.inline-dialog { margin: 8px 0px 24px; }

@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.nav-header-logo { margin-top: 0.5rem; width: 130px; }
-
-@media (min-width: 1024px) {
-  .nav-header-logo { width: 150px; }
-}

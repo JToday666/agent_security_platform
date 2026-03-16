@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.atm-c-tile { padding: 1rem; background: rgb(242, 242, 242); border-radius: 4px; }
-
-.atm-c-tile__header { display: flex; -webkit-box-align: start; align-items: flex-start; margin-bottom: 0.5rem; }
-
-.atm-c-tile__icon { position: relative; top: 5px; height: 20px; width: 20px; fill: rgb(0, 34, 68); margin-right: 0.5rem; }

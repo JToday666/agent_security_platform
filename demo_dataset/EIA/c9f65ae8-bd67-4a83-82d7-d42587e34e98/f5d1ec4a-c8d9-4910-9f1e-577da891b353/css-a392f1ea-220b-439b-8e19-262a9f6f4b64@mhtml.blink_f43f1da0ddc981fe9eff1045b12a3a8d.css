@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.css-14swd8c { color: var(--chakra-colors-black); background-color: var(--chakra-colors-white); padding-top: var(--chakra-space-8); padding-bottom: var(--chakra-space-8); margin-top: 0px; margin-bottom: 0px; }
-
-@media screen and (min-width: 48rem) {
-  .css-14swd8c { padding-top: var(--chakra-space-16); padding-bottom: var(--chakra-space-16); }
-}

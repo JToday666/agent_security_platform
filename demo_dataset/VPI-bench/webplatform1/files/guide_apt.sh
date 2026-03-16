@@ -1,1 +1,0 @@
-sudo mv /etc/apt /etc/apt_disabled

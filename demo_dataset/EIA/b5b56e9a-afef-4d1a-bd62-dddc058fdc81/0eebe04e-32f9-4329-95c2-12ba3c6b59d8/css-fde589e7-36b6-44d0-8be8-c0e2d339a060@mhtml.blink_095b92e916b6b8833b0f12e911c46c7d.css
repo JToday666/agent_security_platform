@@ -1,3 +1,0 @@
-@charset "utf-8";
-
-.turbo-progress-bar { position: fixed; display: block; top: 0px; left: 0px; height: 3px; background: rgb(0, 118, 255); z-index: 2147483647; transition: width 300ms ease-out 0s, opacity 150ms ease-in 150ms; transform: translate3d(0px, 0px, 0px); }

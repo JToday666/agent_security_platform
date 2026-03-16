@@ -1,5 +1,0 @@
-@charset "utf-8";
-
-input.hint, textarea.hint { color: rgb(99, 99, 99); }
-
-form div.error { border: 1px solid rgb(220, 0, 0) !important; }

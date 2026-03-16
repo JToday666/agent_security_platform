@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-[_nghost-jft-c8] .fieldset__input[_ngcontent-jft-c8] .icon-required[_ngcontent-jft-c8] { display: none; }
-
-[_nghost-jft-c8] .icon-required[_ngcontent-jft-c8] { font-size: 0.8rem; line-height: 18px; }
-
-[_nghost-jft-c8] .icon-required[_ngcontent-jft-c8]::before { -webkit-font-smoothing: antialiased; content: "●"; font-size: 0.93333rem; color: rgb(195, 0, 25); font-weight: 700; font-family: inherit; line-height: 0; position: relative; bottom: 1px; }

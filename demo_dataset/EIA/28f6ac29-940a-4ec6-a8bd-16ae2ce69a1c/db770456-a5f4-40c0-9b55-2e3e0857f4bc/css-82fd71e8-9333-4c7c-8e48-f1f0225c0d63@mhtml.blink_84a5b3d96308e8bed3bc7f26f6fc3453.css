@@ -1,5 +1,0 @@
-@charset "utf-8";
-
-#app { scrollbar-gutter: stable; }
-
-#app[aria-hidden="true"] { overflow: hidden; position: fixed; width: 100vw; }

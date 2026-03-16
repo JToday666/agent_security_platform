@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.css-193by5c { width: var(--chakra-sizes-80); max-width: 100%; margin: 0px auto; }
-
-@media screen and (min-width: 64rem) {
-  .css-193by5c { width: auto; flex: 1 1 auto; }
-}

@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.mktoForm .mktoButtonWrap.mktoRound .mktoButton { color: rgb(255, 255, 255); border: 1px solid rgb(163, 190, 226); border-radius: 5px; background-color: rgb(119, 157, 213); background-image: linear-gradient(rgb(119, 157, 213), rgb(81, 134, 203)); padding: 0.4em 1em; font-size: 1em; }
-
-.mktoForm .mktoButtonWrap.mktoRound .mktoButton:hover { border: 1px solid rgb(69, 99, 140); }
-
-.mktoForm .mktoButtonWrap.mktoRound .mktoButton:focus { outline: none; border: 1px solid rgb(69, 99, 140); }
-
-.mktoForm .mktoButtonWrap.mktoRound .mktoButton:active { background-color: rgb(81, 134, 203); background-image: linear-gradient(rgb(81, 134, 203), rgb(119, 157, 213)); }

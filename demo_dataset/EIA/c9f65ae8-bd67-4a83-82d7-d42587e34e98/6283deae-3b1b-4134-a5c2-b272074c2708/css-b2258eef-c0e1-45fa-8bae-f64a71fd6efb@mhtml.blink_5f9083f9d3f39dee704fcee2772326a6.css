@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.css-x05q2w { grid-column: span 12 / span 12; text-align: center; }
-
-@media screen and (min-width: 64rem) {
-  .css-x05q2w { grid-column: 3 / span 8; }
-}

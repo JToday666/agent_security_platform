@@ -1,3 +1,0 @@
-@charset "utf-8";
-
-.ng-animate.item:not(.left):not(.right) { transition: left 0s ease-in-out 0s; }

@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.css-1hbf8le { display: flex; flex-direction: row; }
-
-@media (max-width: 564px) {
-  .css-1hbf8le { flex-direction: column; }
-}

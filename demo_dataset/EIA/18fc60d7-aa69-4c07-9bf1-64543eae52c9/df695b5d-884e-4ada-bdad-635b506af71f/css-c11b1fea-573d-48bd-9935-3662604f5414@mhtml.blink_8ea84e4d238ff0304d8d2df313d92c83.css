@@ -1,3 +1,0 @@
-@charset "utf-8";
-
-.accessibility-hidden { height: 0px; width: 0px; overflow: hidden; position: absolute; left: -999px; }

@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.app-components-Seatmap-SeatToolTip-SeatToolTip__tooltip--sOWVq { position: fixed; text-align: left; width: 0px; height: 0px; margin: 0px auto; z-index: 1; font-size: 12px; font-weight: normal; }
-
-.app-components-Seatmap-SeatToolTip-SeatToolTip__tooltip__container--2rLla { background: rgb(255, 255, 255); border: 1px solid rgb(172, 172, 172); border-radius: 3px; bottom: 100%; left: -39px; margin-bottom: 9px; padding: 8px; position: absolute; width: 220px; }
-
-.app-components-Seatmap-SeatToolTip-SeatToolTip__tooltip__container--2rLla::before { border-top: 9px solid rgb(172, 172, 172); border-right: 5px solid rgba(0, 0, 0, 0); border-left: 5px solid rgba(0, 0, 0, 0); content: ""; left: 34px; position: absolute; top: 100%; }
-
-.app-components-Seatmap-SeatToolTip-SeatToolTip__tooltip__container--2rLla::after { content: ""; position: absolute; top: 100%; left: 35px; border-top: 8px solid rgb(255, 255, 255); border-right: 4px solid rgba(0, 0, 0, 0); border-left: 4px solid rgba(0, 0, 0, 0); }

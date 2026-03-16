@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.app-components-AutoComplete-NoResultsMessage-styles__container--3gQJO { background-color: rgb(255, 255, 255); border: 1px solid rgb(102, 102, 102); border-radius: 0px 0px 0.28rem 0.28rem; box-shadow: rgb(51, 51, 51) -1px 1px 1px 0px; display: block; outline: 0px; position: relative; text-align: left; width: 100%; z-index: 4; }
-
-.app-components-AutoComplete-NoResultsMessage-styles__text--22U5s { font-size: 1rem; line-height: 1.5rem; margin: 0px; padding: 0.5rem; }
-
-@media screen and (min-width: 720px) {
-  .app-components-AutoComplete-NoResultsMessage-styles__container--3gQJO { position: absolute; }
-}

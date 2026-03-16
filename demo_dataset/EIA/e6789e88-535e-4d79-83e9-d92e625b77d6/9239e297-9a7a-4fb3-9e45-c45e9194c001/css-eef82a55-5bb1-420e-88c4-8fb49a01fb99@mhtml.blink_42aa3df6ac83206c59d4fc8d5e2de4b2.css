@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.framed #kampyleButtonContainer { display: none !important; }
-
-.framed .alme--window { display: none !important; }
-
-.grecaptcha-badge { visibility: hidden !important; }

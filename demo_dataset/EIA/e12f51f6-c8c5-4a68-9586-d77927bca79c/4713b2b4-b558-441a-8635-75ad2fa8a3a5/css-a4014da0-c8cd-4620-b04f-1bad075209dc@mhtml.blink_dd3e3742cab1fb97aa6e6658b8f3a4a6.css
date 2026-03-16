@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.payment-react.inline .payment-website { }
-
-.payment-react.inline .payment-website.hidden { opacity: 0; }
-
-.inline-dialog + .payment-website { display: none; }

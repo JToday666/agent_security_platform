@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.message-list[data-v-7218dcc5] { padding-top: 1rem; overflow: hidden auto; }
-
-.message-bot[data-v-7218dcc5] { align-self: flex-start; }
-
-.message-human[data-v-7218dcc5] { align-self: flex-end; }
-
-.message-feedback[data-v-7218dcc5] { align-self: flex-end; }

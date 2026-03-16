@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.css-d7es2a { display: flex; flex-basis: 100%; flex-direction: column; }
-
-@media (min-width: 564px) {
-  .css-d7es2a { margin-left: 20px; }
-}

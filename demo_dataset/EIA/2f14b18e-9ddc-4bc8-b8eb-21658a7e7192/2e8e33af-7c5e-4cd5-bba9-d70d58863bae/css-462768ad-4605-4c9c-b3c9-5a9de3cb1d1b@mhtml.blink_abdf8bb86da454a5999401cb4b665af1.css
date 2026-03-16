@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-#app[aria-hidden="true"] { overflow: hidden; position: fixed; width: 100vw; }
-
-@media screen and (min-width: 768px) {
-  #app[aria-hidden="true"] { border-right: 15px solid transparent; }
-}

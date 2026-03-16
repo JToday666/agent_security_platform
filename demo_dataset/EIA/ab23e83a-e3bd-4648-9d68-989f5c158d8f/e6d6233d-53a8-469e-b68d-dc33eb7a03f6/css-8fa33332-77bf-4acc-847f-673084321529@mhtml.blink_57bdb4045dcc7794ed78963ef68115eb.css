@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.app-components-Refunds-tabs-RequestARefund-sections-GetBack-styles__requestEmail--RK7vf { margin-top: 0px; }
-
-.app-components-Refunds-tabs-RequestARefund-sections-GetBack-styles__emailField--3fZbd { margin: 24px 0px; max-width: 304px; }
-
-@media screen and (min-width: 720px) {
-  .app-components-Refunds-tabs-RequestARefund-sections-GetBack-styles__emailField--3fZbd { width: 50%; }
-}

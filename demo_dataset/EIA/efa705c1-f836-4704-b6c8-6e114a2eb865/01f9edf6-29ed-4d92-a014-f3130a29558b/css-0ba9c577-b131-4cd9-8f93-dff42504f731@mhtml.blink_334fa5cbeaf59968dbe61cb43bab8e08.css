@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.css-uicjjq { margin: -8px; display: flex; flex-direction: row; -webkit-box-pack: justify; justify-content: space-between; }
-
-.css-uicjjq > * { margin: 8px; }
-
-@media (min-width: 564px) {
-  .css-uicjjq { -webkit-box-pack: end; justify-content: flex-end; }
-}

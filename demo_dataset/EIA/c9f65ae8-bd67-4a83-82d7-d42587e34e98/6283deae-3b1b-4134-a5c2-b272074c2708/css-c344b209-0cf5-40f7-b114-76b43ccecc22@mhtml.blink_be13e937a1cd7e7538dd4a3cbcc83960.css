@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.css-vhgmxi { margin-top: var(--chakra-space-14); }
-
-@media screen and (min-width: 64rem) {
-  .css-vhgmxi { margin-top: 0px; }
-}

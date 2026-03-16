@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.css-1wsyhmk { cursor: pointer; text-decoration: none; outline: transparent solid 2px; outline-offset: 2px; color: var(--chakra-colors-gray-800); transition: none 0s ease 0s; font-weight: 400; padding-top: var(--chakra-space-3-5); padding-bottom: var(--chakra-space-3-5); padding-left: var(--chakra-space-6); font-size: var(--chakra-fontSizes-base); position: relative; display: flex; -webkit-box-align: center; align-items: center; height: auto; width: 100%; text-align: left; line-height: var(--chakra-lineHeights-6); border-bottom-width: 1px; border-bottom-style: solid; border-color: var(--chakra-colors-accent); border-radius: 0px; }
-
-.css-1wsyhmk:hover, .css-1wsyhmk[data-hover] { text-decoration: none; color: var(--chakra-colors-primary-600); }
-
-.css-1wsyhmk:focus, .css-1wsyhmk[data-focus] { box-shadow: var(--chakra-shadows-outline); }
-
-.css-1wsyhmk svg { display: inline-block; vertical-align: initial; }

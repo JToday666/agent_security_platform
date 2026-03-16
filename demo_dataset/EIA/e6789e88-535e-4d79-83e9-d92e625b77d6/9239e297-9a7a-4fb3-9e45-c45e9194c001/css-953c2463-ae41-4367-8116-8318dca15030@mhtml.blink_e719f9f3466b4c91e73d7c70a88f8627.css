@@ -1,7 +1,0 @@
-@charset "utf-8";
-
-.mobile-only-heading { display: none; visibility: hidden; }
-
-@media (max-width: 670px) {
-  .mobile-only-heading { display: inline; visibility: visible; }
-}

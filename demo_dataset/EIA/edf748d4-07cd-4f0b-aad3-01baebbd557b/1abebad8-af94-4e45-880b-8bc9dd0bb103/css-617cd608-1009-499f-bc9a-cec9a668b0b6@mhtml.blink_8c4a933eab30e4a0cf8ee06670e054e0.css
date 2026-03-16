@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.price[_nghost-iyw-c155] { display: inline-flex; white-space: nowrap; }
-
-.price--strike-through[_nghost-iyw-c155] { text-decoration: line-through; }
-
-.price__symbol--suffix[_ngcontent-iyw-c155] { order: 1; }
-
-.price__symbol--suffix[_ngcontent-iyw-c155]::before { content: " "; }

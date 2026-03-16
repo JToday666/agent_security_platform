@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-body:not(.loaded) app-root { display: none; }
-
-body:not(.loaded) app-root-scully { display: inherit; }
-
-body.loaded app-root { display: inherit; }
-
-body.loaded app-root-scully { display: none; }

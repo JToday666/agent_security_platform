@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-.css-wlk1sc { margin-right: -4px; margin-left: -4px; margin-top: -8px; display: flex; flex-direction: row; -webkit-box-align: center; align-items: center; margin-bottom: -12px !important; }
-
-.css-wlk1sc > * { margin: 8px 4px; }
-
-@media (max-width: 768px) {
-  .css-wlk1sc { display: none; }
-}
