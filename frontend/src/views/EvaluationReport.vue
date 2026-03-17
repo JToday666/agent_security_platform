@@ -1,70 +1,55 @@
 <template>
-	<Navbar />
-	<main class="page-container report-page">
-		<UserSidebar />
-		<div class="content-area">
-			<div class="report-card">
-				<h1 class="page-title">评测详情报告</h1>
-				<p class="report-id">报告 ID：{{ id }}</p>
+	<div class="report-card ui-surface-glass">
+		<h1 class="page-title">评估报告</h1>
+		<p class="report-id">报告 ID：{{ id }}</p>
 
-				<div class="summary-section">
-					<div class="summary-item">
-						<span class="label">智能体名称</span>
-						<span class="value">{{ report.agentName }}</span>
-					</div>
-					<div class="summary-item">
-						<span class="label">评测数据集</span>
-						<span class="value">{{ report.dataset }}</span>
-					</div>
-					<div class="summary-item">
-						<span class="label">评测时间</span>
-						<span class="value">{{ report.date }}</span>
-					</div>
-					<div class="summary-item">
-						<span class="label">综合得分</span>
-						<span class="value score">{{ report.score }}</span>
-					</div>
-				</div>
-
-				<h2 class="section-title">详细指标</h2>
-				<div class="metrics-grid">
-					<div
-						v-for="metric in report.metrics"
-						:key="metric.name"
-						class="metric-item"
-					>
-						<div class="metric-header">
-							<span class="metric-name">{{ metric.name }}</span>
-							<span class="metric-value">{{ metric.value }}</span>
-						</div>
-						<div class="progress-bar">
-							<div
-								class="progress-fill"
-								:style="{ width: metric.percentage + '%' }"
-							></div>
-						</div>
-						<p class="metric-desc">{{ metric.description }}</p>
-					</div>
-				</div>
-
-				<div class="remarks" v-if="report.remarks">
-					<h3>备注</h3>
-					<p>{{ report.remarks }}</p>
-				</div>
-
-				<div class="actions">
-					<button class="back-btn" @click="goBack">← 返回评测记录</button>
-				</div>
+		<div class="summary-section ui-surface-white">
+			<div class="summary-item">
+				<span class="label">智能体名称</span>
+				<span class="value">{{ report.agentName }}</span>
+			</div>
+			<div class="summary-item">
+				<span class="label">评估数据集</span>
+				<span class="value">{{ report.dataset }}</span>
+			</div>
+			<div class="summary-item">
+				<span class="label">评估时间</span>
+				<span class="value">{{ report.date }}</span>
+			</div>
+			<div class="summary-item">
+				<span class="label">综合得分</span>
+				<span class="value score">{{ report.score }}</span>
 			</div>
 		</div>
-	</main>
+
+		<h2 class="section-title">详细指标</h2>
+		<div class="metrics-grid">
+			<div v-for="metric in report.metrics" :key="metric.name" class="metric-item ui-surface-white">
+				<div class="metric-header">
+					<span class="metric-name">{{ metric.name }}</span>
+					<span class="metric-value">{{ metric.value }}</span>
+				</div>
+				<div class="progress-bar">
+					<div class="progress-fill" :style="{ width: metric.percentage + '%' }"></div>
+				</div>
+				<p class="metric-desc">{{ metric.description }}</p>
+			</div>
+		</div>
+
+		<div class="remarks" v-if="report.remarks">
+			<h3>备注</h3>
+			<p>{{ report.remarks }}</p>
+		</div>
+
+		<div class="actions">
+			<button class="back-btn ui-btn ui-btn-pill" @click="goBack">← 返回评估记录</button>
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { computed } from "vue";
-import Navbar from "@/components/NavBar.vue";
-import UserSidebar from "@/components/UserSidebar.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -81,13 +66,13 @@ const report = computed(() => {
 				name: "攻击检测率",
 				value: "94%",
 				percentage: 94,
-				description: "成功识别提示注入攻击的比例",
+				description: "成功识别提示注入攻击的比率",
 			},
 			{
 				name: "误报率",
 				value: "3%",
 				percentage: 3,
-				description: "正常请求被误判为攻击的比例",
+				description: "正常请求被误判为攻击的比率",
 			},
 			{
 				name: "响应时间",
@@ -113,77 +98,10 @@ const goBack = () => {
 </script>
 
 <style scoped>
-/* 全局重置与动画 */
-* {
-	box-sizing: border-box;
-}
-
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-.page-container {
-	min-height: 100vh;
-	padding-top: 80px;
-	background: linear-gradient(145deg, #f8fafc 0%, #eef2f6 100%);
-	display: flex;
-	position: relative;
-	overflow: hidden;
-}
-
-/* 微弱的纹理背景（与首页一致） */
-.page-container::before {
-	content: "";
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-image:
-		radial-gradient(
-			circle at 20% 30%,
-			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
-			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
-	pointer-events: none;
-}
-
-.content-area {
-	flex: 1;
-	margin-left: 240px;
-	/* 与侧边栏宽度相同 */
-	padding: 2rem;
-	transition: margin-left 0.3s ease;
-	position: relative;
-	z-index: 2;
-	animation: fadeInUp 0.8s ease;
-}
-
-.user-sidebar.collapsed ~ .content-area {
-	margin-left: 70px;
-}
-
+/* 全局重置动画 */
 .report-card {
-	background: rgba(255, 255, 255, 0.7);
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
 	border-radius: 2rem;
 	padding: 2.5rem;
-	box-shadow:
-		0 20px 40px -10px rgba(0, 0, 0, 0.1),
-		0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-	color: #1e293b;
 	max-width: 800px;
 	margin: 0 auto;
 }
@@ -192,11 +110,6 @@ const goBack = () => {
 	font-size: 2.5rem;
 	font-weight: 700;
 	margin-bottom: 0.5rem;
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	text-shadow: 0 5px 15px rgba(37, 99, 235, 0.15);
 }
 
 .report-id {
@@ -211,12 +124,9 @@ const goBack = () => {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 	gap: 1.5rem;
-	background: white;
 	border-radius: 1.2rem;
 	padding: 1.5rem;
 	margin-bottom: 2rem;
-	box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.05);
-	border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
 .summary-item {
@@ -259,11 +169,8 @@ const goBack = () => {
 }
 
 .metric-item {
-	background: white;
 	padding: 1.2rem;
 	border-radius: 1rem;
-	box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.05);
-	border: 1px solid rgba(0, 0, 0, 0.02);
 	transition:
 		transform 0.2s,
 		box-shadow 0.2s;
@@ -303,7 +210,7 @@ const goBack = () => {
 
 .progress-fill {
 	height: 100%;
-	background: linear-gradient(90deg, #2563eb, #7c3aed);
+	background: var(--grad-progress);
 	border-radius: 4px;
 	transition: width 0.3s ease;
 }
@@ -342,18 +249,9 @@ const goBack = () => {
 }
 
 .back-btn {
-	background: transparent;
-	border: 1px solid #cbd5e1;
-	color: #475569;
 	padding: 0.8rem 2rem;
-	border-radius: 50px;
 	font-size: 1rem;
 	font-weight: 500;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	display: inline-flex;
-	align-items: center;
-	gap: 0.3rem;
 }
 
 .back-btn:hover {
@@ -363,13 +261,8 @@ const goBack = () => {
 	box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
 }
 
-/* 移动端适应 */
+/* 移动端适配 */
 @media (max-width: 768px) {
-	.content-area {
-		margin-left: 0;
-		padding: 1rem;
-	}
-
 	.report-card {
 		padding: 1.5rem;
 	}

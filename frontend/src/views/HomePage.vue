@@ -1,6 +1,5 @@
 <template>
-	<Navbar />
-	<main class="home-main">
+	<div class="home-page">
 		<div class="hero">
 			<!-- 标题区域 -->
 			<div class="hero-content">
@@ -12,10 +11,10 @@
 			</div>
 
 			<!-- 使用指南卡片 -->
-			<div class="guide-card">
+			<div class="guide-card ui-surface-glass">
 				<h2 class="guide-title">三步快速上手</h2>
 				<div class="steps-grid">
-					<div class="step-item" v-for="(step, index) in steps" :key="index">
+					<div class="step-item ui-surface-white" v-for="(step, index) in steps" :key="index">
 						<div class="step-number">{{ index + 1 }}</div>
 						<h3>{{ step.title }}</h3>
 						<p>{{ step.desc }}</p>
@@ -27,10 +26,10 @@
 			<div class="actions">
 				<!-- 第一行：核心功能按钮 -->
 				<div class="primary-actions">
-					<button class="btn primary" @click="goDataset">
+					<button class="btn primary ui-btn ui-btn-pill" @click="goDataset">
 						<span>📊</span> 浏览数据集
 					</button>
-					<button class="btn primary" @click="goLeaderboard">
+					<button class="btn primary ui-btn ui-btn-pill" @click="goLeaderboard">
 						<span>🏆</span> 查看排行榜
 					</button>
 				</div>
@@ -38,21 +37,18 @@
 				<!-- 第二行：用户相关（登录/个人中心） -->
 				<div class="user-actions">
 					<template v-if="!isLogin">
-						<button class="btn accent" @click="openLoginDialog">
+						<button class="btn accent ui-btn ui-btn-pill ui-btn-gradient" @click="openLoginDialog">
 							<span>✨</span> 登录 / 注册
 						</button>
 					</template>
 					<template v-else>
 						<div class="welcome-card">
-							<span class="greeting"
-								>欢迎回来，<strong>{{ username }}</strong
-								>！</span
-							>
+							<span class="greeting">欢迎回来，<strong>{{ username }}</strong>！</span>
 							<div class="action-buttons">
-								<router-link to="/user" class="btn outline">
+								<router-link to="/user" class="btn outline ui-btn ui-btn-pill">
 									<span>👤</span> 个人中心
 								</router-link>
-								<button class="btn logout" @click="handleLogoutClick">
+								<button class="btn logout ui-btn ui-btn-pill" @click="handleLogoutClick">
 									<span>🚪</span> 退出
 								</button>
 							</div>
@@ -61,23 +57,14 @@
 				</div>
 			</div>
 		</div>
-	</main>
+	</div>
 
 	<!-- 登录弹窗 -->
 	<LoginDialog />
 
 	<!-- 退出确认弹窗 -->
-	<ConfirmDialog
-		v-model="showLogoutConfirm"
-		title="确认退出"
-		message="您确定要退出登录吗？"
-		confirm-text="退出"
-		cancel-text="取消"
-		:danger="true"
-		:loading="logoutLoading"
-		@confirm="handleLogoutConfirm"
-		@cancel="handleLogoutCancel"
-	/>
+	<ConfirmDialog v-model="showLogoutConfirm" title="确认退出" message="您确定要退出登录吗？" confirm-text="退出" cancel-text="取消"
+		:danger="true" :loading="logoutLoading" @confirm="handleLogoutConfirm" @cancel="handleLogoutCancel" />
 </template>
 
 <script setup lang="ts">
@@ -85,7 +72,6 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
-import Navbar from "@/components/NavBar.vue";
 import LoginDialog from "@/components/LoginDialog.vue";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
 
@@ -132,11 +118,8 @@ const handleLogoutCancel = () => {
 
 <style scoped>
 /* 全局重置与动画 */
-* {
-	box-sizing: border-box;
-}
-
 @keyframes float {
+
 	0%,
 	100% {
 		transform: translateY(0);
@@ -147,35 +130,13 @@ const handleLogoutCancel = () => {
 	}
 }
 
-.home-main {
-	min-height: 100vh;
-	padding-top: 80px;
-	background: linear-gradient(145deg, #f8fafc 0%, #eef2f6 100%);
+.home-page {
+	min-height: calc(100vh - 80px);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	position: relative;
-	overflow: hidden;
-}
-
-/* 浅色背景上的微弱纹理 */
-.home-main::before {
-	content: "";
-	position: absolute;
 	width: 100%;
-	height: 100%;
-	background-image:
-		radial-gradient(
-			circle at 20% 30%,
-			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
-			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
-	pointer-events: none;
 }
 
 .hero {
@@ -194,28 +155,10 @@ const handleLogoutCancel = () => {
 	animation: fadeInUp 1s ease;
 }
 
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
 .title {
 	font-size: 3.5rem;
 	font-weight: 800;
 	margin-bottom: 0.5rem;
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	-webkit-background-clip: text;
-	background-clip: text;
-	/* 添加标准属性，消除警告 */
-	-webkit-text-fill-color: transparent;
-	text-shadow: 0 5px 15px rgba(37, 99, 235, 0.15);
 }
 
 .subtitle {
@@ -235,15 +178,9 @@ const handleLogoutCancel = () => {
 
 /* 指南卡片 */
 .guide-card {
-	background: rgba(255, 255, 255, 0.7);
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
 	border-radius: 3rem;
 	padding: 2.5rem;
 	margin: 3rem 0;
-	box-shadow:
-		0 20px 40px -10px rgba(0, 0, 0, 0.1),
-		0 0 0 1px rgba(255, 255, 255, 0.8) inset;
 	transition: transform 0.3s ease;
 }
 
@@ -266,18 +203,9 @@ const handleLogoutCancel = () => {
 }
 
 .step-item {
-	background: white;
-	border-radius: 1.5rem;
 	padding: 1.5rem 1rem;
 	text-align: center;
-	transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	cursor: default;
-	box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-}
-
-.step-item:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.15);
 }
 
 .step-number {
@@ -358,16 +286,11 @@ const handleLogoutCancel = () => {
 
 /* 按钮样式 */
 .btn {
-	display: inline-flex;
-	align-items: center;
+	justify-content: center;
 	gap: 0.6rem;
 	padding: 0.9rem 2.2rem;
 	border: none;
-	border-radius: 50px;
 	font-size: 1rem;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	text-decoration: none;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
 }
@@ -394,13 +317,6 @@ const handleLogoutCancel = () => {
 .primary:hover {
 	background: #f8fafc;
 	border-color: #cbd5e1;
-}
-
-.accent {
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	color: white;
-	border: none;
-	box-shadow: 0 8px 18px -6px #2563eb80;
 }
 
 .accent:hover {

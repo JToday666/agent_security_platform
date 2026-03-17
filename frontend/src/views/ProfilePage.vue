@@ -1,116 +1,79 @@
 <template>
-	<Navbar />
-	<main class="page-container profile-page">
-		<UserSidebar />
-		<div class="content-area">
-			<div class="form-card">
-				<h1 class="page-title">修改信息</h1>
-				<p class="page-subtitle">更新您的个人资料和账户信息。</p>
+	<div class="form-card ui-surface-glass">
+		<h1 class="page-title">修改信息</h1>
+		<p class="page-subtitle">更新您的个人资料和账户信息。</p>
 
-				<form @submit.prevent="handleSubmit" class="profile-form">
-					<!-- 头像上传区域 -->
-					<div class="avatar-section">
-						<div class="avatar-preview">
-							<img
-								:src="avatarPreview || avatarUrl || defaultAvatar"
-								alt="头像"
-								v-if="avatarPreview || avatarUrl"
-							/>
-							<span v-else class="avatar-placeholder">📷</span>
-						</div>
-						<div class="avatar-upload">
-							<label for="avatar" class="upload-label">选择新头像</label>
-							<input
-								type="file"
-								id="avatar"
-								accept="image/*"
-								@change="onAvatarChange"
-								class="hidden-input"
-								:disabled="uploading"
-							/>
-							<p class="hint">支持 JPG、PNG，大小不超过 2MB</p>
-							<div v-if="uploading" class="uploading-hint">上传中...</div>
-						</div>
-					</div>
-
-					<!-- 表单字段 -->
-					<div class="form-group">
-						<label for="username">用户名</label>
-						<input
-							type="text"
-							id="username"
-							v-model="form.username"
-							placeholder="请输入用户名"
-							required
-						/>
-					</div>
-
-					<div class="form-group">
-						<label for="email">邮箱</label>
-						<input
-							type="email"
-							id="email"
-							v-model="form.email"
-							readonly
-							class="readonly-field"
-						/>
-						<p class="field-hint">邮箱不可修改</p>
-					</div>
-
-					<div class="form-group">
-						<label for="password">新密码</label>
-						<input
-							type="password"
-							id="password"
-							v-model="form.password"
-							placeholder="留空表示不修改"
-						/>
-					</div>
-
-					<div class="form-group">
-						<label for="confirmPassword">确认新密码</label>
-						<input
-							type="password"
-							id="confirmPassword"
-							v-model="form.confirmPassword"
-							placeholder="再次输入新密码"
-						/>
-					</div>
-
-					<div v-if="message" class="form-message" :class="messageType">
-						{{ message }}
-					</div>
-
-					<div class="form-actions">
-						<button type="submit" class="submit-btn" :disabled="submitting">
-							{{ submitting ? "保存中..." : "保存修改" }}
-						</button>
-						<button
-							type="button"
-							class="cancel-btn"
-							@click="resetForm"
-							:disabled="submitting"
-						>
-							取消
-						</button>
-					</div>
-				</form>
+		<form @submit.prevent="handleSubmit" class="profile-form">
+			<!-- 头像上传区域 -->
+			<div class="avatar-section ui-surface-white">
+				<div class="avatar-preview">
+					<img :src="avatarPreview || avatarUrl || defaultAvatar" alt="头像"
+						v-if="avatarPreview || avatarUrl" />
+					<span v-else class="avatar-placeholder">📷</span>
+				</div>
+				<div class="avatar-upload">
+					<label for="avatar"
+						class="upload-label ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift">选择新头像</label>
+					<input type="file" id="avatar" accept="image/*" @change="onAvatarChange" class="hidden-input"
+						:disabled="uploading" />
+					<p class="hint">支持 JPG、PNG，大小不超过 2MB</p>
+					<div v-if="uploading" class="uploading-hint">上传中..</div>
+				</div>
 			</div>
-		</div>
-	</main>
+
+			<!-- 表单字段 -->
+			<div class="form-group">
+				<label for="username">用户名</label>
+				<input type="text" id="username" class="ui-input-pill ui-input-focus-ring" v-model="form.username"
+					placeholder="请输入用户名" required />
+			</div>
+
+			<div class="form-group">
+				<label for="email">邮箱</label>
+				<input type="email" id="email" v-model="form.email" readonly
+					class="readonly-field ui-input-pill ui-input-focus-ring" />
+				<p class="field-hint">邮箱不可修改</p>
+			</div>
+
+			<div class="form-group">
+				<label for="password">新密码</label>
+				<input type="password" id="password" class="ui-input-pill ui-input-focus-ring" v-model="form.password"
+					placeholder="留空表示不修改" />
+			</div>
+
+			<div class="form-group">
+				<label for="confirmPassword">确认新密码</label>
+				<input type="password" id="confirmPassword" class="ui-input-pill ui-input-focus-ring"
+					v-model="form.confirmPassword" placeholder="再次输入新密码" />
+			</div>
+
+			<div v-if="message" class="form-message" :class="messageType">
+				{{ message }}
+			</div>
+
+			<div class="form-actions">
+				<button type="submit" class="submit-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
+					:disabled="submitting">
+					{{ submitting ? "保存中..." : "保存修改" }}
+				</button>
+				<button type="button" class="cancel-btn ui-btn ui-btn-pill ui-btn-outline" @click="resetForm"
+					:disabled="submitting">
+					取消
+				</button>
+			</div>
+		</form>
+	</div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch } from "vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
-import Navbar from "@/components/NavBar.vue";
-import UserSidebar from "@/components/UserSidebar.vue";
 
 const userStore = useUserStore();
 const { currentUser, avatarUrl } = storeToRefs(userStore);
 
-// 默认头像（请替换为实际图片地址）
+// 默认头像，请替换为实际图片地址。
 const defaultAvatar = "https://via.placeholder.com/100?text=Avatar";
 
 // 表单数据
@@ -127,7 +90,7 @@ const uploading = ref(false);
 const message = ref("");
 const messageType = ref<"success" | "error">("success");
 
-// 从 store 加载当前用户信息到表单
+// 从store加载当前用户信息到表单
 const loadUserData = () => {
 	if (currentUser.value) {
 		form.username = currentUser.value.username || "";
@@ -144,7 +107,7 @@ onMounted(() => {
 			.then(() => {
 				loadUserData();
 			})
-			.catch(() => {});
+			.catch(() => { });
 	}
 });
 
@@ -195,7 +158,7 @@ const handleSubmit = async () => {
 		return;
 	}
 
-	// 构建更新数据（只包含可修改字段：用户名、密码）
+	// 创建更新数据，只包含可修改字段：用户名、密码
 	const updateData: {
 		username?: string;
 		password?: string;
@@ -219,7 +182,7 @@ const handleSubmit = async () => {
 
 	try {
 		await userStore.updateProfile(updateData);
-		message.value = "信息更新成功！";
+		message.value = "信息更新成功";
 		messageType.value = "success";
 		form.password = "";
 		form.confirmPassword = "";
@@ -232,7 +195,7 @@ const handleSubmit = async () => {
 };
 
 const resetForm = () => {
-	loadUserData(); // 重置为 store 中的原始数据
+	loadUserData(); // 重置为store中的原始数据
 	form.password = "";
 	form.confirmPassword = "";
 	avatarPreview.value = null;
@@ -240,80 +203,12 @@ const resetForm = () => {
 };
 </script>
 
-<style scoped></style>
 
 <style scoped>
-/* 全局重置与动画 */
-* {
-	box-sizing: border-box;
-}
-
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-.page-container {
-	min-height: 100vh;
-	padding-top: 80px;
-	background: linear-gradient(145deg, #f8fafc 0%, #eef2f6 100%);
-	display: flex;
-	position: relative;
-	overflow: hidden;
-}
-
-/* 微弱的纹理背景 */
-.page-container::before {
-	content: "";
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-image:
-		radial-gradient(
-			circle at 20% 30%,
-			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
-			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
-	pointer-events: none;
-}
-
-.content-area {
-	flex: 1;
-	margin-left: 240px;
-	/* 与侧边栏宽度相同 */
-	padding: 2rem;
-	transition: margin-left 0.3s ease;
-	position: relative;
-	z-index: 2;
-	animation: fadeInUp 0.8s ease;
-}
-
-.user-sidebar.collapsed ~ .content-area {
-	margin-left: 70px;
-}
-
+/* 全局重置动画 */
 .form-card {
-	background: rgba(255, 255, 255, 0.7);
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
 	border-radius: 2rem;
 	padding: 2.5rem;
-	box-shadow:
-		0 20px 40px -10px rgba(0, 0, 0, 0.1),
-		0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-	color: #1e293b;
 	max-width: 600px;
 	margin: 0 auto;
 }
@@ -322,18 +217,11 @@ const resetForm = () => {
 	font-size: 2.5rem;
 	font-weight: 700;
 	margin-bottom: 0.5rem;
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	text-shadow: 0 5px 15px rgba(37, 99, 235, 0.15);
 }
 
 .page-subtitle {
 	font-size: 1.1rem;
-	color: #475569;
 	margin-bottom: 2rem;
-	line-height: 1.6;
 }
 
 /* 头像区域 */
@@ -342,11 +230,8 @@ const resetForm = () => {
 	gap: 2rem;
 	align-items: center;
 	margin-bottom: 2rem;
-	background: white;
 	padding: 1.5rem;
 	border-radius: 1.2rem;
-	box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.05);
-	border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
 .avatar-preview {
@@ -379,24 +264,14 @@ const resetForm = () => {
 
 .upload-label {
 	display: inline-block;
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	color: white;
 	padding: 0.5rem 1.5rem;
-	border-radius: 30px;
 	font-weight: 500;
-	cursor: pointer;
 	transition:
 		transform 0.2s,
 		box-shadow 0.2s;
 	margin-bottom: 0.5rem;
-	box-shadow: 0 8px 18px -6px #2563eb80;
 	border: none;
 	font-size: 0.95rem;
-}
-
-.upload-label:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 15px 25px -8px #2563eb;
 }
 
 .hidden-input {
@@ -424,21 +299,11 @@ const resetForm = () => {
 .form-group input {
 	width: 100%;
 	padding: 0.8rem 1.2rem;
-	background: white;
-	border: 1px solid #e2e8f0;
-	border-radius: 30px;
-	color: #1e293b;
 	font-size: 1rem;
 	transition:
 		border-color 0.2s,
 		box-shadow 0.2s;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-}
-
-.form-group input:focus {
-	outline: none;
-	border-color: #2563eb;
-	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .form-group input::placeholder {
@@ -477,25 +342,11 @@ const resetForm = () => {
 .cancel-btn {
 	padding: 0.8rem 2rem;
 	border: none;
-	border-radius: 50px;
 	font-size: 1rem;
-	font-weight: 600;
-	cursor: pointer;
 	transition:
 		transform 0.2s,
 		box-shadow 0.2s;
 	flex: 1;
-}
-
-.submit-btn {
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	color: white;
-	box-shadow: 0 8px 18px -6px #2563eb80;
-}
-
-.submit-btn:hover:not(:disabled) {
-	transform: translateY(-2px);
-	box-shadow: 0 15px 25px -8px #2563eb;
 }
 
 .submit-btn:disabled {
@@ -503,12 +354,6 @@ const resetForm = () => {
 	cursor: not-allowed;
 	transform: none;
 	box-shadow: none;
-}
-
-.cancel-btn {
-	background: transparent;
-	color: #475569;
-	border: 1px solid #cbd5e1;
 }
 
 .cancel-btn:hover {
@@ -520,11 +365,6 @@ const resetForm = () => {
 
 /* 响应式 */
 @media (max-width: 768px) {
-	.content-area {
-		margin-left: 0;
-		padding: 1rem;
-	}
-
 	.form-card {
 		padding: 1.5rem;
 	}
@@ -536,19 +376,18 @@ const resetForm = () => {
 	}
 }
 
-.hidden-input {
-	display: none;
-}
 .uploading-hint {
 	color: #666;
 	font-size: 0.85rem;
 	margin-top: 0.25rem;
 }
+
 .readonly-field {
 	background-color: #f5f5f5;
 	cursor: not-allowed;
 	color: #666;
 }
+
 .field-hint {
 	font-size: 0.8rem;
 	color: #999;

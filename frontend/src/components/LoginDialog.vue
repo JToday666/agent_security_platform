@@ -1,9 +1,9 @@
 <template>
 	<Teleport to="body">
 		<Transition name="fade" @after-leave="afterLeave">
-			<div v-if="showLogin" class="dialog-overlay" @click.self="closeDialog">
+			<div v-if="showLogin" class="dialog-overlay ui-modal-overlay" @click.self="closeDialog">
 				<Transition name="scale" appear>
-					<div class="dialog-card">
+					<div class="dialog-card ui-modal-card">
 						<!-- 关闭按钮 -->
 						<button class="close-btn" @click="closeDialog" aria-label="关闭">
 							<XMarkIcon class="w-5 h-5" />
@@ -25,45 +25,20 @@
 						</div>
 
 						<!-- 登录表单 -->
-						<form
-							v-if="mode === 'login'"
-							@submit.prevent="handleLogin"
-							class="form"
-						>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'login-username' }"
-							>
+						<form v-if="mode === 'login'" @submit.prevent="handleLogin" class="form">
+							<div class="form-group" :class="{ focused: focusedField === 'login-username' }">
 								<UserIcon class="input-icon" />
-								<input
-									v-model="loginForm.username"
-									type="text"
-									placeholder="用户名/邮箱"
-									required
-									@focus="focusedField = 'login-username'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="loginForm.username" type="text" placeholder="用户名/邮箱" required
+									@focus="focusedField = 'login-username'" @blur="focusedField = null" />
 							</div>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'login-password' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'login-password' }">
 								<LockClosedIcon class="input-icon" />
-								<input
-									v-model="loginForm.password"
-									type="password"
-									placeholder="密码"
-									required
-									@focus="focusedField = 'login-password'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="loginForm.password" type="password" placeholder="密码" required
+									@focus="focusedField = 'login-password'" @blur="focusedField = null" />
 							</div>
 
 							<!-- 密码长度提示 -->
-							<div
-								v-if="loginForm.password && loginForm.password.length < 6"
-								class="error-message"
-							>
+							<div v-if="loginForm.password && loginForm.password.length < 6" class="error-message">
 								密码长度至少6位
 							</div>
 
@@ -74,80 +49,37 @@
 								</div>
 							</Transition>
 
-							<button
-								type="submit"
-								class="submit-btn"
-								:disabled="!isLoginValid || loading"
-							>
+							<button type="submit" class="submit-btn ui-btn" :disabled="!isLoginValid || loading">
 								<span v-if="!loading">登录</span>
-								<span v-else class="loader"></span>
+								<span v-else class="loader ui-loader"></span>
 							</button>
 						</form>
 
 						<!-- 注册表单 -->
 						<form v-else @submit.prevent="handleRegister" class="form">
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'reg-username' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'reg-username' }">
 								<UserIcon class="input-icon" />
-								<input
-									v-model="registerForm.username"
-									type="text"
-									placeholder="用户名"
-									required
-									@focus="focusedField = 'reg-username'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="registerForm.username" type="text" placeholder="用户名" required
+									@focus="focusedField = 'reg-username'" @blur="focusedField = null" />
 							</div>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'reg-email' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'reg-email' }">
 								<EnvelopeIcon class="input-icon" />
-								<input
-									v-model="registerForm.email"
-									type="email"
-									placeholder="邮箱"
-									required
-									@focus="focusedField = 'reg-email'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="registerForm.email" type="email" placeholder="邮箱" required
+									@focus="focusedField = 'reg-email'" @blur="focusedField = null" />
 							</div>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'reg-password' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'reg-password' }">
 								<LockClosedIcon class="input-icon" />
-								<input
-									v-model="registerForm.password"
-									type="password"
-									placeholder="密码"
-									required
-									@focus="focusedField = 'reg-password'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="registerForm.password" type="password" placeholder="密码" required
+									@focus="focusedField = 'reg-password'" @blur="focusedField = null" />
 							</div>
 							<!-- 密码长度提示 -->
-							<div
-								v-if="registerForm.password && registerForm.password.length < 6"
-								class="error-message"
-							>
+							<div v-if="registerForm.password && registerForm.password.length < 6" class="error-message">
 								密码长度至少6位
 							</div>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'reg-confirm' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'reg-confirm' }">
 								<LockClosedIcon class="input-icon" />
-								<input
-									v-model="registerForm.confirmPassword"
-									type="password"
-									placeholder="确认密码"
-									required
-									@focus="focusedField = 'reg-confirm'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="registerForm.confirmPassword" type="password" placeholder="确认密码"
+									required @focus="focusedField = 'reg-confirm'" @blur="focusedField = null" />
 							</div>
 
 							<Transition name="shake">
@@ -163,13 +95,9 @@
 								</div>
 							</Transition>
 
-							<button
-								type="submit"
-								class="submit-btn"
-								:disabled="!isRegisterValid || loading"
-							>
+							<button type="submit" class="submit-btn ui-btn" :disabled="!isRegisterValid || loading">
 								<span v-if="!loading">注册</span>
-								<span v-else class="loader"></span>
+								<span v-else class="loader ui-loader"></span>
 							</button>
 						</form>
 
@@ -258,8 +186,8 @@ const isLoginValid = computed(() => {
 const passwordMatchError = computed(() => {
 	if (registerForm.password && registerForm.confirmPassword) {
 		return registerForm.password !== registerForm.confirmPassword ?
-				"两次密码不一致"
-			:	"";
+			"两次密码不一致"
+			: "";
 	}
 	return "";
 });
@@ -331,34 +259,13 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-* {
-	box-sizing: border-box;
-}
-
 /* 过渡动画 */
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-	opacity: 0;
-}
-
-.scale-enter-active {
-	transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.scale-enter-from {
-	transform: scale(0.9);
-}
-
 .shake-enter-active {
 	animation: shake 0.3s ease;
 }
 
 @keyframes shake {
+
 	0%,
 	100% {
 		transform: translateX(0);
@@ -382,31 +289,19 @@ const handleRegister = async () => {
 }
 
 .dialog-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.6);
-	backdrop-filter: blur(8px);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1000;
+	background-color: var(--overlay-dark-60);
+	backdrop-filter: blur(var(--blur-8));
+	z-index: var(--z-nav);
 }
 
 .dialog-card {
-	background: rgba(255, 255, 255, 0.95);
-	backdrop-filter: blur(10px);
-	border-radius: 32px;
+	background: var(--glass-bg-95);
+	backdrop-filter: blur(var(--blur-10));
 	padding: 2rem 2rem 2rem 2rem;
-	width: 90%;
 	max-width: 420px;
 	box-shadow:
 		0 25px 50px -12px rgba(0, 0, 0, 0.25),
 		0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-	position: relative;
-	color: #1e293b;
 }
 
 .close-btn {
@@ -537,22 +432,6 @@ h3 {
 .submit-btn:disabled {
 	opacity: 0.6;
 	cursor: not-allowed;
-}
-
-.loader {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	border: 2px solid rgba(255, 255, 255, 0.3);
-	border-radius: 50%;
-	border-top-color: white;
-	animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-	to {
-		transform: rotate(360deg);
-	}
 }
 
 .error-message {

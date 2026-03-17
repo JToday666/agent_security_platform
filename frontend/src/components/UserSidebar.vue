@@ -49,20 +49,17 @@ const collapsed = ref(false);
 	top: 70px;
 	/* 与导航栏高度一致 */
 	height: calc(100vh - 70px);
-	background: rgba(255, 255, 255, 0.7);
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
 	border-right: 1px solid rgba(0, 0, 0, 0.05);
 	box-shadow: 5px 0 20px rgba(0, 0, 0, 0.03);
 	transition: width 0.3s ease;
-	width: 240px;
-	z-index: 900;
+	width: var(--sidebar-width);
+	z-index: var(--z-sidebar);
 	display: flex;
 	flex-direction: column;
 }
 
 .user-sidebar.collapsed {
-	width: 70px;
+	width: var(--sidebar-width-collapsed);
 }
 
 .toggle-btn {

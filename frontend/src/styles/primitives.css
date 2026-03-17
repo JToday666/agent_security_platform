@@ -1,0 +1,229 @@
+/* 全局基础样式 */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/* 通用关键帧动画 */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* 弹窗过渡动画原语 */
+:where(.fade-enter-active, .fade-leave-active) {
+	transition: opacity var(--duration-base) ease;
+}
+
+:where(.fade-enter-from, .fade-leave-to) {
+	opacity: 0;
+}
+
+:where(.scale-enter-active) {
+	transition: transform var(--duration-base) var(--ease-modal-pop);
+}
+
+:where(.scale-enter-from) {
+	transform: scale(0.9);
+}
+
+/* 通用加载器原语 */
+:where(.loader) {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-radius: var(--radius-circle);
+	border-top-color: var(--color-white);
+	animation: spin var(--duration-fade-in) linear infinite;
+}
+
+/* 页面布局样式 PublicLayout / UserLayout */
+:where(.public-layout, .user-layout) {
+	min-height: 100vh;
+	padding-top: var(--nav-height);
+	background: var(--grad-page-bg);
+	position: relative;
+	overflow: hidden;
+}
+
+:where(.user-layout) {
+	display: flex;
+}
+
+:where(.public-layout, .user-layout)::before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image:
+		radial-gradient(
+			circle at 20% 30%,
+			rgba(59, 130, 246, 0.03) 0%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at 80% 70%,
+			rgba(236, 72, 153, 0.03) 0%,
+			transparent 30%
+		);
+	pointer-events: none;
+}
+
+/* 内容容器与文案原语 */
+:where(.content) {
+	width: 100%;
+	margin: 0 auto;
+	position: relative;
+	z-index: var(--z-content);
+	animation: fadeInUp var(--duration-fade-in) ease;
+}
+
+:where(.page-subtitle) {
+	color: var(--color-text-muted);
+	line-height: 1.6;
+}
+
+/* 导航栏/侧边栏玻璃面板原语 */
+:where(.navbar, .user-sidebar) {
+	background: var(--glass-bg);
+	backdrop-filter: blur(var(--blur-12));
+	-webkit-backdrop-filter: blur(var(--blur-12));
+}
+
+/* 弹窗容器原语 */
+:where(.dialog-overlay, .confirm-overlay) {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+:where(.dialog-card, .confirm-card) {
+	width: 90%;
+	border-radius: var(--radius-dialog);
+	position: relative;
+	color: var(--color-text-main);
+}
+
+/* 玻璃卡片原语 */
+:where(
+	.contact-card,
+	.detail-card,
+	.report-card,
+	.form-card,
+	.records-card,
+	.guide-card
+) {
+	background: var(--glass-bg);
+	backdrop-filter: blur(var(--blur-12));
+	-webkit-backdrop-filter: blur(var(--blur-12));
+	box-shadow: var(--shadow-glass-card);
+	color: var(--color-text-main);
+}
+
+/* 白色表面层原语 */
+:where(
+	.info-grid,
+	.summary-section,
+	.avatar-section,
+	.record-item,
+	.metric-item,
+	.rank-table
+) {
+	background: var(--color-white);
+	border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+:where(
+	.info-grid,
+	.summary-section,
+	.avatar-section,
+	.record-item,
+	.metric-item,
+	.dataset-selector,
+	.file-info
+) {
+	box-shadow: var(--shadow-surface-soft);
+}
+
+/* 信息卡片 hover 原语 */
+:where(.step-item, .contact-item) {
+	background: var(--color-white);
+	border-radius: var(--radius-card-md);
+	transition: all var(--duration-base) var(--ease-spring);
+	border: 1px solid rgba(0, 0, 0, 0.02);
+	box-shadow: var(--shadow-surface-mid);
+}
+
+:where(.step-item:hover, .contact-item:hover) {
+	transform: translateY(-5px);
+	box-shadow: var(--shadow-surface-hover);
+}
+
+/* 返回按钮原语 */
+:where(.back-btn) {
+	background: transparent;
+	border: 1px solid #cbd5e1;
+	color: var(--color-text-muted);
+	cursor: pointer;
+	transition: all var(--duration-fast) ease;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+}
+
+/* 渐变标题原语 */
+:where(.page-title, .title) {
+	background: var(--grad-primary);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	text-shadow: var(--shadow-title);
+}
+
+/* 渐变主按钮原语 */
+:where(
+	.view-btn,
+	.filter-btn,
+	.download-btn,
+	.upload-label,
+	.records-card .btn,
+	.form-card .submit-btn,
+	.confirm-card .confirm,
+	.btn.accent
+) {
+	background: var(--grad-primary);
+	color: var(--color-white);
+	box-shadow: var(--shadow-primary-btn);
+}
+
+:where(
+	.view-btn:hover,
+	.filter-btn:hover,
+	.download-btn:hover,
+	.upload-label:hover,
+	.records-card .btn:hover,
+	.form-card .submit-btn:hover:not(:disabled),
+	.confirm-card .confirm:hover:not(:disabled)
+) {
+	box-shadow: var(--shadow-primary-btn-hover);
+}

@@ -3,6 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import { createPinia } from "pinia";
 import { useUserStore } from "./store/user";
+import "./styles/tokens.css";
+import "./styles/primitives.css";
+import "./styles/semantic.css";
 
 const app = createApp(App);
 
