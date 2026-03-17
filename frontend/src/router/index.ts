@@ -8,44 +8,56 @@ import EvaluationReport from "@/views/EvaluationReport.vue";
 import SubmitAgent from "@/views/SubmitAgent.vue";
 import ProfilePage from "@/views/ProfilePage.vue";
 import ContactUs from "@/views/ContactUs.vue";
+import PublicLayout from "@/layouts/PublicLayout.vue";
+import UserLayout from "@/layouts/UserLayout.vue";
 import { useUserStore } from "@/store/user";
 
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [
-		{ path: "/", component: Home },
-		{ path: "/dataset", component: DataSet },
-		{ path: "/dataset/:id", component: DatasetDetail },
-		{ path: "/leaderboard", component: LeaderBoard },
-		{ path: "/contact", component: ContactUs },
+		{
+			path: "/",
+			component: PublicLayout,
+			children: [
+				{ path: "", component: Home },
+				{ path: "dataset", component: DataSet },
+				{ path: "dataset/:id", component: DatasetDetail },
+				{ path: "leaderboard", component: LeaderBoard },
+				{ path: "contact", component: ContactUs },
+			],
+		},
 
 		{
-			path: "/user",
-			component: UserCenter,
+			path: "/",
+			component: UserLayout,
 			meta: { requiresAuth: true },
-		},
-		{
-			path: "/report/:id",
-			component: EvaluationReport,
-			meta: { requiresAuth: true },
-		},
-		{
-			path: "/submit",
-			component: SubmitAgent,
-			meta: { requiresAuth: true },
-		},
-		{
-			path: "/profile",
-			component: ProfilePage,
-			meta: { requiresAuth: true },
+			children: [
+				{
+					path: "user",
+					component: UserCenter,
+				},
+				{
+					path: "report/:id",
+					component: EvaluationReport,
+				},
+				{
+					path: "submit",
+					component: SubmitAgent,
+				},
+				{
+					path: "profile",
+					component: ProfilePage,
+				},
+			],
 		},
 	],
 });
 
 router.beforeEach((to, _, next) => {
 	const userStore = useUserStore();
+	const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
-	if (to.meta.requiresAuth && !userStore.isLogin) {
+	if (requiresAuth && !userStore.isLogin) {
 		userStore.showLogin = true;
 		next(false);
 	} else {

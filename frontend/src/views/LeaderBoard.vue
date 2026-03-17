@@ -1,125 +1,64 @@
 <template>
-	<Navbar />
-	<main class="page-container leaderboard-page">
-		<div class="content">
-			<h1 class="page-title">排行榜</h1>
-			<p class="page-subtitle">查看公开智能体在各数据集上的表现排名。</p>
+	<div class="content">
+		<h1 class="page-title">排行榜</h1>
+		<p class="page-subtitle">查看公开智能体在各数据集上的表现排名。</p>
 
-			<!-- 筛选区域 -->
-			<div class="filter-bar">
-				<select class="filter-select">
-					<option>所有数据集</option>
-					<option>Prompt Injection Dataset</option>
-					<option>Jailbreak Dataset</option>
-				</select>
-				<select class="filter-select">
-					<option>所有智能体</option>
-					<option>智能体 A</option>
-					<option>智能体 B</option>
-				</select>
-				<button class="filter-btn">筛选</button>
-			</div>
-
-			<!-- 排名表格 -->
-			<div class="rank-table">
-				<div class="table-header">
-					<span>排名</span>
-					<span>智能体名称</span>
-					<span>所属数据集</span>
-					<span>评分</span>
-				</div>
-				<div class="table-row" v-for="n in 5" :key="n">
-					<span>{{ n }}</span>
-					<span>智能体 Alpha-{{ n }}</span>
-					<span>Prompt Injection Dataset</span>
-					<span>{{ (Math.random() * 100).toFixed(2) }}</span>
-				</div>
-			</div>
-			<p class="coming-soon">更多排名数据即将上线，敬请期待。</p>
+		<!-- 筛选区域 -->
+		<div class="filter-bar ui-surface-white">
+			<select class="filter-select">
+				<option>所有数据集</option>
+				<option>Prompt Injection Dataset</option>
+				<option>Jailbreak Dataset</option>
+			</select>
+			<select class="filter-select">
+				<option>所有智能体</option>
+				<option>智能体 A</option>
+				<option>智能体 B</option>
+			</select>
+			<button class="filter-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift">筛选</button>
 		</div>
-	</main>
+
+		<!-- 排名表格 -->
+		<div class="rank-table ui-surface-white">
+			<div class="table-header">
+				<span>排名</span>
+				<span>智能体名称</span>
+				<span>所属数据集</span>
+				<span>得分</span>
+			</div>
+			<div class="table-row" v-for="n in 5" :key="n">
+				<span>{{ n }}</span>
+				<span>智能体 Alpha-{{ n }}</span>
+				<span>Prompt Injection Dataset</span>
+				<span>{{ (Math.random() * 100).toFixed(2) }}</span>
+			</div>
+		</div>
+		<p class="coming-soon">更多排名数据即将上线，敬请期待！</p>
+	</div>
 </template>
 
 <script setup lang="ts">
-import Navbar from "@/components/NavBar.vue";
 </script>
 
 <style scoped>
-/* 全局重置与动画 */
-* {
-	box-sizing: border-box;
-}
-
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-.page-container {
-	min-height: 100vh;
-	padding-top: 80px;
-	background: linear-gradient(145deg, #f8fafc 0%, #eef2f6 100%);
-	display: flex;
-	justify-content: center;
-	position: relative;
-	overflow: hidden;
-}
-
-/* 微弱的纹理背景 */
-.page-container::before {
-	content: "";
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-image:
-		radial-gradient(
-			circle at 20% 30%,
-			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
-			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
-	pointer-events: none;
-}
-
+/* 全局重置动画 */
 .content {
 	max-width: 1000px;
-	width: 100%;
 	padding: 3rem 2rem;
-	position: relative;
-	z-index: 2;
-	animation: fadeInUp 0.8s ease;
 }
 
 .page-title {
 	font-size: 3rem;
 	font-weight: 800;
 	margin-bottom: 0.5rem;
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	text-shadow: 0 5px 15px rgba(37, 99, 235, 0.15);
 }
 
 .page-subtitle {
 	font-size: 1.2rem;
-	color: #475569;
 	margin-bottom: 2rem;
-	line-height: 1.6;
 }
 
-/* 筛选条 */
+/* 筛选条件 */
 .filter-bar {
 	display: flex;
 	gap: 1rem;
@@ -158,31 +97,19 @@ import Navbar from "@/components/NavBar.vue";
 }
 
 .filter-btn {
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	color: white;
 	border: none;
 	padding: 0.6rem 2rem;
-	border-radius: 30px;
 	font-weight: 600;
-	cursor: pointer;
 	transition:
 		transform 0.2s,
 		box-shadow 0.2s;
-	box-shadow: 0 8px 18px -6px #2563eb80;
-}
-
-.filter-btn:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 15px 25px -8px #2563eb;
 }
 
 /* 排名表格 */
 .rank-table {
-	background: white;
 	border-radius: 1.5rem;
 	overflow: hidden;
 	box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
-	border: 1px solid rgba(0, 0, 0, 0.02);
 	margin-bottom: 2rem;
 }
 
@@ -220,7 +147,7 @@ import Navbar from "@/components/NavBar.vue";
 	margin-top: 1rem;
 }
 
-/* 移动端适应 */
+/* 绉诲姩绔€傚簲 */
 @media (max-width: 640px) {
 	.content {
 		padding: 2rem 1rem;

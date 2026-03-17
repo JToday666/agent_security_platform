@@ -1,29 +1,20 @@
 <template>
-	<Navbar />
-	<main class="page-container dataset-page">
-		<div class="content">
-			<h1 class="page-title">数据集列表</h1>
-			<p class="page-subtitle">选择以下数据集，查看详细说明和下载链接。</p>
+	<div class="content">
+		<h1 class="page-title">数据集列表</h1>
+		<p class="page-subtitle">选择以下数据集，查看详细说明和下载链接。</p>
 
-			<div class="dataset-grid">
-				<router-link
-					v-for="item in datasets"
-					:key="item.id"
-					:to="`/dataset/${item.id}`"
-					class="dataset-card"
-				>
-					<h3>{{ item.name }}</h3>
-					<p>{{ item.description }}</p>
-					<span class="card-link">查看详情 →</span>
-				</router-link>
-			</div>
+		<div class="dataset-grid">
+			<router-link v-for="item in datasets" :key="item.id" :to="`/dataset/${item.id}`"
+				class="dataset-card ui-surface-glass">
+				<h3>{{ item.name }}</h3>
+				<p>{{ item.description }}</p>
+				<span class="card-link">查看详情 →</span>
+			</router-link>
 		</div>
-	</main>
+	</div>
 </template>
 
 <script setup lang="ts">
-import Navbar from "@/components/NavBar.vue";
-
 const datasets = [
 	{
 		id: 1,
@@ -42,80 +33,22 @@ const datasets = [
 
 <style scoped>
 /* 全局重置与动画 */
-* {
-	box-sizing: border-box;
-}
-
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-.page-container {
-	min-height: 100vh;
-	padding-top: 80px;
-	/* 为固定导航栏留出空间 */
-	background: linear-gradient(145deg, #f8fafc 0%, #eef2f6 100%);
-	display: flex;
-	justify-content: center;
-	position: relative;
-	overflow: hidden;
-}
-
-/* 微弱的纹理背景 */
-.page-container::before {
-	content: "";
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-image:
-		radial-gradient(
-			circle at 20% 30%,
-			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
-			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
-	pointer-events: none;
-}
-
 .content {
 	max-width: 1200px;
-	width: 100%;
 	padding: 3rem 2rem;
 	color: #1e293b;
 	/* 深色文字 */
-	position: relative;
-	z-index: 2;
-	animation: fadeInUp 0.8s ease;
 }
 
 .page-title {
 	font-size: 3rem;
 	font-weight: 800;
 	margin-bottom: 0.5rem;
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	text-shadow: 0 5px 15px rgba(37, 99, 235, 0.15);
 }
 
 .page-subtitle {
 	font-size: 1.2rem;
-	color: #475569;
 	margin-bottom: 3rem;
-	line-height: 1.6;
 }
 
 .dataset-grid {

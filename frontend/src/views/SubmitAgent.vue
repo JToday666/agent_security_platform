@@ -1,146 +1,100 @@
 <template>
-	<Navbar />
-	<main class="page-container submit-page">
-		<UserSidebar />
-		<div class="content-area">
-			<div class="form-card">
-				<h1 class="page-title">提交智能体</h1>
-				<p class="page-subtitle">请填写以下信息以提交您的智能体参与评测。</p>
+	<div class="form-card ui-surface-glass">
+		<h1 class="page-title">提交智能体</h1>
+		<p class="page-subtitle">请填写以下信息以提交您的智能体参加评估。</p>
 
-				<form @submit.prevent="handleSubmit" class="submit-form">
-					<!-- 智能体名称 -->
-					<div class="form-group">
-						<label for="agentName"
-							>智能体名称 <span class="required">*</span></label
-						>
-						<input
-							type="text"
-							id="agentName"
-							v-model="form.agentName"
-							placeholder="例如：安全卫士 v1.0"
-							required
-						/>
-					</div>
-
-					<!-- API 地址 -->
-					<div class="form-group">
-						<label for="apiUrl">API 地址 <span class="required">*</span></label>
-						<input
-							type="url"
-							id="apiUrl"
-							v-model="form.apiUrl"
-							placeholder="https://your-agent.com/api"
-							required
-						/>
-						<p class="hint">智能体对外提供服务的 HTTP 端点，用于评测交互。</p>
-					</div>
-
-					<!-- 描述（文本域） -->
-					<div class="form-group">
-						<label for="description">描述（可选）</label>
-						<textarea
-							id="description"
-							v-model="form.description"
-							rows="4"
-							placeholder="简要描述您的智能体特点、技术栈等"
-						></textarea>
-					</div>
-
-					<!-- 数据集选择 -->
-					<div class="form-group">
-						<label>选择评测数据集 <span class="required">*</span></label>
-						<div class="dataset-selector">
-							<div class="selector-header">
-								<span class="selected-count">已选 {{ selectedCount }} 个</span>
-								<div class="selector-actions">
-									<button type="button" class="action-link" @click="selectAll">
-										全选
-									</button>
-									<button type="button" class="action-link" @click="clearAll">
-										清空
-									</button>
-								</div>
-							</div>
-							<div class="dataset-list">
-								<label
-									v-for="ds in datasetOptions"
-									:key="ds.id"
-									class="dataset-item"
-								>
-									<input
-										type="checkbox"
-										:value="ds.id"
-										v-model="form.selectedDatasets"
-									/>
-									<span class="dataset-name">{{ ds.name }}</span>
-									<span class="dataset-desc">{{ ds.description }}</span>
-								</label>
-							</div>
-						</div>
-					</div>
-
-					<!-- Docker 镜像上传 -->
-					<div class="form-group">
-						<label for="dockerImage"
-							>Docker 镜像 <span class="required">*</span></label
-						>
-						<div class="upload-area">
-							<input
-								type="file"
-								id="dockerImage"
-								ref="fileInput"
-								accept=".tar,.tar.gz,.tgz"
-								@change="handleFileChange"
-								class="file-input"
-							/>
-							<div class="upload-placeholder" v-if="!form.dockerFile">
-								<span class="upload-icon">📦</span>
-								<p>点击或拖拽上传 Docker 镜像包（支持 .tar, .tar.gz）</p>
-								<button
-									type="button"
-									class="browse-btn"
-									@click="triggerFileInput"
-								>
-									选择文件
-								</button>
-							</div>
-							<div class="file-info" v-else>
-								<span class="file-name">{{ form.dockerFile.name }}</span>
-								<span class="file-size">{{
-									formatFileSize(form.dockerFile.size)
-								}}</span>
-								<button type="button" class="remove-file" @click="removeFile">
-									✕
-								</button>
-							</div>
-						</div>
-					</div>
-
-					<!-- 提交按钮和提示 -->
-					<div class="form-actions">
-						<button
-							type="submit"
-							class="submit-btn"
-							:disabled="submitting || !isFormValid"
-						>
-							{{ submitting ? "提交中..." : "提交智能体" }}
-						</button>
-						<p v-if="submitError" class="error-message">{{ submitError }}</p>
-						<p v-if="submitSuccess" class="success-message">
-							提交成功！即将跳转至评测记录。
-						</p>
-					</div>
-				</form>
+		<form @submit.prevent="handleSubmit" class="submit-form">
+			<!-- 智能体名称 -->
+			<div class="form-group">
+				<label for="agentName">智能体名称<span class="required">*</span></label>
+				<input type="text" id="agentName" class="ui-input-pill ui-input-focus-ring" v-model="form.agentName"
+					placeholder="例如：安全卫士 v1.0" required />
 			</div>
-		</div>
-	</main>
+
+			<!-- API 地址 -->
+			<div class="form-group">
+				<label for="apiUrl">API 地址 <span class="required">*</span></label>
+				<input type="url" id="apiUrl" class="ui-input-pill ui-input-focus-ring" v-model="form.apiUrl"
+					placeholder="https://your-agent.com/api" required />
+				<p class="hint">智能体对外提供的 HTTP 端点，用于评估测试。</p>
+			</div>
+
+			<!-- 描述（文本区域） -->
+			<div class="form-group">
+				<label for="description">描述（可选）</label>
+				<textarea id="description" class="ui-input-focus-ring" v-model="form.description" rows="4"
+					placeholder="简要描述您的智能体特点、技术栈等"></textarea>
+			</div>
+
+			<!-- 数据集选择 -->
+			<div class="form-group">
+				<label>选择评估数据集<span class="required">*</span></label>
+				<div class="dataset-selector ui-surface-white">
+					<div class="selector-header">
+						<span class="selected-count">已选 {{ selectedCount }} 个</span>
+						<div class="selector-actions">
+							<button type="button" class="action-link" @click="selectAll">
+								全选
+							</button>
+							<button type="button" class="action-link" @click="clearAll">
+								清空
+							</button>
+						</div>
+					</div>
+					<div class="dataset-list">
+						<label v-for="ds in datasetOptions" :key="ds.id" class="dataset-item">
+							<input type="checkbox" :value="ds.id" v-model="form.selectedDatasets" />
+							<span class="dataset-name">{{ ds.name }}</span>
+							<span class="dataset-desc">{{ ds.description }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<!-- Docker 镜像上传 -->
+			<div class="form-group">
+				<label for="dockerImage">Docker 镜像 <span class="required">*</span></label>
+				<div class="upload-area">
+					<input type="file" id="dockerImage" ref="fileInput" accept=".tar,.tar.gz,.tgz"
+						@change="handleFileChange" class="file-input" />
+					<div class="upload-placeholder" v-if="!form.dockerFile">
+						<span class="upload-icon">📦</span>
+						<p>点击或拖拽上传 Docker 镜像文件（支持 .tar, .tar.gz）</p>
+						<button type="button" class="browse-btn ui-btn ui-btn-pill ui-btn-hover-lift"
+							@click="triggerFileInput">
+							选择文件
+						</button>
+					</div>
+					<div class="file-info ui-surface-white" v-else>
+						<span class="file-name">{{ form.dockerFile.name }}</span>
+						<span class="file-size">{{
+							formatFileSize(form.dockerFile.size)
+						}}</span>
+						<button type="button" class="remove-file" @click="removeFile">
+							×
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 提交按钮和提示 -->
+			<div class="form-actions">
+				<button type="submit" class="submit-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
+					:disabled="submitting || !isFormValid">
+					{{ submitting ? "提交中.." : "提交智能体" }}
+				</button>
+				<p v-if="submitError" class="error-message">{{ submitError }}</p>
+				<p v-if="submitSuccess" class="success-message">
+					提交成功，即将跳转至评估记录。
+				</p>
+			</div>
+		</form>
+	</div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
-import Navbar from "@/components/NavBar.vue";
-import UserSidebar from "@/components/UserSidebar.vue";
 
 // 模拟数据集选项（与数据集页面一致）
 const datasetOptions = [
@@ -172,7 +126,7 @@ const router = useRouter();
 // 已选数据集数量
 const selectedCount = computed(() => form.selectedDatasets.length);
 
-// 表单整体有效性验证
+// 表单数据有效性验证
 const isFormValid = computed(() => {
 	return (
 		form.agentName.trim() !== "" &&
@@ -213,7 +167,7 @@ const handleFileChange = (e: Event) => {
 	const target = e.target as HTMLInputElement;
 	const file = target.files?.[0];
 	if (file) {
-		// 可添加文件类型/大小验证
+		// 可添加文件类型大小验证
 		form.dockerFile = file;
 	}
 };
@@ -222,7 +176,7 @@ const handleFileChange = (e: Event) => {
 const removeFile = () => {
 	form.dockerFile = null;
 	if (fileInput.value) {
-		fileInput.value.value = ""; // 清空 input
+		fileInput.value.value = ""; // 娓呯┖ input
 	}
 };
 
@@ -246,7 +200,7 @@ const handleSubmit = async () => {
 		await new Promise((resolve) => setTimeout(resolve, 2000));
 		// 假设提交成功
 		submitSuccess.value = true;
-		// 2 秒后跳转到评测记录页面
+		// 2 秒后跳转至评估记录页面
 		setTimeout(() => {
 			router.push("/user");
 		}, 2000);
@@ -260,77 +214,10 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-/* 全局重置与动画 */
-* {
-	box-sizing: border-box;
-}
-
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-.page-container {
-	min-height: 100vh;
-	padding-top: 80px;
-	background: linear-gradient(145deg, #f8fafc 0%, #eef2f6 100%);
-	display: flex;
-	position: relative;
-	overflow: hidden;
-}
-
-/* 微弱的纹理背景 */
-.page-container::before {
-	content: "";
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-image:
-		radial-gradient(
-			circle at 20% 30%,
-			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
-			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
-	pointer-events: none;
-}
-
-.content-area {
-	flex: 1;
-	margin-left: 240px;
-	/* 与侧边栏宽度相同 */
-	padding: 2rem;
-	transition: margin-left 0.3s ease;
-	position: relative;
-	z-index: 2;
-	animation: fadeInUp 0.8s ease;
-}
-
-.user-sidebar.collapsed ~ .content-area {
-	margin-left: 70px;
-}
-
+/* 全局重置动画 */
 .form-card {
-	background: rgba(255, 255, 255, 0.7);
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
 	border-radius: 2rem;
 	padding: 2.5rem;
-	box-shadow:
-		0 20px 40px -10px rgba(0, 0, 0, 0.1),
-		0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-	color: #1e293b;
 	max-width: 800px;
 	margin: 0 auto;
 }
@@ -339,18 +226,11 @@ const handleSubmit = async () => {
 	font-size: 2.5rem;
 	font-weight: 700;
 	margin-bottom: 0.5rem;
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	text-shadow: 0 5px 15px rgba(37, 99, 235, 0.15);
 }
 
 .page-subtitle {
 	font-size: 1.1rem;
-	color: #475569;
 	margin-bottom: 2rem;
-	line-height: 1.6;
 }
 
 .submit-form {
@@ -404,13 +284,6 @@ const handleSubmit = async () => {
 	resize: vertical;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-	outline: none;
-	border-color: #2563eb;
-	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
 .form-group input::placeholder,
 .form-group textarea::placeholder {
 	color: #94a3b8;
@@ -422,7 +295,6 @@ const handleSubmit = async () => {
 	border-radius: 1.2rem;
 	padding: 1.2rem;
 	border: 1px solid #e2e8f0;
-	box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.05);
 }
 
 .selector-header {
@@ -548,7 +420,6 @@ const handleSubmit = async () => {
 	color: #2563eb;
 	border: 1px solid #2563eb30;
 	padding: 0.5rem 1.5rem;
-	border-radius: 50px;
 	font-weight: 500;
 	cursor: pointer;
 	transition: all 0.2s;
@@ -571,7 +442,6 @@ const handleSubmit = async () => {
 	align-items: center;
 	gap: 1rem;
 	flex-wrap: wrap;
-	box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.05);
 }
 
 .file-name {
@@ -606,11 +476,8 @@ const handleSubmit = async () => {
 }
 
 .submit-btn {
-	background: linear-gradient(135deg, #2563eb, #7c3aed);
-	color: white;
 	padding: 0.9rem 2.5rem;
 	border: none;
-	border-radius: 50px;
 	font-size: 1.1rem;
 	font-weight: 600;
 	cursor: pointer;
@@ -620,7 +487,6 @@ const handleSubmit = async () => {
 	width: 100%;
 	max-width: 300px;
 	margin: 0 auto;
-	box-shadow: 0 8px 18px -6px #2563eb80;
 }
 
 .submit-btn:hover:not(:disabled) {
@@ -649,11 +515,6 @@ const handleSubmit = async () => {
 
 /* 响应式 */
 @media (max-width: 768px) {
-	.content-area {
-		margin-left: 0;
-		padding: 1rem;
-	}
-
 	.form-card {
 		padding: 1.5rem;
 	}
