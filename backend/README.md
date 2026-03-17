@@ -58,3 +58,64 @@ python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 
 vscode/pycharm
 
+## 后端测试
+
+### POST /auth/register
+
+```txt
+POST /api/v1/auth/register HTTP/1.1
+Host: 127.0.0.1:8002
+Content-Length: 67
+Content-Type:application/json
+
+{"username": "xcx","email": "xcx@example.com","password": "123456"}
+```
+
+### POST /auth/login
+
+```txt
+POST /api/v1/auth/login HTTP/1.1
+Host: 127.0.0.1:8002
+Content-Length: 40
+Content-Type:application/json
+
+{"username": "xcx","password": "123456"}
+```
+
+### GET /auth/me
+
+```txt
+GET /api/v1/auth/me HTTP/1.1
+Host: 127.0.0.1:8002
+Authorization: Bearer eyJhbGciOiJIUz...
+
+
+```
+
+### GET /user/profile
+
+```txt
+GET /api/v1/user/profile HTTP/1.1
+Host: 127.0.0.1:8002
+Authorization: Bearer eyJhbGciOiJIUz...
+
+
+```
+
+### PUT /user/profile
+
+```txt
+PUT /api/v1/user/profile HTTP/1.1
+Host: 127.0.0.1:8002
+Authorization: Bearer eyJhbGciOiJIUz...
+Content-Type:application/json
+Content-Length: 24
+
+{"username": "test_xcx"}
+```
+
+### POST /user/avatar
+
+```cmd
+curl -X POST "http://127.0.0.1:8002/api/v1/user/avatar" -H "Authorization: Bearer eyJhbGciOiJIUz..." -F "avatar=@C:\Users\...\avatar.png"
+```
