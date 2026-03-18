@@ -10,40 +10,24 @@
 				<form @submit.prevent="handleSubmit" class="submit-form">
 					<!-- 智能体名称 -->
 					<div class="form-group">
-						<label for="agentName"
-							>智能体名称 <span class="required">*</span></label
-						>
-						<input
-							type="text"
-							id="agentName"
-							v-model="form.agentName"
-							placeholder="例如：安全卫士 v1.0"
-							required
-						/>
+						<label for="agentName">智能体名称 <span class="required">*</span></label>
+						<input type="text" id="agentName" v-model="form.agentName" placeholder="例如：安全卫士 v1.0"
+							required />
 					</div>
 
 					<!-- API 地址 -->
 					<div class="form-group">
 						<label for="apiUrl">API 地址 <span class="required">*</span></label>
-						<input
-							type="url"
-							id="apiUrl"
-							v-model="form.apiUrl"
-							placeholder="https://your-agent.com/api"
-							required
-						/>
+						<input type="url" id="apiUrl" v-model="form.apiUrl" placeholder="https://your-agent.com/api"
+							required />
 						<p class="hint">智能体对外提供服务的 HTTP 端点，用于评测交互。</p>
 					</div>
 
 					<!-- 描述（文本域） -->
 					<div class="form-group">
 						<label for="description">描述（可选）</label>
-						<textarea
-							id="description"
-							v-model="form.description"
-							rows="4"
-							placeholder="简要描述您的智能体特点、技术栈等"
-						></textarea>
+						<textarea id="description" v-model="form.description" rows="4"
+							placeholder="简要描述您的智能体特点、技术栈等"></textarea>
 					</div>
 
 					<!-- 数据集选择 -->
@@ -62,16 +46,8 @@
 								</div>
 							</div>
 							<div class="dataset-list">
-								<label
-									v-for="ds in datasetOptions"
-									:key="ds.id"
-									class="dataset-item"
-								>
-									<input
-										type="checkbox"
-										:value="ds.id"
-										v-model="form.selectedDatasets"
-									/>
+								<label v-for="ds in datasetOptions" :key="ds.id" class="dataset-item">
+									<input type="checkbox" :value="ds.id" v-model="form.selectedDatasets" />
 									<span class="dataset-name">{{ ds.name }}</span>
 									<span class="dataset-desc">{{ ds.description }}</span>
 								</label>
@@ -81,26 +57,14 @@
 
 					<!-- Docker 镜像上传 -->
 					<div class="form-group">
-						<label for="dockerImage"
-							>Docker 镜像 <span class="required">*</span></label
-						>
+						<label for="dockerImage">Docker 镜像 <span class="required">*</span></label>
 						<div class="upload-area">
-							<input
-								type="file"
-								id="dockerImage"
-								ref="fileInput"
-								accept=".tar,.tar.gz,.tgz"
-								@change="handleFileChange"
-								class="file-input"
-							/>
+							<input type="file" id="dockerImage" ref="fileInput" accept=".tar,.tar.gz,.tgz"
+								@change="handleFileChange" class="file-input" />
 							<div class="upload-placeholder" v-if="!form.dockerFile">
 								<span class="upload-icon">📦</span>
 								<p>点击或拖拽上传 Docker 镜像包（支持 .tar, .tar.gz）</p>
-								<button
-									type="button"
-									class="browse-btn"
-									@click="triggerFileInput"
-								>
+								<button type="button" class="browse-btn" @click="triggerFileInput">
 									选择文件
 								</button>
 							</div>
@@ -118,11 +82,7 @@
 
 					<!-- 提交按钮和提示 -->
 					<div class="form-actions">
-						<button
-							type="submit"
-							class="submit-btn"
-							:disabled="submitting || !isFormValid"
-						>
+						<button type="submit" class="submit-btn" :disabled="submitting || !isFormValid">
 							{{ submitting ? "提交中..." : "提交智能体" }}
 						</button>
 						<p v-if="submitError" class="error-message">{{ submitError }}</p>
@@ -293,16 +253,12 @@ const handleSubmit = async () => {
 	width: 100%;
 	height: 100%;
 	background-image:
-		radial-gradient(
-			circle at 20% 30%,
+		radial-gradient(circle at 20% 30%,
 			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
+			transparent 30%),
+		radial-gradient(circle at 80% 70%,
 			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
+			transparent 30%);
 	pointer-events: none;
 }
 
@@ -317,7 +273,7 @@ const handleSubmit = async () => {
 	animation: fadeInUp 0.8s ease;
 }
 
-.user-sidebar.collapsed ~ .content-area {
+.user-sidebar.collapsed~.content-area {
 	margin-left: 70px;
 }
 

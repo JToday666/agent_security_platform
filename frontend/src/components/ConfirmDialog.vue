@@ -15,20 +15,10 @@
 
 						<!-- 按钮组 -->
 						<div class="button-group" :class="{ single: !showCancel }">
-							<button
-								v-if="showCancel"
-								class="btn cancel"
-								@click="handleCancel"
-								:disabled="loading"
-							>
+							<button v-if="showCancel" class="btn cancel" @click="handleCancel" :disabled="loading">
 								{{ cancelText }}
 							</button>
-							<button
-								class="btn confirm"
-								:class="{ danger }"
-								@click="handleConfirm"
-								:disabled="loading"
-							>
+							<button class="btn confirm" :class="{ danger }" @click="handleConfirm" :disabled="loading">
 								<span v-if="!loading">{{ confirmText }}</span>
 								<span v-else class="loader"></span>
 							</button>

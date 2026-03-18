@@ -4,12 +4,10 @@
 			<div v-if="showLogin" class="dialog-overlay" @click.self="closeDialog">
 				<Transition name="scale" appear>
 					<div class="dialog-card">
-						<!-- 关闭按钮 -->
 						<button class="close-btn" @click="closeDialog" aria-label="关闭">
 							<XMarkIcon class="w-5 h-5" />
 						</button>
 
-						<!-- 标题 & 装饰 -->
 						<div class="header">
 							<div class="logo-wrapper">
 								<ShieldCheckIcon class="logo-icon" />
@@ -17,54 +15,28 @@
 							<h3>{{ mode === "login" ? "欢迎回来" : "创建账号" }}</h3>
 							<p class="subtitle">
 								{{
-									mode === "login" ? "登录以继续使用智能体检测平台" : (
-										"注册后即可开始检测您的智能体"
-									)
+									mode === "login"
+										? "登录后继续使用智能体安全评测平台"
+										: "注册后即可开始评测您的智能体"
 								}}
 							</p>
 						</div>
 
-						<!-- 登录表单 -->
-						<form
-							v-if="mode === 'login'"
-							@submit.prevent="handleLogin"
-							class="form"
-						>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'login-username' }"
-							>
+						<form v-if="mode === 'login'" @submit.prevent="handleLogin" class="form">
+							<div class="form-group" :class="{ focused: focusedField === 'login-username' }">
 								<UserIcon class="input-icon" />
-								<input
-									v-model="loginForm.username"
-									type="text"
-									placeholder="用户名/邮箱"
-									required
-									@focus="focusedField = 'login-username'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="loginForm.username" type="text" placeholder="用户名或邮箱" required
+									@focus="focusedField = 'login-username'" @blur="focusedField = null" />
 							</div>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'login-password' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'login-password' }">
 								<LockClosedIcon class="input-icon" />
-								<input
-									v-model="loginForm.password"
-									type="password"
-									placeholder="密码"
-									required
-									@focus="focusedField = 'login-password'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="loginForm.password" type="password" placeholder="密码" required
+									@focus="focusedField = 'login-password'" @blur="focusedField = null" />
 							</div>
 
-							<!-- 密码长度提示 -->
-							<div
-								v-if="loginForm.password && loginForm.password.length < 6"
-								class="error-message"
-							>
-								密码长度至少6位
+							<div v-if="loginForm.password && (loginForm.password.length < PASSWORD_MIN_LENGTH || loginForm.password.length > PASSWORD_MAX_LENGTH)"
+								class="error-message">
+								密码长度需在 6-128 位之间
 							</div>
 
 							<Transition name="shake">
@@ -74,80 +46,36 @@
 								</div>
 							</Transition>
 
-							<button
-								type="submit"
-								class="submit-btn"
-								:disabled="!isLoginValid || loading"
-							>
+							<button type="submit" class="submit-btn" :disabled="!isLoginValid || loading">
 								<span v-if="!loading">登录</span>
 								<span v-else class="loader"></span>
 							</button>
 						</form>
 
-						<!-- 注册表单 -->
 						<form v-else @submit.prevent="handleRegister" class="form">
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'reg-username' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'reg-username' }">
 								<UserIcon class="input-icon" />
-								<input
-									v-model="registerForm.username"
-									type="text"
-									placeholder="用户名"
-									required
-									@focus="focusedField = 'reg-username'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="registerForm.username" type="text" placeholder="用户名" required
+									@focus="focusedField = 'reg-username'" @blur="focusedField = null" />
 							</div>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'reg-email' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'reg-email' }">
 								<EnvelopeIcon class="input-icon" />
-								<input
-									v-model="registerForm.email"
-									type="email"
-									placeholder="邮箱"
-									required
-									@focus="focusedField = 'reg-email'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="registerForm.email" type="email" placeholder="邮箱" required
+									@focus="focusedField = 'reg-email'" @blur="focusedField = null" />
 							</div>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'reg-password' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'reg-password' }">
 								<LockClosedIcon class="input-icon" />
-								<input
-									v-model="registerForm.password"
-									type="password"
-									placeholder="密码"
-									required
-									@focus="focusedField = 'reg-password'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="registerForm.password" type="password" placeholder="密码" required
+									@focus="focusedField = 'reg-password'" @blur="focusedField = null" />
 							</div>
-							<!-- 密码长度提示 -->
-							<div
-								v-if="registerForm.password && registerForm.password.length < 6"
-								class="error-message"
-							>
-								密码长度至少6位
+							<div v-if="registerForm.password && (registerForm.password.length < PASSWORD_MIN_LENGTH || registerForm.password.length > PASSWORD_MAX_LENGTH)"
+								class="error-message">
+								密码长度需在 6-128 位之间
 							</div>
-							<div
-								class="form-group"
-								:class="{ focused: focusedField === 'reg-confirm' }"
-							>
+							<div class="form-group" :class="{ focused: focusedField === 'reg-confirm' }">
 								<LockClosedIcon class="input-icon" />
-								<input
-									v-model="registerForm.confirmPassword"
-									type="password"
-									placeholder="确认密码"
-									required
-									@focus="focusedField = 'reg-confirm'"
-									@blur="focusedField = null"
-								/>
+								<input v-model="registerForm.confirmPassword" type="password" placeholder="确认密码"
+									required @focus="focusedField = 'reg-confirm'" @blur="focusedField = null" />
 							</div>
 
 							<Transition name="shake">
@@ -163,24 +91,17 @@
 								</div>
 							</Transition>
 
-							<button
-								type="submit"
-								class="submit-btn"
-								:disabled="!isRegisterValid || loading"
-							>
+							<button type="submit" class="submit-btn" :disabled="!isRegisterValid || loading">
 								<span v-if="!loading">注册</span>
 								<span v-else class="loader"></span>
 							</button>
 						</form>
 
-						<!-- 切换模式链接 -->
 						<div class="switch-mode">
 							<a href="#" @click.prevent="toggleMode">
-								<span v-if="mode === 'register'">← 已有账号？</span>
+								<span v-if="mode === 'register'">已有账号？</span>
 								<span v-else>没有账号？</span>
-								<span class="highlight">{{
-									mode === "register" ? "登录" : "立即注册"
-								}}</span>
+								<span class="highlight">{{ mode === "register" ? "登录" : "立即注册" }}</span>
 								<span v-if="mode === 'login'"> →</span>
 							</a>
 						</div>
@@ -193,6 +114,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import {
@@ -204,8 +126,16 @@ import {
 	ExclamationCircleIcon,
 } from "@heroicons/vue/24/outline";
 
+const USERNAME_MIN_LENGTH = 3;
+const USERNAME_MAX_LENGTH = 50;
+const PASSWORD_MIN_LENGTH = 6;
+const PASSWORD_MAX_LENGTH = 128;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const userStore = useUserStore();
 const { showLogin } = storeToRefs(userStore);
+const router = useRouter();
+const route = useRoute();
 
 const mode = ref<"login" | "register">("login");
 const loading = ref(false);
@@ -225,8 +155,51 @@ const registerForm = reactive({
 });
 const registerError = ref("");
 
+const normalizeRedirect = (target: unknown): string | null => {
+	if (typeof target !== "string") {
+		return null;
+	}
+	const value = target.trim();
+	if (!value.startsWith("/") || value.startsWith("//")) {
+		return null;
+	}
+	return value;
+};
+
+const clearRedirectQuery = async () => {
+	if (!Object.prototype.hasOwnProperty.call(route.query, "redirect")) {
+		return;
+	}
+	const { redirect: _redirect, ...restQuery } = route.query;
+	try {
+		await router.replace({
+			path: route.path,
+			query: restQuery,
+			hash: route.hash,
+		});
+	} catch {
+		// ignore duplicated navigation
+	}
+};
+
+const navigateAfterAuth = async () => {
+	const fromStore = normalizeRedirect(userStore.consumeRedirectAfterLogin());
+	const fromQuery = normalizeRedirect(route.query.redirect);
+	const target = fromStore || fromQuery;
+
+	if (target) {
+		try {
+			await router.replace(target);
+		} catch {
+			// ignore duplicated navigation
+		}
+		return;
+	}
+
+	await clearRedirectQuery();
+};
+
 const afterLeave = () => {
-	// 重置所有状态
 	loginForm.username = "";
 	loginForm.password = "";
 	registerForm.username = "";
@@ -249,79 +222,114 @@ const toggleMode = () => {
 	registerError.value = "";
 };
 
-// 登录表单验证：用户名不为空，密码长度 >=6
 const isLoginValid = computed(() => {
-	return loginForm.username.trim() !== "" && loginForm.password.length >= 6;
+	const usernameValue = loginForm.username.trim();
+	return (
+		usernameValue.length > 0 &&
+		loginForm.password.length >= PASSWORD_MIN_LENGTH &&
+		loginForm.password.length <= PASSWORD_MAX_LENGTH
+	);
 });
 
-// 密码一致错误
 const passwordMatchError = computed(() => {
 	if (registerForm.password && registerForm.confirmPassword) {
-		return registerForm.password !== registerForm.confirmPassword ?
-				"两次密码不一致"
-			:	"";
+		return registerForm.password !== registerForm.confirmPassword
+			? "两次密码不一致"
+			: "";
 	}
 	return "";
 });
 
-// 注册表单验证
 const isRegisterValid = computed(() => {
+	const usernameValue = registerForm.username.trim();
+	const emailValue = registerForm.email.trim();
 	return (
-		registerForm.username.trim() !== "" &&
-		registerForm.email.trim() !== "" &&
-		registerForm.password.length >= 6 &&
-		registerForm.confirmPassword.length >= 6 &&
-		registerForm.password === registerForm.confirmPassword &&
-		/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerForm.email)
+		usernameValue.length >= USERNAME_MIN_LENGTH &&
+		usernameValue.length <= USERNAME_MAX_LENGTH &&
+		emailValue.length > 0 &&
+		EMAIL_REGEX.test(emailValue) &&
+		registerForm.password.length >= PASSWORD_MIN_LENGTH &&
+		registerForm.password.length <= PASSWORD_MAX_LENGTH &&
+		registerForm.confirmPassword.length >= PASSWORD_MIN_LENGTH &&
+		registerForm.confirmPassword.length <= PASSWORD_MAX_LENGTH &&
+		registerForm.password === registerForm.confirmPassword
 	);
 });
 
 const handleLogin = async () => {
-	if (loginForm.password.length < 6) {
-		loginError.value = "密码长度至少6位";
+	const usernameValue = loginForm.username.trim();
+	if (!usernameValue) {
+		loginError.value = "用户名或邮箱不能为空";
 		return;
 	}
+	if (
+		loginForm.password.length < PASSWORD_MIN_LENGTH ||
+		loginForm.password.length > PASSWORD_MAX_LENGTH
+	) {
+		loginError.value = "密码长度需在 6-128 位之间";
+		return;
+	}
+
 	loading.value = true;
 	loginError.value = "";
+
 	try {
-		const success = await userStore.login(
-			loginForm.username,
-			loginForm.password,
-		);
+		const success = await userStore.login(usernameValue, loginForm.password);
 		if (success) {
 			closeDialog();
-		} else {
-			loginError.value = "登录失败，请稍后重试"; // 实际上异常会被 catch
+			await navigateAfterAuth();
+			return;
 		}
+		loginError.value = "登录失败，请稍后重试";
 	} catch (error: any) {
-		loginError.value = error.message || "用户名/邮箱或密码错误";
+		loginError.value = error.message || "用户名、邮箱或密码错误";
 	} finally {
 		loading.value = false;
 	}
 };
 
 const handleRegister = async () => {
-	if (registerForm.password.length < 6) {
-		registerError.value = "密码长度至少6位";
+	const usernameValue = registerForm.username.trim();
+	const emailValue = registerForm.email.trim();
+
+	if (
+		usernameValue.length < USERNAME_MIN_LENGTH ||
+		usernameValue.length > USERNAME_MAX_LENGTH
+	) {
+		registerError.value = "用户名长度需在 3-50 位之间";
+		return;
+	}
+	if (!EMAIL_REGEX.test(emailValue)) {
+		registerError.value = "邮箱格式不正确";
+		return;
+	}
+	if (
+		registerForm.password.length < PASSWORD_MIN_LENGTH ||
+		registerForm.password.length > PASSWORD_MAX_LENGTH
+	) {
+		registerError.value = "密码长度需在 6-128 位之间";
 		return;
 	}
 	if (registerForm.password !== registerForm.confirmPassword) {
-		registerError.value = "密码不一致";
+		registerError.value = "两次密码输入不一致";
 		return;
 	}
+
 	loading.value = true;
 	registerError.value = "";
+
 	try {
 		const success = await userStore.register({
-			username: registerForm.username,
-			email: registerForm.email,
+			username: usernameValue,
+			email: emailValue,
 			password: registerForm.password,
 		});
 		if (success) {
 			closeDialog();
-		} else {
-			registerError.value = "注册失败，请稍后重试";
+			await navigateAfterAuth();
+			return;
 		}
+		registerError.value = "注册失败，请稍后重试";
 	} catch (error: any) {
 		registerError.value = error.message || "用户名或邮箱已被注册";
 	} finally {
@@ -335,7 +343,6 @@ const handleRegister = async () => {
 	box-sizing: border-box;
 }
 
-/* 过渡动画 */
 .fade-enter-active,
 .fade-leave-active {
 	transition: opacity 0.3s ease;
@@ -359,6 +366,7 @@ const handleRegister = async () => {
 }
 
 @keyframes shake {
+
 	0%,
 	100% {
 		transform: translateX(0);
@@ -399,7 +407,7 @@ const handleRegister = async () => {
 	background: rgba(255, 255, 255, 0.95);
 	backdrop-filter: blur(10px);
 	border-radius: 32px;
-	padding: 2rem 2rem 2rem 2rem;
+	padding: 2rem;
 	width: 90%;
 	max-width: 420px;
 	box-shadow:

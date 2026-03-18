@@ -28,20 +28,13 @@
 
 				<h2 class="section-title">详细指标</h2>
 				<div class="metrics-grid">
-					<div
-						v-for="metric in report.metrics"
-						:key="metric.name"
-						class="metric-item"
-					>
+					<div v-for="metric in report.metrics" :key="metric.name" class="metric-item">
 						<div class="metric-header">
 							<span class="metric-name">{{ metric.name }}</span>
 							<span class="metric-value">{{ metric.value }}</span>
 						</div>
 						<div class="progress-bar">
-							<div
-								class="progress-fill"
-								:style="{ width: metric.percentage + '%' }"
-							></div>
+							<div class="progress-fill" :style="{ width: metric.percentage + '%' }"></div>
 						</div>
 						<p class="metric-desc">{{ metric.description }}</p>
 					</div>
@@ -146,16 +139,12 @@ const goBack = () => {
 	width: 100%;
 	height: 100%;
 	background-image:
-		radial-gradient(
-			circle at 20% 30%,
+		radial-gradient(circle at 20% 30%,
 			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
+			transparent 30%),
+		radial-gradient(circle at 80% 70%,
 			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
+			transparent 30%);
 	pointer-events: none;
 }
 
@@ -170,7 +159,7 @@ const goBack = () => {
 	animation: fadeInUp 0.8s ease;
 }
 
-.user-sidebar.collapsed ~ .content-area {
+.user-sidebar.collapsed~.content-area {
 	margin-left: 70px;
 }
 

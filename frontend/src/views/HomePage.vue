@@ -44,10 +44,7 @@
 					</template>
 					<template v-else>
 						<div class="welcome-card">
-							<span class="greeting"
-								>欢迎回来，<strong>{{ username }}</strong
-								>！</span
-							>
+							<span class="greeting">欢迎回来，<strong>{{ username }}</strong>！</span>
 							<div class="action-buttons">
 								<router-link to="/user" class="btn outline">
 									<span>👤</span> 个人中心
@@ -63,21 +60,9 @@
 		</div>
 	</main>
 
-	<!-- 登录弹窗 -->
-	<LoginDialog />
-
 	<!-- 退出确认弹窗 -->
-	<ConfirmDialog
-		v-model="showLogoutConfirm"
-		title="确认退出"
-		message="您确定要退出登录吗？"
-		confirm-text="退出"
-		cancel-text="取消"
-		:danger="true"
-		:loading="logoutLoading"
-		@confirm="handleLogoutConfirm"
-		@cancel="handleLogoutCancel"
-	/>
+	<ConfirmDialog v-model="showLogoutConfirm" title="确认退出" message="您确定要退出登录吗？" confirm-text="退出" cancel-text="取消"
+		:danger="true" :loading="logoutLoading" @confirm="handleLogoutConfirm" @cancel="handleLogoutCancel" />
 </template>
 
 <script setup lang="ts">
@@ -86,7 +71,6 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import Navbar from "@/components/NavBar.vue";
-import LoginDialog from "@/components/LoginDialog.vue";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
 
 const router = useRouter();
@@ -137,6 +121,7 @@ const handleLogoutCancel = () => {
 }
 
 @keyframes float {
+
 	0%,
 	100% {
 		transform: translateY(0);
@@ -165,16 +150,12 @@ const handleLogoutCancel = () => {
 	width: 100%;
 	height: 100%;
 	background-image:
-		radial-gradient(
-			circle at 20% 30%,
+		radial-gradient(circle at 20% 30%,
 			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
+			transparent 30%),
+		radial-gradient(circle at 80% 70%,
 			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
+			transparent 30%);
 	pointer-events: none;
 }
 

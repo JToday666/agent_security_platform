@@ -9,11 +9,7 @@
 				</p>
 
 				<div class="contact-grid">
-					<div
-						v-for="item in contactItems"
-						:key="item.title"
-						class="contact-item"
-					>
+					<div v-for="item in contactItems" :key="item.title" class="contact-item">
 						<span class="icon">{{ item.icon }}</span>
 						<div class="info">
 							<h3>{{ item.title }}</h3>
@@ -31,13 +27,8 @@
 							<!-- 社交媒体 (social 类型) -->
 							<template v-else-if="item.type === 'social'">
 								<div class="social-links">
-									<a
-										v-for="social in item.links"
-										:key="social.name"
-										:href="social.url"
-										target="_blank"
-										>{{ social.name }}</a
-									>
+									<a v-for="social in item.links" :key="social.name" :href="social.url"
+										target="_blank">{{ social.name }}</a>
 									<span v-if="item.links.length > 1" class="separator">·</span>
 								</div>
 							</template>
@@ -58,24 +49,24 @@ import Navbar from "@/components/NavBar.vue";
 
 type ContactItem =
 	| {
-			icon: string;
-			title: string;
-			type: "link";
-			text: string;
-			link: string;
-	  }
+		icon: string;
+		title: string;
+		type: "link";
+		text: string;
+		link: string;
+	}
 	| {
-			icon: string;
-			title: string;
-			type: "text";
-			text: string;
-	  }
+		icon: string;
+		title: string;
+		type: "text";
+		text: string;
+	}
 	| {
-			icon: string;
-			title: string;
-			type: "social";
-			links: { name: string; url: string }[];
-	  };
+		icon: string;
+		title: string;
+		type: "social";
+		links: { name: string; url: string }[];
+	};
 
 const contactItems: ContactItem[] = [
 	{
@@ -147,16 +138,12 @@ const contactItems: ContactItem[] = [
 	width: 100%;
 	height: 100%;
 	background-image:
-		radial-gradient(
-			circle at 20% 30%,
+		radial-gradient(circle at 20% 30%,
 			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
+			transparent 30%),
+		radial-gradient(circle at 80% 70%,
 			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
+			transparent 30%);
 	pointer-events: none;
 }
 

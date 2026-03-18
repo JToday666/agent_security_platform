@@ -8,36 +8,18 @@
 			<div class="right-section">
 				<!-- 导航链接区域 -->
 				<div class="nav-links">
-					<router-link to="/" class="nav-link" active-class="active"
-						>首页</router-link
-					>
-					<router-link to="/dataset" class="nav-link" active-class="active"
-						>数据集</router-link
-					>
-					<router-link to="/leaderboard" class="nav-link" active-class="active"
-						>排行榜</router-link
-					>
-					<router-link to="/contact" class="nav-link" active-class="active"
-						>联系我们</router-link
-					>
-					<router-link
-						v-if="isLogin"
-						to="/user"
-						class="nav-link"
-						active-class="active"
-						>个人中心</router-link
-					>
+					<router-link to="/" class="nav-link" active-class="active">首页</router-link>
+					<router-link to="/dataset" class="nav-link" active-class="active">数据集</router-link>
+					<router-link to="/leaderboard" class="nav-link" active-class="active">排行榜</router-link>
+					<router-link to="/contact" class="nav-link" active-class="active">联系我们</router-link>
+					<router-link v-if="isLogin" to="/user" class="nav-link" active-class="active">个人中心</router-link>
 				</div>
 
 				<!-- 登录后显示头像和用户名 -->
-				<div
-					v-if="isLogin"
-					class="user-info"
-					@click="goToProfile"
-					:title="'修改个人信息'"
-				>
+				<div v-if="isLogin" class="user-info" @click="goToProfile" :title="'修改个人信息'">
 					<div class="avatar">
-						<span class="default-avatar">{{
+						<img v-if="resolvedAvatar" :src="resolvedAvatar" alt="头像" class="avatar-img" />
+						<span v-else class="default-avatar">{{
 							username.charAt(0).toUpperCase()
 						}}</span>
 					</div>
@@ -49,14 +31,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
+import { resolveAssetUrl } from "@/utils/assets";
 
 const router = useRouter();
 const userStore = useUserStore();
-const { isLogin, username } = storeToRefs(userStore);
+const { isLogin, username, avatarUrl } = storeToRefs(userStore);
+const resolvedAvatar = computed(() => resolveAssetUrl(avatarUrl.value));
 
 // 导航栏显示状态（滚动隐藏/显示）
 const isVisible = ref(true);
@@ -244,6 +228,13 @@ const goToProfile = () => {
 	font-weight: 600;
 	font-size: 1rem;
 	box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.avatar-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
 }
 
 .default-avatar {

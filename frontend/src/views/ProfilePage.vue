@@ -11,23 +11,12 @@
 					<!-- 头像上传区域 -->
 					<div class="avatar-section">
 						<div class="avatar-preview">
-							<img
-								:src="avatarPreview || avatarUrl || defaultAvatar"
-								alt="头像"
-								v-if="avatarPreview || avatarUrl"
-							/>
-							<span v-else class="avatar-placeholder">📷</span>
+							<img :src="displayAvatar" alt="头像" />
 						</div>
 						<div class="avatar-upload">
 							<label for="avatar" class="upload-label">选择新头像</label>
-							<input
-								type="file"
-								id="avatar"
-								accept="image/*"
-								@change="onAvatarChange"
-								class="hidden-input"
-								:disabled="uploading"
-							/>
+							<input type="file" id="avatar" accept="image/jpeg,image/png" @change="onAvatarChange"
+								class="hidden-input" :disabled="uploading" />
 							<p class="hint">支持 JPG、PNG，大小不超过 2MB</p>
 							<div v-if="uploading" class="uploading-hint">上传中...</div>
 						</div>
@@ -36,45 +25,26 @@
 					<!-- 表单字段 -->
 					<div class="form-group">
 						<label for="username">用户名</label>
-						<input
-							type="text"
-							id="username"
-							v-model="form.username"
-							placeholder="请输入用户名"
-							required
-						/>
+						<input type="text" id="username" v-model="form.username" placeholder="请输入用户名" required
+							minlength="3" maxlength="50" />
 					</div>
 
 					<div class="form-group">
 						<label for="email">邮箱</label>
-						<input
-							type="email"
-							id="email"
-							v-model="form.email"
-							readonly
-							class="readonly-field"
-						/>
+						<input type="email" id="email" v-model="form.email" readonly class="readonly-field" />
 						<p class="field-hint">邮箱不可修改</p>
 					</div>
 
 					<div class="form-group">
 						<label for="password">新密码</label>
-						<input
-							type="password"
-							id="password"
-							v-model="form.password"
-							placeholder="留空表示不修改"
-						/>
+						<input type="password" id="password" v-model="form.password" placeholder="留空表示不修改" minlength="6"
+							maxlength="128" />
 					</div>
 
 					<div class="form-group">
 						<label for="confirmPassword">确认新密码</label>
-						<input
-							type="password"
-							id="confirmPassword"
-							v-model="form.confirmPassword"
-							placeholder="再次输入新密码"
-						/>
+						<input type="password" id="confirmPassword" v-model="form.confirmPassword" placeholder="再次输入新密码"
+							minlength="6" maxlength="128" />
 					</div>
 
 					<div v-if="message" class="form-message" :class="messageType">
@@ -85,12 +55,7 @@
 						<button type="submit" class="submit-btn" :disabled="submitting">
 							{{ submitting ? "保存中..." : "保存修改" }}
 						</button>
-						<button
-							type="button"
-							class="cancel-btn"
-							@click="resetForm"
-							:disabled="submitting"
-						>
+						<button type="button" class="cancel-btn" @click="resetForm" :disabled="submitting">
 							取消
 						</button>
 					</div>
@@ -101,11 +66,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from "vue";
+import { ref, reactive, onMounted, watch, computed } from "vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import Navbar from "@/components/NavBar.vue";
 import UserSidebar from "@/components/UserSidebar.vue";
+import { resolveAssetUrl } from "@/utils/assets";
+
+const USERNAME_MIN_LENGTH = 3;
+const USERNAME_MAX_LENGTH = 50;
+const PASSWORD_MIN_LENGTH = 6;
+const PASSWORD_MAX_LENGTH = 128;
+const AVATAR_MAX_SIZE = 2 * 1024 * 1024;
+const AVATAR_ALLOWED_TYPES = new Set(["image/jpeg", "image/png"]);
 
 const userStore = useUserStore();
 const { currentUser, avatarUrl } = storeToRefs(userStore);
@@ -126,6 +99,12 @@ const submitting = ref(false);
 const uploading = ref(false);
 const message = ref("");
 const messageType = ref<"success" | "error">("success");
+const displayAvatar = computed(() => {
+	if (avatarPreview.value) {
+		return avatarPreview.value;
+	}
+	return resolveAssetUrl(avatarUrl.value) || defaultAvatar;
+});
 
 // 从 store 加载当前用户信息到表单
 const loadUserData = () => {
@@ -135,16 +114,13 @@ const loadUserData = () => {
 	}
 };
 
-onMounted(() => {
-	if (currentUser.value) {
-		loadUserData();
+onMounted(async () => {
+	const hasProfile = await userStore.fetchProfile();
+	if (!hasProfile && !currentUser.value) {
+		message.value = "获取个人信息失败，请重新登录";
+		messageType.value = "error";
 	} else {
-		userStore
-			.fetchProfile()
-			.then(() => {
-				loadUserData();
-			})
-			.catch(() => {});
+		loadUserData();
 	}
 });
 
@@ -157,7 +133,14 @@ const onAvatarChange = async (e: Event) => {
 	const file = target.files?.[0];
 	if (!file) return;
 
-	if (file.size > 2 * 1024 * 1024) {
+	if (!AVATAR_ALLOWED_TYPES.has(file.type)) {
+		message.value = "仅支持 JPG、PNG 格式";
+		messageType.value = "error";
+		target.value = "";
+		return;
+	}
+
+	if (file.size > AVATAR_MAX_SIZE) {
 		message.value = "头像大小不能超过 2MB";
 		messageType.value = "error";
 		target.value = "";
@@ -173,7 +156,7 @@ const onAvatarChange = async (e: Event) => {
 	uploading.value = true;
 	message.value = "";
 	try {
-		const newUrl = await userStore.uploadAvatar(file);
+		await userStore.uploadAvatar(file);
 		avatarPreview.value = null;
 		message.value = "头像更新成功";
 		messageType.value = "success";
@@ -188,9 +171,16 @@ const onAvatarChange = async (e: Event) => {
 };
 
 const handleSubmit = async () => {
+	const usernameValue = form.username.trim();
+
 	// 密码一致性验证
 	if (form.password && form.password !== form.confirmPassword) {
 		message.value = "两次输入的密码不一致";
+		messageType.value = "error";
+		return;
+	}
+	if (!usernameValue) {
+		message.value = "用户名不能为空";
 		messageType.value = "error";
 		return;
 	}
@@ -201,10 +191,26 @@ const handleSubmit = async () => {
 		password?: string;
 	} = {};
 
-	if (form.username !== currentUser.value?.username) {
-		updateData.username = form.username;
+	if (
+		usernameValue.length < USERNAME_MIN_LENGTH ||
+		usernameValue.length > USERNAME_MAX_LENGTH
+	) {
+		message.value = "用户名长度需在 3-50 位之间";
+		messageType.value = "error";
+		return;
+	}
+	if (usernameValue !== currentUser.value?.username) {
+		updateData.username = usernameValue;
 	}
 	if (form.password) {
+		if (
+			form.password.length < PASSWORD_MIN_LENGTH ||
+			form.password.length > PASSWORD_MAX_LENGTH
+		) {
+			message.value = "密码长度需在 6-128 位之间";
+			messageType.value = "error";
+			return;
+		}
 		updateData.password = form.password;
 	}
 
@@ -240,8 +246,6 @@ const resetForm = () => {
 };
 </script>
 
-<style scoped></style>
-
 <style scoped>
 /* 全局重置与动画 */
 * {
@@ -276,16 +280,12 @@ const resetForm = () => {
 	width: 100%;
 	height: 100%;
 	background-image:
-		radial-gradient(
-			circle at 20% 30%,
+		radial-gradient(circle at 20% 30%,
 			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
+			transparent 30%),
+		radial-gradient(circle at 80% 70%,
 			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
+			transparent 30%);
 	pointer-events: none;
 }
 
@@ -300,7 +300,7 @@ const resetForm = () => {
 	animation: fadeInUp 0.8s ease;
 }
 
-.user-sidebar.collapsed ~ .content-area {
+.user-sidebar.collapsed~.content-area {
 	margin-left: 70px;
 }
 
@@ -539,16 +539,19 @@ const resetForm = () => {
 .hidden-input {
 	display: none;
 }
+
 .uploading-hint {
 	color: #666;
 	font-size: 0.85rem;
 	margin-top: 0.25rem;
 }
+
 .readonly-field {
 	background-color: #f5f5f5;
 	cursor: not-allowed;
 	color: #666;
 }
+
 .field-hint {
 	font-size: 0.8rem;
 	color: #999;

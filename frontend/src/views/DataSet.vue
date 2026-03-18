@@ -6,12 +6,7 @@
 			<p class="page-subtitle">选择以下数据集，查看详细说明和下载链接。</p>
 
 			<div class="dataset-grid">
-				<router-link
-					v-for="item in datasets"
-					:key="item.id"
-					:to="`/dataset/${item.id}`"
-					class="dataset-card"
-				>
+				<router-link v-for="item in datasets" :key="item.id" :to="`/dataset/${item.id}`" class="dataset-card">
 					<h3>{{ item.name }}</h3>
 					<p>{{ item.description }}</p>
 					<span class="card-link">查看详情 →</span>
@@ -76,16 +71,12 @@ const datasets = [
 	width: 100%;
 	height: 100%;
 	background-image:
-		radial-gradient(
-			circle at 20% 30%,
+		radial-gradient(circle at 20% 30%,
 			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
+			transparent 30%),
+		radial-gradient(circle at 80% 70%,
 			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
+			transparent 30%);
 	pointer-events: none;
 }
 

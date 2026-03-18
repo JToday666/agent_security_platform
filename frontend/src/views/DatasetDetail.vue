@@ -31,12 +31,7 @@
 					</div>
 
 					<div class="download-section">
-						<a
-							:href="dataset.downloadUrl"
-							class="download-btn"
-							target="_blank"
-							rel="noopener"
-						>
+						<a :href="dataset.downloadUrl" class="download-btn" target="_blank" rel="noopener">
 							下载数据集
 						</a>
 					</div>
@@ -133,16 +128,12 @@ const goBack = () => {
 	width: 100%;
 	height: 100%;
 	background-image:
-		radial-gradient(
-			circle at 20% 30%,
+		radial-gradient(circle at 20% 30%,
 			rgba(59, 130, 246, 0.03) 0%,
-			transparent 30%
-		),
-		radial-gradient(
-			circle at 80% 70%,
+			transparent 30%),
+		radial-gradient(circle at 80% 70%,
 			rgba(236, 72, 153, 0.03) 0%,
-			transparent 30%
-		);
+			transparent 30%);
 	pointer-events: none;
 }
 
