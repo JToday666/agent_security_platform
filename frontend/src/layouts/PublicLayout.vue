@@ -1,8 +1,8 @@
 <template>
-	<Navbar />
-	<main class="public-layout">
-		<router-view />
-	</main>
+  <Navbar />
+  <main class="public-layout">
+    <router-view />
+  </main>
 </template>
 
 <script setup lang="ts">

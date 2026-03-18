@@ -1,6 +1,6 @@
 <template>
-	<router-view />
-	<LoginDialog />
+  <router-view />
+  <LoginDialog />
 </template>
 
 <script setup lang="ts">
