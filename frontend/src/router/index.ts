@@ -13,56 +13,56 @@ import UserLayout from "@/layouts/UserLayout.vue";
 import { useUserStore } from "@/store/user";
 
 const router = createRouter({
-	history: createWebHistory(),
-	routes: [
-		{
-			path: "/",
-			component: PublicLayout,
-			children: [
-				{ path: "", component: Home },
-				{ path: "dataset", component: DataSet },
-				{ path: "dataset/:id", component: DatasetDetail },
-				{ path: "leaderboard", component: LeaderBoard },
-				{ path: "contact", component: ContactUs },
-			],
-		},
+  history: createWebHistory(),
+  routes: [
+    {
+      path: "/",
+      component: PublicLayout,
+      children: [
+        { path: "", component: Home },
+        { path: "dataset", component: DataSet },
+        { path: "dataset/:id", component: DatasetDetail },
+        { path: "leaderboard", component: LeaderBoard },
+        { path: "contact", component: ContactUs },
+      ],
+    },
 
-		{
-			path: "/",
-			component: UserLayout,
-			meta: { requiresAuth: true },
-			children: [
-				{
-					path: "user",
-					component: UserCenter,
-				},
-				{
-					path: "report/:id",
-					component: EvaluationReport,
-				},
-				{
-					path: "submit",
-					component: SubmitAgent,
-				},
-				{
-					path: "profile",
-					component: ProfilePage,
-				},
-			],
-		},
-	],
+    {
+      path: "/",
+      component: UserLayout,
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: "user",
+          component: UserCenter,
+        },
+        {
+          path: "report/:id",
+          component: EvaluationReport,
+        },
+        {
+          path: "submit",
+          component: SubmitAgent,
+        },
+        {
+          path: "profile",
+          component: ProfilePage,
+        },
+      ],
+    },
+  ],
 });
 
-router.beforeEach((to, _, next) => {
-	const userStore = useUserStore();
-	const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+router.beforeEach((to) => {
+  const userStore = useUserStore();
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
-	if (requiresAuth && !userStore.isLogin) {
-		userStore.showLogin = true;
-		next(false);
-	} else {
-		next();
-	}
+  if (requiresAuth && !userStore.isLogin) {
+    userStore.openLoginDialog();
+    return { path: "/" };
+  }
+
+  return true;
 });
 
 export default router;
