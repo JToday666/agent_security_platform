@@ -12,7 +12,7 @@
 
       <!-- 使用指南卡片 -->
       <div class="guide-card ui-surface-glass">
-        <h2 class="guide-title">三步快速上手</h2>
+        <h2 class="guide-title">快速上手</h2>
         <div class="steps-grid">
           <div
             class="step-item ui-surface-white"
@@ -31,10 +31,12 @@
         <!-- 第一行：核心功能按钮 -->
         <div class="primary-actions">
           <button class="btn primary ui-btn ui-btn-pill" @click="goDataset">
-            <span>📊</span> 浏览数据集
+            <AppIcon icon="lucide:database" class="btn-icon" />
+            <span>浏览数据集</span>
           </button>
           <button class="btn primary ui-btn ui-btn-pill" @click="goLeaderboard">
-            <span>🏆</span> 查看排行榜
+            <AppIcon icon="lucide:trophy" class="btn-icon" />
+            <span>查看排行榜</span>
           </button>
         </div>
 
@@ -45,7 +47,8 @@
               class="btn accent ui-btn ui-btn-pill ui-btn-gradient"
               @click="openLoginDialog"
             >
-              <span>✨</span> 登录 / 注册
+              <AppIcon icon="lucide:log-in" class="btn-icon" />
+              <span>登录 / 注册</span>
             </button>
           </template>
           <template v-else>
@@ -56,13 +59,15 @@
               >
               <div class="action-buttons">
                 <router-link to="/user" class="btn outline ui-btn ui-btn-pill">
-                  <span>👤</span> 个人中心
+                  <AppIcon icon="lucide:layout-dashboard" class="btn-icon" />
+                  <span>个人中心</span>
                 </router-link>
                 <button
                   class="btn logout ui-btn ui-btn-pill"
                   @click="handleLogoutClick"
                 >
-                  <span>🚪</span> 退出
+                  <AppIcon icon="lucide:log-out" class="btn-icon" />
+                  <span>退出</span>
                 </button>
               </div>
             </div>
@@ -92,6 +97,7 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import AppIcon from "@/components/AppIcon.vue";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -120,7 +126,6 @@ const handleLogoutClick = () => {
 
 const handleLogoutConfirm = () => {
   logoutLoading.value = true;
-  // 模拟异步操作（实际可调用 userStore.logout()）
   setTimeout(() => {
     userStore.logout();
     router.push("/");
@@ -303,6 +308,8 @@ const handleLogoutCancel = () => {
 
 /* 按钮样式 */
 .btn {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
   gap: 0.6rem;
   padding: 0.9rem 2.2rem;
@@ -313,7 +320,13 @@ const handleLogoutCancel = () => {
 }
 
 .btn span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-icon {
   font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
 .btn:hover {

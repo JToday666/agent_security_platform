@@ -91,7 +91,7 @@
             class="file-input"
           />
           <div class="upload-placeholder" v-if="!form.dockerFile">
-            <span class="upload-icon">📦</span>
+            <AppIcon icon="lucide:package" class="upload-icon" />
             <p>点击或拖拽上传 Docker 镜像文件（支持 .tar, .tar.gz）</p>
             <button
               type="button"
@@ -106,8 +106,13 @@
             <span class="file-size">{{
               formatFileSize(form.dockerFile.size)
             }}</span>
-            <button type="button" class="remove-file" @click="removeFile">
-              ×
+            <button
+              type="button"
+              class="remove-file"
+              @click="removeFile"
+              aria-label="移除文件"
+            >
+              <AppIcon icon="lucide:x" class="remove-file-icon" />
             </button>
           </div>
         </div>
@@ -134,6 +139,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
+import AppIcon from "@/components/AppIcon.vue";
 
 // 模拟数据集选项（与数据集页面一致）
 const datasetOptions = [
@@ -443,8 +449,9 @@ const handleSubmit = async () => {
 }
 
 .upload-icon {
-  font-size: 3rem;
-  display: block;
+  width: 3rem;
+  height: 3rem;
+  display: inline-block;
   margin-bottom: 0.5rem;
   color: #64748b;
 }
@@ -499,13 +506,20 @@ const handleSubmit = async () => {
   background: none;
   border: none;
   color: #94a3b8;
-  font-size: 1.2rem;
   cursor: pointer;
   transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .remove-file:hover {
   color: #ef4444;
+}
+
+.remove-file-icon {
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 /* 表单操作区 */

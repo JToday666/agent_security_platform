@@ -13,31 +13,44 @@
             :key="item.title"
             class="contact-item ui-surface-white"
           >
-            <span class="icon">{{ item.icon }}</span>
-            <div class="info">
+            <AppIcon :icon="item.icon" class="icon" />
+            <div class="info" :class="`info--${item.type}`">
               <h3>{{ item.title }}</h3>
 
               <!-- 邮箱/电话 (link 类型) -->
               <template v-if="item.type === 'link'">
-                <a :href="item.link">{{ item.text }}</a>
+                <a :href="item.link" class="info-value info-value--single-line">
+                  {{ item.text }}
+                </a>
               </template>
 
               <!-- 地址 (text 类型) -->
               <template v-else-if="item.type === 'text'">
-                <p>{{ item.text }}</p>
+                <p class="info-value info-value--address">{{ item.text }}</p>
               </template>
 
               <!-- 社交媒体 (social 类型) -->
               <template v-else-if="item.type === 'social'">
                 <div class="social-links">
-                  <a
-                    v-for="social in item.links"
+                  <template
+                    v-for="(social, index) in item.links"
                     :key="social.name"
-                    :href="social.url"
-                    target="_blank"
-                    >{{ social.name }}</a
                   >
-                  <span v-if="item.links.length > 1" class="separator">·</span>
+                    <a
+                      :href="social.url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="info-value info-value--single-line social-link"
+                      ><AppIcon :icon="social.icon" class="social-brand-icon" />
+                      <span>{{ social.name }}</span></a
+                    >
+                    <span
+                      v-if="index < item.links.length - 1"
+                      class="separator"
+                      aria-hidden="true"
+                      >·</span
+                    >
+                  </template>
                 </div>
               </template>
             </div>
@@ -53,6 +66,8 @@
 </template>
 
 <script setup lang="ts">
+import AppIcon from "@/components/AppIcon.vue";
+
 type ContactItem =
   | {
       icon: string;
@@ -71,37 +86,45 @@ type ContactItem =
       icon: string;
       title: string;
       type: "social";
-      links: { name: string; url: string }[];
+      links: { name: string; icon: string; url: string }[];
     };
 
 const contactItems: ContactItem[] = [
   {
-    icon: "📧",
+    icon: "lucide:mail",
     title: "邮箱",
     type: "link",
     text: "u202312421@hust.edu.com",
     link: "mailto:u202312421@hust.edu.com",
   },
   {
-    icon: "📞",
+    icon: "lucide:phone",
     title: "电话",
     type: "link",
     text: "+86 13886038599",
     link: "tel:+8613886038599",
   },
   {
-    icon: "📍",
+    icon: "lucide:map-pin",
     title: "地址",
     type: "text",
     text: "武汉市东西湖区国家网络安全基地",
   },
   {
-    icon: "🌐",
+    icon: "lucide:globe",
     title: "社交媒体",
     type: "social",
     links: [
-      { name: "Twitter", url: "#" },
-      { name: "GitHub", url: "#" },
+      {
+        name: "X",
+        icon: "ri:twitter-x-line",
+        url: "https://x.com/agent_security_demo",
+      },
+      {
+        name: "GitHub",
+        icon: "ri:github-line",
+        url: "https://github.com/JToday666/agent_security_platform",
+      },
     ],
   },
 ];
@@ -117,6 +140,7 @@ const contactItems: ContactItem[] = [
 }
 
 .content {
+  width: 100%;
   max-width: 800px;
   padding: 2rem;
 }
@@ -141,58 +165,85 @@ const contactItems: ContactItem[] = [
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
   margin: 2rem 0;
 }
 
 .contact-item {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 1.65rem 1.5rem;
+  min-height: 220px;
+  text-align: center;
 }
 
 .icon {
-  font-size: 2.2rem;
-  line-height: 1;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: #2563eb;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
 }
 
 .info {
   flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
 }
 
 .info h3 {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.3rem;
+  margin: 0;
   color: #0f172a;
 }
 
-.info a,
-.info p {
+.info-value {
+  margin: 0;
   color: #64748b;
   text-decoration: none;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 1rem;
+  line-height: 1.55;
+  text-align: center;
   word-break: break-word;
   transition: color 0.2s;
 }
 
-.info a:hover {
+.info-value--single-line {
+  white-space: nowrap;
+}
+
+.info-value--address {
+  max-width: 16ch;
+  text-wrap: balance;
+}
+
+.info a:hover,
+.social-link:hover {
   color: #2563eb;
   text-decoration: underline;
 }
 
 .social-links {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  display: inline-flex;
+  justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  width: 100%;
 }
 
 .social-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   color: #64748b;
 }
 
@@ -200,9 +251,15 @@ const contactItems: ContactItem[] = [
   color: #2563eb;
 }
 
+.social-brand-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
 .separator {
   color: #cbd5e1;
-  margin: 0 0.2rem;
+  margin: 0 0.1rem;
 }
 
 .note {
@@ -234,7 +291,12 @@ const contactItems: ContactItem[] = [
   }
 
   .contact-item {
-    padding: 1.2rem;
+    min-height: auto;
+    padding: 1.25rem 1.2rem;
+  }
+
+  .info-value {
+    font-size: 0.95rem;
   }
 }
 </style>

@@ -24,8 +24,8 @@ import UserSidebar from "@/components/UserSidebar.vue";
   animation: fadeInUp var(--duration-fade-in) ease;
 }
 
-/* 通过 :global 控制侧边栏折叠状态来自动调整内容区域边距 */
-.user-layout :global(.user-sidebar.collapsed) ~ .content-area {
+/* 控制侧边栏折叠状态来自动调整内容区域边距 */
+.user-layout .user-sidebar.collapsed ~ .content-area {
   margin-left: var(--sidebar-width-collapsed);
 }
 

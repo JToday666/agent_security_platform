@@ -10,7 +10,7 @@
           <div class="confirm-card ui-modal-card">
             <!-- 可选图标 -->
             <div class="icon-wrapper" v-if="showIcon">
-              <ExclamationTriangleIcon class="icon" />
+              <AppIcon icon="lucide:alert-triangle" class="icon" />
             </div>
 
             <!-- 标题与内容 -->
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ExclamationTriangleIcon } from "@heroicons/vue/24/outline";
+import AppIcon from "@/components/AppIcon.vue";
 
 interface Props {
   modelValue: boolean; // 控制显示
