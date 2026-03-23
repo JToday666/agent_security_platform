@@ -15,6 +15,7 @@
 # backend
 /backend/.env
 /backend/**/__pycache__/
+/backend/uploads/
 
 #frontend
 # Logs
