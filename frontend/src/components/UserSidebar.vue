@@ -1,35 +1,41 @@
 <template>
   <aside class="user-sidebar" :class="{ collapsed }">
     <!-- 收起/展开按钮，放在右上角 -->
-    <button class="toggle-btn" @click="collapsed = !collapsed">
-      <span v-if="collapsed">▶</span>
-      <span v-else>◀</span>
+    <button
+      class="toggle-btn"
+      @click="collapsed = !collapsed"
+      :aria-label="collapsed ? '展开侧边栏' : '收起侧边栏'"
+    >
+      <AppIcon
+        :icon="collapsed ? 'lucide:chevrons-right' : 'lucide:chevrons-left'"
+        class="toggle-icon"
+      />
     </button>
 
     <!-- 导航链接 -->
     <nav class="sidebar-nav">
       <router-link to="/user" class="nav-item" active-class="active">
-        <span class="icon">📋</span>
+        <AppIcon icon="lucide:clipboard-list" class="icon" />
         <span class="text" v-if="!collapsed">评测记录</span>
       </router-link>
       <router-link to="/submit" class="nav-item" active-class="active">
-        <span class="icon">🤖</span>
+        <AppIcon icon="lucide:bot" class="icon" />
         <span class="text" v-if="!collapsed">提交智能体</span>
       </router-link>
       <router-link to="/profile" class="nav-item" active-class="active">
-        <span class="icon">✏️</span>
+        <AppIcon icon="lucide:square-pen" class="icon" />
         <span class="text" v-if="!collapsed">修改信息</span>
       </router-link>
       <router-link to="/dataset" class="nav-item" active-class="active">
-        <span class="icon">📊</span>
+        <AppIcon icon="lucide:database" class="icon" />
         <span class="text" v-if="!collapsed">数据集</span>
       </router-link>
       <router-link to="/leaderboard" class="nav-item" active-class="active">
-        <span class="icon">🏆</span>
+        <AppIcon icon="lucide:trophy" class="icon" />
         <span class="text" v-if="!collapsed">排行榜</span>
       </router-link>
       <router-link to="/contact" class="nav-item" active-class="active">
-        <span class="icon">📧</span>
+        <AppIcon icon="lucide:mail" class="icon" />
         <span class="text" v-if="!collapsed">联系我们</span>
       </router-link>
     </nav>
@@ -38,6 +44,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import AppIcon from "@/components/AppIcon.vue";
 
 const collapsed = ref(false);
 </script>
@@ -81,6 +88,11 @@ const collapsed = ref(false);
   font-size: 1rem;
 }
 
+.toggle-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
 .toggle-btn:hover {
   background: rgba(0, 0, 0, 0.06);
   color: #2563eb;
@@ -120,9 +132,10 @@ const collapsed = ref(false);
 }
 
 .icon {
-  font-size: 1.4rem;
+  width: 1.35rem;
+  height: 1.35rem;
   min-width: 24px;
-  text-align: center;
+  flex-shrink: 0;
 }
 
 .text {

@@ -150,7 +150,7 @@
   margin-top: 1rem;
 }
 
-/* 绉诲姩绔€傚簲 */
+/* 移动端适应 */
 @media (max-width: 640px) {
   .content {
     padding: 2rem 1rem;

@@ -10,13 +10,13 @@
           <div class="dialog-card ui-modal-card">
             <!-- 关闭按钮 -->
             <button class="close-btn" @click="closeDialog" aria-label="关闭">
-              <XMarkIcon class="w-5 h-5" />
+              <AppIcon icon="lucide:x" class="close-icon" />
             </button>
 
             <!-- 标题 & 装饰 -->
             <div class="header">
               <div class="logo-wrapper">
-                <ShieldCheckIcon class="logo-icon" />
+                <AppIcon icon="lucide:shield-check" class="logo-icon" />
               </div>
               <h3>{{ mode === "login" ? "欢迎回来" : "创建账号" }}</h3>
               <p class="subtitle">
@@ -38,7 +38,7 @@
                 class="form-group"
                 :class="{ focused: focusedField === 'login-username' }"
               >
-                <UserIcon class="input-icon" />
+                <AppIcon icon="lucide:user" class="input-icon" />
                 <input
                   v-model="loginForm.username"
                   type="text"
@@ -52,7 +52,7 @@
                 class="form-group"
                 :class="{ focused: focusedField === 'login-password' }"
               >
-                <LockClosedIcon class="input-icon" />
+                <AppIcon icon="lucide:lock" class="input-icon" />
                 <input
                   v-model="loginForm.password"
                   type="password"
@@ -72,9 +72,12 @@
               </div>
 
               <Transition name="shake">
-                <div v-if="loginError" class="error-message">
-                  <ExclamationCircleIcon class="w-4 h-4" />
-                  {{ loginError }}
+                <div
+                  v-if="loginError"
+                  class="error-message error-message--stacked"
+                >
+                  <AppIcon icon="lucide:circle-alert" class="error-icon" />
+                  <span class="error-text">{{ loginError }}</span>
                 </div>
               </Transition>
 
@@ -94,7 +97,7 @@
                 class="form-group"
                 :class="{ focused: focusedField === 'reg-username' }"
               >
-                <UserIcon class="input-icon" />
+                <AppIcon icon="lucide:user" class="input-icon" />
                 <input
                   v-model="registerForm.username"
                   type="text"
@@ -117,7 +120,7 @@
                 class="form-group"
                 :class="{ focused: focusedField === 'reg-email' }"
               >
-                <EnvelopeIcon class="input-icon" />
+                <AppIcon icon="lucide:mail" class="input-icon" />
                 <input
                   v-model="registerForm.email"
                   type="email"
@@ -131,7 +134,7 @@
                 class="form-group"
                 :class="{ focused: focusedField === 'reg-password' }"
               >
-                <LockClosedIcon class="input-icon" />
+                <AppIcon icon="lucide:lock" class="input-icon" />
                 <input
                   v-model="registerForm.password"
                   type="password"
@@ -152,7 +155,7 @@
                 class="form-group"
                 :class="{ focused: focusedField === 'reg-confirm' }"
               >
-                <LockClosedIcon class="input-icon" />
+                <AppIcon icon="lucide:lock" class="input-icon" />
                 <input
                   v-model="registerForm.confirmPassword"
                   type="password"
@@ -164,15 +167,21 @@
               </div>
 
               <Transition name="shake">
-                <div v-if="registerError" class="error-message">
-                  <ExclamationCircleIcon class="w-4 h-4" />
-                  {{ registerError }}
+                <div
+                  v-if="registerError"
+                  class="error-message error-message--stacked"
+                >
+                  <AppIcon icon="lucide:circle-alert" class="error-icon" />
+                  <span class="error-text">{{ registerError }}</span>
                 </div>
               </Transition>
               <Transition name="shake">
-                <div v-if="passwordMatchError" class="error-message">
-                  <ExclamationCircleIcon class="w-4 h-4" />
-                  {{ passwordMatchError }}
+                <div
+                  v-if="passwordMatchError"
+                  class="error-message error-message--stacked"
+                >
+                  <AppIcon icon="lucide:circle-alert" class="error-icon" />
+                  <span class="error-text">{{ passwordMatchError }}</span>
                 </div>
               </Transition>
 
@@ -208,14 +217,7 @@
 import { ref, reactive, computed } from "vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
-import {
-  XMarkIcon,
-  ShieldCheckIcon,
-  UserIcon,
-  LockClosedIcon,
-  EnvelopeIcon,
-  ExclamationCircleIcon,
-} from "@heroicons/vue/24/outline";
+import AppIcon from "@/components/AppIcon.vue";
 
 const userStore = useUserStore();
 const { showLogin } = storeToRefs(userStore);
@@ -416,6 +418,11 @@ const handleRegister = async () => {
   transform: rotate(90deg);
 }
 
+.close-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 .header {
   text-align: center;
   margin-bottom: 2rem;
@@ -534,6 +541,29 @@ h3 {
   padding: 0.5rem 1rem;
   border-radius: 30px;
   margin-top: -0.5rem;
+}
+
+.error-message--stacked {
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: center;
+  line-height: 1.45;
+  padding: 0.65rem 0.9rem;
+  border-radius: 16px;
+  max-width: 100%;
+}
+
+.error-icon {
+  width: 14px;
+  height: 14px;
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.error-text {
+  display: block;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 .switch-mode {

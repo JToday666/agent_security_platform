@@ -8,24 +8,29 @@
       <div class="right-section">
         <!-- 导航链接区域 -->
         <div class="nav-links">
-          <router-link to="/" class="nav-link" active-class="active"
-            >首页</router-link
+          <router-link to="/" class="nav-link" exact-active-class="active"
+            ><AppIcon icon="lucide:house" class="nav-link-icon" />
+            <span>首页</span></router-link
           >
           <router-link to="/dataset" class="nav-link" active-class="active"
-            >数据集</router-link
+            ><AppIcon icon="lucide:database" class="nav-link-icon" />
+            <span>数据集</span></router-link
           >
           <router-link to="/leaderboard" class="nav-link" active-class="active"
-            >排行榜</router-link
+            ><AppIcon icon="lucide:trophy" class="nav-link-icon" />
+            <span>排行榜</span></router-link
           >
           <router-link to="/contact" class="nav-link" active-class="active"
-            >联系我们</router-link
+            ><AppIcon icon="lucide:mail" class="nav-link-icon" />
+            <span>联系我们</span></router-link
           >
           <router-link
             v-if="isLogin"
             to="/user"
             class="nav-link"
             active-class="active"
-            >个人中心</router-link
+            ><AppIcon icon="lucide:layout-dashboard" class="nav-link-icon" />
+            <span>个人中心</span></router-link
           >
         </div>
 
@@ -53,6 +58,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
+import AppIcon from "@/components/AppIcon.vue";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -169,6 +175,9 @@ const goToProfile = () => {
 }
 
 .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   color: #334155;
   text-decoration: none;
   font-weight: 500;
@@ -176,6 +185,12 @@ const goToProfile = () => {
   padding: 0.5rem 0;
   position: relative;
   transition: color 0.2s ease;
+}
+
+.nav-link-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
 }
 
 .nav-link::after {
