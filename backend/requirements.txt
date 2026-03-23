@@ -1,9 +1,11 @@
+alembic
 fastapi
 uvicorn[standard]
 pydantic
 pydantic_settings
 sqlalchemy
 asyncpg
+psycopg[binary]
 PyJWT
 email-validator
 python-multipart
