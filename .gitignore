@@ -9,6 +9,8 @@
 .idea/
 # Ignore environment variable files
 .env
+# Ignore temporary files
+~$*
 
 # backend
 /backend/.env
