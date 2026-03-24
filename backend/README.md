@@ -115,6 +115,30 @@ uv run alembic history
 python -m alembic upgrade head
 ```
 
+### 6.3 Alembic 规范（新增）
+
+- 所有 schema 变更必须通过迁移交付，不在运行时代码中执行自动建表。
+- 生成迁移前先确认模型已在 `app/models/__init__.py` 导入，避免漏检。
+- 迁移 message 采用“动作 + 对象”命名，避免 `update`、`fix` 这类无语义名称。
+- 使用 `--autogenerate` 后必须人工审核迁移脚本，重点关注：
+  - 非预期 `drop_table` / `drop_column` / `drop_index`
+  - 非预期约束与索引变化
+  - 类型变更是否对现有数据兼容
+- 破坏性变更（删字段、重命名、不兼容类型）需要在变更说明中写清：
+  - 影响范围
+  - 兼容策略
+  - 回滚方案
+
+推荐提交流程：
+
+```bash
+uv run alembic upgrade head
+uv run alembic current
+# 可选：验证回滚链路
+uv run alembic downgrade -1
+uv run alembic upgrade head
+```
+
 ## 7. API 与响应格式
 
 ### 使用约束
