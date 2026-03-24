@@ -11,11 +11,16 @@
 .env
 # Ignore temporary files
 ~$*
+# Ignore AGENTS.md file
+AGENTS.md
 
 # backend
 /backend/.env
 /backend/**/__pycache__/
-/backend/uploads/
+/backend/uploads
+/backend/data*
+/backend/environment
+/backend/storage
 
 #frontend
 # Logs
