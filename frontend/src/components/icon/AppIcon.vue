@@ -18,6 +18,7 @@ defineOptions({
   inheritAttrs: false,
 });
 
+// 统一包装第三方图标组件，便于全站控制尺寸和可访问性属性。
 withDefaults(
   defineProps<{
     icon: string;

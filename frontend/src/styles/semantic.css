@@ -64,6 +64,17 @@
   box-shadow: var(--shadow-primary-btn-hover);
 }
 
+:where(.ui-hover-card) {
+  transition:
+    transform var(--duration-base) var(--ease-spring),
+    box-shadow var(--duration-base) var(--ease-spring);
+}
+
+:where(.ui-hover-card:hover) {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-surface-hover);
+}
+
 :where(.ui-input-pill) {
   background: var(--color-white);
   border: 1px solid #e2e8f0;

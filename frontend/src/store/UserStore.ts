@@ -37,7 +37,9 @@ interface UpdateProfileData {
 }
 
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || "/api/v1";
+const POST_LOGIN_REDIRECT_KEY = "agent-platform:post-login-redirect";
 
+// 解析后端服务的源地址，用于补全相对头像地址。
 const resolveApiOrigin = (): string | null => {
   if (!/^https?:\/\//i.test(API_BASE_URL)) return null;
 
@@ -50,6 +52,7 @@ const resolveApiOrigin = (): string | null => {
 
 const API_ORIGIN = resolveApiOrigin();
 
+// 后端既可能返回绝对地址，也可能返回相对路径，这里统一做一次归一化。
 const normalizeAvatarUrl = (avatarUrl?: string | null): string | null => {
   if (!avatarUrl) return null;
 
@@ -79,18 +82,23 @@ export const useUserStore = defineStore("user", () => {
   const showLogin = ref(false);
   const token = ref<string | null>(localStorage.getItem("token"));
   const currentUser = ref<User | null>(null);
+  const postLoginRedirect = ref<string | null>(
+    sessionStorage.getItem(POST_LOGIN_REDIRECT_KEY),
+  );
 
   const isLogin = computed(() => Boolean(token.value && currentUser.value));
   const username = computed(() => currentUser.value?.username || "");
   const email = computed(() => currentUser.value?.email || "");
   const avatarUrl = computed(() => currentUser.value?.avatarUrl || "");
 
+  // 清空认证态时同时移除本地 token，避免刷新后误判为已登录。
   const clearAuthState = () => {
     localStorage.removeItem("token");
     token.value = null;
     currentUser.value = null;
   };
 
+  // 登录和注册成功后都复用同一套认证态落库逻辑。
   const setAuthState = (newToken: string, user: UserPayload) => {
     localStorage.setItem("token", newToken);
     token.value = newToken;
@@ -178,6 +186,24 @@ export const useUserStore = defineStore("user", () => {
     showLogin.value = true;
   };
 
+  // 登录回跳目标使用 sessionStorage 保存，避免刷新页面后丢失。
+  const setPostLoginRedirect = (path: string | null) => {
+    postLoginRedirect.value = path;
+
+    if (path) {
+      sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, path);
+      return;
+    }
+
+    sessionStorage.removeItem(POST_LOGIN_REDIRECT_KEY);
+  };
+
+  const consumePostLoginRedirect = (): string | null => {
+    const redirect = postLoginRedirect.value;
+    setPostLoginRedirect(null);
+    return redirect;
+  };
+
   /* 获取当前用户详细信息 */
   const fetchProfile = async (): Promise<boolean> => {
     try {
@@ -241,10 +267,13 @@ export const useUserStore = defineStore("user", () => {
     username,
     email,
     avatarUrl,
+    postLoginRedirect,
     login,
     register,
     logout,
     openLoginDialog,
+    setPostLoginRedirect,
+    consumePostLoginRedirect,
     restoreLogin,
     fetchProfile,
     updateProfile,

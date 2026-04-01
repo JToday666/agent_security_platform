@@ -215,10 +215,13 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
-import { useUserStore } from "@/store/user";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/UserStore";
 import { storeToRefs } from "pinia";
-import AppIcon from "@/components/AppIcon.vue";
+import AppIcon from "@/components/icon/AppIcon.vue";
+import { RouteLocation } from "@/router/RouteNames";
 
+const router = useRouter();
 const userStore = useUserStore();
 const { showLogin } = storeToRefs(userStore);
 
@@ -226,6 +229,7 @@ const mode = ref<"login" | "register">("login");
 const loading = ref(false);
 const focusedField = ref<string | null>(null);
 
+// 登录和注册表单分开维护，避免字段相互影响。
 const loginForm = reactive({
   username: "",
   password: "",
@@ -240,8 +244,8 @@ const registerForm = reactive({
 });
 const registerError = ref("");
 
+// 每次弹窗关闭后都回收表单状态，避免登录和注册态相互污染。
 const afterLeave = () => {
-  // 重置所有状态
   loginForm.username = "";
   loginForm.password = "";
   registerForm.username = "";
@@ -258,18 +262,19 @@ const closeDialog = () => {
   userStore.showLogin = false;
 };
 
+// 登录/注册模式切换时顺手清空错误提示，避免旧提示残留。
 const toggleMode = () => {
   mode.value = mode.value === "login" ? "register" : "login";
   loginError.value = "";
   registerError.value = "";
 };
 
-// 登录表单验证：用户名不为空，密码长度 >=6
+// 登录表单验证：用户名不为空，密码长度大于等于 6。
 const isLoginValid = computed(() => {
   return loginForm.username.trim() !== "" && loginForm.password.length >= 6;
 });
 
-// 密码一致错误
+// 注册阶段实时提示两次密码是否一致。
 const passwordMatchError = computed(() => {
   if (registerForm.password && registerForm.confirmPassword) {
     return registerForm.password !== registerForm.confirmPassword
@@ -279,7 +284,7 @@ const passwordMatchError = computed(() => {
   return "";
 });
 
-// 注册表单验证
+// 注册表单验证除了长度，还包含基础邮箱格式校验。
 const isRegisterValid = computed(() => {
   const normalizedUsername = registerForm.username.trim();
   return (
@@ -297,6 +302,7 @@ const handleLogin = async () => {
     loginError.value = "密码长度至少6位";
     return;
   }
+
   loading.value = true;
   loginError.value = "";
   try {
@@ -306,6 +312,8 @@ const handleLogin = async () => {
     );
     if (success) {
       closeDialog();
+      const redirect = userStore.consumePostLoginRedirect() || RouteLocation.userCenter;
+      await router.push(redirect);
     } else {
       loginError.value = "登录失败，请稍后重试"; // 实际上异常会被 catch
     }
@@ -339,6 +347,8 @@ const handleRegister = async () => {
     });
     if (success) {
       closeDialog();
+      const redirect = userStore.consumePostLoginRedirect() || RouteLocation.userCenter;
+      await router.push(redirect);
     } else {
       registerError.value = "注册失败，请稍后重试";
     }

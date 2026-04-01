@@ -14,27 +14,32 @@
 
     <!-- 导航链接 -->
     <nav class="sidebar-nav">
-      <router-link to="/user" class="nav-item" active-class="active">
+      <router-link
+        :to="RouteLocation.userCenter"
+        class="nav-item"
+        active-class="active"
+        exact-active-class="active"
+      >
         <AppIcon icon="lucide:clipboard-list" class="icon" />
         <span class="text" v-if="!collapsed">评测记录</span>
       </router-link>
-      <router-link to="/submit" class="nav-item" active-class="active">
+      <router-link :to="RouteLocation.agentSubmit" class="nav-item" active-class="active">
         <AppIcon icon="lucide:bot" class="icon" />
         <span class="text" v-if="!collapsed">提交智能体</span>
       </router-link>
-      <router-link to="/profile" class="nav-item" active-class="active">
+      <router-link :to="RouteLocation.userProfile" class="nav-item" active-class="active">
         <AppIcon icon="lucide:square-pen" class="icon" />
         <span class="text" v-if="!collapsed">修改信息</span>
       </router-link>
-      <router-link to="/dataset" class="nav-item" active-class="active">
+      <router-link :to="RouteLocation.datasetList" class="nav-item" active-class="active">
         <AppIcon icon="lucide:database" class="icon" />
         <span class="text" v-if="!collapsed">数据集</span>
       </router-link>
-      <router-link to="/leaderboard" class="nav-item" active-class="active">
+      <router-link :to="RouteLocation.leaderboard" class="nav-item" active-class="active">
         <AppIcon icon="lucide:trophy" class="icon" />
         <span class="text" v-if="!collapsed">排行榜</span>
       </router-link>
-      <router-link to="/contact" class="nav-item" active-class="active">
+      <router-link :to="RouteLocation.contact" class="nav-item" active-class="active">
         <AppIcon icon="lucide:mail" class="icon" />
         <span class="text" v-if="!collapsed">联系我们</span>
       </router-link>
@@ -44,8 +49,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import AppIcon from "@/components/AppIcon.vue";
+import AppIcon from "@/components/icon/AppIcon.vue";
+import { RouteLocation } from "@/router/RouteNames";
 
+// 侧边栏折叠状态仅影响前端展示，不参与路由状态持久化。
 const collapsed = ref(false);
 </script>
 
@@ -53,9 +60,9 @@ const collapsed = ref(false);
 .user-sidebar {
   position: fixed;
   left: 0;
-  top: 70px;
+  top: var(--nav-height);
   /* 与导航栏高度一致 */
-  height: calc(100vh - 70px);
+  height: calc(100vh - var(--nav-height));
   border-right: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 5px 0 20px rgba(0, 0, 0, 0.03);
   transition: width 0.3s ease;

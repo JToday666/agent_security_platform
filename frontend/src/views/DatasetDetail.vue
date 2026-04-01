@@ -1,238 +1,177 @@
 <template>
-  <div class="content">
-    <div class="detail-card ui-surface-glass">
-      <div class="card-header">
-        <button class="back-btn ui-btn ui-btn-pill" @click="goBack">
-          ← 返回列表
+  <div class="content detail-page layout-page-shell">
+    <PageHeroCard
+      :eyebrow="detail?.category.name || '数据集详情'"
+      :title="detail?.name || '数据集详情'"
+      :description="detail?.shortDescription || '按统一详情模板展示单个数据集的说明、评测重点、典型场景与媒体信息。'"
+      :chips="heroChips"
+    >
+      <template #actions>
+        <button class="back-btn ui-btn ui-btn-pill" type="button" @click="goBack">
+          返回数据集列表
         </button>
-      </div>
+      </template>
+    </PageHeroCard>
 
-      <div v-if="dataset" class="dataset-info">
-        <h1 class="dataset-name">{{ dataset.name }}</h1>
-        <p class="dataset-description">{{ dataset.description }}</p>
-
-        <div class="info-grid ui-surface-white">
-          <div class="info-item">
-            <span class="label">样本数量</span>
-            <span class="value">{{ dataset.sampleCount }}</span>
-          </div>
-          <div class="info-item">
-            <span class="label">攻击类型</span>
-            <span class="value">{{ dataset.attackTypes }}</span>
-          </div>
-          <div class="info-item">
-            <span class="label">数据格式</span>
-            <span class="value">{{ dataset.format }}</span>
-          </div>
-          <div class="info-item">
-            <span class="label">发布年份</span>
-            <span class="value">{{ dataset.year }}</span>
-          </div>
-        </div>
-
-        <div class="download-section">
-          <a
-            :href="dataset.downloadUrl"
-            class="download-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
-            target="_blank"
-            rel="noopener"
-          >
-            下载数据集
-          </a>
-        </div>
-      </div>
-
-      <div v-else class="not-found">
-        <p>数据集不存在或ID错误</p>
-        <button
-          class="back-btn large ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
-          @click="goBack"
-        >
-          返回列表
-        </button>
-      </div>
+    <div v-if="loading" class="state-card layout-state-card ui-surface-white">
+      <h2>正在加载详情</h2>
+      <p>系统正在获取该数据集的说明、媒体资源和评测信息。</p>
     </div>
+
+    <div v-else-if="error" class="state-card layout-state-card ui-surface-white">
+      <h2>{{ notFound ? "数据集不存在" : "详情加载失败" }}</h2>
+      <p>{{ error }}</p>
+      <button class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient" @click="loadDetail">
+        重试
+      </button>
+    </div>
+
+    <template v-else-if="detail">
+      <section class="section-card layout-section-card ui-surface-white">
+        <h2>详细说明</h2>
+        <p class="long-copy">{{ detail.fullDescription }}</p>
+      </section>
+
+      <div class="grid-layout layout-two-column">
+        <section class="section-card layout-section-card ui-surface-white">
+          <h2>评测重点</h2>
+          <ul class="bullet-list">
+            <li v-for="item in detail.highlights" :key="item">{{ item }}</li>
+          </ul>
+        </section>
+
+        <section class="section-card layout-section-card ui-surface-white">
+          <h2>典型场景</h2>
+          <ul class="bullet-list">
+            <li v-for="item in detail.scenarios" :key="item">{{ item }}</li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="section-card layout-section-card ui-surface-white">
+        <h2>媒体与运行效果</h2>
+        <p class="section-note">
+          图片与视频均来自 mock 数据；若视频资源不可达，页面会自动降级为不可用提示。
+        </p>
+        <DatasetMediaGallery :media="detail.media" />
+      </section>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { computed } from "vue";
-
-// 模拟数据集详情数据（与 DataSet.vue 中的数据集对应）
-const datasets = [
-  {
-    id: 1,
-    name: "Prompt Injection Dataset",
-    description:
-      "包含多种提示注入攻击样本，用于测试智能体对恶意指令的防护能力。数据集包含 10,000 条精心构造的提示，覆盖常见攻击模式。",
-    sampleCount: "10,000",
-    attackTypes: "提示注入、指令劫持",
-    format: "JSON",
-    year: "2024",
-    downloadUrl: "#",
-  },
-  {
-    id: 2,
-    name: "Jailbreak Dataset",
-    description:
-      "模拟越狱攻击场景，评估智能体在违规请求下的行为安全性。数据集包含 8,000 条越狱尝试，覆盖多种绕过策略。",
-    sampleCount: "8,000",
-    attackTypes: "越狱攻击、角色扮演",
-    format: "CSV",
-    year: "2023",
-    downloadUrl: "#",
-  },
-];
+import PageHeroCard from "@/components/common/PageHeroCard.vue";
+import DatasetMediaGallery from "@/components/dataset/DatasetMediaGallery.vue";
+import { RouteLocation } from "@/router/RouteNames";
+import type { DatasetDetail as DatasetDetailType } from "@/types/DatasetTypes";
+import {
+  formatSampleCount,
+} from "@/utils/DatasetUtils";
+import { useDatasetCatalogStore } from "@/store/DatasetCatalogStore";
 
 const route = useRoute();
 const router = useRouter();
+const datasetCatalogStore = useDatasetCatalogStore();
 
-const id = Number(route.params.id);
-const dataset = computed(() => datasets.find((d) => d.id === id));
+const detail = ref<DatasetDetailType | null>(null);
+const loading = ref(false);
+const error = ref("");
+const notFound = ref(false);
 
-const goBack = () => {
-  if (window.history.state?.back) {
-    router.back();
-  } else {
-    router.push("/dataset");
+// 详情页只接受规范化的 datasetId 参数，旧地址由路由层负责重定向。
+const datasetId = computed(() => String(route.params.datasetId ?? ""));
+
+const heroChips = computed(() => [
+  {
+    label: "样本数",
+    value: formatSampleCount(detail.value?.sampleCount),
+  },
+  {
+    label: "评测重点",
+    value: `${detail.value?.highlights.length ?? 0} 条`,
+  },
+  {
+    label: "典型场景",
+    value: `${detail.value?.scenarios.length ?? 0} 条`,
+  },
+]);
+
+// 每次路由参数变化时重新拉取详情，保证直接切换详情页时内容同步。
+const loadDetail = async () => {
+  loading.value = true;
+  error.value = "";
+  notFound.value = false;
+
+  try {
+    const result = await datasetCatalogStore.fetchDatasetDetailById(
+      datasetId.value,
+      true,
+    );
+
+    if (!result.detail) {
+      detail.value = null;
+      notFound.value = result.notFound;
+      error.value = result.errorMessage;
+      return;
+    }
+
+    detail.value = result.detail;
+  } finally {
+    loading.value = false;
   }
 };
+
+const goBack = () => {
+  if (window.history.length > 1) {
+    router.back();
+    return;
+  }
+
+  router.push(RouteLocation.datasetList);
+};
+
+watch(datasetId, async () => {
+  await loadDetail();
+});
+
+onMounted(async () => {
+  await loadDetail();
+});
 </script>
 
 <style scoped>
-/* 全局重置动画 */
-.content {
-  max-width: 800px;
-  padding: 2rem;
-}
-
-.detail-card {
-  border-radius: 2rem;
-  padding: 2rem;
-}
-
-.card-header {
-  margin-bottom: 1.5rem;
+.detail-page {
+  padding-bottom: 2.5rem;
 }
 
 .back-btn {
-  padding: 0.5rem 1.2rem;
-  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  color: #334155;
+  padding: 0.85rem 1.15rem;
 }
 
-.back-btn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-  transform: translateX(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
-}
-
-.dataset-name {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #0f172a;
-}
-
-.dataset-description {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  margin-bottom: 2rem;
-  color: #475569;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-  border-radius: 1.2rem;
-  padding: 1.5rem;
-}
-
-.info-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.label {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #64748b;
-  margin-bottom: 0.3rem;
-}
-
-.value {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #0f172a;
-}
-
-.download-section {
-  text-align: center;
+.section-card {
   margin-top: 1rem;
 }
 
-.download-btn {
-  display: inline-block;
-  padding: 0.9rem 2.5rem;
-  text-decoration: none;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  border: none;
-}
-
-.download-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 25px -8px #2563eb;
-}
-
-.not-found {
-  text-align: center;
-  padding: 3rem 0;
-}
-
-.not-found p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+.long-copy,
+.section-note {
+  margin: 0.85rem 0 0;
   color: #475569;
+  line-height: 1.85;
 }
 
-.back-btn.large {
-  padding: 0.8rem 2rem;
-  font-size: 1rem;
-  background: #2563eb;
-  color: white;
-  border: none;
+.grid-layout {
+  margin-top: 1rem;
 }
 
-.back-btn.large:hover {
-  background: #1d4ed8;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -8px #2563eb;
-}
-
-/* 绉诲姩绔€傚簲 */
-@media (max-width: 640px) {
-  .content {
-    padding: 1rem;
-  }
-
-  .detail-card {
-    padding: 1.5rem;
-  }
-
-  .dataset-name {
-    font-size: 2rem;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    padding: 1rem;
-  }
+.bullet-list {
+  margin: 0.85rem 0 0;
+  padding-left: 1.1rem;
+  color: #475569;
+  line-height: 1.85;
 }
 </style>

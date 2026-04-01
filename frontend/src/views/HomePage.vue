@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="content home-page layout-page-shell layout-page-shell--wide">
     <div class="hero">
       <!-- 标题区域 -->
       <div class="hero-content">
@@ -15,7 +15,7 @@
         <h2 class="guide-title">快速上手</h2>
         <div class="steps-grid">
           <div
-            class="step-item ui-surface-white"
+            class="step-item ui-surface-white ui-hover-card"
             v-for="(step, index) in steps"
             :key="index"
           >
@@ -58,7 +58,7 @@
                 >！</span
               >
               <div class="action-buttons">
-                <router-link to="/user" class="btn outline ui-btn ui-btn-pill">
+                <router-link :to="RouteLocation.userCenter" class="btn outline ui-btn ui-btn-pill">
                   <AppIcon icon="lucide:layout-dashboard" class="btn-icon" />
                   <span>个人中心</span>
                 </router-link>
@@ -94,10 +94,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/store/user";
+import { useUserStore } from "@/store/UserStore";
 import { storeToRefs } from "pinia";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
-import AppIcon from "@/components/AppIcon.vue";
+import ConfirmDialog from "@/components/dialog/ConfirmDialog.vue";
+import AppIcon from "@/components/icon/AppIcon.vue";
+import { RouteLocation } from "@/router/RouteNames";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -111,9 +112,9 @@ const steps = [
   { title: "登上榜单", desc: "公开您的智能体，与其他开发者一较高下" },
 ];
 
-// 页面跳转
-const goDataset = () => router.push("/dataset");
-const goLeaderboard = () => router.push("/leaderboard");
+// 首页按钮统一走命名路由，便于后续维护。
+const goDataset = () => router.push(RouteLocation.datasetList);
+const goLeaderboard = () => router.push(RouteLocation.leaderboard);
 const openLoginDialog = () => userStore.openLoginDialog();
 
 // 退出确认逻辑
@@ -128,7 +129,7 @@ const handleLogoutConfirm = () => {
   logoutLoading.value = true;
   setTimeout(() => {
     userStore.logout();
-    router.push("/");
+    router.push(RouteLocation.home);
     showLogoutConfirm.value = false;
     logoutLoading.value = false;
   }, 100);
@@ -153,19 +154,18 @@ const handleLogoutCancel = () => {
 }
 
 .home-page {
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - var(--nav-height));
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   width: 100%;
+  padding-bottom: 2.5rem;
 }
 
 .hero {
-  max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
-  padding: 2rem 2rem 3rem;
+  padding: 1rem 0 2rem;
   color: #1e293b;
   position: relative;
   z-index: 2;
