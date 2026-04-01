@@ -1,74 +1,108 @@
 <template>
-  <div class="records-card ui-surface-glass">
-    <h1 class="page-title">评估记录</h1>
-    <p class="page-subtitle">您提交过的所有智能体评估记录。</p>
+  <div class="content records-card layout-page-panel layout-page-panel--lg ui-surface-glass">
+    <h1 class="page-title layout-page-title">评测记录</h1>
+    <p class="page-subtitle layout-page-subtitle">
+      已提交任务会优先展示最近创建的记录，新的 mock 提交会直接出现在这里。
+    </p>
 
-    <div class="records-list">
-      <div
+    <div v-if="loading" class="state-card layout-state-card ui-surface-white">
+      <h2>正在读取记录</h2>
+      <p>系统正在同步您最近的评测任务与执行状态。</p>
+    </div>
+
+    <div v-else-if="error" class="state-card layout-state-card ui-surface-white">
+      <h2>记录加载失败</h2>
+      <p>{{ error }}</p>
+      <button class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient" @click="loadRecords">
+        重试
+      </button>
+    </div>
+
+    <div v-else-if="records.length" class="records-list">
+      <article
         v-for="record in records"
-        :key="record.id"
+        :key="record.evaluationId"
         class="record-item ui-surface-white"
       >
         <div class="record-info">
-          <h3>{{ record.name }}</h3>
-          <p>数据集：{{ record.dataset }} · 提交时间：{{ record.date }}</p>
+          <div class="title-row">
+            <h3>{{ record.agentName }}</h3>
+            <span class="status-badge" :class="record.status">{{ statusLabels[record.status] }}</span>
+            <span class="visibility-badge" :class="{ public: record.publicToLeaderboard }">
+              {{ record.publicToLeaderboard ? "公开" : "私有" }}
+            </span>
+          </div>
+
+          <p class="record-meta">
+            数据集：{{ record.datasetNames.join("、") }}
+          </p>
+          <p class="record-meta">
+            创建时间：{{ formatDateTimeLabel(record.createdAt) }} · 提交方式：{{ record.submitMethod.toUpperCase() }}
+          </p>
         </div>
-        <router-link
-          :to="`/report/${record.id}`"
-          class="view-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
-        >
-          查看报告 ←
-        </router-link>
-      </div>
+
+        <div class="record-side">
+          <strong class="score">{{ record.score ? `${record.score} 分` : "待生成" }}</strong>
+          <router-link
+            :to="RouteLocation.evaluationDetail(record.evaluationId)"
+            class="view-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
+          >
+            查看详情
+          </router-link>
+        </div>
+      </article>
     </div>
 
-    <div v-if="records.length === 0" class="empty-state">
-      <p>您还没有提交过智能体评估。</p>
+    <div v-else class="empty-state layout-state-card">
+      <p>您还没有提交过智能体评测。</p>
       <router-link
-        to="/submit"
-        class="btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
-        >立即提交</router-link
+        :to="RouteLocation.agentSubmit"
+        class="btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
       >
+        立即提交
+      </router-link>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const records = [
-  {
-    id: 1,
-    name: "智能体 Alpha-1",
-    dataset: "Prompt Injection Dataset",
-    date: "2025-02-10",
-  },
-  {
-    id: 2,
-    name: "智能体 Beta-2",
-    dataset: "Jailbreak Dataset",
-    date: "2025-02-12",
-  },
-];
+import { onMounted, ref } from "vue";
+import { getEvaluationRecords } from "@/api/AgentService";
+import { RouteLocation } from "@/router/RouteNames";
+import type { EvaluationRecord } from "@/types/AgentTypes";
+import { formatDateTimeLabel } from "@/utils/DatasetUtils";
+
+// 用户中心只展示当前登录用户可见的评测记录。
+const records = ref<EvaluationRecord[]>([]);
+const loading = ref(true);
+const error = ref("");
+
+const statusLabels = {
+  pending: "排队中",
+  running: "执行中",
+  completed: "已完成",
+};
+
+const loadRecords = async () => {
+  loading.value = true;
+  error.value = "";
+
+  try {
+    records.value = await getEvaluationRecords();
+  } catch (loadError) {
+    error.value =
+      loadError instanceof Error ? loadError.message : "评测记录加载失败。";
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(async () => {
+  await loadRecords();
+});
 </script>
 
 <style scoped>
-.records-card {
-  border-radius: 2rem;
-  padding: 2rem 2.5rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.page-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.page-subtitle {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-}
-
 .records-list {
   display: flex;
   flex-direction: column;
@@ -79,75 +113,112 @@ const records = [
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.2rem 1.5rem;
-  border-radius: 1.2rem;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  gap: 1rem;
+  padding: 1.25rem 1.4rem;
+  border-radius: 1.3rem;
+  transition: transform 0.2s ease;
 }
 
 .record-item:hover {
-  transform: translateX(5px);
-  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+  transform: translateX(4px);
 }
 
-.record-info h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
+.record-info {
+  flex: 1;
+}
+
+.title-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.title-row h3 {
+  margin: 0;
+  font-size: 1.25rem;
   color: #0f172a;
 }
 
-.record-info p {
-  font-size: 0.95rem;
+.status-badge,
+.visibility-badge {
+  border-radius: 999px;
+  padding: 0.28rem 0.72rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.status-badge.pending {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.status-badge.running {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-badge.completed {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.visibility-badge {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.visibility-badge.public {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.record-meta {
+  margin: 0.55rem 0 0;
   color: #64748b;
+  line-height: 1.7;
+}
+
+.record-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.8rem;
+}
+
+.score {
+  color: #0f172a;
+  font-size: 1.1rem;
 }
 
 .view-btn {
-  padding: 0.5rem 1.2rem;
+  padding: 0.74rem 1.05rem;
   text-decoration: none;
-  font-weight: 500;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
 }
 
 .empty-state {
   text-align: center;
-  padding: 3rem 0;
 }
 
 .empty-state p {
-  font-size: 1.1rem;
-  color: #475569;
-  margin-bottom: 1.5rem;
+  margin: 0.8rem auto 0;
+  max-width: 520px;
+  color: #64748b;
+  line-height: 1.7;
 }
 
 .btn {
-  display: inline-block;
-  padding: 0.8rem 2rem;
   text-decoration: none;
-  font-weight: 600;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
 }
 
 @media (max-width: 768px) {
-  .records-card {
-    padding: 1.5rem;
-  }
-
-  .page-title {
-    font-size: 2rem;
-  }
-
   .record-item {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    align-items: stretch;
   }
 
-  .view-btn {
-    align-self: flex-end;
+  .record-side {
+    align-items: stretch;
   }
 }
 </style>

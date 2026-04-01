@@ -9,8 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "@/components/NavBar.vue";
-import UserSidebar from "@/components/UserSidebar.vue";
+// 用户布局统一承载侧边导航和登录后页面内容。
+import Navbar from "@/components/navigation/NavBar.vue";
+import UserSidebar from "@/components/navigation/UserSidebar.vue";
 </script>
 
 <style scoped>

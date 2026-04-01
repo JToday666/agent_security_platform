@@ -5,6 +5,7 @@ export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   message?: string;
+  code?: number;
 }
 
 interface BackendResponse<T = any> {
@@ -25,6 +26,7 @@ const axiosInstance = axios.create({
   timeout: 10000,
 });
 
+// 把后端校验错误拼成可直接展示的中文提示。
 const buildValidationMessage = (errors: ValidationErrorItem[]): string => {
   if (!errors.length) return "请求参数错误";
 
@@ -71,11 +73,12 @@ const extractErrorMessage = (payload: any): string => {
 const toApiResponse = <T = any>(payload: any): ApiResponse<T> => {
   const response = payload as BackendResponse<T>;
   if (response?.code === 0) {
-    return { success: true, data: response.data };
+    return { success: true, data: response.data, code: response.code };
   }
 
   return {
     success: false,
+    code: response?.code,
     message: extractErrorMessage(response),
   };
 };
@@ -99,6 +102,7 @@ axiosInstance.interceptors.response.use(
       extractErrorMessage(error.response?.data) || error.message || "网络错误";
 
     if (error.response?.status === 401) {
+      // 统一抛出未授权事件，由应用入口处理登录弹窗和路由回退。
       window.dispatchEvent(
         new CustomEvent("unauthorized", {
           detail: {

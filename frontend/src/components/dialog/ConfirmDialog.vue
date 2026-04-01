@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import AppIcon from "@/components/AppIcon.vue";
+import AppIcon from "@/components/icon/AppIcon.vue";
 
 interface Props {
   modelValue: boolean; // 控制显示
@@ -75,29 +75,26 @@ const emit = defineEmits<{
   (e: "cancel"): void;
 }>();
 
-// 关闭弹窗（不触发确认）
+// 关闭弹窗（不触发确认）。
 const close = () => {
   emit("update:modelValue", false);
 };
 
-// 点击取消
+// 点击取消时同步关闭弹窗，并把取消事件交给外层页面处理。
 const handleCancel = () => {
   if (props.loading) return;
   emit("cancel");
   close();
 };
 
-// 点击确认
+// 点击确认时不直接关闭，交由外层异步流程决定何时收口。
 const handleConfirm = () => {
   if (props.loading) return;
   emit("confirm");
-  // 注意：外部通常会在异步操作完成后手动关闭，所以这里不自动关闭
-  // 如果不需要异步，可以 close()，但为了通用性，交由外部控制
 };
 
-// 动画结束后额外清理（如果有需要）
+// 预留离场后的收尾钩子，便于未来增加内部状态。
 const afterLeave = () => {
-  // 可在此重置内部状态
 };
 </script>
 
