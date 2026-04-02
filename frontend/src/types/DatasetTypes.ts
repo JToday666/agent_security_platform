@@ -18,9 +18,7 @@ export interface DatasetCategory {
   subcategories: DatasetSubcategory[];
 }
 
-export interface DatasetCategoryViewModel extends DatasetCategory {
-  themeIndex: number;
-}
+export type DatasetCategoryViewModel = DatasetCategory;
 
 export interface DatasetCatalogResponse {
   catalogVersion: string;
@@ -42,7 +40,7 @@ export interface DatasetMediaItem {
 export interface DatasetResourceLink {
   label: string;
   url: string;
-  type?: "docs" | "download" | "demo";
+  type: "docs" | "download" | "demo";
 }
 
 export interface DatasetDetail {
