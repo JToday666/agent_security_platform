@@ -2,8 +2,8 @@
   <section class="tree-card ui-surface-white">
     <div class="tree-header">
       <div>
-        <h3>评测数据集</h3>
-        <p>难度变化后只保留当前仍有效的已选交集，不会自动补选新结果。</p>
+        <h3>评测目录</h3>
+        <p>按当前攻击难度展示可选风险域与评测项，仅保留当前仍有效的已选交集。</p>
       </div>
       <div class="header-actions">
         <button
@@ -31,22 +31,22 @@
         v-if="status === 'refreshing'"
         class="status-banner refreshing"
       >
-        正在按当前难度刷新可用数据集…
+        正在按当前难度刷新可用评测项…
       </p>
       <div v-if="status === 'loading' && !categories.length" class="state-card">
-        <h4>正在加载可用数据集</h4>
-        <p>系统正在根据当前攻击难度筛选目录，请稍候。</p>
+        <h4>正在加载可用评测项</h4>
+        <p>系统正在根据当前攻击难度筛选风险域与评测项，请稍候。</p>
       </div>
       <div v-else-if="status === 'error' && !categories.length" class="state-card">
-        <h4>数据集目录加载失败</h4>
+        <h4>评测目录加载失败</h4>
         <p>{{ errorMessage || "请重试后继续提交。" }}</p>
         <button class="retry-btn ui-btn ui-btn-pill" type="button" @click="$emit('retry')">
           重试
         </button>
       </div>
       <div v-else-if="status === 'empty'" class="state-card">
-        <h4>当前难度下暂无可用数据集</h4>
-        <p>请调整攻击难度后重试；在无可用数据集时无法提交。</p>
+        <h4>当前难度下暂无可用评测项</h4>
+        <p>请调整攻击难度后重试；在无可用评测项时无法提交。</p>
       </div>
       <p v-else-if="status === 'error'" class="status-banner error">
         {{ errorMessage || "目录刷新失败，请重试。" }}
@@ -58,9 +58,9 @@
 
     <template v-if="categories.length">
       <div class="summary-bar">
-        <span>已选大类 {{ selectedCategoryCount }}</span>
-        <span>已选小类 {{ selectedDatasetIds.length }}</span>
-        <span>总小类 {{ totalDatasetCount }}</span>
+        <span>已选风险域 {{ selectedCategoryCount }}</span>
+        <span>已选评测项 {{ selectedDatasetIds.length }}</span>
+        <span>总评测项 {{ totalDatasetCount }}</span>
       </div>
 
       <div class="category-list">

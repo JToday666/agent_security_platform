@@ -16,19 +16,16 @@
           <div class="info" :class="`info--${item.type}`">
             <h3>{{ item.title }}</h3>
 
-            <!-- 邮箱/电话 (link 类型) -->
             <template v-if="item.type === 'link'">
               <a :href="item.link" class="info-value info-value--single-line">
                 {{ item.text }}
               </a>
             </template>
 
-            <!-- 地址 (text 类型) -->
             <template v-else-if="item.type === 'text'">
               <p class="info-value info-value--address">{{ item.text }}</p>
             </template>
 
-            <!-- 社交媒体 (social 类型) -->
             <template v-else-if="item.type === 'social'">
               <div class="social-links">
                 <template
@@ -64,7 +61,6 @@
 </template>
 
 <script setup lang="ts">
-// 联系方式卡片复用统一图标组件，保持视觉和可访问性一致。
 import AppIcon from "@/components/icon/AppIcon.vue";
 
 type ContactItem =
@@ -130,7 +126,6 @@ const contactItems: ContactItem[] = [
 </script>
 
 <style scoped>
-/* 全局重置与动画 */
 .contact-page {
   min-height: calc(100vh - var(--nav-height));
   display: flex;
@@ -259,7 +254,6 @@ const contactItems: ContactItem[] = [
   font-style: italic;
 }
 
-/* 移动端适应 */
 @media (max-width: 640px) {
   .contact-card {
     border-radius: 2rem;

@@ -55,7 +55,6 @@ const cardStyle = computed(() => ({
   "--dataset-shadow": theme.value.shadow,
 }));
 
-// 卡片顶部的大类徽标颜色和数据集所属大类保持一致。
 const badgeStyle = computed(() => {
   return {
     background: theme.value.soft,

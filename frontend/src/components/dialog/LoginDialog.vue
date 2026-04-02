@@ -8,12 +8,10 @@
       >
         <Transition name="scale" appear>
           <div class="dialog-card ui-modal-card">
-            <!-- 关闭按钮 -->
             <button class="close-btn" @click="closeDialog" aria-label="关闭">
               <AppIcon icon="lucide:x" class="close-icon" />
             </button>
 
-            <!-- 标题 & 装饰 -->
             <div class="header">
               <div class="logo-wrapper">
                 <AppIcon icon="lucide:shield-check" class="logo-icon" />
@@ -28,7 +26,6 @@
               </p>
             </div>
 
-            <!-- 登录表单 -->
             <form
               v-if="mode === 'login'"
               @submit.prevent="handleLogin"
@@ -63,7 +60,6 @@
                 />
               </div>
 
-              <!-- 密码长度提示 -->
               <div
                 v-if="loginForm.password && loginForm.password.length < 6"
                 class="error-message"
@@ -91,7 +87,6 @@
               </button>
             </form>
 
-            <!-- 注册表单 -->
             <form v-else @submit.prevent="handleRegister" class="form">
               <div
                 class="form-group"
@@ -144,7 +139,6 @@
                   @blur="focusedField = null"
                 />
               </div>
-              <!-- 密码长度提示 -->
               <div
                 v-if="registerForm.password && registerForm.password.length < 6"
                 class="error-message"
@@ -195,7 +189,6 @@
               </button>
             </form>
 
-            <!-- 切换模式链接 -->
             <div class="switch-mode">
               <a href="#" @click.prevent="toggleMode">
                 <span v-if="mode === 'register'">← 已有账号？</span>
@@ -229,7 +222,6 @@ const mode = ref<"login" | "register">("login");
 const loading = ref(false);
 const focusedField = ref<string | null>(null);
 
-// 登录和注册表单分开维护，避免字段相互影响。
 const loginForm = reactive({
   username: "",
   password: "",
@@ -244,7 +236,6 @@ const registerForm = reactive({
 });
 const registerError = ref("");
 
-// 每次弹窗关闭后都回收表单状态，避免登录和注册态相互污染。
 const afterLeave = () => {
   loginForm.username = "";
   loginForm.password = "";
@@ -262,19 +253,16 @@ const closeDialog = () => {
   userStore.showLogin = false;
 };
 
-// 登录/注册模式切换时顺手清空错误提示，避免旧提示残留。
 const toggleMode = () => {
   mode.value = mode.value === "login" ? "register" : "login";
   loginError.value = "";
   registerError.value = "";
 };
 
-// 登录表单验证：用户名不为空，密码长度大于等于 6。
 const isLoginValid = computed(() => {
   return loginForm.username.trim() !== "" && loginForm.password.length >= 6;
 });
 
-// 注册阶段实时提示两次密码是否一致。
 const passwordMatchError = computed(() => {
   if (registerForm.password && registerForm.confirmPassword) {
     return registerForm.password !== registerForm.confirmPassword
@@ -284,7 +272,6 @@ const passwordMatchError = computed(() => {
   return "";
 });
 
-// 注册表单验证除了长度，还包含基础邮箱格式校验。
 const isRegisterValid = computed(() => {
   const normalizedUsername = registerForm.username.trim();
   return (
@@ -315,7 +302,7 @@ const handleLogin = async () => {
       const redirect = userStore.consumePostLoginRedirect() || RouteLocation.userCenter;
       await router.push(redirect);
     } else {
-      loginError.value = "登录失败，请稍后重试"; // 实际上异常会被 catch
+      loginError.value = "登录失败，请稍后重试";
     }
   } catch (error: any) {
     loginError.value = error.message || "用户名/邮箱或密码错误";
@@ -361,7 +348,6 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-/* 过渡动画 */
 .shake-enter-active {
   animation: shake 0.3s ease;
 }

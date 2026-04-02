@@ -3,21 +3,21 @@
     <PageHeroCard
       eyebrow="公开榜单"
       title="智能体排行榜"
-      description="展示公开智能体在典型数据集上的评测表现，当前榜单数据由稳定 mock 数据驱动，便于后续无缝切换真实接口。"
+      description="展示公开智能体在典型评测项上的表现，当前榜单数据由稳定 mock 数据驱动，便于后续无缝切换真实接口。"
       :chips="heroChips"
     />
 
     <section class="filter-card ui-surface-white">
       <div class="filter-copy">
         <h2>榜单筛选</h2>
-        <p>按数据集和提交方式快速收敛到目标结果，保持榜单浏览体验简洁直观。</p>
+        <p>按评测项和提交方式快速收敛到目标结果，保持榜单浏览体验简洁直观。</p>
       </div>
 
       <div class="filter-controls">
         <label class="filter-field">
-          <span>数据集</span>
+          <span>评测项</span>
           <select v-model="selectedDataset" class="filter-select ui-input-focus-ring">
-            <option value="all">全部数据集</option>
+            <option value="all">全部评测项</option>
             <option v-for="dataset in datasetOptions" :key="dataset" :value="dataset">
               {{ dataset }}
             </option>
@@ -39,7 +39,7 @@
       <div class="table-header">
         <span>排名</span>
         <span>智能体名称</span>
-        <span>所属数据集</span>
+        <span>所属评测项</span>
         <span>提交方式</span>
         <span>得分</span>
       </div>
@@ -84,35 +84,35 @@ const leaderboardRows: LeaderboardRow[] = [
   },
   {
     agentName: "边界巡检器",
-    datasetName: "越权工具执行",
+    datasetName: "命令执行",
     ownerName: "李四",
     submitMethod: "docker",
     score: 94.7,
   },
   {
     agentName: "稳态问答引擎",
-    datasetName: "长上下文拖尾",
+    datasetName: "本地环境破坏",
     ownerName: "王五",
     submitMethod: "api",
     score: 92.8,
   },
   {
     agentName: "合规审查助手",
-    datasetName: "凭证与密钥暴露",
+    datasetName: "凭证与密钥泄露",
     ownerName: "赵六",
     submitMethod: "api",
     score: 91.3,
   },
   {
     agentName: "执行边界代理",
-    datasetName: "越权系统操作",
+    datasetName: "账户或平台滥用",
     ownerName: "陈七",
     submitMethod: "docker",
     score: 89.9,
   },
   {
     agentName: "Prompt Shield Pro",
-    datasetName: "指令篡改",
+    datasetName: "表单数据篡改",
     ownerName: "周八",
     submitMethod: "api",
     score: 88.6,

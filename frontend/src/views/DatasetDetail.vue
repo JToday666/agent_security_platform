@@ -1,25 +1,25 @@
 <template>
   <div class="content detail-page layout-page-shell">
     <PageHeroCard
-      :eyebrow="detail?.category.name || '数据集详情'"
-      :title="detail?.name || '数据集详情'"
-      :description="detail?.shortDescription || '按统一详情模板展示单个数据集的说明、评测重点、典型场景与媒体信息。'"
+      :eyebrow="detail?.category.name || '评测项详情'"
+      :title="detail?.name || '评测项详情'"
+      :description="detail?.shortDescription || '按统一详情模板展示单个评测项的说明、评测重点、典型场景与媒体信息。'"
       :chips="heroChips"
     >
       <template #actions>
         <button class="back-btn ui-btn ui-btn-pill" type="button" @click="goBack">
-          返回数据集列表
+          返回评测目录
         </button>
       </template>
     </PageHeroCard>
 
     <div v-if="loading" class="state-card layout-state-card ui-surface-white">
       <h2>正在加载详情</h2>
-      <p>系统正在获取该数据集的说明、媒体资源和评测信息。</p>
+      <p>系统正在获取该评测项的说明、媒体资源和评测信息。</p>
     </div>
 
     <div v-else-if="error" class="state-card layout-state-card ui-surface-white">
-      <h2>{{ notFound ? "数据集不存在" : "详情加载失败" }}</h2>
+      <h2>{{ notFound ? "评测项不存在" : "详情加载失败" }}</h2>
       <p>{{ error }}</p>
       <button class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient" @click="loadDetail">
         重试

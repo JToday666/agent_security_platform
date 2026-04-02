@@ -34,7 +34,7 @@
           </div>
 
           <p class="record-meta">
-            数据集：{{ record.datasetNames.join("、") }}
+            评测项：{{ record.datasetNames.join("、") }}
           </p>
           <p class="record-meta">
             创建时间：{{ formatDateTimeLabel(record.createdAt) }} · 提交方式：{{ record.submitMethod.toUpperCase() }}
@@ -72,7 +72,6 @@ import { RouteLocation } from "@/router/RouteNames";
 import type { EvaluationRecord } from "@/types/AgentTypes";
 import { formatDateTimeLabel } from "@/utils/DatasetUtils";
 
-// 用户中心只展示当前登录用户可见的评测记录。
 const records = ref<EvaluationRecord[]>([]);
 const loading = ref(true);
 const error = ref("");

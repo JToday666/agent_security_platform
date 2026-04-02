@@ -1,9 +1,9 @@
 <template>
   <div class="content dataset-page layout-page-shell">
     <PageHeroCard
-      eyebrow="数据集目录"
-      title="平台数据集"
-      description="按攻击目的展示当前可用的测试数据集。目录数据由统一 mock 接口提供，列表页、详情页与提交页共用同一份目录源。"
+      eyebrow="评测目录"
+      title="风险评测目录"
+      description="按风险域组织当前可用评测项。目录页、详情页与提交页共用同一份前端模拟目录源，便于统一浏览、筛选与提交。"
       :chips="heroChips"
     />
 
@@ -13,7 +13,7 @@
 
     <div v-if="loading && !loaded" class="state-card layout-state-card ui-surface-white">
       <h2>正在加载目录</h2>
-      <p>稍等片刻，系统正在同步最新数据集目录。</p>
+      <p>稍等片刻，系统正在同步最新风险评测目录。</p>
     </div>
 
     <div
@@ -49,8 +49,8 @@
       </div>
 
       <div v-else class="state-card layout-state-card ui-surface-white">
-        <h2>当前没有可显示的数据集</h2>
-        <p>你已经取消了全部大类筛选，可以一键恢复全选继续浏览。</p>
+        <h2>当前没有可显示的评测项</h2>
+        <p>你已清空全部风险域筛选，可一键恢复全选继续浏览。</p>
         <button
           class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient"
           @click="selectAllCategories"
@@ -98,15 +98,15 @@ const visibleDatasetCount = computed(() =>
 
 const heroChips = computed(() => [
   {
-    label: "全部大类",
+    label: "全部风险域",
     value: `${enabledCategories.value.length} 个`,
   },
   {
-    label: "全部小类",
+    label: "全部评测项",
     value: `${totalDatasetCount.value} 个`,
   },
   {
-    label: "当前可见小类",
+    label: "当前可见评测项",
     value: `${visibleDatasetCount.value} 个`,
   },
 ]);

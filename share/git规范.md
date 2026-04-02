@@ -67,7 +67,7 @@ git clone -b dev https://github.com/JToday666/agent_security_platform.git
 - refactor: ... 重构不改行为
 - chore: ... 杂项（依赖、脚手架）
 
-> ***一个 commit 只做一件事***（不混改）。
+> **_一个 commit 只做一件事_**（不混改）。
 
 ### 协作工作流
 
@@ -132,7 +132,7 @@ git push origin feature/xxx
 git checkout dev
 ```
 
-合并有多种方式：merge（合并）、squash（压缩）、rebase（变基）  
+合并有多种方式：merge（合并）、squash（压缩）、rebase（变基）
 
 ```shell
 git merge --squash feature/xxx

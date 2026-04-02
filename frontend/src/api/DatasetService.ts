@@ -13,7 +13,7 @@ import {
   buildReferenceDatasetCatalog,
   getReferenceDatasetDetail,
   referenceSubmitMeta,
-} from "@/api/fixtures/ReferenceData";
+} from "@/api/fixtures/ReferenceDatasetFixtures";
 import { isStepAligned } from "@/utils/SubmitParameterUtils";
 
 interface DatasetCatalogRequestOptions {
@@ -133,7 +133,7 @@ export const getDatasetDetail = async (
   const detail = getReferenceDatasetDetail(datasetId);
   if (!detail) {
     const result = await resolveMockEnvelope(
-      createErrorEnvelope(40400, "数据集不存在。", null),
+      createErrorEnvelope(40400, "评测项不存在。", null),
     );
     throw createDatasetServiceError(result.message, result.code);
   }

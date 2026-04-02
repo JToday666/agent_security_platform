@@ -7,7 +7,6 @@ import HomePage from "@/views/HomePage.vue";
 import LeaderboardPage from "@/views/LeaderboardPage.vue";
 import { ROUTE_NAME } from "@/router/RouteNames";
 
-// 公共页面路由统一挂在公共布局下。
 export const publicRoutes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -23,13 +22,13 @@ export const publicRoutes: RouteRecordRaw[] = [
         path: "dataset",
         name: ROUTE_NAME.DATASET_LIST,
         component: DatasetCatalogPage,
-        meta: { title: "数据集" },
+        meta: { title: "评测目录" },
       },
       {
         path: "dataset/:datasetId",
         name: ROUTE_NAME.DATASET_DETAIL,
         component: DatasetDetail,
-        meta: { title: "数据集详情" },
+        meta: { title: "评测项详情" },
       },
       {
         path: "leaderboard",

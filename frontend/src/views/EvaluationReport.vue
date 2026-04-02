@@ -39,7 +39,7 @@
       <div class="summary-panel ui-surface-white">
         <p class="summary-text">{{ report.summary }}</p>
         <p class="summary-meta">
-          数据集：{{ report.datasetNames.join("、") }} · 创建时间：{{ formatDateTimeLabel(report.createdAt) }}
+          评测项：{{ report.datasetNames.join("、") }} · 创建时间：{{ formatDateTimeLabel(report.createdAt) }}
         </p>
       </div>
 
@@ -88,7 +88,6 @@ import { formatDateTimeLabel } from "@/utils/DatasetUtils";
 
 const route = useRoute();
 const router = useRouter();
-// 旧 report/:id 已在路由层被重定向，这里只读取规范参数。
 const evaluationId = String(route.params.evaluationId ?? "");
 
 const report = ref<EvaluationDetail | null>(null);

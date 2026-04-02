@@ -75,7 +75,7 @@ export const validateSubmitPayload = (
   }
 
   if (payload.selectedDatasetIds.length === 0) {
-    errors.push("请至少选择一个数据集。");
+    errors.push("请至少选择一个评测项。");
   }
 
   const validDatasetIdSet = new Set(validDatasetIds);
@@ -84,7 +84,7 @@ export const validateSubmitPayload = (
   );
 
   if (hasInvalidDataset) {
-    errors.push("已选择的数据集里包含失效项，请刷新后重试。");
+    errors.push("已选择的评测项里包含失效项，请刷新后重试。");
   }
 
   return {
