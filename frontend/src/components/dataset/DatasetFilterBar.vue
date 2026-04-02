@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import type { DatasetCategoryViewModel } from "@/types/DatasetTypes";
-import { getCategoryTheme } from "@/utils/DatasetUtils";
+import { getCategoryTheme } from "@/utils/common";
 
 defineEmits<{
   (event: "select-all"): void;

@@ -12,7 +12,7 @@
     <h3 class="dataset-name">{{ dataset.name }}</h3>
     <p class="dataset-description">{{ dataset.shortDescription }}</p>
 
-    <div class="meta-list">
+    <div class="grid-cols-2" style="gap: 0.8rem; margin-top: 1.2rem;">
       <div class="meta-item">
         <span class="meta-label">样本数</span>
         <strong>{{ formatSampleCount(dataset.sampleCount) }}</strong>
@@ -38,7 +38,7 @@ import {
   formatDateLabel,
   formatSampleCount,
   getCategoryTheme,
-} from "@/utils/DatasetUtils";
+} from "@/utils/common";
 
 const props = defineProps<{
   dataset: DatasetSubcategory;
@@ -131,13 +131,6 @@ const badgeStyle = computed(() => {
   color: #475569;
   line-height: 1.7;
   flex: 1;
-}
-
-.meta-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
-  margin-top: 1.2rem;
 }
 
 .meta-item {

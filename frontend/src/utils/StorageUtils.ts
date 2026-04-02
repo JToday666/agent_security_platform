@@ -13,6 +13,8 @@ const parseJson = <T>(raw: string | null): T | null => {
   }
 };
 
+// ============ 持久化状态管理 ============
+
 export const loadPersistedState = <T>(
   key: string,
   version: number,
@@ -43,4 +45,36 @@ export const savePersistedState = <T>(
 
 export const clearPersistedState = (key: string): void => {
   localStorage.removeItem(key);
+};
+
+// ============ 通用本地存储操作 ============
+
+export const setLocalStorage = (key: string, value: unknown): void => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Failed to set localStorage[${key}]:`, error);
+  }
+};
+
+export const getLocalStorage = <T = unknown>(
+  key: string,
+  defaultValue?: T,
+): T | null => {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return defaultValue ?? null;
+    return JSON.parse(raw) as T;
+  } catch (error) {
+    console.error(`Failed to get localStorage[${key}]:`, error);
+    return defaultValue ?? null;
+  }
+};
+
+export const removeLocalStorage = (key: string): void => {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.error(`Failed to remove localStorage[${key}]:`, error);
+  }
 };

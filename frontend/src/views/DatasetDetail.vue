@@ -68,7 +68,7 @@ import { RouteLocation } from "@/router/RouteNames";
 import type { DatasetDetail as DatasetDetailType } from "@/types/DatasetTypes";
 import {
   formatSampleCount,
-} from "@/utils/DatasetUtils";
+} from "@/utils/common";
 import { useDatasetCatalogStore } from "@/store/DatasetCatalogStore";
 
 const route = useRoute();

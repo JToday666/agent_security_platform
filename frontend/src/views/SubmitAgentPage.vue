@@ -85,12 +85,12 @@ import type {
 import {
   toggleCategoryDatasets as toggleCategoryDatasetsValue,
   toggleDatasetId,
-} from "@/utils/DatasetUtils";
+} from "@/utils/common";
 import {
   normalizeDifficulty,
   normalizeTimeoutMinutes,
-} from "@/utils/SubmitParameterUtils";
-import { validateSubmitPayload } from "@/utils/SubmitValidation";
+  validateSubmitPayload,
+} from "@/utils/submit";
 
 const router = useRouter();
 const submitDraftStore = useSubmitDraftStore();

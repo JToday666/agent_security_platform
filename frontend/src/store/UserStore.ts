@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import request from "@/utils/request";
+import request from "@/utils/Request";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
 export interface User {
   id: number;
@@ -33,7 +34,6 @@ interface UpdateProfileData {
 }
 
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || "/api/v1";
-const POST_LOGIN_REDIRECT_KEY = "agent-platform:post-login-redirect";
 
 const resolveApiOrigin = (): string | null => {
   if (!/^https?:\/\//i.test(API_BASE_URL)) return null;
@@ -74,10 +74,12 @@ const normalizeUser = (user: UserPayload): User => ({
 
 export const useUserStore = defineStore("user", () => {
   const showLogin = ref(false);
-  const token = ref<string | null>(localStorage.getItem("token"));
+  const token = ref<string | null>(
+    localStorage.getItem(STORAGE_KEYS.user.token),
+  );
   const currentUser = ref<User | null>(null);
   const postLoginRedirect = ref<string | null>(
-    sessionStorage.getItem(POST_LOGIN_REDIRECT_KEY),
+    sessionStorage.getItem(STORAGE_KEYS.user.postLoginRedirect),
   );
 
   const isLogin = computed(() => Boolean(token.value && currentUser.value));
@@ -86,13 +88,13 @@ export const useUserStore = defineStore("user", () => {
   const avatarUrl = computed(() => currentUser.value?.avatarUrl || "");
 
   const clearAuthState = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem(STORAGE_KEYS.user.token);
     token.value = null;
     currentUser.value = null;
   };
 
   const setAuthState = (newToken: string, user: UserPayload) => {
-    localStorage.setItem("token", newToken);
+    localStorage.setItem(STORAGE_KEYS.user.token, newToken);
     token.value = newToken;
     currentUser.value = normalizeUser(user);
   };
@@ -102,7 +104,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const restoreLogin = async (): Promise<boolean> => {
-    const storedToken = localStorage.getItem("token");
+    const storedToken = localStorage.getItem(STORAGE_KEYS.user.token);
     if (!storedToken) return false;
 
     token.value = storedToken;
@@ -181,11 +183,11 @@ export const useUserStore = defineStore("user", () => {
     postLoginRedirect.value = path;
 
     if (path) {
-      sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, path);
+      sessionStorage.setItem(STORAGE_KEYS.user.postLoginRedirect, path);
       return;
     }
 
-    sessionStorage.removeItem(POST_LOGIN_REDIRECT_KEY);
+    sessionStorage.removeItem(STORAGE_KEYS.user.postLoginRedirect);
   };
 
   const consumePostLoginRedirect = (): string | null => {

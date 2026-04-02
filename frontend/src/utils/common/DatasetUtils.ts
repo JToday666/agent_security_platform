@@ -4,7 +4,7 @@ import type {
   DatasetCategoryViewModel,
   DatasetSubcategory,
 } from "@/types/DatasetTypes";
-import { ORDERED_REFERENCE_CATEGORY_IDS } from "@/constants/ReferenceDatasetTaxonomy";
+import { ORDERED_REFERENCE_CATEGORY_IDS } from "@/constants/DatasetTaxonomy";
 
 export interface CategoryTheme {
   soft: string;

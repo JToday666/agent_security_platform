@@ -4,10 +4,11 @@ import router from "./router";
 import { createPinia } from "pinia";
 import { useUserStore } from "./store/UserStore";
 import { RouteLocation } from "./router/RouteNames";
-import "./styles/tokens.css";
-import "./styles/primitives.css";
-import "./styles/semantic.css";
+import "./styles/Tokens.css";
+import "./styles/Primitives.css";
+import "./styles/Semantic.css";
 import "./styles/LayoutShared.css";
+import "./styles/Utilities.css";
 
 const app = createApp(App);
 const pinia = createPinia();
