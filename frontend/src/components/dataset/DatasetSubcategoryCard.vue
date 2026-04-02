@@ -2,6 +2,7 @@
   <router-link
     :to="RouteLocation.datasetDetail(dataset.datasetId)"
     class="dataset-card ui-surface-white"
+    :style="cardStyle"
   >
     <div class="card-top">
       <span class="category-badge" :style="badgeStyle">{{ category.name }}</span>
@@ -36,7 +37,7 @@ import type { DatasetCategoryViewModel, DatasetSubcategory } from "@/types/Datas
 import {
   formatDateLabel,
   formatSampleCount,
-  getCategoryThemeByIndex,
+  getCategoryTheme,
 } from "@/utils/DatasetUtils";
 
 const props = defineProps<{
@@ -44,19 +45,30 @@ const props = defineProps<{
   category: DatasetCategoryViewModel;
 }>();
 
+const theme = computed(() => getCategoryTheme(props.category.categoryId));
+
+const cardStyle = computed(() => ({
+  "--dataset-soft": theme.value.soft,
+  "--dataset-border": theme.value.border,
+  "--dataset-text": theme.value.text,
+  "--dataset-solid": theme.value.solid,
+  "--dataset-shadow": theme.value.shadow,
+}));
+
 // 卡片顶部的大类徽标颜色和数据集所属大类保持一致。
 const badgeStyle = computed(() => {
-  const theme = getCategoryThemeByIndex(props.category.themeIndex);
   return {
-    background: theme.soft,
-    color: theme.text,
-    border: `1px solid ${theme.border}`,
+    background: theme.value.soft,
+    color: theme.value.text,
+    border: `1px solid ${theme.value.border}`,
   };
 });
 </script>
 
 <style scoped>
 .dataset-card {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   min-height: 260px;
@@ -64,15 +76,29 @@ const badgeStyle = computed(() => {
   border-radius: 1.4rem;
   text-decoration: none;
   color: inherit;
-  border: 1px solid rgba(226, 232, 240, 0.88);
+  border: 1px solid var(--dataset-border, rgba(226, 232, 240, 0.88));
+  box-shadow: 0 10px 20px -26px var(--dataset-shadow, rgba(15, 23, 42, 0.16));
   transition:
     transform 0.22s ease,
-    box-shadow 0.22s ease;
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.dataset-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--dataset-solid, #2563eb),
+    var(--dataset-border, #93c5fd)
+  );
 }
 
 .dataset-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 36px -14px rgba(15, 23, 42, 0.16);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px -22px var(--dataset-shadow, rgba(15, 23, 42, 0.2));
 }
 
 .card-top {
@@ -117,7 +143,8 @@ const badgeStyle = computed(() => {
 
 .meta-item {
   padding: 0.9rem;
-  background: #f8fafc;
+  background: linear-gradient(180deg, var(--dataset-soft, #f8fafc), #ffffff 84%);
+  border: 1px solid var(--dataset-border, #e2e8f0);
   border-radius: 1rem;
 }
 
@@ -138,7 +165,7 @@ const badgeStyle = computed(() => {
   align-items: center;
   gap: 0.45rem;
   margin-top: 1.1rem;
-  color: #2563eb;
+  color: var(--dataset-solid, #2563eb);
   font-weight: 700;
 }
 

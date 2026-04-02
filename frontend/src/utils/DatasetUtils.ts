@@ -11,60 +11,99 @@ export interface CategoryTheme {
   border: string;
   text: string;
   gradient: string;
+  shadow: string;
 }
 
-const CATEGORY_THEME_PALETTES: Array<
-  [
-    soft: string,
-    solid: string,
-    border: string,
-    text: string,
-    gradientStart: string,
-    gradientEnd: string,
-  ]
-> = [
-  ["#eff6ff", "#2563eb", "#93c5fd", "#1d4ed8", "#2563eb", "#60a5fa"],
-  ["#eef2ff", "#4f46e5", "#a5b4fc", "#3730a3", "#4338ca", "#818cf8"],
-  ["#f5f3ff", "#7c3aed", "#c4b5fd", "#6d28d9", "#7c3aed", "#a78bfa"],
-  ["#faf5ff", "#9333ea", "#d8b4fe", "#7e22ce", "#9333ea", "#c084fc"],
-  ["#fdf4ff", "#c026d3", "#f0abfc", "#a21caf", "#c026d3", "#e879f9"],
-  ["#fdf2f8", "#db2777", "#f9a8d4", "#be185d", "#db2777", "#f472b6"],
-  ["#fff1f2", "#e11d48", "#fda4af", "#be123c", "#e11d48", "#fb7185"],
-  ["#fef2f2", "#dc2626", "#fca5a5", "#b91c1c", "#dc2626", "#f87171"],
-  ["#fff7ed", "#ea580c", "#fdba74", "#c2410c", "#ea580c", "#fb923c"],
-  ["#fffbeb", "#d97706", "#fcd34d", "#b45309", "#d97706", "#fbbf24"],
-  ["#fefce8", "#ca8a04", "#fde047", "#a16207", "#ca8a04", "#facc15"],
-  ["#f7fee7", "#65a30d", "#bef264", "#4d7c0f", "#65a30d", "#a3e635"],
-  ["#f0fdf4", "#16a34a", "#86efac", "#15803d", "#16a34a", "#4ade80"],
-  ["#ecfdf5", "#059669", "#6ee7b7", "#047857", "#059669", "#34d399"],
-  ["#f0fdfa", "#0d9488", "#5eead4", "#0f766e", "#0d9488", "#2dd4bf"],
-  ["#ecfeff", "#0891b2", "#67e8f9", "#0e7490", "#0891b2", "#22d3ee"],
-  ["#f0f9ff", "#0284c7", "#7dd3fc", "#0369a1", "#0284c7", "#38bdf8"],
-  ["#eef8ff", "#2563eb", "#bfdbfe", "#1e40af", "#1d4ed8", "#38bdf8"],
-  ["#faf5ff", "#a21caf", "#e9d5ff", "#86198f", "#a21caf", "#d946ef"],
-  ["#fff7ed", "#c2410c", "#fdba74", "#9a3412", "#c2410c", "#f59e0b"],
+const COMFORT_HUE_RANGES: ReadonlyArray<readonly [start: number, end: number]> = [
+  [152, 178],
+  [184, 208],
+  [214, 232],
+  [238, 258],
+  [264, 286],
+  [294, 318],
+  [326, 348],
+  [4, 26],
 ];
 
-const CATEGORY_THEMES: CategoryTheme[] = CATEGORY_THEME_PALETTES.map(
-  ([soft, solid, border, text, gradientStart, gradientEnd]) => ({
-    soft,
-    solid,
-    border,
-    text,
-    gradient: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})`,
-  }),
+const CATEGORY_THEME_CACHE = new Map<string, CategoryTheme>();
+
+const COMFORT_HUE_TOTAL = COMFORT_HUE_RANGES.reduce(
+  (total, [start, end]) => total + (end - start),
+  0,
 );
 
-const buildFallbackCategoryTheme = (themeIndex: number): CategoryTheme => {
-  const hue = Math.round((themeIndex * 137.508) % 360);
-  const endHue = (hue + 24) % 360;
+const hashCategoryId = (value: string): number => {
+  let hash = 2166136261;
+
+  for (const char of value) {
+    hash ^= char.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return hash >>> 0;
+};
+
+const mixHash = (value: number): number => {
+  let hash = value >>> 0;
+
+  hash ^= hash >>> 16;
+  hash = Math.imul(hash, 2246822507) >>> 0;
+  hash ^= hash >>> 13;
+  hash = Math.imul(hash, 3266489909) >>> 0;
+  hash ^= hash >>> 16;
+
+  return hash >>> 0;
+};
+
+const normalizeHue = (value: number): number => {
+  const normalized = value % 360;
+
+  return normalized < 0 ? normalized + 360 : normalized;
+};
+
+const toHsl = (hue: number, saturation: number, lightness: number): string =>
+  `hsl(${Math.round(normalizeHue(hue))} ${saturation}% ${lightness}%)`;
+
+const toHsla = (
+  hue: number,
+  saturation: number,
+  lightness: number,
+  alpha: number,
+): string =>
+  `hsla(${Math.round(normalizeHue(hue))}, ${saturation}%, ${lightness}%, ${alpha})`;
+
+const mapNormalizedValueToHue = (value: number): number => {
+  let offset = value * COMFORT_HUE_TOTAL;
+
+  for (const [start, end] of COMFORT_HUE_RANGES) {
+    const span = end - start;
+
+    if (offset < span) {
+      return start + offset;
+    }
+
+    offset -= span;
+  }
+
+  const [lastStart, lastEnd] =
+    COMFORT_HUE_RANGES[COMFORT_HUE_RANGES.length - 1]!;
+  return lastEnd - Math.max(1, lastEnd - lastStart) / 2;
+};
+
+const buildCategoryTheme = (categoryId: string): CategoryTheme => {
+  const hash = mixHash(hashCategoryId(categoryId));
+  const normalizedBase = hash / 0x100000000;
+  const normalizedAccent = (normalizedBase + 0.07) % 1;
+  const baseHue = mapNormalizedValueToHue(normalizedBase);
+  const accentHue = mapNormalizedValueToHue(normalizedAccent);
 
   return {
-    soft: `hsl(${hue} 85% 95%)`,
-    solid: `hsl(${hue} 72% 48%)`,
-    border: `hsl(${hue} 72% 78%)`,
-    text: `hsl(${hue} 66% 30%)`,
-    gradient: `linear-gradient(135deg, hsl(${hue} 72% 48%), hsl(${endHue} 78% 60%))`,
+    soft: toHsl(baseHue, 64, 97),
+    solid: toHsl(baseHue, 60, 43),
+    border: toHsl(baseHue, 52, 86),
+    text: toHsl(baseHue, 38, 30),
+    gradient: `linear-gradient(135deg, ${toHsl(baseHue, 58, 42)}, ${toHsl(accentHue, 56, 48)})`,
+    shadow: toHsla(baseHue, 36, 40, 0.16),
   };
 };
 
@@ -74,8 +113,18 @@ const sortCategoriesForDisplay = (
 ) => left.sort - right.sort || left.categoryId.localeCompare(right.categoryId);
 
 // 主题色不再按 categoryId 哈希，而是按稳定排序后的索引分配。
-export const getCategoryThemeByIndex = (themeIndex: number): CategoryTheme =>
-  CATEGORY_THEMES[themeIndex] ?? buildFallbackCategoryTheme(themeIndex);
+export const getCategoryTheme = (categoryId: string): CategoryTheme => {
+  const themeKey = categoryId.trim() || "__default__";
+  const cachedTheme = CATEGORY_THEME_CACHE.get(themeKey);
+
+  if (cachedTheme) {
+    return cachedTheme;
+  }
+
+  const theme = buildCategoryTheme(themeKey);
+  CATEGORY_THEME_CACHE.set(themeKey, theme);
+  return theme;
+};
 
 export const getEnabledCategories = (
   categories: DatasetCategory[],
@@ -94,11 +143,7 @@ export const getEnabledCategories = (
       };
     })
     .filter((category) => category.subcategories.length > 0)
-    .sort(sortCategoriesForDisplay)
-    .map((category, themeIndex) => ({
-      ...category,
-      themeIndex,
-    }));
+    .sort(sortCategoriesForDisplay);
 
 export const getAllDatasetIds = (categories: DatasetCategory[]): string[] =>
   getEnabledCategories(categories).flatMap((category) =>

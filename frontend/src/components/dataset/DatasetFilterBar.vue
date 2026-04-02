@@ -25,7 +25,7 @@
         :key="category.categoryId"
         class="category-chip ui-btn ui-btn-pill"
         :class="{ active: selectedCategoryIds.includes(category.categoryId) }"
-        :style="getChipStyle(category.themeIndex, selectedCategoryIds.includes(category.categoryId))"
+        :style="getChipStyle(category.categoryId, selectedCategoryIds.includes(category.categoryId))"
         @click="$emit('toggle-category', category.categoryId)"
       >
         <span class="chip-name">{{ category.name }}</span>
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import type { DatasetCategoryViewModel } from "@/types/DatasetTypes";
-import { getCategoryThemeByIndex } from "@/utils/DatasetUtils";
+import { getCategoryTheme } from "@/utils/DatasetUtils";
 
 defineEmits<{
   (event: "select-all"): void;
@@ -51,21 +51,23 @@ defineProps<{
   visibleDatasetCount: number;
 }>();
 
-const getChipStyle = (themeIndex: number, active: boolean) => {
-  const theme = getCategoryThemeByIndex(themeIndex);
+const getChipStyle = (categoryId: string, active: boolean) => {
+  const theme = getCategoryTheme(categoryId);
 
   if (active) {
     return {
       background: theme.gradient,
       color: "#ffffff",
-      border: "1px solid transparent",
+      border: `1px solid ${theme.solid}`,
+      boxShadow: `0 12px 24px -24px ${theme.shadow}`,
     };
   }
 
   return {
-    background: theme.soft,
+    background: `linear-gradient(180deg, ${theme.soft}, #ffffff)`,
     color: theme.text,
     border: `1px solid ${theme.border}`,
+    boxShadow: `0 8px 16px -24px ${theme.shadow}`,
   };
 };
 </script>
@@ -133,7 +135,10 @@ const getChipStyle = (themeIndex: number, active: boolean) => {
   align-items: center;
   gap: 0.55rem;
   padding: 0.85rem 1.15rem;
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .category-chip:hover {

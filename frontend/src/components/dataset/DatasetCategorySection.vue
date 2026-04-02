@@ -8,7 +8,7 @@
         </div>
         <p class="description">{{ category.description }}</p>
       </div>
-      <div class="stat-card ui-surface-white">
+      <div class="stat-card ui-surface-white" :style="statCardStyle">
         <span>小类数量</span>
         <strong>{{ category.subcategories.length }}</strong>
       </div>
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { DatasetCategoryViewModel } from "@/types/DatasetTypes";
-import { getCategoryThemeByIndex } from "@/utils/DatasetUtils";
+import { getCategoryTheme } from "@/utils/DatasetUtils";
 import DatasetSubcategoryCard from "@/components/dataset/DatasetSubcategoryCard.vue";
 
 const props = defineProps<{
@@ -36,11 +36,20 @@ const props = defineProps<{
 }>();
 
 const headerStyle = computed(() => {
-  const theme = getCategoryThemeByIndex(props.category.themeIndex);
+  const theme = getCategoryTheme(props.category.categoryId);
 
   return {
     backgroundImage: theme.gradient,
-    boxShadow: `0 20px 40px -20px ${theme.solid}80`,
+    boxShadow: `0 18px 34px -26px ${theme.shadow}`,
+  };
+});
+
+const statCardStyle = computed(() => {
+  const theme = getCategoryTheme(props.category.categoryId);
+
+  return {
+    border: `1px solid ${theme.border}`,
+    boxShadow: `0 12px 22px -24px ${theme.shadow}`,
   };
 });
 </script>
