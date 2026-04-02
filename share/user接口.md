@@ -43,8 +43,8 @@
 
 ```json
 {
-	"username": "string", // 用户名或邮箱
-	"password": "string" // 密码（至少6位）
+  "username": "string", // 用户名或邮箱
+  "password": "string" // 密码（至少6位）
 }
 ```
 
@@ -52,17 +52,17 @@
 
 ```json
 {
-	"code": 0,
-	"data": {
-		"token": "eyJhbGciOiJIUzI1NiIs...",
-		"user": {
-			"id": 1,
-			"username": "john_doe",
-			"email": "john@example.com",
-			"avatarUrl": "https://example.com/avatars/1.jpg"
-		}
-	},
-	"message": "success"
+  "code": 0,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIs...",
+    "user": {
+      "id": 1,
+      "username": "john_doe",
+      "email": "john@example.com",
+      "avatarUrl": "https://example.com/avatars/1.jpg"
+    }
+  },
+  "message": "success"
 }
 ```
 
@@ -87,9 +87,9 @@
 
 ```json
 {
-	"username": "string", // 用户名（唯一）
-	"email": "string", // 邮箱（唯一）
-	"password": "string" // 密码（至少6位）
+  "username": "string", // 用户名（唯一）
+  "email": "string", // 邮箱（唯一）
+  "password": "string" // 密码（至少6位）
 }
 ```
 
@@ -97,17 +97,17 @@
 
 ```json
 {
-	"code": 0,
-	"data": {
-		"token": "eyJhbGciOiJIUzI1NiIs...",
-		"user": {
-			"id": 2,
-			"username": "jane_doe",
-			"email": "jane@example.com",
-			"avatarUrl": null // 初始头像可为空
-		}
-	},
-	"message": "success"
+  "code": 0,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIs...",
+    "user": {
+      "id": 2,
+      "username": "jane_doe",
+      "email": "jane@example.com",
+      "avatarUrl": null // 初始头像可为空
+    }
+  },
+  "message": "success"
 }
 ```
 
@@ -139,14 +139,14 @@ Authorization: Bearer <token>
 
 ```json
 {
-	"code": 0,
-	"data": {
-		"id": 1,
-		"username": "john_doe",
-		"email": "john@example.com",
-		"avatarUrl": "https://example.com/avatars/1.jpg"
-	},
-	"message": "success"
+  "code": 0,
+  "data": {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john@example.com",
+    "avatarUrl": "https://example.com/avatars/1.jpg"
+  },
+  "message": "success"
 }
 ```
 
@@ -175,14 +175,14 @@ Authorization: Bearer <token>
 
 ```json
 {
-	"code": 0,
-	"data": {
-		"id": 1,
-		"username": "john_doe",
-		"email": "john@example.com",
-		"avatarUrl": "https://example.com/avatars/1.jpg"
-	},
-	"message": "success"
+  "code": 0,
+  "data": {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john@example.com",
+    "avatarUrl": "https://example.com/avatars/1.jpg"
+  },
+  "message": "success"
 }
 ```
 
@@ -208,8 +208,8 @@ Authorization: Bearer <token>
 
 ```json
 {
-	"username": "new_username", // 可选，新用户名（唯一）
-	"password": "new_password" // 可选，新密码（至少6位）
+  "username": "new_username", // 可选，新用户名（唯一）
+  "password": "new_password" // 可选，新密码（至少6位）
 }
 ```
 
@@ -219,14 +219,14 @@ Authorization: Bearer <token>
 
 ```json
 {
-	"code": 0,
-	"data": {
-		"id": 1,
-		"username": "new_username",
-		"email": "john@example.com",
-		"avatarUrl": "https://example.com/avatars/1.jpg"
-	},
-	"message": "success"
+  "code": 0,
+  "data": {
+    "id": 1,
+    "username": "new_username",
+    "email": "john@example.com",
+    "avatarUrl": "https://example.com/avatars/1.jpg"
+  },
+  "message": "success"
 }
 ```
 
@@ -265,11 +265,11 @@ Content-Type: multipart/form-data
 
 ```json
 {
-	"code": 0,
-	"data": {
-		"avatarUrl": "https://example.com/avatars/1_new.jpg"
-	},
-	"message": "success"
+  "code": 0,
+  "data": {
+    "avatarUrl": "https://example.com/avatars/1_new.jpg"
+  },
+  "message": "success"
 }
 ```
 

@@ -10,18 +10,15 @@ import {
   getAllDatasetIds,
   getEnabledCategories,
   sanitizeDatasetSelection,
-} from "@/utils/DatasetUtils";
+} from "@/utils/common";
 import {
   clearPersistedState,
   loadPersistedState,
   savePersistedState,
 } from "@/utils/StorageUtils";
-import {
-  normalizeDifficulty,
-  normalizeTimeoutMinutes,
-} from "@/utils/SubmitParameterUtils";
+import { normalizeDifficulty, normalizeTimeoutMinutes } from "@/utils/submit";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
-const STORAGE_KEY = "agent-platform:submit-page:form:v2";
 const STORAGE_VERSION = 2;
 const PERSIST_DELAY_MS = 400;
 
@@ -94,7 +91,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
 
     if (!hydrated.value) {
       const persisted = loadPersistedState<SubmitFormPersistedData>(
-        STORAGE_KEY,
+        STORAGE_KEYS.draft.submit,
         STORAGE_VERSION,
       );
 
@@ -188,8 +185,8 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
       catalogSyncNotice.value =
         persistedCatalogVersion.value &&
         persistedCatalogVersion.value !== catalogVersion
-          ? "目录版本已更新，系统已保留当前仍有效的已选数据集与展开分组。"
-          : "难度变化后已自动移除失效的数据集或展开分组。";
+          ? "目录版本已更新，系统已保留当前仍有效的已选评测项与展开分组。"
+          : "难度变化后已自动移除失效的评测项或展开分组。";
     } else {
       catalogSyncNotice.value = "";
     }
@@ -225,7 +222,12 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
         expandedCategoryIds: expandedCategoryIds.value,
       };
 
-      savePersistedState(STORAGE_KEY, STORAGE_VERSION, payload, catalogVersion);
+      savePersistedState(
+        STORAGE_KEYS.draft.submit,
+        STORAGE_VERSION,
+        payload,
+        catalogVersion,
+      );
     }, PERSIST_DELAY_MS);
   };
 
@@ -243,7 +245,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     persistedCatalogVersion.value = "";
     catalogSyncNotice.value = "";
     hasSyncedCatalog.value = categories.length > 0;
-    clearPersistedState(STORAGE_KEY);
+    clearPersistedState(STORAGE_KEYS.draft.submit);
   };
 
   const setSubmitMethod = (method: "api" | "docker") => {
@@ -270,7 +272,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
 
   const clearDraftAfterSubmit = () => {
     clearPersistTimer();
-    clearPersistedState(STORAGE_KEY);
+    clearPersistedState(STORAGE_KEYS.draft.submit);
     restoredDraftNotice.value = false;
     restoredFromPersistedDraft.value = false;
     persistedCatalogVersion.value = "";

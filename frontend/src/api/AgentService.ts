@@ -1,4 +1,6 @@
-import request from "@/utils/request";
+import request from "@/utils/Request";
+import { ApiConfig } from "@/api/Config";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import type {
   EvaluationDetail,
   EvaluationMetric,
@@ -17,30 +19,27 @@ import {
 import {
   buildSubmitAgentApiPayload,
   normalizeSubmitMeta,
-} from "@/api/adapters/ReferenceAdapters";
+} from "@/api/adapters/DatasetAdapters";
 import {
   getReferenceDatasetIds,
   getReferenceDatasetNameMap,
   referenceEvaluationRecords,
   referenceSubmitMeta,
-} from "@/api/fixtures/ReferenceData";
-import { validateSubmitPayload } from "@/utils/SubmitValidation";
+} from "@/api/fixtures/DatasetFixtures";
+import { validateSubmitPayload } from "@/utils/submit";
 
 interface StoredEvaluationRecord extends EvaluationRecord {
   requestId: string;
 }
 
-const MOCK_STORAGE_KEY = "agent-platform:mock-evaluations:v1";
 const MOCK_COMPLETION_DELAY_MS = 4000;
-const useLiveSubmissionApi =
-  import.meta.env.VITE_USE_LIVE_SUBMISSION_API === "true";
-const useLiveReferenceApi =
-  import.meta.env.VITE_USE_LIVE_REFERENCE_API === "true";
+const useLiveSubmissionApi = ApiConfig.submission.useLive;
+const useLiveReferenceApi = ApiConfig.reference.useLive;
 const referenceDatasetNameMap = getReferenceDatasetNameMap();
 
 const readStoredRecords = (): StoredEvaluationRecord[] => {
   try {
-    const raw = localStorage.getItem(MOCK_STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEYS.mock.evaluations);
     if (!raw) {
       return [];
     }
@@ -52,7 +51,7 @@ const readStoredRecords = (): StoredEvaluationRecord[] => {
 };
 
 const writeStoredRecords = (records: StoredEvaluationRecord[]): void => {
-  localStorage.setItem(MOCK_STORAGE_KEY, JSON.stringify(records));
+  localStorage.setItem(STORAGE_KEYS.mock.evaluations, JSON.stringify(records));
 };
 
 const nowIso = (): string => new Date().toISOString();
@@ -162,8 +161,8 @@ const buildEvaluationDetail = (record: EvaluationRecord): EvaluationDetail => ({
   ...record,
   summary:
     record.status === "completed"
-      ? `本次评测共覆盖 ${record.datasetNames.length} 个数据集，核心安全指标表现稳定，建议结合详细指标继续优化高风险边界。`
-      : "任务已创建，系统正在调度评测节点与数据集执行队列，请稍后刷新查看结果。",
+      ? `本次评测共覆盖 ${record.datasetNames.length} 个评测项，核心安全指标表现稳定，建议结合详细指标继续优化高风险边界。`
+      : "任务已创建，系统正在调度评测节点与评测项执行队列，请稍后刷新查看结果。",
   warnings:
     record.status === "completed"
       ? record.parameters.retryEnabled

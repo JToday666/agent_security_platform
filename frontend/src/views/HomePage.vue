@@ -1,7 +1,6 @@
 <template>
   <div class="content home-page layout-page-shell layout-page-shell--wide">
     <div class="hero">
-      <!-- 标题区域 -->
       <div class="hero-content">
         <h1 class="title">智能体安全评测平台</h1>
         <p class="subtitle">安全 · 可靠 · 专业的智能体评估系统</p>
@@ -10,7 +9,6 @@
         </p>
       </div>
 
-      <!-- 使用指南卡片 -->
       <div class="guide-card ui-surface-glass">
         <h2 class="guide-title">快速上手</h2>
         <div class="steps-grid">
@@ -26,13 +24,11 @@
         </div>
       </div>
 
-      <!-- 操作按钮区域（分两行） -->
       <div class="actions">
-        <!-- 第一行：核心功能按钮 -->
         <div class="primary-actions">
           <button class="btn primary ui-btn ui-btn-pill" @click="goDataset">
             <AppIcon icon="lucide:database" class="btn-icon" />
-            <span>浏览数据集</span>
+            <span>浏览评测目录</span>
           </button>
           <button class="btn primary ui-btn ui-btn-pill" @click="goLeaderboard">
             <AppIcon icon="lucide:trophy" class="btn-icon" />
@@ -40,7 +36,6 @@
           </button>
         </div>
 
-        <!-- 第二行：用户相关（登录/个人中心） -->
         <div class="user-actions">
           <template v-if="!isLogin">
             <button
@@ -77,7 +72,6 @@
     </div>
   </div>
 
-  <!-- 退出确认弹窗 -->
   <ConfirmDialog
     v-model="showLogoutConfirm"
     title="确认退出"
@@ -104,20 +98,17 @@ const router = useRouter();
 const userStore = useUserStore();
 const { isLogin, username } = storeToRefs(userStore);
 
-// 步骤数据
 const steps = [
   { title: "注册/登录", desc: "创建账号或登录，开启评测之旅" },
-  { title: "提交智能体", desc: "在个人中心上传您的智能体，选择测试数据集" },
+  { title: "提交智能体", desc: "在个人中心上传您的智能体，选择风险域与评测项" },
   { title: "查看报告", desc: "获取详细评测结果，优化智能体性能" },
   { title: "登上榜单", desc: "公开您的智能体，与其他开发者一较高下" },
 ];
 
-// 首页按钮统一走命名路由，便于后续维护。
 const goDataset = () => router.push(RouteLocation.datasetList);
 const goLeaderboard = () => router.push(RouteLocation.leaderboard);
 const openLoginDialog = () => userStore.openLoginDialog();
 
-// 退出确认逻辑
 const showLogoutConfirm = ref(false);
 const logoutLoading = ref(false);
 
@@ -141,7 +132,6 @@ const handleLogoutCancel = () => {
 </script>
 
 <style scoped>
-/* 全局重置与动画 */
 @keyframes float {
   0%,
   100% {
@@ -198,7 +188,6 @@ const handleLogoutCancel = () => {
   margin: 0 auto;
 }
 
-/* 指南卡片 */
 .guide-card {
   border-radius: 3rem;
   padding: 2.5rem;
@@ -257,7 +246,6 @@ const handleLogoutCancel = () => {
   line-height: 1.5;
 }
 
-/* 操作区域 */
 .actions {
   display: flex;
   flex-direction: column;
@@ -306,7 +294,6 @@ const handleLogoutCancel = () => {
   gap: 0.8rem;
 }
 
-/* 按钮样式 */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -377,7 +364,6 @@ const handleLogoutCancel = () => {
   border-color: #ef4444;
 }
 
-/* 响应式调整 */
 @media (max-width: 768px) {
   .title {
     font-size: 2.5rem;

@@ -2,11 +2,11 @@
   <section class="filter-card ui-surface-glass">
     <div class="summary-row">
       <div class="summary-item ui-surface-white">
-        <span>已选大类</span>
+        <span>已选风险域</span>
         <strong>{{ selectedCategoryIds.length }}</strong>
       </div>
       <div class="summary-item ui-surface-white">
-        <span>已显示小类</span>
+        <span>已显示评测项</span>
         <strong>{{ visibleDatasetCount }}</strong>
       </div>
       <div class="actions">
@@ -14,7 +14,7 @@
           全选
         </button>
         <button class="action-btn ui-btn ui-btn-pill" @click="$emit('clear-all')">
-          全不选
+          清空筛选
         </button>
       </div>
     </div>
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import type { DatasetCategoryViewModel } from "@/types/DatasetTypes";
-import { getCategoryTheme } from "@/utils/DatasetUtils";
+import { getCategoryTheme } from "@/utils/common";
 
 defineEmits<{
   (event: "select-all"): void;

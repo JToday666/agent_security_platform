@@ -9,7 +9,6 @@
 </template>
 
 <script setup lang="ts">
-// 用户布局统一承载侧边导航和登录后页面内容。
 import Navbar from "@/components/navigation/NavBar.vue";
 import UserSidebar from "@/components/navigation/UserSidebar.vue";
 </script>
@@ -25,7 +24,6 @@ import UserSidebar from "@/components/navigation/UserSidebar.vue";
   animation: fadeInUp var(--duration-fade-in) ease;
 }
 
-/* 控制侧边栏折叠状态来自动调整内容区域边距 */
 .user-layout .user-sidebar.collapsed ~ .content-area {
   margin-left: var(--sidebar-width-collapsed);
 }

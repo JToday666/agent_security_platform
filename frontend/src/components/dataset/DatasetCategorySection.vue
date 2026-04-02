@@ -9,12 +9,12 @@
         <p class="description">{{ category.description }}</p>
       </div>
       <div class="stat-card ui-surface-white" :style="statCardStyle">
-        <span>小类数量</span>
+        <span>评测项数量</span>
         <strong>{{ category.subcategories.length }}</strong>
       </div>
     </header>
 
-    <div class="card-grid">
+    <div class="grid-auto-fit" style="--grid-min-size: 280px; --grid-gap: 1rem; margin-top: 1.1rem;">
       <DatasetSubcategoryCard
         v-for="dataset in category.subcategories"
         :key="dataset.datasetId"
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { DatasetCategoryViewModel } from "@/types/DatasetTypes";
-import { getCategoryTheme } from "@/utils/DatasetUtils";
+import { getCategoryTheme } from "@/utils/common";
 import DatasetSubcategoryCard from "@/components/dataset/DatasetSubcategoryCard.vue";
 
 const props = defineProps<{
@@ -115,13 +115,6 @@ const statCardStyle = computed(() => {
   display: block;
   margin-top: 0.35rem;
   font-size: 1.5rem;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-  margin-top: 1.1rem;
 }
 
 @media (max-width: 768px) {

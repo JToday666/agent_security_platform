@@ -1,6 +1,5 @@
 <template>
   <aside class="user-sidebar" :class="{ collapsed }">
-    <!-- 收起/展开按钮，放在右上角 -->
     <button
       class="toggle-btn"
       @click="collapsed = !collapsed"
@@ -12,7 +11,6 @@
       />
     </button>
 
-    <!-- 导航链接 -->
     <nav class="sidebar-nav">
       <router-link
         :to="RouteLocation.userCenter"
@@ -33,7 +31,7 @@
       </router-link>
       <router-link :to="RouteLocation.datasetList" class="nav-item" active-class="active">
         <AppIcon icon="lucide:database" class="icon" />
-        <span class="text" v-if="!collapsed">数据集</span>
+        <span class="text" v-if="!collapsed">评测目录</span>
       </router-link>
       <router-link :to="RouteLocation.leaderboard" class="nav-item" active-class="active">
         <AppIcon icon="lucide:trophy" class="icon" />
@@ -52,7 +50,6 @@ import { ref } from "vue";
 import AppIcon from "@/components/icon/AppIcon.vue";
 import { RouteLocation } from "@/router/RouteNames";
 
-// 侧边栏折叠状态仅影响前端展示，不参与路由状态持久化。
 const collapsed = ref(false);
 </script>
 
@@ -61,7 +58,6 @@ const collapsed = ref(false);
   position: fixed;
   left: 0;
   top: var(--nav-height);
-  /* 与导航栏高度一致 */
   height: calc(100vh - var(--nav-height));
   border-right: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 5px 0 20px rgba(0, 0, 0, 0.03);
@@ -151,7 +147,6 @@ const collapsed = ref(false);
   opacity: 0.9;
 }
 
-/* 收起时隐藏文字，图标居中 */
 .user-sidebar.collapsed .nav-item {
   justify-content: center;
   padding: 0.8rem 0;
@@ -165,7 +160,6 @@ const collapsed = ref(false);
   display: none;
 }
 
-/* 响应式 */
 @media (max-width: 768px) {
   .user-sidebar {
     width: 200px;

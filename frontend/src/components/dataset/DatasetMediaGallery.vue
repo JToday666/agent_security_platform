@@ -1,10 +1,10 @@
 <template>
   <section class="gallery">
     <div v-if="!media.length" class="empty-card ui-surface-white">
-      <p>当前数据集暂未提供媒体资源。</p>
+      <p>当前评测项暂未提供媒体资源。</p>
     </div>
 
-    <div v-else class="media-grid">
+    <div v-else class="grid-auto-fit" style="--grid-min-size: 280px; --grid-gap: 1rem;">
       <article
         v-for="item in media"
         :key="item.mediaId"
@@ -32,7 +32,7 @@
 
         <div class="media-body">
           <h3>{{ item.title }}</h3>
-          <p>{{ item.description || "该媒体用于辅助理解数据集结构与运行效果。" }}</p>
+          <p>{{ item.description || "该媒体用于辅助理解评测项结构与运行效果。" }}</p>
         </div>
       </article>
     </div>
@@ -60,12 +60,6 @@ const markFailed = (mediaId: string) => {
   padding: 1.4rem;
   border-radius: 1.2rem;
   color: #64748b;
-}
-
-.media-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
 }
 
 .media-card {

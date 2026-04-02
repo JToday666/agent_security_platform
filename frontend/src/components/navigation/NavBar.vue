@@ -1,12 +1,9 @@
 <template>
   <nav class="navbar" :class="{ hidden: !isVisible }">
     <div class="nav-container">
-      <!-- 左侧 Logo -->
       <router-link :to="RouteLocation.home" class="logo">智能体安全评测</router-link>
 
-      <!-- 右侧区域：导航链接 + 用户信息（登录后显示） -->
       <div class="right-section">
-        <!-- 导航链接区域 -->
         <div class="nav-links">
           <router-link :to="RouteLocation.home" class="nav-link" exact-active-class="active"
             ><AppIcon icon="lucide:house" class="nav-link-icon" />
@@ -14,7 +11,7 @@
           >
           <router-link :to="RouteLocation.datasetList" class="nav-link" active-class="active"
             ><AppIcon icon="lucide:database" class="nav-link-icon" />
-            <span>数据集</span></router-link
+            <span>评测目录</span></router-link
           >
           <router-link :to="RouteLocation.leaderboard" class="nav-link" active-class="active"
             ><AppIcon icon="lucide:trophy" class="nav-link-icon" />
@@ -34,7 +31,6 @@
           >
         </div>
 
-        <!-- 登录后显示头像和用户名 -->
         <div
           v-if="isLogin"
           class="user-info"
@@ -65,7 +61,6 @@ const router = useRouter();
 const userStore = useUserStore();
 const { isLogin, username } = storeToRefs(userStore);
 
-// 导航栏根据滚动方向自动隐藏，在鼠标靠近顶部时重新出现。
 const isVisible = ref(true);
 let lastScrollY = window.scrollY;
 const SCROLL_THRESHOLD = 10;
@@ -94,7 +89,6 @@ const handleMouseMove = (e: MouseEvent) => {
 let ticking = false;
 const onScroll = () => {
   if (!ticking) {
-    // 用 rAF 合并滚动中的多次计算，避免频繁触发重排。
     requestAnimationFrame(() => {
       handleScroll();
       ticking = false;
@@ -114,7 +108,6 @@ onUnmounted(() => {
   window.removeEventListener("mousemove", handleMouseMove);
 });
 
-// 头像区域点击后直接进入个人资料页。
 const goToProfile = () => {
   router.push(RouteLocation.userProfile);
 };
@@ -225,7 +218,6 @@ const goToProfile = () => {
   background: linear-gradient(90deg, #2563eb, #7c3aed);
 }
 
-/* 用户信息区域 */
 .user-info {
   display: flex;
   align-items: center;
@@ -283,7 +275,6 @@ const goToProfile = () => {
   white-space: nowrap;
 }
 
-/* 响应式调整 */
 @media (max-width: 768px) {
   .nav-container {
     padding: 0 1rem;
@@ -313,7 +304,6 @@ const goToProfile = () => {
 
   .username {
     display: none;
-    /* 小屏隐藏用户名，只保留头像 */
   }
 
   .user-info {

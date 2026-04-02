@@ -3,13 +3,13 @@
     <PageHeroCard
       eyebrow="智能体提交"
       title="提交智能体评测"
-      description="提交页会先加载参数元数据，再按当前攻击难度刷新可用数据集目录；草稿仅持久化非敏感字段。"
+      description="提交页会先加载参数元数据，再按当前攻击难度刷新风险域与评测项目录；草稿仅持久化非敏感字段。"
       :chips="heroChips"
     />
 
     <div v-if="pageLoading" class="state-card layout-state-card ui-surface-white">
       <h2>正在初始化提交页</h2>
-      <p>系统正在加载提交元数据、恢复草稿，并根据当前难度筛选数据集目录。</p>
+      <p>系统正在加载提交元数据、恢复草稿，并根据当前难度筛选评测目录。</p>
     </div>
 
     <div v-else-if="pageError" class="state-card layout-state-card ui-surface-white">
@@ -85,12 +85,12 @@ import type {
 import {
   toggleCategoryDatasets as toggleCategoryDatasetsValue,
   toggleDatasetId,
-} from "@/utils/DatasetUtils";
+} from "@/utils/common";
 import {
   normalizeDifficulty,
   normalizeTimeoutMinutes,
-} from "@/utils/SubmitParameterUtils";
-import { validateSubmitPayload } from "@/utils/SubmitValidation";
+  validateSubmitPayload,
+} from "@/utils/submit";
 
 const router = useRouter();
 const submitDraftStore = useSubmitDraftStore();
@@ -148,11 +148,11 @@ const heroChips = computed(() => [
     value: form.value?.submitMethod === "docker" ? "Docker" : "API",
   },
   {
-    label: "已选大类",
+    label: "已选风险域",
     value: `${selectedCategoryCount.value} 个`,
   },
   {
-    label: "已选数据集",
+    label: "已选评测项",
     value: `${form.value?.selectedDatasetIds.length ?? 0} 个`,
   },
 ]);
@@ -416,12 +416,12 @@ const handleSubmit = async () => {
   precheckWarnings.value = [];
 
   if (datasetCatalogStatus.value === "empty") {
-    submitError.value = "当前难度下没有可用数据集，无法提交。";
+    submitError.value = "当前难度下没有可用评测项，无法提交。";
     return;
   }
 
   if (!datasetCatalogReady.value) {
-    submitError.value = "请等待数据集目录刷新完成后再提交。";
+    submitError.value = "请等待评测目录刷新完成后再提交。";
     return;
   }
 
