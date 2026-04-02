@@ -68,7 +68,7 @@
           v-for="category in categories"
           :key="category.categoryId"
           class="category-block"
-          :style="getCategoryBlockStyle(category.themeIndex)"
+          :style="getCategoryBlockStyle(category.categoryId)"
         >
           <div class="category-row">
             <label class="category-main">
@@ -127,7 +127,7 @@ import { computed } from "vue";
 import type { DatasetCategoryViewModel } from "@/types/DatasetTypes";
 import type { SubmitDatasetCatalogStatus } from "@/composables/useSubmitDatasetCatalog";
 import {
-  getCategoryThemeByIndex,
+  getCategoryTheme,
   isCategoryFullySelected,
   isCategoryPartiallySelected,
 } from "@/utils/DatasetUtils";
@@ -184,14 +184,16 @@ const getCategoryStateLabel = (category: DatasetCategoryViewModel) => {
   return "未选";
 };
 
-const getCategoryBlockStyle = (themeIndex: number) => {
-  const theme = getCategoryThemeByIndex(themeIndex);
+const getCategoryBlockStyle = (categoryId: string) => {
+  const theme = getCategoryTheme(categoryId);
 
   return {
     "--category-soft": theme.soft,
     "--category-border": theme.border,
     "--category-text": theme.text,
     "--category-solid": theme.solid,
+    "--category-gradient": theme.gradient,
+    "--category-shadow": theme.shadow,
   };
 };
 </script>
@@ -318,10 +320,21 @@ const getCategoryBlockStyle = (themeIndex: number) => {
 }
 
 .category-block {
+  position: relative;
   border: 1px solid var(--category-border, #e2e8f0);
   border-radius: 1.3rem;
   overflow: hidden;
-  box-shadow: 0 12px 28px -22px rgba(15, 23, 42, 0.3);
+  box-shadow: 0 12px 24px -28px var(--category-shadow, rgba(15, 23, 42, 0.22));
+}
+
+.category-block::before {
+  content: "";
+  display: block;
+  height: 3px;
+  background: var(
+    --category-gradient,
+    linear-gradient(135deg, #2563eb, #7c3aed)
+  );
 }
 
 .category-row {
@@ -404,7 +417,7 @@ const getCategoryBlockStyle = (themeIndex: number) => {
   display: grid;
   gap: 0.8rem;
   padding: 1rem 1.05rem;
-  background: linear-gradient(180deg, rgba(248, 250, 252, 0.82), #ffffff);
+  background: linear-gradient(180deg, var(--category-soft, #f8fafc), #ffffff 84%);
 }
 
 .dataset-item {
@@ -413,8 +426,9 @@ const getCategoryBlockStyle = (themeIndex: number) => {
   gap: 0.8rem;
   padding: 0.9rem;
   border-radius: 1rem;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #ffffff 0%, var(--category-soft, #f8fafc) 130%);
+  border: 1px solid var(--category-border, #e2e8f0);
+  box-shadow: 0 8px 16px -28px var(--category-shadow, rgba(15, 23, 42, 0.18));
 }
 
 .dataset-copy {
