@@ -4,6 +4,7 @@ import type {
   DatasetCategoryViewModel,
   DatasetSubcategory,
 } from "@/types/DatasetTypes";
+import { ORDERED_REFERENCE_CATEGORY_IDS } from "@/constants/ReferenceDatasetTaxonomy";
 
 export interface CategoryTheme {
   soft: string;
@@ -14,23 +15,17 @@ export interface CategoryTheme {
   shadow: string;
 }
 
-const COMFORT_HUE_RANGES: ReadonlyArray<readonly [start: number, end: number]> =
-  [
-    [152, 178],
-    [184, 208],
-    [214, 232],
-    [238, 258],
-    [264, 286],
-    [294, 318],
-    [326, 348],
-    [4, 26],
-  ];
+const COMFORT_HUE_ANCHORS = [162, 192, 220, 244, 270, 24, 340] as const;
+const MIN_HUE_GAP = 22;
+const HUE_JITTER_RANGE = 5;
+const ACCENT_HUE_OFFSET = 7;
 
 const CATEGORY_THEME_CACHE = new Map<string, CategoryTheme>();
-
-const COMFORT_HUE_TOTAL = COMFORT_HUE_RANGES.reduce(
-  (total, [start, end]) => total + (end - start),
-  0,
+const REFERENCE_CATEGORY_ORDER = new Map(
+  ORDERED_REFERENCE_CATEGORY_IDS.map((categoryId, index) => [
+    categoryId,
+    index,
+  ]),
 );
 
 const hashCategoryId = (value: string): number => {
@@ -73,30 +68,92 @@ const toHsla = (
 ): string =>
   `hsla(${Math.round(normalizeHue(hue))}, ${saturation}%, ${lightness}%, ${alpha})`;
 
-const mapNormalizedValueToHue = (value: number): number => {
-  let offset = value * COMFORT_HUE_TOTAL;
+const compareCategoryIds = (left: string, right: string): number =>
+  (REFERENCE_CATEGORY_ORDER.get(left) ?? Number.MAX_SAFE_INTEGER) -
+    (REFERENCE_CATEGORY_ORDER.get(right) ?? Number.MAX_SAFE_INTEGER) ||
+  left.localeCompare(right);
 
-  for (const [start, end] of COMFORT_HUE_RANGES) {
-    const span = end - start;
-
-    if (offset < span) {
-      return start + offset;
-    }
-
-    offset -= span;
-  }
-
-  const [lastStart, lastEnd] =
-    COMFORT_HUE_RANGES[COMFORT_HUE_RANGES.length - 1]!;
-  return lastEnd - Math.max(1, lastEnd - lastStart) / 2;
+const getHueDistance = (left: number, right: number): number => {
+  const delta = Math.abs(normalizeHue(left - right));
+  return delta > 180 ? 360 - delta : delta;
 };
 
+const ensureMinimumHueGap = (hue: number, usedHues: number[]): number => {
+  let resolvedHue = normalizeHue(hue);
+
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const hasConflict = usedHues.some(
+      (item) => getHueDistance(resolvedHue, item) < MIN_HUE_GAP,
+    );
+
+    if (!hasConflict) {
+      return resolvedHue;
+    }
+
+    resolvedHue = normalizeHue(resolvedHue + MIN_HUE_GAP / 2);
+  }
+
+  return resolvedHue;
+};
+
+const buildResolvedHueMap = (
+  categoryIds: readonly string[],
+): Map<string, number> => {
+  const ids = Array.from(
+    new Set(categoryIds.map((item) => item.trim()).filter(Boolean)),
+  ).sort(compareCategoryIds);
+
+  if (ids.length === 0) {
+    return new Map();
+  }
+
+  const collectionSeed = ids.reduce(
+    (seed, categoryId) => mixHash(seed ^ hashCategoryId(categoryId)),
+    2166136261,
+  );
+  const anchorRotation = collectionSeed % COMFORT_HUE_ANCHORS.length;
+
+  const rankedIds = ids
+    .map((categoryId) => ({
+      categoryId,
+      score: mixHash(hashCategoryId(categoryId)) / 0x100000000,
+      jitterSeed: mixHash(hashCategoryId(`${categoryId}:hue-jitter`)),
+    }))
+    .sort(
+      (left, right) =>
+        left.score - right.score ||
+        compareCategoryIds(left.categoryId, right.categoryId),
+    );
+
+  const usedHues: number[] = [];
+  const resolvedEntries = rankedIds.map((item, index) => {
+    const anchor =
+      COMFORT_HUE_ANCHORS[
+        (index + anchorRotation) % COMFORT_HUE_ANCHORS.length
+      ]!;
+    const jitter = ((item.jitterSeed / 0x100000000) * 2 - 1) * HUE_JITTER_RANGE;
+    const baseHue = ensureMinimumHueGap(anchor + jitter, usedHues);
+    usedHues.push(baseHue);
+
+    return [item.categoryId, baseHue] as const;
+  });
+
+  return new Map(resolvedEntries);
+};
+
+const REFERENCE_CATEGORY_HUES = buildResolvedHueMap(
+  ORDERED_REFERENCE_CATEGORY_IDS,
+);
+
+const resolveBaseHue = (categoryId: string): number =>
+  REFERENCE_CATEGORY_HUES.get(categoryId) ??
+  buildResolvedHueMap([...ORDERED_REFERENCE_CATEGORY_IDS, categoryId]).get(
+    categoryId,
+  )!;
+
 const buildCategoryTheme = (categoryId: string): CategoryTheme => {
-  const hash = mixHash(hashCategoryId(categoryId));
-  const normalizedBase = hash / 0x100000000;
-  const normalizedAccent = (normalizedBase + 0.07) % 1;
-  const baseHue = mapNormalizedValueToHue(normalizedBase);
-  const accentHue = mapNormalizedValueToHue(normalizedAccent);
+  const baseHue = resolveBaseHue(categoryId);
+  const accentHue = normalizeHue(baseHue + ACCENT_HUE_OFFSET);
 
   return {
     soft: toHsl(baseHue, 64, 97),
@@ -113,7 +170,6 @@ const sortCategoriesForDisplay = (
   right: DatasetCategory,
 ) => left.sort - right.sort || left.categoryId.localeCompare(right.categoryId);
 
-// 主题色不再按 categoryId 哈希，而是按稳定排序后的索引分配。
 export const getCategoryTheme = (categoryId: string): CategoryTheme => {
   const themeKey = categoryId.trim() || "__default__";
   const cachedTheme = CATEGORY_THEME_CACHE.get(themeKey);

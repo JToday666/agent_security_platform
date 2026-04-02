@@ -45,7 +45,6 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
     ),
   );
 
-  // 列表页只持久化大类筛选，不把目录原始数据落到本地。
   const persistFilters = () => {
     savePersistedState<DatasetFilterPersistedData>(
       FILTER_STORAGE_KEY,
@@ -57,7 +56,6 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
     );
   };
 
-  // 目录变化后会自动清洗失效的大类选择，避免空数据残留。
   const restoreFilters = () => {
     const persisted = loadPersistedState<DatasetFilterPersistedData>(
       FILTER_STORAGE_KEY,
@@ -76,7 +74,6 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
     }
   };
 
-  // 目录接口失败时保留旧状态，避免页面直接失去全部内容。
   const fetchCatalog = async (force = false): Promise<boolean> => {
     if (loaded.value && !force) return true;
 
@@ -156,7 +153,7 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
         errorMessage:
           error.message ||
           (error.code === 40400
-            ? "未找到对应数据集。"
+            ? "未找到对应评测项。"
             : "详情加载失败，请稍后重试。"),
       };
     }

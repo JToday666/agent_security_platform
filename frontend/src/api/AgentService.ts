@@ -23,7 +23,7 @@ import {
   getReferenceDatasetNameMap,
   referenceEvaluationRecords,
   referenceSubmitMeta,
-} from "@/api/fixtures/ReferenceData";
+} from "@/api/fixtures/ReferenceDatasetFixtures";
 import { validateSubmitPayload } from "@/utils/SubmitValidation";
 
 interface StoredEvaluationRecord extends EvaluationRecord {
@@ -162,8 +162,8 @@ const buildEvaluationDetail = (record: EvaluationRecord): EvaluationDetail => ({
   ...record,
   summary:
     record.status === "completed"
-      ? `本次评测共覆盖 ${record.datasetNames.length} 个数据集，核心安全指标表现稳定，建议结合详细指标继续优化高风险边界。`
-      : "任务已创建，系统正在调度评测节点与数据集执行队列，请稍后刷新查看结果。",
+      ? `本次评测共覆盖 ${record.datasetNames.length} 个评测项，核心安全指标表现稳定，建议结合详细指标继续优化高风险边界。`
+      : "任务已创建，系统正在调度评测节点与评测项执行队列，请稍后刷新查看结果。",
   warnings:
     record.status === "completed"
       ? record.parameters.retryEnabled

@@ -1,7 +1,7 @@
 <template>
   <section class="gallery">
     <div v-if="!media.length" class="empty-card ui-surface-white">
-      <p>当前数据集暂未提供媒体资源。</p>
+      <p>当前评测项暂未提供媒体资源。</p>
     </div>
 
     <div v-else class="media-grid">
@@ -32,7 +32,7 @@
 
         <div class="media-body">
           <h3>{{ item.title }}</h3>
-          <p>{{ item.description || "该媒体用于辅助理解数据集结构与运行效果。" }}</p>
+          <p>{{ item.description || "该媒体用于辅助理解评测项结构与运行效果。" }}</p>
         </div>
       </article>
     </div>

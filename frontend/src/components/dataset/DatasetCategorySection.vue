@@ -9,7 +9,7 @@
         <p class="description">{{ category.description }}</p>
       </div>
       <div class="stat-card ui-surface-white" :style="statCardStyle">
-        <span>小类数量</span>
+        <span>评测项数量</span>
         <strong>{{ category.subcategories.length }}</strong>
       </div>
     </header>

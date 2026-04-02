@@ -188,8 +188,8 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
       catalogSyncNotice.value =
         persistedCatalogVersion.value &&
         persistedCatalogVersion.value !== catalogVersion
-          ? "目录版本已更新，系统已保留当前仍有效的已选数据集与展开分组。"
-          : "难度变化后已自动移除失效的数据集或展开分组。";
+          ? "目录版本已更新，系统已保留当前仍有效的已选评测项与展开分组。"
+          : "难度变化后已自动移除失效的评测项或展开分组。";
     } else {
       catalogSyncNotice.value = "";
     }
