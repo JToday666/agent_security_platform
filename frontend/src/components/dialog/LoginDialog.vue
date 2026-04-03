@@ -5,6 +5,7 @@
         v-if="showLogin"
         class="dialog-overlay ui-modal-overlay"
         @click.self="closeDialog"
+        @keydown.esc="closeDialog"
       >
         <Transition name="scale" appear>
           <div class="dialog-card ui-modal-card">

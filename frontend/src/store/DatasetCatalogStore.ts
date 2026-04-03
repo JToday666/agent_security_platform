@@ -10,14 +10,14 @@ import {
   findDatasetSummary,
   getEnabledCategories,
   sanitizeCategorySelection,
-} from "@/utils/DatasetUtils";
+} from "@/utils/common";
 import { loadPersistedState, savePersistedState } from "@/utils/StorageUtils";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
 interface DatasetFilterPersistedData {
   selectedCategoryIds: string[];
 }
 
-const FILTER_STORAGE_KEY = "agent-platform:dataset-page:filters:v1";
 const FILTER_STORAGE_VERSION = 1;
 
 interface DatasetDetailFetchResult {
@@ -47,7 +47,7 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
 
   const persistFilters = () => {
     savePersistedState<DatasetFilterPersistedData>(
-      FILTER_STORAGE_KEY,
+      STORAGE_KEYS.catalog.filters,
       FILTER_STORAGE_VERSION,
       {
         selectedCategoryIds: selectedCategoryIds.value,
@@ -58,7 +58,7 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
 
   const restoreFilters = () => {
     const persisted = loadPersistedState<DatasetFilterPersistedData>(
-      FILTER_STORAGE_KEY,
+      STORAGE_KEYS.catalog.filters,
       FILTER_STORAGE_VERSION,
     );
 

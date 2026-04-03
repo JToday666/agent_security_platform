@@ -4,7 +4,7 @@ import type {
   DatasetCatalogResponse,
   DatasetCategoryViewModel,
 } from "@/types/DatasetTypes";
-import { getAllDatasetIds, getEnabledCategories } from "@/utils/DatasetUtils";
+import { getAllDatasetIds, getEnabledCategories } from "@/utils/common";
 
 export type SubmitDatasetCatalogStatus =
   | "idle"

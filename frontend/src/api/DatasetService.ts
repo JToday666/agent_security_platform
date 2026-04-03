@@ -1,4 +1,5 @@
-import request from "@/utils/request";
+import request from "@/utils/Request";
+import { ApiConfig } from "@/api/Config";
 import type {
   DatasetCatalogResponse,
   DatasetDetail,
@@ -13,8 +14,8 @@ import {
   buildReferenceDatasetCatalog,
   getReferenceDatasetDetail,
   referenceSubmitMeta,
-} from "@/api/fixtures/ReferenceDatasetFixtures";
-import { isStepAligned } from "@/utils/SubmitParameterUtils";
+} from "@/api/fixtures/DatasetFixtures";
+import { isStepAligned } from "@/utils/submit";
 
 interface DatasetCatalogRequestOptions {
   difficulty?: number;
@@ -38,8 +39,7 @@ const createDatasetServiceError = (
   return error;
 };
 
-const useLiveReferenceApi =
-  import.meta.env.VITE_USE_LIVE_REFERENCE_API === "true";
+const useLiveReferenceApi = ApiConfig.reference.useLive;
 
 const validateDifficulty = (difficulty?: number) => {
   if (typeof difficulty !== "number") {

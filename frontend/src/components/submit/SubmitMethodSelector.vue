@@ -5,7 +5,7 @@
       <p>根据当前平台能力选择接入方式，mock 首版同时支持 API 和 Docker。</p>
     </div>
 
-    <div class="method-grid">
+    <div class="grid-auto-fit" style="--grid-min-size: 220px; --grid-gap: 0.9rem; margin-top: 1rem;">
       <button
         v-for="method in methods"
         :key="method"
@@ -46,13 +46,6 @@ const methodLabels: Record<
 </script>
 
 <style scoped>
-.method-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.9rem;
-  margin-top: 1rem;
-}
-
 .method-card {
   border: 1px solid #dbeafe;
   background: #f8fafc;

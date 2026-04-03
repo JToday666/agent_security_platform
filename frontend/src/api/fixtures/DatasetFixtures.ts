@@ -10,9 +10,9 @@ import type {
 import type {
   ReferenceCategorySeed,
   ReferenceDatasetSeed,
-} from "@/constants/ReferenceDatasetTaxonomy";
-import { REFERENCE_DATASET_TAXONOMY } from "@/constants/ReferenceDatasetTaxonomy";
-import { getCategoryTheme } from "@/utils/DatasetUtils";
+} from "@/constants/DatasetTaxonomy";
+import { REFERENCE_DATASET_TAXONOMY } from "@/constants/DatasetTaxonomy";
+import { getCategoryTheme } from "@/utils/common";
 
 interface DifficultyRange {
   min: number;

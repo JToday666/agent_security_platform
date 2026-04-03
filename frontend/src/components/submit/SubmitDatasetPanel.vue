@@ -130,7 +130,7 @@ import {
   getCategoryTheme,
   isCategoryFullySelected,
   isCategoryPartiallySelected,
-} from "@/utils/DatasetUtils";
+} from "@/utils/common";
 
 const props = defineProps<{
   categories: DatasetCategoryViewModel[];

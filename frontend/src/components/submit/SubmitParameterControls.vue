@@ -1,10 +1,8 @@
 <template>
-  <section class="layout-section-card ui-surface-white">
-    <div class="layout-section-head">
-      <h2>评测参数</h2>
-      <p>参数约束由 submit-meta 驱动，输入会自动归一化，并在提交前再次校验。</p>
-    </div>
-
+  <SubmitSection
+    title="评测参数"
+    description="参数约束由 submit-meta 驱动，输入会自动归一化，并在提交前再次校验。"
+  >
     <div class="field-grid">
       <div class="field full">
         <div class="label-row">
@@ -73,17 +71,18 @@
         />
       </label>
     </div>
-  </section>
+  </SubmitSection>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
+import SubmitSection from "./SubmitSection.vue";
 import type { SubmitFormState, SubmitMetaResponse } from "@/types/AgentTypes";
 import {
   getRangeSoftWarning,
   normalizeDifficulty,
   normalizeTimeoutMinutes,
-} from "@/utils/SubmitParameterUtils";
+} from "@/utils/submit";
 
 const props = defineProps<{
   meta: SubmitMetaResponse;

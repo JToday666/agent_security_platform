@@ -84,7 +84,7 @@ import { useRoute, useRouter } from "vue-router";
 import { getEvaluationDetail } from "@/api/AgentService";
 import { RouteLocation } from "@/router/RouteNames";
 import type { EvaluationDetail } from "@/types/AgentTypes";
-import { formatDateTimeLabel } from "@/utils/DatasetUtils";
+import { formatDateTimeLabel } from "@/utils/common";
 
 const route = useRoute();
 const router = useRouter();

@@ -5,6 +5,7 @@
         v-if="modelValue"
         class="confirm-overlay ui-modal-overlay"
         @click.self="handleCancel"
+        @keydown.esc="handleCancel"
       >
         <Transition name="scale" appear>
           <div class="confirm-card ui-modal-card">

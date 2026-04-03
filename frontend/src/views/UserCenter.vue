@@ -70,7 +70,7 @@ import { onMounted, ref } from "vue";
 import { getEvaluationRecords } from "@/api/AgentService";
 import { RouteLocation } from "@/router/RouteNames";
 import type { EvaluationRecord } from "@/types/AgentTypes";
-import { formatDateTimeLabel } from "@/utils/DatasetUtils";
+import { formatDateTimeLabel } from "@/utils/common";
 
 const records = ref<EvaluationRecord[]>([]);
 const loading = ref(true);

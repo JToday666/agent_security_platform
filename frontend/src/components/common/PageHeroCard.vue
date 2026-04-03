@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div v-if="chips.length" class="chips">
+    <div v-if="chips.length" class="grid-auto-fit" style="--grid-min-size: 180px; --grid-gap: 1rem; margin-top: 1.8rem; position: relative; z-index: 1;">
       <div v-for="chip in chips" :key="chip.label" class="chip ui-surface-white">
         <span class="chip-label">{{ chip.label }}</span>
         <strong class="chip-value">{{ chip.value }}</strong>
@@ -113,15 +113,6 @@ withDefaults(
 
 .actions {
   flex-shrink: 0;
-}
-
-.chips {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-top: 1.8rem;
 }
 
 .chip {

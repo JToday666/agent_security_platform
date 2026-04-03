@@ -4,7 +4,7 @@
       <p>当前评测项暂未提供媒体资源。</p>
     </div>
 
-    <div v-else class="media-grid">
+    <div v-else class="grid-auto-fit" style="--grid-min-size: 280px; --grid-gap: 1rem;">
       <article
         v-for="item in media"
         :key="item.mediaId"
@@ -60,12 +60,6 @@ const markFailed = (mediaId: string) => {
   padding: 1.4rem;
   border-radius: 1.2rem;
   color: #64748b;
-}
-
-.media-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
 }
 
 .media-card {
