@@ -58,7 +58,6 @@ export const getDatasetCatalog = async (
   options: DatasetCatalogRequestOptions = {},
 ): Promise<DatasetCatalogResponse> => {
   const { difficulty, signal } = options;
-  validateDifficulty(difficulty);
 
   if (useLiveReferenceApi) {
     const response = await request.get<DatasetCatalogResponse>(
@@ -81,6 +80,8 @@ export const getDatasetCatalog = async (
 
     return response.data;
   }
+
+  validateDifficulty(difficulty);
 
   if (shouldMockFail("mockCatalogError")) {
     const result = await resolveMockEnvelope(

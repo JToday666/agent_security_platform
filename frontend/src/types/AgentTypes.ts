@@ -1,4 +1,24 @@
 export type SubmitMethod = "api" | "docker";
+export type EvaluationStatus =
+  | "pending"
+  | "running"
+  | "pausing"
+  | "paused"
+  | "terminating"
+  | "canceling"
+  | "completed"
+  | "terminated"
+  | "canceled"
+  | "failed";
+
+export type EvaluationFinalizationReason =
+  | "completed"
+  | "terminated_by_user"
+  | "auto_terminated_after_pause_timeout"
+  | "canceled_by_user"
+  | "failed";
+
+export type EvaluationAction = "pause" | "resume" | "terminate" | "cancel";
 
 export interface SubmitParameters {
   difficulty: number;
@@ -56,20 +76,6 @@ export interface SubmitMetaResponse {
   publicToLeaderboard: BooleanMeta;
 }
 
-export interface LegacySubmitMetaResponse {
-  supportedMethods: SubmitMethod[];
-  parameterMeta: {
-    difficulty: RangeMeta;
-    timeoutMinutes: RangeMeta;
-    retryEnabled: BooleanMeta;
-    publicToLeaderboard: BooleanMeta;
-  };
-}
-
-export type SubmitMetaApiResponse =
-  | SubmitMetaResponse
-  | LegacySubmitMetaResponse;
-
 export interface PrecheckResponse {
   ok: boolean;
   warnings: string[];
@@ -77,8 +83,22 @@ export interface PrecheckResponse {
 
 export interface SubmitResponse {
   evaluationId: string;
-  status: "pending" | "running" | "completed";
+  status: EvaluationStatus;
   createdAt: string;
+}
+
+export interface PendingSubmitRequest {
+  requestId: string;
+  payloadDigest: string;
+  createdAt: string;
+}
+
+export interface SubmitFieldErrors {
+  agentName?: string;
+  apiBaseUrl?: string;
+  dockerImageUri?: string;
+  selectedDatasetIds?: string;
+  requestId?: string;
 }
 
 export interface EvaluationRecord {
@@ -87,12 +107,15 @@ export interface EvaluationRecord {
   description?: string;
   createdAt: string;
   updatedAt: string;
-  status: "pending" | "running" | "completed";
+  status: EvaluationStatus;
+  progressPercent: number;
+  finalReportAvailable: boolean;
+  finalizationReason: EvaluationFinalizationReason | null;
   publicToLeaderboard: boolean;
   datasetIds: string[];
   datasetNames: string[];
   submitMethod: SubmitMethod;
-  score?: number;
+  score: number | null;
   ownerName: string;
   parameters: SubmitParameters;
 }
@@ -104,10 +127,42 @@ export interface EvaluationMetric {
   description: string;
 }
 
-export interface EvaluationDetail extends EvaluationRecord {
+export interface EvaluationProgress {
+  percent: number;
+  totalDatasetCount: number;
+  completedDatasetCount: number;
+  runningDatasetId: string | null;
+  runningDatasetName: string | null;
+  pauseDeadlineAt: string | null;
+  statusText: string;
+}
+
+export interface EvaluationControls {
+  canPause: boolean;
+  canResume: boolean;
+  canTerminate: boolean;
+  canCancel: boolean;
+  pauseUsed: boolean;
+}
+
+export interface EvaluationReport {
+  generatedAt: string;
   summary: string;
   warnings: string[];
   metrics: EvaluationMetric[];
+}
+
+export interface EvaluationDetail extends Omit<
+  EvaluationRecord,
+  "progressPercent"
+> {
+  progress: EvaluationProgress;
+  controls: EvaluationControls;
+  report: EvaluationReport | null;
+}
+
+export interface EvaluationActionRequest {
+  action: EvaluationAction;
 }
 
 export interface SubmitFormState {
@@ -143,4 +198,5 @@ export interface SubmitFormPersistedData {
   publicToLeaderboard: boolean;
   selectedDatasetIds: string[];
   expandedCategoryIds: string[];
+  pendingRequest: PendingSubmitRequest | null;
 }

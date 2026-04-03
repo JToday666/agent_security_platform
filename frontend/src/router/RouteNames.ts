@@ -5,6 +5,7 @@ export const ROUTE_NAME = {
   DATASET_DETAIL: "DatasetDetail",
   LEADERBOARD_PAGE: "LeaderboardPage",
   CONTACT_PAGE: "ContactPage",
+  NOT_FOUND: "NotFoundPage",
   USER_CENTER: "UserCenter",
   EVALUATION_DETAIL: "EvaluationDetail",
   AGENT_SUBMIT: "AgentSubmit",
@@ -29,6 +30,9 @@ export const RouteLocation = {
   },
   contact: {
     name: ROUTE_NAME.CONTACT_PAGE,
+  },
+  notFound: {
+    name: ROUTE_NAME.NOT_FOUND,
   },
   userCenter: {
     name: ROUTE_NAME.USER_CENTER,

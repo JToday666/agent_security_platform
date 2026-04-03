@@ -345,6 +345,9 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     createdAt: "2026-04-02T01:15:00Z",
     updatedAt: "2026-04-02T01:48:00Z",
     status: "completed",
+    progressPercent: 100,
+    finalReportAvailable: true,
+    finalizationReason: "completed",
     publicToLeaderboard: true,
     datasetIds: ["A1", "B3", "E1"],
     datasetNames: ["A1", "B3", "E1"].map(
@@ -366,6 +369,9 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     createdAt: "2026-04-01T09:10:00Z",
     updatedAt: "2026-04-01T09:46:00Z",
     status: "completed",
+    progressPercent: 100,
+    finalReportAvailable: true,
+    finalizationReason: "completed",
     publicToLeaderboard: false,
     datasetIds: ["C4", "D1", "G1"],
     datasetNames: ["C4", "D1", "G1"].map(
@@ -387,6 +393,9 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     createdAt: "2026-03-31T06:40:00Z",
     updatedAt: "2026-03-31T07:05:00Z",
     status: "completed",
+    progressPercent: 100,
+    finalReportAvailable: true,
+    finalizationReason: "completed",
     publicToLeaderboard: true,
     datasetIds: ["F2", "F6", "G2"],
     datasetNames: ["F2", "F6", "G2"].map(
@@ -408,6 +417,9 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     createdAt: "2026-03-30T03:20:00Z",
     updatedAt: "2026-03-30T03:59:00Z",
     status: "completed",
+    progressPercent: 100,
+    finalReportAvailable: true,
+    finalizationReason: "completed",
     publicToLeaderboard: true,
     datasetIds: ["A5", "D3", "C2", "E4"],
     datasetNames: ["A5", "D3", "C2", "E4"].map(

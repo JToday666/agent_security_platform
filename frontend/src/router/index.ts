@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { registerRouteGuards } from "@/router/RouteGuards";
-import { legacyRoutes } from "@/router/modules/LegacyRoutes";
-import { publicRoutes } from "@/router/modules/PublicRoutes";
+import { notFoundRoute, publicRoutes } from "@/router/modules/PublicRoutes";
 import { userRoutes } from "@/router/modules/UserRoutes";
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [...legacyRoutes, ...publicRoutes, ...userRoutes],
+  routes: [...publicRoutes, ...userRoutes, notFoundRoute],
   scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition;

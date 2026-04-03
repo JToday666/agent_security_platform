@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import type {
+  PendingSubmitRequest,
   SubmitFormPersistedData,
   SubmitFormState,
   SubmitMetaResponse,
@@ -16,10 +17,14 @@ import {
   loadPersistedState,
   savePersistedState,
 } from "@/utils/StorageUtils";
-import { normalizeDifficulty, normalizeTimeoutMinutes } from "@/utils/submit";
+import {
+  MAX_SUBMIT_DATASET_COUNT,
+  normalizeDifficulty,
+  normalizeTimeoutMinutes,
+} from "@/utils/submit";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
-const STORAGE_VERSION = 2;
+const STORAGE_VERSION = 3;
 const PERSIST_DELAY_MS = 400;
 
 const createDefaultForm = (meta: SubmitMetaResponse): SubmitFormState => ({
@@ -76,6 +81,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
   const persistedCatalogVersion = ref("");
   const hasSyncedCatalog = ref(false);
   const currentMeta = ref<SubmitMetaResponse | null>(null);
+  const pendingRequest = ref<PendingSubmitRequest | null>(null);
   const persistTimer = ref<number | null>(null);
 
   const clearPersistTimer = () => {
@@ -116,12 +122,14 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
         expandedCategoryIds.value = [
           ...(persisted.data.expandedCategoryIds ?? []),
         ];
+        pendingRequest.value = persisted.data.pendingRequest ?? null;
         restoredDraftNotice.value = true;
         restoredFromPersistedDraft.value = true;
         persistedCatalogVersion.value = persisted.catalogVersion ?? "";
       } else {
         form.value = defaultForm;
         expandedCategoryIds.value = [];
+        pendingRequest.value = null;
         restoredDraftNotice.value = false;
         restoredFromPersistedDraft.value = false;
         persistedCatalogVersion.value = "";
@@ -135,6 +143,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     if (!form.value) {
       form.value = defaultForm;
       expandedCategoryIds.value = [];
+      pendingRequest.value = null;
       return;
     }
 
@@ -160,6 +169,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
       categories,
       form.value.selectedDatasetIds,
       true,
+      MAX_SUBMIT_DATASET_COUNT,
     );
 
     if (
@@ -220,6 +230,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
         publicToLeaderboard: form.value.publicToLeaderboard,
         selectedDatasetIds: form.value.selectedDatasetIds,
         expandedCategoryIds: expandedCategoryIds.value,
+        pendingRequest: pendingRequest.value,
       };
 
       savePersistedState(
@@ -238,8 +249,11 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     clearPersistTimer();
     currentMeta.value = meta;
     form.value = createDefaultForm(meta);
-    form.value.selectedDatasetIds = [...getAllDatasetIds(categories)];
+    form.value.selectedDatasetIds = [
+      ...getAllDatasetIds(categories, MAX_SUBMIT_DATASET_COUNT),
+    ];
     expandedCategoryIds.value = [];
+    pendingRequest.value = null;
     restoredDraftNotice.value = false;
     restoredFromPersistedDraft.value = false;
     persistedCatalogVersion.value = "";
@@ -266,6 +280,10 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     expandedCategoryIds.value = value;
   };
 
+  const setPendingRequest = (value: PendingSubmitRequest | null) => {
+    pendingRequest.value = value;
+  };
+
   const setCatalogSyncNotice = (value: string) => {
     catalogSyncNotice.value = value;
   };
@@ -281,6 +299,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     hydrated.value = false;
     form.value = null;
     expandedCategoryIds.value = [];
+    pendingRequest.value = null;
   };
 
   return {
@@ -289,12 +308,14 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     restoredDraftNotice,
     catalogSyncNotice,
     currentMeta,
+    pendingRequest,
     applyMeta,
     syncWithCatalog,
     persistDraft,
     resetDraft,
     setSubmitMethod,
     setExpandedCategoryIds,
+    setPendingRequest,
     setCatalogSyncNotice,
     clearDraftAfterSubmit,
   };

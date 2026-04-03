@@ -1,7 +1,7 @@
 <template>
   <SubmitSection
     title="智能体信息"
-    description="基础信息和提交通道字段都会在正式提交前经过本地校验和 mock 预检查。"
+    description="基础信息和提交通道字段都会在正式提交前经过本地校验和预检查。"
   >
     <div class="grid-auto-fit">
       <FormField
@@ -9,7 +9,9 @@
         :model-value="form.agentName"
         type="text"
         placeholder="例如：安全卫士 v1.0"
-        full-width
+        :error="fieldErrors.agentName"
+        :required="true"
+        full
         @update:model-value="form.agentName = $event"
       />
 
@@ -18,7 +20,7 @@
         :model-value="form.description"
         type="textarea"
         placeholder="简要说明智能体定位、核心能力和适用场景。"
-        full-width
+        full
         :rows="6"
         @update:model-value="form.description = $event"
       />
@@ -29,7 +31,9 @@
           :model-value="form.api.baseUrl"
           type="url"
           placeholder="https://example.com/agent/run"
-          full-width
+          :error="fieldErrors.apiBaseUrl"
+          :required="true"
+          full
           @update:model-value="form.api.baseUrl = $event"
         />
         <FormField
@@ -37,7 +41,7 @@
           :model-value="form.api.token"
           type="password"
           placeholder="仅保存在当前页面内存，不会持久化"
-          full-width
+          full
           @update:model-value="form.api.token = $event"
         />
       </template>
@@ -48,7 +52,9 @@
           :model-value="form.docker.imageUri"
           type="text"
           placeholder="registry.example.com/agent:latest"
-          full-width
+          :error="fieldErrors.dockerImageUri"
+          :required="true"
+          full
           @update:model-value="form.docker.imageUri = $event"
         />
         <FormField
@@ -73,7 +79,16 @@
 <script setup lang="ts">
 import SubmitSection from "./SubmitSection.vue";
 import FormField from "@/components/common/FormField.vue";
-import type { SubmitFormState } from "@/types/AgentTypes";
+import type { SubmitFieldErrors, SubmitFormState } from "@/types/AgentTypes";
+
+withDefaults(
+  defineProps<{
+    fieldErrors?: SubmitFieldErrors;
+  }>(),
+  {
+    fieldErrors: () => ({}),
+  },
+);
 
 const form = defineModel<SubmitFormState>({ required: true });
 </script>
@@ -84,9 +99,5 @@ const form = defineModel<SubmitFormState>({ required: true });
   grid-template-columns: 1fr;
   gap: 1rem;
   margin-top: 1rem;
-}
-
-:deep(.form-field-full-width) {
-  grid-column: 1 / -1;
 }
 </style>

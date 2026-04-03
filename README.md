@@ -4,9 +4,9 @@ Agent Security Platform 是一个面向 AI Agent 安全评测的平台仓库，�
 
 ## 当前实现状态
 
-- 前端：页面与交互已较完整，覆盖首页、评测目录、评测项详情、智能体提交、评测记录、评测详情、个人资料等页面；数据集浏览、提交评测、评测记录相关能力默认主要基于 mock 数据，并支持切换到真实 API。
+- 前端：已按最新 submit/evaluations 契约实现数据集浏览、智能体提交、评测记录、评测详情与任务控制；提交链路默认基于 mock 数据闭环验证，并支持切换到真实 API。
 - 后端：当前已实现用户认证、用户资料读写、头像上传、统一响应格式、JWT 鉴权、PostgreSQL 连接与 Alembic 迁移基础设施。
-- 设计与契约：数据集管理、提交评测、Runner/Oracle、评测报告等更完整的平台能力目前主要体现在 [share/database&submit接口.md](./share/database&submit接口.md) 和 [docs/评测平台后端设计.md](./docs/评测平台后端设计.md) 中，不等同于当前后端已全部实现。
+- 设计与契约：数据集与提交接口以 [share/database&submit接口.md](./share/database&submit接口.md) 为准，评测列表/详情/任务控制接口以 [share/evaluations接口.md](./share/evaluations接口.md) 为准；这些能力不等同于当前后端仓库已全部实现。
 
 ## 项目结构
 
@@ -76,7 +76,7 @@ agent_security_platform/
 │       │   ├── DatasetService.ts  # 评测目录与详情服务
 │       │   ├── MockApiUtils.ts  # mock 响应、延迟与失败注入工具
 │       │   ├── adapters/
-│       │   │   └── DatasetAdapters.ts  # 提交参数与 submit-meta 兼容适配
+│       │   │   └── DatasetAdapters.ts  # 提交请求参数适配
 │       │   └── fixtures/
 │       │       └── DatasetFixtures.ts  # 目录、详情、榜单与评测记录 mock 数据
 │       ├── components/  # 页面组件与可复用 UI
@@ -105,8 +105,6 @@ agent_security_platform/
 │       │       ├── SubmitSection.vue  # 提交页通用分区容器
 │       │       └── SubmitVisibilityCard.vue  # 排行榜公开设置开关
 │       ├── composables/  # 可复用组合式逻辑
-│       │   ├── useDialogBase.ts  # 通用弹窗开关与交互逻辑
-│       │   ├── usePersistentStore.ts  # 带本地持久化的通用状态加载器
 │       │   └── useSubmitDatasetCatalog.ts  # 提交页按难度加载评测目录
 │       ├── constants/  # 常量与参考数据定义
 │       │   ├── DatasetTaxonomy.ts  # 参考风险域 taxonomy 与数据集种子
@@ -120,8 +118,7 @@ agent_security_platform/
 │       │   ├── RouteMeta.d.ts  # 路由 meta 类型扩展
 │       │   ├── RouteNames.ts  # 命名路由与跳转辅助对象
 │       │   └── modules/
-│       │       ├── LegacyRoutes.ts  # 历史 URL 到新地址的重定向
-│       │       ├── PublicRoutes.ts  # 公共页面路由表
+│       │       ├── PublicRoutes.ts  # 公共页面路由表与 404 兜底路由
 │       │       └── UserRoutes.ts  # 登录后用户页面路由表
 │       ├── store/  # Pinia 状态管理
 │       │   ├── DatasetCatalogStore.ts  # 目录加载、筛选与详情缓存状态
@@ -142,20 +139,24 @@ agent_security_platform/
 │       │   ├── StorageUtils.ts  # 本地持久化读写与版本控制
 │       │   ├── common/
 │       │   │   └── DatasetUtils.ts  # 风险域主题、筛选与选择辅助函数
+│       │   ├── evaluation/
+│       │   │   └── index.ts  # 评测状态标签、终态判断与轮询辅助函数
 │       │   └── submit/
 │       │       └── ParameterValidator.ts  # 提交参数归一化与表单校验
 │       └── views/  # 页面级视图
 │           ├── ContactUs.vue  # 联系方式与反馈入口页
 │           ├── DatasetCatalogPage.vue  # 评测目录浏览页
 │           ├── DatasetDetail.vue  # 单个评测项详情页
-│           ├── EvaluationReport.vue  # 单次评测详情与指标页
+│           ├── EvaluationReport.vue  # 任务进度与最终报告页
 │           ├── HomePage.vue  # 首页与快速入口
 │           ├── LeaderboardPage.vue  # 公开排行榜页
+│           ├── NotFoundPage.vue  # 未知地址统一 404 页面
 │           ├── ProfilePage.vue  # 个人资料与头像修改页
 │           ├── SubmitAgentPage.vue  # 智能体提交页
 │           └── UserCenter.vue  # 评测记录列表页
 └── share/
-    ├── database&submit接口.md  # 数据集、提交评测与评测结果接口契约
+    ├── database&submit接口.md  # 数据集、提交元数据、预检查与正式提交契约
+    ├── evaluations接口.md  # 评测列表、详情与任务控制接口契约
     ├── git规范.md  # 仓库协作与提交规范
     └── user接口.md  # 认证、资料与头像接口说明
 ```
@@ -180,9 +181,10 @@ agent_security_platform/
 当前前端主要面向以下场景：
 
 - 评测目录浏览与评测项详情查看
-- 智能体提交表单、参数预检查、草稿持久化
-- 用户评测记录和评测详情展示
+- 智能体提交表单、本地校验、预检查确认与草稿持久化
+- 用户评测记录、评测详情轮询与暂停/继续/终止/取消控制
 - 登录弹窗、登录态恢复和未授权回退
+- 前端仅保留当前规范路由，未知地址与历史旧入口统一进入 404 页面
 
 ### 后端
 
@@ -244,7 +246,8 @@ agent_security_platform/
 需要特别区分：
 
 - [share/user接口.md](./share/user接口.md) 主要对应当前已实现的认证与用户接口。
-- [share/database&submit接口.md](./share/database&submit接口.md) 主要描述前后端对“数据集、提交评测、评测记录”等能力的接口契约。
+- [share/database&submit接口.md](./share/database&submit接口.md) 主要描述前后端对“数据集、提交元数据、预检查、正式提交”等能力的接口契约。
+- [share/evaluations接口.md](./share/evaluations接口.md) 主要描述前后端对“评测记录、评测详情、轮询、任务控制”等能力的接口契约。
 - [docs/评测平台后端设计.md](./docs/评测平台后端设计.md) 主要描述目标后端架构与演进方向。
 
 后两者不应被理解为“当前后端已全部具备这些接口和能力”。
@@ -338,7 +341,8 @@ uv run python run.py
 ### 前后端接口契约
 
 - [share/user接口.md](./share/user接口.md)：认证、用户资料、头像上传等接口说明，最接近当前已实现的后端能力。
-- [share/database&submit接口.md](./share/database&submit接口.md)：数据集目录、提交评测、评测记录与评测详情等接口契约，主要用于前后端联调与后续实现。
+- [share/database&submit接口.md](./share/database&submit接口.md)：数据集目录、提交元数据、预检查与正式提交接口契约。
+- [share/evaluations接口.md](./share/evaluations接口.md)：评测记录列表、评测详情、轮询与任务控制接口契约。
 
 ### 风险分类与数据集背景
 

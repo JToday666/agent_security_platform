@@ -5,6 +5,7 @@ import type {
   DatasetSubcategory,
 } from "@/types/DatasetTypes";
 import { ORDERED_REFERENCE_CATEGORY_IDS } from "@/constants/DatasetTaxonomy";
+import { MAX_SUBMIT_DATASET_COUNT } from "@/utils/submit";
 
 export interface CategoryTheme {
   soft: string;
@@ -170,6 +171,13 @@ const sortCategoriesForDisplay = (
   right: DatasetCategory,
 ) => left.sort - right.sort || left.categoryId.localeCompare(right.categoryId);
 
+const dedupeIds = (ids: string[]): string[] => Array.from(new Set(ids));
+
+const applySelectionLimit = (
+  ids: string[],
+  maxCount = MAX_SUBMIT_DATASET_COUNT,
+): string[] => dedupeIds(ids).slice(0, Math.max(0, maxCount));
+
 export const getCategoryTheme = (categoryId: string): CategoryTheme => {
   const themeKey = categoryId.trim() || "__default__";
   const cachedTheme = CATEGORY_THEME_CACHE.get(themeKey);
@@ -202,10 +210,18 @@ export const getEnabledCategories = (
     .filter((category) => category.subcategories.length > 0)
     .sort(sortCategoriesForDisplay);
 
-export const getAllDatasetIds = (categories: DatasetCategory[]): string[] =>
-  getEnabledCategories(categories).flatMap((category) =>
+export const getAllDatasetIds = (
+  categories: DatasetCategory[],
+  maxCount?: number,
+): string[] => {
+  const ids = getEnabledCategories(categories).flatMap((category) =>
     category.subcategories.map((item) => item.datasetId),
   );
+
+  return typeof maxCount === "number"
+    ? applySelectionLimit(ids, maxCount)
+    : ids;
+};
 
 export const countVisibleDatasets = (
   categories: DatasetCategory[],
@@ -260,6 +276,7 @@ export const sanitizeDatasetSelection = (
   categories: DatasetCategory[],
   selectedDatasetIds: string[],
   preserveEmptyInput = false,
+  maxCount?: number,
 ): string[] => {
   const availableIds = new Set(getAllDatasetIds(categories));
 
@@ -267,10 +284,15 @@ export const sanitizeDatasetSelection = (
     return [];
   }
 
-  const sanitized = selectedDatasetIds.filter((item) => availableIds.has(item));
+  const sanitized = applySelectionLimit(
+    selectedDatasetIds.filter((item) => availableIds.has(item)),
+    maxCount ?? MAX_SUBMIT_DATASET_COUNT,
+  );
   if (sanitized.length > 0) return sanitized;
 
-  return Array.from(availableIds);
+  return typeof maxCount === "number"
+    ? applySelectionLimit(Array.from(availableIds), maxCount)
+    : Array.from(availableIds);
 };
 
 export const countSelectedDatasets = (
@@ -300,6 +322,7 @@ export const isCategoryPartiallySelected = (
 export const toggleCategoryDatasets = (
   category: DatasetCategory,
   selectedDatasetIds: string[],
+  maxCount = MAX_SUBMIT_DATASET_COUNT,
 ): string[] => {
   const datasetIds = category.subcategories.map((item) => item.datasetId);
   const fullySelected = datasetIds.every((item) =>
@@ -310,18 +333,19 @@ export const toggleCategoryDatasets = (
     return selectedDatasetIds.filter((item) => !datasetIds.includes(item));
   }
 
-  return Array.from(new Set([...selectedDatasetIds, ...datasetIds]));
+  return applySelectionLimit([...selectedDatasetIds, ...datasetIds], maxCount);
 };
 
 export const toggleDatasetId = (
   datasetId: string,
   selectedDatasetIds: string[],
+  maxCount = MAX_SUBMIT_DATASET_COUNT,
 ): string[] => {
   if (selectedDatasetIds.includes(datasetId)) {
     return selectedDatasetIds.filter((item) => item !== datasetId);
   }
 
-  return [...selectedDatasetIds, datasetId];
+  return applySelectionLimit([...selectedDatasetIds, datasetId], maxCount);
 };
 
 export const formatDateLabel = (value?: string): string => {

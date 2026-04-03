@@ -1,8 +1,8 @@
 <template>
   <section class="layout-section-card ui-surface-white">
     <div class="layout-section-head">
-      <h2>提交方式</h2>
-      <p>根据当前平台能力选择接入方式，mock 首版同时支持 API 和 Docker。</p>
+      <h2>提交方式 <span class="required-mark">*</span></h2>
+      <p>根据当前平台能力选择接入方式，提交前会按照对应字段进行本地校验和预检查。</p>
     </div>
 
     <div class="grid-auto-fit" style="--grid-min-size: 220px; --grid-gap: 0.9rem; margin-top: 1rem;">
@@ -46,6 +46,10 @@ const methodLabels: Record<
 </script>
 
 <style scoped>
+.required-mark {
+  color: #dc2626;
+}
+
 .method-card {
   border: 1px solid #dbeafe;
   background: #f8fafc;

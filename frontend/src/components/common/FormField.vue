@@ -1,6 +1,9 @@
 <template>
   <label :class="['form-field', { full, 'form-field-textarea': type === 'textarea' }]">
-    <span v-if="label" class="form-field-label">{{ label }}</span>
+    <span v-if="label" class="form-field-label">
+      {{ label }}
+      <span v-if="required" class="required-mark">*</span>
+    </span>
     <component
       :is="type === 'textarea' ? 'textarea' : 'input'"
       :type="type === 'textarea' ? undefined : type"
@@ -27,6 +30,7 @@ interface Props {
   rows?: number;
   full?: boolean;
   disabled?: boolean;
+  required?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -34,6 +38,7 @@ withDefaults(defineProps<Props>(), {
   full: false,
   disabled: false,
   rows: 4,
+  required: false,
 });
 
 defineEmits<{
@@ -56,6 +61,11 @@ defineEmits<{
   color: #334155;
   font-weight: 600;
   font-size: 0.95rem;
+}
+
+.required-mark {
+  color: #dc2626;
+  margin-left: 0.2rem;
 }
 
 .form-field-input {

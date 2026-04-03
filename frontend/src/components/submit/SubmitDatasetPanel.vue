@@ -2,8 +2,8 @@
   <section class="tree-card ui-surface-white">
     <div class="tree-header">
       <div>
-        <h3>评测目录</h3>
-        <p>按当前攻击难度展示可选风险域与评测项，仅保留当前仍有效的已选交集。</p>
+        <h3>评测目录 <span class="required-mark">*</span></h3>
+        <p>按当前攻击难度展示可选风险域与评测项，仅保留当前仍有效的已选结果。</p>
       </div>
       <div class="header-actions">
         <button
@@ -27,10 +27,8 @@
 
     <div class="status-list">
       <p v-if="syncMessage" class="status-banner sync">{{ syncMessage }}</p>
-      <p
-        v-if="status === 'refreshing'"
-        class="status-banner refreshing"
-      >
+      <p v-if="selectionErrorMessage" class="status-banner error">{{ selectionErrorMessage }}</p>
+      <p v-if="status === 'refreshing'" class="status-banner refreshing">
         正在按当前难度刷新可用评测项…
       </p>
       <div v-if="status === 'loading' && !categories.length" class="state-card">
@@ -139,6 +137,7 @@ const props = defineProps<{
   status: SubmitDatasetCatalogStatus;
   errorMessage?: string;
   syncMessage?: string;
+  selectionErrorMessage?: string;
 }>();
 
 defineEmits<{
@@ -180,7 +179,7 @@ const getCategoryState = (category: DatasetCategoryViewModel) => {
 
 const getCategoryStateLabel = (category: DatasetCategoryViewModel) => {
   if (isFullySelected(category)) return "全选";
-  if (isPartiallySelected(category)) return "半选";
+  if (isPartiallySelected(category)) return "部分";
   return "未选";
 };
 
@@ -199,6 +198,10 @@ const getCategoryBlockStyle = (categoryId: string) => {
 </script>
 
 <style scoped>
+.required-mark {
+  color: #dc2626;
+}
+
 .tree-card {
   border-radius: 1.8rem;
   padding: 1.4rem;

@@ -80,7 +80,7 @@ const loading = ref(false);
 const error = ref("");
 const notFound = ref(false);
 
-// 详情页只接受规范化的 datasetId 参数，旧地址由路由层负责重定向。
+// 详情页只接受规范化的 datasetId 参数。
 const datasetId = computed(() => String(route.params.datasetId ?? ""));
 
 const heroChips = computed(() => [

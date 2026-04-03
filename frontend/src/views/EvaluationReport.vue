@@ -3,123 +3,345 @@
     <h1 class="page-title layout-page-title">评测详情</h1>
     <p class="report-id">任务 ID：{{ evaluationId }}</p>
 
-    <div v-if="loading" class="state-card layout-state-card ui-surface-white">
+    <div v-if="loading && !detail" class="state-card layout-state-card ui-surface-white">
       <h2>正在读取评测详情</h2>
       <p>系统正在同步该任务的执行状态和最新指标。</p>
     </div>
 
-    <div v-else-if="error" class="state-card layout-state-card ui-surface-white">
+    <div v-else-if="error && !detail" class="state-card layout-state-card ui-surface-white">
       <h2>详情加载失败</h2>
       <p>{{ error }}</p>
-      <button class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient" @click="loadDetail">
+      <button class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient" @click="loadDetail()">
         重试
       </button>
     </div>
 
-    <template v-else-if="report">
+    <template v-else-if="detail">
       <div class="summary-section ui-surface-white">
         <div class="summary-item">
           <span class="label">智能体名称</span>
-          <span class="value">{{ report.agentName }}</span>
+          <span class="value">{{ detail.agentName }}</span>
         </div>
         <div class="summary-item">
           <span class="label">评测状态</span>
-          <span class="value" :class="report.status">{{ statusLabels[report.status] }}</span>
+          <span class="value" :class="getEvaluationStatusTone(detail.status)">
+            {{ getEvaluationStatusLabel(detail.status) }}
+          </span>
         </div>
         <div class="summary-item">
           <span class="label">提交方式</span>
-          <span class="value">{{ report.submitMethod.toUpperCase() }}</span>
+          <span class="value">{{ detail.submitMethod.toUpperCase() }}</span>
         </div>
         <div class="summary-item">
           <span class="label">综合得分</span>
-          <span class="value score">{{ report.score ? `${report.score} 分` : "待生成" }}</span>
+          <span class="value score">{{ formatEvaluationScore(detail.score, detail.finalReportAvailable) }}</span>
         </div>
       </div>
 
-      <div class="summary-panel ui-surface-white">
-        <p class="summary-text">{{ report.summary }}</p>
+      <div v-if="error" class="inline-error ui-surface-white">
+        {{ error }}
+      </div>
+
+      <div class="progress-panel ui-surface-white">
+        <div class="progress-head">
+          <div>
+            <h2>任务进度</h2>
+            <p>{{ detail.progress.statusText }}</p>
+          </div>
+          <strong>{{ detail.progress.percent }}%</strong>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" :style="{ width: `${detail.progress.percent}%` }"></div>
+        </div>
+
+        <div class="progress-meta">
+          <span>已完成 {{ detail.progress.completedDatasetCount }} / {{ detail.progress.totalDatasetCount }}</span>
+          <span v-if="detail.progress.runningDatasetName">当前数据集：{{ detail.progress.runningDatasetName }}</span>
+          <span v-if="detail.progress.pauseDeadlineAt">最晚恢复时间：{{ formatDateTimeLabel(detail.progress.pauseDeadlineAt) }}</span>
+          <span v-if="getFinalizationReasonLabel(detail.finalizationReason)">
+            {{ getFinalizationReasonLabel(detail.finalizationReason) }}
+          </span>
+        </div>
+      </div>
+
+      <div v-if="hasAvailableActions(detail.controls)" class="actions-panel ui-surface-white">
+        <div class="action-buttons">
+          <button
+            v-if="detail.controls.canPause"
+            class="ui-btn ui-btn-pill"
+            type="button"
+            :disabled="actionLoading"
+            @click="openActionDialog('pause')"
+          >
+            暂停
+          </button>
+          <button
+            v-if="detail.controls.canResume"
+            class="ui-btn ui-btn-pill ui-btn-gradient"
+            type="button"
+            :disabled="actionLoading"
+            @click="runAction('resume')"
+          >
+            继续
+          </button>
+          <button
+            v-if="detail.controls.canTerminate"
+            class="ui-btn ui-btn-pill"
+            type="button"
+            :disabled="actionLoading"
+            @click="openActionDialog('terminate')"
+          >
+            终止
+          </button>
+          <button
+            v-if="detail.controls.canCancel"
+            class="ui-btn ui-btn-pill ui-btn-danger"
+            type="button"
+            :disabled="actionLoading"
+            @click="openActionDialog('cancel')"
+          >
+            取消
+          </button>
+        </div>
+      </div>
+
+      <div v-if="detail.report" class="summary-panel ui-surface-white">
+        <p class="summary-text">{{ detail.report.summary }}</p>
         <p class="summary-meta">
-          评测项：{{ report.datasetNames.join("、") }} · 创建时间：{{ formatDateTimeLabel(report.createdAt) }}
+          评测项：{{ detail.datasetNames.join("、") }}
+          · 报告生成时间：{{ formatDateTimeLabel(detail.report.generatedAt) }}
         </p>
       </div>
 
-      <div v-if="report.warnings.length" class="warnings ui-surface-white">
+      <div v-else-if="detail.status === 'canceled' || detail.status === 'failed'" class="summary-panel ui-surface-white">
+        <p class="summary-text">{{ detail.progress.statusText }}</p>
+        <p class="summary-meta">当前任务未生成最终报告。</p>
+      </div>
+
+      <div v-if="detail.report?.warnings.length" class="warnings ui-surface-white">
         <h2>提示</h2>
-        <p v-for="warning in report.warnings" :key="warning">{{ warning }}</p>
+        <p v-for="warning in detail.report.warnings" :key="warning">{{ warning }}</p>
       </div>
 
-      <h2 class="section-title">详细指标</h2>
-      <div class="metrics-grid">
-        <div
-          v-for="metric in report.metrics"
-          :key="metric.name"
-          class="metric-item ui-surface-white"
-        >
-          <div class="metric-header">
-            <span class="metric-name">{{ metric.name }}</span>
-            <span class="metric-value">{{ metric.value }}</span>
+      <template v-if="detail.report">
+        <h2 class="section-title">详细指标</h2>
+        <div class="metrics-grid">
+          <div
+            v-for="metric in detail.report.metrics"
+            :key="metric.name"
+            class="metric-item ui-surface-white"
+          >
+            <div class="metric-header">
+              <span class="metric-name">{{ metric.name }}</span>
+              <span class="metric-value">{{ metric.value }}</span>
+            </div>
+            <div class="progress-bar secondary">
+              <div
+                class="progress-fill"
+                :style="{ width: `${metric.percentage}%` }"
+              ></div>
+            </div>
+            <p class="metric-desc">{{ metric.description }}</p>
           </div>
-          <div class="progress-bar">
-            <div
-              class="progress-fill"
-              :style="{ width: metric.percentage + '%' }"
-            ></div>
-          </div>
-          <p class="metric-desc">{{ metric.description }}</p>
         </div>
-      </div>
+      </template>
 
-      <div class="actions">
+      <div class="actions footer-actions">
         <button class="back-btn ui-btn ui-btn-pill" @click="goBack">
           返回评测记录
         </button>
       </div>
     </template>
+
+    <ConfirmDialog
+      v-model="actionDialogVisible"
+      :title="actionDialogTitle"
+      :message="actionDialogMessage"
+      :confirm-text="actionDialogConfirmText"
+      cancel-text="返回"
+      :danger="actionDialogDanger"
+      :loading="actionLoading"
+      @confirm="confirmAction"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getEvaluationDetail } from "@/api/AgentService";
+import {
+  getEvaluationDetail,
+  postEvaluationAction,
+} from "@/api/AgentService";
+import ConfirmDialog from "@/components/dialog/ConfirmDialog.vue";
 import { RouteLocation } from "@/router/RouteNames";
-import type { EvaluationDetail } from "@/types/AgentTypes";
+import type {
+  EvaluationAction,
+  EvaluationDetail,
+} from "@/types/AgentTypes";
 import { formatDateTimeLabel } from "@/utils/common";
+import {
+  formatEvaluationScore,
+  getEvaluationStatusLabel,
+  getEvaluationStatusTone,
+  getFinalizationReasonLabel,
+  hasAvailableActions,
+  shouldPollEvaluation,
+} from "@/utils/evaluation";
 
 const route = useRoute();
 const router = useRouter();
-const evaluationId = String(route.params.evaluationId ?? "");
+const evaluationId = computed(() => String(route.params.evaluationId ?? ""));
 
-const report = ref<EvaluationDetail | null>(null);
+const detail = ref<EvaluationDetail | null>(null);
 const loading = ref(true);
 const error = ref("");
+const actionLoading = ref(false);
+const pendingAction = ref<EvaluationAction | null>(null);
+const actionDialogVisible = ref(false);
+const actionDialogTitle = ref("");
+const actionDialogMessage = ref("");
+const actionDialogConfirmText = ref("确认");
+const actionDialogDanger = ref(false);
 
-const statusLabels = {
-  pending: "排队中",
-  running: "执行中",
-  completed: "已完成",
+let pollTimer: number | null = null;
+
+const getErrorCode = (value: unknown): number | null => {
+  if (!value || typeof value !== "object" || !("code" in value)) {
+    return null;
+  }
+
+  const code = Number((value as { code?: unknown }).code);
+  return Number.isFinite(code) ? code : null;
 };
 
-const loadDetail = async () => {
-  loading.value = true;
-  error.value = "";
+const clearPolling = () => {
+  if (pollTimer !== null) {
+    window.clearInterval(pollTimer);
+    pollTimer = null;
+  }
+};
+
+const syncPolling = () => {
+  clearPolling();
+
+  if (!detail.value || !shouldPollEvaluation(detail.value.status)) {
+    return;
+  }
+
+  pollTimer = window.setInterval(() => {
+    void loadDetail(true);
+  }, 3000);
+};
+
+const loadDetail = async (silent = false) => {
+  if (!silent || !detail.value) {
+    loading.value = true;
+  }
+
+  if (!silent) {
+    error.value = "";
+  }
 
   try {
-    report.value = await getEvaluationDetail(evaluationId);
+    detail.value = await getEvaluationDetail(evaluationId.value);
+    error.value = "";
+    syncPolling();
   } catch (loadError) {
     error.value =
       loadError instanceof Error ? loadError.message : "评测详情加载失败。";
+    clearPolling();
   } finally {
     loading.value = false;
   }
+};
+
+const applyDetail = (nextDetail: EvaluationDetail) => {
+  detail.value = nextDetail;
+  error.value = "";
+  syncPolling();
 };
 
 const goBack = () => {
   router.push(RouteLocation.userCenter);
 };
 
+const openActionDialog = (action: EvaluationAction) => {
+  pendingAction.value = action;
+  actionDialogDanger.value = action === "cancel";
+  actionDialogConfirmText.value =
+    action === "pause"
+      ? "确认暂停"
+      : action === "terminate"
+        ? "确认终止"
+        : "确认取消";
+
+  if (action === "pause") {
+    actionDialogTitle.value = "暂停任务";
+    actionDialogMessage.value =
+      "暂停会在当前数据集跑完后生效，任务最多只能暂停一次。";
+  } else if (action === "terminate") {
+    actionDialogTitle.value = "终止任务";
+    actionDialogMessage.value =
+      "终止会在当前数据集跑完后结束剩余队列，并生成最终报告。";
+  } else {
+    actionDialogTitle.value = "取消任务";
+    actionDialogMessage.value =
+      "取消会直接中断当前任务，并且不会生成最终报告。";
+  }
+
+  actionDialogVisible.value = true;
+};
+
+const runAction = async (action: EvaluationAction) => {
+  actionLoading.value = true;
+  error.value = "";
+
+  try {
+    const nextDetail = await postEvaluationAction(evaluationId.value, action);
+    applyDetail(nextDetail);
+  } catch (actionError) {
+    const code = getErrorCode(actionError);
+    const message =
+      actionError instanceof Error ? actionError.message : "任务操作失败。";
+    error.value = message;
+
+    if (code === 40901 || code === 40902) {
+      await loadDetail(true);
+      error.value = message;
+    }
+  } finally {
+    actionLoading.value = false;
+  }
+};
+
+const confirmAction = async () => {
+  if (!pendingAction.value) {
+    return;
+  }
+
+  const action = pendingAction.value;
+  await runAction(action);
+  pendingAction.value = null;
+  actionDialogVisible.value = false;
+};
+
+watch(
+  evaluationId,
+  async () => {
+    clearPolling();
+    detail.value = null;
+    await loadDetail();
+  },
+);
+
 onMounted(async () => {
   await loadDetail();
+});
+
+onBeforeUnmount(() => {
+  clearPolling();
 });
 </script>
 
@@ -155,50 +377,112 @@ onMounted(async () => {
   font-weight: 700;
 }
 
-.value.pending {
-  color: #c2410c;
-}
-
+.value.pending,
 .value.running {
   color: #2563eb;
+}
+
+.value.paused,
+.value.terminated {
+  color: #b45309;
 }
 
 .value.completed {
   color: #15803d;
 }
 
+.value.canceled,
+.value.failed {
+  color: #b91c1c;
+}
+
 .score {
   color: #7c3aed;
 }
 
+.inline-error,
+.progress-panel,
 .summary-panel,
-.warnings {
+.warnings,
+.actions-panel {
   margin-top: 1rem;
   border-radius: 1.2rem;
   padding: 1.2rem;
 }
 
-.summary-text {
-  margin: 0;
-  color: #334155;
-  line-height: 1.8;
+.inline-error {
+  color: #b91c1c;
 }
 
-.summary-meta {
-  margin: 0.8rem 0 0;
-  color: #64748b;
+.progress-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
 }
 
+.progress-head h2,
 .warnings h2 {
   margin: 0;
   color: #0f172a;
   font-size: 1.1rem;
 }
 
+.progress-head p,
+.summary-text,
+.metric-desc,
 .warnings p {
-  margin: 0.7rem 0 0;
-  color: #c2410c;
   line-height: 1.7;
+}
+
+.progress-head p,
+.summary-text {
+  margin: 0.45rem 0 0;
+  color: #334155;
+}
+
+.progress-head strong {
+  color: #2563eb;
+  font-size: 1.4rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #e2e8f0;
+  margin-top: 0.9rem;
+}
+
+.progress-bar.secondary {
+  height: 8px;
+  margin-top: 0.7rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--grad-progress);
+  transition: width 0.3s ease;
+}
+
+.progress-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+  color: #64748b;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.summary-meta {
+  margin: 0.8rem 0 0;
+  color: #64748b;
 }
 
 .section-title {
@@ -233,27 +517,12 @@ onMounted(async () => {
   font-weight: 700;
 }
 
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: #e2e8f0;
-  margin-top: 0.7rem;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--grad-progress);
-}
-
 .metric-desc {
   margin: 0.7rem 0 0;
   color: #64748b;
-  line-height: 1.6;
 }
 
-.actions {
+.footer-actions {
   margin-top: 1.5rem;
   text-align: right;
 }
@@ -263,8 +532,13 @@ onMounted(async () => {
 }
 
 @media (max-width: 768px) {
-  .actions {
+  .progress-head,
+  .footer-actions {
     text-align: initial;
+  }
+
+  .progress-head {
+    flex-direction: column;
   }
 
   .back-btn {

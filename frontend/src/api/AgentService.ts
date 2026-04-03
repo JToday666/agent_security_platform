@@ -2,12 +2,18 @@ import request from "@/utils/Request";
 import { ApiConfig } from "@/api/Config";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import type {
+  EvaluationAction,
+  EvaluationActionRequest,
+  EvaluationControls,
   EvaluationDetail,
+  EvaluationFinalizationReason,
   EvaluationMetric,
+  EvaluationProgress,
   EvaluationRecord,
+  EvaluationReport,
+  EvaluationStatus,
   PrecheckResponse,
   SubmitAgentPayload,
-  SubmitMetaApiResponse,
   SubmitMetaResponse,
   SubmitResponse,
 } from "@/types/AgentTypes";
@@ -16,26 +22,117 @@ import {
   createSuccessEnvelope,
   resolveMockEnvelope,
 } from "@/api/MockApiUtils";
-import {
-  buildSubmitAgentApiPayload,
-  normalizeSubmitMeta,
-} from "@/api/adapters/DatasetAdapters";
+import { buildSubmitAgentApiPayload } from "@/api/adapters/DatasetAdapters";
 import {
   getReferenceDatasetIds,
   getReferenceDatasetNameMap,
   referenceEvaluationRecords,
   referenceSubmitMeta,
 } from "@/api/fixtures/DatasetFixtures";
-import { validateSubmitPayload } from "@/utils/submit";
+import {
+  MAX_SUBMIT_DATASET_COUNT,
+  validateSubmitPayload,
+} from "@/utils/submit";
 
-interface StoredEvaluationRecord extends EvaluationRecord {
+interface StoredEvaluationRecord {
+  evaluationId: string;
   requestId: string;
+  agentName: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+  status: EvaluationStatus;
+  publicToLeaderboard: boolean;
+  datasetIds: string[];
+  datasetNames: string[];
+  submitMethod: "api" | "docker";
+  score: number | null;
+  ownerName: string;
+  parameters: SubmitAgentPayload["parameters"];
+  completedDatasetCount: number;
+  pauseUsed: boolean;
+  pauseDeadlineAt: string | null;
+  finalReportAvailable: boolean;
+  finalizationReason: EvaluationFinalizationReason | null;
+  reportGeneratedAt: string | null;
+  phaseStartedAt: string;
 }
 
-const MOCK_COMPLETION_DELAY_MS = 4000;
+interface ResolvedEvaluationState {
+  evaluationId: string;
+  agentName: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+  status: EvaluationStatus;
+  publicToLeaderboard: boolean;
+  datasetIds: string[];
+  datasetNames: string[];
+  submitMethod: "api" | "docker";
+  score: number | null;
+  ownerName: string;
+  parameters: SubmitAgentPayload["parameters"];
+  progressPercent: number;
+  finalReportAvailable: boolean;
+  finalizationReason: EvaluationFinalizationReason | null;
+  progress: EvaluationProgress;
+  controls: EvaluationControls;
+  report: EvaluationReport | null;
+}
+
+interface ServiceError extends Error {
+  code?: number;
+}
+
+const MOCK_PENDING_DELAY_MS = 2200;
+const MOCK_DATASET_DURATION_MS = 3600;
+const MOCK_CANCEL_DELAY_MS = 800;
+const PAUSE_TIMEOUT_MS = 60 * 60 * 1000;
 const useLiveSubmissionApi = ApiConfig.submission.useLive;
 const useLiveReferenceApi = ApiConfig.reference.useLive;
 const referenceDatasetNameMap = getReferenceDatasetNameMap();
+
+const nowIso = (): string => new Date().toISOString();
+const toTimestamp = (value: string): number => new Date(value).getTime();
+const toIso = (value: number): string => new Date(value).toISOString();
+
+const createServiceError = (message: string, code?: number): ServiceError => {
+  const error = new Error(message) as ServiceError;
+  error.code = code;
+  return error;
+};
+
+const createSubmitMetaError = (): Error =>
+  new Error("submit-meta 响应结构不符合新协议，请确认后端仅返回扁平结构。");
+
+const ensureSubmitMeta = (payload: unknown): SubmitMetaResponse => {
+  if (!payload || typeof payload !== "object") {
+    throw createSubmitMetaError();
+  }
+
+  const candidate = payload as Partial<SubmitMetaResponse>;
+
+  if (
+    !Array.isArray(candidate.supportedMethods) ||
+    !candidate.difficulty ||
+    !candidate.timeoutMinutes ||
+    !candidate.retryEnabled ||
+    !candidate.publicToLeaderboard
+  ) {
+    throw createSubmitMetaError();
+  }
+
+  return {
+    supportedMethods: candidate.supportedMethods,
+    difficulty: candidate.difficulty,
+    timeoutMinutes: {
+      ...candidate.timeoutMinutes,
+      recommendedMax: candidate.timeoutMinutes.recommendedMax ?? 20,
+    },
+    retryEnabled: candidate.retryEnabled,
+    publicToLeaderboard: candidate.publicToLeaderboard,
+  };
+};
 
 const readStoredRecords = (): StoredEvaluationRecord[] => {
   try {
@@ -54,39 +151,58 @@ const writeStoredRecords = (records: StoredEvaluationRecord[]): void => {
   localStorage.setItem(STORAGE_KEYS.mock.evaluations, JSON.stringify(records));
 };
 
-const nowIso = (): string => new Date().toISOString();
+const getDatasetCount = (record: { datasetIds: string[] }): number =>
+  Math.max(record.datasetIds.length, 1);
 
-const computeScore = (record: EvaluationRecord): number => {
+const clampPercent = (value: number): number =>
+  Math.min(100, Math.max(0, Math.round(value)));
+
+const computeScore = (
+  record: {
+    agentName: string;
+    evaluationId: string;
+    datasetIds: string[];
+    parameters: SubmitAgentPayload["parameters"];
+    submitMethod: "api" | "docker";
+  },
+  completedDatasetCount = record.datasetIds.length,
+): number => {
+  const completionRatio = completedDatasetCount / getDatasetCount(record);
   const datasetFactor = record.datasetIds.length * 1.8;
   const retryPenalty = record.parameters.retryEnabled ? 1.5 : 0;
   const difficultyBonus = record.parameters.difficulty * 7;
   const timeoutBonus = Math.min(record.parameters.timeoutMinutes, 24) * 0.18;
   const seed = record.agentName.length + record.evaluationId.length;
+  const completionPenalty = (1 - completionRatio) * 10;
   const score =
     82 +
     datasetFactor +
     difficultyBonus +
     timeoutBonus -
-    retryPenalty +
+    retryPenalty -
+    completionPenalty +
     (seed % 4);
 
-  return Number(Math.min(98.8, Math.max(76.4, score)).toFixed(1));
+  return Number(Math.min(98.8, Math.max(70.6, score)).toFixed(1));
 };
 
-const buildMetrics = (record: EvaluationRecord): EvaluationMetric[] => {
-  const score = record.score ?? computeScore(record);
+const buildMetrics = (
+  score: number,
+  submitMethod: "api" | "docker",
+  retryEnabled: boolean,
+): EvaluationMetric[] => {
   const attackDetection = Math.min(99, Math.round(score + 2));
   const policyStability = Math.min(
     97,
-    Math.round(score - (record.parameters.retryEnabled ? 1 : 0)),
+    Math.round(score - (retryEnabled ? 1 : 0)),
   );
   const executionBoundary = Math.min(
     98,
-    Math.round(score + (record.submitMethod === "docker" ? 1 : 0)),
+    Math.round(score + (submitMethod === "docker" ? 1 : 0)),
   );
   const responseSpeed = Math.max(
     68,
-    Math.round(96 - record.parameters.timeoutMinutes * 0.9),
+    Math.round(96 - (retryEnabled ? 1 : 0) * 1.4),
   );
 
   return [
@@ -117,94 +233,503 @@ const buildMetrics = (record: EvaluationRecord): EvaluationMetric[] => {
   ];
 };
 
-const upgradeStoredRecords = (
-  records: StoredEvaluationRecord[],
-): StoredEvaluationRecord[] => {
+const buildReport = (record: {
+  status: EvaluationStatus;
+  finalReportAvailable: boolean;
+  reportGeneratedAt: string | null;
+  finalizationReason: EvaluationFinalizationReason | null;
+  parameters: SubmitAgentPayload["parameters"];
+  submitMethod: "api" | "docker";
+  score: number | null;
+  completedDatasetCount: number;
+  datasetIds: string[];
+}): EvaluationReport | null => {
+  if (!record.finalReportAvailable || record.score === null) {
+    return null;
+  }
+
+  const totalDatasetCount = getDatasetCount(record);
+  const completedDatasetCount = Math.min(
+    record.completedDatasetCount,
+    totalDatasetCount,
+  );
+  const summary =
+    record.status === "completed"
+      ? `本次评测共覆盖 ${totalDatasetCount} 个数据集，所有评测项已完成，核心安全指标表现稳定。`
+      : `本次评测在完成 ${completedDatasetCount}/${totalDatasetCount} 个数据集后结束，以下报告仅基于已完成的评测数据。`;
+
+  const warnings: string[] = [];
+  if (record.parameters.retryEnabled) {
+    warnings.push("已启用失败重试，建议复核高耗时场景下的重试副作用。");
+  }
+  if (record.finalizationReason === "terminated_by_user") {
+    warnings.push("任务由用户终止，未完成的数据集不会计入最终报告。");
+  }
+  if (record.finalizationReason === "auto_terminated_after_pause_timeout") {
+    warnings.push("任务在暂停超时后自动终止，报告仅覆盖已完成的数据集。");
+  }
+
+  return {
+    generatedAt: record.reportGeneratedAt ?? nowIso(),
+    summary,
+    warnings,
+    metrics: buildMetrics(
+      record.score,
+      record.submitMethod,
+      record.parameters.retryEnabled,
+    ),
+  };
+};
+
+const buildControls = (
+  status: EvaluationStatus,
+  pauseUsed: boolean,
+): EvaluationControls => ({
+  canPause: status === "running" && !pauseUsed,
+  canResume: status === "paused",
+  canTerminate: status === "running" || status === "paused",
+  canCancel:
+    status === "pending" || status === "running" || status === "paused",
+  pauseUsed,
+});
+
+const buildStatusText = (
+  status: EvaluationStatus,
+  progress: Pick<
+    EvaluationProgress,
+    | "runningDatasetName"
+    | "completedDatasetCount"
+    | "totalDatasetCount"
+    | "pauseDeadlineAt"
+  >,
+  reason: EvaluationFinalizationReason | null,
+): string => {
+  switch (status) {
+    case "pending":
+      return "任务已创建，正在等待调度。";
+    case "running":
+      return progress.runningDatasetName
+        ? `当前正在评测数据集 ${progress.runningDatasetName}。`
+        : "任务正在执行中。";
+    case "pausing":
+      return progress.runningDatasetName
+        ? `已收到暂停请求，当前数据集 ${progress.runningDatasetName} 完成后将暂停。`
+        : "已收到暂停请求，当前任务即将暂停。";
+    case "paused":
+      return progress.pauseDeadlineAt
+        ? `任务已暂停，请在 ${progress.pauseDeadlineAt} 前选择继续、终止或取消。`
+        : "任务已暂停。";
+    case "terminating":
+      return progress.runningDatasetName
+        ? `已收到终止请求，当前数据集 ${progress.runningDatasetName} 完成后将结束任务。`
+        : "已收到终止请求，当前任务即将结束。";
+    case "canceling":
+      return "正在取消任务并中断执行。";
+    case "completed":
+      return "所有数据集已评测完成，已生成最终报告。";
+    case "terminated":
+      return reason === "auto_terminated_after_pause_timeout"
+        ? "任务在暂停超时后自动终止，已生成最终报告。"
+        : `任务已结束，已完成 ${progress.completedDatasetCount}/${progress.totalDatasetCount} 个数据集并生成最终报告。`;
+    case "canceled":
+      return "任务已取消，未生成最终报告。";
+    case "failed":
+      return "任务执行失败，请稍后重试。";
+  }
+};
+
+const buildProgress = (
+  record: StoredEvaluationRecord,
+  status: EvaluationStatus,
+  now: number,
+): EvaluationProgress => {
+  const totalDatasetCount = getDatasetCount(record);
+  const completedDatasetCount = Math.min(
+    record.completedDatasetCount,
+    totalDatasetCount,
+  );
+  const phaseElapsed = Math.max(0, now - toTimestamp(record.phaseStartedAt));
+  const runningDatasetId =
+    status === "running" || status === "pausing" || status === "terminating"
+      ? (record.datasetIds[completedDatasetCount] ?? null)
+      : null;
+  const runningDatasetName = runningDatasetId
+    ? (record.datasetNames[completedDatasetCount] ?? runningDatasetId)
+    : null;
+
+  let percent = Math.round((completedDatasetCount / totalDatasetCount) * 100);
+  if (status === "pending") {
+    percent = clampPercent((phaseElapsed / MOCK_PENDING_DELAY_MS) * 8);
+  } else if (
+    status === "running" ||
+    status === "pausing" ||
+    status === "terminating"
+  ) {
+    const partial = Math.min(phaseElapsed / MOCK_DATASET_DURATION_MS, 0.98);
+    percent = clampPercent(
+      ((completedDatasetCount + partial) / totalDatasetCount) * 100,
+    );
+  } else if (status === "completed") {
+    percent = 100;
+  } else if (status === "canceled" || status === "failed") {
+    percent = clampPercent((completedDatasetCount / totalDatasetCount) * 100);
+  }
+
+  const progressBase = {
+    percent,
+    totalDatasetCount,
+    completedDatasetCount,
+    runningDatasetId,
+    runningDatasetName,
+    pauseDeadlineAt: status === "paused" ? record.pauseDeadlineAt : null,
+  };
+
+  return {
+    ...progressBase,
+    statusText: buildStatusText(
+      status,
+      progressBase,
+      record.finalizationReason,
+    ),
+  };
+};
+
+const toEvaluationRecord = (
+  state: ResolvedEvaluationState,
+): EvaluationRecord => ({
+  evaluationId: state.evaluationId,
+  agentName: state.agentName,
+  description: state.description,
+  createdAt: state.createdAt,
+  updatedAt: state.updatedAt,
+  status: state.status,
+  progressPercent: state.progressPercent,
+  finalReportAvailable: state.finalReportAvailable,
+  finalizationReason: state.finalizationReason,
+  publicToLeaderboard: state.publicToLeaderboard,
+  datasetIds: state.datasetIds,
+  datasetNames: state.datasetNames,
+  submitMethod: state.submitMethod,
+  score: state.score,
+  ownerName: state.ownerName,
+  parameters: state.parameters,
+});
+
+const toEvaluationDetail = (
+  state: ResolvedEvaluationState,
+): EvaluationDetail => ({
+  ...toEvaluationRecord(state),
+  progress: state.progress,
+  controls: state.controls,
+  report: state.report,
+});
+
+const finalizeStoredRecord = (
+  record: StoredEvaluationRecord,
+  status: Extract<
+    EvaluationStatus,
+    "completed" | "terminated" | "canceled" | "failed"
+  >,
+  finalizationReason: EvaluationFinalizationReason,
+  finalizedAt: string,
+) => {
+  record.status = status;
+  record.updatedAt = finalizedAt;
+  record.phaseStartedAt = finalizedAt;
+  record.pauseDeadlineAt = null;
+  record.finalizationReason = finalizationReason;
+  record.finalReportAvailable =
+    status === "completed" || status === "terminated";
+  record.reportGeneratedAt = record.finalReportAvailable ? finalizedAt : null;
+  record.score = record.finalReportAvailable
+    ? computeScore(record, record.completedDatasetCount)
+    : null;
+};
+
+const advanceStoredRecord = (
+  record: StoredEvaluationRecord,
+  now = Date.now(),
+): boolean => {
   let changed = false;
+  const totalDatasetCount = getDatasetCount(record);
 
-  const upgraded = records.map<StoredEvaluationRecord>((record) => {
-    if (record.status === "completed") {
-      return record;
+  while (true) {
+    switch (record.status) {
+      case "pending": {
+        const phaseEnd =
+          toTimestamp(record.phaseStartedAt) + MOCK_PENDING_DELAY_MS;
+        if (now < phaseEnd) {
+          return changed;
+        }
+
+        record.status = "running";
+        record.phaseStartedAt = toIso(phaseEnd);
+        record.updatedAt = record.phaseStartedAt;
+        changed = true;
+        continue;
+      }
+
+      case "running":
+      case "pausing":
+      case "terminating": {
+        const phaseEnd =
+          toTimestamp(record.phaseStartedAt) + MOCK_DATASET_DURATION_MS;
+        if (now < phaseEnd) {
+          return changed;
+        }
+
+        record.completedDatasetCount = Math.min(
+          record.completedDatasetCount + 1,
+          totalDatasetCount,
+        );
+        record.updatedAt = toIso(phaseEnd);
+        changed = true;
+
+        if (record.status === "pausing") {
+          record.status = "paused";
+          record.phaseStartedAt = record.updatedAt;
+          record.pauseDeadlineAt = toIso(phaseEnd + PAUSE_TIMEOUT_MS);
+          continue;
+        }
+
+        if (record.status === "terminating") {
+          finalizeStoredRecord(
+            record,
+            "terminated",
+            "terminated_by_user",
+            record.updatedAt,
+          );
+          return true;
+        }
+
+        if (record.completedDatasetCount >= totalDatasetCount) {
+          finalizeStoredRecord(
+            record,
+            "completed",
+            "completed",
+            record.updatedAt,
+          );
+          return true;
+        }
+
+        record.status = "running";
+        record.phaseStartedAt = record.updatedAt;
+        continue;
+      }
+
+      case "paused": {
+        if (
+          record.pauseDeadlineAt &&
+          now >= toTimestamp(record.pauseDeadlineAt)
+        ) {
+          finalizeStoredRecord(
+            record,
+            "terminated",
+            "auto_terminated_after_pause_timeout",
+            record.pauseDeadlineAt,
+          );
+          return true;
+        }
+
+        return changed;
+      }
+
+      case "canceling": {
+        const phaseEnd =
+          toTimestamp(record.phaseStartedAt) + MOCK_CANCEL_DELAY_MS;
+        if (now < phaseEnd) {
+          return changed;
+        }
+
+        finalizeStoredRecord(
+          record,
+          "canceled",
+          "canceled_by_user",
+          toIso(phaseEnd),
+        );
+        return true;
+      }
+
+      default:
+        return changed;
     }
+  }
+};
 
-    const elapsed = Date.now() - new Date(record.createdAt).getTime();
-    if (elapsed < MOCK_COMPLETION_DELAY_MS) {
-      return record;
+const syncStoredRecords = (): StoredEvaluationRecord[] => {
+  const records = readStoredRecords();
+  let changed = false;
+  const now = Date.now();
+
+  const nextRecords = records.map((record) => {
+    const nextRecord = { ...record };
+    if (advanceStoredRecord(nextRecord, now)) {
+      changed = true;
     }
-
-    changed = true;
-    return {
-      ...record,
-      status: "completed",
-      updatedAt: nowIso(),
-      score: computeScore(record),
-    };
+    return nextRecord;
   });
 
   if (changed) {
-    writeStoredRecords(upgraded);
+    writeStoredRecords(nextRecords);
   }
 
-  return upgraded;
+  return nextRecords;
+};
+
+const buildResolvedStateFromStored = (
+  record: StoredEvaluationRecord,
+  now = Date.now(),
+): ResolvedEvaluationState => {
+  const progress = buildProgress(record, record.status, now);
+  const controls = buildControls(record.status, record.pauseUsed);
+  const report = buildReport(record);
+
+  return {
+    evaluationId: record.evaluationId,
+    agentName: record.agentName,
+    description: record.description,
+    createdAt: record.createdAt,
+    updatedAt: record.updatedAt,
+    status: record.status,
+    publicToLeaderboard: record.publicToLeaderboard,
+    datasetIds: record.datasetIds,
+    datasetNames: record.datasetNames,
+    submitMethod: record.submitMethod,
+    score: record.score,
+    ownerName: record.ownerName,
+    parameters: record.parameters,
+    progressPercent: progress.percent,
+    finalReportAvailable: record.finalReportAvailable,
+    finalizationReason: record.finalizationReason,
+    progress,
+    controls,
+    report,
+  };
+};
+
+const buildResolvedStateFromReference = (
+  record: EvaluationRecord,
+): ResolvedEvaluationState => {
+  const progress: EvaluationProgress = {
+    percent: record.progressPercent,
+    totalDatasetCount: record.datasetIds.length,
+    completedDatasetCount: record.datasetIds.length,
+    runningDatasetId: null,
+    runningDatasetName: null,
+    pauseDeadlineAt: null,
+    statusText: "所有数据集已评测完成，已生成最终报告。",
+  };
+
+  return {
+    evaluationId: record.evaluationId,
+    agentName: record.agentName,
+    description: record.description,
+    createdAt: record.createdAt,
+    updatedAt: record.updatedAt,
+    status: record.status,
+    publicToLeaderboard: record.publicToLeaderboard,
+    datasetIds: record.datasetIds,
+    datasetNames: record.datasetNames,
+    submitMethod: record.submitMethod,
+    score: record.score,
+    ownerName: record.ownerName,
+    parameters: record.parameters,
+    progressPercent: record.progressPercent,
+    finalReportAvailable: record.finalReportAvailable,
+    finalizationReason: record.finalizationReason,
+    progress,
+    controls: buildControls(record.status, false),
+    report:
+      record.finalReportAvailable && typeof record.score === "number"
+        ? {
+            generatedAt: record.updatedAt,
+            summary: `本次评测共覆盖 ${record.datasetIds.length} 个数据集，核心安全指标表现稳定。`,
+            warnings: [],
+            metrics: buildMetrics(
+              record.score,
+              record.submitMethod,
+              record.parameters.retryEnabled,
+            ),
+          }
+        : null,
+  };
 };
 
 const getMergedRecords = (): EvaluationRecord[] => {
-  const storedRecords = upgradeStoredRecords(readStoredRecords());
+  const storedRecords = syncStoredRecords().map((record) =>
+    toEvaluationRecord(buildResolvedStateFromStored(record)),
+  );
 
   return [...storedRecords, ...referenceEvaluationRecords].sort(
-    (left, right) =>
-      new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime(),
+    (left, right) => toTimestamp(right.createdAt) - toTimestamp(left.createdAt),
   );
 };
 
-const buildEvaluationDetail = (record: EvaluationRecord): EvaluationDetail => ({
-  ...record,
-  summary:
-    record.status === "completed"
-      ? `本次评测共覆盖 ${record.datasetNames.length} 个评测项，核心安全指标表现稳定，建议结合详细指标继续优化高风险边界。`
-      : "任务已创建，系统正在调度评测节点与评测项执行队列，请稍后刷新查看结果。",
-  warnings:
-    record.status === "completed"
-      ? record.parameters.retryEnabled
-        ? ["已启用失败重试，建议复核长耗时场景下的重试副作用。"]
-        : []
-      : ["评测尚未完成，当前展示的是任务创建信息与预计执行范围。"],
-  metrics:
-    record.status === "completed"
-      ? buildMetrics(record)
-      : [
-          {
-            name: "任务创建",
-            value: "100%",
-            percentage: 100,
-            description: "任务已成功入队，等待评测执行。",
-          },
-          {
-            name: "执行准备",
-            value: "65%",
-            percentage: 65,
-            description: "目录装载与环境校验已完成，正在分配执行资源。",
-          },
-        ],
-});
-
 const getReferenceMeta = async (): Promise<SubmitMetaResponse> => {
   if (useLiveReferenceApi) {
-    const response = await request.get<SubmitMetaApiResponse>(
+    const response = await request.get<SubmitMetaResponse>(
       "/agents/submit-meta",
     );
 
     if (!response.success || !response.data) {
-      throw new Error(response.message || "提交元数据加载失败。");
+      throw createServiceError(
+        response.message || "提交元数据加载失败。",
+        response.code,
+      );
     }
 
-    return normalizeSubmitMeta(response.data);
+    return ensureSubmitMeta(response.data);
   }
 
   const result = await resolveMockEnvelope(
     createSuccessEnvelope(referenceSubmitMeta),
   );
-  return result.data;
+  return ensureSubmitMeta(result.data);
+};
+
+const getStoredRecordById = (
+  evaluationId: string,
+): StoredEvaluationRecord | null => {
+  const records = syncStoredRecords();
+  const record = records.find((item) => item.evaluationId === evaluationId);
+  return record ? { ...record } : null;
+};
+
+const updateStoredRecord = (nextRecord: StoredEvaluationRecord): void => {
+  const records = syncStoredRecords();
+  const nextRecords = records.map((record) =>
+    record.evaluationId === nextRecord.evaluationId ? nextRecord : record,
+  );
+  writeStoredRecords(nextRecords);
+};
+
+const ensureMockActionAllowed = (
+  record: StoredEvaluationRecord,
+  action: EvaluationAction,
+) => {
+  const controls = buildControls(record.status, record.pauseUsed);
+
+  if (action === "pause") {
+    if (record.pauseUsed) {
+      throw createServiceError("该任务已使用过暂停机会，不能再次暂停。", 40902);
+    }
+    if (!controls.canPause) {
+      throw createServiceError(`当前状态不允许执行 ${action} 操作。`, 40901);
+    }
+    return;
+  }
+
+  if (action === "resume" && !controls.canResume) {
+    throw createServiceError(`当前状态不允许执行 ${action} 操作。`, 40901);
+  }
+
+  if (action === "terminate" && !controls.canTerminate) {
+    throw createServiceError(`当前状态不允许执行 ${action} 操作。`, 40901);
+  }
+
+  if (action === "cancel" && !controls.canCancel) {
+    throw createServiceError(`当前状态不允许执行 ${action} 操作。`, 40901);
+  }
 };
 
 export const getSubmitMeta = async (): Promise<SubmitMetaResponse> =>
@@ -220,7 +745,10 @@ export const precheckAgent = async (
     );
 
     if (!response.success || !response.data) {
-      throw new Error(response.message || "预检查失败。");
+      throw createServiceError(
+        response.message || "预检查失败。",
+        response.code,
+      );
     }
 
     return response.data;
@@ -240,12 +768,12 @@ export const precheckAgent = async (
         warnings: validation.errors,
       }),
     );
-    throw new Error(result.message);
+    throw createServiceError(result.message, result.code);
   }
 
   const warnings: string[] = [];
   if (payload.publicToLeaderboard) {
-    warnings.push("该次结果将进入公开排行榜，请确认描述中不包含敏感信息。");
+    warnings.push("本次结果将进入公开排行榜，请确认描述中不包含敏感信息。");
   }
 
   const recommendedMax = meta.timeoutMinutes.recommendedMax ?? 20;
@@ -275,7 +803,10 @@ export const submitAgent = async (
     );
 
     if (!response.success || !response.data) {
-      throw new Error(response.message || "提交失败，请稍后重试。");
+      throw createServiceError(
+        response.message || "提交失败，请稍后重试。",
+        response.code,
+      );
     }
 
     return response.data;
@@ -292,15 +823,15 @@ export const submitAgent = async (
     const result = await resolveMockEnvelope(
       createErrorEnvelope(40002, validation.errors[0] || "参数校验失败。", {
         evaluationId: "",
-        status: "pending",
+        status: "pending" as EvaluationStatus,
         createdAt: "",
       }),
       { delay: 520 },
     );
-    throw new Error(result.message);
+    throw createServiceError(result.message, result.code);
   }
 
-  const existing = readStoredRecords().find(
+  const existing = syncStoredRecords().find(
     (record) => record.requestId === payload.requestId,
   );
   if (existing) {
@@ -316,6 +847,10 @@ export const submitAgent = async (
   }
 
   const now = nowIso();
+  const datasetIds = Array.from(new Set(payload.selectedDatasetIds)).slice(
+    0,
+    MAX_SUBMIT_DATASET_COUNT,
+  );
   const record: StoredEvaluationRecord = {
     evaluationId: `eval_${Date.now()}`,
     requestId: payload.requestId,
@@ -325,17 +860,24 @@ export const submitAgent = async (
     updatedAt: now,
     status: "pending",
     publicToLeaderboard: payload.publicToLeaderboard,
-    datasetIds: payload.selectedDatasetIds,
-    datasetNames: payload.selectedDatasetIds.map(
+    datasetIds,
+    datasetNames: datasetIds.map(
       (item) => referenceDatasetNameMap.get(item) ?? item,
     ),
     submitMethod: payload.submitMethod,
-    score: undefined,
+    score: null,
     ownerName: "当前用户",
     parameters: payload.parameters,
+    completedDatasetCount: 0,
+    pauseUsed: false,
+    pauseDeadlineAt: null,
+    finalReportAvailable: false,
+    finalizationReason: null,
+    reportGeneratedAt: null,
+    phaseStartedAt: now,
   };
 
-  writeStoredRecords([record, ...readStoredRecords()]);
+  writeStoredRecords([record, ...syncStoredRecords()]);
 
   const result = await resolveMockEnvelope(
     createSuccessEnvelope({
@@ -354,7 +896,10 @@ export const getEvaluationRecords = async (): Promise<EvaluationRecord[]> => {
     const response = await request.get<EvaluationRecord[]>("/evaluations");
 
     if (!response.success || !response.data) {
-      throw new Error(response.message || "评测记录加载失败。");
+      throw createServiceError(
+        response.message || "评测记录加载失败。",
+        response.code,
+      );
     }
 
     return response.data;
@@ -375,26 +920,121 @@ export const getEvaluationDetail = async (
     );
 
     if (!response.success || !response.data) {
-      throw new Error(response.message || "评测详情加载失败。");
+      throw createServiceError(
+        response.message || "评测详情加载失败。",
+        response.code,
+      );
     }
 
     return response.data;
   }
 
-  const record = getMergedRecords().find(
+  const storedRecord = getStoredRecordById(evaluationId);
+  if (storedRecord) {
+    const result = await resolveMockEnvelope(
+      createSuccessEnvelope(
+        toEvaluationDetail(buildResolvedStateFromStored(storedRecord)),
+      ),
+    );
+    return result.data;
+  }
+
+  const referenceRecord = referenceEvaluationRecords.find(
     (item) => item.evaluationId === evaluationId,
   );
-
-  if (!record) {
+  if (referenceRecord) {
     const result = await resolveMockEnvelope(
-      createErrorEnvelope(40400, "评测记录不存在。", null),
+      createSuccessEnvelope(
+        toEvaluationDetail(buildResolvedStateFromReference(referenceRecord)),
+      ),
     );
-    throw new Error(result.message);
+    return result.data;
   }
 
   const result = await resolveMockEnvelope(
-    createSuccessEnvelope(buildEvaluationDetail(record)),
+    createErrorEnvelope(40400, "评测记录不存在。", null),
   );
+  throw createServiceError(result.message, result.code);
+};
 
+export const postEvaluationAction = async (
+  evaluationId: string,
+  action: EvaluationAction,
+): Promise<EvaluationDetail> => {
+  if (useLiveSubmissionApi) {
+    const response = await request.post<EvaluationDetail>(
+      `/evaluations/${evaluationId}/actions`,
+      { action } as EvaluationActionRequest,
+    );
+
+    if (!response.success || !response.data) {
+      throw createServiceError(
+        response.message || "任务操作失败。",
+        response.code,
+      );
+    }
+
+    return response.data;
+  }
+
+  const storedRecord = getStoredRecordById(evaluationId);
+  if (!storedRecord) {
+    const result = await resolveMockEnvelope(
+      createErrorEnvelope(
+        40400,
+        `评测任务 ${evaluationId} 不存在或已被删除。`,
+        null,
+      ),
+    );
+    throw createServiceError(result.message, result.code);
+  }
+
+  ensureMockActionAllowed(storedRecord, action);
+
+  const nextRecord = { ...storedRecord };
+  const actedAt = nowIso();
+
+  switch (action) {
+    case "pause":
+      nextRecord.status = "pausing";
+      nextRecord.pauseUsed = true;
+      nextRecord.updatedAt = actedAt;
+      break;
+    case "resume":
+      nextRecord.status = "running";
+      nextRecord.phaseStartedAt = actedAt;
+      nextRecord.pauseDeadlineAt = null;
+      nextRecord.updatedAt = actedAt;
+      break;
+    case "terminate":
+      if (nextRecord.status === "paused") {
+        finalizeStoredRecord(
+          nextRecord,
+          "terminated",
+          "terminated_by_user",
+          actedAt,
+        );
+      } else {
+        nextRecord.status = "terminating";
+        nextRecord.updatedAt = actedAt;
+      }
+      break;
+    case "cancel":
+      nextRecord.status = "canceling";
+      nextRecord.phaseStartedAt = actedAt;
+      nextRecord.pauseDeadlineAt = null;
+      nextRecord.updatedAt = actedAt;
+      break;
+  }
+
+  advanceStoredRecord(nextRecord, Date.now());
+  updateStoredRecord(nextRecord);
+
+  const result = await resolveMockEnvelope(
+    createSuccessEnvelope(
+      toEvaluationDetail(buildResolvedStateFromStored(nextRecord)),
+    ),
+    { delay: 420 },
+  );
   return result.data;
 };

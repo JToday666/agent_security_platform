@@ -4,9 +4,6 @@
       <p v-if="restoreMessage" class="status-message restore">{{ restoreMessage }}</p>
       <p v-if="syncMessage" class="status-message sync">{{ syncMessage }}</p>
       <p v-if="errorMessage" class="status-message error">{{ errorMessage }}</p>
-      <p v-for="warning in warnings" :key="warning" class="status-message warning">
-        {{ warning }}
-      </p>
     </div>
 
     <div class="action-row">
@@ -18,7 +15,7 @@
         type="submit"
         :disabled="submitting || !canSubmit"
       >
-        {{ submitting ? "提交中..." : "预检查并提交" }}
+        {{ submitting ? "提交中..." : "提交任务" }}
       </button>
     </div>
   </section>
@@ -33,13 +30,11 @@ withDefaults(
   defineProps<{
     submitting: boolean;
     canSubmit: boolean;
-    warnings?: string[];
     errorMessage?: string;
     restoreMessage?: string;
     syncMessage?: string;
   }>(),
   {
-    warnings: () => [],
     errorMessage: "",
     restoreMessage: "",
     syncMessage: "",
@@ -79,11 +74,6 @@ withDefaults(
 .status-message.error {
   background: rgba(254, 226, 226, 0.9);
   color: #b91c1c;
-}
-
-.status-message.warning {
-  background: rgba(240, 253, 244, 0.92);
-  color: #15803d;
 }
 
 .action-row {

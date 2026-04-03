@@ -2,7 +2,7 @@
   <div class="content records-card layout-page-panel layout-page-panel--lg ui-surface-glass">
     <h1 class="page-title layout-page-title">评测记录</h1>
     <p class="page-subtitle layout-page-subtitle">
-      已提交任务会优先展示最近创建的记录，新的 mock 提交会直接出现在这里。
+      已提交任务会优先展示最近创建的记录，创建成功后可进入详情页持续观察任务进度。
     </p>
 
     <div v-if="loading" class="state-card layout-state-card ui-surface-white">
@@ -27,7 +27,9 @@
         <div class="record-info">
           <div class="title-row">
             <h3>{{ record.agentName }}</h3>
-            <span class="status-badge" :class="record.status">{{ statusLabels[record.status] }}</span>
+            <span class="status-badge" :class="getEvaluationStatusTone(record.status)">
+              {{ getEvaluationStatusLabel(record.status) }}
+            </span>
             <span class="visibility-badge" :class="{ public: record.publicToLeaderboard }">
               {{ record.publicToLeaderboard ? "公开" : "私有" }}
             </span>
@@ -37,12 +39,23 @@
             评测项：{{ record.datasetNames.join("、") }}
           </p>
           <p class="record-meta">
-            创建时间：{{ formatDateTimeLabel(record.createdAt) }} · 提交方式：{{ record.submitMethod.toUpperCase() }}
+            创建时间：{{ formatDateTimeLabel(record.createdAt) }}
+            · 提交方式：{{ record.submitMethod.toUpperCase() }}
           </p>
+          <p v-if="getFinalizationReasonLabel(record.finalizationReason)" class="record-meta finalization">
+            {{ getFinalizationReasonLabel(record.finalizationReason) }}
+          </p>
+
+          <div class="progress-row">
+            <div class="progress-bar">
+              <div class="progress-fill" :style="{ width: `${record.progressPercent}%` }"></div>
+            </div>
+            <span class="progress-text">{{ record.progressPercent }}%</span>
+          </div>
         </div>
 
         <div class="record-side">
-          <strong class="score">{{ record.score ? `${record.score} 分` : "待生成" }}</strong>
+          <strong class="score">{{ formatEvaluationScore(record.score, record.finalReportAvailable) }}</strong>
           <router-link
             :to="RouteLocation.evaluationDetail(record.evaluationId)"
             class="view-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
@@ -71,16 +84,16 @@ import { getEvaluationRecords } from "@/api/AgentService";
 import { RouteLocation } from "@/router/RouteNames";
 import type { EvaluationRecord } from "@/types/AgentTypes";
 import { formatDateTimeLabel } from "@/utils/common";
+import {
+  formatEvaluationScore,
+  getEvaluationStatusLabel,
+  getEvaluationStatusTone,
+  getFinalizationReasonLabel,
+} from "@/utils/evaluation";
 
 const records = ref<EvaluationRecord[]>([]);
 const loading = ref(true);
 const error = ref("");
-
-const statusLabels = {
-  pending: "排队中",
-  running: "执行中",
-  completed: "已完成",
-};
 
 const loadRecords = async () => {
   loading.value = true;
@@ -157,9 +170,25 @@ onMounted(async () => {
   color: #1d4ed8;
 }
 
+.status-badge.paused {
+  background: #fef3c7;
+  color: #b45309;
+}
+
 .status-badge.completed {
   background: #dcfce7;
   color: #15803d;
+}
+
+.status-badge.terminated {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.status-badge.canceled,
+.status-badge.failed {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .visibility-badge {
@@ -176,6 +205,38 @@ onMounted(async () => {
   margin: 0.55rem 0 0;
   color: #64748b;
   line-height: 1.7;
+}
+
+.record-meta.finalization {
+  color: #475569;
+  font-weight: 600;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--grad-progress);
+}
+
+.progress-text {
+  min-width: 44px;
+  text-align: right;
+  color: #334155;
+  font-weight: 700;
 }
 
 .record-side {

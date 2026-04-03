@@ -5,6 +5,7 @@ import DatasetDetail from "@/views/DatasetDetail.vue";
 import DatasetCatalogPage from "@/views/DatasetCatalogPage.vue";
 import HomePage from "@/views/HomePage.vue";
 import LeaderboardPage from "@/views/LeaderboardPage.vue";
+import NotFoundPage from "@/views/NotFoundPage.vue";
 import { ROUTE_NAME } from "@/router/RouteNames";
 
 export const publicRoutes: RouteRecordRaw[] = [
@@ -45,3 +46,16 @@ export const publicRoutes: RouteRecordRaw[] = [
     ],
   },
 ];
+
+export const notFoundRoute: RouteRecordRaw = {
+  path: "/:pathMatch(.*)*",
+  component: PublicLayout,
+  children: [
+    {
+      path: "",
+      name: ROUTE_NAME.NOT_FOUND,
+      component: NotFoundPage,
+      meta: { title: "页面未找到" },
+    },
+  ],
+};

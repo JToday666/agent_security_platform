@@ -8,6 +8,12 @@ export interface ApiResponse<T = any> {
   code?: number;
 }
 
+export interface ApiError extends Error {
+  code?: number;
+  httpStatus?: number;
+  data?: unknown;
+}
+
 interface BackendResponse<T = any> {
   code: number;
   data: T;
@@ -26,7 +32,6 @@ const axiosInstance = axios.create({
   timeout: 10000,
 });
 
-// 把后端校验错误拼成可直接展示的中文提示。
 const buildValidationMessage = (errors: ValidationErrorItem[]): string => {
   if (!errors.length) return "请求参数错误";
 
@@ -70,6 +75,24 @@ const extractErrorMessage = (payload: any): string => {
   return "请求失败";
 };
 
+const createApiError = (
+  message: string,
+  options: {
+    code?: number;
+    httpStatus?: number;
+    data?: unknown;
+  } = {},
+): ApiError => {
+  const error = new Error(message) as ApiError;
+  error.code = options.code;
+  error.httpStatus = options.httpStatus;
+  error.data = options.data;
+  return error;
+};
+
+export const isApiError = (error: unknown): error is ApiError =>
+  error instanceof Error && ("code" in error || "httpStatus" in error);
+
 const toApiResponse = <T = any>(payload: any): ApiResponse<T> => {
   const response = payload as BackendResponse<T>;
   if (response?.code === 0) {
@@ -98,24 +121,29 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
+    const responseData = error.response?.data;
     const message =
-      extractErrorMessage(error.response?.data) || error.message || "网络错误";
+      extractErrorMessage(responseData) || error.message || "网络错误";
 
     if (error.response?.status === 401) {
-      // 统一抛出未授权事件，由应用入口处理登录弹窗和路由回退。
       window.dispatchEvent(
         new CustomEvent("unauthorized", {
           detail: {
             message,
             status: error.response.status,
-            code:
-              error.response.data?.code ?? error.response.data?.detail?.code,
+            code: responseData?.code ?? responseData?.detail?.code,
           },
         }),
       );
     }
 
-    return Promise.reject(new Error(message));
+    return Promise.reject(
+      createApiError(message, {
+        code: responseData?.code ?? responseData?.detail?.code,
+        httpStatus: error.response?.status,
+        data: responseData?.data ?? responseData?.detail ?? responseData,
+      }),
+    );
   },
 );
 
@@ -124,12 +152,8 @@ const request = {
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> => {
-    try {
-      const response: AxiosResponse = await axiosInstance.get(url, config);
-      return toApiResponse<T>(response.data);
-    } catch (error: any) {
-      throw error;
-    }
+    const response: AxiosResponse = await axiosInstance.get(url, config);
+    return toApiResponse<T>(response.data);
   },
 
   post: async <T = any>(
@@ -137,16 +161,8 @@ const request = {
     data?: any,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> => {
-    try {
-      const response: AxiosResponse = await axiosInstance.post(
-        url,
-        data,
-        config,
-      );
-      return toApiResponse<T>(response.data);
-    } catch (error: any) {
-      throw error;
-    }
+    const response: AxiosResponse = await axiosInstance.post(url, data, config);
+    return toApiResponse<T>(response.data);
   },
 
   put: async <T = any>(
@@ -154,16 +170,8 @@ const request = {
     data?: any,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> => {
-    try {
-      const response: AxiosResponse = await axiosInstance.put(
-        url,
-        data,
-        config,
-      );
-      return toApiResponse<T>(response.data);
-    } catch (error: any) {
-      throw error;
-    }
+    const response: AxiosResponse = await axiosInstance.put(url, data, config);
+    return toApiResponse<T>(response.data);
   },
 };
 
