@@ -3,7 +3,7 @@
     <div class="tree-header">
       <div>
         <h3>评测目录 <span class="required-mark">*</span></h3>
-        <p>按当前攻击难度展示可选风险域与评测项，仅保留当前仍有效的已选结果。</p>
+        <p>展示当前可用的风险域与评测项，仅保留当前仍有效的已选结果。</p>
       </div>
       <div class="header-actions">
         <button
@@ -29,11 +29,11 @@
       <p v-if="syncMessage" class="status-banner sync">{{ syncMessage }}</p>
       <p v-if="selectionErrorMessage" class="status-banner error">{{ selectionErrorMessage }}</p>
       <p v-if="status === 'refreshing'" class="status-banner refreshing">
-        正在按当前难度刷新可用评测项…
+        正在刷新可用评测项…
       </p>
       <div v-if="status === 'loading' && !categories.length" class="state-card">
         <h4>正在加载可用评测项</h4>
-        <p>系统正在根据当前攻击难度筛选风险域与评测项，请稍候。</p>
+        <p>系统正在同步当前可用的风险域与评测项，请稍候。</p>
       </div>
       <div v-else-if="status === 'error' && !categories.length" class="state-card">
         <h4>评测目录加载失败</h4>
@@ -43,8 +43,8 @@
         </button>
       </div>
       <div v-else-if="status === 'empty'" class="state-card">
-        <h4>当前难度下暂无可用评测项</h4>
-        <p>请调整攻击难度后重试；在无可用评测项时无法提交。</p>
+        <h4>当前暂无可用评测项</h4>
+        <p>请稍后重试；在没有可用评测项时无法提交。</p>
       </div>
       <p v-else-if="status === 'error'" class="status-banner error">
         {{ errorMessage || "目录刷新失败，请重试。" }}

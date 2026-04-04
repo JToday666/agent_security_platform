@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import request from "@/utils/Request";
+import request from "@/utils/request";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
 export interface User {

@@ -3,13 +3,13 @@
     <PageHeroCard
       eyebrow="智能体提交"
       title="提交智能体评测"
-      description="提交页会先加载参数元数据，再按当前攻击难度刷新评测目录；草稿仅持久化非敏感字段。"
+      description="提交页会先加载参数元数据和评测目录；草稿仅持久化非敏感字段。"
       :chips="heroChips"
     />
 
     <div v-if="pageLoading" class="state-card layout-state-card ui-surface-white">
       <h2>正在初始化提交页</h2>
-      <p>系统正在加载提交元数据、恢复草稿，并根据当前难度筛选评测目录。</p>
+      <p>系统正在加载提交元数据、恢复草稿，并同步评测目录。</p>
     </div>
 
     <div v-else-if="pageError" class="state-card layout-state-card ui-surface-white">
@@ -144,9 +144,7 @@ const confirmDialogTitle = ref("确认提交");
 const confirmDialogMessage = ref("");
 const confirmedPayload = ref<SubmitAgentPayload | null>(null);
 
-let catalogDebounceTimer: number | null = null;
 let activeCatalogController: AbortController | null = null;
-let latestCatalogRequestSeq = 0;
 
 const enabledCategories = computed(() => datasetCatalog.enabledCategories.value);
 const validDatasetIds = computed(() => datasetCatalog.datasetIds.value);
@@ -158,21 +156,7 @@ const selectedCategoryCount = computed(
       ),
     ).length,
 );
-const currentDifficulty = computed(() => {
-  if (!form.value || !submitMeta.value) {
-    return null;
-  }
-
-  return normalizeDifficulty(
-    form.value.parameters.difficulty,
-    submitMeta.value.difficulty,
-  );
-});
-const datasetCatalogReady = computed(
-  () =>
-    datasetCatalogStatus.value === "ready" &&
-    datasetCatalog.hasResolvedCurrentDifficulty.value,
-);
+const datasetCatalogReady = computed(() => datasetCatalogStatus.value === "ready");
 const heroChips = computed(() => [
   {
     label: "当前提交方式",
@@ -202,13 +186,6 @@ const buildRequestId = (): string => {
 const clearFormErrors = () => {
   submitError.value = "";
   fieldErrors.value = {};
-};
-
-const clearScheduledCatalogRefresh = () => {
-  if (catalogDebounceTimer !== null) {
-    window.clearTimeout(catalogDebounceTimer);
-    catalogDebounceTimer = null;
-  }
 };
 
 const abortActiveCatalogRequest = () => {
@@ -363,38 +340,29 @@ const syncCatalogSelection = () => {
   );
 };
 
-const loadCatalogForDifficulty = async (
-  difficulty: number,
-  force = false,
-) => {
-  const requestSeq = ++latestCatalogRequestSeq;
+const loadCatalog = async (force = false) => {
   abortActiveCatalogRequest();
   const controller = new AbortController();
   activeCatalogController = controller;
 
   try {
-    await datasetCatalog.fetchCatalog(difficulty, {
+    await datasetCatalog.fetchCatalog({
       signal: controller.signal,
       force,
     });
 
-    if (requestSeq !== latestCatalogRequestSeq) {
-      return;
-    }
-
     syncCatalogSelection();
   } catch (error) {
-    if (requestSeq !== latestCatalogRequestSeq || isAbortLikeError(error)) {
+    if (isAbortLikeError(error)) {
       return;
     }
-  }
-};
 
-const scheduleCatalogRefresh = (difficulty: number, force = false) => {
-  clearScheduledCatalogRefresh();
-  catalogDebounceTimer = window.setTimeout(() => {
-    void loadCatalogForDifficulty(difficulty, force);
-  }, force ? 0 : 200);
+    throw error;
+  } finally {
+    if (activeCatalogController === controller) {
+      activeCatalogController = null;
+    }
+  }
 };
 
 const initializePage = async () => {
@@ -424,9 +392,7 @@ const initializePage = async () => {
     );
     setSelectedDatasetIds(form.value.selectedDatasetIds);
 
-    if (currentDifficulty.value !== null) {
-      await loadCatalogForDifficulty(currentDifficulty.value, true);
-    }
+    await loadCatalog(true);
   } catch (error) {
     pageError.value =
       error instanceof Error ? error.message : "提交页初始化失败。";
@@ -487,11 +453,7 @@ const toggleExpandedCategory = (categoryId: string) => {
 };
 
 const retryDatasetCatalog = () => {
-  if (currentDifficulty.value === null) {
-    return;
-  }
-
-  void loadCatalogForDifficulty(currentDifficulty.value, true);
+  void loadCatalog(true);
 };
 
 const resetDraft = () => {
@@ -507,10 +469,6 @@ const resetDraft = () => {
   datasetSelectionNotice.value = "";
   confirmDialogVisible.value = false;
   confirmedPayload.value = null;
-
-  if (currentDifficulty.value !== null) {
-    void loadCatalogForDifficulty(currentDifficulty.value, true);
-  }
 };
 
 const handleSubmit = async () => {
@@ -521,12 +479,12 @@ const handleSubmit = async () => {
   clearFormErrors();
 
   if (datasetCatalogStatus.value === "empty") {
-    submitError.value = "当前难度下没有可用评测项，无法提交。";
+    submitError.value = "当前暂无可用评测项，无法提交。";
     return;
   }
 
   if (!datasetCatalogReady.value) {
-    submitError.value = "请等待评测目录刷新完成后再提交。";
+    submitError.value = "请等待评测目录加载完成后再提交。";
     return;
   }
 
@@ -600,7 +558,7 @@ const canSubmit = computed(() => {
 
 watch(
   () => form.value?.parameters.difficulty,
-  (value, previousValue) => {
+  (value) => {
     if (!form.value || !submitMeta.value || typeof value !== "number") {
       return;
     }
@@ -608,15 +566,7 @@ watch(
     const normalized = normalizeDifficulty(value, submitMeta.value.difficulty);
     if (normalized !== value) {
       form.value.parameters.difficulty = normalized;
-      return;
     }
-
-    if (typeof previousValue !== "number") {
-      return;
-    }
-
-    clearFormErrors();
-    scheduleCatalogRefresh(normalized);
   },
 );
 
@@ -684,7 +634,6 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
-  clearScheduledCatalogRefresh();
   abortActiveCatalogRequest();
 });
 </script>
