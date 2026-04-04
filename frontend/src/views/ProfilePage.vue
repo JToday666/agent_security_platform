@@ -1,18 +1,17 @@
 <template>
-  <div class="form-card ui-surface-glass">
-    <h1 class="page-title">修改信息</h1>
-    <p class="page-subtitle">更新您的个人资料和账户信息。</p>
+  <div class="content form-card layout-page-panel layout-page-panel--sm ui-surface-glass">
+    <h1 class="page-title layout-page-title">修改信息</h1>
+    <p class="page-subtitle layout-page-subtitle">更新您的个人资料和账户信息。</p>
 
     <form @submit.prevent="handleSubmit" class="profile-form">
-      <!-- 头像上传区域 -->
       <div class="avatar-section ui-surface-white">
         <div class="avatar-preview">
           <img
-            :src="avatarPreview || avatarUrl || defaultAvatar"
+            :src="avatarPreview || avatarUrl"
             alt="头像"
             v-if="avatarPreview || avatarUrl"
           />
-          <span v-else class="avatar-placeholder">📷</span>
+          <AppIcon v-else icon="lucide:image-plus" class="avatar-placeholder" />
         </div>
         <div class="avatar-upload">
           <label
@@ -33,7 +32,6 @@
         </div>
       </div>
 
-      <!-- 表单字段 -->
       <div class="form-group">
         <label for="username">用户名</label>
         <input
@@ -107,18 +105,16 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch } from "vue";
-import { useUserStore } from "@/store/user";
+import { useUserStore } from "@/store/UserStore";
 import { storeToRefs } from "pinia";
+import AppIcon from "@/components/icon/AppIcon.vue";
 
 const userStore = useUserStore();
 const { currentUser, avatarUrl } = storeToRefs(userStore);
 
-// 默认头像，请替换为实际图片地址。
-const defaultAvatar = "https://via.placeholder.com/100?text=Avatar";
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
 const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png"];
 
-// 表单数据
 const form = reactive({
   username: "",
   email: "",
@@ -132,11 +128,10 @@ const uploading = ref(false);
 const message = ref("");
 const messageType = ref<"success" | "error">("success");
 
-// 从store加载当前用户信息到表单
 const loadUserData = () => {
   if (currentUser.value) {
     form.username = currentUser.value.username || "";
-    form.email = currentUser.value.email || ""; // 邮箱只读显示，不用于提交
+    form.email = currentUser.value.email || "";
   }
 };
 
@@ -185,7 +180,7 @@ const onAvatarChange = async (e: Event) => {
   uploading.value = true;
   message.value = "";
   try {
-    const newUrl = await userStore.uploadAvatar(file);
+    await userStore.uploadAvatar(file);
     avatarPreview.value = null;
     message.value = "头像更新成功";
     messageType.value = "success";
@@ -214,14 +209,12 @@ const handleSubmit = async () => {
     return;
   }
 
-  // 密码一致性验证
   if (form.password && form.password !== form.confirmPassword) {
     message.value = "两次输入的密码不一致";
     messageType.value = "error";
     return;
   }
 
-  // 创建更新数据，只包含可修改字段：用户名、密码
   const updateData: {
     username?: string;
     password?: string;
@@ -258,7 +251,7 @@ const handleSubmit = async () => {
 };
 
 const resetForm = () => {
-  loadUserData(); // 重置为store中的原始数据
+  loadUserData();
   form.password = "";
   form.confirmPassword = "";
   avatarPreview.value = null;
@@ -267,26 +260,6 @@ const resetForm = () => {
 </script>
 
 <style scoped>
-/* 全局重置动画 */
-.form-card {
-  border-radius: 2rem;
-  padding: 2.5rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.page-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.page-subtitle {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-}
-
-/* 头像区域 */
 .avatar-section {
   display: flex;
   gap: 2rem;
@@ -316,7 +289,8 @@ const resetForm = () => {
 }
 
 .avatar-placeholder {
-  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
   color: #94a3b8;
 }
 
@@ -346,7 +320,6 @@ const resetForm = () => {
   margin: 0;
 }
 
-/* 表单组 */
 .form-group {
   margin-bottom: 1.5rem;
 }
@@ -372,7 +345,6 @@ const resetForm = () => {
   color: #94a3b8;
 }
 
-/* 提示信息 */
 .form-message {
   padding: 0.8rem 1.2rem;
   border-radius: 30px;
@@ -393,7 +365,6 @@ const resetForm = () => {
   border: 1px solid #fca5a5;
 }
 
-/* 按钮组 */
 .form-actions {
   display: flex;
   gap: 1rem;
@@ -425,12 +396,7 @@ const resetForm = () => {
   box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
 }
 
-/* 响应式 */
 @media (max-width: 768px) {
-  .form-card {
-    padding: 1.5rem;
-  }
-
   .avatar-section {
     flex-direction: column;
     text-align: center;

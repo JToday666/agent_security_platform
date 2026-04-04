@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "@/components/NavBar.vue";
-import UserSidebar from "@/components/UserSidebar.vue";
+import Navbar from "@/components/navigation/NavBar.vue";
+import UserSidebar from "@/components/navigation/UserSidebar.vue";
 </script>
 
 <style scoped>
@@ -24,7 +24,6 @@ import UserSidebar from "@/components/UserSidebar.vue";
   animation: fadeInUp var(--duration-fade-in) ease;
 }
 
-/* 控制侧边栏折叠状态来自动调整内容区域边距 */
 .user-layout .user-sidebar.collapsed ~ .content-area {
   margin-left: var(--sidebar-width-collapsed);
 }

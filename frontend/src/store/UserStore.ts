@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import request from "@/utils/request";
+import request from "@/utils/Request";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
-// 用户类型定义
 export interface User {
   id: number;
   username: string;
@@ -18,19 +18,16 @@ interface UserPayload {
   avatar_url?: string | null;
 }
 
-// 登录响应数据类型
 interface LoginResponse {
   token: string;
   user: UserPayload;
 }
 
-// 注册响应数据类型
 interface RegisterResponse {
   token: string;
   user: UserPayload;
 }
 
-// 更新个人信息请求体
 interface UpdateProfileData {
   username?: string;
   password?: string;
@@ -77,8 +74,13 @@ const normalizeUser = (user: UserPayload): User => ({
 
 export const useUserStore = defineStore("user", () => {
   const showLogin = ref(false);
-  const token = ref<string | null>(localStorage.getItem("token"));
+  const token = ref<string | null>(
+    localStorage.getItem(STORAGE_KEYS.user.token),
+  );
   const currentUser = ref<User | null>(null);
+  const postLoginRedirect = ref<string | null>(
+    sessionStorage.getItem(STORAGE_KEYS.user.postLoginRedirect),
+  );
 
   const isLogin = computed(() => Boolean(token.value && currentUser.value));
   const username = computed(() => currentUser.value?.username || "");
@@ -86,13 +88,13 @@ export const useUserStore = defineStore("user", () => {
   const avatarUrl = computed(() => currentUser.value?.avatarUrl || "");
 
   const clearAuthState = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem(STORAGE_KEYS.user.token);
     token.value = null;
     currentUser.value = null;
   };
 
   const setAuthState = (newToken: string, user: UserPayload) => {
-    localStorage.setItem("token", newToken);
+    localStorage.setItem(STORAGE_KEYS.user.token, newToken);
     token.value = newToken;
     currentUser.value = normalizeUser(user);
   };
@@ -101,9 +103,8 @@ export const useUserStore = defineStore("user", () => {
     currentUser.value = normalizeUser(user);
   };
 
-  /* 从 localStorage 恢复登录状态 */
   const restoreLogin = async (): Promise<boolean> => {
-    const storedToken = localStorage.getItem("token");
+    const storedToken = localStorage.getItem(STORAGE_KEYS.user.token);
     if (!storedToken) return false;
 
     token.value = storedToken;
@@ -178,7 +179,23 @@ export const useUserStore = defineStore("user", () => {
     showLogin.value = true;
   };
 
-  /* 获取当前用户详细信息 */
+  const setPostLoginRedirect = (path: string | null) => {
+    postLoginRedirect.value = path;
+
+    if (path) {
+      sessionStorage.setItem(STORAGE_KEYS.user.postLoginRedirect, path);
+      return;
+    }
+
+    sessionStorage.removeItem(STORAGE_KEYS.user.postLoginRedirect);
+  };
+
+  const consumePostLoginRedirect = (): string | null => {
+    const redirect = postLoginRedirect.value;
+    setPostLoginRedirect(null);
+    return redirect;
+  };
+
   const fetchProfile = async (): Promise<boolean> => {
     try {
       const res = await request.get<UserPayload>("/user/profile");
@@ -192,7 +209,6 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  /* 更新个人信息（用户名、密码） */
   const updateProfile = async (data: UpdateProfileData): Promise<boolean> => {
     try {
       const res = await request.put<UserPayload>("/user/profile", data);
@@ -208,7 +224,6 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  /* 上传头像 */
   const uploadAvatar = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append("avatar", file);
@@ -241,10 +256,13 @@ export const useUserStore = defineStore("user", () => {
     username,
     email,
     avatarUrl,
+    postLoginRedirect,
     login,
     register,
     logout,
     openLoginDialog,
+    setPostLoginRedirect,
+    consumePostLoginRedirect,
     restoreLogin,
     fetchProfile,
     updateProfile,

@@ -5,6 +5,13 @@ export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   message?: string;
+  code?: number;
+}
+
+export interface ApiError extends Error {
+  code?: number;
+  httpStatus?: number;
+  data?: unknown;
 }
 
 interface BackendResponse<T = any> {
@@ -68,14 +75,33 @@ const extractErrorMessage = (payload: any): string => {
   return "请求失败";
 };
 
+const createApiError = (
+  message: string,
+  options: {
+    code?: number;
+    httpStatus?: number;
+    data?: unknown;
+  } = {},
+): ApiError => {
+  const error = new Error(message) as ApiError;
+  error.code = options.code;
+  error.httpStatus = options.httpStatus;
+  error.data = options.data;
+  return error;
+};
+
+export const isApiError = (error: unknown): error is ApiError =>
+  error instanceof Error && ("code" in error || "httpStatus" in error);
+
 const toApiResponse = <T = any>(payload: any): ApiResponse<T> => {
   const response = payload as BackendResponse<T>;
   if (response?.code === 0) {
-    return { success: true, data: response.data };
+    return { success: true, data: response.data, code: response.code };
   }
 
   return {
     success: false,
+    code: response?.code,
     message: extractErrorMessage(response),
   };
 };
@@ -95,8 +121,9 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
+    const responseData = error.response?.data;
     const message =
-      extractErrorMessage(error.response?.data) || error.message || "网络错误";
+      extractErrorMessage(responseData) || error.message || "网络错误";
 
     if (error.response?.status === 401) {
       window.dispatchEvent(
@@ -104,14 +131,19 @@ axiosInstance.interceptors.response.use(
           detail: {
             message,
             status: error.response.status,
-            code:
-              error.response.data?.code ?? error.response.data?.detail?.code,
+            code: responseData?.code ?? responseData?.detail?.code,
           },
         }),
       );
     }
 
-    return Promise.reject(new Error(message));
+    return Promise.reject(
+      createApiError(message, {
+        code: responseData?.code ?? responseData?.detail?.code,
+        httpStatus: error.response?.status,
+        data: responseData?.data ?? responseData?.detail ?? responseData,
+      }),
+    );
   },
 );
 
@@ -120,12 +152,8 @@ const request = {
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> => {
-    try {
-      const response: AxiosResponse = await axiosInstance.get(url, config);
-      return toApiResponse<T>(response.data);
-    } catch (error: any) {
-      throw error;
-    }
+    const response: AxiosResponse = await axiosInstance.get(url, config);
+    return toApiResponse<T>(response.data);
   },
 
   post: async <T = any>(
@@ -133,16 +161,8 @@ const request = {
     data?: any,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> => {
-    try {
-      const response: AxiosResponse = await axiosInstance.post(
-        url,
-        data,
-        config,
-      );
-      return toApiResponse<T>(response.data);
-    } catch (error: any) {
-      throw error;
-    }
+    const response: AxiosResponse = await axiosInstance.post(url, data, config);
+    return toApiResponse<T>(response.data);
   },
 
   put: async <T = any>(
@@ -150,16 +170,8 @@ const request = {
     data?: any,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> => {
-    try {
-      const response: AxiosResponse = await axiosInstance.put(
-        url,
-        data,
-        config,
-      );
-      return toApiResponse<T>(response.data);
-    } catch (error: any) {
-      throw error;
-    }
+    const response: AxiosResponse = await axiosInstance.put(url, data, config);
+    return toApiResponse<T>(response.data);
   },
 };
 

@@ -4,5 +4,5 @@
 </template>
 
 <script setup lang="ts">
-import LoginDialog from "@/components/LoginDialog.vue";
+import LoginDialog from "@/components/dialog/LoginDialog.vue";
 </script>

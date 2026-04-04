@@ -1,72 +1,67 @@
 <template>
-  <div class="contact-page">
-    <div class="content">
-      <div class="contact-card ui-surface-glass">
-        <h1 class="page-title">联系我们</h1>
-        <p class="page-subtitle">
-          如果您有任何问题或建议，欢迎通过以下方式与我们取得联系。
-        </p>
+  <div class="content contact-page layout-page-shell layout-page-shell--compact">
+    <div class="contact-card layout-page-panel ui-surface-glass">
+      <h1 class="page-title layout-page-title">联系我们</h1>
+      <p class="page-subtitle layout-page-subtitle">
+        如果您有任何问题或建议，欢迎通过以下方式与我们取得联系。
+      </p>
 
-        <div class="contact-grid">
-          <div
-            v-for="item in contactItems"
-            :key="item.title"
-            class="contact-item ui-surface-white"
-          >
-            <AppIcon :icon="item.icon" class="icon" />
-            <div class="info" :class="`info--${item.type}`">
-              <h3>{{ item.title }}</h3>
+      <div class="contact-grid">
+        <div
+          v-for="item in contactItems"
+          :key="item.title"
+          class="contact-item ui-surface-white ui-hover-card"
+        >
+          <AppIcon :icon="item.icon" class="icon" />
+          <div class="info" :class="`info--${item.type}`">
+            <h3>{{ item.title }}</h3>
 
-              <!-- 邮箱/电话 (link 类型) -->
-              <template v-if="item.type === 'link'">
-                <a :href="item.link" class="info-value info-value--single-line">
-                  {{ item.text }}
-                </a>
-              </template>
+            <template v-if="item.type === 'link'">
+              <a :href="item.link" class="info-value info-value--single-line">
+                {{ item.text }}
+              </a>
+            </template>
 
-              <!-- 地址 (text 类型) -->
-              <template v-else-if="item.type === 'text'">
-                <p class="info-value info-value--address">{{ item.text }}</p>
-              </template>
+            <template v-else-if="item.type === 'text'">
+              <p class="info-value info-value--address">{{ item.text }}</p>
+            </template>
 
-              <!-- 社交媒体 (social 类型) -->
-              <template v-else-if="item.type === 'social'">
-                <div class="social-links">
-                  <template
-                    v-for="(social, index) in item.links"
-                    :key="social.name"
+            <template v-else-if="item.type === 'social'">
+              <div class="social-links">
+                <template
+                  v-for="(social, index) in item.links"
+                  :key="social.name"
+                >
+                  <a
+                    :href="social.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="info-value info-value--single-line social-link"
+                    ><AppIcon :icon="social.icon" class="social-brand-icon" />
+                    <span>{{ social.name }}</span></a
                   >
-                    <a
-                      :href="social.url"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="info-value info-value--single-line social-link"
-                      ><AppIcon :icon="social.icon" class="social-brand-icon" />
-                      <span>{{ social.name }}</span></a
-                    >
-                    <span
-                      v-if="index < item.links.length - 1"
-                      class="separator"
-                      aria-hidden="true"
-                      >·</span
-                    >
-                  </template>
-                </div>
-              </template>
-            </div>
+                  <span
+                    v-if="index < item.links.length - 1"
+                    class="separator"
+                    aria-hidden="true"
+                    >·</span
+                  >
+                </template>
+              </div>
+            </template>
           </div>
         </div>
+      </div>
 
-        <div class="note">
-          <p>我们会在 24 小时内回复您的邮件，感谢您的支持！</p>
-        </div>
+      <div class="note">
+        <p>我们会在 24 小时内回复您的邮件，感谢您的支持！</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import AppIcon from "@/components/AppIcon.vue";
+import AppIcon from "@/components/icon/AppIcon.vue";
 
 type ContactItem =
   | {
@@ -131,34 +126,22 @@ const contactItems: ContactItem[] = [
 </script>
 
 <style scoped>
-/* 全局重置与动画 */
 .contact-page {
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - var(--nav-height));
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.content {
-  width: 100%;
-  max-width: 800px;
-  padding: 2rem;
+  padding-bottom: 2.5rem;
 }
 
 .contact-card {
-  border-radius: 3rem;
-  padding: 3rem 2.5rem;
+  border-radius: 2.4rem;
 }
 
 .page-title {
-  font-size: 3rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
   text-align: center;
 }
 
 .page-subtitle {
-  font-size: 1.1rem;
   margin-bottom: 2.5rem;
   text-align: center;
 }
@@ -271,19 +254,9 @@ const contactItems: ContactItem[] = [
   font-style: italic;
 }
 
-/* 移动端适应 */
 @media (max-width: 640px) {
-  .content {
-    padding: 1rem;
-  }
-
   .contact-card {
-    padding: 2rem 1.5rem;
     border-radius: 2rem;
-  }
-
-  .page-title {
-    font-size: 2.5rem;
   }
 
   .contact-grid {

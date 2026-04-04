@@ -1,32 +1,29 @@
 <template>
   <nav class="navbar" :class="{ hidden: !isVisible }">
     <div class="nav-container">
-      <!-- 左侧 Logo -->
-      <router-link to="/" class="logo">智能体安全评测</router-link>
+      <router-link :to="RouteLocation.home" class="logo">智能体安全评测</router-link>
 
-      <!-- 右侧区域：导航链接 + 用户信息（登录后显示） -->
       <div class="right-section">
-        <!-- 导航链接区域 -->
         <div class="nav-links">
-          <router-link to="/" class="nav-link" exact-active-class="active"
+          <router-link :to="RouteLocation.home" class="nav-link" exact-active-class="active"
             ><AppIcon icon="lucide:house" class="nav-link-icon" />
             <span>首页</span></router-link
           >
-          <router-link to="/dataset" class="nav-link" active-class="active"
+          <router-link :to="RouteLocation.datasetList" class="nav-link" active-class="active"
             ><AppIcon icon="lucide:database" class="nav-link-icon" />
-            <span>数据集</span></router-link
+            <span>评测目录</span></router-link
           >
-          <router-link to="/leaderboard" class="nav-link" active-class="active"
+          <router-link :to="RouteLocation.leaderboard" class="nav-link" active-class="active"
             ><AppIcon icon="lucide:trophy" class="nav-link-icon" />
             <span>排行榜</span></router-link
           >
-          <router-link to="/contact" class="nav-link" active-class="active"
+          <router-link :to="RouteLocation.contact" class="nav-link" active-class="active"
             ><AppIcon icon="lucide:mail" class="nav-link-icon" />
             <span>联系我们</span></router-link
           >
           <router-link
             v-if="isLogin"
-            to="/user"
+            :to="RouteLocation.userCenter"
             class="nav-link"
             active-class="active"
             ><AppIcon icon="lucide:layout-dashboard" class="nav-link-icon" />
@@ -34,7 +31,6 @@
           >
         </div>
 
-        <!-- 登录后显示头像和用户名 -->
         <div
           v-if="isLogin"
           class="user-info"
@@ -56,15 +52,15 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/store/user";
+import { useUserStore } from "@/store/UserStore";
 import { storeToRefs } from "pinia";
-import AppIcon from "@/components/AppIcon.vue";
+import AppIcon from "@/components/icon/AppIcon.vue";
+import { RouteLocation } from "@/router/RouteNames";
 
 const router = useRouter();
 const userStore = useUserStore();
 const { isLogin, username } = storeToRefs(userStore);
 
-// 导航栏显示状态（滚动隐藏/显示）
 const isVisible = ref(true);
 let lastScrollY = window.scrollY;
 const SCROLL_THRESHOLD = 10;
@@ -112,9 +108,8 @@ onUnmounted(() => {
   window.removeEventListener("mousemove", handleMouseMove);
 });
 
-// 跳转到修改信息页面
 const goToProfile = () => {
-  router.push("/profile");
+  router.push(RouteLocation.userProfile);
 };
 </script>
 
@@ -140,7 +135,7 @@ const goToProfile = () => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
-  height: 70px;
+  height: var(--nav-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -223,7 +218,6 @@ const goToProfile = () => {
   background: linear-gradient(90deg, #2563eb, #7c3aed);
 }
 
-/* 用户信息区域 */
 .user-info {
   display: flex;
   align-items: center;
@@ -281,7 +275,6 @@ const goToProfile = () => {
   white-space: nowrap;
 }
 
-/* 响应式调整 */
 @media (max-width: 768px) {
   .nav-container {
     padding: 0 1rem;
@@ -311,7 +304,6 @@ const goToProfile = () => {
 
   .username {
     display: none;
-    /* 小屏隐藏用户名，只保留头像 */
   }
 
   .user-info {

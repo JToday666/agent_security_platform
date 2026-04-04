@@ -1,7 +1,6 @@
 <template>
-  <div class="home-page">
+  <div class="content home-page layout-page-shell layout-page-shell--wide">
     <div class="hero">
-      <!-- 标题区域 -->
       <div class="hero-content">
         <h1 class="title">智能体安全评测平台</h1>
         <p class="subtitle">安全 · 可靠 · 专业的智能体评估系统</p>
@@ -10,12 +9,11 @@
         </p>
       </div>
 
-      <!-- 使用指南卡片 -->
       <div class="guide-card ui-surface-glass">
         <h2 class="guide-title">快速上手</h2>
         <div class="steps-grid">
           <div
-            class="step-item ui-surface-white"
+            class="step-item ui-surface-white ui-hover-card"
             v-for="(step, index) in steps"
             :key="index"
           >
@@ -26,13 +24,11 @@
         </div>
       </div>
 
-      <!-- 操作按钮区域（分两行） -->
       <div class="actions">
-        <!-- 第一行：核心功能按钮 -->
         <div class="primary-actions">
           <button class="btn primary ui-btn ui-btn-pill" @click="goDataset">
             <AppIcon icon="lucide:database" class="btn-icon" />
-            <span>浏览数据集</span>
+            <span>浏览评测目录</span>
           </button>
           <button class="btn primary ui-btn ui-btn-pill" @click="goLeaderboard">
             <AppIcon icon="lucide:trophy" class="btn-icon" />
@@ -40,7 +36,6 @@
           </button>
         </div>
 
-        <!-- 第二行：用户相关（登录/个人中心） -->
         <div class="user-actions">
           <template v-if="!isLogin">
             <button
@@ -58,7 +53,7 @@
                 >！</span
               >
               <div class="action-buttons">
-                <router-link to="/user" class="btn outline ui-btn ui-btn-pill">
+                <router-link :to="RouteLocation.userCenter" class="btn outline ui-btn ui-btn-pill">
                   <AppIcon icon="lucide:layout-dashboard" class="btn-icon" />
                   <span>个人中心</span>
                 </router-link>
@@ -77,7 +72,6 @@
     </div>
   </div>
 
-  <!-- 退出确认弹窗 -->
   <ConfirmDialog
     v-model="showLogoutConfirm"
     title="确认退出"
@@ -94,29 +88,27 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/store/user";
+import { useUserStore } from "@/store/UserStore";
 import { storeToRefs } from "pinia";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
-import AppIcon from "@/components/AppIcon.vue";
+import ConfirmDialog from "@/components/dialog/ConfirmDialog.vue";
+import AppIcon from "@/components/icon/AppIcon.vue";
+import { RouteLocation } from "@/router/RouteNames";
 
 const router = useRouter();
 const userStore = useUserStore();
 const { isLogin, username } = storeToRefs(userStore);
 
-// 步骤数据
 const steps = [
   { title: "注册/登录", desc: "创建账号或登录，开启评测之旅" },
-  { title: "提交智能体", desc: "在个人中心上传您的智能体，选择测试数据集" },
+  { title: "提交智能体", desc: "在个人中心上传您的智能体，选择风险域与评测项" },
   { title: "查看报告", desc: "获取详细评测结果，优化智能体性能" },
   { title: "登上榜单", desc: "公开您的智能体，与其他开发者一较高下" },
 ];
 
-// 页面跳转
-const goDataset = () => router.push("/dataset");
-const goLeaderboard = () => router.push("/leaderboard");
+const goDataset = () => router.push(RouteLocation.datasetList);
+const goLeaderboard = () => router.push(RouteLocation.leaderboard);
 const openLoginDialog = () => userStore.openLoginDialog();
 
-// 退出确认逻辑
 const showLogoutConfirm = ref(false);
 const logoutLoading = ref(false);
 
@@ -128,7 +120,7 @@ const handleLogoutConfirm = () => {
   logoutLoading.value = true;
   setTimeout(() => {
     userStore.logout();
-    router.push("/");
+    router.push(RouteLocation.home);
     showLogoutConfirm.value = false;
     logoutLoading.value = false;
   }, 100);
@@ -140,7 +132,6 @@ const handleLogoutCancel = () => {
 </script>
 
 <style scoped>
-/* 全局重置与动画 */
 @keyframes float {
   0%,
   100% {
@@ -153,19 +144,18 @@ const handleLogoutCancel = () => {
 }
 
 .home-page {
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - var(--nav-height));
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   width: 100%;
+  padding-bottom: 2.5rem;
 }
 
 .hero {
-  max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
-  padding: 2rem 2rem 3rem;
+  padding: 1rem 0 2rem;
   color: #1e293b;
   position: relative;
   z-index: 2;
@@ -198,7 +188,6 @@ const handleLogoutCancel = () => {
   margin: 0 auto;
 }
 
-/* 指南卡片 */
 .guide-card {
   border-radius: 3rem;
   padding: 2.5rem;
@@ -257,7 +246,6 @@ const handleLogoutCancel = () => {
   line-height: 1.5;
 }
 
-/* 操作区域 */
 .actions {
   display: flex;
   flex-direction: column;
@@ -306,7 +294,6 @@ const handleLogoutCancel = () => {
   gap: 0.8rem;
 }
 
-/* 按钮样式 */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -377,7 +364,6 @@ const handleLogoutCancel = () => {
   border-color: #ef4444;
 }
 
-/* 响应式调整 */
 @media (max-width: 768px) {
   .title {
     font-size: 2.5rem;

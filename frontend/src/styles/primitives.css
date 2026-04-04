@@ -124,61 +124,6 @@
   color: var(--color-text-main);
 }
 
-/* 玻璃卡片原语 */
-:where(
-  .contact-card,
-  .detail-card,
-  .report-card,
-  .form-card,
-  .records-card,
-  .guide-card
-) {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur-12));
-  -webkit-backdrop-filter: blur(var(--blur-12));
-  box-shadow: var(--shadow-glass-card);
-  color: var(--color-text-main);
-}
-
-/* 白色表面层原语 */
-:where(
-  .info-grid,
-  .summary-section,
-  .avatar-section,
-  .record-item,
-  .metric-item,
-  .rank-table
-) {
-  background: var(--color-white);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-}
-
-:where(
-  .info-grid,
-  .summary-section,
-  .avatar-section,
-  .record-item,
-  .metric-item,
-  .dataset-selector,
-  .file-info
-) {
-  box-shadow: var(--shadow-surface-soft);
-}
-
-/* 信息卡片 hover 原语 */
-:where(.step-item, .contact-item) {
-  background: var(--color-white);
-  border-radius: var(--radius-card-md);
-  transition: all var(--duration-base) var(--ease-spring);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  box-shadow: var(--shadow-surface-mid);
-}
-
-:where(.step-item:hover, .contact-item:hover) {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-surface-hover);
-}
-
 /* 返回按钮原语 */
 :where(.back-btn) {
   background: transparent;
@@ -198,32 +143,4 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: var(--shadow-title);
-}
-
-/* 渐变主按钮原语 */
-:where(
-  .view-btn,
-  .filter-btn,
-  .download-btn,
-  .upload-label,
-  .records-card .btn,
-  .form-card .submit-btn,
-  .confirm-card .confirm,
-  .btn.accent
-) {
-  background: var(--grad-primary);
-  color: var(--color-white);
-  box-shadow: var(--shadow-primary-btn);
-}
-
-:where(
-  .view-btn:hover,
-  .filter-btn:hover,
-  .download-btn:hover,
-  .upload-label:hover,
-  .records-card .btn:hover,
-  .form-card .submit-btn:hover:not(:disabled),
-  .confirm-card .confirm:hover:not(:disabled)
-) {
-  box-shadow: var(--shadow-primary-btn-hover);
 }

@@ -5,15 +5,14 @@
         v-if="showLogin"
         class="dialog-overlay ui-modal-overlay"
         @click.self="closeDialog"
+        @keydown.esc="closeDialog"
       >
         <Transition name="scale" appear>
           <div class="dialog-card ui-modal-card">
-            <!-- 关闭按钮 -->
             <button class="close-btn" @click="closeDialog" aria-label="关闭">
               <AppIcon icon="lucide:x" class="close-icon" />
             </button>
 
-            <!-- 标题 & 装饰 -->
             <div class="header">
               <div class="logo-wrapper">
                 <AppIcon icon="lucide:shield-check" class="logo-icon" />
@@ -28,7 +27,6 @@
               </p>
             </div>
 
-            <!-- 登录表单 -->
             <form
               v-if="mode === 'login'"
               @submit.prevent="handleLogin"
@@ -63,7 +61,6 @@
                 />
               </div>
 
-              <!-- 密码长度提示 -->
               <div
                 v-if="loginForm.password && loginForm.password.length < 6"
                 class="error-message"
@@ -91,7 +88,6 @@
               </button>
             </form>
 
-            <!-- 注册表单 -->
             <form v-else @submit.prevent="handleRegister" class="form">
               <div
                 class="form-group"
@@ -144,7 +140,6 @@
                   @blur="focusedField = null"
                 />
               </div>
-              <!-- 密码长度提示 -->
               <div
                 v-if="registerForm.password && registerForm.password.length < 6"
                 class="error-message"
@@ -195,7 +190,6 @@
               </button>
             </form>
 
-            <!-- 切换模式链接 -->
             <div class="switch-mode">
               <a href="#" @click.prevent="toggleMode">
                 <span v-if="mode === 'register'">← 已有账号？</span>
@@ -215,10 +209,13 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
-import { useUserStore } from "@/store/user";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/UserStore";
 import { storeToRefs } from "pinia";
-import AppIcon from "@/components/AppIcon.vue";
+import AppIcon from "@/components/icon/AppIcon.vue";
+import { RouteLocation } from "@/router/RouteNames";
 
+const router = useRouter();
 const userStore = useUserStore();
 const { showLogin } = storeToRefs(userStore);
 
@@ -241,7 +238,6 @@ const registerForm = reactive({
 const registerError = ref("");
 
 const afterLeave = () => {
-  // 重置所有状态
   loginForm.username = "";
   loginForm.password = "";
   registerForm.username = "";
@@ -264,12 +260,10 @@ const toggleMode = () => {
   registerError.value = "";
 };
 
-// 登录表单验证：用户名不为空，密码长度 >=6
 const isLoginValid = computed(() => {
   return loginForm.username.trim() !== "" && loginForm.password.length >= 6;
 });
 
-// 密码一致错误
 const passwordMatchError = computed(() => {
   if (registerForm.password && registerForm.confirmPassword) {
     return registerForm.password !== registerForm.confirmPassword
@@ -279,7 +273,6 @@ const passwordMatchError = computed(() => {
   return "";
 });
 
-// 注册表单验证
 const isRegisterValid = computed(() => {
   const normalizedUsername = registerForm.username.trim();
   return (
@@ -297,6 +290,7 @@ const handleLogin = async () => {
     loginError.value = "密码长度至少6位";
     return;
   }
+
   loading.value = true;
   loginError.value = "";
   try {
@@ -306,8 +300,10 @@ const handleLogin = async () => {
     );
     if (success) {
       closeDialog();
+      const redirect = userStore.consumePostLoginRedirect() || RouteLocation.userCenter;
+      await router.push(redirect);
     } else {
-      loginError.value = "登录失败，请稍后重试"; // 实际上异常会被 catch
+      loginError.value = "登录失败，请稍后重试";
     }
   } catch (error: any) {
     loginError.value = error.message || "用户名/邮箱或密码错误";
@@ -339,6 +335,8 @@ const handleRegister = async () => {
     });
     if (success) {
       closeDialog();
+      const redirect = userStore.consumePostLoginRedirect() || RouteLocation.userCenter;
+      await router.push(redirect);
     } else {
       registerError.value = "注册失败，请稍后重试";
     }
@@ -351,7 +349,6 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-/* 过渡动画 */
 .shake-enter-active {
   animation: shake 0.3s ease;
 }

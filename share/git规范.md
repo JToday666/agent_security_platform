@@ -20,6 +20,7 @@
 - 任何合并都要写详细的提交信息，如实现的功能、改bug等等
 - 在dev实现阶段任务后将同步至main分支
 - share文件夹为共享文件夹，可以把任务分配、to-do list、临时详细、共享资料等等放在里面，但是不要放大文件
+- 仓库中的文本文件统一使用 UTF-8 无 BOM 编码，行尾统一使用 CRLF
 
 ## 处理流
 
@@ -67,7 +68,7 @@ git clone -b dev https://github.com/JToday666/agent_security_platform.git
 - refactor: ... 重构不改行为
 - chore: ... 杂项（依赖、脚手架）
 
-> ***一个 commit 只做一件事***（不混改）。
+> **_一个 commit 只做一件事_**（不混改）。
 
 ### 协作工作流
 
@@ -132,7 +133,7 @@ git push origin feature/xxx
 git checkout dev
 ```
 
-合并有多种方式：merge（合并）、squash（压缩）、rebase（变基）  
+合并有多种方式：merge（合并）、squash（压缩）、rebase（变基）
 
 ```shell
 git merge --squash feature/xxx
