@@ -1,4 +1,4 @@
-import request from "@/utils/Request";
+import request from "@/utils/request";
 import { ApiConfig } from "@/api/Config";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import type {
@@ -25,10 +25,13 @@ import {
 import { buildSubmitAgentApiPayload } from "@/api/adapters/DatasetAdapters";
 import {
   getReferenceDatasetIds,
-  getReferenceDatasetNameMap,
   referenceEvaluationRecords,
   referenceSubmitMeta,
 } from "@/api/fixtures/DatasetFixtures";
+import {
+  resolvePublicDatasetName,
+  resolvePublicDatasetNames,
+} from "@/utils/common";
 import {
   MAX_SUBMIT_DATASET_COUNT,
   validateSubmitPayload,
@@ -90,7 +93,6 @@ const MOCK_CANCEL_DELAY_MS = 800;
 const PAUSE_TIMEOUT_MS = 60 * 60 * 1000;
 const useLiveSubmissionApi = ApiConfig.submission.useLive;
 const useLiveReferenceApi = ApiConfig.reference.useLive;
-const referenceDatasetNameMap = getReferenceDatasetNameMap();
 
 const nowIso = (): string => new Date().toISOString();
 const toTimestamp = (value: string): number => new Date(value).getTime();
@@ -104,6 +106,72 @@ const createServiceError = (message: string, code?: number): ServiceError => {
 
 const createSubmitMetaError = (): Error =>
   new Error("submit-meta 响应结构不符合新协议，请确认后端仅返回扁平结构。");
+
+const escapeRegex = (value: string): string =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const sanitizeStatusText = (
+  statusText: string,
+  datasetId: string | null,
+  datasetName: string | null,
+): string => {
+  if (!statusText || !datasetId || !datasetName || datasetId === datasetName) {
+    return statusText;
+  }
+
+  const escapedDatasetId = escapeRegex(datasetId);
+  const escapedDatasetName = escapeRegex(datasetName);
+  const pairedPatterns = [
+    new RegExp(`${escapedDatasetId}（${escapedDatasetName}）`, "g"),
+    new RegExp(`${escapedDatasetId}\\(${escapedDatasetName}\\)`, "g"),
+  ];
+
+  const sanitized = pairedPatterns.reduce(
+    (currentText, pattern) => currentText.replace(pattern, datasetName),
+    statusText,
+  );
+
+  return sanitized.replace(new RegExp(escapedDatasetId, "g"), datasetName);
+};
+
+const sanitizeEvaluationRecord = (
+  record: EvaluationRecord,
+): EvaluationRecord => ({
+  ...record,
+  datasetNames: resolvePublicDatasetNames(
+    record.datasetIds,
+    record.datasetNames,
+  ),
+});
+
+const sanitizeEvaluationDetail = (
+  detail: EvaluationDetail,
+): EvaluationDetail => {
+  const datasetNames = resolvePublicDatasetNames(
+    detail.datasetIds,
+    detail.datasetNames,
+  );
+  const runningDatasetName = detail.progress.runningDatasetId
+    ? resolvePublicDatasetName(
+        detail.progress.runningDatasetId,
+        detail.progress.runningDatasetName,
+      )
+    : detail.progress.runningDatasetName;
+
+  return {
+    ...detail,
+    datasetNames,
+    progress: {
+      ...detail.progress,
+      runningDatasetName,
+      statusText: sanitizeStatusText(
+        detail.progress.statusText,
+        detail.progress.runningDatasetId,
+        runningDatasetName,
+      ),
+    },
+  };
+};
 
 const ensureSubmitMeta = (payload: unknown): SubmitMetaResponse => {
   if (!payload || typeof payload !== "object") {
@@ -354,7 +422,10 @@ const buildProgress = (
       ? (record.datasetIds[completedDatasetCount] ?? null)
       : null;
   const runningDatasetName = runningDatasetId
-    ? (record.datasetNames[completedDatasetCount] ?? runningDatasetId)
+    ? resolvePublicDatasetName(
+        runningDatasetId,
+        record.datasetNames[completedDatasetCount],
+      )
     : null;
 
   let percent = Math.round((completedDatasetCount / totalDatasetCount) * 100);
@@ -593,7 +664,10 @@ const buildResolvedStateFromStored = (
     status: record.status,
     publicToLeaderboard: record.publicToLeaderboard,
     datasetIds: record.datasetIds,
-    datasetNames: record.datasetNames,
+    datasetNames: resolvePublicDatasetNames(
+      record.datasetIds,
+      record.datasetNames,
+    ),
     submitMethod: record.submitMethod,
     score: record.score,
     ownerName: record.ownerName,
@@ -629,7 +703,10 @@ const buildResolvedStateFromReference = (
     status: record.status,
     publicToLeaderboard: record.publicToLeaderboard,
     datasetIds: record.datasetIds,
-    datasetNames: record.datasetNames,
+    datasetNames: resolvePublicDatasetNames(
+      record.datasetIds,
+      record.datasetNames,
+    ),
     submitMethod: record.submitMethod,
     score: record.score,
     ownerName: record.ownerName,
@@ -861,9 +938,7 @@ export const submitAgent = async (
     status: "pending",
     publicToLeaderboard: payload.publicToLeaderboard,
     datasetIds,
-    datasetNames: datasetIds.map(
-      (item) => referenceDatasetNameMap.get(item) ?? item,
-    ),
+    datasetNames: resolvePublicDatasetNames(datasetIds),
     submitMethod: payload.submitMethod,
     score: null,
     ownerName: "当前用户",
@@ -902,13 +977,13 @@ export const getEvaluationRecords = async (): Promise<EvaluationRecord[]> => {
       );
     }
 
-    return response.data;
+    return response.data.map(sanitizeEvaluationRecord);
   }
 
   const result = await resolveMockEnvelope(
     createSuccessEnvelope(getMergedRecords()),
   );
-  return result.data;
+  return result.data.map(sanitizeEvaluationRecord);
 };
 
 export const getEvaluationDetail = async (
@@ -926,7 +1001,7 @@ export const getEvaluationDetail = async (
       );
     }
 
-    return response.data;
+    return sanitizeEvaluationDetail(response.data);
   }
 
   const storedRecord = getStoredRecordById(evaluationId);
@@ -936,7 +1011,7 @@ export const getEvaluationDetail = async (
         toEvaluationDetail(buildResolvedStateFromStored(storedRecord)),
       ),
     );
-    return result.data;
+    return sanitizeEvaluationDetail(result.data);
   }
 
   const referenceRecord = referenceEvaluationRecords.find(
@@ -948,7 +1023,7 @@ export const getEvaluationDetail = async (
         toEvaluationDetail(buildResolvedStateFromReference(referenceRecord)),
       ),
     );
-    return result.data;
+    return sanitizeEvaluationDetail(result.data);
   }
 
   const result = await resolveMockEnvelope(
@@ -974,7 +1049,7 @@ export const postEvaluationAction = async (
       );
     }
 
-    return response.data;
+    return sanitizeEvaluationDetail(response.data);
   }
 
   const storedRecord = getStoredRecordById(evaluationId);
@@ -1036,5 +1111,5 @@ export const postEvaluationAction = async (
     ),
     { delay: 420 },
   );
-  return result.data;
+  return sanitizeEvaluationDetail(result.data);
 };

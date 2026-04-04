@@ -35,6 +35,7 @@ lerna-debug.log*
 /frontend/dist-ssr
 /frontend/coverage
 /frontend/*.local
+/frontend/scripts
 
 # Editor directories and files
 *.suo

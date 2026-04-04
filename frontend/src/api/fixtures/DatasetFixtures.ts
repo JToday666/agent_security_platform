@@ -12,7 +12,7 @@ import type {
   ReferenceDatasetSeed,
 } from "@/constants/DatasetTaxonomy";
 import { REFERENCE_DATASET_TAXONOMY } from "@/constants/DatasetTaxonomy";
-import { getCategoryTheme } from "@/utils/common";
+import { getCategoryTheme, resolvePublicDatasetNames } from "@/utils/common";
 
 interface DifficultyRange {
   min: number;
@@ -233,19 +233,8 @@ export const referenceSubmitMeta: SubmitMetaResponse = {
 
 const buildCatalogCategory = (
   category: CategoryFixture,
-  difficulty?: number,
 ): DatasetCategory | null => {
-  const datasets = category.datasets.filter((item) => {
-    if (typeof difficulty !== "number") {
-      return item.enabled;
-    }
-
-    return (
-      item.enabled &&
-      item.difficultyRange.min <= difficulty &&
-      item.difficultyRange.max >= difficulty
-    );
-  });
+  const datasets = category.datasets.filter((item) => item.enabled);
 
   if (!category.enabled || datasets.length === 0) {
     return null;
@@ -273,11 +262,9 @@ const buildCatalogCategory = (
   };
 };
 
-export const buildReferenceDatasetCatalog = (
-  difficulty?: number,
-): DatasetCatalogResponse => {
+export const buildReferenceDatasetCatalog = (): DatasetCatalogResponse => {
   const categories = referenceCategories
-    .map((category) => buildCatalogCategory(category, difficulty))
+    .map((category) => buildCatalogCategory(category))
     .filter((category): category is DatasetCategory => category !== null);
 
   return {
@@ -323,8 +310,8 @@ export const getReferenceDatasetDetail = (
   return null;
 };
 
-export const getReferenceDatasetIds = (difficulty?: number): string[] =>
-  buildReferenceDatasetCatalog(difficulty).categories.flatMap((category) =>
+export const getReferenceDatasetIds = (): string[] =>
+  buildReferenceDatasetCatalog().categories.flatMap((category) =>
     category.subcategories.map((item) => item.datasetId),
   );
 
@@ -334,8 +321,6 @@ export const getReferenceDatasetNameMap = (): Map<string, string> =>
       category.datasets.map((item) => [item.datasetId, item.name] as const),
     ),
   );
-
-const datasetNameMap = getReferenceDatasetNameMap();
 
 export const referenceEvaluationRecords: EvaluationRecord[] = [
   {
@@ -350,9 +335,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: true,
     datasetIds: ["A1", "B3", "E1"],
-    datasetNames: ["A1", "B3", "E1"].map(
-      (item) => datasetNameMap.get(item) ?? item,
-    ),
+    datasetNames: resolvePublicDatasetNames(["A1", "B3", "E1"]),
     submitMethod: "api",
     score: 94.2,
     ownerName: "张岚",
@@ -374,9 +357,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: false,
     datasetIds: ["C4", "D1", "G1"],
-    datasetNames: ["C4", "D1", "G1"].map(
-      (item) => datasetNameMap.get(item) ?? item,
-    ),
+    datasetNames: resolvePublicDatasetNames(["C4", "D1", "G1"]),
     submitMethod: "docker",
     score: 92.8,
     ownerName: "周衡",
@@ -398,9 +379,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: true,
     datasetIds: ["F2", "F6", "G2"],
-    datasetNames: ["F2", "F6", "G2"].map(
-      (item) => datasetNameMap.get(item) ?? item,
-    ),
+    datasetNames: resolvePublicDatasetNames(["F2", "F6", "G2"]),
     submitMethod: "api",
     score: 90.6,
     ownerName: "林澈",
@@ -422,9 +401,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: true,
     datasetIds: ["A5", "D3", "C2", "E4"],
-    datasetNames: ["A5", "D3", "C2", "E4"].map(
-      (item) => datasetNameMap.get(item) ?? item,
-    ),
+    datasetNames: resolvePublicDatasetNames(["A5", "D3", "C2", "E4"]),
     submitMethod: "docker",
     score: 93.1,
     ownerName: "许闻",

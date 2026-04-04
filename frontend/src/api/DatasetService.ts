@@ -1,4 +1,4 @@
-import request from "@/utils/Request";
+import request from "@/utils/request";
 import { ApiConfig } from "@/api/Config";
 import type {
   DatasetCatalogResponse,
@@ -13,12 +13,9 @@ import {
 import {
   buildReferenceDatasetCatalog,
   getReferenceDatasetDetail,
-  referenceSubmitMeta,
 } from "@/api/fixtures/DatasetFixtures";
-import { isStepAligned } from "@/utils/submit";
 
 interface DatasetCatalogRequestOptions {
-  difficulty?: number;
   signal?: AbortSignal;
 }
 
@@ -41,32 +38,15 @@ const createDatasetServiceError = (
 
 const useLiveReferenceApi = ApiConfig.reference.useLive;
 
-const validateDifficulty = (difficulty?: number) => {
-  if (typeof difficulty !== "number") {
-    return;
-  }
-
-  const meta = referenceSubmitMeta.difficulty;
-  const outOfRange = difficulty < meta.min || difficulty > meta.max;
-
-  if (outOfRange || !isStepAligned(difficulty, meta)) {
-    throw new Error("参数超出允许范围。");
-  }
-};
-
 export const getDatasetCatalog = async (
   options: DatasetCatalogRequestOptions = {},
 ): Promise<DatasetCatalogResponse> => {
-  const { difficulty, signal } = options;
+  const { signal } = options;
 
   if (useLiveReferenceApi) {
     const response = await request.get<DatasetCatalogResponse>(
       "/datasets/catalog",
       {
-        params:
-          typeof difficulty === "number"
-            ? { difficulty: difficulty.toFixed(1) }
-            : undefined,
         signal,
       },
     );
@@ -81,8 +61,6 @@ export const getDatasetCatalog = async (
     return response.data;
   }
 
-  validateDifficulty(difficulty);
-
   if (shouldMockFail("mockCatalogError")) {
     const result = await resolveMockEnvelope(
       createErrorEnvelope(50000, "目录加载失败，请稍后重试。", {
@@ -96,7 +74,7 @@ export const getDatasetCatalog = async (
   }
 
   const result = await resolveMockEnvelope(
-    createSuccessEnvelope(buildReferenceDatasetCatalog(difficulty)),
+    createSuccessEnvelope(buildReferenceDatasetCatalog()),
   );
 
   return result.data;

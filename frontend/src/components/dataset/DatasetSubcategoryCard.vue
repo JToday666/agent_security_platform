@@ -6,7 +6,6 @@
   >
     <div class="card-top">
       <span class="category-badge" :style="badgeStyle">{{ category.name }}</span>
-      <span class="dataset-id">{{ dataset.datasetId }}</span>
     </div>
 
     <h3 class="dataset-name">{{ dataset.name }}</h3>
@@ -107,17 +106,11 @@ const badgeStyle = computed(() => {
   gap: 0.75rem;
 }
 
-.category-badge,
-.dataset-id {
+.category-badge {
   border-radius: 999px;
   padding: 0.34rem 0.7rem;
   font-size: 0.8rem;
   font-weight: 600;
-}
-
-.dataset-id {
-  background: #f8fafc;
-  color: #64748b;
 }
 
 .dataset-name {
