@@ -13,6 +13,8 @@
 ~$*
 # Ignore AGENTS.md file
 AGENTS.md
+# Ignore Codex files
+.codex
 
 # backend
 /backend/.env

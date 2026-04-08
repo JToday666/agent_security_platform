@@ -1,8 +1,8 @@
-"""add_benchmark_sample_tables
+"""create_benchmark_samples_and_oracles
 
-Revision ID: b7c2f9d1a8e4
-Revises: 6dbccc598a4b
-Create Date: 2026-03-27 14:30:00.000000
+Revision ID: 91e6a8d2c3f4
+Revises: 50bfe4200b1a
+Create Date: 2026-04-08 10:05:00.000000
 """
 
 from typing import Sequence, Union
@@ -13,88 +13,13 @@ from sqlalchemy.dialects import postgresql
 
 
 # revision identifiers, used by Alembic.
-revision: str = "b7c2f9d1a8e4"
-down_revision: Union[str, Sequence[str], None] = "6dbccc598a4b"
+revision: str = "91e6a8d2c3f4"
+down_revision: Union[str, Sequence[str], None] = "50bfe4200b1a"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.create_table(
-        "dataset_sources",
-        sa.Column("id", sa.SmallInteger(), nullable=False),
-        sa.Column("code", sa.Text(), nullable=False),
-        sa.Column("name", sa.Text(), nullable=False),
-        sa.Column("description", sa.Text(), nullable=True),
-        sa.Column("is_active", sa.Boolean(), server_default=sa.text("true"), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
-        sa.PrimaryKeyConstraint("id", name=op.f("pk_dataset_sources")),
-    )
-    op.create_index(op.f("ix_dataset_sources_code"), "dataset_sources", ["code"], unique=True)
-
-    op.create_table(
-        "attack_delivery_types",
-        sa.Column("id", sa.SmallInteger(), nullable=False),
-        sa.Column("code", sa.Text(), nullable=False),
-        sa.Column("name", sa.Text(), nullable=False),
-        sa.Column("description", sa.Text(), nullable=True),
-        sa.Column("is_active", sa.Boolean(), server_default=sa.text("true"), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
-        sa.PrimaryKeyConstraint("id", name=op.f("pk_attack_delivery_types")),
-    )
-    op.create_index(
-        op.f("ix_attack_delivery_types_code"),
-        "attack_delivery_types",
-        ["code"],
-        unique=True,
-    )
-
-    op.create_table(
-        "risk_categories",
-        sa.Column("id", sa.SmallInteger(), nullable=False),
-        sa.Column("code", sa.Text(), nullable=False),
-        sa.Column("name", sa.Text(), nullable=False),
-        sa.Column("description", sa.Text(), nullable=True),
-        sa.Column("sort_order", sa.SmallInteger(), nullable=True),
-        sa.Column("is_active", sa.Boolean(), server_default=sa.text("true"), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
-        sa.PrimaryKeyConstraint("id", name=op.f("pk_risk_categories")),
-    )
-    op.create_index(op.f("ix_risk_categories_code"), "risk_categories", ["code"], unique=True)
-    op.create_index(op.f("ix_risk_categories_sort_order"), "risk_categories", ["sort_order"], unique=False)
-
-    op.create_table(
-        "asset_types",
-        sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("code", sa.Text(), nullable=False),
-        sa.Column("name", sa.Text(), nullable=False),
-        sa.Column("description", sa.Text(), nullable=True),
-        sa.Column("is_active", sa.Boolean(), server_default=sa.text("true"), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
-        sa.PrimaryKeyConstraint("id", name=op.f("pk_asset_types")),
-    )
-    op.create_index(op.f("ix_asset_types_code"), "asset_types", ["code"], unique=True)
-
-    op.create_table(
-        "risk_subtypes",
-        sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("category_id", sa.SmallInteger(), nullable=False),
-        sa.Column("code", sa.Text(), nullable=False),
-        sa.Column("name", sa.Text(), nullable=False),
-        sa.Column("description", sa.Text(), nullable=True),
-        sa.Column("sort_order", sa.SmallInteger(), nullable=True),
-        sa.Column("is_active", sa.Boolean(), server_default=sa.text("true"), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
-        sa.ForeignKeyConstraint(
-            ["category_id"],
-            ["risk_categories.id"],
-            name=op.f("fk_risk_subtypes_category_id_risk_categories"),
-        ),
-        sa.PrimaryKeyConstraint("id", name=op.f("pk_risk_subtypes")),
-        sa.UniqueConstraint("category_id", "code", name=op.f("uq_risk_subtypes_category_id")),
-    )
-    op.create_index(op.f("ix_risk_subtypes_category_id"), "risk_subtypes", ["category_id"], unique=False)
-
     op.create_table(
         "benchmark_samples",
         sa.Column("id", sa.BigInteger(), nullable=False),
@@ -110,12 +35,23 @@ def upgrade() -> None:
         sa.Column("risk_subtype_id", sa.Integer(), nullable=False),
         sa.Column("risk_level", sa.SmallInteger(), nullable=False),
         sa.Column("attack_level", sa.SmallInteger(), nullable=False),
+        sa.Column("difficulty_seed", sa.Numeric(4, 3), nullable=False),
+        sa.Column("difficulty_score", sa.Numeric(4, 3), nullable=False),
+        sa.Column("difficulty_updated_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column("asset_type_id", sa.Integer(), nullable=True),
         sa.Column("expected_safe_behavior", sa.Text(), nullable=False),
         sa.Column("is_active", sa.Boolean(), server_default=sa.text("true"), nullable=False),
         sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
         sa.CheckConstraint("attack_level IN (1, 2, 3)", name=op.f("ck_benchmark_samples_attack_level_range")),
+        sa.CheckConstraint(
+            "difficulty_score >= 0 AND difficulty_score <= 1",
+            name=op.f("ck_benchmark_samples_difficulty_score_range"),
+        ),
+        sa.CheckConstraint(
+            "difficulty_seed >= 0 AND difficulty_seed <= 1",
+            name=op.f("ck_benchmark_samples_difficulty_seed_range"),
+        ),
         sa.CheckConstraint("risk_level IN (1, 2, 3)", name=op.f("ck_benchmark_samples_risk_level_range")),
         sa.ForeignKeyConstraint(
             ["asset_type_id"],
@@ -170,7 +106,24 @@ def upgrade() -> None:
         ["dataset_source_id", "is_active"],
         unique=False,
     )
-    op.create_index(op.f("ix_benchmark_samples_is_active"), "benchmark_samples", ["is_active"], unique=False)
+    op.create_index(
+        op.f("ix_benchmark_samples_difficulty_score"),
+        "benchmark_samples",
+        ["difficulty_score"],
+        unique=False,
+    )
+    op.create_index(
+        op.f("ix_benchmark_samples_is_active"),
+        "benchmark_samples",
+        ["is_active"],
+        unique=False,
+    )
+    op.create_index(
+        "ix_benchmark_samples_is_active_difficulty_score",
+        "benchmark_samples",
+        ["is_active", "difficulty_score"],
+        unique=False,
+    )
     op.create_index(
         op.f("ix_benchmark_samples_risk_level"),
         "benchmark_samples",
@@ -241,7 +194,12 @@ def downgrade() -> None:
     )
     op.drop_index(op.f("ix_benchmark_samples_risk_subtype_id"), table_name="benchmark_samples")
     op.drop_index(op.f("ix_benchmark_samples_risk_level"), table_name="benchmark_samples")
+    op.drop_index(
+        "ix_benchmark_samples_is_active_difficulty_score",
+        table_name="benchmark_samples",
+    )
     op.drop_index(op.f("ix_benchmark_samples_is_active"), table_name="benchmark_samples")
+    op.drop_index(op.f("ix_benchmark_samples_difficulty_score"), table_name="benchmark_samples")
     op.drop_index("ix_benchmark_samples_dataset_source_id_is_active", table_name="benchmark_samples")
     op.drop_index(op.f("ix_benchmark_samples_dataset_source_id"), table_name="benchmark_samples")
     op.drop_index(op.f("ix_benchmark_samples_attack_level"), table_name="benchmark_samples")
@@ -251,19 +209,3 @@ def downgrade() -> None:
     )
     op.drop_index(op.f("ix_benchmark_samples_asset_type_id"), table_name="benchmark_samples")
     op.drop_table("benchmark_samples")
-
-    op.drop_index(op.f("ix_risk_subtypes_category_id"), table_name="risk_subtypes")
-    op.drop_table("risk_subtypes")
-
-    op.drop_index(op.f("ix_asset_types_code"), table_name="asset_types")
-    op.drop_table("asset_types")
-
-    op.drop_index(op.f("ix_risk_categories_sort_order"), table_name="risk_categories")
-    op.drop_index(op.f("ix_risk_categories_code"), table_name="risk_categories")
-    op.drop_table("risk_categories")
-
-    op.drop_index(op.f("ix_attack_delivery_types_code"), table_name="attack_delivery_types")
-    op.drop_table("attack_delivery_types")
-
-    op.drop_index(op.f("ix_dataset_sources_code"), table_name="dataset_sources")
-    op.drop_table("dataset_sources")

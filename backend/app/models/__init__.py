@@ -9,6 +9,16 @@ from .benchmark import (
     RiskSubtype,
     SampleOracle,
 )
+from .benchmark_run import (
+    ExecutionArtifact,
+    ExecutionSummary,
+    OracleResult,
+    RunReport,
+    RunSample,
+    SampleDifficultyStat,
+    SampleExecution,
+    TestRun,
+)
 from .user import User
 
 __all__ = [
@@ -16,8 +26,16 @@ __all__ = [
     "AttackDeliveryType",
     "BenchmarkSample",
     "DatasetSource",
+    "ExecutionArtifact",
+    "ExecutionSummary",
+    "OracleResult",
     "RiskCategory",
     "RiskSubtype",
+    "RunReport",
+    "RunSample",
+    "SampleDifficultyStat",
+    "SampleExecution",
     "SampleOracle",
+    "TestRun",
     "User",
 ]

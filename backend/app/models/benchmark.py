@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 
 from sqlalchemy import (
     BigInteger,
@@ -8,6 +9,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    Numeric,
     SmallInteger,
     Text,
     UniqueConstraint,
@@ -112,6 +114,14 @@ class BenchmarkSample(Base):
         UniqueConstraint("dataset_source_id", "sample_id"),
         CheckConstraint("risk_level IN (1, 2, 3)", name="risk_level_range"),
         CheckConstraint("attack_level IN (1, 2, 3)", name="attack_level_range"),
+        CheckConstraint(
+            "difficulty_seed >= 0 AND difficulty_seed <= 1",
+            name="difficulty_seed_range",
+        ),
+        CheckConstraint(
+            "difficulty_score >= 0 AND difficulty_score <= 1",
+            name="difficulty_score_range",
+        ),
         Index(
             "ix_benchmark_samples_risk_subtype_id_risk_level_attack_level",
             "risk_subtype_id",
@@ -122,6 +132,11 @@ class BenchmarkSample(Base):
             "ix_benchmark_samples_dataset_source_id_is_active",
             "dataset_source_id",
             "is_active",
+        ),
+        Index(
+            "ix_benchmark_samples_is_active_difficulty_score",
+            "is_active",
+            "difficulty_score",
         ),
     )
 
@@ -153,6 +168,16 @@ class BenchmarkSample(Base):
     )
     risk_level: Mapped[int] = mapped_column(SmallInteger, nullable=False, index=True)
     attack_level: Mapped[int] = mapped_column(SmallInteger, nullable=False, index=True)
+    difficulty_seed: Mapped[Decimal] = mapped_column(Numeric(4, 3), nullable=False)
+    difficulty_score: Mapped[Decimal] = mapped_column(
+        Numeric(4, 3),
+        nullable=False,
+        index=True,
+    )
+    difficulty_updated_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
     asset_type_id: Mapped[int | None] = mapped_column(
         Integer,
         ForeignKey("asset_types.id"),
