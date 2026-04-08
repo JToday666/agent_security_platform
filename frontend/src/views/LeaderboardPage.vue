@@ -3,7 +3,7 @@
     <PageHeroCard
       eyebrow="公开榜单"
       title="智能体排行榜"
-      description="展示公开智能体在典型评测项上的表现，当前榜单数据由稳定 mock 数据驱动，便于后续无缝切换真实接口。"
+      description="查看公开智能体在典型评测项上的表现，并按评测项或提交方式快速筛选结果。"
       :chips="heroChips"
     />
 

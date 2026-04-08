@@ -3,7 +3,7 @@
     <div class="tree-header">
       <div>
         <h3>评测目录 <span class="required-mark">*</span></h3>
-        <p>展示当前可用的风险域与评测项，仅保留当前仍有效的已选结果。</p>
+        <p>选择本次要覆盖的风险域和评测项，已选内容会汇总到本次提交任务中。</p>
       </div>
       <div class="header-actions">
         <button

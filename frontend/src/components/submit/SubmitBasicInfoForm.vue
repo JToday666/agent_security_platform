@@ -1,7 +1,7 @@
 <template>
   <SubmitSection
     title="智能体信息"
-    description="基础信息和提交通道字段都会在正式提交前经过本地校验和预检查。"
+    description="填写智能体名称、简介和接入信息，便于平台识别能力范围并发起评测。"
   >
     <div class="grid-auto-fit">
       <FormField
