@@ -1,54 +1,44 @@
-# 用户信息接口文档
+# 用户接口
 
-## 基本信息
+## 1. 文档目标
 
-- **基础路径**：`/api`
-- **请求/响应格式**：JSON（头像上传接口除外，使用 `multipart/form-data`）
-- **字符编码**：UTF-8
-- **认证方式**：除登录、注册外，其他接口需在请求头中携带 `Authorization: Bearer <token>`
+本文档定义当前前后端已经对齐的用户相关接口契约。
+对应后端实现位于：
 
-## 通用响应格式
+- `backend/app/api/v1/endpoints/auth.py`
+- `backend/app/api/v1/endpoints/user.py`
 
-### 成功响应
+统一响应与错误码主表见 [backend/docs/05-规范/响应与错误码约定.md](../backend/docs/05-规范/响应与错误码约定.md)。
 
-```json
-{
-  "code": 0,
-  "data": { ... },   // 具体数据，可能为对象或数组
-  "message": "success"
-}
-```
+## 2. 通用约定
 
-### 失败响应
+- Base URL：`/api/v1`
+- 除头像上传接口外，请求与响应均使用 JSON
+- 除注册、登录外，其余接口需携带 `Authorization: Bearer <token>`
+- 业务成功与业务失败统一返回 `{ code, data, message }`
 
-```json
-{
-  "code": 非0整数,
-  "message": "错误描述",
-  "data": null
-}
-```
+兼容性说明：
 
----
+- 当前业务层错误已统一返回 `{ code, data, message }`
+- 请求体结构错误、字段类型错误、部分 schema 校验错误目前仍可能返回 FastAPI/Pydantic 默认 `422` 响应，前端不应把它误当成业务成功
 
-## 接口列表
+## 3. 接口列表
 
-### 1. 用户登录
+### 3.1 用户登录
 
-- **URL**：`/auth/login`
-- **方法**：`POST`
-- **描述**：支持用户名或邮箱登录。
+- 路由：`POST /api/v1/auth/login`
+- 说明：支持用户名或邮箱登录
 
-#### 请求体
+请求体示例：
 
 ```json
 {
-  "username": "string", // 用户名或邮箱
-  "password": "string" // 密码（至少6位）
+  "username": "alice",
+  "password": "123456"
 }
 ```
 
-#### 成功响应（`code=0`）
+成功响应示例：
 
 ```json
 {
@@ -57,43 +47,36 @@
     "token": "eyJhbGciOiJIUzI1NiIs...",
     "user": {
       "id": 1,
-      "username": "john_doe",
-      "email": "john@example.com",
-      "avatarUrl": "https://example.com/avatars/1.jpg"
+      "username": "alice",
+      "email": "alice@example.com",
+      "avatarUrl": null
     }
   },
   "message": "success"
 }
 ```
 
-#### 失败响应
+业务失败示例：
 
-| 错误场景          | HTTP状态码 | 响应示例                                                                  |
-| ----------------- | ---------- | ------------------------------------------------------------------------- |
-| 用户名/邮箱不存在 | 401        | `json { "code": 1001, "message": "用户名或密码错误", "data": null } `     |
-| 密码错误          | 401        | `json { "code": 1001, "message": "用户名或密码错误", "data": null } `     |
-| 请求参数缺失      | 400        | `json { "code": 1000, "message": "用户名和密码不能为空", "data": null } ` |
-| 密码长度不足6位   | 400        | `json { "code": 1000, "message": "密码长度至少6位", "data": null } `      |
+- 用户名或密码错误：`401` + `{"code":1001,"data":null,"message":"用户名或密码错误"}`
+- 用户名仅包含空白字符：`400` + `{"code":1000,"data":null,"message":"用户名和密码不能为空"}`
 
----
+### 3.2 用户注册
 
-### 2. 用户注册
+- 路由：`POST /api/v1/auth/register`
+- 说明：注册成功后直接返回 token 与用户信息
 
-- **URL**：`/auth/register`
-- **方法**：`POST`
-- **描述**：新用户注册，注册成功后自动登录，返回 token 和用户信息。
-
-#### 请求体
+请求体示例：
 
 ```json
 {
-  "username": "string", // 用户名（唯一）
-  "email": "string", // 邮箱（唯一）
-  "password": "string" // 密码（至少6位）
+  "username": "alice",
+  "email": "alice@example.com",
+  "password": "123456"
 }
 ```
 
-#### 成功响应（`code=0`）
+成功响应示例：
 
 ```json
 {
@@ -101,199 +84,140 @@
   "data": {
     "token": "eyJhbGciOiJIUzI1NiIs...",
     "user": {
-      "id": 2,
-      "username": "jane_doe",
-      "email": "jane@example.com",
-      "avatarUrl": null // 初始头像可为空
+      "id": 1,
+      "username": "alice",
+      "email": "alice@example.com",
+      "avatarUrl": null
     }
   },
   "message": "success"
 }
 ```
 
-#### 失败响应
+业务失败示例：
 
-| 错误场景        | HTTP状态码 | 响应示例                                                                        |
-| --------------- | ---------- | ------------------------------------------------------------------------------- |
-| 用户名已被占用  | 409        | `json { "code": 1002, "message": "用户名已被注册", "data": null } `             |
-| 邮箱已被占用    | 409        | `json { "code": 1002, "message": "邮箱已被注册", "data": null } `               |
-| 密码长度不足6位 | 400        | `json { "code": 1000, "message": "密码长度至少6位", "data": null } `            |
-| 邮箱格式不正确  | 400        | `json { "code": 1000, "message": "邮箱格式不正确", "data": null } `             |
-| 用户名/邮箱为空 | 400        | `json { "code": 1000, "message": "用户名、邮箱和密码不能为空", "data": null } ` |
+- 用户名已被注册：`409` + `{"code":1002,"data":null,"message":"用户名已被注册"}`
+- 邮箱已被注册：`409` + `{"code":1002,"data":null,"message":"邮箱已被注册"}`
 
----
+### 3.3 当前用户
 
-### 3. 获取当前用户信息
+- 路由：`GET /api/v1/auth/me`
+- 鉴权：需要
 
-- **URL**：`/auth/me`
-- **方法**：`GET`
-- **描述**：通过 token 获取当前登录用户的详细信息。
+请求头示例：
 
-#### 请求头
-
-```
+```http
 Authorization: Bearer <token>
 ```
 
-#### 成功响应（`code=0`）
+成功响应示例：
 
 ```json
 {
   "code": 0,
   "data": {
     "id": 1,
-    "username": "john_doe",
-    "email": "john@example.com",
-    "avatarUrl": "https://example.com/avatars/1.jpg"
+    "username": "alice",
+    "email": "alice@example.com",
+    "avatarUrl": "/uploads/avatars/1_xxx.png"
   },
   "message": "success"
 }
 ```
 
-#### 失败响应
+业务失败示例：
 
-| 错误场景        | HTTP状态码 | 响应示例                                                               |
-| --------------- | ---------- | ---------------------------------------------------------------------- |
-| 未提供 token    | 401        | `json { "code": 401, "message": "未授权，请先登录", "data": null } `   |
-| token 无效/过期 | 401        | `json { "code": 401, "message": "token 无效或已过期", "data": null } ` |
+- 未登录：`401` + `{"code":401,"data":null,"message":"未授权，请先登录"}`
+- token 无效或已过期：`401` + `{"code":401,"data":null,"message":"token 无效或已过期"}`
 
----
+### 3.4 获取用户资料
 
-### 4. 获取用户详细信息（个人资料页）
+- 路由：`GET /api/v1/user/profile`
+- 鉴权：需要
+- 说明：当前与 `GET /api/v1/auth/me` 返回结构一致
 
-- **URL**：`/user/profile`
-- **方法**：`GET`
-- **描述**：同 `/auth/me`，用于个人资料页初始化。
-
-#### 请求头
-
-```
-Authorization: Bearer <token>
-```
-
-#### 成功响应（`code=0`）
+成功响应示例：
 
 ```json
 {
   "code": 0,
   "data": {
     "id": 1,
-    "username": "john_doe",
-    "email": "john@example.com",
-    "avatarUrl": "https://example.com/avatars/1.jpg"
+    "username": "alice",
+    "email": "alice@example.com",
+    "avatarUrl": "/uploads/avatars/1_xxx.png"
   },
   "message": "success"
 }
 ```
 
-#### 失败响应
+### 3.5 修改用户资料
 
-同 `/auth/me`。
+- 路由：`PUT /api/v1/user/profile`
+- 鉴权：需要
+- 说明：当前允许修改 `username` 和 `password`，不允许修改 `email`
 
----
-
-### 5. 更新个人信息（用户名/密码）
-
-- **URL**：`/user/profile`
-- **方法**：`PUT`
-- **描述**：允许用户修改用户名和密码。**邮箱不可修改**。修改用户名时需要检查唯一性。
-
-#### 请求头
-
-```
-Authorization: Bearer <token>
-```
-
-#### 请求体
+请求体示例：
 
 ```json
 {
-  "username": "new_username", // 可选，新用户名（唯一）
-  "password": "new_password" // 可选，新密码（至少6位）
+  "username": "alice_new",
+  "password": "654321"
 }
 ```
 
-#### 成功响应（`code=0`）
-
-返回更新后的用户信息：
+成功响应示例：
 
 ```json
 {
   "code": 0,
   "data": {
     "id": 1,
-    "username": "new_username",
-    "email": "john@example.com",
-    "avatarUrl": "https://example.com/avatars/1.jpg"
+    "username": "alice_new",
+    "email": "alice@example.com",
+    "avatarUrl": "/uploads/avatars/1_xxx.png"
   },
   "message": "success"
 }
 ```
 
-#### 失败响应
+业务失败示例：
 
-| 错误场景               | HTTP状态码 | 响应示例                                                                  |
-| ---------------------- | ---------- | ------------------------------------------------------------------------- |
-| 用户名已被占用         | 409        | `json { "code": 1003, "message": "用户名已被占用", "data": null } `       |
-| 新密码长度不足6位      | 400        | `json { "code": 1000, "message": "密码长度至少6位", "data": null } `      |
-| 未提供任何可修改字段   | 400        | `json { "code": 1000, "message": "没有提供要修改的字段", "data": null } ` |
-| 尝试修改邮箱（不允许） | 403        | `json { "code": 1004, "message": "邮箱不可修改", "data": null } `         |
-| token 无效/过期        | 401        | 同接口3失败响应                                                           |
+- 用户名已被占用：`409` + `{"code":1003,"data":null,"message":"用户名已被占用"}`
+- 没有提供可修改字段：`400` + `{"code":1000,"data":null,"message":"没有提供要修改的字段"}`
+- 尝试修改邮箱：`403` + `{"code":1004,"data":null,"message":"邮箱不可修改"}`
+- 未登录或 token 无效：同 `GET /api/v1/auth/me`
 
----
+### 3.6 上传头像
 
-### 6. 上传头像
+- 路由：`POST /api/v1/user/avatar`
+- 鉴权：需要
+- 请求类型：`multipart/form-data`
+- 表单字段：`avatar`
 
-- **URL**：`/user/avatar`
-- **方法**：`POST`
-- **描述**：上传用户头像，支持常见图片格式，大小不超过 2MB。
+请求示例：
 
-#### 请求头
-
-```
-Authorization: Bearer <token>
-Content-Type: multipart/form-data
+```bash
+curl -X POST "http://127.0.0.1:8000/api/v1/user/avatar" \
+  -H "Authorization: Bearer <token>" \
+  -F "avatar=@./avatar.png"
 ```
 
-#### 请求体（FormData）
-
-| 字段名 | 类型 | 说明                                |
-| ------ | ---- | ----------------------------------- |
-| avatar | File | 图片文件，支持 JPG、PNG，大小 ≤ 2MB |
-
-#### 成功响应（`code=0`）
+成功响应示例：
 
 ```json
 {
   "code": 0,
   "data": {
-    "avatarUrl": "https://example.com/avatars/1_new.jpg"
+    "avatarUrl": "/uploads/avatars/1_2f6ab0d8f3d44b9d9c0b55f2a62d23d0.png"
   },
   "message": "success"
 }
 ```
 
-#### 失败响应
+业务失败示例：
 
-| 错误场景               | HTTP状态码 | 响应示例                                                                     |
-| ---------------------- | ---------- | ---------------------------------------------------------------------------- |
-| 未上传文件             | 400        | `json { "code": 1000, "message": "请选择要上传的头像", "data": null } `      |
-| 文件大小超过 2MB       | 400        | `json { "code": 1000, "message": "头像大小不能超过 2MB", "data": null } `    |
-| 文件类型不支持         | 400        | `json { "code": 1000, "message": "仅支持 JPG、PNG 格式", "data": null } `    |
-| 上传失败（服务器错误） | 500        | `json { "code": 500, "message": "头像上传失败，请稍后重试", "data": null } ` |
-| token 无效/过期        | 401        | 同接口3失败响应                                                              |
-
----
-
-## 附录：错误码说明
-
-| 错误码 | 含义                               |
-| ------ | ---------------------------------- |
-| 0      | 成功                               |
-| 1000   | 请求参数错误（通用）               |
-| 1001   | 登录失败（用户名/邮箱或密码错误）  |
-| 1002   | 注册失败（用户名或邮箱已被注册）   |
-| 1003   | 更新个人信息失败（用户名已被占用） |
-| 1004   | 更新个人信息失败（邮箱不可修改）   |
-| 401    | 未授权或 token 无效                |
-| 500    | 服务器内部错误                     |
+- 未上传文件：`400` + `{"code":1000,"data":null,"message":"请选择要上传的头像"}`
+- 文件类型不支持：`400` + `{"code":1000,"data":null,"message":"仅支持 JPG、PNG 格式"}`
+- 文件大小超过 2MB：`400` + `{"code":1000,"data":null,"message":"头像大小不能超过 2MB"}`
+- 上传失败：`500` + `{"code":500,"data":null,"message":"头像上传失败，请稍后重试"}`
