@@ -24,6 +24,10 @@ from app.db.base import Base
 
 class TestRun(Base):
     __tablename__ = "test_runs"
+    __table_args__ = (
+        UniqueConstraint("user_id", "request_id"),
+        Index("ix_test_runs_status_updated_at", "status", "updated_at"),
+    )
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     user_id: Mapped[int] = mapped_column(
@@ -32,6 +36,14 @@ class TestRun(Base):
         nullable=False,
         index=True,
     )
+    public_id: Mapped[str] = mapped_column(Text, unique=True, nullable=False)
+    agent_name: Mapped[str] = mapped_column(Text, nullable=False)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    submit_method: Mapped[str] = mapped_column(Text, nullable=False)
+    public_to_leaderboard: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=True, server_default=text("true")
+    )
+    request_id: Mapped[str] = mapped_column(Text, nullable=False)
     agent_base_url: Mapped[str] = mapped_column(Text, nullable=False)
     credential_ref: Mapped[str | None] = mapped_column(Text, nullable=True)
     status: Mapped[str] = mapped_column(Text, nullable=False, index=True)
@@ -67,6 +79,12 @@ class TestRun(Base):
         server_default=func.now(),
         index=True,
     )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
     started_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
@@ -75,6 +93,7 @@ class TestRun(Base):
         DateTime(timezone=True),
         nullable=True,
     )
+    finalization_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
 
 
 class RunSample(Base):
@@ -154,6 +173,12 @@ class SampleExecution(Base):
         nullable=False,
         server_default=func.now(),
         index=True,
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
     )
 
 

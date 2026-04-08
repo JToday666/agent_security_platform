@@ -7,6 +7,7 @@ from .benchmark import (
     DatasetSource,
     RiskCategory,
     RiskSubtype,
+    RiskSubtypeDisplayMeta,
     SampleOracle,
 )
 from .benchmark_run import (
@@ -31,6 +32,7 @@ __all__ = [
     "OracleResult",
     "RiskCategory",
     "RiskSubtype",
+    "RiskSubtypeDisplayMeta",
     "RunReport",
     "RunSample",
     "SampleDifficultyStat",
