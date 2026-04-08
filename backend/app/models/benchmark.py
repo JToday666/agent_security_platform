@@ -58,6 +58,7 @@ class RiskCategory(Base):
     id: Mapped[int] = mapped_column(SmallInteger, primary_key=True)
     code: Mapped[str] = mapped_column(Text, unique=True, index=True, nullable=False)
     name: Mapped[str] = mapped_column(Text, nullable=False)
+    meaning: Mapped[str | None] = mapped_column(Text, nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     sort_order: Mapped[int | None] = mapped_column(SmallInteger, nullable=True, index=True)
     is_active: Mapped[bool] = mapped_column(
@@ -65,6 +66,9 @@ class RiskCategory(Base):
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now()
     )
 
 
@@ -90,6 +94,45 @@ class RiskSubtype(Base):
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class RiskSubtypeDisplayMeta(Base):
+    __tablename__ = "risk_subtype_display_meta"
+
+    subtype_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("risk_subtypes.id"),
+        primary_key=True,
+    )
+    short_description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    full_description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    highlights: Mapped[list[str]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=list,
+        server_default=text("'[]'::jsonb"),
+    )
+    scenarios: Mapped[list[str]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=list,
+        server_default=text("'[]'::jsonb"),
+    )
+    resources: Mapped[list[dict[str, object]]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=list,
+        server_default=text("'[]'::jsonb"),
+    )
+    media: Mapped[list[dict[str, object]]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=list,
+        server_default=text("'[]'::jsonb"),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now()
     )
 
 
