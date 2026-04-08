@@ -1,7 +1,7 @@
 [project]
 name = "agent-backend"
 version = "0.1.0"
-description = "Add your description here"
+description = "web backend for agent security platform"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

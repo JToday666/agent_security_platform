@@ -1,194 +1,145 @@
-# README
+# Backend README
 
-## 架构说明
+## 1. 项目定位
 
-### 项目结构
+本目录是评测平台后端服务，基于 FastAPI + SQLAlchemy + PostgreSQL，当前包含用户认证与用户资料相关接口。
 
-```markdown
+## 2. 后端结构（重点）
+
+```text
 backend/
-├── alembic/                 # Alembic 迁移目录
-│   ├── env.py               # Alembic 环境配置
-│   ├── script.py.mako       # Revision 模板
-│   └── versions/            # 迁移版本文件
-├── alembic.ini              # Alembic 配置文件
 ├── app/
-│   ├── main.py              # 应用入口
+│   ├── main.py                    # FastAPI 入口，静态资源挂载，异常处理注册
 │   ├── api/
-│   │   ├── router.py        # 路由配置
-│   │   ├── deps.py          # 依赖注入
+│   │   ├── response.py            # 统一响应封装：success/fail/unauthorized
+│   │   ├── deps.py                # DB Session 与当前用户依赖
+│   │   ├── router.py              # /api 路由聚合
 │   │   └── v1/
-│   │       ├── api.py       # API 版本管理
-│   │       └── endpoints/   # 具体端点实现
+│   │       ├── api.py             # /api/v1 路由聚合
+│   │       └── endpoints/
+│   │           ├── auth.py        # 登录/注册/当前用户
+│   │           └── user.py        # 资料读取/更新/头像上传
 │   ├── core/
-│   │   └── config.py        # 配置管理
-│   ├── crud/                # 数据库操作层
+│   │   ├── config.py              # 环境变量与数据库 URL 构建
+│   │   └── security.py            # 密码哈希与 JWT
+│   ├── crud/                      # 数据访问层
 │   ├── db/
-│   │   ├── base.py          # 数据库基础配置
-│   │   └── session.py       # 数据库会话
-│   ├── models/              # 数据库模型
-│   └── schemas/             # Pydantic 数据模型
-├── .env.example             # 环境变量示例
-├── pyproject.toml           # uv / 项目依赖配置
-├── uv.lock                  # uv 锁定文件
-├── requirements.txt         # 兼容安装方式的依赖列表
-├── run.py                   # 启动脚本
-└── README.md                # 项目说明
+│   │   ├── base.py                # SQLAlchemy Base 与命名约定
+│   │   └── session.py             # 异步引擎与 AsyncSession
+│   ├── models/                    # ORM 模型
+│   └── schemas/                   # Pydantic 模型
+├── alembic/                       # 数据库迁移目录
+├── alembic.ini
+├── pyproject.toml
+├── requirements.txt
+└── run.py
 ```
 
-### 技术栈
+## 3. 技术栈与关键约定
 
-- **框架**：FastAPI
-- **服务器**：Uvicorn
-- **数据验证**：Pydantic
-- **数据库**：SQLAlchemy + asyncpg
+- 框架：FastAPI
+- 数据层：SQLAlchemy 2.x（async session）
+- 驱动：
+  - 运行时：asyncpg（`postgresql+asyncpg`）
+  - Alembic 迁移：psycopg（`postgresql+psycopg`）
+- 鉴权：JWT（PyJWT）+ HTTP Bearer
+- 密码：PBKDF2-SHA256（100000 迭代）
+- 统一响应：`{ code, data, message }`
 
-## 后端运行方法
+## 4. 环境变量
 
-以下命令均在 `backend` 目录下执行。
-
-### 推荐方式：使用 uv
-
-前置条件：
-
-- Python 3.12+
-- 已安装 `uv`
-- 本地 PostgreSQL 已启动
-
-可先执行下面的命令确认 `uv` 已安装：
-
-```shell
-uv --version
-```
-
-#### 1. 准备环境变量
-
-先复制环境变量示例文件，再按本地数据库配置修改 `.env`：
+先复制并修改：
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-如果使用的是 macOS / Linux：
+核心变量：
 
-```bash
-cp .env.example .env
-```
-
-`.env` 中至少需要确认以下配置：
-
+- `FASTAPI_HOST`（默认 `127.0.0.1`）
+- `FASTAPI_PORT`（默认 `8000`）
 - `POSTGRES_HOST`
 - `POSTGRES_PORT`
 - `POSTGRES_DB`
 - `POSTGRES_USER`
 - `POSTGRES_PASSWORD`
-- `FASTAPI_HOST`
-- `FASTAPI_PORT`
+- `SECRET_KEY`
+- `JWT_ALGORITHM`
+- `ACCESS_TOKEN_EXPIRE_MINUTES`
 
-#### 2. 安装依赖
+## 5. 运行方式
 
-```shell
+以下命令都在 `backend/` 目录执行。
+
+### 5.1 使用 uv（推荐）
+
+```bash
 uv sync
-```
-
-#### 3. 启动服务
-
-直接使用 `uvicorn` 启动：
-
-```shell
 uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-或使用项目自带脚本启动：
+或：
 
-```shell
+```bash
 uv run python run.py
 ```
 
-说明：
+### 5.2 使用 pip
 
-- `uv run python run.py` 会读取 `.env` 中的 `FASTAPI_HOST` 和 `FASTAPI_PORT`
-- 上面的 `uvicorn` 命令适合临时指定 host / port
-- `--reload` 适合开发环境，生产环境不要开启
-
-### 兼容方式：使用 python / uvicorn
-
-如果暂时不使用 `uv`，也可以继续使用现有方式：
-
-```shell
+```bash
 pip install -r requirements.txt
 python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-或者直接运行：
+## 6. 数据库与迁移
 
-```shell
-python run.py
-```
+### 6.1 迁移原则
 
-说明：
+- 所有 Schema 变更必须通过 Alembic。
+- 应用代码不应调用 `create_all` 做自动建表。
+- 新增模型后，需要在 `app/models/__init__.py` 导入，确保 `--autogenerate` 可发现。
 
-- `python run.py` 同样会读取 `.env` 中的 `FASTAPI_HOST` 和 `FASTAPI_PORT`
-- 如果 `.env` 中配置了其他端口，请按实际端口访问接口
+### 6.2 常用命令
 
-### IDE 配置
-
-可以直接在 VS Code / PyCharm 中运行 `run.py`，建议使用 `backend/.venv` 作为解释器。
-
-## 数据库迁移
-
-数据库 schema 变更统一通过 Alembic 管理，应用启动时不会自动建表或自动迁移。
-
-### 首次初始化
-
-确保 `.env` 中的 PostgreSQL 连接信息正确后，在 `backend` 目录执行：
-
-```shell
+```bash
 uv run alembic upgrade head
-```
-
-如果暂时不使用 `uv`，也可以执行：
-
-```shell
-python -m alembic upgrade head
-```
-
-### 常用命令
-
-创建新迁移：
-
-```shell
-uv run alembic revision --autogenerate -m "message"
-```
-
-查看当前迁移版本：
-
-```shell
+uv run alembic revision --autogenerate -m "your message"
+uv run alembic downgrade -1
 uv run alembic current
-```
-
-查看迁移历史：
-
-```shell
 uv run alembic history
 ```
 
-执行迁移到最新版本：
+如不使用 `uv`，可替换为：
 
-```shell
+```bash
+python -m alembic upgrade head
+```
+
+### 6.3 Alembic 规范（新增）
+
+- 所有 schema 变更必须通过迁移交付，不在运行时代码中执行自动建表。
+- 生成迁移前先确认模型已在 `app/models/__init__.py` 导入，避免漏检。
+- 迁移 message 采用“动作 + 对象”命名，避免 `update`、`fix` 这类无语义名称。
+- 使用 `--autogenerate` 后必须人工审核迁移脚本，重点关注：
+  - 非预期 `drop_table` / `drop_column` / `drop_index`
+  - 非预期约束与索引变化
+  - 类型变更是否对现有数据兼容
+- 破坏性变更（删字段、重命名、不兼容类型）需要在变更说明中写清：
+  - 影响范围
+  - 兼容策略
+  - 回滚方案
+
+推荐提交流程：
+
+```bash
+uv run alembic upgrade head
+uv run alembic current
+# 可选：验证回滚链路
+uv run alembic downgrade -1
 uv run alembic upgrade head
 ```
 
-回滚一个版本：
-
-```shell
-uv run alembic downgrade -1
-```
-
-回滚到初始状态：
-
-```shell
-uv run alembic downgrade base
-```
+## 7. API 与响应格式
 
 ### 使用约束
 
