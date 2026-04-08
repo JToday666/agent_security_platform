@@ -106,7 +106,7 @@ class RiskSubtype(Base):
         index=True,
         comment="归属的一级风险大类ID"
     )
-    code: Mapped[str] = mapped_column(Text, nullable=False, comment="子类唯一特征码(类目级别内唯一)")
+    code: Mapped[str] = mapped_column(Text, unique=True, nullable=False, comment="子类唯一特征码(全局唯一的公开数据集ID)")
     name: Mapped[str] = mapped_column(Text, nullable=False, comment="具体诱骗或攻击类别名")
     description: Mapped[str | None] = mapped_column(Text, nullable=True, comment="相关背景资料及评测目的要求")
     sort_order: Mapped[int | None] = mapped_column(SmallInteger, nullable=True, comment="列表呈现时的排序支持")
