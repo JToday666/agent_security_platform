@@ -3,7 +3,7 @@
     <PageHeroCard
       eyebrow="评测目录"
       title="风险评测目录"
-      description="按风险域组织当前可用评测项。目录页、详情页与提交页共用同一份前端模拟目录源，便于统一浏览、筛选与提交。"
+      description="按风险域浏览当前可用评测项，支持筛选、查看详情，并快速发起评测。"
       :chips="heroChips"
     />
 

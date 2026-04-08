@@ -156,7 +156,7 @@ const createMedia = (
             url: REFERENCE_VIDEO_URL,
             coverUrl: createSvgDataUri(
               `${name}运行回放`,
-              "若外部视频不可达，页面会自动降级为不可播放提示。",
+              "如视频暂时无法播放，可先查看封面与文字说明了解该评测项。",
               theme.solid,
               theme.text,
             ),

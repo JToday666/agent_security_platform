@@ -2,7 +2,7 @@
   <div class="content records-card layout-page-panel layout-page-panel--lg ui-surface-glass">
     <h1 class="page-title layout-page-title">评测记录</h1>
     <p class="page-subtitle layout-page-subtitle">
-      已提交任务会优先展示最近创建的记录，创建成功后可进入详情页持续观察任务进度。
+      这里会展示你提交过的评测任务，可随时进入详情页查看进度、结果和后续状态。
     </p>
 
     <div v-if="loading" class="state-card layout-state-card ui-surface-white">

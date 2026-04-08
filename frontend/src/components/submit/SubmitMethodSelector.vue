@@ -2,7 +2,7 @@
   <section class="layout-section-card ui-surface-white">
     <div class="layout-section-head">
       <h2>提交方式 <span class="required-mark">*</span></h2>
-      <p>根据当前平台能力选择接入方式，提交前会按照对应字段进行本地校验和预检查。</p>
+      <p>请选择智能体的接入方式，并按所选方式填写对应的调用或部署信息。</p>
     </div>
 
     <div class="grid-auto-fit" style="--grid-min-size: 220px; --grid-gap: 0.9rem; margin-top: 1rem;">

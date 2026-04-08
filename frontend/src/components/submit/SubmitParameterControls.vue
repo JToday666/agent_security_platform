@@ -1,7 +1,7 @@
 <template>
   <SubmitSection
     title="评测参数"
-    description="参数约束由 submit-meta 驱动，输入会自动归一化，并在提交前再次校验。"
+    description="根据目标场景设置难度、超时时间和重试策略，提交前可再次确认。"
   >
     <div class="field-grid">
       <div class="field full">

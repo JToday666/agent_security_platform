@@ -3,7 +3,7 @@
     <PageHeroCard
       :eyebrow="detail?.category.name || '评测项详情'"
       :title="detail?.name || '评测项详情'"
-      :description="detail?.shortDescription || '按统一详情模板展示单个评测项的说明、评测重点、典型场景与媒体信息。'"
+      :description="detail?.shortDescription || '查看该评测项的详细说明、评测重点、典型场景与相关示例资源。'"
       :chips="heroChips"
     >
       <template #actions>
@@ -51,7 +51,7 @@
       <section class="section-card layout-section-card ui-surface-white">
         <h2>媒体与运行效果</h2>
         <p class="section-note">
-          图片与视频均来自 mock 数据；若视频资源不可达，页面会自动降级为不可用提示。
+          可查看该评测项的样例图片和演示视频；若资源暂时无法加载，页面会提示当前不可用。
         </p>
         <DatasetMediaGallery :media="detail.media" />
       </section>

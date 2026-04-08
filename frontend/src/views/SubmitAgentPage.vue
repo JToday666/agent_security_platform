@@ -3,7 +3,7 @@
     <PageHeroCard
       eyebrow="智能体提交"
       title="提交智能体评测"
-      description="提交页会先加载参数元数据和评测目录；草稿仅持久化非敏感字段。"
+      description="填写智能体信息、选择评测项并确认参数后，即可创建新的评测任务。"
       :chips="heroChips"
     />
 
