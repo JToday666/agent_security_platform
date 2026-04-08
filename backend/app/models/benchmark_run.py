@@ -109,6 +109,87 @@ class TestRun(Base):
         comment="所有样本处理结束且报告生成后，记录该任务彻底完毕的时刻"
     )
     finalization_reason: Mapped[str | None] = mapped_column(Text, nullable=True, comment="任务终止或异常结单的最终原因/备注")
+    pause_used: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+        server_default=text("false"),
+        comment="是否已经使用过一次暂停机会"
+    )
+    pause_deadline_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        comment="任务暂停后允许恢复的截止时间"
+    )
+    requested_action: Mapped[str | None] = mapped_column(Text, nullable=True, comment="当前待执行的控制动作")
+    requested_action_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        comment="记录最近一次用户控制动作请求时间"
+    )
+
+
+class RunDataset(Base):
+    """
+    任务级数据集快照表 (Run Dataset Snapshot Model)
+
+    将一次评测任务中用户选中的公开数据集集合固化为稳定快照，便于列表、详情和控制接口直接按数据集维度查询进度。
+    """
+    __tablename__ = "run_datasets"
+    __table_args__ = (
+        UniqueConstraint("run_id", "dataset_code"),
+        Index("ix_run_datasets_run_id_status", "run_id", "status"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, comment="任务数据集快照主键ID")
+    run_id: Mapped[int] = mapped_column(
+        BigInteger,
+        ForeignKey("test_runs.id"),
+        nullable=False,
+        index=True,
+        comment="关联的测评任务ID"
+    )
+    dataset_code: Mapped[str] = mapped_column(Text, nullable=False, index=True, comment="公开数据集ID，对应 risk_subtypes.code")
+    dataset_name: Mapped[str] = mapped_column(Text, nullable=False, comment="公开数据集名称")
+    order_no: Mapped[int] = mapped_column(Integer, nullable=False, comment="数据集在本次任务中的执行顺序")
+    status: Mapped[str] = mapped_column(Text, nullable=False, index=True, comment="数据集级生命周期状态")
+    total_samples: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default=text("0"),
+        comment="该数据集在本次任务中命中的样本总数"
+    )
+    completed_samples: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default=text("0"),
+        comment="该数据集在本次任务中已完成的样本数"
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        comment="快照创建时间"
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+        comment="快照最近更新时间"
+    )
+    started_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        comment="该数据集开始执行的时间"
+    )
+    finished_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        comment="该数据集完成执行的时间"
+    )
 
 
 class RunSample(Base):

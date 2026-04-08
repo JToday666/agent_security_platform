@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "dev-secret-key-change-in-production"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080
+    PAUSE_TIMEOUT_MINUTES: int = 60
+    SIMULATED_DATASET_STEP_SECONDS: float = 2.0
 
     @property
     def DATABASE_URL(self) -> URL:
@@ -49,6 +51,10 @@ class Settings(BaseSettings):
             port=self.POSTGRES_PORT,
             database=self.POSTGRES_DB,
         )
+
+    @property
+    def CREDENTIAL_STORAGE_DIR(self) -> Path:
+        return BACKEND_DIR / "storage" / "credentials"
 
 
 settings = Settings()

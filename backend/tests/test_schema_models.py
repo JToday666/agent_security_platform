@@ -1,7 +1,7 @@
 import unittest
 
-from app.models.benchmark import RiskCategory, RiskSubtypeDisplayMeta
-from app.models.benchmark_run import SampleExecution, TestRun
+from app.models.benchmark import RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta
+from app.models.benchmark_run import RunDataset, SampleExecution, TestRun
 
 
 class SchemaModelTestCase(unittest.TestCase):
@@ -30,9 +30,30 @@ class SchemaModelTestCase(unittest.TestCase):
         self.assertIn("request_id", columns)
         self.assertIn("updated_at", columns)
         self.assertIn("finalization_reason", columns)
+        self.assertIn("pause_used", columns)
+        self.assertIn("pause_deadline_at", columns)
+        self.assertIn("requested_action", columns)
+        self.assertIn("requested_action_at", columns)
 
     def test_sample_execution_has_updated_at(self) -> None:
         self.assertIn("updated_at", SampleExecution.__table__.c)
+
+    def test_run_dataset_model_exists(self) -> None:
+        columns = RunDataset.__table__.c
+        self.assertIn("run_id", columns)
+        self.assertIn("dataset_code", columns)
+        self.assertIn("dataset_name", columns)
+        self.assertIn("order_no", columns)
+        self.assertIn("status", columns)
+        self.assertIn("total_samples", columns)
+        self.assertIn("completed_samples", columns)
+        self.assertIn("created_at", columns)
+        self.assertIn("updated_at", columns)
+        self.assertIn("started_at", columns)
+        self.assertIn("finished_at", columns)
+
+    def test_risk_subtype_code_is_globally_unique(self) -> None:
+        self.assertTrue(RiskSubtype.__table__.c.code.unique)
 
 
 if __name__ == "__main__":
