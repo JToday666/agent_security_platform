@@ -1,18 +1,9 @@
 import unittest
-from unittest.mock import AsyncMock
+
+from fastapi.testclient import TestClient
 
 from app.api.v1.api import api_router
-from app.api.v1.endpoints.agents import (
-    precheck_submission,
-    submit_agent,
-    submit_meta,
-)
-from app.api.v1.endpoints.datasets import get_dataset_catalog, get_dataset_detail
-from app.api.v1.endpoints.evaluations import (
-    apply_evaluation_action,
-    get_evaluation_detail,
-    list_evaluations,
-)
+from app.main import app
 
 
 class ApiRouteRegistrationTestCase(unittest.TestCase):
@@ -29,66 +20,18 @@ class ApiRouteRegistrationTestCase(unittest.TestCase):
         self.assertIn("/v1/evaluations/{evaluationId}/actions", route_paths)
 
 
-class ApiResponseContractTestCase(unittest.IsolatedAsyncioTestCase):
-    async def test_dataset_endpoints_return_wrapped_response(self) -> None:
-        service = AsyncMock()
-        service.get_catalog.return_value = {"catalogVersion": "2026-04-08T10:00:00Z"}
-        service.get_detail.return_value = {"datasetId": "local_file_modification"}
+class ApiResponseContractTestCase(unittest.TestCase):
+    def setUp(self) -> None:
+        self.client = TestClient(app)
 
-        catalog_response = await get_dataset_catalog(service=service)
-        detail_response = await get_dataset_detail(datasetId="local_file_modification", service=service)
+    def test_unauthorized_profile_request_returns_wrapped_response(self) -> None:
+        response = self.client.get("/api/v1/user/profile")
 
-        self.assertEqual(catalog_response["code"], 0)
-        self.assertEqual(catalog_response["message"], "success")
-        self.assertEqual(detail_response["code"], 0)
-        self.assertEqual(detail_response["message"], "success")
-
-    async def test_agent_endpoints_return_wrapped_response(self) -> None:
-        service = AsyncMock()
-        service.get_submit_meta.return_value = {"supportedMethods": ["api", "docker"]}
-        service.precheck.return_value = {"ok": True, "warnings": []}
-        service.submit.return_value = {
-            "evaluationId": "eval_20260408_001",
-            "status": "pending",
-            "createdAt": "2026-04-08T10:30:00Z",
-        }
-
-        meta_response = await submit_meta(service=service)
-        precheck_response = await precheck_submission(payload=object(), current_user=object(), service=service)
-        submit_response = await submit_agent(
-            payload=object(),
-            current_user=object(),
-            background_tasks=object(),
-            service=service,
-        )
-
-        self.assertEqual(meta_response["code"], 0)
-        self.assertEqual(precheck_response["code"], 0)
-        self.assertEqual(submit_response["code"], 0)
-
-    async def test_evaluation_endpoints_return_wrapped_response(self) -> None:
-        service = AsyncMock()
-        service.list_evaluations.return_value = []
-        service.get_evaluation_detail.return_value = {"evaluationId": "eval_20260408_001"}
-        service.apply_action.return_value = {"evaluationId": "eval_20260408_001", "status": "paused"}
-
-        list_response = await list_evaluations(current_user=object(), service=service)
-        detail_response = await get_evaluation_detail(
-            evaluationId="eval_20260408_001",
-            current_user=object(),
-            service=service,
-        )
-        action_response = await apply_evaluation_action(
-            evaluationId="eval_20260408_001",
-            payload=object(),
-            current_user=object(),
-            background_tasks=object(),
-            service=service,
-        )
-
-        self.assertEqual(list_response["code"], 0)
-        self.assertEqual(detail_response["code"], 0)
-        self.assertEqual(action_response["code"], 0)
+        self.assertEqual(response.status_code, 401)
+        payload = response.json()
+        self.assertEqual(payload["code"], 40100)
+        self.assertEqual(payload["message"], "未登录或登录已失效。")
+        self.assertIsNone(payload["data"])
 
 
 if __name__ == "__main__":

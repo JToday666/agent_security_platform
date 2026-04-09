@@ -2,13 +2,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app.services.secret_store import LocalSecretStore
+from app.shared.credentials import FileCredentialStore
 
 
 class LocalSecretStoreTestCase(unittest.TestCase):
     def test_store_roundtrip_uses_reference_not_plaintext(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            store = LocalSecretStore(base_dir=Path(tmpdir), secret_key="unit-test-secret")
+            store = FileCredentialStore(base_dir=Path(tmpdir), secret_key="unit-test-secret")
 
             credential_ref = store.store(
                 {

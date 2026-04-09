@@ -1,0 +1,33 @@
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.modules.auth.repository import AuthRepository
+from app.modules.auth.schemas import AuthSessionData, LoginRequest, RegisterRequest, UserProfile
+from app.modules.auth.service import AuthService
+from app.shared.auth import get_current_user, get_db
+from app.shared.http import success_payload
+from app.shared.schemas import Envelope
+
+router = APIRouter(prefix="/auth", tags=["auth"])
+
+
+def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
+    return AuthService(AuthRepository(db))
+
+
+@router.post("/login", response_model=Envelope[AuthSessionData])
+async def login(payload: LoginRequest, service: AuthService = Depends(get_auth_service)):
+    response = await service.login(payload.username, payload.password)
+    return success_payload(response.model_dump(by_alias=True))
+
+
+@router.post("/register", response_model=Envelope[AuthSessionData])
+async def register(payload: RegisterRequest, service: AuthService = Depends(get_auth_service)):
+    response = await service.register(payload)
+    return success_payload(response.model_dump(by_alias=True))
+
+
+@router.get("/me", response_model=Envelope[UserProfile])
+async def me(current_user=Depends(get_current_user), service: AuthService = Depends(get_auth_service)):
+    response = await service.me(current_user)
+    return success_payload(response.model_dump(by_alias=True))

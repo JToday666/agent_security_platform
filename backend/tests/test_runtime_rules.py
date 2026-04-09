@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from app.services.runtime_rules import (
+from app.shared.runtime_rules import (
     apply_pause_timeout,
     build_controls,
     difficulty_bucket_bounds,

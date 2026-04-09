@@ -17,21 +17,28 @@ README 只描述当前状态。跨端接口契约、后端内部说明和待办�
 
 - `/api/v1/auth/*`
 - `/api/v1/user/*`
+- `/api/v1/datasets/*`
+- `/api/v1/agents/*`
+- `/api/v1/evaluations/*`
 
 当前已具备的后端基础：
 
 - 统一响应封装：`{ code, data, message }`
-- 统一 DB Session 与鉴权依赖
+- 统一 DB Session、鉴权依赖与全局异常处理
 - Alembic 迁移链路
-- 示例样本目录、隔离环境目录、上传目录
+- 独立 worker 轮询执行链路
+- 运行时目录、上传目录、凭证目录统一收口到 `runtime/`
 
 核心目录：
 
-- `app/`：后端业务代码
+- `app/shared/`：配置、DB、响应封装、异常、鉴权、共用规则
+- `app/modules/`：按业务域组织的 `router / service / repository / schemas`
+- `app/worker/`：任务领取、执行编排、报告聚合
+- `app/`：后端业务代码总入口
 - `alembic/`：数据库迁移
 - `datasets_demo/`：示例样本目录
 - `environments/`：隔离执行目录
-- `storage/`：运行产物存储目录
+- `runtime/`：运行时目录（上传、凭证、worker workdir）
 - `docs/`：后端内部说明与规范文档
 
 ## 3. 快速启动
@@ -51,6 +58,12 @@ uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 uv run python run.py
 ```
 
+worker 启动：
+
+```bash
+uv run python worker.py
+```
+
 常用入口：
 
 - OpenAPI：`http://127.0.0.1:8000/docs`
@@ -62,7 +75,8 @@ uv run python run.py
 
 - 新增 API 路由使用 `/api/v1` 前缀
 - 业务响应统一使用 `{ code, data, message }`
-- 复用 `get_db`、`get_current_user`、`fail()`、`unauthorized()`
+- 复用 `app.shared.auth` 中的 `get_db`、`get_current_user`
+- 统一通过 `app.shared.http` 返回成功 envelope，通过 `app.shared.errors` 抛出业务异常
 - 数据库结构变更必须通过 Alembic 迁移交付
 - 新增模型后先注册到 `app/models/__init__.py`
 

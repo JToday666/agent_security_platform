@@ -19,7 +19,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.db.base import Base
+from app.shared.db.base import Base
 
 
 class TestRun(Base):
@@ -33,6 +33,13 @@ class TestRun(Base):
     __table_args__ = (
         UniqueConstraint("user_id", "request_id"),
         Index("ix_test_runs_status_updated_at", "status", "updated_at"),
+        Index(
+            "ix_test_runs_worker_claim_lookup",
+            "status",
+            "claimed_by",
+            "claim_heartbeat_at",
+            "created_at",
+        ),
     )
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, comment="任务主键ID")
@@ -126,6 +133,23 @@ class TestRun(Base):
         DateTime(timezone=True),
         nullable=True,
         comment="记录最近一次用户控制动作请求时间"
+    )
+    claimed_by: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+        index=True,
+        comment="当前领取该任务的 worker 标识"
+    )
+    claimed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        comment="worker 首次领取该任务的时间"
+    )
+    claim_heartbeat_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        index=True,
+        comment="worker 最近一次心跳时间"
     )
 
 

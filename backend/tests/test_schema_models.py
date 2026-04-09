@@ -34,6 +34,9 @@ class SchemaModelTestCase(unittest.TestCase):
         self.assertIn("pause_deadline_at", columns)
         self.assertIn("requested_action", columns)
         self.assertIn("requested_action_at", columns)
+        self.assertIn("claimed_by", columns)
+        self.assertIn("claimed_at", columns)
+        self.assertIn("claim_heartbeat_at", columns)
 
     def test_sample_execution_has_updated_at(self) -> None:
         self.assertIn("updated_at", SampleExecution.__table__.c)
