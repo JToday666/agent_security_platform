@@ -38,6 +38,17 @@ class SchemaModelTestCase(unittest.TestCase):
         self.assertIn("claimed_at", columns)
         self.assertIn("claim_heartbeat_at", columns)
 
+    def test_test_run_has_pause_timeout_lookup_index(self) -> None:
+        indexes = {
+            index.name: tuple(column.name for column in index.columns)
+            for index in TestRun.__table__.indexes
+        }
+        self.assertIn("ix_test_runs_status_pause_deadline_at", indexes)
+        self.assertEqual(
+            ("status", "pause_deadline_at"),
+            indexes["ix_test_runs_status_pause_deadline_at"],
+        )
+
     def test_sample_execution_has_updated_at(self) -> None:
         self.assertIn("updated_at", SampleExecution.__table__.c)
 

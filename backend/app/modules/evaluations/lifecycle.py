@@ -1,4 +1,4 @@
-"""评测任务生命周期工具，负责收尾与报告生成。"""
+"""评测任务生命周期操作。"""
 
 from __future__ import annotations
 
@@ -10,7 +10,81 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.benchmark import BenchmarkSample, RiskCategory, RiskSubtype
 from app.models.benchmark_run import ExecutionSummary, RunDataset, RunReport, SampleExecution, TestRun
-from app.shared.runtime_rules import TERMINAL_STATUSES, apply_pause_timeout
+from app.modules.evaluations.state_rules import TERMINAL_STATUSES, apply_pause_timeout
+
+
+def request_pause(run, now: datetime) -> None:
+    """将运行中的任务标记为请求暂停。"""
+    run.status = "pausing"
+    run.requested_action = "pause"
+    run.requested_action_at = now
+
+
+def mark_run_started(run, now: datetime) -> None:
+    """确保任务进入运行态。"""
+    if run.started_at is None:
+        run.started_at = now
+    if run.status == "pending":
+        run.status = "running"
+
+
+def request_resume(run, now: datetime) -> None:
+    """恢复暂停中的任务。"""
+    run.status = "running"
+    run.pause_deadline_at = None
+    run.requested_action = None
+    run.requested_action_at = now
+    run.claimed_by = None
+    run.claimed_at = None
+    run.claim_heartbeat_at = None
+
+
+def pause_after_current_dataset(run, pause_deadline: datetime) -> None:
+    """在当前数据集执行完成后将任务切为暂停。"""
+    run.status = "paused"
+    run.pause_used = True
+    run.pause_deadline_at = pause_deadline
+    run.requested_action = None
+    run.requested_action_at = None
+
+
+def keep_running(run) -> None:
+    """维持任务在运行态。"""
+    run.status = "running"
+
+
+async def request_terminate(db: AsyncSession, run, now: datetime) -> None:
+    """请求终止任务，暂停态直接终结。"""
+    if run.status == "paused":
+        await finalize_run(
+            db,
+            run,
+            final_status="terminated",
+            final_reason="terminated_by_user",
+            create_report=True,
+        )
+        return
+
+    run.status = "terminating"
+    run.requested_action = "terminate"
+    run.requested_action_at = now
+
+
+async def request_cancel(db: AsyncSession, run, now: datetime) -> None:
+    """请求取消任务，待执行或暂停态直接取消。"""
+    if run.status in {"pending", "paused"}:
+        await finalize_run(
+            db,
+            run,
+            final_status="canceled",
+            final_reason="canceled_by_user",
+            create_report=False,
+        )
+        return
+
+    run.status = "canceling"
+    run.requested_action = "cancel"
+    run.requested_action_at = now
 
 
 async def finalize_run(

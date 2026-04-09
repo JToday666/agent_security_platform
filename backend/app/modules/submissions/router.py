@@ -11,7 +11,8 @@ from app.modules.submissions.schemas import (
     SubmitResponse,
 )
 from app.modules.submissions.service import SubmissionService
-from app.shared.auth import get_current_user, get_db
+from app.modules.auth.dependencies import get_current_user
+from app.shared.auth import get_db
 from app.shared.http import success_payload
 from app.shared.schemas import Envelope
 

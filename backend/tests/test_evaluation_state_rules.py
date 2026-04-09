@@ -2,26 +2,17 @@ import unittest
 from datetime import datetime, timedelta, timezone
 
 from app.modules.evaluations.state_rules import (
+    TERMINAL_STATUSES,
     apply_pause_timeout,
     build_controls,
 )
-from app.shared.runtime_rules import difficulty_bucket_bounds, is_valid_request_id
 
 
-class RuntimeRulesTestCase(unittest.TestCase):
-    def test_request_id_validation(self) -> None:
-        self.assertTrue(is_valid_request_id("submit_20260408_demo001"))
-        self.assertTrue(is_valid_request_id("A12345"))
-        self.assertFalse(is_valid_request_id("bad"))
-        self.assertFalse(is_valid_request_id("_submit_20260408_demo001"))
-        self.assertFalse(is_valid_request_id("submit 20260408 demo001"))
+class EvaluationStateRulesTestCase(unittest.TestCase):
+    def test_terminal_statuses_are_defined_for_run_domain(self) -> None:
+        self.assertEqual({"completed", "terminated", "canceled", "failed"}, TERMINAL_STATUSES)
 
-    def test_difficulty_bucket_bounds(self) -> None:
-        self.assertEqual(difficulty_bucket_bounds(0), (0.0, 0.05, False))
-        self.assertEqual(difficulty_bucket_bounds(0.5), (0.45, 0.55, False))
-        self.assertEqual(difficulty_bucket_bounds(1), (0.95, 1.0, True))
-
-    def test_controls_for_running_and_paused_states(self) -> None:
+    def test_build_controls_for_running_and_paused_states(self) -> None:
         self.assertEqual(
             build_controls(status="running", pause_used=False),
             {
