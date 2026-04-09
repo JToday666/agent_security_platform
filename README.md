@@ -1,54 +1,136 @@
 # Agent Security Platform
 
-Agent Security Platform 是一个面向 AI Agent 安全评测的仓库，当前同时承载三类内容：
+## 项目概览
 
-- `frontend/`：Vue 3 + TypeScript 前端原型与联调实现
-- `backend/`：FastAPI 后端基础设施与已落地的用户认证能力
-- `share/`：当前前端真实依赖的共享接口契约文档
+当前仓库包含三个核心部分：
 
-## 当前实现状态
+- `frontend/`：Vue 3 + TypeScript 前端
+- `backend/`：FastAPI 后端
+- `share/`：前后端共享接口文档
 
-- 前端已经实现数据集目录、数据集详情、智能体提交、评测记录、评测详情和任务控制等页面。
-- 数据集目录与评测页面默认隐藏内部 `datasetId`，界面展示统一使用公开名称。
-- 提交流程默认可基于 mock 数据闭环运行，也支持按环境变量切换到真实 API。
-- 后端代码仓当前已落地的是认证与用户资料相关接口；`datasets / agents / evaluations` 仍以 `share/` 中的契约文档为准，不能视为 `backend/` 已全部实现。
+本轮前端已完成目录重构、基础脚手架刷新，以及面向用户页面的移动端适配优化。
 
-## 关键前端约定
+## 前端目录约定
 
-- `GET /api/v1/datasets/catalog` 不再接收 `difficulty` 参数。
-- 提交页进入 `/user/submit` 时只请求一次 catalog；后续调整 `difficulty` 不再刷新目录。
-- `difficulty` 仍然保留在 `POST /api/v1/agents/precheck` 与 `POST /api/v1/agents/submit` 的 `parameters` 中。
-- 前端内部表单字段仍叫 `selectedDatasetIds`，发给后端前统一适配为 `datasetIds`。
-- 评测记录和评测详情页面只展示 `datasetNames`、`runningDatasetName`、`statusText` 这类公开文本，不直接显示内部数据集代码。
+前端源码以 `frontend/src` 为根，按职责拆分为四层：
 
-## 共享文档入口
+- `app/`：应用装配层，包含路由、布局、Shell 和全局样式
+- `modules/`：业务模块，按 `public / dataset / submission / evaluation / account` 聚合
+- `shared/`：跨模块复用的 UI、类型、通用能力与静态资源
+- `shared/api/core/HttpClient.ts`：统一 HTTP 请求入口
 
-- [database&submit接口.md](./share/database&submit接口.md)：数据集目录、数据集详情、提交元数据、预检查与正式提交契约
-- [evaluations接口.md](./share/evaluations接口.md)：评测记录列表、评测详情快照与任务控制契约
-- [user接口.md](./share/user接口.md)：认证、用户资料与头像上传接口
-- [git规范.md](./share/git规范.md)：仓库协作与提交规范
+## 品牌资源约定
+
+- 浏览器页签图标固定使用 `frontend/public/favicon.svg`
+- 页面展示用 Logo 统一放在 `frontend/src/shared/assets/branding/logo.svg`
+- 页面中使用 Logo 时，通过源码导入接入，不再依赖 `public/` 固定路径
+
+## 首页与导航行为
+
+- 首页标题“智能体安全评测平台”和副标题“安全 · 可靠 · 专业的智能体评估系统”采用首次进入的较慢打字机动画
+- 若浏览器设置了 `prefers-reduced-motion: reduce`，首页会直接展示完整文案
+- 评测任务详情页在非终态下每 10 分钟自动轮询一次详情；首次进入、路由切换和任务动作后仍立即刷新
+- 移动端主导航统一采用抽屉菜单
+- 登录后页面的左侧边栏仅在桌面端显示；移动端由顶部抽屉统一承接用户导航
+
+## 移动端适配范围
+
+当前已覆盖全部用户可访问页面：
+
+- 首页
+- 评测目录
+- 评测详情
+- 排行榜
+- 联系我们
+- 404 页面
+- 评测记录
+- 评测任务详情
+- 提交智能体
+- 个人资料
+
+适配目标包括：
+
+- 避免横向滚动
+- 统一缩小移动端边距、卡片内边距和标题层级
+- 把高密度表格或双栏内容收敛为窄屏优先的纵向布局
 
 ## 前端运行模式
 
-前端通过环境变量在 mock 与 live API 之间切换：
+前端默认以真实后端为准，不再使用旧的环境变量：
 
-- `VITE_USE_LIVE_REFERENCE_API`：控制数据集目录、数据集详情、提交元数据等参考类接口是否走真实后端
-- `VITE_USE_LIVE_SUBMISSION_API`：控制提交、评测记录、评测详情与任务控制等流程类接口是否走真实后端
-- `VITE_API_BASE_URL`：前端 API 基础地址，默认使用 `/api/v1`
+- `VITE_USE_LIVE_REFERENCE_API`
+- `VITE_USE_LIVE_SUBMISSION_API`
 
-推荐使用方式：
+当前有效环境变量为：
 
-- 页面开发阶段：两个 `VITE_USE_LIVE_*` 变量保持 `false`
-- 前后端联调阶段：按需逐步切换到真实接口
-- 同域部署：`VITE_API_BASE_URL=/api/v1`
-- 本地跨端口联调：例如 `VITE_API_BASE_URL=http://localhost:8000/api/v1`
+- `VITE_API_BASE_URL`
+- `VITE_BACKEND_TARGET`
+- `VITE_ENABLE_API_MOCK`
+- `VITE_ENABLE_LEADERBOARD_MOCK`
 
-## 文本编码规范
+### 同源代理联调
 
-仓库中的文本文件约定统一使用：
+适合本地前后端同时启动：
 
-- UTF-8 无 BOM
-- CRLF 行尾
+```env
+VITE_API_BASE_URL=/api/v1
+VITE_BACKEND_TARGET=http://127.0.0.1:8001
+VITE_ENABLE_API_MOCK=false
+VITE_ENABLE_LEADERBOARD_MOCK=false
+```
+
+### 直连真实后端
+
+适合前端直接访问完整后端地址：
+
+```env
+VITE_API_BASE_URL=http://127.0.0.1:8001/api/v1
+VITE_ENABLE_API_MOCK=false
+VITE_ENABLE_LEADERBOARD_MOCK=false
+```
+
+### 显式业务 Mock
+
+仅影响已接入 Mock 的提交与评测链路：
+
+```env
+VITE_ENABLE_API_MOCK=true
+VITE_ENABLE_LEADERBOARD_MOCK=false
+```
+
+### 排行榜 Mock
+
+排行榜功能尚未接入正式接口；若需演示可单独开启：
+
+```env
+VITE_ENABLE_LEADERBOARD_MOCK=true
+```
+
+## 前端缓存与持久化边界
+
+### 页面生命周期内缓存
+
+当前仅对以下 GET 资源启用内存缓存：
+
+- `GET /api/v1/datasets/catalog`
+- `GET /api/v1/datasets/{datasetId}`
+- `GET /api/v1/agents/submit-meta`
+
+### localStorage 持久化范围
+
+当前仅允许持久化：
+
+- token
+- 登录后回跳地址
+- 提交草稿
+- 纯 UI 状态
+
+在真实 API 模式下，以下内容不作为 durable localStorage 真相源：
+
+- 评测记录
+- 评测详情
+- precheck 结果
+- submit 结果
 
 ## 常用命令
 
@@ -60,10 +142,17 @@ npm run build
 npm run dev
 ```
 
-## 后续推荐优化
+## 相关文档
 
-以下建议当前仅写入文档，不代表后端已实现：
+- 前端本地快速说明：`frontend/README.md`
+- [share/database&submit接口.md](./share/database&submit接口.md)
+- [share/evaluations接口.md](./share/evaluations接口.md)
+- [share/user接口.md](./share/user接口.md)
+- [share/API接口协议.md](./share/API接口协议.md)
 
-- `precheck` 可返回标准化摘要结构，减少前端确认弹窗的本地拼装逻辑
-- `submit` 可直接返回首屏可用的 evaluation snapshot，而不是只返回 `evaluationId`
-- `evaluations` 详情接口可逐步引入版本号、ETag 或推送机制，用于降低 3 秒轮询带来的后端压力
+## 文本编码约定
+
+仓库内本轮修改的受控文本文件统一约定为：
+
+- UTF-8 无 BOM
+- CRLF 行尾

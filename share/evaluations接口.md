@@ -1,54 +1,91 @@
-# 评测记录与报告接口补充说明
+# 评测记录与详情接口补充说明
 
-> 本文档是 [`API接口协议.md`](./API接口协议.md) 的评测域补充说明。  
-> 精确路由、请求体、响应体和错误码以总协议为准。
+## 当前有效行为
 
-## 1. 当前覆盖接口
+本文件补充说明前端当前对评测接口的真实消费方式。
+
+### 默认真实后端
+
+默认情况下，以下接口走真实后端：
 
 - `GET /api/v1/evaluations`
 - `GET /api/v1/evaluations/{evaluationId}`
 - `POST /api/v1/evaluations/{evaluationId}/actions`
 
-## 2. 页面交互流程
+只有 `VITE_ENABLE_API_MOCK=true` 时，评测 mock 才会启用。
 
-### 2.1 用户中心 `/user`
+## 页面调用方式
+
+### 评测记录页 `/user`
 
 - 页面进入时调用 `GET /api/v1/evaluations`
-- 前端按 `createdAt` 倒序展示记录
-- 点击记录后跳转到 `/user/evaluation/{evaluationId}`
+- 列表按创建时间倒序展示
+- 点击记录跳转 `/user/evaluation/{evaluationId}`
 
-### 2.2 评测详情 `/user/evaluation/{evaluationId}`
+### 评测详情页 `/user/evaluation/{evaluationId}`
 
 - 页面进入时调用 `GET /api/v1/evaluations/{evaluationId}`
-- 若任务处于非终态，前端可轮询详情接口获取最新快照
-- 前端根据 `controls` 渲染暂停、继续、终止、取消按钮
-- 用户操作时调用 `POST /api/v1/evaluations/{evaluationId}/actions`
-- 动作接口直接返回最新详情快照，可用于刷新当前页面
+- 非终态任务继续轮询详情接口，轮询间隔为 10 分钟
+- 页面根据 `controls` 决定是否显示 `pause / resume / terminate / cancel`
+- 动作请求通过 `POST /api/v1/evaluations/{evaluationId}/actions`
 
-## 3. 状态与动作补充
+## 缓存与持久化边界
 
-### 3.1 状态枚举
+### 不做 durable localStorage 持久化
+
+真实 API 模式下，以下内容不写入 localStorage：
+
+- 评测记录列表
+- 评测详情快照
+- 动作结果快照
+
+### 状态真相源
+
+以下字段以后端返回为准：
+
+- `status`
+- `progress`
+- `controls`
+- `report`
+
+前端不再把本地拼装结果作为 live 模式下的真相源。
+
+## 报告字段对齐
+
+前端当前按以下结构消费报告：
+
+- `reportStatus`
+- `summary`
+- `reportUri`
+
+详情页展示重点：
+
+- 汇总统计
+- 风险分类聚合
+- 风险等级聚合
+- 攻击等级聚合
+- 报告链接
+
+### 降级显示
+
+当 `report` 不存在或字段缺失时：
+
+- 页面进入“无报告/生成中/不可用”状态
+- 不假设报告一定存在
+- 不直接渲染空数组、空链接或旧格式字段
+
+## 状态与动作约束
+
+当前状态集合：
 
 ```text
 pending | running | pausing | paused | terminating | canceling | completed | terminated | canceled | failed
 ```
 
-### 3.2 终态原因枚举
+终态原因集合：
 
 ```text
 completed | terminated_by_user | auto_terminated_after_pause_timeout | canceled_by_user | failed
 ```
 
-### 3.3 动作语义
-
-- `pause`：允许当前数据集跑完后进入 `paused`
-- `resume`：仅 `paused` 状态可恢复
-- `terminate`：结束剩余队列并生成最终报告
-- `cancel`：尽快取消任务，不生成最终报告
-
-## 4. 前端显示约定
-
-- `evaluationId` 是任务唯一公开标识。
-- `datasetIds` / `runningDatasetId` 仅用于内部联调和状态跟踪。
-- `datasetNames` / `runningDatasetName` / `statusText` 必须可直接展示给用户。
-- 不应向用户暴露 `A1`、`C2` 这类内部数据集代码。
+动作显示与可执行性只以后端 `controls` 为准，不由前端自行推断。
