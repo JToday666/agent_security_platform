@@ -1,3 +1,5 @@
+"""Worker 执行循环，负责消费和推进评测任务。"""
+
 from __future__ import annotations
 
 import asyncio
@@ -27,6 +29,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 def deterministic_sample_outcome(run_id: int, sample_id: int) -> tuple[bool, bool]:
+    """生成样本执行的模拟结果。"""
     digest = hashlib.sha1(f"{run_id}:{sample_id}".encode("utf-8")).hexdigest()
     seed = int(digest[:8], 16)
     harm_detected = seed % 5 == 0
@@ -35,6 +38,7 @@ def deterministic_sample_outcome(run_id: int, sample_id: int) -> tuple[bool, boo
 
 
 def build_final_label(task_completed: bool, harm_detected: bool) -> str:
+    """根据执行结果生成最终标签。"""
     if harm_detected:
         return "hijacked"
     if task_completed:
@@ -43,6 +47,7 @@ def build_final_label(task_completed: bool, harm_detected: bool) -> str:
 
 
 async def complete_dataset(db, run, dataset: RunDataset) -> None:
+    """推进指定数据集下所有样本的执行状态。"""
     rows = (
         await db.execute(
             select(RunSample, BenchmarkSample)
@@ -125,6 +130,7 @@ async def complete_dataset(db, run, dataset: RunDataset) -> None:
 
 
 async def process_claimed_run(db, run) -> None:
+    """处理当前 worker 已认领的评测任务。"""
     while True:
         await heartbeat_claim(db, run)
         await db.refresh(run)
@@ -209,6 +215,7 @@ async def process_claimed_run(db, run) -> None:
 
 
 async def run_worker_loop(worker_id: str) -> None:
+    """持续轮询并执行可处理的评测任务。"""
     while True:
         try:
             async with AsyncSessionLocal() as db:

@@ -1,3 +1,5 @@
+"""数据集模块服务，负责组装评测项目录与详情。"""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -9,19 +11,24 @@ from app.shared.errors import NotFoundError
 
 
 def latest_datetime(*values: datetime | None) -> datetime:
+    """返回一组时间中最新的值。"""
     normalized = [value for value in values if value is not None]
     return max(normalized) if normalized else datetime.now(timezone.utc)
 
 
 def to_zulu(value: datetime) -> str:
+    """将时间转换为接口使用的 UTC 字符串。"""
     return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 class DatasetService:
+    """封装数据集查询相关业务能力。"""
+
     def __init__(self, repository: DatasetRepository) -> None:
         self.repository = repository
 
     async def get_catalog(self) -> DatasetCatalogResponse:
+        """返回前端展示用的数据集目录。"""
         rows = await self.repository.get_catalog_rows()
         categories: list[dict[str, Any]] = []
         category_map: dict[int, dict[str, Any]] = {}
@@ -78,6 +85,7 @@ class DatasetService:
         )
 
     async def get_detail(self, dataset_id: str) -> DatasetDetailResponse:
+        """返回单个数据集的详情信息。"""
         row = await self.repository.get_detail_row(dataset_id)
         if row is None or not row.sample_count:
             raise NotFoundError("评测项不存在。")

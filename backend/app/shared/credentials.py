@@ -1,3 +1,5 @@
+"""凭据存储能力，负责保存和读取敏感提交信息。"""
+
 from __future__ import annotations
 
 import base64
@@ -11,6 +13,8 @@ from typing import Protocol
 
 
 class CredentialStore(Protocol):
+    """定义凭据存储组件需要实现的接口。"""
+
     def store(self, payload: dict[str, object]) -> str:
         ...
 
@@ -22,6 +26,8 @@ class CredentialStore(Protocol):
 
 
 class FileCredentialStore:
+    """基于本地文件的凭据存储实现。"""
+
     def __init__(self, base_dir: Path, secret_key: str) -> None:
         self.base_dir = base_dir
         self.secret_key = secret_key.encode("utf-8")

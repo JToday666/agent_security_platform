@@ -1,3 +1,5 @@
+"""注册全局异常处理器并统一返回响应结构。"""
+
 from __future__ import annotations
 
 from typing import Any
@@ -15,6 +17,7 @@ def _loc_to_field(loc: tuple[Any, ...]) -> str:
 
 
 def register_exception_handlers(app: FastAPI) -> None:
+    """为应用挂载统一的异常响应处理器。"""
     @app.exception_handler(DomainError)
     async def domain_error_handler(_: Request, exc: DomainError):
         return json_error_response(

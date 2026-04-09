@@ -1,9 +1,13 @@
+"""认证模块请求与响应模型。"""
+
 from pydantic import ConfigDict, EmailStr, Field, field_validator
 
 from app.shared.schemas import CamelModel
 
 
 class LoginRequest(CamelModel):
+    """登录接口请求体。"""
+
     username: str = Field(min_length=1, max_length=255)
     password: str = Field(min_length=6, max_length=128)
 
@@ -14,6 +18,8 @@ class LoginRequest(CamelModel):
 
 
 class RegisterRequest(CamelModel):
+    """注册接口请求体。"""
+
     username: str = Field(min_length=3, max_length=50)
     email: EmailStr
     password: str = Field(min_length=6, max_length=128)
@@ -28,6 +34,8 @@ class RegisterRequest(CamelModel):
 
 
 class UserProfile(CamelModel):
+    """认证接口返回的用户资料。"""
+
     id: int
     username: str
     email: EmailStr
@@ -37,5 +45,7 @@ class UserProfile(CamelModel):
 
 
 class AuthSessionData(CamelModel):
+    """登录或注册成功后的会话信息。"""
+
     token: str
     user: UserProfile

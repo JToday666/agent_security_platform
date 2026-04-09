@@ -1,3 +1,5 @@
+"""评测任务模块数据访问层。"""
+
 from collections import defaultdict
 
 from sqlalchemy import select
@@ -7,6 +9,8 @@ from app.models.benchmark_run import RunDataset, RunReport, TestRun
 
 
 class EvaluationRepository:
+    """封装评测任务查询与状态持久化操作。"""
+
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 

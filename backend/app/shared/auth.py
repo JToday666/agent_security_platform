@@ -1,3 +1,5 @@
+"""认证依赖，负责提供数据库会话与当前用户。"""
+
 from typing import AsyncGenerator
 
 from fastapi import Depends
@@ -14,6 +16,7 @@ bearer_scheme = HTTPBearer(auto_error=False)
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    """提供请求级异步数据库会话。"""
     async with AsyncSessionLocal() as session:
         yield session
 
@@ -22,6 +25,7 @@ async def get_current_user(
     credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
     db: AsyncSession = Depends(get_db),
 ):
+    """解析访问令牌并返回当前登录用户。"""
     if credentials is None or not credentials.credentials:
         raise AuthError()
 

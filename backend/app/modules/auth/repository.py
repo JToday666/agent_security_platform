@@ -1,3 +1,5 @@
+"""认证模块数据访问层。"""
+
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -5,6 +7,8 @@ from app.models.user import User
 
 
 class AuthRepository:
+    """封装认证流程使用的用户查询与持久化操作。"""
+
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 

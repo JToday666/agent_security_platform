@@ -1,3 +1,5 @@
+"""FastAPI 应用入口，负责初始化共享能力并挂载顶层路由。"""
+
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
@@ -18,4 +20,5 @@ app.include_router(api_router)
 
 @app.get("/")
 async def read_root():
+    """返回服务根路径的欢迎信息。"""
     return success_payload({"message": f"Hello FastAPI project! PROJECT_NAME: {settings.PROJECT_NAME}"})

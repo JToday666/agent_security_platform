@@ -1,3 +1,5 @@
+"""用户模块数据访问层。"""
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -5,6 +7,8 @@ from app.models.user import User
 
 
 class UserRepository:
+    """封装用户资料相关的数据库操作。"""
+
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 

@@ -1,3 +1,5 @@
+"""数据集模块数据访问层。"""
+
 from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -5,6 +7,8 @@ from app.models.benchmark import BenchmarkSample, RiskCategory, RiskSubtype, Ris
 
 
 class DatasetRepository:
+    """封装数据集目录与详情查询操作。"""
+
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
