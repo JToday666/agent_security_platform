@@ -1,6 +1,6 @@
 import unittest
 
-from app.models.benchmark import RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta
+from app.models.benchmark import RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta, SampleOracle
 from app.models.benchmark_run import RunDataset, SampleExecution, TestRun
 
 
@@ -68,6 +68,11 @@ class SchemaModelTestCase(unittest.TestCase):
 
     def test_risk_subtype_code_is_globally_unique(self) -> None:
         self.assertTrue(RiskSubtype.__table__.c.code.unique)
+
+    def test_sample_oracle_updated_at_has_server_default(self) -> None:
+        column = SampleOracle.__table__.c.updated_at
+        self.assertIsNotNone(column.server_default)
+        self.assertFalse(column.nullable)
 
 
 if __name__ == "__main__":
