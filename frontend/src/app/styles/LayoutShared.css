@@ -1,0 +1,177 @@
+/* 共享页面壳层样式，只承载高复用布局，不覆盖页面个性化视觉。 */
+:where(.layout-page-shell) {
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+}
+
+:where(.layout-page-shell--wide) {
+  max-width: 1280px;
+}
+
+:where(.layout-page-shell--narrow) {
+  max-width: 1000px;
+}
+
+:where(.layout-page-shell--compact) {
+  max-width: 800px;
+}
+
+:where(.layout-page-panel) {
+  border-radius: 2rem;
+  padding: 2rem 2.2rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+:where(.layout-page-panel--sm) {
+  max-width: 600px;
+}
+
+:where(.layout-page-panel--md) {
+  max-width: 920px;
+}
+
+:where(.layout-page-panel--lg) {
+  max-width: 980px;
+}
+
+:where(.layout-page-title) {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.12;
+  margin-bottom: 0.5rem;
+  text-wrap: balance;
+}
+
+:where(.layout-page-subtitle) {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+  color: #475569;
+}
+
+:where(.layout-state-card) {
+  padding: 2rem;
+  border-radius: 1.6rem;
+  text-align: center;
+}
+
+:where(.layout-state-card h2) {
+  margin: 0;
+  color: #0f172a;
+}
+
+:where(.layout-state-card p) {
+  margin: 0.8rem auto 0;
+  max-width: 560px;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+:where(.layout-retry-btn) {
+  margin-top: 1rem;
+  border: none;
+  padding: 0.82rem 1.2rem;
+}
+
+:where(.layout-section-card) {
+  border-radius: 1.6rem;
+  padding: 1.4rem;
+}
+
+:where(.layout-page-stack) {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+:where(.layout-section-head) {
+  margin-bottom: 1rem;
+}
+
+:where(.layout-section-head h2) {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.22rem;
+}
+
+:where(.layout-section-head p) {
+  margin: 0.45rem 0 0;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+:where(.layout-section-card h2) {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.25rem;
+}
+
+:where(.layout-two-column) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  :where(.layout-page-shell) {
+    padding: 1.5rem;
+  }
+
+  :where(.layout-page-panel) {
+    padding: 1.7rem;
+  }
+
+  :where(.layout-page-title) {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :where(.layout-page-shell) {
+    padding: 1rem;
+  }
+
+  :where(.layout-page-panel) {
+    padding: 1.35rem;
+    border-radius: 1.5rem;
+  }
+
+  :where(.layout-page-title) {
+    font-size: 1.9rem;
+  }
+
+  :where(.layout-page-subtitle) {
+    font-size: 0.98rem;
+    margin-bottom: 1.5rem;
+  }
+
+  :where(.layout-state-card) {
+    padding: 1.5rem;
+    border-radius: 1.3rem;
+  }
+
+  :where(.layout-section-card) {
+    padding: 1.15rem;
+    border-radius: 1.3rem;
+  }
+
+  :where(.layout-two-column) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  :where(.layout-page-shell) {
+    padding: 0.85rem;
+  }
+
+  :where(.layout-page-panel) {
+    padding: 1.1rem;
+  }
+
+  :where(.layout-page-title) {
+    font-size: 1.7rem;
+  }
+}
