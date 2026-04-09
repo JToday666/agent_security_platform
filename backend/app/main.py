@@ -1,33 +1,21 @@
-from pathlib import Path
-
 from fastapi import FastAPI
-from fastapi import HTTPException, Request
-from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from app.core.config import settings
+
 from app.api.router import api_router
+from app.shared.config import settings
+from app.shared.exception_handlers import register_exception_handlers
+from app.shared.http import success_payload
+from app.shared.runtime import ensure_runtime_dirs
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
-Path("uploads").mkdir(parents=True, exist_ok=True)
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
-
-
-@app.exception_handler(HTTPException)
-async def http_exception_handler(_: Request, exc: HTTPException):
-    if isinstance(exc.detail, dict) and {"code", "message", "data"}.issubset(exc.detail.keys()):
-        return JSONResponse(status_code=exc.status_code, content=exc.detail)
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={
-            "code": exc.status_code,
-            "message": str(exc.detail),
-            "data": None,
-        },
-    )
+ensure_runtime_dirs()
+register_exception_handlers(app)
+app.mount("/uploads", StaticFiles(directory=settings.uploads_root), name="uploads")
 
 app.include_router(api_router)
 
+
 @app.get("/")
 async def read_root():
-    return {"message": "Hello FastAPI project!" + " PROJECT_NAME: " + settings.PROJECT_NAME}
+    return success_payload({"message": f"Hello FastAPI project! PROJECT_NAME: {settings.PROJECT_NAME}"})

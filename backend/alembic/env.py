@@ -11,8 +11,8 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
-from app.core.config import settings
-from app.db.base import Base
+from app.shared.config import settings
+from app.shared.db.base import Base
 import app.models  # noqa: F401
 
 config = context.config

@@ -15,14 +15,16 @@
 AGENTS.md
 # Ignore Codex files
 .codex
+# Ignore Git worktree files
+.worktrees/
 
 # backend
 /backend/.env
 /backend/**/__pycache__/
-/backend/uploads
+/backend/runtime/
 /backend/data*
-/backend/environment
-/backend/storage
+/backend/environments/
+/backend/storage/
 
 #frontend
 # Logs

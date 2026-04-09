@@ -4,8 +4,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 os.chdir(BASE_DIR)
 
-from app.core.config import settings
 import uvicorn
+from app.shared.config import settings
 
 def main() -> None:
     uvicorn.run(

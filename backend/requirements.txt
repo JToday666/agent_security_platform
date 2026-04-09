@@ -1,5 +1,6 @@
 alembic
 fastapi
+httpx
 uvicorn[standard]
 pydantic
 pydantic_settings
