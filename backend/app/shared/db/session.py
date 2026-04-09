@@ -1,3 +1,5 @@
+"""数据库引擎与异步会话工厂。"""
+
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.shared.config import settings

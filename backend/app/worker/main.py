@@ -1,3 +1,5 @@
+"""Worker 进程入口。"""
+
 from __future__ import annotations
 
 import asyncio
@@ -9,10 +11,12 @@ from app.worker.runner import run_worker_loop
 
 
 def build_worker_id() -> str:
+    """生成当前 worker 的唯一标识。"""
     return f"worker-{socket.gethostname()}-{os.getpid()}-{uuid.uuid4().hex[:8]}"
 
 
 def main() -> None:
+    """启动 worker 主循环。"""
     asyncio.run(run_worker_loop(build_worker_id()))
 
 

@@ -1,3 +1,5 @@
+"""密码与访问令牌相关的安全工具函数。"""
+
 import base64
 import hashlib
 import hmac
@@ -10,6 +12,7 @@ from app.shared.config import settings
 
 
 def hash_password(password: str) -> str:
+    """生成带盐的密码摘要。"""
     salt = os.urandom(16)
     iterations = 100_000
     digest = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, iterations)
@@ -22,6 +25,7 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(password: str, hashed_password: str) -> bool:
+    """校验明文密码是否与摘要匹配。"""
     try:
         algorithm, iterations, salt_b64, hash_b64 = hashed_password.split("$", 3)
     except ValueError:
@@ -39,6 +43,7 @@ def verify_password(password: str, hashed_password: str) -> bool:
 
 
 def create_access_token(user_id: int, expires_delta: timedelta | None = None) -> str:
+    """为指定用户生成访问令牌。"""
     expire = datetime.now(timezone.utc) + (
         expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
@@ -50,4 +55,5 @@ def create_access_token(user_id: int, expires_delta: timedelta | None = None) ->
 
 
 def decode_access_token(token: str) -> dict:
+    """解析访问令牌并返回载荷。"""
     return jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])

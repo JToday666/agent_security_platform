@@ -1,3 +1,5 @@
+"""提交模块服务，负责评测任务预校验与创建。"""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -24,27 +26,34 @@ TIMEOUT_META = {"min": 15, "max": 30, "step": 1, "default": 15, "recommendedMax"
 
 
 def invalid_submission(message: str) -> ValidationDomainError:
+    """构造提交模块使用的参数错误。"""
     return ValidationDomainError(message, http_status=400, code=40002)
 
 
 def to_zulu(value: datetime) -> str:
+    """将时间转换为接口使用的 UTC 字符串。"""
     return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def generate_public_id() -> str:
+    """生成对外展示的评测任务编号。"""
     return f"eval_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:6]}"
 
 
 def integrity_error_text(exc: IntegrityError) -> str:
+    """提取数据库完整性异常中的关键信息。"""
     return f"{exc} {getattr(exc, 'orig', '')}".lower()
 
 
 class SubmissionService:
+    """封装评测任务提交相关业务能力。"""
+
     def __init__(self, repository: SubmissionRepository, credential_store: CredentialStore | None = None) -> None:
         self.repository = repository
         self.credential_store = credential_store or FileCredentialStore(settings.credential_storage_dir, settings.SECRET_KEY)
 
     async def get_submit_meta(self) -> SubmitMetaResponse:
+        """返回提交页面所需的表单元信息。"""
         return SubmitMetaResponse.model_validate(
             {
                 "supportedMethods": SUPPORTED_METHODS,
@@ -56,10 +65,12 @@ class SubmissionService:
         )
 
     async def precheck(self, payload: AgentSubmissionRequest, current_user) -> PrecheckResponse:
+        """对提交请求进行预校验并返回提示信息。"""
         warnings, _ = await self._validate_payload(payload)
         return PrecheckResponse(ok=True, warnings=warnings)
 
     async def submit(self, payload: AgentSubmissionRequest, current_user) -> SubmitResponse:
+        """根据用户请求创建评测任务。"""
         existing = await self.repository.get_existing_run(current_user.id, payload.request_id)
         if existing is not None:
             return SubmitResponse(

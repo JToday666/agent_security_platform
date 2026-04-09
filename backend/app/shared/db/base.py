@@ -1,3 +1,5 @@
+"""SQLAlchemy ORM 基类与命名约定定义。"""
+
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 
@@ -14,4 +16,6 @@ metadata_obj = MetaData(naming_convention=NAMING_CONVENTION)
 
 
 class Base(DeclarativeBase):
+    """项目 ORM 模型共享的声明基类。"""
+
     metadata = metadata_obj

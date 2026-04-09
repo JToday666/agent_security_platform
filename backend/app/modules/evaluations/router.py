@@ -1,3 +1,5 @@
+"""评测任务模块路由，负责任务查询与动作接口。"""
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,11 +14,13 @@ router = APIRouter(prefix="/evaluations", tags=["evaluations"])
 
 
 def get_evaluation_service(db: AsyncSession = Depends(get_db)) -> EvaluationService:
+    """返回评测任务模块使用的服务实例。"""
     return EvaluationService(EvaluationRepository(db))
 
 
 @router.get("", response_model=Envelope[list[EvaluationListItem]])
 async def list_evaluations(current_user=Depends(get_current_user), service: EvaluationService = Depends(get_evaluation_service)):
+    """返回当前用户的评测任务列表。"""
     response = await service.list_evaluations(current_user=current_user)
     return success_payload([item.model_dump(by_alias=True) for item in response])
 
@@ -27,6 +31,7 @@ async def get_evaluation_detail(
     current_user=Depends(get_current_user),
     service: EvaluationService = Depends(get_evaluation_service),
 ):
+    """返回指定评测任务详情。"""
     response = await service.get_evaluation_detail(evaluationId, current_user)
     return success_payload(response.model_dump(by_alias=True))
 
@@ -38,5 +43,6 @@ async def apply_evaluation_action(
     current_user=Depends(get_current_user),
     service: EvaluationService = Depends(get_evaluation_service),
 ):
+    """对指定评测任务执行操作。"""
     response = await service.apply_action(evaluationId, payload, current_user)
     return success_payload(response.model_dump(by_alias=True))

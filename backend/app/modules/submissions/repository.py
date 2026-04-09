@@ -1,3 +1,5 @@
+"""提交模块数据访问层。"""
+
 from collections import defaultdict
 
 from sqlalchemy import and_, case, select
@@ -8,6 +10,8 @@ from app.models.benchmark_run import RunDataset, RunSample, SampleExecution, Tes
 
 
 class SubmissionRepository:
+    """封装评测任务创建所需的数据库操作。"""
+
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 

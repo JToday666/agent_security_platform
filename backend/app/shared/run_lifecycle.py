@@ -1,3 +1,5 @@
+"""评测任务生命周期工具，负责收尾与报告生成。"""
+
 from __future__ import annotations
 
 from collections import defaultdict
@@ -18,6 +20,7 @@ async def finalize_run(
     final_reason: str,
     create_report: bool,
 ) -> None:
+    """结束评测任务并同步更新关联状态。"""
     now = datetime.now(timezone.utc)
     run.status = final_status
     run.finalization_reason = final_reason
@@ -44,6 +47,7 @@ async def finalize_run(
 
 
 async def mark_run_failed(db: AsyncSession, run: TestRun, final_reason: str) -> None:
+    """将评测任务标记为失败。"""
     await finalize_run(
         db,
         run,
@@ -54,6 +58,7 @@ async def mark_run_failed(db: AsyncSession, run: TestRun, final_reason: str) -> 
 
 
 async def reconcile_run_timeout(db: AsyncSession, run: TestRun) -> bool:
+    """处理暂停超时后需要自动收尾的任务。"""
     new_status, new_reason, new_deadline = apply_pause_timeout(
         status=run.status,
         finalization_reason=run.finalization_reason,
@@ -73,6 +78,7 @@ async def reconcile_run_timeout(db: AsyncSession, run: TestRun) -> bool:
 
 
 async def reconcile_expired_paused_runs(db: AsyncSession) -> list[TestRun]:
+    """扫描并处理所有超时的暂停任务。"""
     runs = list(
         (
             await db.execute(
@@ -92,6 +98,7 @@ async def reconcile_expired_paused_runs(db: AsyncSession) -> list[TestRun]:
 
 
 async def upsert_report(db: AsyncSession, run_id: int) -> RunReport:
+    """创建或刷新指定任务的报告记录。"""
     report = (await db.execute(select(RunReport).where(RunReport.run_id == run_id))).scalar_one_or_none()
     summary = await build_report_summary(db, run_id)
 
@@ -108,6 +115,7 @@ async def upsert_report(db: AsyncSession, run_id: int) -> RunReport:
 
 
 async def build_report_summary(db: AsyncSession, run_id: int) -> dict[str, object]:
+    """汇总指定任务的评测报告摘要。"""
     run = await db.get(TestRun, run_id)
     summary_rows = (
         await db.execute(

@@ -1,3 +1,5 @@
+"""注册 `/api/v1` 版本下的业务模块路由。"""
+
 from fastapi import APIRouter
 
 from app.shared.http import success_payload
@@ -16,6 +18,8 @@ api_router.include_router(datasets_router)
 api_router.include_router(agents_router)
 api_router.include_router(evaluations_router)
 
+
 @api_router.get("/", response_model=Envelope[MessagePayload])
 async def read_root():
+    """返回 v1 接口版本的欢迎信息。"""
     return success_payload({"message": "API v1!"})

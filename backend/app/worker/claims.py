@@ -1,3 +1,5 @@
+"""Worker 任务认领与心跳维护相关函数。"""
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
@@ -15,6 +17,7 @@ def claim_is_stale(
     *,
     now: datetime | None = None,
 ) -> bool:
+    """判断任务认领心跳是否已过期。"""
     if claim_heartbeat_at is None:
         return False
     current = now or datetime.now(timezone.utc)
@@ -24,6 +27,7 @@ def claim_is_stale(
 
 
 async def claim_next_run(db: AsyncSession, worker_id: str) -> TestRun | None:
+    """为当前 worker 认领下一条可执行任务。"""
     now = datetime.now(timezone.utc)
     stale_before = now - timedelta(seconds=settings.RUN_CLAIM_STALE_AFTER_SECONDS)
     run = (
@@ -54,5 +58,6 @@ async def claim_next_run(db: AsyncSession, worker_id: str) -> TestRun | None:
 
 
 async def heartbeat_claim(db: AsyncSession, run: TestRun) -> None:
+    """刷新任务认领心跳时间。"""
     run.claim_heartbeat_at = datetime.now(timezone.utc)
     await db.commit()

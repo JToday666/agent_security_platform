@@ -1,7 +1,10 @@
+"""运行时目录初始化工具。"""
+
 from app.shared.config import settings
 
 
 def ensure_runtime_dirs() -> None:
+    """确保服务运行所需目录存在。"""
     for path in (
         settings.runtime_root,
         settings.uploads_root,

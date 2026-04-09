@@ -1,3 +1,5 @@
+"""用户模块服务，负责资料更新与头像上传。"""
+
 import uuid
 from pathlib import Path
 
@@ -15,13 +17,17 @@ MAX_AVATAR_SIZE = 2 * 1024 * 1024
 
 
 class UserService:
+    """封装用户资料相关业务能力。"""
+
     def __init__(self, repository: UserRepository) -> None:
         self.repository = repository
 
     async def get_profile(self, current_user) -> UserProfile:
+        """返回当前用户资料。"""
         return UserProfile.model_validate(current_user)
 
     async def update_profile(self, payload: ProfileUpdateRequest, current_user) -> UserProfile:
+        """更新当前用户可编辑的资料字段。"""
         if payload.email is not None:
             raise ForbiddenError("邮箱不可修改", code=1004)
 
@@ -46,6 +52,7 @@ class UserService:
         return UserProfile.model_validate(current_user)
 
     async def upload_avatar(self, avatar: UploadFile | None, current_user) -> AvatarUploadData:
+        """保存用户头像并返回可访问地址。"""
         if avatar is None:
             raise ValidationDomainError("请选择要上传的头像", http_status=status.HTTP_400_BAD_REQUEST, code=1000)
 

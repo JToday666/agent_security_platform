@@ -1,3 +1,5 @@
+"""集中定义后端运行配置与派生路径。"""
+
 from pathlib import Path
 
 from pydantic import Field
@@ -10,6 +12,8 @@ ENV_FILE = BACKEND_DIR / ".env"
 
 
 class Settings(BaseSettings):
+    """封装环境变量和项目运行时默认配置。"""
+
     model_config = SettingsConfigDict(env_file=str(ENV_FILE), extra="ignore")
 
     PROJECT_NAME: str = "Agent Security Platform"

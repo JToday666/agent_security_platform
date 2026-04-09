@@ -1,3 +1,5 @@
+"""评测任务模块服务，负责列表、详情与任务动作编排。"""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -14,10 +16,12 @@ from app.shared.runtime_rules import TERMINAL_STATUSES, build_controls
 
 
 def to_zulu(value: datetime) -> str:
+    """将时间转换为接口使用的 UTC 字符串。"""
     return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def build_parameters(run) -> dict[str, object]:
+    """整理评测任务保存的运行参数。"""
     return run.execution_config.get(
         "parameters",
         {"difficulty": 0.5, "timeoutMinutes": 15, "retryEnabled": False},
@@ -25,6 +29,7 @@ def build_parameters(run) -> dict[str, object]:
 
 
 def build_progress_percent(run, datasets: list) -> int:
+    """计算评测任务当前进度百分比。"""
     if run.total_samples > 0:
         return max(0, min(100, round((run.completed_samples / run.total_samples) * 100)))
     if not datasets:
@@ -34,6 +39,7 @@ def build_progress_percent(run, datasets: list) -> int:
 
 
 def build_status_text(status: str, running_dataset_name: str | None) -> str:
+    """生成面向前端展示的状态文案。"""
     if status == "pending":
         return "任务已创建，等待开始评测。"
     if status == "running":
@@ -58,6 +64,7 @@ def build_status_text(status: str, running_dataset_name: str | None) -> str:
 
 
 def build_report_payload(report) -> dict[str, object]:
+    """整理评测报告响应体。"""
     return {
         "reportStatus": report.report_status,
         "summary": report.summary_json
@@ -76,10 +83,13 @@ def build_report_payload(report) -> dict[str, object]:
 
 
 class EvaluationService:
+    """封装评测任务查询与动作处理能力。"""
+
     def __init__(self, repository: EvaluationRepository) -> None:
         self.repository = repository
 
     async def list_evaluations(self, current_user) -> list[EvaluationListItem]:
+        """返回当前用户的评测任务列表。"""
         runs = await self.repository.list_runs_for_user(current_user.id)
         datasets_by_run, reports_by_run = await self.repository.load_related_for_runs([run.id for run in runs])
         items: list[EvaluationListItem] = []
@@ -111,10 +121,12 @@ class EvaluationService:
         return items
 
     async def get_evaluation_detail(self, evaluation_id: str, current_user) -> EvaluationDetail:
+        """返回指定评测任务的完整详情。"""
         run = await self._get_run_for_user(evaluation_id=evaluation_id, current_user=current_user)
         return await self._build_detail_snapshot(run=run, owner_name=current_user.username)
 
     async def apply_action(self, evaluation_id: str, payload: EvaluationActionRequest, current_user) -> EvaluationDetail:
+        """对评测任务执行暂停、恢复、终止或取消操作。"""
         run = await self._get_run_for_user(evaluation_id=evaluation_id, current_user=current_user)
         owner_name = current_user.username
         now = datetime.now(timezone.utc)

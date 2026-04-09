@@ -1,3 +1,5 @@
+"""认证模块服务，负责登录注册等业务编排。"""
+
 from fastapi import status
 from sqlalchemy.exc import IntegrityError
 
@@ -8,14 +10,18 @@ from app.shared.security import create_access_token, hash_password, verify_passw
 
 
 def integrity_error_text(exc: IntegrityError) -> str:
+    """提取数据库完整性异常中的关键信息。"""
     return f"{exc} {getattr(exc, 'orig', '')}".lower()
 
 
 class AuthService:
+    """封装认证相关业务能力。"""
+
     def __init__(self, repository: AuthRepository) -> None:
         self.repository = repository
 
     async def login(self, username: str, password: str) -> AuthSessionData:
+        """校验用户凭据并返回登录结果。"""
         normalized_username = username.strip()
         if not normalized_username or not password:
             raise ValidationDomainError("用户名和密码不能为空", http_status=status.HTTP_400_BAD_REQUEST, code=1000)
@@ -30,6 +36,7 @@ class AuthService:
         )
 
     async def register(self, payload: RegisterRequest) -> AuthSessionData:
+        """创建新用户并返回注册结果。"""
         username = payload.username.strip()
         email = payload.email.lower()
 
@@ -55,4 +62,5 @@ class AuthService:
         )
 
     async def me(self, current_user) -> UserProfile:
+        """返回当前用户的资料快照。"""
         return UserProfile.model_validate(current_user)

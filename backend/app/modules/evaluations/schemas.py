@@ -1,15 +1,21 @@
+"""评测任务模块请求与响应模型。"""
+
 from typing import Literal
 
 from app.shared.schemas import CamelModel
 
 
 class EvaluationParameters(CamelModel):
+    """评测任务运行参数。"""
+
     difficulty: float
     timeout_minutes: int
     retry_enabled: bool
 
 
 class EvaluationListItem(CamelModel):
+    """评测任务列表中的单项摘要。"""
+
     evaluation_id: str
     agent_name: str
     description: str | None = None
@@ -29,6 +35,8 @@ class EvaluationListItem(CamelModel):
 
 
 class EvaluationProgress(CamelModel):
+    """评测任务进度信息。"""
+
     percent: int
     total_dataset_count: int
     completed_dataset_count: int
@@ -39,6 +47,8 @@ class EvaluationProgress(CamelModel):
 
 
 class EvaluationControls(CamelModel):
+    """当前评测任务允许执行的操作集合。"""
+
     can_pause: bool
     can_resume: bool
     can_terminate: bool
@@ -47,6 +57,8 @@ class EvaluationControls(CamelModel):
 
 
 class EvaluationReportSummary(CamelModel):
+    """评测报告中的摘要统计。"""
+
     total_samples: int
     completed_samples: int
     task_completed_count: int
@@ -58,12 +70,16 @@ class EvaluationReportSummary(CamelModel):
 
 
 class EvaluationReport(CamelModel):
+    """评测报告响应体。"""
+
     report_status: str
     summary: EvaluationReportSummary
     report_uri: str | None = None
 
 
 class EvaluationDetail(CamelModel):
+    """评测任务详情响应体。"""
+
     evaluation_id: str
     agent_name: str
     description: str | None = None
@@ -85,10 +101,14 @@ class EvaluationDetail(CamelModel):
 
 
 class EvaluationActionRequest(CamelModel):
+    """评测任务动作请求体。"""
+
     action: Literal["pause", "resume", "terminate", "cancel"]
 
 
 class EvaluationActionResult(CamelModel):
+    """评测任务动作处理结果。"""
+
     evaluation_id: str
     status: str
     controls: EvaluationControls
