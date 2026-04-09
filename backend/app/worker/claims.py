@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.benchmark_run import TestRun
@@ -25,28 +25,32 @@ def claim_is_stale(
 
 async def claim_next_run(db: AsyncSession, worker_id: str) -> TestRun | None:
     now = datetime.now(timezone.utc)
-    stale_before = now
-    candidates = (
+    stale_before = now - timedelta(seconds=settings.RUN_CLAIM_STALE_AFTER_SECONDS)
+    run = (
         await db.execute(
             select(TestRun)
-            .where(TestRun.status.in_(["pending", "running", "pausing", "terminating", "canceling"]))
+            .where(
+                TestRun.status.in_(["pending", "running", "pausing", "terminating", "canceling"]),
+                or_(
+                    TestRun.claimed_by.is_(None),
+                    TestRun.claim_heartbeat_at.is_(None),
+                    TestRun.claim_heartbeat_at < stale_before,
+                ),
+            )
             .order_by(TestRun.created_at.asc(), TestRun.id.asc())
+            .limit(1)
             .with_for_update(skip_locked=True)
         )
-    ).scalars()
+    ).scalar_one_or_none()
+    if run is None:
+        return None
 
-    for run in candidates:
-        if run.claimed_by is not None and run.claim_heartbeat_at is not None:
-            if not claim_is_stale(run.claim_heartbeat_at, now=stale_before):
-                continue
-        run.claimed_by = worker_id
-        run.claimed_at = now
-        run.claim_heartbeat_at = now
-        await db.commit()
-        await db.refresh(run)
-        return run
-
-    return None
+    run.claimed_by = worker_id
+    run.claimed_at = now
+    run.claim_heartbeat_at = now
+    await db.commit()
+    await db.refresh(run)
+    return run
 
 
 async def heartbeat_claim(db: AsyncSession, run: TestRun) -> None:

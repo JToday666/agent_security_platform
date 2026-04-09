@@ -9,8 +9,8 @@ from app.modules.evaluations.schemas import (
     EvaluationListItem,
 )
 from app.shared.errors import ConflictError, ForbiddenError, NotFoundError
-from app.shared.runtime_rules import TERMINAL_STATUSES, apply_pause_timeout, build_controls
-from app.worker.reporting import finalize_run
+from app.shared.run_lifecycle import finalize_run, reconcile_run_timeout
+from app.shared.runtime_rules import TERMINAL_STATUSES, build_controls
 
 
 def to_zulu(value: datetime) -> str:
@@ -81,11 +81,11 @@ class EvaluationService:
 
     async def list_evaluations(self, current_user) -> list[EvaluationListItem]:
         runs = await self.repository.list_runs_for_user(current_user.id)
+        datasets_by_run, reports_by_run = await self.repository.load_related_for_runs([run.id for run in runs])
         items: list[EvaluationListItem] = []
         for run in runs:
-            await self._apply_pause_timeout_if_needed(run)
-            datasets = await self.repository.load_run_datasets(run.id)
-            report = await self.repository.load_run_report(run.id)
+            datasets = datasets_by_run.get(run.id, [])
+            report = reports_by_run.get(run.id)
             items.append(
                 EvaluationListItem.model_validate(
                     {
@@ -119,47 +119,68 @@ class EvaluationService:
         owner_name = current_user.username
         now = datetime.now(timezone.utc)
 
-        if payload.action == "pause":
-            if run.pause_used:
-                raise ConflictError("该任务已使用过暂停机会，不能再次暂停。", code=40902)
-            if run.status != "running":
-                raise ConflictError("当前状态不允许执行 pause 操作。", code=40901)
-            run.status = "pausing"
-            run.requested_action = "pause"
-            run.requested_action_at = now
-        elif payload.action == "resume":
-            if run.status != "paused":
-                raise ConflictError("当前状态不允许执行 resume 操作。", code=40901)
-            run.status = "running"
-            run.pause_deadline_at = None
-            run.requested_action = None
-            run.requested_action_at = now
-            run.claimed_by = None
-            run.claimed_at = None
-            run.claim_heartbeat_at = None
-        elif payload.action == "terminate":
-            if run.status not in {"running", "pausing", "paused"}:
-                raise ConflictError("当前状态不允许执行 terminate 操作。", code=40901)
-            if run.status == "paused":
-                await finalize_run(self.repository.db, run, final_status="terminated", final_reason="terminated_by_user", create_report=True)
-            else:
-                run.status = "terminating"
-                run.requested_action = "terminate"
-                run.requested_action_at = now
-        elif payload.action == "cancel":
-            if run.status not in {"pending", "running", "pausing", "paused", "terminating", "canceling"}:
-                raise ConflictError("当前状态不允许执行 cancel 操作。", code=40901)
-            if run.status in {"pending", "paused"}:
-                await finalize_run(self.repository.db, run, final_status="canceled", final_reason="canceled_by_user", create_report=False)
-            else:
-                run.status = "canceling"
-                run.requested_action = "cancel"
-                run.requested_action_at = now
-        else:
-            raise ConflictError(f"当前状态不允许执行 {payload.action} 操作。", code=40901)
+        try:
+            reconciled = await reconcile_run_timeout(self.repository.db, run)
+            if reconciled:
+                await self.repository.refresh(run)
 
-        await self.repository.commit()
-        await self.repository.refresh(run)
+            if payload.action == "pause":
+                if run.pause_used:
+                    raise ConflictError("该任务已使用过暂停机会，不能再次暂停。", code=40902)
+                if run.status != "running":
+                    raise ConflictError("当前状态不允许执行 pause 操作。", code=40901)
+                run.status = "pausing"
+                run.requested_action = "pause"
+                run.requested_action_at = now
+            elif payload.action == "resume":
+                if run.status != "paused":
+                    raise ConflictError("当前状态不允许执行 resume 操作。", code=40901)
+                run.status = "running"
+                run.pause_deadline_at = None
+                run.requested_action = None
+                run.requested_action_at = now
+                run.claimed_by = None
+                run.claimed_at = None
+                run.claim_heartbeat_at = None
+            elif payload.action == "terminate":
+                if run.status not in {"running", "pausing", "paused"}:
+                    raise ConflictError("当前状态不允许执行 terminate 操作。", code=40901)
+                if run.status == "paused":
+                    await finalize_run(
+                        self.repository.db,
+                        run,
+                        final_status="terminated",
+                        final_reason="terminated_by_user",
+                        create_report=True,
+                    )
+                else:
+                    run.status = "terminating"
+                    run.requested_action = "terminate"
+                    run.requested_action_at = now
+            elif payload.action == "cancel":
+                if run.status not in {"pending", "running", "pausing", "paused", "terminating", "canceling"}:
+                    raise ConflictError("当前状态不允许执行 cancel 操作。", code=40901)
+                if run.status in {"pending", "paused"}:
+                    await finalize_run(
+                        self.repository.db,
+                        run,
+                        final_status="canceled",
+                        final_reason="canceled_by_user",
+                        create_report=False,
+                    )
+                else:
+                    run.status = "canceling"
+                    run.requested_action = "cancel"
+                    run.requested_action_at = now
+            else:
+                raise ConflictError(f"当前状态不允许执行 {payload.action} 操作。", code=40901)
+
+            if run.status not in TERMINAL_STATUSES:
+                await self.repository.commit()
+            await self.repository.refresh(run)
+        except Exception:
+            await self.repository.rollback()
+            raise
         return await self._build_detail_snapshot(run=run, owner_name=owner_name)
 
     async def _get_run_for_user(self, evaluation_id: str, current_user):
@@ -168,25 +189,7 @@ class EvaluationService:
             raise NotFoundError("评测记录不存在。")
         if run.user_id != current_user.id:
             raise ForbiddenError("无权访问该评测任务。")
-        await self._apply_pause_timeout_if_needed(run)
         return run
-
-    async def _apply_pause_timeout_if_needed(self, run) -> None:
-        new_status, new_reason, new_deadline = apply_pause_timeout(
-            status=run.status,
-            finalization_reason=run.finalization_reason,
-            pause_deadline_at=run.pause_deadline_at,
-        )
-        if new_status == run.status and new_reason == run.finalization_reason and new_deadline == run.pause_deadline_at:
-            return
-
-        await finalize_run(
-            self.repository.db,
-            run,
-            final_status=new_status,
-            final_reason=new_reason or "auto_terminated_after_pause_timeout",
-            create_report=True,
-        )
 
     async def _build_detail_snapshot(self, run, owner_name: str) -> EvaluationDetail:
         datasets = await self.repository.load_run_datasets(run.id)

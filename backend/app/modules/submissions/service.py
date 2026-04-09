@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from uuid import uuid4
 
+from sqlalchemy.exc import IntegrityError
+
 from app.models.benchmark_run import TestRun
 from app.modules.submissions.repository import SubmissionRepository
 from app.modules.submissions.schemas import (
@@ -31,6 +33,10 @@ def to_zulu(value: datetime) -> str:
 
 def generate_public_id() -> str:
     return f"eval_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:6]}"
+
+
+def integrity_error_text(exc: IntegrityError) -> str:
+    return f"{exc} {getattr(exc, 'orig', '')}".lower()
 
 
 class SubmissionService:
@@ -107,13 +113,31 @@ class SubmissionService:
             claimed_at=None,
             claim_heartbeat_at=None,
         )
-        run = await self.repository.create_run_graph(
-            run=run,
-            dataset_ids=selection["dataset_ids"],
-            dataset_names=selection["dataset_names"],
-            matched_counts=selection["matched_counts"],
-            sample_rows=sample_rows,
-        )
+        try:
+            run = await self.repository.create_run_graph(
+                run=run,
+                dataset_ids=selection["dataset_ids"],
+                dataset_names=selection["dataset_names"],
+                matched_counts=selection["matched_counts"],
+                sample_rows=sample_rows,
+            )
+            await self.repository.commit()
+        except IntegrityError as exc:
+            await self.repository.rollback()
+            self._delete_credentials(credential_ref)
+            if "request_id" in integrity_error_text(exc):
+                existing = await self.repository.get_existing_run(current_user.id, payload.request_id)
+                if existing is not None:
+                    return SubmitResponse(
+                        evaluation_id=existing.public_id,
+                        status=existing.status,
+                        created_at=to_zulu(existing.created_at),
+                    )
+            raise
+        except Exception:
+            await self.repository.rollback()
+            self._delete_credentials(credential_ref)
+            raise
         return SubmitResponse(
             evaluation_id=run.public_id,
             status=run.status,
@@ -196,3 +220,8 @@ class SubmissionService:
                 }
             )
         return None
+
+    def _delete_credentials(self, credential_ref: str | None) -> None:
+        if credential_ref is None:
+            return
+        self.credential_store.delete(credential_ref)

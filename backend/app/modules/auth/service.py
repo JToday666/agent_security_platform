@@ -1,9 +1,14 @@
 from fastapi import status
+from sqlalchemy.exc import IntegrityError
 
 from app.modules.auth.repository import AuthRepository
 from app.modules.auth.schemas import AuthSessionData, RegisterRequest, UserProfile
 from app.shared.errors import AuthError, ConflictError, ValidationDomainError
 from app.shared.security import create_access_token, hash_password, verify_password
+
+
+def integrity_error_text(exc: IntegrityError) -> str:
+    return f"{exc} {getattr(exc, 'orig', '')}".lower()
 
 
 class AuthService:
@@ -34,7 +39,16 @@ class AuthService:
         if await self.repository.is_email_taken(email):
             raise ConflictError("邮箱已被注册", code=1002)
 
-        user = await self.repository.create_user(username, email, hash_password(payload.password))
+        try:
+            user = await self.repository.create_user(username, email, hash_password(payload.password))
+            await self.repository.commit()
+            await self.repository.refresh(user)
+        except IntegrityError as exc:
+            await self.repository.rollback()
+            detail = integrity_error_text(exc)
+            if "email" in detail:
+                raise ConflictError("邮箱已被注册", code=1002) from exc
+            raise ConflictError("用户名已被注册", code=1002) from exc
         return AuthSessionData(
             token=create_access_token(user.id),
             user=UserProfile.model_validate(user),

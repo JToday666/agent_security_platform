@@ -2,6 +2,7 @@ import uuid
 from pathlib import Path
 
 from fastapi import UploadFile, status
+from sqlalchemy.exc import IntegrityError
 
 from app.modules.user.repository import UserRepository
 from app.modules.user.schemas import AvatarUploadData, ProfileUpdateRequest, UserProfile
@@ -35,7 +36,13 @@ class UserService:
         if payload.password is not None:
             current_user.hashed_password = hash_password(payload.password)
 
-        await self.repository.save_user(current_user)
+        try:
+            await self.repository.save_user(current_user)
+            await self.repository.commit()
+            await self.repository.refresh(current_user)
+        except IntegrityError as exc:
+            await self.repository.rollback()
+            raise ConflictError("用户名已被占用", code=1003) from exc
         return UserProfile.model_validate(current_user)
 
     async def upload_avatar(self, avatar: UploadFile | None, current_user) -> AvatarUploadData:
@@ -65,5 +72,13 @@ class UserService:
             ) from exc
 
         current_user.avatar_url = f"/uploads/avatars/{file_name}"
-        await self.repository.save_user(current_user)
+        try:
+            await self.repository.save_user(current_user)
+            await self.repository.commit()
+            await self.repository.refresh(current_user)
+        except Exception:
+            await self.repository.rollback()
+            if file_path.exists():
+                file_path.unlink()
+            raise
         return AvatarUploadData(avatar_url=current_user.avatar_url)

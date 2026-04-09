@@ -71,7 +71,55 @@ uv run python worker.py
 - API 根路径：`GET /api/`
 - API v1 根路径：`GET /api/v1/`
 
-## 4. 核心约束
+## 4. 检查与验证
+
+所有检查命令都必须在 `backend/` 目录执行。
+
+依赖与迁移：
+
+```bash
+uv sync
+uv run alembic upgrade head
+uv run alembic current
+```
+
+数据库连通性检查：
+
+```bash
+uv run python - <<'PY'
+import asyncio
+from sqlalchemy import text
+from app.shared.db.session import AsyncSessionLocal, engine
+
+async def main() -> None:
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(text("SELECT 1 AS ok, current_database() AS db, current_user AS db_user"))
+        print(result.one())
+    await engine.dispose()
+
+asyncio.run(main())
+PY
+```
+
+自动化测试：
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
+
+真实 HTTP 冒烟：
+
+```bash
+uv run uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+另开一个终端，在同样的 `backend/` 目录执行：
+
+```bash
+uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
+```
+
+## 5. 核心约束
 
 - 新增 API 路由使用 `/api/v1` 前缀
 - 业务响应统一使用 `{ code, data, message }`
@@ -80,7 +128,7 @@ uv run python worker.py
 - 数据库结构变更必须通过 Alembic 迁移交付
 - 新增模型后先注册到 `app/models/__init__.py`
 
-## 5. 文档索引
+## 6. 文档索引
 
 后端内部文档：
 
@@ -96,9 +144,10 @@ uv run python worker.py
 
 跨端接口契约：
 
-- [用户接口](../share/user接口.md)
-- [数据集与提交接口](../share/database&submit接口.md)
-- [评测记录与报告接口](../share/evaluations接口.md)
+- [API 接口协议总表](../share/API接口协议.md)
+- [用户接口补充说明](../share/user接口.md)
+- [数据集与提交接口补充说明](../share/database&submit接口.md)
+- [评测记录与报告接口补充说明](../share/evaluations接口.md)
 
 待办事项：
 

@@ -17,6 +17,9 @@ class CredentialStore(Protocol):
     def load(self, credential_ref: str) -> dict[str, object]:
         ...
 
+    def delete(self, credential_ref: str) -> None:
+        ...
+
 
 class FileCredentialStore:
     def __init__(self, base_dir: Path, secret_key: str) -> None:
@@ -34,6 +37,11 @@ class FileCredentialStore:
     def load(self, credential_ref: str) -> dict[str, object]:
         content = (self.base_dir / f"{credential_ref}.bin").read_text(encoding="utf-8")
         return self._open(content)
+
+    def delete(self, credential_ref: str) -> None:
+        path = self.base_dir / f"{credential_ref}.bin"
+        if path.exists():
+            path.unlink()
 
     def _seal(self, payload: dict[str, object]) -> str:
         plaintext = json.dumps(payload, ensure_ascii=True, separators=(",", ":"), sort_keys=True).encode("utf-8")

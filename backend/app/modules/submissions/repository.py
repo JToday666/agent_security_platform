@@ -124,6 +124,14 @@ class SubmissionRepository:
                 for run_sample in run_samples
             ]
         )
-        await self.db.commit()
-        await self.db.refresh(run)
+        await self.db.flush()
         return run
+
+    async def commit(self) -> None:
+        await self.db.commit()
+
+    async def rollback(self) -> None:
+        await self.db.rollback()
+
+    async def refresh(self, entity) -> None:
+        await self.db.refresh(entity)

@@ -17,6 +17,14 @@ class UserRepository:
 
     async def save_user(self, user: User) -> User:
         self.db.add(user)
-        await self.db.commit()
-        await self.db.refresh(user)
+        await self.db.flush()
         return user
+
+    async def commit(self) -> None:
+        await self.db.commit()
+
+    async def rollback(self) -> None:
+        await self.db.rollback()
+
+    async def refresh(self, entity) -> None:
+        await self.db.refresh(entity)
