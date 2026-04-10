@@ -5,6 +5,23 @@
   padding: 2rem;
 }
 
+:where(.layout-app-shell) {
+  min-height: calc(100vh - var(--nav-height));
+}
+
+:where(.layout-app-content) {
+  flex: 1;
+  min-width: 0;
+  margin-left: var(--sidebar-active-width, var(--sidebar-width));
+  position: relative;
+  z-index: var(--z-content);
+  transition: margin-left var(--duration-base) ease;
+}
+
+:where(.layout-app-content) > :where(.content:not(.layout-page-shell)) {
+  padding: 1.15rem 1.25rem 1.5rem;
+}
+
 :where(.layout-page-shell--wide) {
   max-width: 1280px;
 }
@@ -115,6 +132,14 @@
 }
 
 @media (max-width: 1024px) {
+  :where(.layout-app-content) {
+    margin-left: 0;
+  }
+
+  :where(.layout-app-content) > :where(.content:not(.layout-page-shell)) {
+    padding: 0.95rem 1rem 1.25rem;
+  }
+
   :where(.layout-page-shell) {
     padding: 1.5rem;
   }
@@ -163,6 +188,10 @@
 }
 
 @media (max-width: 480px) {
+  :where(.layout-app-content) > :where(.content:not(.layout-page-shell)) {
+    padding: 0.8rem 0.85rem 1rem;
+  }
+
   :where(.layout-page-shell) {
     padding: 0.85rem;
   }

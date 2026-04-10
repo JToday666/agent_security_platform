@@ -3,7 +3,7 @@
     <PageHeroCard
       eyebrow="公开榜单"
       title="智能体排行榜"
-      description="排行榜功能仍在建设中。真实榜单接口尚未上线，页面默认展示产品级占位状态；如需演示，可显式开启独立的排行榜 Mock。"
+      description="排行榜功能仍在建设中，当前仅展示占位状态或可选 Mock 演示。"
       :chips="heroChips"
     />
 
@@ -87,11 +87,11 @@ const mockRows: LeaderboardRow[] = [
 
 const heroChips = computed(() => [
   {
-    label: "运行模式",
+    label: "模式",
     value: showMock ? "Leaderboard Mock" : "敬请期待",
   },
   {
-    label: "结果数量",
+    label: "结果",
     value: showMock ? `${mockRows.length} 条` : "--",
   },
 ]);

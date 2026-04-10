@@ -8,7 +8,9 @@
     "build": "run-s type-check build-only",
     "build-only": "vite build",
     "preview": "vite preview",
-    "type-check": "vue-tsc -b"
+    "type-check": "vue-tsc -b",
+    "test": "node --test \"src/**/*.test.ts\"",
+    "test:watch": "node --test --watch \"src/**/*.test.ts\""
   },
   "dependencies": {
     "@iconify/vue": "5.0.0",
@@ -18,14 +20,12 @@
     "vue-router": "5.0.4"
   },
   "devDependencies": {
-    "@types/node": "25.5.2",
+    "@types/node": "25.6.0",
     "@vitejs/plugin-vue": "6.0.5",
-    "@vitejs/plugin-vue-jsx": "5.1.5",
     "@vue/tsconfig": "0.9.1",
     "npm-run-all2": "8.0.4",
     "typescript": "6.0.2",
     "vite": "8.0.8",
-    "vite-plugin-vue-devtools": "8.1.1",
     "vue-tsc": "3.2.6"
   },
   "engines": {

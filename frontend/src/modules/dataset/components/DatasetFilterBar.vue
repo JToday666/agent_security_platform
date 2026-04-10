@@ -1,32 +1,19 @@
 <template>
   <section class="filter-card ui-surface-glass">
-    <div class="summary-row">
-      <div class="summary-item ui-surface-white">
-        <span>已选风险域</span>
-        <strong>{{ selectedCategoryIds.length }}</strong>
-      </div>
-      <div class="summary-item ui-surface-white">
-        <span>已显示评测项</span>
-        <strong>{{ visibleDatasetCount }}</strong>
-      </div>
-      <div class="actions">
-        <button class="action-btn ui-btn ui-btn-pill" @click="$emit('select-all')">
-          全选
-        </button>
-        <button class="action-btn ui-btn ui-btn-pill" @click="$emit('clear-all')">
-          清空筛选
-        </button>
-      </div>
+    <div class="filter-head">
+      <h2>风险域切换</h2>
+      <p>默认展示首个风险域，点击标签可切换查看对应评测项。</p>
     </div>
 
     <div class="chip-row">
       <button
         v-for="category in categories"
         :key="category.categoryId"
+        type="button"
         class="category-chip ui-btn ui-btn-pill"
-        :class="{ active: selectedCategoryIds.includes(category.categoryId) }"
-        :style="getChipStyle(category.categoryId, selectedCategoryIds.includes(category.categoryId))"
-        @click="$emit('toggle-category', category.categoryId)"
+        :class="{ active: activeCategoryId === category.categoryId }"
+        :style="getChipStyle(category.categoryId, activeCategoryId === category.categoryId)"
+        @click="$emit('select-category', category.categoryId)"
       >
         <span class="chip-name">{{ category.name }}</span>
         <span class="chip-meaning">{{ category.meaning }}</span>
@@ -40,15 +27,12 @@ import type { DatasetCategoryViewModel } from "@/shared/types/DatasetTypes";
 import { getCategoryTheme } from "@/modules/dataset/lib";
 
 defineEmits<{
-  (event: "select-all"): void;
-  (event: "clear-all"): void;
-  (event: "toggle-category", categoryId: string): void;
+  (event: "select-category", categoryId: string): void;
 }>();
 
 defineProps<{
   categories: DatasetCategoryViewModel[];
-  selectedCategoryIds: string[];
-  visibleDatasetCount: number;
+  activeCategoryId: string;
 }>();
 
 const getChipStyle = (categoryId: string, active: boolean) => {
@@ -79,54 +63,22 @@ const getChipStyle = (categoryId: string, active: boolean) => {
   margin-bottom: 1.8rem;
 }
 
-.summary-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.9rem;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.summary-item {
-  min-width: 130px;
-  padding: 0.95rem 1rem;
-  border-radius: 1rem;
-}
-
-.summary-item span {
-  display: block;
-  color: #64748b;
-  font-size: 0.86rem;
-}
-
-.summary-item strong {
-  display: block;
-  margin-top: 0.3rem;
-  font-size: 1.2rem;
+.filter-head h2 {
+  margin: 0;
   color: #0f172a;
+  font-size: 1.08rem;
 }
 
-.actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-left: auto;
-}
-
-.action-btn {
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  color: #334155;
-  padding: 0.72rem 1.1rem;
-}
-
-.action-btn:hover {
-  transform: translateY(-1px);
+.filter-head p {
+  margin: 0.45rem 0 0;
+  color: #64748b;
+  line-height: 1.7;
 }
 
 .chip-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 0.85rem;
   margin-top: 1rem;
 }
 
@@ -155,21 +107,8 @@ const getChipStyle = (categoryId: string, active: boolean) => {
 }
 
 @media (max-width: 768px) {
-  .summary-row {
-    align-items: stretch;
-  }
-
-  .summary-item {
-    flex: 1 1 120px;
-  }
-
-  .actions {
-    width: 100%;
-    margin-left: 0;
-  }
-
-  .action-btn {
-    flex: 1;
+  .filter-card {
+    padding: 1.15rem;
   }
 }
 </style>

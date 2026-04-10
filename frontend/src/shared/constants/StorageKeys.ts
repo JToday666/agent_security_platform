@@ -10,8 +10,8 @@ export const STORAGE_KEYS = {
   draft: {
     submit: "agent-platform:draft:v1",
   },
-  catalog: {
-    filters: "agent-platform:dataset-page:filters:v1",
+  session: {
+    scroll: "agent-platform:session-scroll:v1",
   },
   user: {
     token: "token",

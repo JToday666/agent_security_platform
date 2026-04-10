@@ -74,7 +74,6 @@ const applyMetaDefaults = (
 export const useSubmitDraftStore = defineStore("submitDraft", () => {
   const form = ref<SubmitFormState | null>(null);
   const expandedCategoryIds = ref<string[]>([]);
-  const restoredDraftNotice = ref(false);
   const catalogSyncNotice = ref("");
   const hydrated = ref(false);
   const restoredFromPersistedDraft = ref(false);
@@ -123,14 +122,12 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
           ...(persisted.data.expandedCategoryIds ?? []),
         ];
         pendingRequest.value = persisted.data.pendingRequest ?? null;
-        restoredDraftNotice.value = true;
         restoredFromPersistedDraft.value = true;
         persistedCatalogVersion.value = persisted.catalogVersion ?? "";
       } else {
         form.value = defaultForm;
         expandedCategoryIds.value = [];
         pendingRequest.value = null;
-        restoredDraftNotice.value = false;
         restoredFromPersistedDraft.value = false;
         persistedCatalogVersion.value = "";
       }
@@ -256,7 +253,6 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     ];
     expandedCategoryIds.value = [];
     pendingRequest.value = null;
-    restoredDraftNotice.value = false;
     restoredFromPersistedDraft.value = false;
     persistedCatalogVersion.value = "";
     catalogSyncNotice.value = "";
@@ -286,14 +282,9 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     pendingRequest.value = value;
   };
 
-  const setCatalogSyncNotice = (value: string) => {
-    catalogSyncNotice.value = value;
-  };
-
   const clearDraftAfterSubmit = () => {
     clearPersistTimer();
     clearPersistedState(STORAGE_KEYS.draft.submit);
-    restoredDraftNotice.value = false;
     restoredFromPersistedDraft.value = false;
     persistedCatalogVersion.value = "";
     catalogSyncNotice.value = "";
@@ -307,7 +298,6 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
   return {
     form,
     expandedCategoryIds,
-    restoredDraftNotice,
     catalogSyncNotice,
     currentMeta,
     pendingRequest,
@@ -318,7 +308,6 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     setSubmitMethod,
     setExpandedCategoryIds,
     setPendingRequest,
-    setCatalogSyncNotice,
     clearDraftAfterSubmit,
   };
 });

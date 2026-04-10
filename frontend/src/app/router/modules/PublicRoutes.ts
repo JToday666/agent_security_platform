@@ -22,11 +22,13 @@ export const publicRoutes: RouteRecordRaw[] = [
         path: "dataset",
         name: ROUTE_NAME.DATASET_LIST,
         component: DatasetCatalogPage,
+        meta: { restoreSessionScroll: true },
       },
       {
         path: "dataset/:datasetId",
         name: ROUTE_NAME.DATASET_DETAIL,
         component: DatasetDetailPage,
+        meta: { restoreSessionScroll: true },
       },
       {
         path: "leaderboard",

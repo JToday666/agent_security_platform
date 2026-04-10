@@ -1,7 +1,11 @@
 <template>
   <div class="content report-card layout-page-panel layout-page-panel--md ui-surface-glass">
+    <div class="page-top-actions">
+      <button class="back-btn ui-btn ui-btn-pill" type="button" @click="goBack">
+        返回评测记录
+      </button>
+    </div>
     <h1 class="page-title layout-page-title">评测详情</h1>
-    <p class="report-id">任务 ID：{{ evaluationId }}</p>
 
     <div v-if="loading && !detail" class="state-card layout-state-card ui-surface-white">
       <h2>正在读取评测详情</h2>
@@ -229,12 +233,6 @@
           </div>
         </div>
       </template>
-
-      <div class="actions footer-actions">
-        <button class="back-btn ui-btn ui-btn-pill" @click="goBack">
-          返回评测记录
-        </button>
-      </div>
     </template>
 
     <ConfirmDialog
@@ -449,10 +447,10 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.report-id {
-  font-size: 1rem;
-  color: #64748b;
-  margin-bottom: 1.6rem;
+.page-top-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
 }
 
 .summary-section {
@@ -636,21 +634,11 @@ onBeforeUnmount(() => {
   color: #64748b;
 }
 
-.footer-actions {
-  margin-top: 1.5rem;
-  text-align: right;
-}
-
 .back-btn {
   padding: 0.82rem 1.2rem;
 }
 
 @media (max-width: 768px) {
-  .progress-head,
-  .footer-actions {
-    text-align: initial;
-  }
-
   .progress-head {
     flex-direction: column;
   }

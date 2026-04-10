@@ -3,13 +3,9 @@
     <PageHeroCard
       eyebrow="评测目录"
       title="风险评测目录"
-      description="按风险域浏览当前可用评测项，支持筛选、查看详情，并快速发起评测。"
+      description="默认展示首个风险域的评测项，点击风险域标签即可切换查看其他方向。"
       :chips="heroChips"
     />
-
-    <p v-if="restoredFilterNotice" class="notice-banner ui-surface-white">
-      已恢复上次筛选状态。
-    </p>
 
     <div v-if="loading && !loaded" class="state-card layout-state-card ui-surface-white">
       <h2>正在加载目录</h2>
@@ -30,33 +26,23 @@
       </button>
     </div>
 
+    <div v-else-if="!activeCategory" class="state-card layout-state-card ui-surface-white">
+      <h2>当前暂无可用评测项</h2>
+      <p>系统暂未返回可展示的风险域或评测项，请稍后重试。</p>
+    </div>
+
     <template v-else>
       <DatasetFilterBar
         :categories="enabledCategories"
-        :selected-category-ids="selectedCategoryIds"
-        :visible-dataset-count="visibleDatasetCount"
-        @select-all="selectAllCategories"
-        @clear-all="clearAllCategories"
-        @toggle-category="toggleCategorySelection"
+        :active-category-id="activeCategoryId"
+        @select-category="setActiveCategory"
       />
 
-      <div v-if="visibleCategories.length" class="section-list">
+      <div class="section-list">
         <DatasetCategorySection
-          v-for="category in visibleCategories"
-          :key="category.categoryId"
-          :category="category"
+          :key="activeCategory.categoryId"
+          :category="activeCategory"
         />
-      </div>
-
-      <div v-else class="state-card layout-state-card ui-surface-white">
-        <h2>当前没有可显示的评测项</h2>
-        <p>你已清空全部风险域筛选，可一键恢复全选继续浏览。</p>
-        <button
-          class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient"
-          @click="selectAllCategories"
-        >
-          恢复全选
-        </button>
       </div>
     </template>
   </div>
@@ -70,16 +56,15 @@ import DatasetFilterBar from "@/modules/dataset/components/DatasetFilterBar.vue"
 import DatasetCategorySection from "@/modules/dataset/components/DatasetCategorySection.vue";
 import { useDatasetCatalogStore } from "@/modules/dataset/stores/DatasetCatalogStore";
 
-// 列表页只消费统一目录 store，所有筛选都在前端本地完成。
+// 目录页只消费统一目录 store，风险域切换保持为前端单选状态。
 const datasetCatalogStore = useDatasetCatalogStore();
 const {
   enabledCategories,
-  visibleCategories,
-  selectedCategoryIds,
+  activeCategory,
+  activeCategoryId,
   loading,
   loaded,
   error,
-  restoredFilterNotice,
 } = storeToRefs(datasetCatalogStore);
 
 const totalDatasetCount = computed(() =>
@@ -89,25 +74,18 @@ const totalDatasetCount = computed(() =>
   ),
 );
 
-const visibleDatasetCount = computed(() =>
-  visibleCategories.value.reduce(
-    (sum, category) => sum + category.subcategories.length,
-    0,
-  ),
-);
-
 const heroChips = computed(() => [
   {
-    label: "全部风险域",
+    label: "风险域",
     value: `${enabledCategories.value.length} 个`,
   },
   {
-    label: "全部评测项",
+    label: "评测项总数",
     value: `${totalDatasetCount.value} 个`,
   },
   {
-    label: "当前可见评测项",
-    value: `${visibleDatasetCount.value} 个`,
+    label: "当前风险域",
+    value: activeCategory.value?.name ?? "暂无",
   },
 ]);
 
@@ -115,16 +93,8 @@ const reloadCatalog = async () => {
   await datasetCatalogStore.fetchCatalog(true);
 };
 
-const selectAllCategories = () => {
-  datasetCatalogStore.selectAllCategories();
-};
-
-const clearAllCategories = () => {
-  datasetCatalogStore.clearAllCategories();
-};
-
-const toggleCategorySelection = (categoryId: string) => {
-  datasetCatalogStore.toggleCategorySelection(categoryId);
+const setActiveCategory = (categoryId: string) => {
+  datasetCatalogStore.setActiveCategory(categoryId);
 };
 
 onMounted(async () => {
@@ -135,14 +105,6 @@ onMounted(async () => {
 <style scoped>
 .dataset-page {
   padding-bottom: 2.5rem;
-}
-
-.notice-banner {
-  margin: -0.4rem 0 1rem;
-  padding: 0.95rem 1rem;
-  border-radius: 1rem;
-  color: #1d4ed8;
-  font-weight: 600;
 }
 
 .section-list {

@@ -7,9 +7,9 @@
       <div class="avatar-section ui-surface-white">
         <div class="avatar-preview">
           <img
-            :src="avatarPreview || avatarUrl"
+            :src="avatarPreview || avatarDisplayUrl"
             alt="头像"
-            v-if="avatarPreview || avatarUrl"
+            v-if="avatarPreview || avatarDisplayUrl"
           />
           <AppIcon v-else icon="lucide:image-plus" class="avatar-placeholder" />
         </div>
@@ -28,7 +28,7 @@
             :disabled="uploading"
           />
           <p class="hint">支持 JPG、PNG，大小不超过 2MB</p>
-          <div v-if="uploading" class="uploading-hint">上传中..</div>
+          <div v-if="uploading" class="uploading-hint">上传中...</div>
         </div>
       </div>
 
@@ -104,16 +104,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from "vue";
+import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import { useUserStore } from "@/modules/account/stores/UserStore";
 import { storeToRefs } from "pinia";
 import AppIcon from "@/shared/ui/AppIcon.vue";
 
 const userStore = useUserStore();
-const { currentUser, avatarUrl } = storeToRefs(userStore);
+const { avatarDisplayUrl, currentUser } = storeToRefs(userStore);
 
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
 const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png"];
+const SUCCESS_MESSAGE_TIMEOUT_MS = 3000;
 
 const form = reactive({
   username: "",
@@ -127,6 +128,38 @@ const submitting = ref(false);
 const uploading = ref(false);
 const message = ref("");
 const messageType = ref<"success" | "error">("success");
+let messageTimer: number | null = null;
+
+const clearMessageTimer = () => {
+  if (messageTimer !== null) {
+    window.clearTimeout(messageTimer);
+    messageTimer = null;
+  }
+};
+
+const clearMessage = () => {
+  clearMessageTimer();
+  message.value = "";
+};
+
+const setMessage = (
+  nextMessage: string,
+  type: "success" | "error",
+  autoDismiss = type === "success",
+) => {
+  clearMessageTimer();
+  message.value = nextMessage;
+  messageType.value = type;
+
+  if (!nextMessage || !autoDismiss) {
+    return;
+  }
+
+  messageTimer = window.setTimeout(() => {
+    message.value = "";
+    messageTimer = null;
+  }, SUCCESS_MESSAGE_TIMEOUT_MS);
+};
 
 const loadUserData = () => {
   if (currentUser.value) {
@@ -152,21 +185,23 @@ watch(currentUser, () => {
   loadUserData();
 });
 
+onUnmounted(() => {
+  clearMessageTimer();
+});
+
 const onAvatarChange = async (e: Event) => {
   const target = e.target as HTMLInputElement;
   const file = target.files?.[0];
   if (!file) return;
 
   if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
-    message.value = "仅支持 JPG、PNG 格式";
-    messageType.value = "error";
+    setMessage("仅支持 JPG、PNG 格式", "error", false);
     target.value = "";
     return;
   }
 
   if (file.size > MAX_AVATAR_SIZE) {
-    message.value = "头像大小不能超过 2MB";
-    messageType.value = "error";
+    setMessage("头像大小不能超过 2MB", "error", false);
     target.value = "";
     return;
   }
@@ -178,15 +213,13 @@ const onAvatarChange = async (e: Event) => {
   reader.readAsDataURL(file);
 
   uploading.value = true;
-  message.value = "";
+  clearMessage();
   try {
     await userStore.uploadAvatar(file);
     avatarPreview.value = null;
-    message.value = "头像更新成功";
-    messageType.value = "success";
+    setMessage("头像更新成功", "success");
   } catch (error: any) {
-    message.value = error.message || "头像上传失败";
-    messageType.value = "error";
+    setMessage(error.message || "头像上传失败", "error", false);
     avatarPreview.value = null;
   } finally {
     uploading.value = false;
@@ -198,20 +231,17 @@ const handleSubmit = async () => {
   const normalizedUsername = form.username.trim();
 
   if (normalizedUsername.length < 3) {
-    message.value = "用户名长度至少3位";
-    messageType.value = "error";
+    setMessage("用户名长度至少3位", "error", false);
     return;
   }
 
   if (form.password && form.password.length < 6) {
-    message.value = "密码长度至少6位";
-    messageType.value = "error";
+    setMessage("密码长度至少6位", "error", false);
     return;
   }
 
   if (form.password && form.password !== form.confirmPassword) {
-    message.value = "两次输入的密码不一致";
-    messageType.value = "error";
+    setMessage("两次输入的密码不一致", "error", false);
     return;
   }
 
@@ -228,23 +258,20 @@ const handleSubmit = async () => {
   }
 
   if (Object.keys(updateData).length === 0) {
-    message.value = "没有要保存的修改";
-    messageType.value = "error";
+    setMessage("没有要保存的修改", "error", false);
     return;
   }
 
   submitting.value = true;
-  message.value = "";
+  clearMessage();
 
   try {
     await userStore.updateProfile(updateData);
-    message.value = "信息更新成功";
-    messageType.value = "success";
+    setMessage("信息更新成功", "success");
     form.password = "";
     form.confirmPassword = "";
   } catch (error: any) {
-    message.value = error.message || "更新失败";
-    messageType.value = "error";
+    setMessage(error.message || "更新失败", "error", false);
   } finally {
     submitting.value = false;
   }
@@ -255,7 +282,7 @@ const resetForm = () => {
   form.password = "";
   form.confirmPassword = "";
   avatarPreview.value = null;
-  message.value = "";
+  clearMessage();
 };
 </script>
 

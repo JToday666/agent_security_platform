@@ -3,7 +3,7 @@
     <PageHeroCard
       :eyebrow="detail?.category.name || '评测项详情'"
       :title="detail?.name || '评测项详情'"
-      :description="detail?.shortDescription || '查看该评测项的详细说明、评测重点、典型场景与相关示例资源。'"
+      :description="detail?.shortDescription || '查看该评测项的说明、重点、场景和示例资源。'"
       :chips="heroChips"
     >
       <template #actions>
@@ -85,15 +85,15 @@ const datasetId = computed(() => String(route.params.datasetId ?? ""));
 
 const heroChips = computed(() => [
   {
-    label: "样本数",
+    label: "样本",
     value: formatSampleCount(detail.value?.sampleCount ?? undefined),
   },
   {
-    label: "评测重点",
+    label: "重点",
     value: `${detail.value?.highlights.length ?? 0} 条`,
   },
   {
-    label: "典型场景",
+    label: "场景",
     value: `${detail.value?.scenarios.length ?? 0} 条`,
   },
 ]);

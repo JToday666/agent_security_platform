@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import request from "@/shared/api/core/HttpClient";
 import { normalizeApiAssetUrl } from "@/shared/api/core/ApiRuntime";
 import { STORAGE_KEYS } from "@/shared/constants/StorageKeys";
+import { appendCacheBustParam } from "@/shared/lib/AssetDisplayUrl";
 
 export interface User {
   id: number;
@@ -52,6 +53,7 @@ export const useUserStore = defineStore("user", () => {
     localStorage.getItem(STORAGE_KEYS.user.token),
   );
   const currentUser = ref<User | null>(null);
+  const avatarVersion = ref(Date.now());
   const postLoginRedirect = ref<string | null>(
     sessionStorage.getItem(STORAGE_KEYS.user.postLoginRedirect),
   );
@@ -60,6 +62,9 @@ export const useUserStore = defineStore("user", () => {
   const username = computed(() => currentUser.value?.username || "");
   const email = computed(() => currentUser.value?.email || "");
   const avatarUrl = computed(() => currentUser.value?.avatarUrl || "");
+  const avatarDisplayUrl = computed(() =>
+    appendCacheBustParam(avatarUrl.value, avatarVersion.value),
+  );
 
   const clearAuthState = () => {
     localStorage.removeItem(STORAGE_KEYS.user.token);
@@ -75,6 +80,7 @@ export const useUserStore = defineStore("user", () => {
 
   const setCurrentUser = (user: UserPayload) => {
     currentUser.value = normalizeUser(user);
+    avatarVersion.value = Date.now();
   };
 
   const restoreLogin = async (): Promise<boolean> => {
@@ -212,6 +218,7 @@ export const useUserStore = defineStore("user", () => {
         if (currentUser.value) {
           currentUser.value.avatarUrl = newAvatarUrl;
         }
+        avatarVersion.value = Date.now();
         return newAvatarUrl || "";
       }
 
@@ -230,6 +237,7 @@ export const useUserStore = defineStore("user", () => {
     username,
     email,
     avatarUrl,
+    avatarDisplayUrl,
     postLoginRedirect,
     login,
     register,

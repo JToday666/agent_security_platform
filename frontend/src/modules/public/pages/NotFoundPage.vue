@@ -3,7 +3,7 @@
     <PageHeroCard
       eyebrow="404"
       title="页面未找到"
-      description="当前地址不是系统支持的页面路径。历史旧入口已移除，请从当前导航或下方入口重新进入。"
+      description="当前地址不在系统支持范围内，请从导航或下方入口重新进入。"
     />
 
     <section class="layout-page-panel layout-page-panel--md ui-surface-white not-found-card">

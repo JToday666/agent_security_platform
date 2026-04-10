@@ -14,44 +14,98 @@
 
     <nav class="sidebar-nav">
       <router-link
-        :to="RouteLocation.userCenter"
+        v-for="item in SIDEBAR_ITEMS"
+        :key="item.key"
+        v-bind="getLinkStateProps(item)"
+        :to="item.to"
         class="nav-item"
-        active-class="active"
-        exact-active-class="active"
       >
-        <AppIcon icon="lucide:clipboard-list" class="icon" />
-        <span v-if="!collapsed" class="text">评测记录</span>
-      </router-link>
-      <router-link :to="RouteLocation.agentSubmit" class="nav-item" active-class="active">
-        <AppIcon icon="lucide:bot" class="icon" />
-        <span v-if="!collapsed" class="text">提交智能体</span>
-      </router-link>
-      <router-link :to="RouteLocation.userProfile" class="nav-item" active-class="active">
-        <AppIcon icon="lucide:square-pen" class="icon" />
-        <span v-if="!collapsed" class="text">个人资料</span>
-      </router-link>
-      <router-link :to="RouteLocation.datasetList" class="nav-item" active-class="active">
-        <AppIcon icon="lucide:database" class="icon" />
-        <span v-if="!collapsed" class="text">评测目录</span>
-      </router-link>
-      <router-link :to="RouteLocation.leaderboard" class="nav-item" active-class="active">
-        <AppIcon icon="lucide:trophy" class="icon" />
-        <span v-if="!collapsed" class="text">排行榜</span>
-      </router-link>
-      <router-link :to="RouteLocation.contact" class="nav-item" active-class="active">
-        <AppIcon icon="lucide:mail" class="icon" />
-        <span v-if="!collapsed" class="text">联系我们</span>
+        <AppIcon :icon="item.icon" class="icon" />
+        <span v-if="!collapsed" class="text">{{ item.label }}</span>
       </router-link>
     </nav>
   </aside>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
+import type { RouteLocationRaw } from "vue-router";
 import AppIcon from "@/shared/ui/AppIcon.vue";
 import { RouteLocation } from "@/app/router/RouteNames";
 
+interface SidebarItem {
+  key: string;
+  label: string;
+  icon: string;
+  to: RouteLocationRaw;
+  exact?: boolean;
+}
+
+const SIDEBAR_ITEMS: SidebarItem[] = [
+  {
+    key: "records",
+    label: "评测记录",
+    icon: "lucide:clipboard-list",
+    to: RouteLocation.userCenter,
+    exact: true,
+  },
+  {
+    key: "submit",
+    label: "提交测评",
+    icon: "lucide:file-plus-2",
+    to: RouteLocation.agentSubmit,
+  },
+  {
+    key: "profile",
+    label: "个人资料",
+    icon: "lucide:square-pen",
+    to: RouteLocation.userProfile,
+  },
+  {
+    key: "dataset",
+    label: "评测目录",
+    icon: "lucide:database",
+    to: RouteLocation.datasetList,
+  },
+  {
+    key: "leaderboard",
+    label: "排行榜",
+    icon: "lucide:trophy",
+    to: RouteLocation.leaderboard,
+  },
+  {
+    key: "contact",
+    label: "联系我们",
+    icon: "lucide:mail",
+    to: RouteLocation.contact,
+  },
+];
+
 const collapsed = ref(false);
+
+const getLinkStateProps = (item: SidebarItem) =>
+  item.exact
+    ? { activeClass: "active", exactActiveClass: "active" }
+    : { activeClass: "active" };
+
+const syncSidebarWidth = () => {
+  document.documentElement.style.setProperty(
+    "--sidebar-active-width",
+    collapsed.value
+      ? "var(--sidebar-width-collapsed)"
+      : "var(--sidebar-width)",
+  );
+};
+
+watch(collapsed, syncSidebarWidth);
+
+onMounted(() => {
+  syncSidebarWidth();
+});
+
+onUnmounted(() => {
+  document.documentElement.style.removeProperty("--sidebar-active-width");
+});
 </script>
 
 <style scoped>
@@ -60,13 +114,18 @@ const collapsed = ref(false);
   left: 0;
   top: var(--nav-height);
   height: calc(100vh - var(--nav-height));
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 5px 0 20px rgba(0, 0, 0, 0.03);
   transition: width 0.3s ease;
   width: var(--sidebar-width);
   z-index: var(--z-sidebar);
   display: flex;
   flex-direction: column;
+  padding: 0.75rem;
+  border-right: 1px solid rgba(226, 232, 240, 0.82);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 252, 0.92));
+  box-shadow:
+    18px 0 40px -36px rgba(15, 23, 42, 0.35),
+    inset -1px 0 0 rgba(255, 255, 255, 0.55);
 }
 
 .user-sidebar.collapsed {
@@ -75,23 +134,28 @@ const collapsed = ref(false);
 
 .toggle-btn {
   align-self: flex-end;
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(203, 213, 225, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   color: #64748b;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  margin: 1rem 1rem 0.5rem;
+  margin: 0 0 0.55rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   transition:
     background 0.2s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .toggle-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+  background: #ffffff;
+  border-color: rgba(96, 165, 250, 0.3);
   color: #2563eb;
 }
 
@@ -103,52 +167,60 @@ const collapsed = ref(false);
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 0;
+  gap: 0.35rem;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.8rem 1.5rem;
+  gap: 0.95rem;
+  padding: 0.88rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid transparent;
   color: #334155;
   text-decoration: none;
   transition:
     background 0.2s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   white-space: nowrap;
   overflow: hidden;
-  border-left: 4px solid transparent;
 }
 
 .nav-item:hover {
-  background: rgba(0, 0, 0, 0.02);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(226, 232, 240, 0.88);
   color: #2563eb;
 }
 
 .nav-item.active {
-  background: rgba(59, 130, 246, 0.05);
-  border-left-color: #2563eb;
+  background:
+    linear-gradient(135deg, rgba(219, 234, 254, 0.78), rgba(255, 255, 255, 0.98));
+  border-color: rgba(96, 165, 250, 0.28);
   color: #2563eb;
-  font-weight: 500;
+  font-weight: 600;
+  box-shadow: 0 14px 30px -28px rgba(37, 99, 235, 0.45);
 }
 
 .icon {
-  width: 1.35rem;
-  height: 1.35rem;
-  min-width: 24px;
+  width: 1.18rem;
+  height: 1.18rem;
+  min-width: 1.18rem;
   flex-shrink: 0;
 }
 
 .text {
-  font-size: 1rem;
-  font-weight: 500;
-  opacity: 0.9;
+  font-size: 0.95rem;
+  font-weight: 600;
+  opacity: 0.94;
 }
 
 .user-sidebar.collapsed .nav-item {
   justify-content: center;
-  padding: 0.8rem 0;
+  padding: 0.88rem 0;
 }
 
 .user-sidebar.collapsed .text {

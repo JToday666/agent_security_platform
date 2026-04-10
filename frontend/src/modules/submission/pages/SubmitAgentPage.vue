@@ -3,7 +3,7 @@
     <PageHeroCard
       eyebrow="智能体提交"
       title="提交智能体评测"
-      description="填写智能体信息、选择评测项并确认参数后，即可创建新的评测任务。"
+      description="填写基础信息、选择评测项并确认参数后，即可创建评测任务。"
       :chips="heroChips"
     />
 
@@ -56,7 +56,6 @@
         :submitting="submitting"
         :can-submit="canSubmit"
         :error-message="submitError"
-        :restore-message="restoredDraftNotice ? '已恢复上次未提交内容。' : ''"
         :sync-message="catalogSyncNotice"
         @reset="resetDraft"
       />
@@ -131,7 +130,6 @@ const datasetCatalogErrorMessage = datasetCatalog.errorMessage;
 const {
   form,
   expandedCategoryIds,
-  restoredDraftNotice,
   catalogSyncNotice,
   pendingRequest,
 } = storeToRefs(submitDraftStore);
@@ -163,15 +161,15 @@ const selectedCategoryCount = computed(
 const datasetCatalogReady = computed(() => datasetCatalogStatus.value === "ready");
 const heroChips = computed(() => [
   {
-    label: "当前提交方式",
+    label: "提交方式",
     value: form.value?.submitMethod === "docker" ? "Docker" : "API",
   },
   {
-    label: "已选风险域",
+    label: "风险域",
     value: `${selectedCategoryCount.value} 个`,
   },
   {
-    label: "已选评测项",
+    label: "评测项",
     value: `${form.value?.selectedDatasetIds.length ?? 0} 个`,
   },
 ]);
