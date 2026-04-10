@@ -1,39 +1,37 @@
 <template>
   <nav class="navbar" :class="{ hidden: !isVisible && !mobileMenuOpen }">
     <div class="nav-container">
-      <router-link :to="RouteLocation.home" class="logo">
-        智能体安全评测平台
-      </router-link>
+      <div class="brand-cluster">
+        <router-link
+          :to="RouteLocation.home"
+          class="brand-mark"
+          aria-label="返回首页"
+        >
+          <BrandLogo
+            class="brand-logo"
+            alt="智能体安全评测平台标志"
+            :priority="true"
+          />
+        </router-link>
+        <router-link :to="RouteLocation.home" class="brand-title">
+          智能体安全评测平台
+        </router-link>
+      </div>
 
-      <div class="right-section">
-        <div class="nav-links">
-          <router-link :to="RouteLocation.home" class="nav-link" exact-active-class="active">
-            <AppIcon icon="lucide:house" class="nav-link-icon" />
-            <span>首页</span>
-          </router-link>
-          <router-link :to="RouteLocation.datasetList" class="nav-link" active-class="active">
-            <AppIcon icon="lucide:database" class="nav-link-icon" />
-            <span>评测目录</span>
-          </router-link>
-          <router-link :to="RouteLocation.leaderboard" class="nav-link" active-class="active">
-            <AppIcon icon="lucide:trophy" class="nav-link-icon" />
-            <span>排行榜</span>
-          </router-link>
-          <router-link :to="RouteLocation.contact" class="nav-link" active-class="active">
-            <AppIcon icon="lucide:mail" class="nav-link-icon" />
-            <span>联系我们</span>
-          </router-link>
-          <router-link
-            v-if="isLogin"
-            :to="RouteLocation.userCenter"
-            class="nav-link"
-            active-class="active"
-          >
-            <AppIcon icon="lucide:layout-dashboard" class="nav-link-icon" />
-            <span>用户中心</span>
-          </router-link>
-        </div>
+      <div class="nav-links">
+        <router-link
+          v-for="item in visibleNavItems"
+          :key="`desktop-${item.key}`"
+          v-bind="getLinkStateProps(item)"
+          :to="item.to"
+          class="nav-link"
+        >
+          <AppIcon :icon="item.icon" class="nav-link-icon" />
+          <span>{{ item.label }}</span>
+        </router-link>
+      </div>
 
+      <div class="nav-actions">
         <button
           class="menu-toggle"
           type="button"
@@ -48,17 +46,24 @@
           />
         </button>
 
-        <div
+        <button
           v-if="isLogin"
           class="user-info"
+          type="button"
           title="查看个人资料"
           @click="goToProfile"
         >
-          <div class="avatar">
-            <span class="default-avatar">{{ usernameInitial }}</span>
-          </div>
+          <span class="avatar">
+            <img
+              v-if="avatarDisplayUrl"
+              :src="avatarDisplayUrl"
+              alt=""
+              class="avatar-image"
+            />
+            <span v-else class="default-avatar">{{ usernameInitial }}</span>
+          </span>
           <span class="username">{{ username }}</span>
-        </div>
+        </button>
       </div>
     </div>
 
@@ -93,7 +98,13 @@
         @click="goToProfileFromMenu"
       >
         <span class="avatar">
-          <span class="default-avatar">{{ usernameInitial }}</span>
+          <img
+            v-if="avatarDisplayUrl"
+            :src="avatarDisplayUrl"
+            alt=""
+            class="avatar-image"
+          />
+          <span v-else class="default-avatar">{{ usernameInitial }}</span>
         </span>
         <span class="mobile-profile-copy">
           <strong>{{ username }}</strong>
@@ -104,91 +115,19 @@
 
       <div class="mobile-nav-group">
         <router-link
-          :to="RouteLocation.home"
+          v-for="item in visibleNavItems"
+          :key="`mobile-${item.key}`"
+          v-bind="getLinkStateProps(item)"
+          :to="item.to"
           class="mobile-nav-link"
-          exact-active-class="active"
           @click="closeMobileMenu"
         >
           <span class="mobile-link-main">
-            <AppIcon icon="lucide:house" class="nav-link-icon" />
-            <span>首页</span>
+            <AppIcon :icon="item.icon" class="nav-link-icon" />
+            <span>{{ item.label }}</span>
           </span>
           <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
         </router-link>
-        <router-link
-          :to="RouteLocation.datasetList"
-          class="mobile-nav-link"
-          active-class="active"
-          @click="closeMobileMenu"
-        >
-          <span class="mobile-link-main">
-            <AppIcon icon="lucide:database" class="nav-link-icon" />
-            <span>评测目录</span>
-          </span>
-          <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
-        </router-link>
-        <router-link
-          :to="RouteLocation.leaderboard"
-          class="mobile-nav-link"
-          active-class="active"
-          @click="closeMobileMenu"
-        >
-          <span class="mobile-link-main">
-            <AppIcon icon="lucide:trophy" class="nav-link-icon" />
-            <span>排行榜</span>
-          </span>
-          <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
-        </router-link>
-        <router-link
-          :to="RouteLocation.contact"
-          class="mobile-nav-link"
-          active-class="active"
-          @click="closeMobileMenu"
-        >
-          <span class="mobile-link-main">
-            <AppIcon icon="lucide:mail" class="nav-link-icon" />
-            <span>联系我们</span>
-          </span>
-          <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
-        </router-link>
-        <template v-if="isLogin">
-          <router-link
-            :to="RouteLocation.userCenter"
-            class="mobile-nav-link"
-            active-class="active"
-            @click="closeMobileMenu"
-          >
-            <span class="mobile-link-main">
-              <AppIcon icon="lucide:clipboard-list" class="nav-link-icon" />
-              <span>评测记录</span>
-            </span>
-            <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
-          </router-link>
-          <router-link
-            :to="RouteLocation.agentSubmit"
-            class="mobile-nav-link"
-            active-class="active"
-            @click="closeMobileMenu"
-          >
-            <span class="mobile-link-main">
-              <AppIcon icon="lucide:bot" class="nav-link-icon" />
-              <span>提交智能体</span>
-            </span>
-            <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
-          </router-link>
-          <router-link
-            :to="RouteLocation.userProfile"
-            class="mobile-nav-link"
-            active-class="active"
-            @click="closeMobileMenu"
-          >
-            <span class="mobile-link-main">
-              <AppIcon icon="lucide:square-pen" class="nav-link-icon" />
-              <span>个人资料</span>
-            </span>
-            <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
-          </router-link>
-        </template>
       </div>
     </aside>
   </nav>
@@ -196,29 +135,92 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter, type RouteLocationRaw } from "vue-router";
 import { useUserStore } from "@/modules/account/stores/UserStore";
 import { storeToRefs } from "pinia";
 import AppIcon from "@/shared/ui/AppIcon.vue";
+import BrandLogo from "@/shared/ui/BrandLogo.vue";
 import { RouteLocation } from "@/app/router/RouteNames";
 
+interface NavItem {
+  key: string;
+  label: string;
+  icon: string;
+  to: RouteLocationRaw;
+  requiresAuth?: boolean;
+  exact?: boolean;
+}
+
 const MOBILE_NAV_BREAKPOINT = 1024;
+const SCROLL_THRESHOLD = 10;
+const MOUSE_TOP_THRESHOLD = 10;
+
+const NAV_ITEMS: NavItem[] = [
+  {
+    key: "home",
+    label: "首页",
+    icon: "lucide:house",
+    to: RouteLocation.home,
+    exact: true,
+  },
+  {
+    key: "dataset",
+    label: "评测目录",
+    icon: "lucide:database",
+    to: RouteLocation.datasetList,
+  },
+  {
+    key: "leaderboard",
+    label: "排行榜",
+    icon: "lucide:trophy",
+    to: RouteLocation.leaderboard,
+  },
+  {
+    key: "records",
+    label: "评测记录",
+    icon: "lucide:clipboard-list",
+    to: RouteLocation.userCenter,
+    requiresAuth: true,
+  },
+  {
+    key: "submit",
+    label: "提交测评",
+    icon: "lucide:file-plus-2",
+    to: RouteLocation.agentSubmit,
+    requiresAuth: true,
+  },
+  {
+    key: "contact",
+    label: "联系我们",
+    icon: "lucide:mail",
+    to: RouteLocation.contact,
+  },
+];
 
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
-const { isLogin, username } = storeToRefs(userStore);
+const { avatarDisplayUrl, isLogin, username } = storeToRefs(userStore);
 
 const isVisible = ref(true);
 const mobileMenuOpen = ref(false);
+
+const visibleNavItems = computed(() =>
+  NAV_ITEMS.filter((item) => !item.requiresAuth || isLogin.value),
+);
 
 const usernameInitial = computed(() =>
   (username.value || "A").trim().charAt(0).toUpperCase() || "A",
 );
 
+const getLinkStateProps = (item: NavItem) =>
+  item.exact ? { exactActiveClass: "active" } : { activeClass: "active" };
+
 const syncBodyScrollLock = () => {
   document.body.style.overflow =
-    mobileMenuOpen.value && window.innerWidth <= MOBILE_NAV_BREAKPOINT ? "hidden" : "";
+    mobileMenuOpen.value && window.innerWidth <= MOBILE_NAV_BREAKPOINT
+      ? "hidden"
+      : "";
 };
 
 const closeMobileMenu = () => {
@@ -241,8 +243,7 @@ const goToProfileFromMenu = () => {
 };
 
 let lastScrollY = window.scrollY;
-const SCROLL_THRESHOLD = 10;
-const MOUSE_TOP_THRESHOLD = 10;
+let ticking = false;
 
 const handleScroll = () => {
   if (mobileMenuOpen.value) {
@@ -284,15 +285,16 @@ const handleKeydown = (event: KeyboardEvent) => {
   }
 };
 
-let ticking = false;
 const onScroll = () => {
-  if (!ticking) {
-    window.requestAnimationFrame(() => {
-      handleScroll();
-      ticking = false;
-    });
-    ticking = true;
+  if (ticking) {
+    return;
   }
+
+  window.requestAnimationFrame(() => {
+    handleScroll();
+    ticking = false;
+  });
+  ticking = true;
 };
 
 watch(
@@ -327,10 +329,13 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.05),
-    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
   z-index: var(--z-nav);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.88);
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(255, 255, 255, 0.82));
+  box-shadow:
+    0 16px 32px -28px rgba(15, 23, 42, 0.36),
+    0 0 0 1px rgba(255, 255, 255, 0.78) inset;
   transition: transform 0.35s ease;
   transform: translateY(0);
 }
@@ -342,55 +347,113 @@ onUnmounted(() => {
 .nav-container {
   position: relative;
   z-index: 2;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  width: 100%;
+  padding: 0 clamp(1.25rem, 1.8vw, 1.75rem);
   height: var(--nav-height);
-  display: flex;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  column-gap: clamp(0.9rem, 1.4vw, 1.25rem);
 }
 
-.logo {
-  font-size: 1.6rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.brand-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+.brand-mark {
+  width: 2.72rem;
+  height: 2.72rem;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  letter-spacing: -0.03em;
-  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
-.logo:hover {
-  opacity: 0.82;
+.brand-mark:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px -22px rgba(37, 99, 235, 0.42);
 }
 
-.right-section {
-  display: flex;
+.brand-mark:focus-visible,
+.brand-title:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus-accent);
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+}
+
+.brand-title {
+  color: #0f172a;
+  display: inline-flex;
   align-items: center;
-  gap: 1rem;
+  text-decoration: none;
+  font-size: 1.18rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .brand-title {
+    background: linear-gradient(120deg, #0f172a 0%, #2563eb 52%, #06b6d4 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.brand-title:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
 }
 
 .nav-links {
   display: flex;
-  gap: 1.5rem;
   align-items: center;
+  justify-content: flex-end;
+  gap: 0.52rem;
+  min-width: 0;
+  width: 100%;
+  padding-left: clamp(1.75rem, 5vw, 5.75rem);
 }
 
 .nav-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.55rem;
+  padding: 0.68rem 0.92rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
   color: #334155;
   text-decoration: none;
-  font-weight: 500;
-  font-size: 0.98rem;
-  padding: 0.5rem 0;
-  position: relative;
-  transition: color 0.2s ease;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .nav-link-icon {
@@ -399,79 +462,88 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-.nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #2563eb, #7c3aed);
-  transition: width 0.2s ease;
+.nav-link:hover {
+  color: #0f172a;
+  transform: translateY(-1px);
+  border-color: rgba(226, 232, 240, 0.92);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12px 24px -24px rgba(15, 23, 42, 0.32);
 }
 
-.nav-link:hover,
 .nav-link.active {
-  color: #2563eb;
+  color: #1d4ed8;
+  border-color: rgba(96, 165, 250, 0.34);
+  background:
+    linear-gradient(135deg, rgba(219, 234, 254, 0.88), rgba(255, 255, 255, 0.98));
+  box-shadow: 0 14px 28px -24px rgba(37, 99, 235, 0.4);
 }
 
-.nav-link:hover::after,
-.nav-link.active::after {
-  width: 100%;
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  min-width: 0;
+  justify-self: end;
 }
 
 .menu-toggle {
   display: none;
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(203, 213, 225, 0.88);
+  background: rgba(255, 255, 255, 0.88);
+  color: #0f172a;
   align-items: center;
   justify-content: center;
-  width: 2.9rem;
-  height: 2.9rem;
-  border: 1px solid rgba(148, 163, 184, 0.28);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
-  color: #0f172a;
-  backdrop-filter: blur(10px);
+  cursor: pointer;
+  box-shadow: 0 10px 22px -18px rgba(15, 23, 42, 0.32);
 }
 
 .menu-toggle-icon,
 .mobile-close-icon {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
 .user-info {
-  display: flex;
+  min-width: 0;
+  max-width: 15rem;
+  display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.7rem;
+  padding: 0.34rem 0.48rem 0.34rem 0.34rem;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.96);
+  background: rgba(255, 255, 255, 0.88);
   cursor: pointer;
-  padding: 0.3rem 0.8rem 0.3rem 0.4rem;
-  border-radius: 40px;
-  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.34);
   transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .user-info:hover {
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+  border-color: rgba(96, 165, 250, 0.28);
+  background: #ffffff;
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 999px;
   overflow: hidden;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.26);
   flex-shrink: 0;
+  box-shadow: 0 10px 20px -14px rgba(37, 99, 235, 0.5);
 }
 
 .default-avatar {
@@ -481,17 +553,24 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
-  font-size: 1.05rem;
+  font-size: 0.98rem;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 .username {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #1e293b;
-  max-width: 120px;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: #0f172a;
+  font-size: 0.94rem;
+  font-weight: 600;
 }
 
 .mobile-nav-overlay {
@@ -508,16 +587,16 @@ onUnmounted(() => {
   width: min(88vw, 360px);
   height: calc(100vh - var(--nav-height));
   padding: 1rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(248, 250, 252, 0.98));
-  border-left: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow: -12px 0 36px rgba(15, 23, 42, 0.16);
-  transform: translateX(100%);
-  transition: transform 0.24s ease;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   overflow-y: auto;
+  border-left: 1px solid rgba(226, 232, 240, 0.9);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+  box-shadow: -14px 0 34px rgba(15, 23, 42, 0.16);
+  transform: translateX(100%);
+  transition: transform 0.24s ease;
 }
 
 .mobile-nav-drawer--open {
@@ -537,15 +616,16 @@ onUnmounted(() => {
 }
 
 .mobile-close {
-  width: 2.4rem;
-  height: 2.4rem;
-  border: 1px solid #e2e8f0;
+  width: 2.35rem;
+  height: 2.35rem;
   border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.96);
   background: #ffffff;
   color: #0f172a;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .mobile-profile {
@@ -554,11 +634,13 @@ onUnmounted(() => {
   gap: 0.85rem;
   width: 100%;
   padding: 0.95rem 1rem;
-  border: 1px solid rgba(191, 219, 254, 0.7);
+  border: 1px solid rgba(191, 219, 254, 0.72);
   border-radius: 1.25rem;
-  background: linear-gradient(135deg, rgba(219, 234, 254, 0.82), rgba(237, 233, 254, 0.72));
+  background:
+    linear-gradient(135deg, rgba(219, 234, 254, 0.84), rgba(255, 255, 255, 0.96));
   color: #0f172a;
   text-align: left;
+  cursor: pointer;
 }
 
 .mobile-profile-copy {
@@ -594,10 +676,10 @@ onUnmounted(() => {
   gap: 1rem;
   padding: 0.95rem 1rem;
   border-radius: 1.1rem;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.9);
   color: #334155;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid transparent;
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
@@ -605,9 +687,10 @@ onUnmounted(() => {
 }
 
 .mobile-nav-link.active {
-  color: #2563eb;
-  border-color: rgba(59, 130, 246, 0.18);
-  background: linear-gradient(135deg, rgba(219, 234, 254, 0.72), rgba(255, 255, 255, 0.96));
+  color: #1d4ed8;
+  border-color: rgba(96, 165, 250, 0.24);
+  background:
+    linear-gradient(135deg, rgba(219, 234, 254, 0.8), rgba(255, 255, 255, 0.98));
 }
 
 .mobile-link-main {
@@ -623,9 +706,50 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1340px) {
+  .brand-title {
+    font-size: 1.1rem;
+  }
+
+  .nav-links {
+    padding-left: clamp(1rem, 2.8vw, 2.8rem);
+  }
+}
+
+@media (max-width: 1180px) {
   .nav-container {
     padding: 0 1rem;
+  }
+
+  .brand-cluster {
+    gap: 0.72rem;
+  }
+
+  .brand-title {
+    font-size: 1rem;
+  }
+
+  .nav-links {
+    gap: 0.34rem;
+    padding-left: 0.8rem;
+  }
+
+  .nav-link {
+    gap: 0.48rem;
+    padding: 0.6rem 0.68rem;
+    font-size: 0.89rem;
+  }
+
+  .user-info {
+    max-width: 13rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .nav-container {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0 0.95rem;
   }
 
   .nav-links,
@@ -637,16 +761,30 @@ onUnmounted(() => {
     display: inline-flex;
   }
 
-  .logo {
-    font-size: 1.45rem;
+  .nav-actions {
+    margin-left: auto;
+  }
+
+  .brand-title {
+    max-width: 12ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
 @media (max-width: 640px) {
-  .logo {
-    max-width: 14ch;
-    font-size: 1.2rem;
-    line-height: 1.15;
+  .nav-container {
+    padding: 0 0.9rem;
+  }
+
+  .brand-mark {
+    width: 2.45rem;
+    height: 2.45rem;
+  }
+
+  .brand-title {
+    max-width: 9ch;
+    font-size: 0.98rem;
   }
 
   .mobile-nav-drawer {

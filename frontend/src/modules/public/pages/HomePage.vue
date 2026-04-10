@@ -76,8 +76,8 @@
                   :to="RouteLocation.userCenter"
                   class="btn outline ui-btn ui-btn-pill"
                 >
-                  <AppIcon icon="lucide:layout-dashboard" class="btn-icon" />
-                  <span>个人中心</span>
+                  <AppIcon icon="lucide:clipboard-list" class="btn-icon" />
+                  <span>评测记录</span>
                 </router-link>
                 <button class="btn logout ui-btn ui-btn-pill" @click="handleLogoutClick">
                   <AppIcon icon="lucide:log-out" class="btn-icon" />
@@ -135,8 +135,8 @@ const steps = [
     desc: "创建账号或登录平台，开启您的评测流程。",
   },
   {
-    title: "提交智能体",
-    desc: "在个人中心提交智能体，并选择需要覆盖的评测项。",
+    title: "提交测评",
+    desc: "登录后提交测评任务，并选择需要覆盖的评测项。",
   },
   {
     title: "查看报告",

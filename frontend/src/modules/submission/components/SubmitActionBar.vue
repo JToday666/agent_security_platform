@@ -1,7 +1,6 @@
 <template>
   <section class="action-card ui-surface-glass">
-    <div class="status-list">
-      <p v-if="restoreMessage" class="status-message restore">{{ restoreMessage }}</p>
+    <div v-if="errorMessage || syncMessage" class="status-list">
       <p v-if="syncMessage" class="status-message sync">{{ syncMessage }}</p>
       <p v-if="errorMessage" class="status-message error">{{ errorMessage }}</p>
     </div>
@@ -31,12 +30,10 @@ withDefaults(
     submitting: boolean;
     canSubmit: boolean;
     errorMessage?: string;
-    restoreMessage?: string;
     syncMessage?: string;
   }>(),
   {
     errorMessage: "",
-    restoreMessage: "",
     syncMessage: "",
   },
 );
@@ -61,11 +58,6 @@ withDefaults(
   font-weight: 600;
 }
 
-.status-message.restore {
-  background: rgba(219, 234, 254, 0.9);
-  color: #1d4ed8;
-}
-
 .status-message.sync {
   background: rgba(255, 237, 213, 0.9);
   color: #c2410c;
@@ -80,6 +72,9 @@ withDefaults(
   display: flex;
   justify-content: flex-end;
   gap: 0.8rem;
+}
+
+.status-list + .action-row {
   margin-top: 1rem;
 }
 

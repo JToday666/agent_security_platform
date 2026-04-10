@@ -166,13 +166,17 @@ const buildCategoryTheme = (categoryId: string): CategoryTheme => {
   };
 };
 
+interface IndexedCategory extends DatasetCategory {
+  _displayIndex: number;
+}
+
 const sortCategoriesForDisplay = (
-  left: DatasetCategory,
-  right: DatasetCategory,
+  left: IndexedCategory,
+  right: IndexedCategory,
 ) =>
   (left.sort ?? Number.MAX_SAFE_INTEGER) -
     (right.sort ?? Number.MAX_SAFE_INTEGER) ||
-  left.categoryId.localeCompare(right.categoryId);
+  left._displayIndex - right._displayIndex;
 
 const dedupeIds = (ids: string[]): string[] => Array.from(new Set(ids));
 
@@ -198,6 +202,10 @@ export const getEnabledCategories = (
   categories: DatasetCategory[],
 ): DatasetCategoryViewModel[] =>
   categories
+    .map((category, index) => ({
+      ...category,
+      _displayIndex: index,
+    }))
     .filter((category) => category.enabled)
     .map((category) => {
       const enabledSubcategories = category.subcategories.filter(
@@ -211,7 +219,8 @@ export const getEnabledCategories = (
       };
     })
     .filter((category) => category.subcategories.length > 0)
-    .sort(sortCategoriesForDisplay);
+    .sort(sortCategoriesForDisplay)
+    .map(({ _displayIndex, ...category }) => category);
 
 export const getAllDatasetIds = (
   categories: DatasetCategory[],
@@ -226,13 +235,26 @@ export const getAllDatasetIds = (
     : ids;
 };
 
-export const countVisibleDatasets = (
+export const resolveActiveCategoryId = (
   categories: DatasetCategory[],
-  selectedCategoryIds: string[],
-): number =>
-  getEnabledCategories(categories)
-    .filter((category) => selectedCategoryIds.includes(category.categoryId))
-    .reduce((total, category) => total + category.subcategories.length, 0);
+  preferredCategoryId?: string | null,
+): string => {
+  const enabledCategories = getEnabledCategories(categories);
+  if (enabledCategories.length === 0) {
+    return "";
+  }
+
+  if (
+    preferredCategoryId &&
+    enabledCategories.some(
+      (category) => category.categoryId === preferredCategoryId,
+    )
+  ) {
+    return preferredCategoryId;
+  }
+
+  return enabledCategories[0]?.categoryId ?? "";
+};
 
 export const findDatasetSummary = (
   categories: DatasetCategory[],
@@ -252,27 +274,6 @@ export const findDatasetSummary = (
   }
 
   return null;
-};
-
-export const sanitizeCategorySelection = (
-  categories: DatasetCategory[],
-  selectedCategoryIds: string[],
-  preserveEmptyInput = false,
-): string[] => {
-  const availableIds = new Set(
-    getEnabledCategories(categories).map((item) => item.categoryId),
-  );
-
-  if (preserveEmptyInput && selectedCategoryIds.length === 0) {
-    return [];
-  }
-
-  const sanitized = selectedCategoryIds.filter((item) =>
-    availableIds.has(item),
-  );
-  if (sanitized.length > 0) return sanitized;
-
-  return Array.from(availableIds);
 };
 
 export const sanitizeDatasetSelection = (

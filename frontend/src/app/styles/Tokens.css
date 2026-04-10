@@ -70,9 +70,10 @@
   --duration-fade-in: 0.8s;
 
   /* Layout constants */
-  --nav-height: 80px;
-  --sidebar-width: 240px;
-  --sidebar-width-collapsed: 70px;
+  --nav-height: 72px;
+  --sidebar-width: 232px;
+  --sidebar-width-collapsed: 84px;
+  --sidebar-active-width: var(--sidebar-width);
   --z-content: 2;
   --z-sidebar: 900;
   --z-nav: 1000;

@@ -12,19 +12,8 @@ import type {
 import {
   findDatasetSummary,
   getEnabledCategories,
-  sanitizeCategorySelection,
+  resolveActiveCategoryId,
 } from "@/modules/dataset/lib";
-import {
-  loadPersistedState,
-  savePersistedState,
-} from "@/shared/lib/StorageUtils";
-import { STORAGE_KEYS } from "@/shared/constants/StorageKeys";
-
-interface DatasetFilterPersistedData {
-  selectedCategoryIds: string[];
-}
-
-const FILTER_STORAGE_VERSION = 1;
 
 interface DatasetDetailFetchResult {
   detail: DatasetDetail | null;
@@ -35,50 +24,23 @@ interface DatasetDetailFetchResult {
 export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
   const catalogVersion = ref("");
   const categories = ref<DatasetCategory[]>([]);
-  const selectedCategoryIds = ref<string[]>([]);
+  const activeCategoryId = ref("");
   const loading = ref(false);
   const loaded = ref(false);
   const error = ref("");
   const detailCache = ref<Record<string, DatasetDetail>>({});
-  const restoredFilterNotice = ref(false);
 
   const enabledCategories = computed(() =>
     getEnabledCategories(categories.value),
   );
-  const visibleCategories = computed(() =>
-    enabledCategories.value.filter((category) =>
-      selectedCategoryIds.value.includes(category.categoryId),
-    ),
+  const activeCategory = computed(
+    () =>
+      enabledCategories.value.find(
+        (category) => category.categoryId === activeCategoryId.value,
+      ) ??
+      enabledCategories.value[0] ??
+      null,
   );
-
-  const persistFilters = () => {
-    savePersistedState<DatasetFilterPersistedData>(
-      STORAGE_KEYS.catalog.filters,
-      FILTER_STORAGE_VERSION,
-      {
-        selectedCategoryIds: selectedCategoryIds.value,
-      },
-      catalogVersion.value,
-    );
-  };
-
-  const restoreFilters = () => {
-    const persisted = loadPersistedState<DatasetFilterPersistedData>(
-      STORAGE_KEYS.catalog.filters,
-      FILTER_STORAGE_VERSION,
-    );
-
-    restoredFilterNotice.value = false;
-    selectedCategoryIds.value = sanitizeCategorySelection(
-      categories.value,
-      persisted?.data.selectedCategoryIds ?? [],
-      Boolean(persisted),
-    );
-
-    if (persisted?.data.selectedCategoryIds?.length) {
-      restoredFilterNotice.value = true;
-    }
-  };
 
   const fetchCatalog = async (force = false): Promise<boolean> => {
     if (loaded.value && !force) return true;
@@ -90,8 +52,11 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
       const catalog = await getDatasetCatalog();
       catalogVersion.value = catalog.catalogVersion;
       categories.value = catalog.categories;
+      activeCategoryId.value = resolveActiveCategoryId(
+        catalog.categories,
+        activeCategoryId.value,
+      );
       loaded.value = true;
-      restoreFilters();
       return true;
     } catch (fetchError) {
       error.value =
@@ -104,28 +69,11 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
     }
   };
 
-  const selectAllCategories = () => {
-    selectedCategoryIds.value = enabledCategories.value.map(
-      (item) => item.categoryId,
+  const setActiveCategory = (categoryId: string) => {
+    activeCategoryId.value = resolveActiveCategoryId(
+      categories.value,
+      categoryId,
     );
-    persistFilters();
-  };
-
-  const clearAllCategories = () => {
-    selectedCategoryIds.value = [];
-    persistFilters();
-  };
-
-  const toggleCategorySelection = (categoryId: string) => {
-    if (selectedCategoryIds.value.includes(categoryId)) {
-      selectedCategoryIds.value = selectedCategoryIds.value.filter(
-        (item) => item !== categoryId,
-      );
-    } else {
-      selectedCategoryIds.value = [...selectedCategoryIds.value, categoryId];
-    }
-
-    persistFilters();
   };
 
   const fetchDatasetDetailById = async (
@@ -171,17 +119,14 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
   return {
     catalogVersion,
     categories,
-    selectedCategoryIds,
+    activeCategoryId,
     loading,
     loaded,
     error,
     enabledCategories,
-    visibleCategories,
-    restoredFilterNotice,
+    activeCategory,
     fetchCatalog,
-    selectAllCategories,
-    clearAllCategories,
-    toggleCategorySelection,
+    setActiveCategory,
     fetchDatasetDetailById,
     getDatasetSummaryById,
   };
