@@ -10,7 +10,7 @@ import type {
   DatasetMediaItem,
   DatasetResourceLink,
 } from "@/shared/types/DatasetTypes";
-import { normalizeApiAssetUrl } from "@/shared/api/core/ApiRuntime";
+import { normalizeApiAssetUrl } from "@/shared/api/ApiRuntime";
 
 type UnknownRecord = Record<string, unknown>;
 

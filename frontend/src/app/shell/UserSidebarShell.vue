@@ -1,22 +1,26 @@
 <template>
   <aside class="user-sidebar" :class="{ collapsed }">
-    <button
-      class="toggle-btn"
-      type="button"
-      :aria-label="collapsed ? '展开侧边栏' : '收起侧边栏'"
-      @click="collapsed = !collapsed"
-    >
-      <AppIcon
-        :icon="collapsed ? 'lucide:chevrons-right' : 'lucide:chevrons-left'"
-        class="toggle-icon"
-      />
-    </button>
+    <div class="sidebar-top">
+      <strong v-if="!collapsed" class="sidebar-title">任务</strong>
+
+      <button
+        class="toggle-btn"
+        type="button"
+        :aria-label="collapsed ? '展开侧边栏' : '收起侧边栏'"
+        @click="collapsed = !collapsed"
+      >
+        <AppIcon
+          :icon="collapsed ? 'lucide:panel-left-open' : 'lucide:panel-left-close'"
+          class="toggle-icon"
+        />
+      </button>
+    </div>
 
     <nav class="sidebar-nav">
       <router-link
-        v-for="item in SIDEBAR_ITEMS"
+        v-for="item in WORKSPACE_SIDEBAR_ITEMS"
         :key="item.key"
-        v-bind="getLinkStateProps(item)"
+        v-bind="getNavLinkStateProps(item)"
         :to="item.to"
         class="nav-item"
       >
@@ -24,69 +28,18 @@
         <span v-if="!collapsed" class="text">{{ item.label }}</span>
       </router-link>
     </nav>
+
   </aside>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from "vue";
-import type { RouteLocationRaw } from "vue-router";
-import AppIcon from "@/shared/ui/AppIcon.vue";
-import { RouteLocation } from "@/app/router/RouteNames";
-
-interface SidebarItem {
-  key: string;
-  label: string;
-  icon: string;
-  to: RouteLocationRaw;
-  exact?: boolean;
-}
-
-const SIDEBAR_ITEMS: SidebarItem[] = [
-  {
-    key: "records",
-    label: "评测记录",
-    icon: "lucide:clipboard-list",
-    to: RouteLocation.userCenter,
-    exact: true,
-  },
-  {
-    key: "submit",
-    label: "提交测评",
-    icon: "lucide:file-plus-2",
-    to: RouteLocation.agentSubmit,
-  },
-  {
-    key: "profile",
-    label: "个人资料",
-    icon: "lucide:square-pen",
-    to: RouteLocation.userProfile,
-  },
-  {
-    key: "dataset",
-    label: "评测目录",
-    icon: "lucide:database",
-    to: RouteLocation.datasetList,
-  },
-  {
-    key: "leaderboard",
-    label: "排行榜",
-    icon: "lucide:trophy",
-    to: RouteLocation.leaderboard,
-  },
-  {
-    key: "contact",
-    label: "联系我们",
-    icon: "lucide:mail",
-    to: RouteLocation.contact,
-  },
-];
+import AppIcon from "@/shared/ui/branding/AppIcon.vue";
+import { WORKSPACE_SIDEBAR_ITEMS } from "@/app/shell/NavItems";
+import { getNavLinkStateProps } from "@/app/shell/navLinkState";
 
 const collapsed = ref(false);
 
-const getLinkStateProps = (item: SidebarItem) =>
-  item.exact
-    ? { activeClass: "active", exactActiveClass: "active" }
-    : { activeClass: "active" };
 
 const syncSidebarWidth = () => {
   document.documentElement.style.setProperty(
@@ -113,50 +66,63 @@ onUnmounted(() => {
   position: fixed;
   left: 0;
   top: var(--nav-height);
-  height: calc(100vh - var(--nav-height));
-  transition: width 0.3s ease;
   width: var(--sidebar-width);
+  height: calc(100vh - var(--nav-height));
   z-index: var(--z-sidebar);
   display: flex;
   flex-direction: column;
-  padding: 0.75rem;
-  border-right: 1px solid rgba(226, 232, 240, 0.82);
+  padding: 1rem 0.9rem 1rem 1rem;
+  border-right: 1px solid rgba(148, 163, 184, 0.12);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 252, 0.92));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.72));
   box-shadow:
-    18px 0 40px -36px rgba(15, 23, 42, 0.35),
-    inset -1px 0 0 rgba(255, 255, 255, 0.55);
+    18px 0 40px -36px rgba(15, 23, 42, 0.18),
+    inset -1px 0 0 rgba(255, 255, 255, 0.44);
+  transition: width var(--duration-base) var(--ease-standard);
 }
 
 .user-sidebar.collapsed {
   width: var(--sidebar-width-collapsed);
+  padding-inline: 0.8rem;
+}
+
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar-title {
+  color: var(--color-text-dark);
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .toggle-btn {
-  align-self: flex-end;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
   border-radius: 999px;
-  border: 1px solid rgba(203, 213, 225, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.18);
   background: rgba(255, 255, 255, 0.92);
-  color: #64748b;
-  margin: 0 0 0.55rem;
+  color: var(--color-text-subtle);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  box-shadow: var(--shadow-control);
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+    transform var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
 }
 
 .toggle-btn:hover {
   transform: translateY(-1px);
-  background: #ffffff;
-  border-color: rgba(96, 165, 250, 0.3);
-  color: #2563eb;
+  color: var(--color-primary);
+  border-color: rgba(99, 102, 241, 0.24);
 }
 
 .toggle-icon {
@@ -167,64 +133,56 @@ onUnmounted(() => {
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.38rem;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 0.95rem;
-  padding: 0.88rem 1rem;
+  gap: 0.88rem;
+  padding: 0.85rem 0.95rem;
   border-radius: 1rem;
   border: 1px solid transparent;
   color: #334155;
   text-decoration: none;
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
 }
 
 .nav-item:hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(226, 232, 240, 0.88);
-  color: #2563eb;
+  border-color: rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--color-primary);
 }
 
 .nav-item.active {
-  background:
-    linear-gradient(135deg, rgba(219, 234, 254, 0.78), rgba(255, 255, 255, 0.98));
-  border-color: rgba(96, 165, 250, 0.28);
-  color: #2563eb;
-  font-weight: 600;
-  box-shadow: 0 14px 30px -28px rgba(37, 99, 235, 0.45);
+  color: var(--color-primary);
+  background: linear-gradient(135deg, rgba(219, 234, 254, 0.78), rgba(255, 255, 255, 0.98));
+  border-color: rgba(99, 102, 241, 0.16);
+  box-shadow: 0 18px 28px -26px rgba(79, 70, 229, 0.46);
 }
 
 .icon {
-  width: 1.18rem;
-  height: 1.18rem;
-  min-width: 1.18rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  min-width: 1.1rem;
   flex-shrink: 0;
 }
 
 .text {
-  font-size: 0.95rem;
+  font-size: 0.94rem;
   font-weight: 600;
-  opacity: 0.94;
+  white-space: nowrap;
 }
 
 .user-sidebar.collapsed .nav-item {
   justify-content: center;
-  padding: 0.88rem 0;
-}
-
-.user-sidebar.collapsed .text {
-  display: none;
+  padding-inline: 0;
 }
 
 @media (max-width: 1024px) {

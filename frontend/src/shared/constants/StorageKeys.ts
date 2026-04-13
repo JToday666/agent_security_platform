@@ -7,9 +7,6 @@ export const STORAGE_KEYS = {
     evaluations: "agent-platform:mock-evaluations:v1",
   },
   // 应用数据持久化
-  draft: {
-    submit: "agent-platform:draft:v1",
-  },
   session: {
     scroll: "agent-platform:session-scroll:v1",
   },

@@ -1,17 +1,25 @@
 import type {
-  EvaluationControls,
   EvaluationFinalizationReason,
+  EvaluationRecord,
   EvaluationStatus,
 } from "@/shared/types/AgentTypes";
+import {
+  filterEvaluationRecords as filterEvaluationRecordsValue,
+  type EvaluationRecordFilterMethod,
+  type EvaluationRecordFilters,
+  type EvaluationRecordFilterStatus,
+  type EvaluationRecordFilterVisibility,
+} from "./EvaluationRecordFilters.ts";
+import { hasAvailableEvaluationActions } from "@/modules/evaluation/model/EvaluationControls";
 
-export const TERMINAL_EVALUATION_STATUSES: EvaluationStatus[] = [
+const TERMINAL_EVALUATION_STATUSES: EvaluationStatus[] = [
   "completed",
   "terminated",
   "canceled",
   "failed",
 ];
 
-export const isTerminalEvaluationStatus = (status: EvaluationStatus): boolean =>
+const isTerminalEvaluationStatus = (status: EvaluationStatus): boolean =>
   TERMINAL_EVALUATION_STATUSES.includes(status);
 
 export const getEvaluationStatusLabel = (status: EvaluationStatus): string => {
@@ -81,7 +89,7 @@ export const getEvaluationStatusTone = (status: EvaluationStatus): string => {
 };
 
 export const shouldPollEvaluation = (status: EvaluationStatus): boolean =>
-  !isTerminalEvaluationStatus(status);
+  status !== "paused" && !isTerminalEvaluationStatus(status);
 
 export const hasVisibleScore = (
   score: number | null,
@@ -94,8 +102,16 @@ export const formatEvaluationScore = (
 ): string =>
   hasVisibleScore(score, finalReportAvailable) ? `${score} 分` : "待生成";
 
-export const hasAvailableActions = (controls: EvaluationControls): boolean =>
-  controls.canPause ||
-  controls.canResume ||
-  controls.canTerminate ||
-  controls.canCancel;
+export const hasAvailableActions = hasAvailableEvaluationActions;
+
+export type {
+  EvaluationRecordFilterMethod,
+  EvaluationRecordFilters,
+  EvaluationRecordFilterStatus,
+  EvaluationRecordFilterVisibility,
+};
+
+export const filterEvaluationRecords = (
+  records: EvaluationRecord[],
+  filters: EvaluationRecordFilters,
+): EvaluationRecord[] => filterEvaluationRecordsValue(records, filters);

@@ -1,6 +1,5 @@
 import type {
   DatasetCategory,
-  DatasetCatalogResponse,
   DatasetCategoryViewModel,
   DatasetSubcategory,
 } from "@/shared/types/DatasetTypes";
@@ -299,11 +298,6 @@ export const sanitizeDatasetSelection = (
     : Array.from(availableIds);
 };
 
-export const countSelectedDatasets = (
-  categories: DatasetCategory[],
-  selectedDatasetIds: string[],
-): number => sanitizeDatasetSelection(categories, selectedDatasetIds).length;
-
 export const isCategoryFullySelected = (
   category: DatasetCategory,
   selectedDatasetIds: string[],
@@ -311,17 +305,6 @@ export const isCategoryFullySelected = (
   category.subcategories.every((item) =>
     selectedDatasetIds.includes(item.datasetId),
   );
-
-export const isCategoryPartiallySelected = (
-  category: DatasetCategory,
-  selectedDatasetIds: string[],
-): boolean => {
-  const selectedCount = category.subcategories.filter((item) =>
-    selectedDatasetIds.includes(item.datasetId),
-  ).length;
-
-  return selectedCount > 0 && selectedCount < category.subcategories.length;
-};
 
 export const toggleCategoryDatasets = (
   category: DatasetCategory,
@@ -378,8 +361,3 @@ export const formatSampleCount = (value?: number): string => {
   if (typeof value !== "number") return "待补充";
   return new Intl.NumberFormat("zh-CN").format(value);
 };
-
-export const buildCatalogStats = (catalog: DatasetCatalogResponse | null) => ({
-  categoryCount: catalog?.categoryCount ?? 0,
-  subcategoryCount: catalog?.subcategoryCount ?? 0,
-});

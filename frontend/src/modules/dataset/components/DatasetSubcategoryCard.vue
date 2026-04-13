@@ -1,7 +1,6 @@
 <template>
-  <router-link
-    :to="RouteLocation.datasetDetail(dataset.datasetId)"
-    class="dataset-card ui-surface-white"
+  <article
+    class="dataset-card ui-surface-white ui-hover-card"
     :style="cardStyle"
   >
     <div class="card-top">
@@ -11,7 +10,7 @@
     <h3 class="dataset-name">{{ dataset.name }}</h3>
     <p class="dataset-description">{{ dataset.shortDescription || "暂无说明" }}</p>
 
-    <div class="grid-cols-2" style="gap: 0.8rem; margin-top: 1.2rem;">
+    <div class="grid-cols-2 meta-grid">
       <div class="meta-item">
         <span class="meta-label">样本数</span>
         <strong>{{ formatSampleCount(dataset.sampleCount ?? undefined) }}</strong>
@@ -22,20 +21,36 @@
       </div>
     </div>
 
-    <span class="detail-link">
-      查看详情
-      <span class="detail-arrow">→</span>
-    </span>
-  </router-link>
+    <div class="card-actions">
+      <Button
+        :to="RouteLocation.datasetDetail(dataset.datasetId)"
+        variant="text"
+        size="sm"
+      >
+        查看详情
+      </Button>
+      <Button
+        variant="secondary"
+        size="sm"
+        @click="handleSubmitClick"
+      >
+        {{ isLogin ? "使用此数据集" : "登录后评测" }}
+      </Button>
+    </div>
+  </article>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/RouteNames";
 import type {
   DatasetCategoryViewModel,
   DatasetSubcategory,
 } from "@/shared/types/DatasetTypes";
+import { useUserStore } from "@/modules/account/stores/UserStore";
+import Button from "@/shared/ui/actions/UiButton.vue";
 import {
   formatDateLabel,
   formatSampleCount,
@@ -46,6 +61,10 @@ const props = defineProps<{
   dataset: DatasetSubcategory;
   category: DatasetCategoryViewModel;
 }>();
+
+const router = useRouter();
+const userStore = useUserStore();
+const { isLogin } = storeToRefs(userStore);
 
 const theme = computed(() => getCategoryTheme(props.category.categoryId));
 
@@ -64,6 +83,20 @@ const badgeStyle = computed(() => {
     border: `1px solid ${theme.value.border}`,
   };
 });
+
+const handleSubmitClick = () => {
+  if (!isLogin.value) {
+    userStore.openLoginDialog();
+    return;
+  }
+
+  void router.push({
+    ...RouteLocation.agentSubmit,
+    query: {
+      datasetIds: props.dataset.datasetId,
+    },
+  });
+};
 </script>
 
 <style scoped>
@@ -73,16 +106,11 @@ const badgeStyle = computed(() => {
   display: flex;
   flex-direction: column;
   min-height: 260px;
-  padding: 1.4rem;
-  border-radius: 1.4rem;
-  text-decoration: none;
+  padding: 1.3rem;
+  border-radius: 1.35rem;
   color: inherit;
   border: 1px solid var(--dataset-border, rgba(226, 232, 240, 0.88));
-  box-shadow: 0 10px 20px -26px var(--dataset-shadow, rgba(15, 23, 42, 0.16));
-  transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    border-color 0.22s ease;
+  box-shadow: 0 14px 24px -26px var(--dataset-shadow, rgba(15, 23, 42, 0.16));
 }
 
 .dataset-card::before {
@@ -93,13 +121,21 @@ const badgeStyle = computed(() => {
   background: linear-gradient(
     90deg,
     var(--dataset-solid, #2563eb),
-    var(--dataset-border, #93c5fd)
+    rgba(255, 255, 255, 0.96)
   );
 }
 
-.dataset-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 28px -22px var(--dataset-shadow, rgba(15, 23, 42, 0.2));
+.dataset-card::after {
+  content: "";
+  position: absolute;
+  top: -3rem;
+  right: -3rem;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--dataset-soft, rgba(219, 234, 254, 0.6)), transparent 70%);
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .card-top {
@@ -117,57 +153,54 @@ const badgeStyle = computed(() => {
 }
 
 .dataset-name {
-  margin: 1rem 0 0.7rem;
-  color: #0f172a;
-  font-size: 1.3rem;
+  margin: 0.95rem 0 0.65rem;
+  color: var(--color-text-dark);
+  font-size: 1.22rem;
 }
 
 .dataset-description {
   margin: 0;
-  color: #475569;
-  line-height: 1.7;
+  color: var(--color-text-muted);
+  line-height: 1.76;
   flex: 1;
 }
 
+.meta-grid {
+  gap: 0.8rem;
+  margin-top: 1.05rem;
+}
+
 .meta-item {
-  padding: 0.9rem;
+  padding: 0.85rem;
   background: linear-gradient(180deg, var(--dataset-soft, #f8fafc), #ffffff 84%);
   border: 1px solid var(--dataset-border, #e2e8f0);
-  border-radius: 1rem;
+  border-radius: 0.95rem;
 }
 
 .meta-label {
   display: block;
-  color: #64748b;
+  color: var(--color-text-subtle);
   font-size: 0.8rem;
   margin-bottom: 0.35rem;
 }
 
 .meta-item strong {
-  color: #0f172a;
-  font-size: 0.98rem;
+  color: var(--color-text-dark);
+  font-size: 0.96rem;
 }
 
-.detail-link {
-  display: inline-flex;
+.card-actions {
+  display: flex;
   align-items: center;
-  gap: 0.45rem;
-  margin-top: 1.1rem;
-  color: var(--dataset-solid, #2563eb);
-  font-weight: 700;
-}
-
-.detail-arrow {
-  transition: transform 0.2s ease;
-}
-
-.dataset-card:hover .detail-arrow {
-  transform: translateX(3px);
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 @media (max-width: 640px) {
-  .meta-list {
-    grid-template-columns: 1fr;
+  .card-actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 </style>

@@ -1,238 +1,213 @@
 <template>
-  <div class="content report-card layout-page-panel layout-page-panel--md ui-surface-glass">
-    <div class="page-top-actions">
-      <button class="back-btn ui-btn ui-btn-pill" type="button" @click="goBack">
-        返回评测记录
-      </button>
-    </div>
-    <h1 class="page-title layout-page-title">评测详情</h1>
+  <div class="content detail-page layout-page-shell layout-page-shell--wide">
+    <PageHeroCard
+      :title="detail?.agentName || '评测详情'"
+      :description="detail ? detail.progress.statusText : '查看任务状态与评测结果。'"
+      tone="workspace"
+      title-tone="brand"
+    >
+      <template #actions>
+        <UiButton variant="secondary" @click="goBack">返回评测记录</UiButton>
+      </template>
+    </PageHeroCard>
 
     <div v-if="loading && !detail" class="state-card layout-state-card ui-surface-white">
       <h2>正在读取评测详情</h2>
-      <p>系统正在同步该任务的执行状态和最新指标。</p>
+      <p>请稍候。</p>
     </div>
 
     <div v-else-if="error && !detail" class="state-card layout-state-card ui-surface-white">
       <h2>详情加载失败</h2>
       <p>{{ error }}</p>
-      <button class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient" @click="loadDetail()">
-        重试
-      </button>
+      <UiButton variant="primary" @click="loadDetail()">重试</UiButton>
     </div>
 
     <template v-else-if="detail">
-      <div class="summary-section ui-surface-white">
-        <div class="summary-item">
-          <span class="label">智能体名称</span>
-          <span class="value">{{ detail.agentName }}</span>
-        </div>
-        <div class="summary-item">
-          <span class="label">评测状态</span>
-          <span class="value" :class="getEvaluationStatusTone(detail.status)">
-            {{ getEvaluationStatusLabel(detail.status) }}
-          </span>
-        </div>
-        <div class="summary-item">
-          <span class="label">提交方式</span>
-          <span class="value">{{ detail.submitMethod.toUpperCase() }}</span>
-        </div>
-        <div class="summary-item">
-          <span class="label">综合得分</span>
-          <span class="value score">{{ formatEvaluationScore(detail.score, detail.finalReportAvailable) }}</span>
-        </div>
-      </div>
+      <section class="status-grid">
+        <article class="status-card ui-surface-white">
+          <span class="status-label">任务状态</span>
+          <strong class="status-value">{{ getEvaluationStatusLabel(detail.status) }}</strong>
+          <StatusTag kind="evaluation" :value="detail.status" size="sm" icon-only />
+        </article>
 
-      <div v-if="error" class="inline-error ui-surface-white">
-        {{ error }}
-      </div>
+        <article class="status-card ui-surface-white">
+          <span class="status-label">提交方式</span>
+          <strong class="status-value">{{ detail.submitMethod.toUpperCase() }}</strong>
+          <StatusTag kind="method" :value="detail.submitMethod" size="sm" icon-only />
+        </article>
 
-      <div class="progress-panel ui-surface-white">
-        <div class="progress-head">
+        <article class="status-card ui-surface-white">
+          <span class="status-label">数据集数量</span>
+          <strong class="status-value">{{ detail.datasetNames.length }}</strong>
+        </article>
+
+        <article class="status-card ui-surface-white">
+          <span class="status-label">报告状态</span>
+          <strong class="status-value">{{ reportLabel }}</strong>
+          <StatusTag kind="report" :value="reportTagValue" size="sm" icon-only />
+        </article>
+      </section>
+
+      <InlineNotice
+        v-if="error"
+        tone="danger"
+        title="操作未完成"
+        :message="error"
+      />
+
+      
+        <section v-if="hasAvailableActions(detail.controls)" class="actions-panel ui-surface-white">
+        <div class="panel-head panel-head--compact">
           <div>
-            <h2>任务进度</h2>
-            <p>{{ detail.progress.statusText }}</p>
+            <h2>任务操作</h2>
+            <p>仅显示当前状态下可执行的操作。</p>
           </div>
-          <strong>{{ detail.progress.percent }}%</strong>
         </div>
 
-        <div class="progress-bar">
-          <div class="progress-fill" :style="{ width: `${detail.progress.percent}%` }"></div>
-        </div>
-
-        <div class="progress-meta">
-          <span>已完成 {{ detail.progress.completedDatasetCount }} / {{ detail.progress.totalDatasetCount }}</span>
-          <span v-if="detail.progress.runningDatasetName">当前数据集：{{ detail.progress.runningDatasetName }}</span>
-          <span v-if="detail.progress.pauseDeadlineAt">最晚恢复时间：{{ formatDateTimeLabel(detail.progress.pauseDeadlineAt) }}</span>
-          <span v-if="getFinalizationReasonLabel(detail.finalizationReason)">
-            {{ getFinalizationReasonLabel(detail.finalizationReason) }}
-          </span>
-        </div>
-      </div>
-
-      <div v-if="hasAvailableActions(detail.controls)" class="actions-panel ui-surface-white">
         <div class="action-buttons">
-          <button
+          <UiButton
             v-if="detail.controls.canPause"
-            class="ui-btn ui-btn-pill"
-            type="button"
+            variant="secondary"
             :disabled="actionLoading"
             @click="openActionDialog('pause')"
           >
             暂停
-          </button>
-          <button
+          </UiButton>
+          <UiButton
             v-if="detail.controls.canResume"
-            class="ui-btn ui-btn-pill ui-btn-gradient"
-            type="button"
+            variant="primary"
             :disabled="actionLoading"
             @click="runAction('resume')"
           >
             继续
-          </button>
-          <button
+          </UiButton>
+          <UiButton
             v-if="detail.controls.canTerminate"
-            class="ui-btn ui-btn-pill"
-            type="button"
+            variant="secondary"
             :disabled="actionLoading"
             @click="openActionDialog('terminate')"
           >
             终止
-          </button>
-          <button
+          </UiButton>
+          <UiButton
             v-if="detail.controls.canCancel"
-            class="ui-btn ui-btn-pill ui-btn-danger"
-            type="button"
+            variant="danger"
             :disabled="actionLoading"
             @click="openActionDialog('cancel')"
           >
             取消
-          </button>
+          </UiButton>
         </div>
-      </div>
+      </section>
 
-      <div v-if="detail.report" class="summary-panel ui-surface-white">
-        <p class="summary-text">{{ reportStateText }}</p>
-        <p class="summary-meta">
-          评测项：{{ detail.datasetNames.join("、") }}
-          · 报告生成时间：{{ formatDateTimeLabel(detail.report.generatedAt) }}
-        </p>
-      </div>
-
-      <div v-else-if="detail.status === 'canceled' || detail.status === 'failed'" class="summary-panel ui-surface-white">
-        <p class="summary-text">{{ detail.progress.statusText }}</p>
-        <p class="summary-meta">当前任务未生成最终报告。</p>
-      </div>
-
-      <template v-if="detail.report">
-        <h2 class="section-title">报告摘要</h2>
-        <div class="summary-cards">
-          <div class="metric-item ui-surface-white">
-            <div class="metric-header">
-              <span class="metric-name">总样本数</span>
-              <span class="metric-value">{{ detail.report.summary.totalSamples }}</span>
-            </div>
+      <section class="report-panel ui-surface-white">
+        <div class="panel-head">
+          <div>
+            <h2>报告摘要</h2>
+            <p>{{ reportStateText }}</p>
           </div>
-          <div class="metric-item ui-surface-white">
-            <div class="metric-header">
-              <span class="metric-name">已完成样本</span>
-              <span class="metric-value">{{ detail.report.summary.completedSamples }}</span>
-            </div>
-          </div>
-          <div class="metric-item ui-surface-white">
-            <div class="metric-header">
-              <span class="metric-name">完成任务数</span>
-              <span class="metric-value">{{ detail.report.summary.taskCompletedCount }}</span>
-            </div>
-          </div>
-          <div class="metric-item ui-surface-white">
-            <div class="metric-header">
-              <span class="metric-name">检测到风险</span>
-              <span class="metric-value">{{ detail.report.summary.harmDetectedCount }}</span>
-            </div>
-          </div>
-          <div class="metric-item ui-surface-white">
-            <div class="metric-header">
-              <span class="metric-name">失败数量</span>
-              <span class="metric-value">{{ detail.report.summary.failedCount }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="metrics-grid report-group-grid">
-          <div class="metric-item ui-surface-white">
-            <div class="metric-header">
-              <span class="metric-name">风险分类</span>
-              <span class="metric-value">{{ detail.report.summary.byRiskCategory.length }}</span>
-            </div>
-            <p
-              v-for="item in detail.report.summary.byRiskCategory"
-              :key="`${item.categoryId}-${item.name}`"
-              class="metric-desc"
-            >
-              {{ item.name || item.categoryId }}：样本 {{ item.totalSamples }}，完成 {{ item.taskCompletedCount }}，风险 {{ item.harmDetectedCount }}
-            </p>
-            <p v-if="!detail.report.summary.byRiskCategory.length" class="metric-desc">暂无风险分类汇总。</p>
-          </div>
-
-          <div class="metric-item ui-surface-white">
-            <div class="metric-header">
-              <span class="metric-name">风险等级</span>
-              <span class="metric-value">{{ detail.report.summary.byRiskLevel.length }}</span>
-            </div>
-            <p
-              v-for="item in detail.report.summary.byRiskLevel"
-              :key="`risk-${item.level}`"
-              class="metric-desc"
-            >
-              等级 {{ item.level }}：样本 {{ item.totalSamples }}，风险 {{ item.harmDetectedCount }}
-            </p>
-            <p v-if="!detail.report.summary.byRiskLevel.length" class="metric-desc">暂无风险等级汇总。</p>
-          </div>
-
-          <div class="metric-item ui-surface-white">
-            <div class="metric-header">
-              <span class="metric-name">攻击等级</span>
-              <span class="metric-value">{{ detail.report.summary.byAttackLevel.length }}</span>
-            </div>
-            <p
-              v-for="item in detail.report.summary.byAttackLevel"
-              :key="`attack-${item.level}`"
-              class="metric-desc"
-            >
-              等级 {{ item.level }}：样本 {{ item.totalSamples }}，风险 {{ item.harmDetectedCount }}
-            </p>
-            <p v-if="!detail.report.summary.byAttackLevel.length" class="metric-desc">暂无攻击等级汇总。</p>
-          </div>
-        </div>
-      </template>
-
-      <div v-if="detail.report?.warnings.length" class="warnings ui-surface-white">
-        <h2>提示</h2>
-        <p v-for="warning in detail.report.warnings" :key="warning">{{ warning }}</p>
-      </div>
-
-      <template v-if="detail.report">
-        <h2 class="section-title">详细指标</h2>
-        <div class="metrics-grid">
-          <div
-            v-for="metric in detail.report.metrics"
-            :key="metric.name"
-            class="metric-item ui-surface-white"
+          <UiButton
+            v-if="detail.report?.reportUri"
+            :href="detail.report.reportUri"
+            target="_blank"
+            variant="secondary"
           >
-            <div class="metric-header">
-              <span class="metric-name">{{ metric.name }}</span>
-              <span class="metric-value">{{ metric.value }}</span>
-            </div>
-            <div class="progress-bar secondary">
-              <div
-                class="progress-fill"
-                :style="{ width: `${metric.percentage}%` }"
-              ></div>
-            </div>
-            <p class="metric-desc">{{ metric.description }}</p>
-          </div>
+            打开报告
+          </UiButton>
         </div>
-      </template>
+
+        <div v-if="detail.report" class="report-meta">
+          <span>生成时间：{{ formatDateTimeLabel(detail.report.generatedAt) }}</span>
+          <span v-if="hasVisibleScore(detail.score, detail.finalReportAvailable)">
+            综合得分：{{ formatEvaluationScore(detail.score, detail.finalReportAvailable) }}
+          </span>
+        </div>
+
+        <InlineNotice
+          v-if="!detail.report"
+          tone="info"
+          :message="reportStateText"
+        />
+
+        <template v-else>
+          <div class="summary-metrics">
+            <MetricCard
+              v-for="item in summaryMetrics"
+              :key="item.label"
+              :label="item.label"
+              :value="item.value"
+              :description="item.description"
+            />
+          </div>
+
+          <div class="summary-groups">
+            <article class="summary-group ui-surface-panel">
+              <h3>风险分类</h3>
+              <p v-if="detail.report.summary.byRiskCategory.length === 0" class="empty-copy">
+                暂无风险分类汇总。
+              </p>
+              <ul v-else class="summary-list">
+                <li v-for="item in detail.report.summary.byRiskCategory" :key="`${item.categoryId}-${item.name}`">
+                  {{ item.name || item.categoryId }}：样本 {{ item.totalSamples }}，风险 {{ item.harmDetectedCount }}
+                </li>
+              </ul>
+            </article>
+
+            <article class="summary-group ui-surface-panel">
+              <h3>风险等级</h3>
+              <p v-if="detail.report.summary.byRiskLevel.length === 0" class="empty-copy">
+                暂无风险等级汇总。
+              </p>
+              <ul v-else class="summary-list">
+                <li v-for="item in detail.report.summary.byRiskLevel" :key="`risk-${item.level}`">
+                  等级 {{ item.level }}：样本 {{ item.totalSamples }}，风险 {{ item.harmDetectedCount }}
+                </li>
+              </ul>
+            </article>
+
+            <article class="summary-group ui-surface-panel">
+              <h3>攻击等级</h3>
+              <p v-if="detail.report.summary.byAttackLevel.length === 0" class="empty-copy">
+                暂无攻击等级汇总。
+              </p>
+              <ul v-else class="summary-list">
+                <li v-for="item in detail.report.summary.byAttackLevel" :key="`attack-${item.level}`">
+                  等级 {{ item.level }}：样本 {{ item.totalSamples }}，风险 {{ item.harmDetectedCount }}
+                </li>
+              </ul>
+            </article>
+          </div>
+
+          <InlineNotice
+            v-for="warning in detail.report.warnings"
+            :key="warning"
+            tone="warning"
+            :message="warning"
+          />
+
+          <div v-if="detail.report.metrics.length" class="detail-metrics">
+            <article
+              v-for="metric in detail.report.metrics"
+              :key="metric.name"
+              class="metric-detail ui-surface-panel"
+            >
+              <div class="metric-head">
+                <strong>{{ metric.name }}</strong>
+                <span>{{ metric.value }}</span>
+              </div>
+              <div class="progress-bar progress-bar--secondary">
+                <div class="progress-fill" :style="{ width: `${metric.percentage}%` }"></div>
+              </div>
+              <p>{{ metric.description }}</p>
+            </article>
+          </div>
+          <InlineNotice
+            v-else
+            tone="info"
+            message="当前结果未返回详细指标。"
+          />
+        </template>
+      </section>
     </template>
 
     <ConfirmDialog
@@ -249,436 +224,304 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import {
-  getEvaluationDetail,
-  postEvaluationAction,
-} from "@/modules/evaluation/api";
-import ConfirmDialog from "@/shared/ui/ConfirmDialog.vue";
-import { RouteLocation } from "@/app/router/RouteNames";
-import type {
-  EvaluationAction,
-  EvaluationDetail,
-} from "@/shared/types/AgentTypes";
+import { computed } from "vue";
+import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
+import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
+import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
+import MetricCard from "@/shared/ui/display/MetricCard.vue";
+import StatusTag from "@/shared/ui/display/StatusTag.vue";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
 import { formatDateTimeLabel } from "@/modules/dataset/lib";
+import { useEvaluationDetailPage } from "@/modules/evaluation/composables/useEvaluationDetailPage";
 import {
   formatEvaluationScore,
   getEvaluationStatusLabel,
-  getEvaluationStatusTone,
-  getFinalizationReasonLabel,
   hasAvailableActions,
-  shouldPollEvaluation,
+  hasVisibleScore,
 } from "@/modules/evaluation/lib";
 
-const route = useRoute();
-const router = useRouter();
-const evaluationId = computed(() => String(route.params.evaluationId ?? ""));
+const {
+  detail,
+  loading,
+  error,
+  reportStateText,
+  actionLoading,
+  actionDialogVisible,
+  actionDialogTitle,
+  actionDialogMessage,
+  actionDialogConfirmText,
+  actionDialogDanger,
+  loadDetail,
+  goBack,
+  openActionDialog,
+  runAction,
+  confirmAction,
+} = useEvaluationDetailPage();
 
-const detail = ref<EvaluationDetail | null>(null);
-const loading = ref(true);
-const error = ref("");
-const actionLoading = ref(false);
-const pendingAction = ref<EvaluationAction | null>(null);
-const actionDialogVisible = ref(false);
-const actionDialogTitle = ref("");
-const actionDialogMessage = ref("");
-const actionDialogConfirmText = ref("确认");
-const actionDialogDanger = ref(false);
-
-let pollTimer: number | null = null;
-
-const reportStateText = computed(() => {
-  if (detail.value?.report) {
-    return "报告已生成，可查看摘要统计与报告链接。";
-  }
-
+const reportTagValue = computed(() => {
   if (!detail.value) {
-    return "正在同步报告状态。";
+    return "pending";
   }
 
-  if (detail.value.status === "canceled" || detail.value.status === "failed") {
-    return "当前任务未生成最终报告。";
+  if (detail.value.report) {
+    return "available";
   }
 
-  if (detail.value.status === "completed" || detail.value.status === "terminated") {
-    return "任务已结束，但当前未返回报告内容。";
+  if (
+    detail.value.status === "completed" ||
+    detail.value.status === "terminated" ||
+    detail.value.status === "failed" ||
+    detail.value.status === "canceled"
+  ) {
+    return "missing";
   }
 
-  return "报告尚未生成，请等待任务继续执行。";
+  return "pending";
 });
 
-const getErrorCode = (value: unknown): number | null => {
-  if (!value || typeof value !== "object" || !("code" in value)) {
-    return null;
+const reportLabel = computed(() => {
+  if (reportTagValue.value === "available") {
+    return "已生成";
   }
 
-  const code = Number((value as { code?: unknown }).code);
-  return Number.isFinite(code) ? code : null;
-};
-
-const clearPolling = () => {
-  if (pollTimer !== null) {
-    window.clearInterval(pollTimer);
-    pollTimer = null;
-  }
-};
-
-const syncPolling = () => {
-  clearPolling();
-
-  if (!detail.value || !shouldPollEvaluation(detail.value.status)) {
-    return;
+  if (reportTagValue.value === "missing") {
+    return "未返回";
   }
 
-  pollTimer = window.setInterval(() => {
-    void loadDetail(true);
-  }, 600000);
-};
-
-const loadDetail = async (silent = false) => {
-  if (!silent || !detail.value) {
-    loading.value = true;
-  }
-
-  if (!silent) {
-    error.value = "";
-  }
-
-  try {
-    detail.value = await getEvaluationDetail(evaluationId.value);
-    error.value = "";
-    syncPolling();
-  } catch (loadError) {
-    error.value =
-      loadError instanceof Error ? loadError.message : "评测详情加载失败。";
-    clearPolling();
-  } finally {
-    loading.value = false;
-  }
-};
-
-const applyDetail = (nextDetail: EvaluationDetail) => {
-  detail.value = nextDetail;
-  error.value = "";
-  syncPolling();
-};
-
-const goBack = () => {
-  router.push(RouteLocation.userCenter);
-};
-
-const openActionDialog = (action: EvaluationAction) => {
-  pendingAction.value = action;
-  actionDialogDanger.value = action === "cancel";
-  actionDialogConfirmText.value =
-    action === "pause"
-      ? "确认暂停"
-      : action === "terminate"
-        ? "确认终止"
-        : "确认取消";
-
-  if (action === "pause") {
-    actionDialogTitle.value = "暂停任务";
-    actionDialogMessage.value =
-      "暂停会在当前数据集跑完后生效，任务最多只能暂停一次。";
-  } else if (action === "terminate") {
-    actionDialogTitle.value = "终止任务";
-    actionDialogMessage.value =
-      "终止会在当前数据集跑完后结束剩余队列，并生成最终报告。";
-  } else {
-    actionDialogTitle.value = "取消任务";
-    actionDialogMessage.value =
-      "取消会直接中断当前任务，并且不会生成最终报告。";
-  }
-
-  actionDialogVisible.value = true;
-};
-
-const runAction = async (action: EvaluationAction) => {
-  actionLoading.value = true;
-  error.value = "";
-
-  try {
-    const nextDetail = await postEvaluationAction(evaluationId.value, action);
-    applyDetail(nextDetail);
-  } catch (actionError) {
-    const code = getErrorCode(actionError);
-    const message =
-      actionError instanceof Error ? actionError.message : "任务操作失败。";
-    error.value = message;
-
-    if (code === 40901 || code === 40902) {
-      await loadDetail(true);
-      error.value = message;
-    }
-  } finally {
-    actionLoading.value = false;
-  }
-};
-
-const confirmAction = async () => {
-  if (!pendingAction.value) {
-    return;
-  }
-
-  const action = pendingAction.value;
-  await runAction(action);
-  pendingAction.value = null;
-  actionDialogVisible.value = false;
-};
-
-watch(
-  evaluationId,
-  async () => {
-    clearPolling();
-    detail.value = null;
-    await loadDetail();
-  },
-);
-
-onMounted(async () => {
-  await loadDetail();
+  return "生成中";
 });
 
-onBeforeUnmount(() => {
-  clearPolling();
+const summaryMetrics = computed(() => {
+  if (!detail.value?.report) {
+    return [];
+  }
+
+  const items = [
+    {
+      label: "总样本数",
+      value: String(detail.value.report.summary.totalSamples),
+      description: "报告统计的样本总量",
+    },
+    {
+      label: "已完成样本",
+      value: String(detail.value.report.summary.completedSamples),
+      description: "已完成执行的样本数量",
+    },
+    {
+      label: "完成任务数",
+      value: String(detail.value.report.summary.taskCompletedCount),
+      description: "完成评测的数据集数量",
+    },
+    {
+      label: "检测到风险",
+      value: String(detail.value.report.summary.harmDetectedCount),
+      description: "命中风险的样本数量",
+    },
+    {
+      label: "失败数量",
+      value: String(detail.value.report.summary.failedCount),
+      description: "执行失败的样本数量",
+    },
+  ];
+
+  if (hasVisibleScore(detail.value.score, detail.value.finalReportAvailable)) {
+    items.unshift({
+      label: "综合得分",
+      value: formatEvaluationScore(detail.value.score, detail.value.finalReportAvailable),
+      description: "仅在后端返回最终报告后显示",
+    });
+  }
+
+  return items;
 });
 </script>
 
 <style scoped>
-.page-top-actions {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 1rem;
+.detail-page {
+  padding-bottom: 2.5rem;
 }
 
-.summary-section {
+.status-grid,
+.summary-metrics,
+.summary-groups,
+.detail-metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
-  border-radius: 1.2rem;
-  padding: 1.3rem;
+  gap: 0.9rem;
 }
 
-.summary-item {
-  display: flex;
-  flex-direction: column;
+.status-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.label {
-  color: #64748b;
-  font-size: 0.84rem;
-  margin-bottom: 0.35rem;
+.status-card,
+.actions-panel,
+.report-panel {
+  border-radius: 1.25rem;
+  padding: 1.15rem;
 }
 
-.value {
-  color: #0f172a;
-  font-size: 1.15rem;
-  font-weight: 700;
+.status-label {
+  color: var(--color-text-subtle);
+  font-size: 0.82rem;
 }
 
-.value.pending,
-.value.running {
-  color: #2563eb;
-}
-
-.value.paused,
-.value.terminated {
-  color: #b45309;
-}
-
-.value.completed {
-  color: #15803d;
-}
-
-.value.canceled,
-.value.failed {
-  color: #b91c1c;
-}
-
-.score {
-  color: #7c3aed;
-}
-
-.inline-error,
-.progress-panel,
-.summary-panel,
-.warnings,
-.actions-panel {
-  margin-top: 1rem;
-  border-radius: 1.2rem;
-  padding: 1.2rem;
-}
-
-.inline-error {
-  color: #b91c1c;
-}
-
-.progress-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: flex-start;
-}
-
-.progress-head h2,
-.warnings h2 {
-  margin: 0;
-  color: #0f172a;
+.status-value {
+  display: block;
+  margin: 0.42rem 0 0.55rem;
+  color: var(--color-text-dark);
   font-size: 1.1rem;
 }
 
-.progress-head p,
-.summary-text,
-.metric-desc,
-.warnings p {
-  line-height: 1.7;
+
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.progress-head p,
-.summary-text {
-  margin: 0.45rem 0 0;
-  color: #334155;
+.panel-head h2 {
+  margin: 0;
+  color: var(--color-text-dark);
 }
 
-.progress-head strong {
-  color: #2563eb;
-  font-size: 1.4rem;
+.panel-head p {
+  margin: 0.42rem 0 0;
+  color: var(--color-text-subtle);
+  line-height: 1.68;
+}
+
+.panel-head strong {
+  color: var(--color-primary);
+  font-size: 1.35rem;
+}
+
+.actions-panel,
+.report-panel {
+  margin-top: 1rem;
 }
 
 .progress-bar {
   width: 100%;
   height: 10px;
+  margin-top: 0.9rem;
   border-radius: 999px;
   overflow: hidden;
-  background: #e2e8f0;
-  margin-top: 0.9rem;
+  background: rgba(226, 232, 240, 0.92);
 }
 
-.progress-bar.secondary {
+.progress-bar--secondary {
   height: 8px;
-  margin-top: 0.7rem;
+  margin-top: 0.65rem;
 }
 
 .progress-fill {
   height: 100%;
   background: var(--grad-progress);
-  transition: width 0.3s ease;
 }
 
-.progress-meta {
+.progress-meta,
+.report-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 0.9rem;
-  color: #64748b;
+  color: var(--color-text-subtle);
 }
 
 .action-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+  margin-top: 0.9rem;
 }
 
-.summary-meta {
-  margin: 0.8rem 0 0;
-  color: #64748b;
+.summary-metrics {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  margin-top: 1rem;
 }
 
-.section-title {
-  margin: 1.8rem 0 1rem;
-  color: #0f172a;
+.summary-groups {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 1rem;
 }
 
-.summary-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
+.summary-group {
+  border-radius: 1rem;
+  padding: 1rem;
 }
 
-.metrics-grid {
+.summary-group h3 {
+  margin: 0;
+  color: var(--color-text-dark);
+}
+
+.summary-list,
+.empty-copy {
+  margin: 0.75rem 0 0;
+  color: var(--color-text-subtle);
+  line-height: 1.7;
+}
+
+.summary-list {
+  padding-left: 1rem;
+}
+
+.detail-metrics {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 1rem;
+}
+
+.metric-detail {
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.metric-head {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.report-group-grid {
-  margin-bottom: 1rem;
-}
-
-.metric-item {
-  padding: 1.15rem;
-  border-radius: 1.1rem;
-}
-
-.metric-header {
-  display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
-.metric-name {
-  color: #0f172a;
-  font-weight: 700;
+.metric-head strong {
+  color: var(--color-text-dark);
 }
 
-.metric-value {
-  color: #2563eb;
-  font-weight: 700;
+.metric-head span,
+.metric-detail p {
+  color: var(--color-text-subtle);
 }
 
-.metric-desc {
-  margin: 0.7rem 0 0;
-  color: #64748b;
+.metric-detail p {
+  margin: 0.75rem 0 0;
+  line-height: 1.65;
 }
 
-.back-btn {
-  padding: 0.82rem 1.2rem;
+@media (max-width: 1080px) {
+  .status-grid,
+  .summary-groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
-  .progress-head {
-    flex-direction: column;
-  }
-
-  .progress-meta {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .action-buttons > * {
-    flex: 1 1 100%;
-  }
-
-  .metric-header {
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
-  .summary-section {
+  .status-grid,
+  .summary-groups,
+  .detail-metrics {
     grid-template-columns: 1fr;
   }
 
-  .back-btn {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .summary-section,
-  .inline-error,
-  .progress-panel,
-  .summary-panel,
-  .warnings,
-  .actions-panel,
-  .metric-item {
-    padding: 1rem;
+  .panel-head,
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .progress-head strong {
-    font-size: 1.2rem;
+  .progress-meta,
+  .report-meta {
+    flex-direction: column;
+    gap: 0.45rem;
   }
 }
 </style>

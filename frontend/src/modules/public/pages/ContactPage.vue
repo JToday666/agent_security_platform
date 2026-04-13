@@ -1,72 +1,59 @@
 <template>
   <div class="content contact-page layout-page-shell layout-page-shell--compact">
-    <div class="contact-card layout-page-panel ui-surface-glass">
-      <div class="contact-header">
-        <div class="contact-brand ui-surface-white">
-          <BrandLogo class="contact-logo" alt="智能体安全评测平台标志" />
-        </div>
-        <h1 class="page-title layout-page-title">联系我们</h1>
-        <p class="page-subtitle layout-page-subtitle">
-          如果您有任何问题或建议，欢迎通过以下方式与我们取得联系。
-        </p>
-      </div>
+    <section class="contact-hero" aria-labelledby="contact-hero-title">
+      <BrandLogo class="contact-logo contact-hero__logo" alt="智能体安全评测平台标识" />
+      <h1 id="contact-hero-title" class="contact-hero__title ui-title-gradient">联系我们</h1>
+      <p class="contact-hero__description">
+        如果您有任何问题、建议或合作想法，欢迎通过以下方式与我们取得联系。
+      </p>
+    </section>
 
-      <div class="contact-grid">
-        <div
-          v-for="item in contactItems"
-          :key="item.title"
-          class="contact-item ui-surface-white ui-hover-card"
-        >
+    <section class="contact-grid contact-grid--quad">
+      <article
+        v-for="item in contactItems"
+        :key="item.title"
+        class="contact-item ui-surface-white ui-hover-card"
+      >
+        <div class="contact-item-head">
           <AppIcon :icon="item.icon" class="icon" />
-          <div class="info" :class="`info--${item.type}`">
-            <h3>{{ item.title }}</h3>
-
-            <template v-if="item.type === 'link'">
-              <a :href="item.link" class="info-value info-value--single-line">
-                {{ item.text }}
-              </a>
-            </template>
-
-            <template v-else-if="item.type === 'text'">
-              <p class="info-value info-value--address">{{ item.text }}</p>
-            </template>
-
-            <template v-else-if="item.type === 'social'">
-              <div class="social-links">
-                <template v-for="(social, index) in item.links" :key="social.name">
-                  <a
-                    :href="social.url"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="info-value info-value--single-line social-link"
-                  >
-                    <AppIcon :icon="social.icon" class="social-brand-icon" />
-                    <span>{{ social.name }}</span>
-                  </a>
-                  <span
-                    v-if="index < item.links.length - 1"
-                    class="separator"
-                    aria-hidden="true"
-                  >
-                    ·
-                  </span>
-                </template>
-              </div>
-            </template>
-          </div>
+          <h2>{{ item.title }}</h2>
         </div>
-      </div>
 
-      <div class="note">
-        <p>我们会在 24 小时内回复您的来信，感谢您的关注与支持。</p>
-      </div>
-    </div>
+        <div class="info">
+          <template v-if="item.type === 'link'">
+            <a :href="item.link" class="info-value info-value--single-line">
+              {{ item.text }}
+            </a>
+          </template>
+
+          <template v-else-if="item.type === 'text'">
+            <p class="info-value info-value--address">{{ item.text }}</p>
+          </template>
+
+          <template v-else-if="item.type === 'social'">
+            <div class="social-links">
+              <a
+                v-for="social in item.links"
+                :key="social.name"
+                :href="social.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="info-value info-value--single-line social-link"
+              >
+                <AppIcon :icon="social.icon" class="social-brand-icon" />
+                <span>{{ social.name }}</span>
+              </a>
+            </div>
+          </template>
+        </div>
+      </article>
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import AppIcon from "@/shared/ui/AppIcon.vue";
-import BrandLogo from "@/shared/ui/BrandLogo.vue";
+import AppIcon from "@/shared/ui/branding/AppIcon.vue";
+import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
 
 type ContactItem =
   | {
@@ -131,95 +118,102 @@ const contactItems: ContactItem[] = [
 </script>
 
 <style scoped>
+
 .contact-page {
-  min-height: calc(100vh - var(--nav-height));
-  display: flex;
-  align-items: center;
-  padding-bottom: 2.5rem;
+  padding-bottom: 2.3rem;
 }
 
-.contact-card {
-  border-radius: 2.4rem;
-}
-
-.contact-header {
+.contact-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.85rem;
+  padding: 0.8rem 0 0.35rem;
   text-align: center;
-  gap: 0.8rem;
-}
-
-.contact-brand {
-  width: fit-content;
-  padding: 0.9rem 1.1rem;
-  border-radius: 1.5rem;
 }
 
 .contact-logo {
-  width: clamp(5.75rem, 12vw, 7.5rem);
+  width: clamp(3.8rem, 8vw, 4.4rem);
 }
 
-.page-title {
-  text-align: center;
+.contact-hero__title {
+  margin: 0;
+  color: var(--color-text-dark);
+  font-size: clamp(1.72rem, 3.45vw, 2.56rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
 }
 
-.page-subtitle {
-  margin-bottom: 1.5rem;
-  text-align: center;
+.contact-hero__description {
+  max-width: 56ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.98rem;
+  line-height: 1.66;
 }
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.25rem;
-  margin: 2rem 0;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.contact-grid--quad {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .contact-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.85rem;
-  padding: 1.5rem 1.35rem;
-  min-height: 220px;
+  gap: 0.72rem;
+  min-height: 176px;
+  padding: 1.08rem 1rem;
+  border-radius: 1.2rem;
   text-align: center;
 }
 
-.icon {
-  width: 2.25rem;
-  height: 2.25rem;
-  color: #2563eb;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
-}
-
-.info {
-  flex: 1;
-  width: 100%;
+.contact-item-head {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
+  gap: 0.52rem;
+  width: 100%;
 }
 
-.info h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
+.contact-item-head h2 {
   margin: 0;
-  color: #0f172a;
+  color: var(--color-text-dark);
+  font-size: 1.02rem;
+}
+
+.info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.38rem;
+  width: 100%;
+}
+
+.icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  color: #4f46e5;
 }
 
 .info-value {
   margin: 0;
-  color: #64748b;
+  color: var(--color-text-subtle);
   text-decoration: none;
-  font-size: 1rem;
-  line-height: 1.55;
-  text-align: center;
+  font-size: 0.94rem;
+  line-height: 1.62;
   word-break: break-word;
-  transition: color 0.2s ease;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .info-value--single-line {
@@ -227,34 +221,27 @@ const contactItems: ContactItem[] = [
 }
 
 .info-value--address {
-  max-width: 16ch;
+  max-width: 18ch;
   text-wrap: balance;
 }
 
 .info a:hover,
 .social-link:hover {
-  color: #2563eb;
-  text-decoration: underline;
+  color: var(--color-primary);
 }
 
 .social-links {
-  display: inline-flex;
+  display: flex;
+  align-items: flex-start;
   justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  width: 100%;
+  gap: 0.5rem 0.72rem;
 }
 
 .social-links a {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: #64748b;
-}
-
-.social-links a:hover {
-  color: #2563eb;
 }
 
 .social-brand-icon {
@@ -263,44 +250,17 @@ const contactItems: ContactItem[] = [
   flex-shrink: 0;
 }
 
-.separator {
-  color: #cbd5e1;
-  margin: 0 0.1rem;
-}
-
-.note {
-  text-align: center;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #e2e8f0;
-  color: #64748b;
-  font-style: italic;
-}
-
 @media (max-width: 768px) {
-  .contact-page {
-    align-items: flex-start;
-  }
-
-  .contact-card {
-    border-radius: 2rem;
-  }
-
-  .contact-grid {
+  .contact-grid--quad {
     grid-template-columns: 1fr;
   }
 
   .contact-item {
     min-height: auto;
-    padding: 1.25rem 1.15rem;
   }
 }
 
 @media (max-width: 480px) {
-  .contact-brand {
-    padding: 0.75rem 0.95rem;
-  }
-
   .info-value,
   .info-value--single-line {
     font-size: 0.95rem;

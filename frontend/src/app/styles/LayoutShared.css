@@ -1,8 +1,7 @@
-/* 共享页面壳层样式，只承载高复用布局，不覆盖页面个性化视觉。 */
 :where(.layout-page-shell) {
   width: 100%;
-  max-width: 1200px;
-  padding: 2rem;
+  max-width: var(--page-max-width);
+  padding: 1.8rem 2rem 2.4rem;
 }
 
 :where(.layout-app-shell) {
@@ -15,86 +14,135 @@
   margin-left: var(--sidebar-active-width, var(--sidebar-width));
   position: relative;
   z-index: var(--z-content);
-  transition: margin-left var(--duration-base) ease;
+  transition: margin-left var(--duration-base) var(--ease-standard);
 }
 
 :where(.layout-app-content) > :where(.content:not(.layout-page-shell)) {
-  padding: 1.15rem 1.25rem 1.5rem;
+  padding: 1.25rem 1.4rem 1.8rem;
 }
 
 :where(.layout-page-shell--wide) {
-  max-width: 1280px;
+  max-width: var(--page-max-width-wide);
 }
 
 :where(.layout-page-shell--narrow) {
-  max-width: 1000px;
+  max-width: 1040px;
 }
 
 :where(.layout-page-shell--compact) {
-  max-width: 800px;
+  max-width: 860px;
 }
 
 :where(.layout-page-panel) {
-  border-radius: 2rem;
-  padding: 2rem 2.2rem;
-  margin: 0 auto;
   width: 100%;
+  margin: 0 auto;
+  padding: 1.85rem 2rem;
+  border-radius: var(--radius-card-lg);
 }
 
 :where(.layout-page-panel--sm) {
-  max-width: 600px;
+  max-width: 680px;
 }
 
 :where(.layout-page-panel--md) {
-  max-width: 920px;
-}
-
-:where(.layout-page-panel--lg) {
   max-width: 980px;
 }
 
+:where(.layout-page-panel--lg) {
+  max-width: 1080px;
+}
+
 :where(.layout-page-title) {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.12;
-  margin-bottom: 0.5rem;
+  margin: 0;
+  font-size: clamp(1.78rem, 2.75vw, 2.48rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
 :where(.layout-page-subtitle) {
-  font-size: 1.05rem;
-  line-height: 1.75;
-  margin-bottom: 2rem;
-  color: #475569;
+  font-size: 0.98rem;
+  line-height: 1.68;
+  margin: 0.72rem 0 0;
+  color: var(--color-text-muted);
+  max-width: 56ch;
+}
+
+:where(.layout-page-head) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.72rem;
+  margin-bottom: 1.3rem;
+}
+
+:where(.layout-page-eyebrow) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  padding: 0.4rem 0.78rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(99, 102, 241, 0.16);
+  color: #4338ca;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:where(.layout-inline-summary) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+:where(.layout-inline-summary > *) {
+  min-width: 0;
 }
 
 :where(.layout-state-card) {
-  padding: 2rem;
-  border-radius: 1.6rem;
+  padding: 1.9rem 1.7rem;
+  border-radius: 1.4rem;
   text-align: center;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(248, 250, 252, 0.94)
+  );
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: var(--shadow-surface-soft);
 }
 
 :where(.layout-state-card h2) {
   margin: 0;
-  color: #0f172a;
+  color: var(--color-text-dark);
 }
 
 :where(.layout-state-card p) {
   margin: 0.8rem auto 0;
   max-width: 560px;
-  color: #64748b;
-  line-height: 1.7;
+  color: var(--color-text-subtle);
+  line-height: 1.75;
 }
 
 :where(.layout-retry-btn) {
   margin-top: 1rem;
   border: none;
-  padding: 0.82rem 1.2rem;
+  padding: 0.82rem 1.25rem;
 }
 
 :where(.layout-section-card) {
-  border-radius: 1.6rem;
-  padding: 1.4rem;
+  border-radius: 1.45rem;
+  padding: 1.35rem;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(248, 250, 252, 0.94)
+  );
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: var(--shadow-surface-soft);
 }
 
 :where(.layout-page-stack) {
@@ -109,20 +157,20 @@
 
 :where(.layout-section-head h2) {
   margin: 0;
-  color: #0f172a;
-  font-size: 1.22rem;
+  color: var(--color-text-dark);
+  font-size: 1.16rem;
 }
 
 :where(.layout-section-head p) {
-  margin: 0.45rem 0 0;
-  color: #64748b;
+  margin: 0.48rem 0 0;
+  color: var(--color-text-subtle);
   line-height: 1.7;
 }
 
 :where(.layout-section-card h2) {
   margin: 0;
-  color: #0f172a;
-  font-size: 1.25rem;
+  color: var(--color-text-dark);
+  font-size: 1.2rem;
 }
 
 :where(.layout-two-column) {
@@ -131,76 +179,71 @@
   gap: 1rem;
 }
 
+:where(.layout-page-grid) {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: 0.9rem;
+  align-items: start;
+}
+
+:where(.layout-sticky-actions) {
+  position: sticky;
+  top: calc(var(--nav-height) + 1rem);
+  z-index: 4;
+}
+
+@media (max-width: 1180px) {
+  :where(.layout-page-shell) {
+    padding-inline: 1.5rem;
+  }
+
+  :where(.layout-page-grid) {
+    grid-template-columns: 1fr;
+  }
+
+  :where(.layout-sticky-actions) {
+    position: static;
+  }
+}
+
 @media (max-width: 1024px) {
   :where(.layout-app-content) {
     margin-left: 0;
   }
 
   :where(.layout-app-content) > :where(.content:not(.layout-page-shell)) {
-    padding: 0.95rem 1rem 1.25rem;
-  }
-
-  :where(.layout-page-shell) {
-    padding: 1.5rem;
+    padding: 1rem 1rem 1.4rem;
   }
 
   :where(.layout-page-panel) {
-    padding: 1.7rem;
-  }
-
-  :where(.layout-page-title) {
-    font-size: 2.2rem;
+    padding: 1.6rem;
   }
 }
 
 @media (max-width: 768px) {
   :where(.layout-page-shell) {
-    padding: 1rem;
+    padding: 0.95rem 1rem 1.65rem;
   }
 
   :where(.layout-page-panel) {
-    padding: 1.35rem;
+    padding: 1.25rem;
     border-radius: 1.5rem;
   }
 
-  :where(.layout-page-title) {
-    font-size: 1.9rem;
-  }
-
   :where(.layout-page-subtitle) {
-    font-size: 0.98rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.94rem;
   }
 
   :where(.layout-state-card) {
-    padding: 1.5rem;
-    border-radius: 1.3rem;
+    padding: 1.4rem 1.2rem;
   }
 
   :where(.layout-section-card) {
-    padding: 1.15rem;
-    border-radius: 1.3rem;
+    padding: 1.1rem;
+    border-radius: 1.2rem;
   }
 
   :where(.layout-two-column) {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  :where(.layout-app-content) > :where(.content:not(.layout-page-shell)) {
-    padding: 0.8rem 0.85rem 1rem;
-  }
-
-  :where(.layout-page-shell) {
-    padding: 0.85rem;
-  }
-
-  :where(.layout-page-panel) {
-    padding: 1.1rem;
-  }
-
-  :where(.layout-page-title) {
-    font-size: 1.7rem;
   }
 }

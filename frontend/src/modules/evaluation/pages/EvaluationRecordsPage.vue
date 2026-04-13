@@ -1,99 +1,127 @@
 <template>
-  <div class="content records-card layout-page-panel layout-page-panel--lg ui-surface-glass">
-    <h1 class="page-title layout-page-title">评测记录</h1>
-    <p class="page-subtitle layout-page-subtitle">
-      这里会展示你提交过的评测任务，可随时进入详情页查看进度、结果和后续状态。
-    </p>
+  <div class="content records-page layout-page-shell layout-page-shell--wide">
+    <PageHeroCard
+      title="评测记录"
+      description="查看任务状态、筛选记录并进入详情页。"
+      :chips="heroChips"
+      tone="workspace"
+      title-tone="brand"
+    >
+      <template #actions>
+        <UiButton :to="RouteLocation.agentSubmit" variant="secondary">
+          提交评测
+        </UiButton>
+      </template>
+    </PageHeroCard>
 
-    <div v-if="loading" class="state-card layout-state-card ui-surface-white">
-      <h2>正在读取记录</h2>
-      <p>系统正在同步您最近的评测任务与执行状态。</p>
+    <PageStateCard
+      v-if="loading"
+      title="正在读取记录"
+      message="请稍候。"
+      :loading="true"
+    />
+
+    <PageStateCard
+      v-else-if="error"
+      title="记录加载失败"
+      :message="error"
+      action-text="重试"
+      @action="loadRecords"
+    />
+
+    <div v-else-if="records.length" class="records-shell">
+      <EvaluationFilterBar
+        :search="search"
+        :status="status"
+        :visibility="visibility"
+        :submit-method="submitMethod"
+        @update:search="search = $event"
+        @update:status="status = $event"
+        @update:visibility="visibility = $event"
+        @update:submitMethod="submitMethod = $event"
+      />
+
+      <div class="result-bar">
+        <span>显示 {{ filteredRecords.length }} / {{ records.length }} 条任务</span>
+      </div>
+
+      <div v-if="filteredRecords.length" class="records-list">
+        <EvaluationRecordCard
+          v-for="record in filteredRecords"
+          :key="record.evaluationId"
+          :record="record"
+        />
+      </div>
+
+      <PageStateCard
+        v-else
+        title="没有匹配的任务"
+        message="请调整搜索词或筛选条件。"
+        tone="default"
+      />
     </div>
 
-    <div v-else-if="error" class="state-card layout-state-card ui-surface-white">
-      <h2>记录加载失败</h2>
-      <p>{{ error }}</p>
-      <button class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient" @click="loadRecords">
-        重试
-      </button>
-    </div>
-
-    <div v-else-if="records.length" class="records-list">
-      <article
-        v-for="record in records"
-        :key="record.evaluationId"
-        class="record-item ui-surface-white"
-      >
-        <div class="record-info">
-          <div class="title-row">
-            <h3>{{ record.agentName }}</h3>
-            <span class="status-badge" :class="getEvaluationStatusTone(record.status)">
-              {{ getEvaluationStatusLabel(record.status) }}
-            </span>
-            <span class="visibility-badge" :class="{ public: record.publicToLeaderboard }">
-              {{ record.publicToLeaderboard ? "公开" : "私有" }}
-            </span>
-          </div>
-
-          <p class="record-meta">
-            评测项：{{ record.datasetNames.join("、") }}
-          </p>
-          <p class="record-meta">
-            创建时间：{{ formatDateTimeLabel(record.createdAt) }}
-            · 提交方式：{{ record.submitMethod.toUpperCase() }}
-          </p>
-          <p v-if="getFinalizationReasonLabel(record.finalizationReason)" class="record-meta finalization">
-            {{ getFinalizationReasonLabel(record.finalizationReason) }}
-          </p>
-
-          <div class="progress-row">
-            <div class="progress-bar">
-              <div class="progress-fill" :style="{ width: `${record.progressPercent}%` }"></div>
-            </div>
-            <span class="progress-text">{{ record.progressPercent }}%</span>
-          </div>
-        </div>
-
-        <div class="record-side">
-          <strong class="score">{{ formatEvaluationScore(record.score, record.finalReportAvailable) }}</strong>
-          <router-link
-            :to="RouteLocation.evaluationDetail(record.evaluationId)"
-            class="view-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
-          >
-            查看详情
-          </router-link>
-        </div>
-      </article>
-    </div>
-
-    <div v-else class="empty-state layout-state-card">
-      <p>您还没有提交过智能体评测。</p>
-      <router-link
-        :to="RouteLocation.agentSubmit"
-        class="btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
-      >
-        立即提交
-      </router-link>
-    </div>
+    <PageStateCard
+      v-else
+      title="还没有评测记录"
+      message="创建第一条评测任务后，这里会显示进度和结果。"
+      action-text="立即提交"
+      @action="$router.push(RouteLocation.agentSubmit)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { getEvaluationRecords } from "@/modules/evaluation/api";
+import { computed, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/RouteNames";
-import type { EvaluationRecord } from "@/shared/types/AgentTypes";
-import { formatDateTimeLabel } from "@/modules/dataset/lib";
-import {
-  formatEvaluationScore,
-  getEvaluationStatusLabel,
-  getEvaluationStatusTone,
-  getFinalizationReasonLabel,
-} from "@/modules/evaluation/lib";
+import { getEvaluationRecords } from "@/modules/evaluation/api";
+import EvaluationFilterBar from "@/modules/evaluation/components/EvaluationFilterBar.vue";
+import EvaluationRecordCard from "@/modules/evaluation/components/EvaluationRecordCard.vue";
+import { filterEvaluationRecords } from "@/modules/evaluation/lib";
+import type {
+  EvaluationRecord,
+  EvaluationStatus,
+  SubmitMethod,
+} from "@/shared/types/AgentTypes";
+import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
+import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
 
+const $router = useRouter();
 const records = ref<EvaluationRecord[]>([]);
 const loading = ref(true);
 const error = ref("");
+
+const search = ref("");
+const status = ref<"all" | EvaluationStatus>("all");
+const visibility = ref<"all" | "public" | "private">("all");
+const submitMethod = ref<"all" | SubmitMethod>("all");
+
+const filteredRecords = computed(() =>
+  filterEvaluationRecords(records.value, {
+    status: status.value,
+    visibility: visibility.value,
+    submitMethod: submitMethod.value,
+    search: search.value,
+  }),
+);
+
+const heroChips = computed(() => [
+  { label: "任务总数", value: String(records.value.length) },
+  {
+    label: "运行中",
+    value: String(
+      records.value.filter((item) => item.status === "running").length,
+    ),
+  },
+  {
+    label: "已完成",
+    value: String(
+      records.value.filter((item) => item.status === "completed").length,
+    ),
+  },
+]);
 
 const loadRecords = async () => {
   loading.value = true;
@@ -115,196 +143,24 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.records-page {
+  padding-bottom: 2.5rem;
+}
+
+.records-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.result-bar {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
 .records-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-
-.record-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.25rem 1.4rem;
-  border-radius: 1.3rem;
-  transition: transform 0.2s ease;
-}
-
-.record-item:hover {
-  transform: translateX(4px);
-}
-
-.record-info {
-  flex: 1;
-}
-
-.title-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  align-items: center;
-}
-
-.title-row h3 {
-  margin: 0;
-  font-size: 1.25rem;
-  color: #0f172a;
-}
-
-.status-badge,
-.visibility-badge {
-  border-radius: 999px;
-  padding: 0.28rem 0.72rem;
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.status-badge.pending {
-  background: #ffedd5;
-  color: #c2410c;
-}
-
-.status-badge.running {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-.status-badge.paused {
-  background: #fef3c7;
-  color: #b45309;
-}
-
-.status-badge.completed {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.status-badge.terminated {
-  background: #ede9fe;
-  color: #6d28d9;
-}
-
-.status-badge.canceled,
-.status-badge.failed {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.visibility-badge {
-  background: #e2e8f0;
-  color: #475569;
-}
-
-.visibility-badge.public {
-  background: #ede9fe;
-  color: #6d28d9;
-}
-
-.record-meta {
-  margin: 0.55rem 0 0;
-  color: #64748b;
-  line-height: 1.7;
-}
-
-.record-meta.finalization {
-  color: #475569;
-  font-weight: 600;
-}
-
-.progress-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 0.85rem;
-}
-
-.progress-bar {
-  flex: 1;
-  height: 8px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: #e2e8f0;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--grad-progress);
-}
-
-.progress-text {
-  min-width: 44px;
-  text-align: right;
-  color: #334155;
-  font-weight: 700;
-}
-
-.record-side {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.8rem;
-}
-
-.score {
-  color: #0f172a;
-  font-size: 1.1rem;
-}
-
-.view-btn {
-  padding: 0.74rem 1.05rem;
-  text-decoration: none;
-}
-
-.empty-state {
-  text-align: center;
-}
-
-.empty-state p {
-  margin: 0.8rem auto 0;
-  max-width: 520px;
-  color: #64748b;
-  line-height: 1.7;
-}
-
-.btn {
-  text-decoration: none;
-}
-
-@media (max-width: 768px) {
-  .record-item {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 1.1rem;
-  }
-
-  .record-side {
-    align-items: stretch;
-  }
-
-  .score {
-    text-align: left;
-  }
-
-  .view-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .title-row h3 {
-    font-size: 1.12rem;
-  }
-
-  .progress-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .progress-text {
-    min-width: 0;
-    text-align: left;
-  }
+  gap: 0.9rem;
 }
 </style>

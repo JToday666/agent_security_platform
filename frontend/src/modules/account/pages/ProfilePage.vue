@@ -1,113 +1,127 @@
 <template>
-  <div class="content form-card layout-page-panel layout-page-panel--sm ui-surface-glass">
-    <h1 class="page-title layout-page-title">修改信息</h1>
-    <p class="page-subtitle layout-page-subtitle">更新您的个人资料和账户信息。</p>
+  <div class="content profile-page layout-page-shell layout-page-shell--narrow">
+    <PageHeroCard
+      title="个人资料"
+      description="管理头像、用户名和密码。"
+      tone="workspace"
+      title-tone="brand"
+    />
 
-    <form @submit.prevent="handleSubmit" class="profile-form">
-      <div class="avatar-section ui-surface-white">
-        <div class="avatar-preview">
-          <img
-            :src="avatarPreview || avatarDisplayUrl"
-            alt="头像"
-            v-if="avatarPreview || avatarDisplayUrl"
-          />
-          <AppIcon v-else icon="lucide:image-plus" class="avatar-placeholder" />
+    <div class="profile-grid">
+      <aside class="profile-side ui-surface-panel">
+        <div class="avatar-card ui-surface-white">
+          <div class="avatar-preview">
+            <img
+              v-if="avatarPreview || avatarDisplayUrl"
+              :src="avatarPreview || avatarDisplayUrl"
+              alt="头像"
+            />
+            <AppIcon v-else icon="lucide:image-plus" class="avatar-placeholder" />
+          </div>
+
+          <div class="avatar-copy">
+            <strong>{{ form.username || "未设置用户名" }}</strong>
+            <span>{{ form.email || "未绑定邮箱" }}</span>
+          </div>
         </div>
-        <div class="avatar-upload">
-          <label
-            for="avatar"
-            class="upload-label ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
-            >选择新头像</label
-          >
+
+        <div class="upload-card ui-surface-muted">
+          <UiButton as="label" for="avatar" variant="primary" :loading="uploading">
+            选择新头像
+          </UiButton>
           <input
-            type="file"
             id="avatar"
+            type="file"
             accept="image/*"
-            @change="onAvatarChange"
             class="hidden-input"
             :disabled="uploading"
+            @change="onAvatarChange"
           />
-          <p class="hint">支持 JPG、PNG，大小不超过 2MB</p>
-          <div v-if="uploading" class="uploading-hint">上传中...</div>
+          <p class="hint">支持 JPG、PNG，大小不超过 2MB。</p>
+          <div v-if="uploading" class="uploading-hint">正在上传头像...</div>
         </div>
-      </div>
+      </aside>
 
-      <div class="form-group">
-        <label for="username">用户名</label>
-        <input
-          type="text"
-          id="username"
-          class="ui-input-pill ui-input-focus-ring"
-          v-model="form.username"
-          placeholder="请输入用户名"
-          required
+      <SectionCard
+        class="profile-main ui-surface-panel"
+        title="更新账号信息"
+        description="邮箱不可修改，您可以修改用户名与密码。"
+      >
+        <InlineNotice
+          v-if="message"
+          :tone="messageType === 'success' ? 'success' : 'danger'"
+          :message="message"
         />
-      </div>
 
-      <div class="form-group">
-        <label for="email">邮箱</label>
-        <input
-          type="email"
-          id="email"
-          v-model="form.email"
-          readonly
-          class="readonly-field ui-input-pill ui-input-focus-ring"
-        />
-        <p class="field-hint">邮箱不可修改</p>
-      </div>
+        <form class="profile-form" @submit.prevent="handleSubmit">
+          <FormField
+            label="用户名"
+            :model-value="form.username"
+            type="text"
+            placeholder="请输入用户名"
+            required
+            leading-icon="lucide:user"
+            @update:model-value="form.username = $event"
+          />
 
-      <div class="form-group">
-        <label for="password">新密码</label>
-        <input
-          type="password"
-          id="password"
-          class="ui-input-pill ui-input-focus-ring"
-          v-model="form.password"
-          placeholder="留空表示不修改"
-        />
-      </div>
+          <FormField
+            label="邮箱"
+            :model-value="form.email"
+            type="email"
+            readonly
+            help="邮箱不可修改。"
+            leading-icon="lucide:mail"
+            @update:model-value="form.email = $event"
+          />
 
-      <div class="form-group">
-        <label for="confirmPassword">确认新密码</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          class="ui-input-pill ui-input-focus-ring"
-          v-model="form.confirmPassword"
-          placeholder="再次输入新密码"
-        />
-      </div>
+          <FormField
+            label="新密码"
+            :model-value="form.password"
+            type="password"
+            placeholder="留空表示不修改"
+            leading-icon="lucide:lock"
+            @update:model-value="form.password = $event"
+          />
 
-      <div v-if="message" class="form-message" :class="messageType">
-        {{ message }}
-      </div>
+          <FormField
+            label="确认新密码"
+            :model-value="form.confirmPassword"
+            type="password"
+            placeholder="再次输入新密码"
+            leading-icon="lucide:shield-check"
+            @update:model-value="form.confirmPassword = $event"
+          />
 
-      <div class="form-actions">
-        <button
-          type="submit"
-          class="submit-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
-          :disabled="submitting"
-        >
-          {{ submitting ? "保存中..." : "保存修改" }}
-        </button>
-        <button
-          type="button"
-          class="cancel-btn ui-btn ui-btn-pill ui-btn-outline"
-          @click="resetForm"
-          :disabled="submitting"
-        >
-          取消
-        </button>
-      </div>
-    </form>
+          <div class="form-actions">
+            <UiButton type="submit" variant="primary" :loading="submitting" block>
+              保存修改
+            </UiButton>
+            <UiButton
+              type="button"
+              variant="secondary"
+              :disabled="submitting"
+              block
+              @click="resetForm"
+            >
+              取消
+            </UiButton>
+          </div>
+        </form>
+      </SectionCard>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
-import { useUserStore } from "@/modules/account/stores/UserStore";
 import { storeToRefs } from "pinia";
-import AppIcon from "@/shared/ui/AppIcon.vue";
+import { useUserStore } from "@/modules/account/stores/UserStore";
+import AppIcon from "@/shared/ui/branding/AppIcon.vue";
+import FormField from "@/shared/ui/forms/FormField.vue";
+import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
+import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
+import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
 
 const userStore = useUserStore();
 const { avatarDisplayUrl, currentUser } = storeToRefs(userStore);
@@ -189,8 +203,8 @@ onUnmounted(() => {
   clearMessageTimer();
 });
 
-const onAvatarChange = async (e: Event) => {
-  const target = e.target as HTMLInputElement;
+const onAvatarChange = async (event: Event) => {
+  const target = event.target as HTMLInputElement;
   const file = target.files?.[0];
   if (!file) return;
 
@@ -207,8 +221,8 @@ const onAvatarChange = async (e: Event) => {
   }
 
   const reader = new FileReader();
-  reader.onload = (e) => {
-    avatarPreview.value = e.target?.result as string;
+  reader.onload = (loadEvent) => {
+    avatarPreview.value = loadEvent.target?.result as string;
   };
   reader.readAsDataURL(file);
 
@@ -231,12 +245,12 @@ const handleSubmit = async () => {
   const normalizedUsername = form.username.trim();
 
   if (normalizedUsername.length < 3) {
-    setMessage("用户名长度至少3位", "error", false);
+    setMessage("用户名长度至少 3 位", "error", false);
     return;
   }
 
   if (form.password && form.password.length < 6) {
-    setMessage("密码长度至少6位", "error", false);
+    setMessage("密码长度至少 6 位", "error", false);
     return;
   }
 
@@ -287,26 +301,43 @@ const resetForm = () => {
 </script>
 
 <style scoped>
-.avatar-section {
+.profile-page {
+  padding-bottom: 2.5rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.profile-side,
+.profile-main {
+  padding: 1.3rem;
+  border-radius: 1.5rem;
+}
+
+.avatar-card {
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  border-radius: 1.2rem;
+  gap: 1rem;
+  padding: 1.3rem;
+  border-radius: 1.25rem;
 }
 
 .avatar-preview {
-  width: 80px;
-  height: 80px;
+  width: 106px;
+  height: 106px;
   border-radius: 50%;
   background: #f1f5f9;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 2px solid #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+  border: 3px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 28px -20px rgba(79, 70, 229, 0.32);
 }
 
 .avatar-preview img {
@@ -321,135 +352,63 @@ const resetForm = () => {
   color: #94a3b8;
 }
 
-.avatar-upload {
-  flex: 1;
+.avatar-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.28rem;
+  text-align: center;
 }
 
-.upload-label {
-  display: inline-block;
-  padding: 0.5rem 1.5rem;
-  font-weight: 500;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  margin-bottom: 0.5rem;
-  border: none;
-  font-size: 0.95rem;
+.avatar-copy strong {
+  color: var(--color-text-dark);
+  font-size: 1.04rem;
+}
+
+.avatar-copy span {
+  color: var(--color-text-subtle);
+  font-size: 0.9rem;
+}
+
+.upload-card {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 1.2rem;
 }
 
 .hidden-input {
   display: none;
 }
 
-.hint {
-  font-size: 0.85rem;
-  color: #64748b;
-  margin: 0;
+.hint,
+.uploading-hint {
+  margin: 0.55rem 0 0;
+  color: var(--color-text-subtle);
+  font-size: 0.84rem;
+  line-height: 1.6;
 }
 
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #334155;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.8rem 1.2rem;
-  font-size: 1rem;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-}
-
-.form-group input::placeholder {
-  color: #94a3b8;
-}
-
-.form-message {
-  padding: 0.8rem 1.2rem;
-  border-radius: 30px;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  font-size: 0.95rem;
-}
-
-.form-message.success {
-  background: #dcfce7;
-  color: #166534;
-  border: 1px solid #86efac;
-}
-
-.form-message.error {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .form-actions {
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
 }
 
-.submit-btn,
-.cancel-btn {
-  padding: 0.8rem 2rem;
-  border: none;
-  font-size: 1rem;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  flex: 1;
-}
-
-.submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.cancel-btn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
+@media (max-width: 900px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
-  .avatar-section {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
-
   .form-actions {
     flex-direction: column;
   }
-}
-
-.uploading-hint {
-  color: #666;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-}
-
-.readonly-field {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-  color: #666;
-}
-
-.field-hint {
-  font-size: 0.8rem;
-  color: #999;
-  margin-top: 0.25rem;
 }
 </style>

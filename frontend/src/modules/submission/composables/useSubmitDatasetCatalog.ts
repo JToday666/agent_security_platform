@@ -1,9 +1,6 @@
 import { computed, ref } from "vue";
-import { getDatasetCatalog } from "@/modules/dataset/api";
-import type {
-  DatasetCatalogResponse,
-  DatasetCategoryViewModel,
-} from "@/shared/types/DatasetTypes";
+import { getDatasetCatalog } from "@/modules/dataset/api/DatasetService";
+import type { DatasetCatalogResponse } from "@/shared/types/DatasetTypes";
 import { getAllDatasetIds, getEnabledCategories } from "@/modules/dataset/lib";
 
 export type SubmitDatasetCatalogStatus =
@@ -24,11 +21,10 @@ export const useSubmitDatasetCatalog = () => {
   const status = ref<SubmitDatasetCatalogStatus>("idle");
   const errorMessage = ref("");
 
-  const enabledCategories = computed<DatasetCategoryViewModel[]>(() =>
+  const enabledCategories = computed(() =>
     getEnabledCategories(catalog.value?.categories ?? []),
   );
 
-  const catalogVersion = computed(() => catalog.value?.catalogVersion ?? "");
   const datasetIds = computed(() =>
     getAllDatasetIds(catalog.value?.categories ?? []),
   );
@@ -53,6 +49,7 @@ export const useSubmitDatasetCatalog = () => {
     try {
       const nextCatalog = await getDatasetCatalog({
         signal: options.signal,
+        force: options.force,
       });
 
       applyCatalog(nextCatalog);
@@ -67,7 +64,6 @@ export const useSubmitDatasetCatalog = () => {
 
   return {
     catalog,
-    catalogVersion,
     status,
     errorMessage,
     enabledCategories,

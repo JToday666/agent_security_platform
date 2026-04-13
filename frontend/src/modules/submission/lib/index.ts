@@ -9,3 +9,4 @@ export {
   isValidHttpUrl,
   type ValidationResult,
 } from "./ParameterValidator";
+export { resolveDatasetIdsFromQuery } from "./SubmitQueryUtils";

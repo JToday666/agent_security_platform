@@ -34,7 +34,7 @@ const LEGACY_DATASET_ID_ENTRIES = [
   ["G3", "G3_copyright_illegal_content_access"],
 ] as const;
 
-export const LEGACY_DATASET_ID_MAP = new Map<string, string>(
+const LEGACY_DATASET_ID_MAP = new Map<string, string>(
   LEGACY_DATASET_ID_ENTRIES,
 );
 

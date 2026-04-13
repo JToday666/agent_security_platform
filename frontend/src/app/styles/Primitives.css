@@ -1,20 +1,60 @@
-/* 全局基础样式 */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* 通用关键帧动画 */
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--color-text-main);
+  font-family:
+    "Segoe UI", "PingFang SC", "Microsoft YaHei UI", "Helvetica Neue",
+    sans-serif;
+  background: #f8fafc;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.16);
+  color: var(--color-text-dark);
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translate3d(0, 28px, 0);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -24,9 +64,14 @@
   }
 }
 
-/* 弹窗过渡动画原语 */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 :where(.fade-enter-active, .fade-leave-active) {
-  transition: opacity var(--duration-base) ease;
+  transition: opacity var(--duration-base) var(--ease-standard);
 }
 
 :where(.fade-enter-from, .fade-leave-to) {
@@ -34,113 +79,180 @@
 }
 
 :where(.scale-enter-active) {
-  transition: transform var(--duration-base) var(--ease-modal-pop);
+  transition: transform var(--duration-slow) var(--ease-modal-pop);
 }
 
 :where(.scale-enter-from) {
-  transform: scale(0.9);
+  transform: scale(0.92);
 }
 
-/* 通用加载器原语 */
 :where(.loader) {
   display: inline-block;
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.28);
   border-radius: var(--radius-circle);
   border-top-color: var(--color-white);
   animation: spin var(--duration-fade-in) linear infinite;
 }
 
-/* 页面布局样式 PublicLayout / UserLayout */
 :where(.public-layout, .user-layout) {
+  position: relative;
   min-height: 100vh;
   padding-top: var(--nav-height);
-  background: var(--grad-page-bg);
-  position: relative;
+  isolation: isolate;
+}
+
+:where(.public-layout) {
   overflow: hidden;
+  background: var(--grad-page-public);
+}
+
+:where(.public-layout)::before,
+:where(.public-layout)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+:where(.public-layout)::before {
+  background:
+    radial-gradient(
+      circle at 12% 12%,
+      rgba(99, 102, 241, 0.18),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(59, 130, 246, 0.18),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 78% 58%,
+      rgba(139, 92, 246, 0.16),
+      transparent 26%
+    ),
+    linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    auto,
+    40px 40px,
+    40px 40px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.45));
+}
+
+:where(.public-layout)::after {
+  inset: 0 auto auto 50%;
+  width: min(62rem, 88vw);
+  height: 20rem;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.68),
+    transparent 72%
+  );
+  filter: blur(24px);
+  opacity: 0.85;
 }
 
 :where(.user-layout) {
   display: flex;
+  background: var(--grad-page-workspace);
 }
 
-:where(.public-layout, .user-layout)::before {
+:where(.user-layout)::before {
   content: "";
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image:
+  inset: 0 0 auto;
+  height: 15rem;
+  background:
     radial-gradient(
-      circle at 20% 30%,
-      rgba(59, 130, 246, 0.03) 0%,
-      transparent 30%
+      circle at 18% 0%,
+      rgba(96, 165, 250, 0.12),
+      transparent 34%
     ),
-    radial-gradient(
-      circle at 80% 70%,
-      rgba(236, 72, 153, 0.03) 0%,
-      transparent 30%
-    );
+    radial-gradient(circle at 82% 0%, rgba(129, 140, 248, 0.1), transparent 34%);
   pointer-events: none;
 }
 
-/* 内容容器与文案原语 */
 :where(.content) {
   width: 100%;
   margin: 0 auto;
   position: relative;
   z-index: var(--z-content);
-  animation: fadeInUp var(--duration-fade-in) ease;
+  animation: fadeInUp var(--duration-fade-in) var(--ease-emphasized);
 }
 
 :where(.page-subtitle) {
   color: var(--color-text-muted);
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
-/* 导航栏/侧边栏玻璃面板原语 */
 :where(.navbar, .user-sidebar) {
   background: var(--glass-bg);
   backdrop-filter: blur(var(--blur-12));
   -webkit-backdrop-filter: blur(var(--blur-12));
 }
 
-/* 弹窗容器原语 */
 :where(.dialog-overlay, .confirm-overlay) {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 :where(.dialog-card, .confirm-card) {
-  width: 90%;
+  width: min(90vw, 460px);
   border-radius: var(--radius-dialog);
   position: relative;
   color: var(--color-text-main);
 }
 
-/* 返回按钮原语 */
 :where(.back-btn) {
-  background: transparent;
-  border: 1px solid #cbd5e1;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: all var(--duration-fast) ease;
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.4rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard);
 }
 
-/* 渐变标题原语 */
+:where(.back-btn:hover) {
+  transform: translateY(-1px);
+  border-color: rgba(99, 102, 241, 0.28);
+  background: rgba(255, 255, 255, 0.92);
+}
+
 :where(.page-title, .title) {
   background: var(--grad-primary);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: var(--shadow-title);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
