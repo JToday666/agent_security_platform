@@ -49,7 +49,7 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
     error.value = "";
 
     try {
-      const catalog = await getDatasetCatalog();
+      const catalog = await getDatasetCatalog({ force });
       catalogVersion.value = catalog.catalogVersion;
       categories.value = catalog.categories;
       activeCategoryId.value = resolveActiveCategoryId(
@@ -89,7 +89,7 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
     }
 
     try {
-      const detail = await getDatasetDetail(datasetId);
+      const detail = await getDatasetDetail(datasetId, { force });
       detailCache.value = {
         ...detailCache.value,
         [datasetId]: detail,

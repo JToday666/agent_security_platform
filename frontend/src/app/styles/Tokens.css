@@ -2,78 +2,120 @@
   /* Core colors */
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
+  --color-primary-soft: #dbeafe;
   --color-secondary: #7c3aed;
   --color-secondary-hover: #6d28d9;
+  --color-secondary-soft: #ede9fe;
+  --color-accent: #06b6d4;
   --color-white: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f8fafc;
+  --color-surface-muted: #f1f5f9;
+  --color-border-soft: rgba(148, 163, 184, 0.18);
+  --color-border-strong: rgba(148, 163, 184, 0.28);
   --color-text-main: #1e293b;
   --color-text-dark: #0f172a;
   --color-text-muted: #475569;
   --color-text-subtle: #64748b;
 
   /* Brand gradients */
-  --grad-primary: linear-gradient(135deg, #2563eb, #7c3aed);
-  --grad-primary-hover: linear-gradient(135deg, #1d4ed8, #6d28d9);
-  --grad-page-bg: linear-gradient(145deg, #f8fafc 0%, #eef2f6 100%);
-  --grad-progress: linear-gradient(90deg, #2563eb, #7c3aed);
+  --grad-primary: linear-gradient(
+    135deg,
+    #2563eb 0%,
+    #4f46e5 56%,
+    #8b5cf6 100%
+  );
+  --grad-primary-hover: linear-gradient(
+    135deg,
+    #1d4ed8 0%,
+    #4338ca 56%,
+    #7c3aed 100%
+  );
+  --grad-primary-soft: linear-gradient(
+    135deg,
+    rgba(37, 99, 235, 0.14),
+    rgba(79, 70, 229, 0.12),
+    rgba(139, 92, 246, 0.12)
+  );
+  --grad-progress: linear-gradient(
+    90deg,
+    #2563eb 0%,
+    #6366f1 55%,
+    #8b5cf6 100%
+  );
+  --grad-page-public: linear-gradient(
+    180deg,
+    #f7f9fd 0%,
+    #f4f8ff 42%,
+    #eef4ff 100%
+  );
+  --grad-page-workspace: linear-gradient(180deg, #f8fafc 0%, #f7f9fc 100%);
 
   /* Glass / blur */
-  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.68);
   --glass-bg-90: rgba(255, 255, 255, 0.9);
   --glass-bg-95: rgba(255, 255, 255, 0.95);
-  --glass-border-inset: 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-  --overlay-dark-40: rgba(0, 0, 0, 0.4);
-  --overlay-dark-60: rgba(0, 0, 0, 0.6);
+  --glass-border-inset: 0 0 0 1px rgba(255, 255, 255, 0.74) inset;
+  --overlay-dark-40: rgba(2, 6, 23, 0.4);
+  --overlay-dark-60: rgba(2, 6, 23, 0.6);
   --blur-4: 4px;
   --blur-8: 8px;
   --blur-10: 10px;
   --blur-12: 12px;
   --blur-16: 16px;
+  --blur-24: 24px;
 
   /* Shadows */
-  --shadow-title: 0 5px 15px rgba(37, 99, 235, 0.15);
+  --shadow-title: 0 14px 32px rgba(99, 102, 241, 0.16);
   --shadow-glass-card:
-    0 20px 40px -10px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-  --shadow-primary-btn: 0 8px 18px -6px #2563eb80;
-  --shadow-primary-btn-hover: 0 15px 25px -8px #2563eb;
-  --shadow-surface-soft: 0 5px 15px -5px rgba(0, 0, 0, 0.05);
-  --shadow-surface-mid: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-  --shadow-surface-hover: 0 20px 35px -8px rgba(0, 0, 0, 0.15);
-  --shadow-panel-elevated: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
-  --shadow-control: 0 4px 8px rgba(0, 0, 0, 0.02);
-  --shadow-focus-primary: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  --shadow-focus-accent: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    0 24px 50px -26px rgba(15, 23, 42, 0.22),
+    0 0 0 1px rgba(255, 255, 255, 0.82) inset;
+  --shadow-primary-btn: 0 14px 28px -16px rgba(79, 70, 229, 0.56);
+  --shadow-primary-btn-hover: 0 20px 36px -18px rgba(79, 70, 229, 0.62);
+  --shadow-surface-soft: 0 10px 30px -24px rgba(15, 23, 42, 0.16);
+  --shadow-surface-mid: 0 18px 40px -28px rgba(15, 23, 42, 0.18);
+  --shadow-surface-hover: 0 24px 48px -28px rgba(15, 23, 42, 0.24);
+  --shadow-panel-elevated: 0 30px 60px -34px rgba(15, 23, 42, 0.24);
+  --shadow-control: 0 10px 24px -20px rgba(15, 23, 42, 0.2);
+  --shadow-focus-primary: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  --shadow-focus-accent: 0 0 0 4px rgba(99, 102, 241, 0.14);
 
   /* Radius / spacing */
-  --radius-3xl: 3rem;
-  --radius-pill: 50px;
+  --radius-4xl: 3.25rem;
+  --radius-3xl: 2.5rem;
+  --radius-pill: 999px;
   --radius-pill-40: 40px;
   --radius-pill-30: 30px;
   --radius-dialog: 32px;
   --radius-card-lg: 2rem;
-  --radius-card-md: 1.5rem;
-  --radius-card-sm: 1.2rem;
+  --radius-card-md: 1.35rem;
+  --radius-card-sm: 1rem;
   --radius-control-md: 1rem;
-  --radius-control-sm: 4px;
-  --radius-chip: 20px;
+  --radius-control-sm: 0.5rem;
+  --radius-chip: 999px;
   --radius-input: 18px;
   --radius-circle: 50%;
-  --radius-card: 2rem;
+  --radius-card: 1.85rem;
   --space-page-x: 2rem;
   --space-page-x-mobile: 1rem;
 
   /* Motion */
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.18);
   --ease-modal-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --duration-fast: 0.2s;
-  --duration-base: 0.3s;
-  --duration-fade-in: 0.8s;
+  --duration-fast: 0.16s;
+  --duration-base: 0.24s;
+  --duration-slow: 0.34s;
+  --duration-fade-in: 0.6s;
 
   /* Layout constants */
-  --nav-height: 72px;
-  --sidebar-width: 232px;
-  --sidebar-width-collapsed: 84px;
+  --nav-height: 76px;
+  --sidebar-width: 248px;
+  --sidebar-width-collapsed: 88px;
   --sidebar-active-width: var(--sidebar-width);
+  --page-max-width: 1240px;
+  --page-max-width-wide: 1320px;
   --z-content: 2;
   --z-sidebar: 900;
   --z-nav: 1000;

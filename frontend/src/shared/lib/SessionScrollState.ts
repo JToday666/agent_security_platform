@@ -1,9 +1,9 @@
+import { STORAGE_KEYS } from "@/shared/constants/StorageKeys";
+
 export interface ScrollPosition {
   left: number;
   top: number;
 }
-
-const SESSION_SCROLL_STORAGE_KEY_PREFIX = "agent-platform:session-scroll:v1";
 
 interface StorageLike {
   getItem(key: string): string | null;
@@ -32,8 +32,8 @@ export const buildSessionScrollStorageKey = (
     .join("&");
 
   return normalizedParams
-    ? `${SESSION_SCROLL_STORAGE_KEY_PREFIX}::${routeName}::${normalizedParams}`
-    : `${SESSION_SCROLL_STORAGE_KEY_PREFIX}::${routeName}`;
+    ? `${STORAGE_KEYS.session.scroll}::${routeName}::${normalizedParams}`
+    : `${STORAGE_KEYS.session.scroll}::${routeName}`;
 };
 
 export const saveSessionScrollPosition = (

@@ -1,62 +1,71 @@
 <template>
   <div class="content dataset-page layout-page-shell">
     <PageHeroCard
-      eyebrow="评测目录"
-      title="风险评测目录"
-      description="默认展示首个风险域的评测项，点击风险域标签即可切换查看其他方向。"
-      :chips="heroChips"
+      title="数据集目录"
+      description="按风险域浏览可用数据集，并查看说明。"
+      density="default"
+      tone="showcase"
     />
 
-    <div v-if="loading && !loaded" class="state-card layout-state-card ui-surface-white">
-      <h2>正在加载目录</h2>
-      <p>稍等片刻，系统正在同步最新风险评测目录。</p>
-    </div>
+    <PageStateCard
+      v-if="loading && !loaded"
+      title="正在加载目录"
+      message="请稍候。"
+      :loading="true"
+    />
 
-    <div
+    <PageStateCard
       v-else-if="error && !enabledCategories.length"
-      class="state-card layout-state-card ui-surface-white"
-    >
-      <h2>目录加载失败</h2>
-      <p>{{ error }}</p>
-      <button
-        class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient ui-btn-hover-lift"
-        @click="reloadCatalog"
-      >
-        重新加载
-      </button>
-    </div>
+      title="目录加载失败"
+      :message="error"
+      action-text="重新加载"
+      @action="reloadCatalog"
+    />
 
-    <div v-else-if="!activeCategory" class="state-card layout-state-card ui-surface-white">
-      <h2>当前暂无可用评测项</h2>
-      <p>系统暂未返回可展示的风险域或评测项，请稍后重试。</p>
-    </div>
+    <PageStateCard
+      v-else-if="!activeCategory"
+      title="当前暂无可用数据集"
+      message="请稍后重试。"
+    />
 
     <template v-else>
       <DatasetFilterBar
         :categories="enabledCategories"
         :active-category-id="activeCategoryId"
+        :search="search"
+        :sort-key="sortKey"
         @select-category="setActiveCategory"
+        @update:search="search = $event"
+        @update:sort-key="sortKey = $event"
+        @clear-search="search = ''"
       />
 
-      <div class="section-list">
+      <div v-if="filteredCategory" class="section-list">
         <DatasetCategorySection
-          :key="activeCategory.categoryId"
-          :category="activeCategory"
+          :key="`${filteredCategory.categoryId}-${sortKey}-${search}`"
+          :category="filteredCategory"
         />
       </div>
+
+      <PageStateCard
+        v-else
+        title="没有找到匹配的数据集"
+        message="请尝试更换关键词或切换风险域。"
+      />
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
-import PageHeroCard from "@/shared/ui/PageHeroCard.vue";
-import DatasetFilterBar from "@/modules/dataset/components/DatasetFilterBar.vue";
 import DatasetCategorySection from "@/modules/dataset/components/DatasetCategorySection.vue";
+import DatasetFilterBar from "@/modules/dataset/components/DatasetFilterBar.vue";
+import { buildDatasetCatalogView, type DatasetCatalogSortKey } from "@/modules/dataset/lib";
 import { useDatasetCatalogStore } from "@/modules/dataset/stores/DatasetCatalogStore";
+import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
+import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
 
-// 目录页只消费统一目录 store，风险域切换保持为前端单选状态。
 const datasetCatalogStore = useDatasetCatalogStore();
 const {
   enabledCategories,
@@ -67,27 +76,20 @@ const {
   error,
 } = storeToRefs(datasetCatalogStore);
 
-const totalDatasetCount = computed(() =>
-  enabledCategories.value.reduce(
-    (sum, category) => sum + category.subcategories.length,
-    0,
-  ),
-);
+const search = ref("");
+const sortKey = ref<DatasetCatalogSortKey>("default");
 
-const heroChips = computed(() => [
-  {
-    label: "风险域",
-    value: `${enabledCategories.value.length} 个`,
-  },
-  {
-    label: "评测项总数",
-    value: `${totalDatasetCount.value} 个`,
-  },
-  {
-    label: "当前风险域",
-    value: activeCategory.value?.name ?? "暂无",
-  },
-]);
+const filteredCategory = computed(() => {
+  if (!activeCategory.value) {
+    return null;
+  }
+
+  return buildDatasetCatalogView(
+    activeCategory.value,
+    search.value,
+    sortKey.value,
+  ).category;
+});
 
 const reloadCatalog = async () => {
   await datasetCatalogStore.fetchCatalog(true);
@@ -110,6 +112,6 @@ onMounted(async () => {
 .section-list {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0.75rem;
 }
 </style>

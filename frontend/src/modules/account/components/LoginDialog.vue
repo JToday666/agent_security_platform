@@ -21,183 +21,103 @@
               <p class="subtitle">
                 {{
                   mode === "login"
-                    ? "登录以继续使用智能体检测平台"
-                    : "注册后即可开始检测您的智能体"
+                    ? "登录后继续使用智能体安全评测平台。"
+                    : "注册后即可开始评测您的智能体。"
                 }}
               </p>
             </div>
 
-            <form
-              v-if="mode === 'login'"
-              @submit.prevent="handleLogin"
-              class="form"
-            >
-              <div
-                class="form-group"
-                :class="{ focused: focusedField === 'login-username' }"
-              >
-                <AppIcon icon="lucide:user" class="input-icon" />
-                <input
-                  v-model="loginForm.username"
-                  type="text"
-                  placeholder="用户名/邮箱"
-                  required
-                  @focus="focusedField = 'login-username'"
-                  @blur="focusedField = null"
-                />
-              </div>
-              <div
-                class="form-group"
-                :class="{ focused: focusedField === 'login-password' }"
-              >
-                <AppIcon icon="lucide:lock" class="input-icon" />
-                <input
-                  v-model="loginForm.password"
-                  type="password"
-                  placeholder="密码"
-                  required
-                  @focus="focusedField = 'login-password'"
-                  @blur="focusedField = null"
-                />
-              </div>
+            <form v-if="mode === 'login'" class="form" @submit.prevent="handleLogin">
+              <FormField
+                label="用户名或邮箱"
+                :model-value="loginForm.username"
+                type="text"
+                placeholder="请输入用户名或邮箱"
+                leading-icon="lucide:user"
+                @update:model-value="loginForm.username = $event"
+              />
+              <FormField
+                label="密码"
+                :model-value="loginForm.password"
+                type="password"
+                placeholder="请输入密码"
+                leading-icon="lucide:lock"
+                @update:model-value="loginForm.password = $event"
+              />
 
-              <div
+              <InlineNotice
                 v-if="loginForm.password && loginForm.password.length < 6"
-                class="error-message"
-              >
-                密码长度至少6位
-              </div>
+                tone="warning"
+                message="密码长度至少 6 位。"
+              />
+              <InlineNotice v-if="loginError" tone="danger" :message="loginError" />
 
-              <Transition name="shake">
-                <div
-                  v-if="loginError"
-                  class="error-message error-message--stacked"
-                >
-                  <AppIcon icon="lucide:circle-alert" class="error-icon" />
-                  <span class="error-text">{{ loginError }}</span>
-                </div>
-              </Transition>
-
-              <button
-                type="submit"
-                class="submit-btn ui-btn"
-                :disabled="!isLoginValid || loading"
-              >
-                <span v-if="!loading">登录</span>
-                <span v-else class="loader ui-loader"></span>
-              </button>
+              <UiButton type="submit" variant="primary" :loading="loading" :disabled="!isLoginValid" block>
+                登录
+              </UiButton>
             </form>
 
-            <form v-else @submit.prevent="handleRegister" class="form">
-              <div
-                class="form-group"
-                :class="{ focused: focusedField === 'reg-username' }"
-              >
-                <AppIcon icon="lucide:user" class="input-icon" />
-                <input
-                  v-model="registerForm.username"
-                  type="text"
-                  placeholder="用户名"
-                  required
-                  @focus="focusedField = 'reg-username'"
-                  @blur="focusedField = null"
-                />
-              </div>
-              <div
-                v-if="
-                  registerForm.username &&
-                  registerForm.username.trim().length < 3
-                "
-                class="error-message"
-              >
-                用户名长度至少3位
-              </div>
-              <div
-                class="form-group"
-                :class="{ focused: focusedField === 'reg-email' }"
-              >
-                <AppIcon icon="lucide:mail" class="input-icon" />
-                <input
-                  v-model="registerForm.email"
-                  type="email"
-                  placeholder="邮箱"
-                  required
-                  @focus="focusedField = 'reg-email'"
-                  @blur="focusedField = null"
-                />
-              </div>
-              <div
-                class="form-group"
-                :class="{ focused: focusedField === 'reg-password' }"
-              >
-                <AppIcon icon="lucide:lock" class="input-icon" />
-                <input
-                  v-model="registerForm.password"
-                  type="password"
-                  placeholder="密码"
-                  required
-                  @focus="focusedField = 'reg-password'"
-                  @blur="focusedField = null"
-                />
-              </div>
-              <div
+            <form v-else class="form" @submit.prevent="handleRegister">
+              <FormField
+                label="用户名"
+                :model-value="registerForm.username"
+                type="text"
+                placeholder="请输入用户名"
+                leading-icon="lucide:user"
+                @update:model-value="registerForm.username = $event"
+              />
+              <InlineNotice
+                v-if="registerForm.username && registerForm.username.trim().length < 3"
+                tone="warning"
+                message="用户名长度至少 3 位。"
+              />
+              <FormField
+                label="邮箱"
+                :model-value="registerForm.email"
+                type="email"
+                placeholder="请输入邮箱"
+                leading-icon="lucide:mail"
+                @update:model-value="registerForm.email = $event"
+              />
+              <FormField
+                label="密码"
+                :model-value="registerForm.password"
+                type="password"
+                placeholder="请输入密码"
+                leading-icon="lucide:lock"
+                @update:model-value="registerForm.password = $event"
+              />
+              <FormField
+                label="确认密码"
+                :model-value="registerForm.confirmPassword"
+                type="password"
+                placeholder="再次输入密码"
+                leading-icon="lucide:shield-check"
+                @update:model-value="registerForm.confirmPassword = $event"
+              />
+
+              <InlineNotice
                 v-if="registerForm.password && registerForm.password.length < 6"
-                class="error-message"
-              >
-                密码长度至少6位
-              </div>
-              <div
-                class="form-group"
-                :class="{ focused: focusedField === 'reg-confirm' }"
-              >
-                <AppIcon icon="lucide:lock" class="input-icon" />
-                <input
-                  v-model="registerForm.confirmPassword"
-                  type="password"
-                  placeholder="确认密码"
-                  required
-                  @focus="focusedField = 'reg-confirm'"
-                  @blur="focusedField = null"
-                />
-              </div>
+                tone="warning"
+                message="密码长度至少 6 位。"
+              />
+              <InlineNotice v-if="registerError" tone="danger" :message="registerError" />
+              <InlineNotice
+                v-if="passwordMatchError"
+                tone="danger"
+                :message="passwordMatchError"
+              />
 
-              <Transition name="shake">
-                <div
-                  v-if="registerError"
-                  class="error-message error-message--stacked"
-                >
-                  <AppIcon icon="lucide:circle-alert" class="error-icon" />
-                  <span class="error-text">{{ registerError }}</span>
-                </div>
-              </Transition>
-              <Transition name="shake">
-                <div
-                  v-if="passwordMatchError"
-                  class="error-message error-message--stacked"
-                >
-                  <AppIcon icon="lucide:circle-alert" class="error-icon" />
-                  <span class="error-text">{{ passwordMatchError }}</span>
-                </div>
-              </Transition>
-
-              <button
-                type="submit"
-                class="submit-btn ui-btn"
-                :disabled="!isRegisterValid || loading"
-              >
-                <span v-if="!loading">注册</span>
-                <span v-else class="loader ui-loader"></span>
-              </button>
+              <UiButton type="submit" variant="primary" :loading="loading" :disabled="!isRegisterValid" block>
+                注册
+              </UiButton>
             </form>
 
             <div class="switch-mode">
               <a href="#" @click.prevent="toggleMode">
-                <span v-if="mode === 'register'">← 已有账号？</span>
+                <span v-if="mode === 'register'">已有账号？</span>
                 <span v-else>没有账号？</span>
-                <span class="highlight">{{
-                  mode === "register" ? "登录" : "立即注册"
-                }}</span>
-                <span v-if="mode === 'login'"> →</span>
+                <span class="highlight">{{ mode === "register" ? "登录" : "立即注册" }}</span>
               </a>
             </div>
           </div>
@@ -208,12 +128,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/modules/account/stores/UserStore";
 import { storeToRefs } from "pinia";
-import AppIcon from "@/shared/ui/AppIcon.vue";
 import { RouteLocation } from "@/app/router/RouteNames";
+import { useUserStore } from "@/modules/account/stores/UserStore";
+import AppIcon from "@/shared/ui/branding/AppIcon.vue";
+import FormField from "@/shared/ui/forms/FormField.vue";
+import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -221,7 +144,6 @@ const { showLogin } = storeToRefs(userStore);
 
 const mode = ref<"login" | "register">("login");
 const loading = ref(false);
-const focusedField = ref<string | null>(null);
 
 const loginForm = reactive({
   username: "",
@@ -267,7 +189,7 @@ const isLoginValid = computed(() => {
 const passwordMatchError = computed(() => {
   if (registerForm.password && registerForm.confirmPassword) {
     return registerForm.password !== registerForm.confirmPassword
-      ? "两次密码不一致"
+      ? "两次密码不一致。"
       : "";
   }
   return "";
@@ -287,7 +209,7 @@ const isRegisterValid = computed(() => {
 
 const handleLogin = async () => {
   if (loginForm.password.length < 6) {
-    loginError.value = "密码长度至少6位";
+    loginError.value = "密码长度至少 6 位。";
     return;
   }
 
@@ -303,10 +225,10 @@ const handleLogin = async () => {
       const redirect = userStore.consumePostLoginRedirect() || RouteLocation.userCenter;
       await router.push(redirect);
     } else {
-      loginError.value = "登录失败，请稍后重试";
+      loginError.value = "登录失败，请稍后重试。";
     }
   } catch (error: any) {
-    loginError.value = error.message || "用户名/邮箱或密码错误";
+    loginError.value = error.message || "用户名、邮箱或密码错误。";
   } finally {
     loading.value = false;
   }
@@ -314,15 +236,15 @@ const handleLogin = async () => {
 
 const handleRegister = async () => {
   if (registerForm.username.trim().length < 3) {
-    registerError.value = "用户名长度至少3位";
+    registerError.value = "用户名长度至少 3 位。";
     return;
   }
   if (registerForm.password.length < 6) {
-    registerError.value = "密码长度至少6位";
+    registerError.value = "密码长度至少 6 位。";
     return;
   }
   if (registerForm.password !== registerForm.confirmPassword) {
-    registerError.value = "密码不一致";
+    registerError.value = "密码不一致。";
     return;
   }
   loading.value = true;
@@ -338,10 +260,10 @@ const handleRegister = async () => {
       const redirect = userStore.consumePostLoginRedirect() || RouteLocation.userCenter;
       await router.push(redirect);
     } else {
-      registerError.value = "注册失败，请稍后重试";
+      registerError.value = "注册失败，请稍后重试。";
     }
   } catch (error: any) {
-    registerError.value = error.message || "用户名或邮箱已被注册";
+    registerError.value = error.message || "用户名或邮箱已被注册。";
   } finally {
     loading.value = false;
   }
@@ -349,33 +271,6 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-.shake-enter-active {
-  animation: shake 0.3s ease;
-}
-
-@keyframes shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-
-  20% {
-    transform: translateX(-5px);
-  }
-
-  40% {
-    transform: translateX(5px);
-  }
-
-  60% {
-    transform: translateX(-3px);
-  }
-
-  80% {
-    transform: translateX(3px);
-  }
-}
-
 .dialog-overlay {
   background-color: var(--overlay-dark-60);
   backdrop-filter: blur(var(--blur-8));
@@ -385,8 +280,8 @@ const handleRegister = async () => {
 .dialog-card {
   background: var(--glass-bg-95);
   backdrop-filter: blur(var(--blur-10));
-  padding: 2rem 2rem 2rem 2rem;
-  max-width: 420px;
+  padding: 2rem;
+  max-width: 460px;
   box-shadow:
     0 25px 50px -12px rgba(0, 0, 0, 0.25),
     0 0 0 1px rgba(255, 255, 255, 0.5) inset;
@@ -422,7 +317,7 @@ const handleRegister = async () => {
 
 .header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .logo-wrapper {
@@ -453,118 +348,17 @@ h3 {
 .subtitle {
   margin: 0.5rem 0 0;
   color: #64748b;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-}
-
-.form-group {
-  position: relative;
-  transition: all 0.2s;
-}
-
-.form-group.focused .input-icon {
-  color: #3b82f6;
-}
-
-.input-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  color: #94a3b8;
-  transition: color 0.2s;
-  pointer-events: none;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.9rem 1rem 0.9rem 2.8rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 18px;
-  font-size: 1rem;
-  background: white;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-  outline: none;
-}
-
-.form-group.focused input {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-}
-
-.submit-btn {
-  position: relative;
-  width: 100%;
-  padding: 0.9rem;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-  border: none;
-  border-radius: 18px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.2s;
-  margin-top: 0.5rem;
-}
-
-.submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -10px #3b82f6;
-}
-
-.submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.error-message {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  justify-content: center;
-  color: #dc2626;
-  font-size: 0.85rem;
-  background: #fee2e2;
-  padding: 0.5rem 1rem;
-  border-radius: 30px;
-  margin-top: -0.5rem;
-}
-
-.error-message--stacked {
-  flex-direction: column;
-  gap: 0.35rem;
-  text-align: center;
-  line-height: 1.45;
-  padding: 0.65rem 0.9rem;
-  border-radius: 16px;
-  max-width: 100%;
-}
-
-.error-icon {
-  width: 14px;
-  height: 14px;
-  color: #ef4444;
-  flex-shrink: 0;
-}
-
-.error-text {
-  display: block;
-  max-width: 100%;
-  word-break: break-word;
+  gap: 1rem;
 }
 
 .switch-mode {
-  margin-top: 1.5rem;
+  margin-top: 1.2rem;
   text-align: center;
 }
 

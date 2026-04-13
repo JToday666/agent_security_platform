@@ -1,10 +1,10 @@
 <template>
-  <nav class="navbar" :class="{ hidden: !isVisible && !mobileMenuOpen }">
+  <nav class="navbar" :class="[`navbar--${shellContext}`, { hidden: !isVisible && !mobileMenuOpen }]">
     <div class="nav-container">
       <div class="brand-cluster">
         <router-link
           :to="RouteLocation.home"
-          class="brand-mark"
+          class="brand-mark ui-glow-frame"
           aria-label="返回首页"
         >
           <BrandLogo
@@ -13,16 +13,17 @@
             :priority="true"
           />
         </router-link>
-        <router-link :to="RouteLocation.home" class="brand-title">
+
+        <router-link :to="RouteLocation.home" class="brand-title ui-title-gradient">
           智能体安全评测平台
         </router-link>
       </div>
 
-      <div class="nav-links">
+      <div class="nav-links nav-links--primary">
         <router-link
-          v-for="item in visibleNavItems"
-          :key="`desktop-${item.key}`"
-          v-bind="getLinkStateProps(item)"
+          v-for="item in mainNavItems"
+          :key="`desktop-main-${item.key}`"
+          v-bind="getNavLinkStateProps(item)"
           :to="item.to"
           class="nav-link"
         >
@@ -31,20 +32,30 @@
         </router-link>
       </div>
 
-      <div class="nav-actions">
-        <button
-          class="menu-toggle"
-          type="button"
-          :aria-expanded="mobileMenuOpen ? 'true' : 'false'"
-          aria-controls="mobile-nav-drawer"
-          :aria-label="mobileMenuOpen ? '关闭导航菜单' : '打开导航菜单'"
-          @click="toggleMobileMenu"
+      <div v-if="secondaryNavItems.length" class="nav-links nav-links--secondary">
+        <router-link
+          v-for="item in secondaryNavItems"
+          :key="`desktop-secondary-${item.key}`"
+          v-bind="getNavLinkStateProps(item)"
+          :to="item.to"
+          class="nav-link nav-link--secondary nav-link--with-icon"
         >
-          <AppIcon
-            :icon="mobileMenuOpen ? 'lucide:x' : 'lucide:menu'"
-            class="menu-toggle-icon"
-          />
-        </button>
+          <AppIcon :icon="item.icon" class="nav-link-icon" />
+          <span>{{ item.label }}</span>
+        </router-link>
+      </div>
+
+      <div class="nav-actions">
+        <UiButton
+          v-if="!isLogin && shellContext === 'public'"
+          class="cta-btn"
+          as="button"
+          variant="primary"
+          leading-icon="lucide:log-in"
+          @click="openLoginDialog"
+        >
+          <span>登录 / 注册</span>
+        </UiButton>
 
         <button
           v-if="isLogin"
@@ -62,7 +73,24 @@
             />
             <span v-else class="default-avatar">{{ usernameInitial }}</span>
           </span>
-          <span class="username">{{ username }}</span>
+          <span class="user-copy">
+            <strong>{{ username }}</strong>
+            <span>个人资料</span>
+          </span>
+        </button>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          :aria-expanded="mobileMenuOpen ? 'true' : 'false'"
+          aria-controls="mobile-nav-drawer"
+          :aria-label="mobileMenuOpen ? '关闭导航菜单' : '打开导航菜单'"
+          @click="toggleMobileMenu"
+        >
+          <AppIcon
+            :icon="mobileMenuOpen ? 'lucide:x' : 'lucide:menu'"
+            class="menu-toggle-icon"
+          />
         </button>
       </div>
     </div>
@@ -80,7 +108,7 @@
       :class="{ 'mobile-nav-drawer--open': mobileMenuOpen }"
     >
       <div class="mobile-drawer-head">
-        <strong class="mobile-drawer-title">导航菜单</strong>
+        <strong class="mobile-drawer-title">导航</strong>
         <button
           class="mobile-close"
           type="button"
@@ -108,18 +136,48 @@
         </span>
         <span class="mobile-profile-copy">
           <strong>{{ username }}</strong>
-          <span>查看个人资料</span>
+          <span>个人资料</span>
         </span>
         <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
       </button>
 
+      <UiButton
+        v-else
+        class="mobile-cta"
+        as="button"
+        variant="primary"
+        leading-icon="lucide:log-in"
+        @click="openLoginDialogFromMenu"
+      >
+        <span>登录 / 注册</span>
+      </UiButton>
+
       <div class="mobile-nav-group">
+        <p class="mobile-group-label">页面</p>
         <router-link
-          v-for="item in visibleNavItems"
-          :key="`mobile-${item.key}`"
-          v-bind="getLinkStateProps(item)"
+          v-for="item in mainNavItems"
+          :key="`mobile-main-${item.key}`"
+          v-bind="getNavLinkStateProps(item)"
           :to="item.to"
           class="mobile-nav-link"
+          @click="closeMobileMenu"
+        >
+          <span class="mobile-link-main">
+            <AppIcon :icon="item.icon" class="nav-link-icon" />
+            <span>{{ item.label }}</span>
+          </span>
+          <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
+        </router-link>
+      </div>
+
+      <div v-if="secondaryNavItems.length" class="mobile-nav-group">
+        <p class="mobile-group-label">更多</p>
+        <router-link
+          v-for="item in secondaryNavItems"
+          :key="`mobile-secondary-${item.key}`"
+          v-bind="getNavLinkStateProps(item)"
+          :to="item.to"
+          class="mobile-nav-link mobile-nav-link--secondary"
           @click="closeMobileMenu"
         >
           <span class="mobile-link-main">
@@ -135,67 +193,20 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import { useRoute, useRouter, type RouteLocationRaw } from "vue-router";
-import { useUserStore } from "@/modules/account/stores/UserStore";
+import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import AppIcon from "@/shared/ui/AppIcon.vue";
-import BrandLogo from "@/shared/ui/BrandLogo.vue";
+import { useUserStore } from "@/modules/account/stores/UserStore";
+import AppIcon from "@/shared/ui/branding/AppIcon.vue";
+import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
 import { RouteLocation } from "@/app/router/RouteNames";
-
-interface NavItem {
-  key: string;
-  label: string;
-  icon: string;
-  to: RouteLocationRaw;
-  requiresAuth?: boolean;
-  exact?: boolean;
-}
+import { EXPLORE_NAV_ITEMS, WORKSPACE_NAV_ITEMS } from "@/app/shell/NavItems";
+import { resolveShellContext } from "@/app/shell/ShellContext";
+import { getNavLinkStateProps } from "@/app/shell/navLinkState";
 
 const MOBILE_NAV_BREAKPOINT = 1024;
 const SCROLL_THRESHOLD = 10;
 const MOUSE_TOP_THRESHOLD = 10;
-
-const NAV_ITEMS: NavItem[] = [
-  {
-    key: "home",
-    label: "首页",
-    icon: "lucide:house",
-    to: RouteLocation.home,
-    exact: true,
-  },
-  {
-    key: "dataset",
-    label: "评测目录",
-    icon: "lucide:database",
-    to: RouteLocation.datasetList,
-  },
-  {
-    key: "leaderboard",
-    label: "排行榜",
-    icon: "lucide:trophy",
-    to: RouteLocation.leaderboard,
-  },
-  {
-    key: "records",
-    label: "评测记录",
-    icon: "lucide:clipboard-list",
-    to: RouteLocation.userCenter,
-    requiresAuth: true,
-  },
-  {
-    key: "submit",
-    label: "提交测评",
-    icon: "lucide:file-plus-2",
-    to: RouteLocation.agentSubmit,
-    requiresAuth: true,
-  },
-  {
-    key: "contact",
-    label: "联系我们",
-    icon: "lucide:mail",
-    to: RouteLocation.contact,
-  },
-];
 
 const route = useRoute();
 const router = useRouter();
@@ -205,16 +216,32 @@ const { avatarDisplayUrl, isLogin, username } = storeToRefs(userStore);
 const isVisible = ref(true);
 const mobileMenuOpen = ref(false);
 
-const visibleNavItems = computed(() =>
-  NAV_ITEMS.filter((item) => !item.requiresAuth || isLogin.value),
+const shellContext = computed(() =>
+  resolveShellContext(route.name ? String(route.name) : undefined),
 );
+
+const mainNavItems = computed(() =>
+  shellContext.value === "workspace"
+    ? WORKSPACE_NAV_ITEMS.filter((item) => !item.requiresAuth || isLogin.value)
+    : EXPLORE_NAV_ITEMS,
+);
+
+const secondaryNavItems = computed(() => {
+  if (shellContext.value === "workspace") {
+    return EXPLORE_NAV_ITEMS;
+  }
+
+  if (!isLogin.value) {
+    return [];
+  }
+
+  return WORKSPACE_NAV_ITEMS.filter((item) => !item.requiresAuth || isLogin.value);
+});
 
 const usernameInitial = computed(() =>
   (username.value || "A").trim().charAt(0).toUpperCase() || "A",
 );
 
-const getLinkStateProps = (item: NavItem) =>
-  item.exact ? { exactActiveClass: "active" } : { activeClass: "active" };
 
 const syncBodyScrollLock = () => {
   document.body.style.overflow =
@@ -240,6 +267,15 @@ const goToProfile = () => {
 const goToProfileFromMenu = () => {
   closeMobileMenu();
   void router.push(RouteLocation.userProfile);
+};
+
+const openLoginDialog = () => {
+  userStore.openLoginDialog();
+};
+
+const openLoginDialogFromMenu = () => {
+  closeMobileMenu();
+  userStore.openLoginDialog();
 };
 
 let lastScrollY = window.scrollY;
@@ -294,6 +330,7 @@ const onScroll = () => {
     handleScroll();
     ticking = false;
   });
+
   ticking = true;
 };
 
@@ -326,34 +363,44 @@ onUnmounted(() => {
 <style scoped>
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  inset: 0 0 auto;
   z-index: var(--z-nav);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.88);
-  background:
-    linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(255, 255, 255, 0.82));
-  box-shadow:
-    0 16px 32px -28px rgba(15, 23, 42, 0.36),
-    0 0 0 1px rgba(255, 255, 255, 0.78) inset;
-  transition: transform 0.35s ease;
-  transform: translateY(0);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.58);
+  transition:
+    transform var(--duration-base) var(--ease-standard),
+    background var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
 }
 
 .navbar.hidden {
   transform: translateY(-100%);
 }
 
+.navbar--public {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.68));
+  box-shadow:
+    0 18px 36px -30px rgba(79, 70, 229, 0.38),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.42);
+}
+
+.navbar--workspace {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.74));
+  box-shadow:
+    0 14px 28px -26px rgba(15, 23, 42, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.54);
+}
+
 .nav-container {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  padding: 0 clamp(1.25rem, 1.8vw, 1.75rem);
-  height: var(--nav-height);
+  max-width: min(1440px, calc(100vw - 32px));
+  min-height: var(--nav-height);
+  margin: 0 auto;
+  padding: 0 1.25rem;
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
-  column-gap: clamp(0.9rem, 1.4vw, 1.25rem);
+  gap: 1rem;
 }
 
 .brand-cluster {
@@ -361,34 +408,18 @@ onUnmounted(() => {
   align-items: center;
   gap: 0.9rem;
   min-width: 0;
-  flex-shrink: 0;
 }
 
 .brand-mark {
-  width: 2.72rem;
-  height: 2.72rem;
-  border-radius: 0.9rem;
-  overflow: hidden;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1.1rem;
+  padding: 0.45rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
-  flex-shrink: 0;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-.brand-mark:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 28px -22px rgba(37, 99, 235, 0.42);
-}
-
-.brand-mark:focus-visible,
-.brand-title:focus-visible {
-  outline: none;
-  box-shadow: var(--shadow-focus-accent);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.76));
+  box-shadow: 0 18px 32px -26px rgba(79, 70, 229, 0.42);
 }
 
 .brand-logo {
@@ -397,63 +428,71 @@ onUnmounted(() => {
 }
 
 .brand-title {
-  color: #0f172a;
-  display: inline-flex;
-  align-items: center;
+  color: var(--color-text-dark);
   text-decoration: none;
-  font-size: 1.18rem;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   white-space: nowrap;
-  transition:
-    transform 0.2s ease,
-    filter 0.2s ease;
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .brand-title {
-    background: linear-gradient(120deg, #0f172a 0%, #2563eb 52%, #06b6d4 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-  }
-}
-
-.brand-title:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.04);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.52rem;
   min-width: 0;
-  width: 100%;
-  padding-left: clamp(1.75rem, 5vw, 5.75rem);
+}
+
+.nav-links--primary {
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.nav-links--secondary {
+  gap: 0.35rem;
+  justify-content: flex-end;
 }
 
 .nav-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.5rem;
   padding: 0.68rem 0.92rem;
-  border-radius: 999px;
-  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
   color: #334155;
   text-decoration: none;
-  font-size: 0.95rem;
+  border: 1px solid transparent;
+  font-size: 0.92rem;
   font-weight: 600;
-  white-space: nowrap;
   transition:
-    color 0.2s ease,
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
+    transform var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.nav-link:hover {
+  transform: translateY(-1px);
+  color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(99, 102, 241, 0.14);
+}
+
+.nav-link.active {
+  color: var(--color-primary);
+  background: linear-gradient(135deg, rgba(219, 234, 254, 0.74), rgba(237, 233, 254, 0.7));
+  border-color: rgba(99, 102, 241, 0.18);
+  box-shadow: 0 14px 28px -28px rgba(79, 70, 229, 0.5);
+}
+
+.nav-link--secondary {
+  padding-inline: 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 0.86rem;
+}
+
+.nav-link--with-icon {
+  gap: 0.45rem;
 }
 
 .nav-link-icon {
@@ -462,43 +501,29 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-.nav-link:hover {
-  color: #0f172a;
-  transform: translateY(-1px);
-  border-color: rgba(226, 232, 240, 0.92);
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 12px 24px -24px rgba(15, 23, 42, 0.32);
-}
-
-.nav-link.active {
-  color: #1d4ed8;
-  border-color: rgba(96, 165, 250, 0.34);
-  background:
-    linear-gradient(135deg, rgba(219, 234, 254, 0.88), rgba(255, 255, 255, 0.98));
-  box-shadow: 0 14px 28px -24px rgba(37, 99, 235, 0.4);
-}
-
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  flex-shrink: 0;
-  min-width: 0;
   justify-self: end;
+}
+
+.cta-btn {
+  white-space: nowrap;
 }
 
 .menu-toggle {
   display: none;
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 999px;
-  border: 1px solid rgba(203, 213, 225, 0.88);
-  background: rgba(255, 255, 255, 0.88);
-  color: #0f172a;
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--color-text-dark);
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 10px 22px -18px rgba(15, 23, 42, 0.32);
+  box-shadow: var(--shadow-control);
 }
 
 .menu-toggle-icon,
@@ -513,37 +538,37 @@ onUnmounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
-  padding: 0.34rem 0.48rem 0.34rem 0.34rem;
+  padding: 0.36rem 0.44rem;
   border-radius: 999px;
-  border: 1px solid rgba(226, 232, 240, 0.96);
-  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.82);
   cursor: pointer;
-  box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.34);
+  box-shadow: var(--shadow-control);
   transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard);
 }
 
 .user-info:hover {
   transform: translateY(-1px);
-  border-color: rgba(96, 165, 250, 0.28);
-  background: #ffffff;
+  border-color: rgba(99, 102, 241, 0.26);
+  background: rgba(255, 255, 255, 0.94);
 }
 
 .avatar {
-  width: 2.3rem;
-  height: 2.3rem;
+  width: 2.45rem;
+  height: 2.45rem;
   border-radius: 999px;
   overflow: hidden;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: var(--grad-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
   font-weight: 700;
   flex-shrink: 0;
-  box-shadow: 0 10px 20px -14px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 16px 24px -18px rgba(79, 70, 229, 0.58);
 }
 
 .default-avatar {
@@ -559,18 +584,31 @@ onUnmounted(() => {
 .avatar-image {
   width: 100%;
   height: 100%;
-  display: block;
   object-fit: cover;
 }
 
-.username {
+.user-copy {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.user-copy strong,
+.user-copy span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #0f172a;
-  font-size: 0.94rem;
-  font-weight: 600;
+}
+
+.user-copy strong {
+  color: var(--color-text-dark);
+  font-size: 0.92rem;
+}
+
+.user-copy span {
+  color: var(--color-text-subtle);
+  font-size: 0.76rem;
 }
 
 .mobile-nav-overlay {
@@ -584,19 +622,19 @@ onUnmounted(() => {
   position: fixed;
   top: var(--nav-height);
   right: 0;
-  width: min(88vw, 360px);
+  width: min(90vw, 390px);
   height: calc(100vh - var(--nav-height));
   padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   overflow-y: auto;
-  border-left: 1px solid rgba(226, 232, 240, 0.9);
+  border-left: 1px solid rgba(148, 163, 184, 0.18);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
-  box-shadow: -14px 0 34px rgba(15, 23, 42, 0.16);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 247, 255, 0.98));
+  box-shadow: -18px 0 40px rgba(15, 23, 42, 0.18);
   transform: translateX(100%);
-  transition: transform 0.24s ease;
+  transition: transform var(--duration-base) var(--ease-standard);
 }
 
 .mobile-nav-drawer--open {
@@ -605,13 +643,13 @@ onUnmounted(() => {
 
 .mobile-drawer-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
 }
 
 .mobile-drawer-title {
-  color: #0f172a;
+  color: var(--color-text-dark);
   font-size: 1rem;
 }
 
@@ -619,9 +657,9 @@ onUnmounted(() => {
   width: 2.35rem;
   height: 2.35rem;
   border-radius: 999px;
-  border: 1px solid rgba(226, 232, 240, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.2);
   background: #ffffff;
-  color: #0f172a;
+  color: var(--color-text-dark);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -634,13 +672,16 @@ onUnmounted(() => {
   gap: 0.85rem;
   width: 100%;
   padding: 0.95rem 1rem;
-  border: 1px solid rgba(191, 219, 254, 0.72);
-  border-radius: 1.25rem;
-  background:
-    linear-gradient(135deg, rgba(219, 234, 254, 0.84), rgba(255, 255, 255, 0.96));
-  color: #0f172a;
+  border: 1px solid rgba(99, 102, 241, 0.16);
+  border-radius: 1.3rem;
+  background: linear-gradient(135deg, rgba(219, 234, 254, 0.84), rgba(255, 255, 255, 0.96));
+  color: var(--color-text-dark);
   text-align: left;
   cursor: pointer;
+}
+
+.mobile-cta {
+  width: 100%;
 }
 
 .mobile-profile-copy {
@@ -660,13 +701,22 @@ onUnmounted(() => {
 
 .mobile-profile-copy span {
   font-size: 0.88rem;
-  color: #475569;
+  color: var(--color-text-muted);
 }
 
 .mobile-nav-group {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
+}
+
+.mobile-group-label {
+  margin: 0;
+  color: #6366f1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .mobile-nav-link {
@@ -677,20 +727,23 @@ onUnmounted(() => {
   padding: 0.95rem 1rem;
   border-radius: 1.1rem;
   border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   color: #334155;
   text-decoration: none;
   transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard);
 }
 
 .mobile-nav-link.active {
-  color: #1d4ed8;
-  border-color: rgba(96, 165, 250, 0.24);
-  background:
-    linear-gradient(135deg, rgba(219, 234, 254, 0.8), rgba(255, 255, 255, 0.98));
+  color: var(--color-primary);
+  border-color: rgba(99, 102, 241, 0.18);
+  background: linear-gradient(135deg, rgba(219, 234, 254, 0.8), rgba(255, 255, 255, 0.98));
+}
+
+.mobile-nav-link--secondary {
+  background: rgba(248, 250, 252, 0.9);
 }
 
 .mobile-link-main {
@@ -707,41 +760,27 @@ onUnmounted(() => {
 }
 
 @media (max-width: 1340px) {
-  .brand-title {
-    font-size: 1.1rem;
+  .nav-container {
+    grid-template-columns: auto minmax(0, 1fr) auto;
   }
 
-  .nav-links {
-    padding-left: clamp(1rem, 2.8vw, 2.8rem);
+  .nav-links--secondary {
+    display: none;
   }
 }
 
 @media (max-width: 1180px) {
-  .nav-container {
-    padding: 0 1rem;
-  }
-
-  .brand-cluster {
-    gap: 0.72rem;
-  }
-
   .brand-title {
     font-size: 1rem;
   }
 
-  .nav-links {
-    gap: 0.34rem;
-    padding-left: 0.8rem;
-  }
-
   .nav-link {
-    gap: 0.48rem;
-    padding: 0.6rem 0.68rem;
-    font-size: 0.89rem;
+    padding: 0.62rem 0.8rem;
+    font-size: 0.88rem;
   }
 
   .user-info {
-    max-width: 13rem;
+    max-width: 13.2rem;
   }
 }
 
@@ -753,23 +792,16 @@ onUnmounted(() => {
   }
 
   .nav-links,
+  .cta-btn,
   .user-info {
     display: none;
   }
 
   .menu-toggle {
     display: inline-flex;
-  }
-
-  .nav-actions {
     margin-left: auto;
   }
 
-  .brand-title {
-    max-width: 12ch;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 }
 
 @media (max-width: 640px) {
@@ -778,13 +810,14 @@ onUnmounted(() => {
   }
 
   .brand-mark {
-    width: 2.45rem;
-    height: 2.45rem;
+    width: 2.72rem;
+    height: 2.72rem;
   }
 
   .brand-title {
-    max-width: 9ch;
-    font-size: 0.98rem;
+    max-width: 10ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .mobile-nav-drawer {

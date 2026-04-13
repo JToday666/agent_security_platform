@@ -1,29 +1,29 @@
-import request from "@/shared/api/core/HttpClient";
-import { ApiConfig } from "@/shared/api/core/Config";
+import request from "@/shared/api/HttpClient";
+import { ApiConfig } from "@/shared/api/Config";
 import {
-  withMemoryCache,
   readMemoryCache,
   setMemoryCache,
-} from "@/shared/api/core/MemoryCache";
-import {
-  adaptDatasetCatalog,
-  adaptDatasetDetail,
-} from "@/modules/dataset/api/adapters/DatasetAdapters";
-import type {
-  DatasetCatalogResponse,
-  DatasetDetail,
-} from "@/shared/types/DatasetTypes";
+  withMemoryCache,
+} from "@/shared/api/MemoryCache";
 import {
   createErrorEnvelope,
   createSuccessEnvelope,
   resolveMockEnvelope,
   shouldMockFail,
-} from "@/shared/api/core/MockApiUtils";
+} from "@/shared/api/MockApiUtils";
+import {
+  adaptDatasetCatalog,
+  adaptDatasetDetail,
+} from "@/modules/dataset/api/adapters/DatasetAdapters";
 import {
   buildReferenceDatasetCatalog,
   getReferenceDatasetDetail,
 } from "@/modules/dataset/mock/DatasetFixtures";
 import { normalizeDatasetId } from "@/modules/dataset/lib/DatasetIdAliases";
+import type {
+  DatasetCatalogResponse,
+  DatasetDetail,
+} from "@/shared/types/DatasetTypes";
 
 interface DatasetCatalogRequestOptions {
   signal?: AbortSignal;
@@ -50,29 +50,49 @@ const createDatasetServiceError = (
 
 const DATASET_CATALOG_CACHE_KEY = "datasets:catalog";
 const DATASET_DETAIL_CACHE_PREFIX = "datasets:detail";
-const useLiveReferenceApi = !ApiConfig.enableApiMock;
 
 const datasetDetailCacheKey = (datasetId: string): string =>
   `${DATASET_DETAIL_CACHE_PREFIX}:${normalizeDatasetId(datasetId)}`;
+
+const loadCatalogFromApi = async (
+  signal?: AbortSignal,
+): Promise<DatasetCatalogResponse> => {
+  const response = await request.get<unknown>("/datasets/catalog", {
+    signal,
+  });
+
+  if (!response.success || !response.data) {
+    throw createDatasetServiceError(
+      response.message || "目录加载失败，请稍后重试。",
+      response.code,
+    );
+  }
+
+  return adaptDatasetCatalog(response.data as never);
+};
+
+const loadDetailFromApi = async (
+  datasetId: string,
+  signal?: AbortSignal,
+): Promise<DatasetDetail> => {
+  const response = await request.get<unknown>(`/datasets/${datasetId}`, {
+    signal,
+  });
+
+  if (!response.success || !response.data) {
+    throw createDatasetServiceError(
+      response.message || "详情加载失败，请稍后重试。",
+      response.code,
+    );
+  }
+
+  return adaptDatasetDetail(response.data as never);
+};
 
 export const getDatasetCatalog = async (
   options: DatasetCatalogRequestOptions = {},
 ): Promise<DatasetCatalogResponse> => {
   const { force = false, signal } = options;
-  const loadCatalog = async (): Promise<DatasetCatalogResponse> => {
-    const response = await request.get<unknown>("/datasets/catalog", {
-      signal,
-    });
-
-    if (!response.success || !response.data) {
-      throw createDatasetServiceError(
-        response.message || "目录加载失败，请稍后重试。",
-        response.code,
-      );
-    }
-
-    return adaptDatasetCatalog(response.data as never);
-  };
 
   if (ApiConfig.enableApiMock) {
     if (shouldMockFail("mockCatalogError")) {
@@ -97,51 +117,20 @@ export const getDatasetCatalog = async (
     const cached = !force
       ? readMemoryCache<DatasetCatalogResponse>(DATASET_CATALOG_CACHE_KEY)
       : undefined;
+
     if (cached) {
       return cached;
     }
 
-    const catalog = await loadCatalog();
+    const catalog = await loadCatalogFromApi(signal);
     return setMemoryCache(DATASET_CATALOG_CACHE_KEY, catalog);
   }
 
-  return withMemoryCache(DATASET_CATALOG_CACHE_KEY, loadCatalog, { force });
-
-  if (useLiveReferenceApi) {
-    const response = await request.get<DatasetCatalogResponse>(
-      "/datasets/catalog",
-      {
-        signal,
-      },
-    );
-
-    if (!response.success || !response.data) {
-      throw createDatasetServiceError(
-        response.message || "目录加载失败。",
-        response.code,
-      );
-    }
-
-    return response.data as DatasetCatalogResponse;
-  }
-
-  if (shouldMockFail("mockCatalogError")) {
-    const result = await resolveMockEnvelope(
-      createErrorEnvelope(50000, "目录加载失败，请稍后重试。", {
-        catalogVersion: "",
-        categoryCount: 0,
-        subcategoryCount: 0,
-        categories: [],
-      }),
-    );
-    throw new Error(result.message);
-  }
-
-  const result = await resolveMockEnvelope(
-    createSuccessEnvelope(buildReferenceDatasetCatalog()),
+  return withMemoryCache(
+    DATASET_CATALOG_CACHE_KEY,
+    () => loadCatalogFromApi(signal),
+    { force },
   );
-
-  return result.data as DatasetCatalogResponse;
 };
 
 export const getDatasetDetail = async (
@@ -151,23 +140,6 @@ export const getDatasetDetail = async (
   const normalizedDatasetId = normalizeDatasetId(datasetId);
   const { force = false, signal } = options;
   const cacheKey = datasetDetailCacheKey(normalizedDatasetId);
-  const loadDetail = async (): Promise<DatasetDetail> => {
-    const response = await request.get<unknown>(
-      `/datasets/${normalizedDatasetId}`,
-      {
-        signal,
-      },
-    );
-
-    if (!response.success || !response.data) {
-      throw createDatasetServiceError(
-        response.message || "详情加载失败，请稍后重试。",
-        response.code,
-      );
-    }
-
-    return adaptDatasetDetail(response.data as never);
-  };
 
   if (ApiConfig.enableApiMock) {
     if (shouldMockFail("mockDetailError")) {
@@ -193,49 +165,18 @@ export const getDatasetDetail = async (
     const cached = !force
       ? readMemoryCache<DatasetDetail>(cacheKey)
       : undefined;
+
     if (cached) {
       return cached;
     }
 
-    const detail = await loadDetail();
+    const detail = await loadDetailFromApi(normalizedDatasetId, signal);
     return setMemoryCache(cacheKey, detail);
   }
 
-  return withMemoryCache(cacheKey, loadDetail, { force });
-
-  if (useLiveReferenceApi) {
-    const response = await request.get<DatasetDetail>(
-      `/datasets/${datasetId}`,
-      {
-        signal: options.signal,
-      },
-    );
-
-    if (!response.success || !response.data) {
-      throw createDatasetServiceError(
-        response.message || "详情加载失败，请重试。",
-        response.code,
-      );
-    }
-
-    return response.data as DatasetDetail;
-  }
-
-  if (shouldMockFail("mockDetailError")) {
-    const result = await resolveMockEnvelope(
-      createErrorEnvelope(50000, "详情加载失败，请重试。", null),
-    );
-    throw createDatasetServiceError(result.message, result.code);
-  }
-
-  const detail = getReferenceDatasetDetail(datasetId) as DatasetDetail | null;
-  if (!detail) {
-    const result = await resolveMockEnvelope(
-      createErrorEnvelope(40400, "评测项不存在。", null),
-    );
-    throw createDatasetServiceError(result.message, result.code);
-  }
-
-  const result = await resolveMockEnvelope(createSuccessEnvelope(detail));
-  return result.data as DatasetDetail;
+  return withMemoryCache(
+    cacheKey,
+    () => loadDetailFromApi(normalizedDatasetId, signal),
+    { force },
+  );
 };

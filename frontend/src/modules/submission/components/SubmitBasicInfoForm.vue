@@ -1,5 +1,5 @@
 <template>
-  <SubmitSection
+  <SectionCard
     title="智能体信息"
     description="填写智能体名称、简介和接入信息，便于平台识别能力范围并发起评测。"
   >
@@ -33,6 +33,7 @@
           placeholder="https://example.com/agent/run"
           :error="fieldErrors.apiBaseUrl"
           :required="true"
+          leading-icon="lucide:link"
           full
           @update:model-value="form.api.baseUrl = $event"
         />
@@ -40,7 +41,8 @@
           label="API Token"
           :model-value="form.api.token"
           type="password"
-          placeholder="仅保存在当前页面内存，不会持久化"
+          placeholder="仅用于本次接入校验，离开页面后需重新填写"
+          leading-icon="lucide:key-round"
           full
           @update:model-value="form.api.token = $event"
         />
@@ -54,6 +56,7 @@
           placeholder="registry.example.com/agent:latest"
           :error="fieldErrors.dockerImageUri"
           :required="true"
+          leading-icon="lucide:package"
           full
           @update:model-value="form.docker.imageUri = $event"
         />
@@ -62,23 +65,25 @@
           :model-value="form.docker.username"
           type="text"
           placeholder="可选"
+          leading-icon="lucide:user"
           @update:model-value="form.docker.username = $event"
         />
         <FormField
           label="镜像仓库密码"
           :model-value="form.docker.password"
           type="password"
-          placeholder="仅保存在当前页面内存"
+          placeholder="仅用于当前镜像认证，离开页面后需重新填写"
+          leading-icon="lucide:lock"
           @update:model-value="form.docker.password = $event"
         />
       </template>
     </div>
-  </SubmitSection>
+  </SectionCard>
 </template>
 
 <script setup lang="ts">
-import SubmitSection from "./SubmitSection.vue";
-import FormField from "@/shared/ui/FormField.vue";
+import FormField from "@/shared/ui/forms/FormField.vue";
+import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import type {
   SubmitFieldErrors,
   SubmitFormState,
@@ -101,6 +106,5 @@ const form = defineModel<SubmitFormState>({ required: true });
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-  margin-top: 1rem;
 }
 </style>

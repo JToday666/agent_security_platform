@@ -1,8 +1,34 @@
 <template>
-  <section class="filter-card ui-surface-glass">
-    <div class="filter-head">
-      <h2>风险域切换</h2>
-      <p>默认展示首个风险域，点击标签可切换查看对应评测项。</p>
+  <SectionCard
+    title="筛选与排序"
+    description="按风险域、名称和排序方式快速定位目标数据集。"
+  >
+    <div class="toolbar">
+      <FormField
+        label="搜索"
+        :model-value="search"
+        type="search"
+        placeholder="按名称或摘要搜索"
+        leading-icon="lucide:search"
+        @update:model-value="$emit('update:search', $event)"
+      />
+
+      <FormField
+        label="排序"
+        :model-value="sortKey"
+        type="select"
+        :options="sortOptions"
+        @update:model-value="handleSortKeyChange"
+      />
+
+      <UiButton
+        class="clear-btn"
+        variant="secondary"
+        :disabled="!search.trim()"
+        @click="$emit('clear-search')"
+      >
+        清空搜索
+      </UiButton>
     </div>
 
     <div class="chip-row">
@@ -10,30 +36,48 @@
         v-for="category in categories"
         :key="category.categoryId"
         type="button"
-        class="category-chip ui-btn ui-btn-pill"
+        class="category-chip"
         :class="{ active: activeCategoryId === category.categoryId }"
         :style="getChipStyle(category.categoryId, activeCategoryId === category.categoryId)"
         @click="$emit('select-category', category.categoryId)"
       >
         <span class="chip-name">{{ category.name }}</span>
-        <span class="chip-meaning">{{ category.meaning }}</span>
       </button>
     </div>
-  </section>
+  </SectionCard>
 </template>
 
 <script setup lang="ts">
 import type { DatasetCategoryViewModel } from "@/shared/types/DatasetTypes";
+import type { DatasetCatalogSortKey } from "@/modules/dataset/lib";
 import { getCategoryTheme } from "@/modules/dataset/lib";
+import FormField from "@/shared/ui/forms/FormField.vue";
+import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
 
-defineEmits<{
+const emit = defineEmits<{
   (event: "select-category", categoryId: string): void;
+  (event: "update:search", value: string): void;
+  (event: "update:sortKey", value: DatasetCatalogSortKey): void;
+  (event: "clear-search"): void;
 }>();
 
 defineProps<{
   categories: DatasetCategoryViewModel[];
   activeCategoryId: string;
+  search: string;
+  sortKey: DatasetCatalogSortKey;
 }>();
+
+const sortOptions: Array<{ label: string; value: DatasetCatalogSortKey }> = [
+  { label: "默认排序", value: "default" },
+  { label: "最近更新", value: "updated-desc" },
+  { label: "样本数从高到低", value: "samples-desc" },
+];
+
+const handleSortKeyChange = (value: string) => {
+  emit("update:sortKey", value as DatasetCatalogSortKey);
+};
 
 const getChipStyle = (categoryId: string, active: boolean) => {
   const theme = getCategoryTheme(categoryId);
@@ -43,54 +87,44 @@ const getChipStyle = (categoryId: string, active: boolean) => {
       background: theme.gradient,
       color: "#ffffff",
       border: `1px solid ${theme.solid}`,
-      boxShadow: `0 12px 24px -24px ${theme.shadow}`,
+      boxShadow: `0 16px 28px -26px ${theme.shadow}`,
     };
   }
 
   return {
-    background: `linear-gradient(180deg, ${theme.soft}, #ffffff)`,
+    background: "rgba(255, 255, 255, 0.78)",
     color: theme.text,
     border: `1px solid ${theme.border}`,
-    boxShadow: `0 8px 16px -24px ${theme.shadow}`,
+    boxShadow: `0 12px 20px -24px ${theme.shadow}`,
   };
 };
 </script>
 
 <style scoped>
-.filter-card {
-  border-radius: 2rem;
-  padding: 1.4rem;
-  margin-bottom: 1.8rem;
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.4fr) minmax(180px, 0.8fr) auto;
+  gap: 0.85rem;
 }
 
-.filter-head h2 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 1.08rem;
-}
-
-.filter-head p {
-  margin: 0.45rem 0 0;
-  color: #64748b;
-  line-height: 1.7;
+.clear-btn {
+  align-self: end;
 }
 
 .chip-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.85rem;
-  margin-top: 1rem;
+  gap: 0.8rem;
 }
 
 .category-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.85rem 1.15rem;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+  padding: 0.82rem 1.05rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-standard);
 }
 
 .category-chip:hover {
@@ -101,14 +135,13 @@ const getChipStyle = (categoryId: string, active: boolean) => {
   font-weight: 700;
 }
 
-.chip-meaning {
-  opacity: 0.86;
-  font-size: 0.88rem;
-}
-
 @media (max-width: 768px) {
-  .filter-card {
-    padding: 1.15rem;
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .clear-btn {
+    width: 100%;
   }
 }
 </style>

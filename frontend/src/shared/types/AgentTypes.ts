@@ -207,21 +207,3 @@ export interface SubmitFormState {
   publicToLeaderboard: boolean;
   selectedDatasetIds: string[];
 }
-
-export interface SubmitFormPersistedData {
-  submitMethod: SubmitMethod;
-  agentName: string;
-  description: string;
-  api: {
-    baseUrl: string;
-  };
-  docker: {
-    imageUri: string;
-    username: string;
-  };
-  parameters: SubmitParameters;
-  publicToLeaderboard: boolean;
-  selectedDatasetIds: string[];
-  expandedCategoryIds: string[];
-  pendingRequest: PendingSubmitRequest | null;
-}

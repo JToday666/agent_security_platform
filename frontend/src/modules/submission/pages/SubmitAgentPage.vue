@@ -1,64 +1,89 @@
 <template>
   <div class="content submit-page layout-page-shell layout-page-shell--wide">
     <PageHeroCard
-      eyebrow="智能体提交"
-      title="提交智能体评测"
-      description="填写基础信息、选择评测项并确认参数后，即可创建评测任务。"
-      :chips="heroChips"
+      title="提交评测"
+      description="填写智能体信息、选择数据集并确认运行参数后创建评测任务。"
+      tone="workspace"
+      title-tone="brand"
+    >
+      <template #actions>
+        <UiButton :to="RouteLocation.datasetList" variant="secondary">
+          浏览数据集
+        </UiButton>
+      </template>
+    </PageHeroCard>
+
+    <PageStateCard
+      v-if="pageLoading"
+      title="正在初始化提交页"
+      message="请稍候。"
+      :loading="true"
     />
 
-    <div v-if="pageLoading" class="state-card layout-state-card ui-surface-white">
-      <h2>正在初始化提交页</h2>
-      <p>系统正在加载提交元数据、恢复草稿，并同步评测目录。</p>
-    </div>
-
-    <div v-else-if="pageError" class="state-card layout-state-card ui-surface-white">
-      <h2>页面初始化失败</h2>
-      <p>{{ pageError }}</p>
-      <button
-        class="retry-btn layout-retry-btn ui-btn ui-btn-pill ui-btn-gradient"
-        type="button"
-        @click="initializePage"
-      >
-        重新加载
-      </button>
-    </div>
+    <PageStateCard
+      v-else-if="pageError"
+      title="页面初始化失败"
+      :message="pageError"
+      action-text="重新加载"
+      @action="initializePage"
+    />
 
     <form
       v-else-if="form && submitMeta"
-      class="submit-form"
+      class="submit-form layout-page-grid"
       @submit.prevent="handleSubmit"
     >
-      <SubmitMethodSelector
-        :model-value="form.submitMethod"
-        :methods="submitMeta.supportedMethods"
-        @update:model-value="submitDraftStore.setSubmitMethod"
-      />
-      <SubmitBasicInfoForm v-model="form" :field-errors="fieldErrors" />
-      <SubmitParameterControls v-model="form" :meta="submitMeta" />
-      <SubmitDatasetPanel
-        :categories="enabledCategories"
-        :selected-dataset-ids="form.selectedDatasetIds"
-        :expanded-category-ids="expandedCategoryIds"
-        :status="datasetCatalogStatus"
-        :error-message="datasetCatalogErrorMessage"
-        :sync-message="catalogSyncNotice"
-        :selection-error-message="selectionErrorMessage"
-        @select-all="selectAllDatasets"
-        @clear-all="clearAllDatasets"
-        @toggle-category="toggleCategoryDatasets"
-        @toggle-dataset="toggleDataset"
-        @toggle-expanded="toggleExpandedCategory"
-        @retry="retryDatasetCatalog"
-      />
-      <SubmitVisibilityCard v-model="form" />
-      <SubmitActionBar
-        :submitting="submitting"
-        :can-submit="canSubmit"
-        :error-message="submitError"
-        :sync-message="catalogSyncNotice"
-        @reset="resetDraft"
-      />
+      <div class="submit-main layout-page-stack">
+        <SubmitMethodSelector
+          :model-value="form.submitMethod"
+          :methods="submitMeta.supportedMethods"
+          @update:model-value="setSubmitMethod"
+        />
+        <SubmitBasicInfoForm v-model="form" :field-errors="fieldErrors" />
+        <SubmitParameterControls v-model="form" :meta="submitMeta" />
+        <SubmitDatasetPanel
+          :categories="enabledCategories"
+          :selected-dataset-ids="form.selectedDatasetIds"
+          :expanded-category-ids="expandedCategoryIds"
+          :status="datasetCatalogStatus"
+          :error-message="datasetCatalogErrorMessage"
+          :selection-error-message="selectionErrorMessage"
+          @select-all="selectAllDatasets"
+          @clear-all="clearAllDatasets"
+          @toggle-category="toggleCategoryDatasets"
+          @toggle-dataset="toggleDataset"
+          @toggle-expanded="toggleExpandedCategory"
+          @retry="retryDatasetCatalog"
+        />
+        <SectionCard
+          title="排行榜公开设置"
+          description="公开后，此次评测结果可参与排行榜展示；不公开时，仅本人可见。"
+        >
+          <UiToggleField
+            v-model="form.publicToLeaderboard"
+            :title="form.publicToLeaderboard ? '公开到排行榜' : '仅本人可见'"
+            description="可以随提交一起保存，默认按平台设置填充。"
+          />
+        </SectionCard>
+      </div>
+
+      <div class="submit-side layout-sticky-actions">
+        <SubmitActionBar
+          :agent-name="form.agentName.trim()"
+          :submit-method="form.submitMethod"
+          :selected-category-count="selectedCategoryCount"
+          :selected-dataset-count="form.selectedDatasetIds.length"
+          :selected-dataset-names="selectedDatasetNames"
+          :difficulty="form.parameters.difficulty"
+          :timeout-minutes="form.parameters.timeoutMinutes"
+          :retry-enabled="form.parameters.retryEnabled"
+          :public-to-leaderboard="form.publicToLeaderboard"
+          :submitting="submitting"
+          :can-submit="canSubmit"
+          :error-message="submitError"
+          @reset="resetDraft"
+        />
+      </div>
     </form>
 
     <ConfirmDialog
@@ -74,570 +99,51 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
-import {
-  getSubmitMeta,
-  precheckAgent,
-  submitAgent,
-} from "@/modules/submission/api";
-import { useSubmitDatasetCatalog } from "@/modules/submission/composables/useSubmitDatasetCatalog";
-import PageHeroCard from "@/shared/ui/PageHeroCard.vue";
-import ConfirmDialog from "@/shared/ui/ConfirmDialog.vue";
+import { RouteLocation } from "@/app/router/RouteNames";
 import SubmitActionBar from "@/modules/submission/components/SubmitActionBar.vue";
 import SubmitBasicInfoForm from "@/modules/submission/components/SubmitBasicInfoForm.vue";
 import SubmitDatasetPanel from "@/modules/submission/components/SubmitDatasetPanel.vue";
 import SubmitMethodSelector from "@/modules/submission/components/SubmitMethodSelector.vue";
 import SubmitParameterControls from "@/modules/submission/components/SubmitParameterControls.vue";
-import SubmitVisibilityCard from "@/modules/submission/components/SubmitVisibilityCard.vue";
-import { RouteLocation } from "@/app/router/RouteNames";
-import { useSubmitDraftStore } from "@/modules/submission/stores/SubmitDraftStore";
-import type {
-  PendingSubmitRequest,
-  SubmitAgentPayload,
-  SubmitFieldErrors,
-  SubmitMetaResponse,
-} from "@/shared/types/AgentTypes";
-import {
-  toggleCategoryDatasets as toggleCategoryDatasetsValue,
-  toggleDatasetId,
-} from "@/modules/dataset/lib";
-import {
-  MAX_SUBMIT_DATASET_COUNT,
-  normalizeDifficulty,
-  normalizeTimeoutMinutes,
-  validateSubmitPayload,
-} from "@/modules/submission/lib";
-
-interface SubmitPayloadSnapshot {
-  agentName: string;
-  description: string;
-  submitMethod: SubmitAgentPayload["submitMethod"];
-  apiBaseUrl: string;
-  dockerImageUri: string;
-  parameters: SubmitAgentPayload["parameters"];
-  publicToLeaderboard: boolean;
-  datasetIds: string[];
-}
-
-const router = useRouter();
-const submitDraftStore = useSubmitDraftStore();
-const datasetCatalog = useSubmitDatasetCatalog();
-const datasetCatalogStatus = datasetCatalog.status;
-const datasetCatalogErrorMessage = datasetCatalog.errorMessage;
+import { useSubmitAgentPage } from "@/modules/submission/composables/useSubmitAgentPage";
+import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
+import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
+import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
+import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
+import UiToggleField from "@/shared/ui/forms/UiToggleField.vue";
 
 const {
   form,
+  submitMeta,
+  pageLoading,
+  pageError,
+  submitting,
+  submitError,
+  fieldErrors,
   expandedCategoryIds,
-  catalogSyncNotice,
-  pendingRequest,
-} = storeToRefs(submitDraftStore);
-
-const submitMeta = ref<SubmitMetaResponse | null>(null);
-const pageLoading = ref(true);
-const pageError = ref("");
-const submitting = ref(false);
-const submitError = ref("");
-const fieldErrors = ref<SubmitFieldErrors>({});
-const datasetSelectionNotice = ref("");
-const confirmDialogVisible = ref(false);
-const confirmDialogTitle = ref("确认提交");
-const confirmDialogMessage = ref("");
-const confirmedPayload = ref<SubmitAgentPayload | null>(null);
-
-let activeCatalogController: AbortController | null = null;
-
-const enabledCategories = computed(() => datasetCatalog.enabledCategories.value);
-const validDatasetIds = computed(() => datasetCatalog.datasetIds.value);
-const selectedCategoryCount = computed(
-  () =>
-    enabledCategories.value.filter((category) =>
-      category.subcategories.some((item) =>
-        form.value?.selectedDatasetIds.includes(item.datasetId),
-      ),
-    ).length,
-);
-const datasetCatalogReady = computed(() => datasetCatalogStatus.value === "ready");
-const heroChips = computed(() => [
-  {
-    label: "提交方式",
-    value: form.value?.submitMethod === "docker" ? "Docker" : "API",
-  },
-  {
-    label: "风险域",
-    value: `${selectedCategoryCount.value} 个`,
-  },
-  {
-    label: "评测项",
-    value: `${form.value?.selectedDatasetIds.length ?? 0} 个`,
-  },
-]);
-const selectionErrorMessage = computed(
-  () => fieldErrors.value.selectedDatasetIds || datasetSelectionNotice.value,
-);
-
-const buildRequestId = (): string => {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-    return `submit_${crypto.randomUUID()}`;
-  }
-
-  return `submit_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
-};
-
-const clearFormErrors = () => {
-  submitError.value = "";
-  fieldErrors.value = {};
-};
-
-const abortActiveCatalogRequest = () => {
-  if (activeCatalogController) {
-    activeCatalogController.abort();
-    activeCatalogController = null;
-  }
-};
-
-const isAbortLikeError = (error: unknown): boolean =>
-  error instanceof DOMException
-    ? error.name === "AbortError"
-    : error instanceof Error
-      ? error.name === "AbortError" || error.name === "CanceledError"
-      : false;
-
-const setSelectedDatasetIds = (value: string[]) => {
-  if (!form.value) {
-    return;
-  }
-
-  const uniqueIds = Array.from(new Set(value));
-  const nextIds = uniqueIds.slice(0, MAX_SUBMIT_DATASET_COUNT);
-  form.value.selectedDatasetIds = nextIds;
-
-  datasetSelectionNotice.value =
-    uniqueIds.length > MAX_SUBMIT_DATASET_COUNT
-      ? `最多只能选择 ${MAX_SUBMIT_DATASET_COUNT} 个评测项，超出的部分已自动忽略。`
-      : "";
-
-  if (nextIds.length > 0 && fieldErrors.value.selectedDatasetIds) {
-    fieldErrors.value = {
-      ...fieldErrors.value,
-      selectedDatasetIds: undefined,
-    };
-  }
-};
-
-const buildPayloadSnapshot = (): SubmitPayloadSnapshot | null => {
-  if (!form.value || !submitMeta.value) {
-    return null;
-  }
-
-  const datasetIds = Array.from(new Set(form.value.selectedDatasetIds)).sort();
-
-  return {
-    agentName: form.value.agentName.trim(),
-    description: form.value.description.trim(),
-    submitMethod: form.value.submitMethod,
-    apiBaseUrl:
-      form.value.submitMethod === "api" ? form.value.api.baseUrl.trim() : "",
-    dockerImageUri:
-      form.value.submitMethod === "docker"
-        ? form.value.docker.imageUri.trim()
-        : "",
-    parameters: {
-      difficulty: normalizeDifficulty(
-        form.value.parameters.difficulty,
-        submitMeta.value.difficulty,
-      ),
-      timeoutMinutes: normalizeTimeoutMinutes(
-        form.value.parameters.timeoutMinutes,
-        submitMeta.value.timeoutMinutes,
-      ),
-      retryEnabled: Boolean(form.value.parameters.retryEnabled),
-    },
-    publicToLeaderboard: Boolean(form.value.publicToLeaderboard),
-    datasetIds,
-  };
-};
-
-const buildPayloadDigest = (): string => {
-  const snapshot = buildPayloadSnapshot();
-  return snapshot ? JSON.stringify(snapshot) : "";
-};
-
-const resolvePendingRequest = (payloadDigest: string): PendingSubmitRequest => {
-  if (
-    pendingRequest.value &&
-    pendingRequest.value.payloadDigest === payloadDigest
-  ) {
-    return pendingRequest.value;
-  }
-
-  const nextPendingRequest: PendingSubmitRequest = {
-    requestId: buildRequestId(),
-    payloadDigest,
-    createdAt: new Date().toISOString(),
-  };
-  submitDraftStore.setPendingRequest(nextPendingRequest);
-  return nextPendingRequest;
-};
-
-const buildPayload = (mode: "preview" | "submit"): SubmitAgentPayload => {
-  const snapshot = buildPayloadSnapshot();
-  if (!snapshot) {
-    throw new Error("提交表单尚未初始化完成。");
-  }
-
-  const payloadDigest = JSON.stringify(snapshot);
-  const requestId =
-    mode === "submit"
-      ? resolvePendingRequest(payloadDigest).requestId
-      : pendingRequest.value?.payloadDigest === payloadDigest
-        ? pendingRequest.value.requestId
-        : "preview_request_id";
-
-  return {
-    agentName: snapshot.agentName,
-    description: snapshot.description,
-    submitMethod: snapshot.submitMethod,
-    api:
-      snapshot.submitMethod === "api"
-        ? {
-            baseUrl: form.value?.api.baseUrl.trim() ?? "",
-            token: form.value?.api.token.trim() ?? "",
-          }
-        : null,
-    docker:
-      snapshot.submitMethod === "docker"
-        ? {
-            imageUri: form.value?.docker.imageUri.trim() ?? "",
-            username: form.value?.docker.username.trim() ?? "",
-            password: form.value?.docker.password.trim() ?? "",
-          }
-        : null,
-    parameters: snapshot.parameters,
-    publicToLeaderboard: snapshot.publicToLeaderboard,
-    selectedDatasetIds: snapshot.datasetIds,
-    requestId,
-  };
-};
-
-const buildConfirmMessage = (warnings: string[], payload: SubmitAgentPayload): string => {
-  const header = `智能体名称：${payload.agentName}\n提交方式：${payload.submitMethod.toUpperCase()}\n评测项数量：${payload.selectedDatasetIds.length}`;
-
-  if (!warnings.length) {
-    return `${header}\n\n系统已完成提交检查，确认后将正式创建评测任务。`;
-  }
-
-  return `${header}\n\n系统发现以下提示：\n- ${warnings.join("\n- ")}\n\n确认后将正式创建评测任务。`;
-};
-
-const syncCatalogSelection = () => {
-  if (!datasetCatalog.catalog.value) {
-    return;
-  }
-
-  submitDraftStore.syncWithCatalog(
-    datasetCatalog.catalog.value.categories,
-    datasetCatalog.catalogVersion.value,
-  );
-};
-
-const loadCatalog = async (force = false) => {
-  abortActiveCatalogRequest();
-  const controller = new AbortController();
-  activeCatalogController = controller;
-
-  try {
-    await datasetCatalog.fetchCatalog({
-      signal: controller.signal,
-      force,
-    });
-
-    syncCatalogSelection();
-  } catch (error) {
-    if (isAbortLikeError(error)) {
-      return;
-    }
-
-    throw error;
-  } finally {
-    if (activeCatalogController === controller) {
-      activeCatalogController = null;
-    }
-  }
-};
-
-const initializePage = async () => {
-  pageLoading.value = true;
-  pageError.value = "";
-  clearFormErrors();
-  datasetSelectionNotice.value = "";
-  confirmDialogVisible.value = false;
-  confirmedPayload.value = null;
-
-  try {
-    const meta = await getSubmitMeta();
-    submitMeta.value = meta;
-    submitDraftStore.applyMeta(meta);
-
-    if (!form.value) {
-      throw new Error("提交表单初始化失败。");
-    }
-
-    form.value.parameters.difficulty = normalizeDifficulty(
-      form.value.parameters.difficulty,
-      meta.difficulty,
-    );
-    form.value.parameters.timeoutMinutes = normalizeTimeoutMinutes(
-      form.value.parameters.timeoutMinutes,
-      meta.timeoutMinutes,
-    );
-    setSelectedDatasetIds(form.value.selectedDatasetIds);
-
-    await loadCatalog(true);
-  } catch (error) {
-    pageError.value =
-      error instanceof Error ? error.message : "提交页初始化失败。";
-  } finally {
-    pageLoading.value = false;
-  }
-};
-
-const selectAllDatasets = () => {
-  setSelectedDatasetIds(validDatasetIds.value);
-};
-
-const clearAllDatasets = () => {
-  setSelectedDatasetIds([]);
-};
-
-const toggleCategoryDatasets = (categoryId: string) => {
-  if (!form.value) {
-    return;
-  }
-
-  const category = enabledCategories.value.find(
-    (item) => item.categoryId === categoryId,
-  );
-  if (!category) {
-    return;
-  }
-
-  setSelectedDatasetIds(
-    toggleCategoryDatasetsValue(
-      category,
-      form.value.selectedDatasetIds,
-      MAX_SUBMIT_DATASET_COUNT,
-    ),
-  );
-};
-
-const toggleDataset = (datasetId: string) => {
-  if (!form.value) {
-    return;
-  }
-
-  setSelectedDatasetIds(
-    toggleDatasetId(
-      datasetId,
-      form.value.selectedDatasetIds,
-      MAX_SUBMIT_DATASET_COUNT,
-    ),
-  );
-};
-
-const toggleExpandedCategory = (categoryId: string) => {
-  const nextExpanded = expandedCategoryIds.value.includes(categoryId)
-    ? expandedCategoryIds.value.filter((item) => item !== categoryId)
-    : [...expandedCategoryIds.value, categoryId];
-
-  submitDraftStore.setExpandedCategoryIds(nextExpanded);
-};
-
-const retryDatasetCatalog = () => {
-  void loadCatalog(true);
-};
-
-const resetDraft = () => {
-  if (!submitMeta.value) {
-    return;
-  }
-
-  submitDraftStore.resetDraft(
-    submitMeta.value,
-    datasetCatalog.catalog.value?.categories ?? [],
-  );
-  clearFormErrors();
-  datasetSelectionNotice.value = "";
-  confirmDialogVisible.value = false;
-  confirmedPayload.value = null;
-};
-
-const handleSubmit = async () => {
-  if (!submitMeta.value || !form.value) {
-    return;
-  }
-
-  clearFormErrors();
-
-  if (datasetCatalogStatus.value === "empty") {
-    submitError.value = "当前暂无可用评测项，无法提交。";
-    return;
-  }
-
-  if (!datasetCatalogReady.value) {
-    submitError.value = "请等待评测目录加载完成后再提交。";
-    return;
-  }
-
-  submitting.value = true;
-
-  try {
-    const payload = buildPayload("submit");
-    const validation = validateSubmitPayload(
-      payload,
-      submitMeta.value,
-      validDatasetIds.value,
-    );
-
-    if (!validation.valid) {
-      fieldErrors.value = validation.fieldErrors;
-      submitError.value = validation.errors[0] || "提交参数校验失败。";
-      return;
-    }
-
-    const precheckResult = await precheckAgent(payload);
-    confirmedPayload.value = payload;
-    confirmDialogTitle.value = precheckResult.warnings.length
-      ? "提交前确认"
-      : "确认提交";
-    confirmDialogMessage.value = buildConfirmMessage(
-      precheckResult.warnings,
-      payload,
-    );
-    confirmDialogVisible.value = true;
-  } catch (error) {
-    submitError.value =
-      error instanceof Error ? error.message : "提交失败，请稍后重试。";
-  } finally {
-    submitting.value = false;
-  }
-};
-
-const confirmSubmit = async () => {
-  if (!confirmedPayload.value) {
-    return;
-  }
-
-  submitting.value = true;
-  submitError.value = "";
-
-  try {
-    const submitResult = await submitAgent(confirmedPayload.value);
-    confirmDialogVisible.value = false;
-    submitDraftStore.clearDraftAfterSubmit();
-    await router.push(RouteLocation.evaluationDetail(submitResult.evaluationId));
-  } catch (error) {
-    submitError.value =
-      error instanceof Error ? error.message : "提交失败，请稍后重试。";
-  } finally {
-    submitting.value = false;
-  }
-};
-
-const canSubmit = computed(() => {
-  if (!form.value || !submitMeta.value || !datasetCatalogReady.value) {
-    return false;
-  }
-
-  const payload = buildPayload("preview");
-  return validateSubmitPayload(
-    payload,
-    submitMeta.value,
-    validDatasetIds.value,
-  ).valid;
-});
-
-watch(
-  () => form.value?.parameters.difficulty,
-  (value) => {
-    if (!form.value || !submitMeta.value || typeof value !== "number") {
-      return;
-    }
-
-    const normalized = normalizeDifficulty(value, submitMeta.value.difficulty);
-    if (normalized !== value) {
-      form.value.parameters.difficulty = normalized;
-    }
-  },
-);
-
-watch(
-  () => form.value?.parameters.timeoutMinutes,
-  (value) => {
-    if (!form.value || !submitMeta.value || typeof value !== "number") {
-      return;
-    }
-
-    const normalized = normalizeTimeoutMinutes(
-      value,
-      submitMeta.value.timeoutMinutes,
-    );
-    if (normalized !== value) {
-      form.value.parameters.timeoutMinutes = normalized;
-    }
-  },
-);
-
-watch(
-  [form, expandedCategoryIds, pendingRequest, () => datasetCatalog.catalogVersion.value],
-  ([currentForm]) => {
-    if (!currentForm) {
-      return;
-    }
-
-    const payloadDigest = buildPayloadDigest();
-    if (
-      pendingRequest.value &&
-      payloadDigest &&
-      pendingRequest.value.payloadDigest !== payloadDigest
-    ) {
-      submitDraftStore.setPendingRequest(null);
-    }
-
-    submitDraftStore.persistDraft(datasetCatalog.catalogVersion.value);
-  },
-  {
-    deep: true,
-  },
-);
-
-watch(
-  () => form.value?.selectedDatasetIds,
-  (value) => {
-    if (!value) {
-      return;
-    }
-
-    if (value.length > 0 && fieldErrors.value.selectedDatasetIds) {
-      fieldErrors.value = {
-        ...fieldErrors.value,
-        selectedDatasetIds: undefined,
-      };
-    }
-  },
-  {
-    deep: true,
-  },
-);
-
-onMounted(async () => {
-  await initializePage();
-});
-
-onBeforeUnmount(() => {
-  abortActiveCatalogRequest();
-});
+  datasetCatalogStatus,
+  datasetCatalogErrorMessage,
+  enabledCategories,
+  selectedCategoryCount,
+  selectedDatasetNames,
+  selectionErrorMessage,
+  confirmDialogVisible,
+  confirmDialogTitle,
+  confirmDialogMessage,
+  canSubmit,
+  setSubmitMethod,
+  initializePage,
+  handleSubmit,
+  confirmSubmit,
+  selectAllDatasets,
+  clearAllDatasets,
+  toggleCategoryDatasets,
+  toggleDataset,
+  toggleExpandedCategory,
+  retryDatasetCatalog,
+  resetDraft,
+} = useSubmitAgentPage();
 </script>
 
 <style scoped>
@@ -646,10 +152,22 @@ onBeforeUnmount(() => {
 }
 
 .submit-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 980px;
-  margin: 0 auto;
+  align-items: start;
+}
+
+.submit-main,
+.submit-side {
+  min-width: 0;
+}
+
+.submit-side {
+  align-self: start;
+  height: fit-content;
+}
+
+@media (max-width: 1180px) {
+  .submit-side {
+    width: 100%;
+  }
 }
 </style>

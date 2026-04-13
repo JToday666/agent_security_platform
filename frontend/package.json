@@ -9,8 +9,8 @@
     "build-only": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc -b",
-    "test": "node --test \"src/**/*.test.ts\"",
-    "test:watch": "node --test --watch \"src/**/*.test.ts\""
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@iconify/vue": "5.0.0",
@@ -23,9 +23,11 @@
     "@types/node": "25.6.0",
     "@vitejs/plugin-vue": "6.0.5",
     "@vue/tsconfig": "0.9.1",
+    "jsdom": "29.0.2",
     "npm-run-all2": "8.0.4",
     "typescript": "6.0.2",
     "vite": "8.0.8",
+    "vitest": "4.1.4",
     "vue-tsc": "3.2.6"
   },
   "engines": {

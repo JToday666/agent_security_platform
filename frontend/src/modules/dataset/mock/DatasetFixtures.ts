@@ -212,7 +212,7 @@ const referenceCategories: CategoryFixture[] = REFERENCE_DATASET_TAXONOMY.map(
   }),
 );
 
-export const REFERENCE_CATALOG_VERSION = "2026-04-02T08:00:00Z";
+const REFERENCE_CATALOG_VERSION = "2026-04-02T08:00:00Z";
 
 export const referenceSubmitMeta: SubmitMetaResponse = {
   supportedMethods: ["api", "docker"],
@@ -319,13 +319,6 @@ export const getReferenceDatasetDetail = (
 export const getReferenceDatasetIds = (): string[] =>
   buildReferenceDatasetCatalog().categories.flatMap((category) =>
     category.subcategories.map((item) => item.datasetId),
-  );
-
-export const getReferenceDatasetNameMap = (): Map<string, string> =>
-  new Map(
-    referenceCategories.flatMap((category) =>
-      category.datasets.map((item) => [item.datasetId, item.name] as const),
-    ),
   );
 
 export const referenceEvaluationRecords: EvaluationRecord[] = [

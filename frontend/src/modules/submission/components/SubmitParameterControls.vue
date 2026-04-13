@@ -1,13 +1,13 @@
 <template>
-  <SubmitSection
+  <SectionCard
     title="评测参数"
-    description="根据目标场景设置难度、超时时间和重试策略，提交前可再次确认。"
+    description="根据目标场景设置难度、超时和失败重试策略。"
   >
     <div class="field-grid">
-      <div class="field full">
+      <div class="field field--full ui-surface-muted">
         <div class="label-row">
           <div>
-            <span>攻击难度</span>
+            <span class="field-label">攻击难度</span>
             <p class="field-help">
               范围 {{ meta.difficulty.min.toFixed(1) }} -
               {{ meta.difficulty.max.toFixed(1) }}，步长
@@ -40,8 +40,8 @@
         </div>
       </div>
 
-      <label class="field">
-        <span>超时时间（分钟）</span>
+      <label class="field ui-surface-muted">
+        <span class="field-label">超时时间（分钟）</span>
         <input
           type="number"
           :value="form.parameters.timeoutMinutes"
@@ -59,24 +59,19 @@
         <small v-if="timeoutWarning" class="field-warning">{{ timeoutWarning }}</small>
       </label>
 
-      <label class="toggle-card">
-        <div>
-          <strong>失败重试</strong>
-          <p>当请求或执行链路失败时，允许平台做一次自动重试。</p>
-        </div>
-        <input
-          v-model="form.parameters.retryEnabled"
-          type="checkbox"
-          class="toggle-input"
-        />
-      </label>
+      <UiToggleField
+        v-model="form.parameters.retryEnabled"
+        title="失败重试"
+        description="当请求或执行链路失败时，允许平台自动重试一次。"
+      />
     </div>
-  </SubmitSection>
+  </SectionCard>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import SubmitSection from "./SubmitSection.vue";
+import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import UiToggleField from "@/shared/ui/forms/UiToggleField.vue";
 import type {
   SubmitFormState,
   SubmitMetaResponse,
@@ -150,32 +145,28 @@ const handleTimeoutBlur = () => {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
 }
 
-.field,
-.toggle-card {
+.field {
   padding: 1rem;
   border-radius: 1.2rem;
-  background: #f8fafc;
   border: 1px solid #e2e8f0;
 }
 
-.field.full {
+.field--full {
   grid-column: 1 / -1;
+}
+
+.field-label {
+  display: block;
+  color: #334155;
+  font-weight: 600;
 }
 
 .label-row {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-}
-
-.label-row span,
-.field span {
-  display: block;
-  color: #334155;
-  font-weight: 600;
 }
 
 .label-row strong {
@@ -256,30 +247,6 @@ const handleTimeoutBlur = () => {
 .number-input {
   width: 100%;
   padding: 0.82rem 1rem;
-}
-
-.toggle-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.toggle-card strong {
-  display: block;
-  color: #0f172a;
-}
-
-.toggle-card p {
-  margin: 0.3rem 0 0;
-  color: #64748b;
-  line-height: 1.6;
-}
-
-.toggle-input {
-  width: 20px;
-  height: 20px;
-  accent-color: #2563eb;
 }
 
 @media (max-width: 768px) {

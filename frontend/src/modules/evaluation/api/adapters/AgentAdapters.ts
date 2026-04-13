@@ -9,7 +9,7 @@ import type {
   EvaluationStatus,
   SubmitMetaResponse,
 } from "@/shared/types/AgentTypes";
-import { normalizeApiAssetUrl } from "@/shared/api/core/ApiRuntime";
+import { normalizeApiAssetUrl } from "@/shared/api/ApiRuntime";
 import { normalizeDatasetIds } from "@/modules/dataset/lib/DatasetIdAliases";
 import {
   resolvePublicDatasetName,

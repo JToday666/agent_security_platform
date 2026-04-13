@@ -1,85 +1,117 @@
-# 数据集与提交接口补充说明
+# 数据集与提交流程接口说明
 
-## 当前有效行为
+本文档描述当前前端在数据集浏览与提交流程中的真实调用行为，并同步补充当前页面呈现规则。
 
-本文件描述的是前端当前真实生效的运行方式，用于补充 [`API接口协议.md`](./API接口协议.md)。
+## 运行模式
 
-### 默认真实后端
+由 `VITE_ENABLE_API_MOCK` 统一控制：
 
-默认情况下，以下接口都走真实后端：
+- `false`: 调用真实后端接口。
+- `true`: 数据集、提交预检、提交创建统一走前端 mock 实现。
 
-- `GET /api/v1/datasets/catalog`
-- `GET /api/v1/datasets/{datasetId}`
-- `GET /api/v1/agents/submit-meta`
-- `POST /api/v1/agents/precheck`
-- `POST /api/v1/agents/submit`
+前端不再区分旧的“局部 live / 局部 mock”开关，也不再维护提交草稿的 localStorage 持久化版本。
 
-### 显式 Mock 开关
+## 数据集接口
 
-只有在设置 `VITE_ENABLE_API_MOCK=true` 时，提交与评测 mock 才会启用。
+### 1. 获取数据集目录
 
-默认值：
+- 方法：`GET /datasets/catalog`
+- 前端入口：`getDatasetCatalog(options?)`
+- 支持参数：
+  - `signal?: AbortSignal`
+  - `force?: boolean`
 
-- `VITE_ENABLE_API_MOCK=false`
+前端行为：
 
-## 页面调用顺序
+- 默认走内存缓存。
+- `force=true` 时绕过缓存重新请求。
+- 数据集目录页与提交页共享同一目录资源来源，提交页刷新目录时也会透传 `force`。
 
-### 数据集列表页 `/dataset`
+### 2. 获取数据集详情
 
-- 页面进入时请求 `GET /api/v1/datasets/catalog`
-- 点击某个数据集后进入 `/dataset/{datasetId}`
-- 详情页请求 `GET /api/v1/datasets/{datasetId}`
+- 方法：`GET /datasets/{datasetId}`
+- 前端入口：`getDatasetDetail(datasetId, options?)`
+- 支持参数：
+  - `signal?: AbortSignal`
+  - `force?: boolean`
 
-### 提交页 `/user/submit`
+前端行为：
 
-页面初始化时依次准备：
+- 默认走内存缓存。
+- 详情页主动刷新时会透传 `force=true`。
+- 请求前会先做 `datasetId` 规范化。
 
-- `GET /api/v1/agents/submit-meta`
-- `GET /api/v1/datasets/catalog`
+## 提交流程接口
 
-用户点击提交时：
+### 1. 获取提交元数据
 
-1. 先调用 `POST /api/v1/agents/precheck`
-2. 用户确认后再调用 `POST /api/v1/agents/submit`
-3. 成功后跳转 `/user/evaluation/{evaluationId}`
+- 方法：`GET /agents/submit-meta`
+- 前端入口：`getSubmitMeta()`
 
-## 缓存与持久化边界
+返回内容用于控制：
 
-### 页面生命周期内内存缓存
+- 支持的提交方式
+- 难度范围
+- 超时时间范围
+- 是否允许失败重试
+- 是否默认公开到排行榜
 
-允许缓存：
+该接口有内存缓存。
 
-- `datasets/catalog`
-- `datasets/{datasetId}`
-- `agents/submit-meta`
+### 2. 提交前预检
 
-缓存只在当前前端运行生命周期内有效，刷新页面后失效。
+- 方法：`POST /agents/precheck`
+- 前端入口：`precheckAgent(payload)`
 
-### 禁止 durable localStorage 持久化
+前端行为：
 
-真实 API 模式下，以下结果不写入 localStorage：
+- 点击“提交任务”后先构建 payload，再做字段校验。
+- 校验通过后调用预检接口。
+- 预检返回的 warning 只用于确认弹窗提示，不会写入本地持久化。
 
-- precheck 结果
-- submit 结果
-- 评测记录快照
-- 评测详情快照
+### 3. 创建评测任务
 
-### 允许持久化
+- 方法：`POST /agents/submit`
+- 前端入口：`submitAgent(payload)`
+
+前端行为：
+
+- 最终提交使用与预检一致的业务 payload。
+- `requestId` 在前端生成，用于当前会话内避免重复提交。
+- 提交成功后清空当前页面内存中的草稿状态。
+
+## 提交页状态边界
+
+### 当前只保留在页面内存中的内容
+
+- 智能体表单内容
+- 已选数据集
+- 展开中的分类
+- 当前待提交请求信息
+
+### 不再写入 durable localStorage 的内容
 
 - 提交草稿
-- token
-- 登录回跳地址
-- 非业务真相类 UI 状态
+- 数据集选择草稿
+- 提交预检结果
+- 提交成功结果
 
-## 前端字段约定
+## localStorage 仍会用到的键
 
-- 列表与详情 API 不再接收 `difficulty` query 参数
-- `difficulty` 只保留在 `precheck` / `submit` 的 `parameters.difficulty`
-- 前端表单字段仍使用 `selectedDatasetIds`
-- 发给后端前统一适配为 `datasetIds`
+- 用户 token
+- 登录后跳转地址
+- 会话滚动位置
+- mock 评测记录（仅 mock 模式）
 
-## 显示约定
+## 页面呈现补充
 
-- 用户界面优先显示公开名称，不直接展示内部 dataset code
-- 后端字段为空、缺失、`null`、空字符串时，页面必须进入降级显示
-- 不允许出现裸 `undefined`、`null` 或因空字段导致页面崩溃
+### 数据集详情页
+
+- 第二个卡片“准备发起评测”中的标题、说明与按钮使用居中对齐。
+- 该卡片只承担从详情进入提交页的明确入口，不附带额外说明性噪音文案。
+
+### 提交评测页
+
+- API Token 字段说明已改为更面向用户的提示文案，不再使用“仅保存在当前页面内存……”这类开发者导向措辞。
+- 当目录刷新后移除了失效的数据集或展开状态时，页面内部会静默同步，不再显示左右两侧的黄色提示条。
+- 目录同步仍然真实发生，只是改为不打断用户的页面操作。
