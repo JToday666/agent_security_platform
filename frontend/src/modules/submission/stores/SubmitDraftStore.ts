@@ -4,18 +4,18 @@ import type {
   PendingSubmitRequest,
   SubmitFormState,
   SubmitMetaResponse,
-} from "@/shared/types/AgentTypes";
-import type { DatasetCategory } from "@/shared/types/DatasetTypes";
+} from "@/shared/types/agent-types";
+import type { DatasetCategory } from "@/shared/types/dataset-types";
 import {
   getAllDatasetIds,
   getEnabledCategories,
   sanitizeDatasetSelection,
-} from "@/modules/dataset/lib";
+} from "@/modules/dataset/lib/dataset-utils";
 import {
   MAX_SUBMIT_DATASET_COUNT,
   normalizeDifficulty,
   normalizeTimeoutMinutes,
-} from "@/modules/submission/lib";
+} from "@/modules/submission/model/parameter-validator";
 
 const createDefaultForm = (meta: SubmitMetaResponse): SubmitFormState => ({
   submitMethod: meta.supportedMethods[0] ?? "api",

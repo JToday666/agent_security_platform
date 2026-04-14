@@ -112,7 +112,7 @@ const handleClick = (event: MouseEvent) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .ui-button {
   display: inline-flex;
   align-items: center;

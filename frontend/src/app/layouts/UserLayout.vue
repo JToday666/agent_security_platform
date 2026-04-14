@@ -13,7 +13,7 @@ import NavBarShell from "@/app/shell/NavBarShell.vue";
 import UserSidebarShell from "@/app/shell/UserSidebarShell.vue";
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .user-layout {
   min-height: calc(100vh - var(--nav-height));
 }

@@ -74,16 +74,16 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { RouteLocation } from "@/app/router/RouteNames";
-import { getEvaluationRecords } from "@/modules/evaluation/api";
+import { RouteLocation } from "@/app/router/route-names";
+import { getEvaluationRecords } from "@/modules/evaluation/api/evaluation-api";
 import EvaluationFilterBar from "@/modules/evaluation/components/EvaluationFilterBar.vue";
 import EvaluationRecordCard from "@/modules/evaluation/components/EvaluationRecordCard.vue";
-import { filterEvaluationRecords } from "@/modules/evaluation/lib";
+import { filterEvaluationRecords } from "@/modules/evaluation/lib/evaluation-record-filters";
 import type {
   EvaluationRecord,
   EvaluationStatus,
   SubmitMethod,
-} from "@/shared/types/AgentTypes";
+} from "@/shared/types/agent-types";
 import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
 import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
@@ -142,7 +142,7 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .records-page {
   padding-bottom: 2.5rem;
 }

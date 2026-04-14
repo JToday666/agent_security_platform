@@ -87,7 +87,7 @@ import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import type {
   SubmitFieldErrors,
   SubmitFormState,
-} from "@/shared/types/AgentTypes";
+} from "@/shared/types/agent-types";
 
 withDefaults(
   defineProps<{
@@ -101,7 +101,7 @@ withDefaults(
 const form = defineModel<SubmitFormState>({ required: true });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .grid-auto-fit {
   display: grid;
   grid-template-columns: 1fr;

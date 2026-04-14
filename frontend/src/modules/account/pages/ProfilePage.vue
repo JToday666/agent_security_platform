@@ -59,7 +59,6 @@
             :model-value="form.username"
             type="text"
             placeholder="请输入用户名"
-            required
             leading-icon="lucide:user"
             @update:model-value="form.username = $event"
           />
@@ -115,7 +114,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
-import { useUserStore } from "@/modules/account/stores/UserStore";
+import { useUserStore } from "@/modules/account/stores/userStore";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
@@ -300,7 +299,7 @@ const resetForm = () => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .profile-page {
   padding-bottom: 2.5rem;
 }

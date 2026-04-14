@@ -1,7 +1,10 @@
 import { computed, ref } from "vue";
-import { getDatasetCatalog } from "@/modules/dataset/api/DatasetService";
-import type { DatasetCatalogResponse } from "@/shared/types/DatasetTypes";
-import { getAllDatasetIds, getEnabledCategories } from "@/modules/dataset/lib";
+import { getDatasetCatalog } from "@/modules/dataset/api/dataset-api";
+import type { DatasetCatalogResponse } from "@/shared/types/dataset-types";
+import {
+  getAllDatasetIds,
+  getEnabledCategories,
+} from "@/modules/dataset/lib/dataset-utils";
 
 export type SubmitDatasetCatalogStatus =
   | "idle"

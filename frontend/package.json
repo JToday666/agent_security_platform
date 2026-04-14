@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "npm@11.12.1",
   "scripts": {
     "dev": "vite",
     "build": "run-s type-check build-only",
@@ -14,23 +15,24 @@
   },
   "dependencies": {
     "@iconify/vue": "5.0.0",
-    "axios": "1.15.0",
+    "axios": "^1.15.0",
     "pinia": "3.0.4",
     "vue": "3.5.32",
-    "vue-router": "5.0.4"
+    "vue-router": "4.5.1"
   },
   "devDependencies": {
     "@types/node": "25.6.0",
     "@vitejs/plugin-vue": "6.0.5",
     "@vue/tsconfig": "0.9.1",
-    "jsdom": "29.0.2",
+    "jsdom": "26.1.0",
     "npm-run-all2": "8.0.4",
-    "typescript": "6.0.2",
+    "sass": "^1.99.0",
+    "typescript": "5.9.2",
     "vite": "8.0.8",
     "vitest": "4.1.4",
     "vue-tsc": "3.2.6"
   },
   "engines": {
-    "node": "^20.19.0 || >=22.12.0"
+    "node": ">=24.14.1 <25"
   }
 }

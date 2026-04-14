@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { SubmitMethod } from "@/shared/types/AgentTypes";
+import type { SubmitMethod } from "@/shared/types/agent-types";
 import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import UiChoiceCardGroup from "@/shared/ui/forms/UiChoiceCardGroup.vue";
 

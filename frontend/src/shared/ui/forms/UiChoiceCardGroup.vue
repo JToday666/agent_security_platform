@@ -29,7 +29,7 @@ defineEmits<{
 }>();
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .ui-choice-card-group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

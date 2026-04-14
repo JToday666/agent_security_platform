@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import request from "@/shared/api/HttpClient";
-import { normalizeApiAssetUrl } from "@/shared/api/ApiRuntime";
-import { STORAGE_KEYS } from "@/shared/constants/StorageKeys";
-import { appendCacheBustParam } from "@/shared/lib/AssetDisplayUrl";
+import request from "@/shared/api/http-client";
+import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
+import { STORAGE_KEYS } from "@/shared/constants/storage-keys";
+import { appendCacheBustParam } from "@/shared/lib/asset-display-url";
 
 export interface User {
   id: number;

@@ -25,7 +25,7 @@ withDefaults(
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .brand-logo {
   display: block;
   width: 100%;

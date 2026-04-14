@@ -24,7 +24,7 @@ withDefaults(
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .ui-tag {
   display: inline-flex;
   align-items: center;

@@ -50,7 +50,7 @@ defineEmits<{
 }>();
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .page-state-card {
   display: flex;
   flex-direction: column;

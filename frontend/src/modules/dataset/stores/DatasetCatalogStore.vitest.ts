@@ -3,10 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   getDatasetCatalog,
   getDatasetDetail,
-} from "@/modules/dataset/api/DatasetService";
-import { useDatasetCatalogStore } from "./DatasetCatalogStore";
+} from "@/modules/dataset/api/dataset-api";
+import { useDatasetCatalogStore } from "./datasetCatalogStore";
 
-vi.mock("@/modules/dataset/api/DatasetService", () => ({
+vi.mock("@/modules/dataset/api/dataset-api", () => ({
   getDatasetCatalog: vi.fn(),
   getDatasetDetail: vi.fn(),
 }));

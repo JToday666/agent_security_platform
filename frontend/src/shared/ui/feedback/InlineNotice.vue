@@ -31,7 +31,7 @@ withDefaults(
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .inline-notice {
   display: flex;
   align-items: flex-start;

@@ -61,8 +61,11 @@ import { computed, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import DatasetCategorySection from "@/modules/dataset/components/DatasetCategorySection.vue";
 import DatasetFilterBar from "@/modules/dataset/components/DatasetFilterBar.vue";
-import { buildDatasetCatalogView, type DatasetCatalogSortKey } from "@/modules/dataset/lib";
-import { useDatasetCatalogStore } from "@/modules/dataset/stores/DatasetCatalogStore";
+import {
+  buildDatasetCatalogView,
+  type DatasetCatalogSortKey,
+} from "@/modules/dataset/model/dataset-catalog-view";
+import { useDatasetCatalogStore } from "@/modules/dataset/stores/datasetCatalogStore";
 import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
 import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
 
@@ -104,7 +107,7 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .dataset-page {
   padding-bottom: 2.5rem;
 }

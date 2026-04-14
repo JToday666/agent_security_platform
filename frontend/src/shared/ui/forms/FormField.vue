@@ -105,7 +105,7 @@ defineEmits<{
 const resolvedHelp = computed(() => props.help || props.hint);
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .form-field {
   display: flex;
   flex-direction: column;

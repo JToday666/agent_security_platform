@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { useSubmitDatasetCatalog } from "./useSubmitDatasetCatalog";
-import { getDatasetCatalog } from "@/modules/dataset/api/DatasetService";
+import { getDatasetCatalog } from "@/modules/dataset/api/dataset-api";
 
-vi.mock("@/modules/dataset/api/DatasetService", () => ({
+vi.mock("@/modules/dataset/api/dataset-api", () => ({
   getDatasetCatalog: vi.fn(),
 }));
 

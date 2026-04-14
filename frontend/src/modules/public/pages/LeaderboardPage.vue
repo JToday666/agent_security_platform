@@ -9,7 +9,6 @@
 
     <section class="placeholder-card ui-surface-panel">
       <h2>公开结果暂未开放</h2>
-      <p>当公开评测结果接入后，这里会展示真实排行榜。</p>
 
       <div class="placeholder-actions">
         <UiButton :to="RouteLocation.datasetList" variant="primary">
@@ -26,10 +25,10 @@
 <script setup lang="ts">
 import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
-import { RouteLocation } from "@/app/router/RouteNames";
+import { RouteLocation } from "@/app/router/route-names";
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .leaderboard-page {
   padding-bottom: 2.5rem;
 }

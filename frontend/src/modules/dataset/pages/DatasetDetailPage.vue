@@ -88,14 +88,17 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
-import { RouteLocation } from "@/app/router/RouteNames";
+import { RouteLocation } from "@/app/router/route-names";
 import DatasetMediaGallery from "@/modules/dataset/components/DatasetMediaGallery.vue";
 import DatasetMetaBar from "@/modules/dataset/components/DatasetMetaBar.vue";
 import DatasetResourcesList from "@/modules/dataset/components/DatasetResourcesList.vue";
-import { formatDateLabel, formatSampleCount } from "@/modules/dataset/lib";
-import { useDatasetCatalogStore } from "@/modules/dataset/stores/DatasetCatalogStore";
-import { useUserStore } from "@/modules/account/stores/UserStore";
-import type { DatasetDetail as DatasetDetailType } from "@/shared/types/DatasetTypes";
+import {
+  formatDateLabel,
+  formatSampleCount,
+} from "@/modules/dataset/lib/dataset-utils";
+import { useDatasetCatalogStore } from "@/modules/dataset/stores/datasetCatalogStore";
+import { useUserStore } from "@/modules/account/stores/userStore";
+import type { DatasetDetail as DatasetDetailType } from "@/shared/types/dataset-types";
 import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
 import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
 import SectionCard from "@/shared/ui/page/SectionCard.vue";
@@ -165,7 +168,7 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .detail-page {
   padding-bottom: 2.5rem;
 }

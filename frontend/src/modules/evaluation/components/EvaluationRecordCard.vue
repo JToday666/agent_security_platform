@@ -39,12 +39,12 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { EvaluationRecord } from "@/shared/types/AgentTypes";
-import { RouteLocation } from "@/app/router/RouteNames";
+import type { EvaluationRecord } from "@/shared/types/agent-types";
+import { RouteLocation } from "@/app/router/route-names";
 import Button from "@/shared/ui/actions/UiButton.vue";
 import StatusTag from "@/shared/ui/display/StatusTag.vue";
-import { formatDateTimeLabel } from "@/modules/dataset/lib";
-import { getFinalizationReasonLabel } from "@/modules/evaluation/lib";
+import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
+import { getFinalizationReasonLabel } from "@/modules/evaluation/lib/evaluation-status";
 
 const props = defineProps<{
   record: EvaluationRecord;
@@ -60,7 +60,7 @@ const finalizationReason = computed(() =>
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .record-card {
   border-radius: 1.35rem;
   padding: 1.05rem 1.12rem;

@@ -27,7 +27,7 @@ defineProps<{
 }>();
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .workflow-card {
   display: flex;
   flex-direction: column;

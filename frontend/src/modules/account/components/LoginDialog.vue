@@ -131,8 +131,8 @@
 import { computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { RouteLocation } from "@/app/router/RouteNames";
-import { useUserStore } from "@/modules/account/stores/UserStore";
+import { RouteLocation } from "@/app/router/route-names";
+import { useUserStore } from "@/modules/account/stores/userStore";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
@@ -270,7 +270,7 @@ const handleRegister = async () => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .dialog-overlay {
   background-color: var(--overlay-dark-60);
   backdrop-filter: blur(var(--blur-8));
