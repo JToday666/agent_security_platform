@@ -1,9 +1,10 @@
-"""datasets_demo 旧格式样本导入逻辑。"""
+"""数据集样本扫描、归一化与样本入库逻辑。"""
 
 from __future__ import annotations
 
 import json
 import re
+from collections import defaultdict
 from dataclasses import dataclass, field
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
@@ -12,15 +13,8 @@ from urllib.parse import urlparse
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models.benchmark import (
-    AssetType,
-    AttackDeliveryType,
-    BenchmarkSample,
-    DatasetSource,
-    RiskCategory,
-    RiskSubtype,
-    SampleOracle,
-)
+from app.models.benchmark import AssetType, AttackDeliveryType, BenchmarkSample, DatasetSource, RiskCategory, RiskSubtype, SampleOracle
+from app.modules.datasets.db_support import sync_pk_sequence
 
 
 IGNORED_JSON_FILENAMES = {"package.json", "package-lock.json", "default.json"}
@@ -36,6 +30,21 @@ LEGACY_REQUIRED_KEYS = {
     "success_oracle",
     "harm_oracle",
 }
+STANDARD_REQUIRED_KEYS = {
+    "schema_version",
+    "sample_id",
+    "dataset_source_code",
+    "entry_path",
+    "user_goal",
+    "attacker_is_user",
+    "attack_delivery_type_code",
+    "risk_category_code",
+    "risk_subtype_code",
+    "risk_level",
+    "attack_level",
+    "expected_safe_behavior",
+    "oracles",
+}
 LEVEL_CODE_TO_VALUE = {"low": 1, "medium": 2, "high": 3}
 DATASET_SOURCE_CODE_ALIASES = {
     "EIA": "eia",
@@ -43,11 +52,11 @@ DATASET_SOURCE_CODE_ALIASES = {
     "BrowserART": "browser_art",
     "browser-art": "browser_art",
 }
-CATEGORY_DEFINITIONS = {
+LEGACY_CATEGORY_DEFINITIONS = {
     "01_Confidentiality": {"code": "confidentiality", "name": "Confidentiality", "sort_order": 1},
     "02_Integrity": {"code": "integrity", "name": "Integrity", "sort_order": 2},
 }
-SUBTYPE_DEFINITIONS = {
+LEGACY_SUBTYPE_DEFINITIONS = {
     "A1_Identity_Information_Leakage": {
         "code": "A1_identity_leakage",
         "name": "Identity Leakage",
@@ -69,6 +78,8 @@ SUBTYPE_DEFINITIONS = {
         "sort_order": 5,
     },
 }
+KNOWN_CATEGORY_BY_CODE = {item["code"]: item for item in LEGACY_CATEGORY_DEFINITIONS.values()}
+KNOWN_SUBTYPE_BY_CODE = {item["code"]: item for item in LEGACY_SUBTYPE_DEFINITIONS.values()}
 
 
 class ImportValidationError(ValueError):
@@ -97,10 +108,10 @@ class PlannedSample:
     attack_delivery_type_name: str
     risk_category_code: str
     risk_category_name: str
-    risk_category_sort_order: int
+    risk_category_sort_order: int | None
     risk_subtype_code: str
     risk_subtype_name: str
-    risk_subtype_sort_order: int
+    risk_subtype_sort_order: int | None
     asset_type_code: str | None
     asset_type_name: str | None
     user_goal: str
@@ -117,36 +128,45 @@ class PlannedSample:
 
 
 @dataclass(slots=True)
-class ImportPlan:
+class SampleImportPlan:
     sample_root: Path
     samples: list[PlannedSample]
 
 
+ImportPlan = SampleImportPlan
+
+
 @dataclass(slots=True)
-class ImportResult:
-    created_sources: int = 0
-    updated_sources: int = 0
-    created_delivery_types: int = 0
-    updated_delivery_types: int = 0
-    created_categories: int = 0
-    updated_categories: int = 0
-    created_subtypes: int = 0
-    updated_subtypes: int = 0
-    created_asset_types: int = 0
-    updated_asset_types: int = 0
+class SampleImportResult:
     created_samples: int = 0
     updated_samples: int = 0
     created_oracles: int = 0
     updated_oracles: int = 0
 
 
+ImportResult = SampleImportResult
+
+
+@dataclass(slots=True)
+class _DiscoveredMetadataFile:
+    path: Path
+    fmt: str
+
+
 def discover_legacy_sample_files(sample_root: Path) -> list[Path]:
     """返回 demo 目录中可导入的旧格式样本 JSON。"""
+    return [item.path for item in discover_sample_metadata_files(sample_root, mode="legacy")]
+
+
+def discover_sample_metadata_files(sample_root: Path, mode: str = "auto") -> list[_DiscoveredMetadataFile]:
+    """发现样本目录中的元数据文件。"""
     root = sample_root.resolve()
     if not root.exists():
         raise ImportValidationError(f"样本根目录不存在: {root}")
+    if mode not in {"auto", "legacy", "standard"}:
+        raise ImportValidationError(f"不支持的扫描模式: {mode}")
 
-    sample_files: list[Path] = []
+    candidates_by_dir: dict[Path, list[_DiscoveredMetadataFile]] = defaultdict(list)
     for path in sorted(root.rglob("*.json")):
         if path.name in IGNORED_JSON_FILENAMES or "saved_logs" in path.parts:
             continue
@@ -154,22 +174,31 @@ def discover_legacy_sample_files(sample_root: Path) -> list[Path]:
             payload = json.loads(path.read_text(encoding="utf-8"))
         except json.JSONDecodeError as exc:
             raise ImportValidationError(f"JSON 解析失败: {path}: {exc}") from exc
-        if isinstance(payload, dict) and LEGACY_REQUIRED_KEYS.issubset(payload):
-            sample_files.append(path)
+        fmt = _detect_metadata_format(payload)
+        if fmt is not None:
+            candidates_by_dir[path.parent].append(_DiscoveredMetadataFile(path=path, fmt=fmt))
 
-    return sample_files
+    discovered: list[_DiscoveredMetadataFile] = []
+    for sample_dir in sorted(candidates_by_dir):
+        selected = _select_metadata_file_for_dir(sample_dir, candidates_by_dir[sample_dir], mode)
+        if selected is not None:
+            discovered.append(selected)
+
+    if not discovered:
+        raise ImportValidationError(f"未在 {root} 下发现可导入的样本元数据")
+    return discovered
 
 
-def build_import_plan(sample_root: Path) -> ImportPlan:
-    """扫描并标准化旧格式样本目录。"""
+def build_sample_import_plan(sample_root: Path, mode: str = "auto") -> SampleImportPlan:
+    """扫描并标准化样本目录。"""
     root = sample_root.resolve()
-    sample_files = discover_legacy_sample_files(root)
-    if not sample_files:
-        raise ImportValidationError(f"未在 {root} 下发现可导入的旧格式样本")
-
-    samples = [_normalize_sample(metadata_path, root) for metadata_path in sample_files]
+    sample_files = discover_sample_metadata_files(root, mode=mode)
+    samples = [_normalize_metadata_file(item, root) for item in sample_files]
     samples.sort(key=lambda item: (item.dataset_source_code, item.sample_id))
-    return ImportPlan(sample_root=root, samples=samples)
+    return SampleImportPlan(sample_root=root, samples=samples)
+
+
+build_import_plan = build_sample_import_plan
 
 
 def compute_difficulty_seed(risk_level: int, attack_level: int) -> Decimal:
@@ -181,86 +210,37 @@ def compute_difficulty_seed(risk_level: int, attack_level: int) -> Decimal:
     return difficulty.quantize(Decimal("0.001"), rounding=ROUND_HALF_UP)
 
 
-def apply_import_plan(session: Session, plan: ImportPlan) -> ImportResult:
-    """将导入计划写入数据库。调用方负责提交事务。"""
-    result = ImportResult()
+def apply_sample_import_plan(session: Session, plan: SampleImportPlan) -> SampleImportResult:
+    """将样本导入计划写入数据库，只负责样本与 oracle。"""
+    for table_name in ("benchmark_samples", "sample_oracles"):
+        sync_pk_sequence(session, table_name)
 
+    result = SampleImportResult()
     source_cache: dict[str, DatasetSource] = {}
     delivery_cache: dict[str, AttackDeliveryType] = {}
     category_cache: dict[str, RiskCategory] = {}
     subtype_cache: dict[str, RiskSubtype] = {}
-    asset_cache: dict[str, AssetType] = {}
+    asset_cache: dict[str, AssetType | None] = {}
 
     for sample in plan.samples:
-        source = source_cache.get(sample.dataset_source_code)
-        if source is None:
-            source, created = _upsert_dataset_source(
-                session,
-                code=sample.dataset_source_code,
-                name=sample.dataset_source_name,
+        source = _require_dataset_source(session, source_cache, sample.dataset_source_code, sample.metadata_path)
+        delivery = _require_attack_delivery_type(
+            session,
+            delivery_cache,
+            sample.attack_delivery_type_code,
+            sample.metadata_path,
+        )
+        category = _require_risk_category(session, category_cache, sample.risk_category_code, sample.metadata_path)
+        subtype = _require_risk_subtype(session, subtype_cache, sample.risk_subtype_code, sample.metadata_path)
+        if subtype.category_id != category.id:
+            raise ImportValidationError(
+                f"{sample.metadata_path}: risk_subtype_code={sample.risk_subtype_code} 不属于 "
+                f"risk_category_code={sample.risk_category_code}"
             )
-            source_cache[sample.dataset_source_code] = source
-            if created:
-                result.created_sources += 1
-            else:
-                result.updated_sources += 1
-
-        delivery = delivery_cache.get(sample.attack_delivery_type_code)
-        if delivery is None:
-            delivery, created = _upsert_attack_delivery_type(
-                session,
-                code=sample.attack_delivery_type_code,
-                name=sample.attack_delivery_type_name,
-            )
-            delivery_cache[sample.attack_delivery_type_code] = delivery
-            if created:
-                result.created_delivery_types += 1
-            else:
-                result.updated_delivery_types += 1
-
-        category = category_cache.get(sample.risk_category_code)
-        if category is None:
-            category, created = _upsert_risk_category(
-                session,
-                code=sample.risk_category_code,
-                name=sample.risk_category_name,
-                sort_order=sample.risk_category_sort_order,
-            )
-            category_cache[sample.risk_category_code] = category
-            if created:
-                result.created_categories += 1
-            else:
-                result.updated_categories += 1
-
-        subtype = subtype_cache.get(sample.risk_subtype_code)
-        if subtype is None:
-            subtype, created = _upsert_risk_subtype(
-                session,
-                category_id=category.id,
-                code=sample.risk_subtype_code,
-                name=sample.risk_subtype_name,
-                sort_order=sample.risk_subtype_sort_order,
-            )
-            subtype_cache[sample.risk_subtype_code] = subtype
-            if created:
-                result.created_subtypes += 1
-            else:
-                result.updated_subtypes += 1
 
         asset = None
-        if sample.asset_type_code and sample.asset_type_name:
-            asset = asset_cache.get(sample.asset_type_code)
-            if asset is None:
-                asset, created = _upsert_asset_type(
-                    session,
-                    code=sample.asset_type_code,
-                    name=sample.asset_type_name,
-                )
-                asset_cache[sample.asset_type_code] = asset
-                if created:
-                    result.created_asset_types += 1
-                else:
-                    result.updated_asset_types += 1
+        if sample.asset_type_code is not None:
+            asset = _require_asset_type(session, asset_cache, sample.asset_type_code, sample.metadata_path)
 
         sample_row, created = _upsert_benchmark_sample(
             session,
@@ -276,8 +256,8 @@ def apply_import_plan(session: Session, plan: ImportPlan) -> ImportResult:
             result.updated_samples += 1
 
         for oracle in sample.oracles:
-            _, created = _upsert_sample_oracle(session, sample_row.id, oracle)
-            if created:
+            _, oracle_created = _upsert_sample_oracle(session, sample_row.id, oracle)
+            if oracle_created:
                 result.created_oracles += 1
             else:
                 result.updated_oracles += 1
@@ -286,7 +266,18 @@ def apply_import_plan(session: Session, plan: ImportPlan) -> ImportResult:
     return result
 
 
-def _normalize_sample(metadata_path: Path, sample_root: Path) -> PlannedSample:
+apply_import_plan = apply_sample_import_plan
+
+
+def _normalize_metadata_file(item: _DiscoveredMetadataFile, sample_root: Path) -> PlannedSample:
+    if item.fmt == "legacy":
+        return _normalize_legacy_sample(item.path, sample_root)
+    if item.fmt == "standard":
+        return _normalize_standard_sample(item.path, sample_root)
+    raise ImportValidationError(f"{item.path}: 不支持的元数据格式 {item.fmt}")
+
+
+def _normalize_legacy_sample(metadata_path: Path, sample_root: Path) -> PlannedSample:
     payload = json.loads(metadata_path.read_text(encoding="utf-8"))
     sample_dir = metadata_path.parent
 
@@ -304,18 +295,18 @@ def _normalize_sample(metadata_path: Path, sample_root: Path) -> PlannedSample:
     if not isinstance(payload.get("attacker_is_user"), bool):
         raise ImportValidationError(f"{metadata_path}: attacker_is_user 必须是布尔值")
 
-    category_definition = CATEGORY_DEFINITIONS.get(primary_risk)
+    category_definition = LEGACY_CATEGORY_DEFINITIONS.get(primary_risk)
     if category_definition is None:
         raise ImportValidationError(f"{metadata_path}: 不支持的 primary_risk={primary_risk}")
 
-    subtype_definition = SUBTYPE_DEFINITIONS.get(secondary_risk)
+    subtype_definition = LEGACY_SUBTYPE_DEFINITIONS.get(secondary_risk)
     if subtype_definition is None:
         raise ImportValidationError(f"{metadata_path}: 不支持的 secondary_risk={secondary_risk}")
 
     risk_level = _normalize_level(payload.get("risk_level"), metadata_path, "risk_level")
     attack_level = _normalize_level(payload.get("attack_level"), metadata_path, "attack_level")
     difficulty_seed = compute_difficulty_seed(risk_level, attack_level)
-    entry_path = _resolve_entry_path(payload, sample_dir, metadata_path)
+    entry_path = _resolve_entry_path_from_legacy_payload(payload, sample_dir, metadata_path)
     resource_path = sample_dir.relative_to(sample_root).as_posix()
 
     asset_type_name = _optional_text(payload.get("asset_type"))
@@ -347,11 +338,83 @@ def _normalize_sample(metadata_path: Path, sample_root: Path) -> PlannedSample:
         difficulty_score=difficulty_seed,
         expected_safe_behavior=expected_safe_behavior,
         metadata_path=metadata_path,
-        oracles=_normalize_oracles(payload, metadata_path),
+        oracles=_normalize_legacy_oracles(payload, metadata_path),
     )
 
 
-def _normalize_oracles(payload: dict[str, object], metadata_path: Path) -> list[PlannedOracle]:
+def _normalize_standard_sample(metadata_path: Path, sample_root: Path) -> PlannedSample:
+    payload = json.loads(metadata_path.read_text(encoding="utf-8"))
+    sample_dir = metadata_path.parent
+
+    schema_version = _require_non_empty_text(payload.get("schema_version"), metadata_path, "schema_version")
+    if schema_version != "1.0":
+        raise ImportValidationError(f"{metadata_path}: schema_version 仅支持 1.0")
+
+    sample_id = _require_non_empty_text(payload.get("sample_id"), metadata_path, "sample_id")
+    dataset_source_code = _require_non_empty_text(payload.get("dataset_source_code"), metadata_path, "dataset_source_code")
+    attack_delivery_type_code = _require_non_empty_text(
+        payload.get("attack_delivery_type_code"),
+        metadata_path,
+        "attack_delivery_type_code",
+    )
+    risk_category_code = _require_non_empty_text(payload.get("risk_category_code"), metadata_path, "risk_category_code")
+    risk_subtype_code = _require_non_empty_text(payload.get("risk_subtype_code"), metadata_path, "risk_subtype_code")
+    entry_path = _require_non_empty_text(payload.get("entry_path"), metadata_path, "entry_path")
+    normalized_entry_path = _coerce_relative_entry_candidate(entry_path)
+    if normalized_entry_path is None:
+        raise ImportValidationError(f"{metadata_path}: entry_path 必须是相对 html 路径")
+    if not (sample_dir / normalized_entry_path).is_file():
+        raise ImportValidationError(f"{metadata_path}: entry_path={normalized_entry_path} 不存在")
+
+    user_goal = _require_non_empty_text(payload.get("user_goal"), metadata_path, "user_goal")
+    expected_safe_behavior = _require_non_empty_text(
+        payload.get("expected_safe_behavior"),
+        metadata_path,
+        "expected_safe_behavior",
+    )
+    if not isinstance(payload.get("attacker_is_user"), bool):
+        raise ImportValidationError(f"{metadata_path}: attacker_is_user 必须是布尔值")
+
+    risk_level = _normalize_level(payload.get("risk_level"), metadata_path, "risk_level")
+    attack_level = _normalize_level(payload.get("attack_level"), metadata_path, "attack_level")
+    difficulty_seed = compute_difficulty_seed(risk_level, attack_level)
+    resource_path = sample_dir.relative_to(sample_root).as_posix()
+    asset_type_code = _optional_text(payload.get("asset_type_code"))
+
+    return PlannedSample(
+        sample_id=sample_id,
+        sample_name=_optional_text(payload.get("sample_name")) or sample_id,
+        resource_path=resource_path,
+        entry_path=normalized_entry_path,
+        dataset_source_code=dataset_source_code,
+        dataset_source_name=_optional_text(payload.get("dataset_source_name")) or humanize_code(dataset_source_code),
+        attack_delivery_type_code=attack_delivery_type_code,
+        attack_delivery_type_name=_optional_text(payload.get("attack_delivery_type_name")) or humanize_code(attack_delivery_type_code),
+        risk_category_code=risk_category_code,
+        risk_category_name=_optional_text(payload.get("risk_category_name")) or default_category_name(risk_category_code),
+        risk_category_sort_order=default_category_sort_order(risk_category_code),
+        risk_subtype_code=risk_subtype_code,
+        risk_subtype_name=_optional_text(payload.get("risk_subtype_name")) or default_subtype_name(risk_subtype_code),
+        risk_subtype_sort_order=default_subtype_sort_order(risk_subtype_code),
+        asset_type_code=asset_type_code,
+        asset_type_name=(
+            _optional_text(payload.get("asset_type_name"))
+            or (humanize_code(asset_type_code) if asset_type_code else None)
+        ),
+        user_goal=user_goal,
+        attacker_goal=_optional_text(payload.get("attacker_goal")),
+        attacker_is_user=payload["attacker_is_user"],
+        risk_level=risk_level,
+        attack_level=attack_level,
+        difficulty_seed=difficulty_seed,
+        difficulty_score=difficulty_seed,
+        expected_safe_behavior=expected_safe_behavior,
+        metadata_path=metadata_path,
+        oracles=_normalize_standard_oracles(payload, metadata_path),
+    )
+
+
+def _normalize_legacy_oracles(payload: dict[str, object], metadata_path: Path) -> list[PlannedOracle]:
     oracles: list[PlannedOracle] = []
     for oracle_kind, field_name in ((1, "success_oracle"), (2, "harm_oracle")):
         raw_list = payload.get(field_name)
@@ -365,7 +428,48 @@ def _normalize_oracles(payload: dict[str, object], metadata_path: Path) -> list[
     return oracles
 
 
-def _resolve_entry_path(payload: dict[str, object], sample_dir: Path, metadata_path: Path) -> str:
+def _normalize_standard_oracles(payload: dict[str, object], metadata_path: Path) -> list[PlannedOracle]:
+    raw_oracles = payload.get("oracles")
+    if not isinstance(raw_oracles, list) or not raw_oracles:
+        raise ImportValidationError(f"{metadata_path}: oracles 必须是非空数组")
+
+    oracles: list[PlannedOracle] = []
+    seen_keys: set[tuple[int, int]] = set()
+    for index, item in enumerate(raw_oracles, start=1):
+        if not isinstance(item, dict):
+            raise ImportValidationError(f"{metadata_path}: oracles[{index}] 必须是对象")
+        kind = _optional_text(item.get("kind"))
+        if kind not in {"success", "harm"}:
+            raise ImportValidationError(f"{metadata_path}: oracles[{index}].kind 仅支持 success/harm")
+        seq_no = item.get("seq_no")
+        if not isinstance(seq_no, int) or seq_no <= 0:
+            raise ImportValidationError(f"{metadata_path}: oracles[{index}].seq_no 必须是正整数")
+        display_text = _require_non_empty_text(item.get("display_text"), metadata_path, f"oracles[{index}].display_text")
+        evaluator_type = _require_non_empty_text(item.get("evaluator_type"), metadata_path, f"oracles[{index}].evaluator_type")
+        evaluator_config = item.get("evaluator_config")
+        if not isinstance(evaluator_config, dict):
+            raise ImportValidationError(f"{metadata_path}: oracles[{index}].evaluator_config 必须是对象")
+        oracle_kind = 1 if kind == "success" else 2
+        dedupe_key = (oracle_kind, seq_no)
+        if dedupe_key in seen_keys:
+            raise ImportValidationError(
+                f"{metadata_path}: 重复的 oracle kind/seq_no 组合 {kind}/{seq_no}"
+            )
+        seen_keys.add(dedupe_key)
+        oracles.append(
+            PlannedOracle(
+                oracle_kind=oracle_kind,
+                seq_no=seq_no,
+                display_text=display_text,
+                evaluator_type=evaluator_type,
+                evaluator_config=evaluator_config,
+            )
+        )
+
+    return oracles
+
+
+def _resolve_entry_path_from_legacy_payload(payload: dict[str, object], sample_dir: Path, metadata_path: Path) -> str:
     entry_url = _optional_text(payload.get("entry_url"))
     if entry_url:
         direct_candidate = _coerce_relative_entry_candidate(entry_url)
@@ -414,13 +518,8 @@ def _coerce_relative_entry_candidate(raw_value: str) -> str | None:
         parsed = urlparse(value)
         value = parsed.path
 
-    value = value.strip()
-    if not value:
-        return None
-
-    value = value.lstrip("/")
-    value = value.replace("\\", "/")
-    if not value.endswith(".html"):
+    value = value.strip().replace("\\", "/").lstrip("/")
+    if not value or not value.endswith(".html"):
         return None
     if Path(value).is_absolute():
         return None
@@ -450,6 +549,38 @@ def normalize_code(value: str) -> str:
     return normalized.strip("_").lower()
 
 
+def humanize_code(value: str) -> str:
+    """将 code 转换为基本可读名称。"""
+    parts = [item for item in re.split(r"[_\-/]+", value.strip()) if item]
+    if not parts:
+        return value
+    readable: list[str] = []
+    for item in parts:
+        if re.fullmatch(r"[A-Z]{2,}|\d+", item):
+            readable.append(item)
+        elif re.fullmatch(r"[A-Za-z]\d+", item):
+            readable.append(item.upper())
+        else:
+            readable.append(item.capitalize())
+    return " ".join(readable)
+
+
+def default_category_name(code: str) -> str:
+    return KNOWN_CATEGORY_BY_CODE.get(code, {}).get("name", humanize_code(code))
+
+
+def default_category_sort_order(code: str) -> int | None:
+    return KNOWN_CATEGORY_BY_CODE.get(code, {}).get("sort_order")
+
+
+def default_subtype_name(code: str) -> str:
+    return KNOWN_SUBTYPE_BY_CODE.get(code, {}).get("name", humanize_code(code))
+
+
+def default_subtype_sort_order(code: str) -> int | None:
+    return KNOWN_SUBTYPE_BY_CODE.get(code, {}).get("sort_order")
+
+
 def _optional_text(value: object) -> str | None:
     if value is None:
         return None
@@ -466,99 +597,114 @@ def _require_non_empty_text(value: object, metadata_path: Path, field_name: str)
     return normalized
 
 
-def _upsert_dataset_source(session: Session, *, code: str, name: str) -> tuple[DatasetSource, bool]:
+def _detect_metadata_format(payload: object) -> str | None:
+    if not isinstance(payload, dict):
+        return None
+    if STANDARD_REQUIRED_KEYS.issubset(payload):
+        return "standard"
+    if LEGACY_REQUIRED_KEYS.issubset(payload):
+        return "legacy"
+    return None
+
+
+def _select_metadata_file_for_dir(
+    sample_dir: Path,
+    candidates: list[_DiscoveredMetadataFile],
+    mode: str,
+) -> _DiscoveredMetadataFile | None:
+    if mode == "auto":
+        standard = [item for item in candidates if item.fmt == "standard"]
+        legacy = [item for item in candidates if item.fmt == "legacy"]
+        if standard and legacy:
+            raise ImportValidationError(f"{sample_dir}: 同目录同时存在 standard 与 legacy 元数据")
+        if len(standard) > 1 or len(legacy) > 1:
+            raise ImportValidationError(f"{sample_dir}: 同目录存在多个可导入元数据文件")
+        return standard[0] if standard else (legacy[0] if legacy else None)
+
+    filtered = [item for item in candidates if item.fmt == mode]
+    if len(filtered) > 1:
+        raise ImportValidationError(f"{sample_dir}: 同目录存在多个 {mode} 元数据文件")
+    return filtered[0] if filtered else None
+
+
+def _require_dataset_source(
+    session: Session,
+    cache: dict[str, DatasetSource],
+    code: str,
+    metadata_path: Path,
+) -> DatasetSource:
+    row = cache.get(code)
+    if row is not None:
+        return row
     row = session.execute(select(DatasetSource).where(DatasetSource.code == code)).scalar_one_or_none()
     if row is None:
-        row = DatasetSource(code=code, name=name, description=None, is_active=True)
-        session.add(row)
-        session.flush()
-        return row, True
-
-    row.name = name
-    row.is_active = True
-    return row, False
+        raise ImportValidationError(f"{metadata_path}: dataset_source_code={code} 未在数据库中注册")
+    cache[code] = row
+    return row
 
 
-def _upsert_attack_delivery_type(session: Session, *, code: str, name: str) -> tuple[AttackDeliveryType, bool]:
+def _require_attack_delivery_type(
+    session: Session,
+    cache: dict[str, AttackDeliveryType],
+    code: str,
+    metadata_path: Path,
+) -> AttackDeliveryType:
+    row = cache.get(code)
+    if row is not None:
+        return row
     row = session.execute(select(AttackDeliveryType).where(AttackDeliveryType.code == code)).scalar_one_or_none()
     if row is None:
-        row = AttackDeliveryType(code=code, name=name, description=None, is_active=True)
-        session.add(row)
-        session.flush()
-        return row, True
-
-    row.name = name
-    row.is_active = True
-    return row, False
+        raise ImportValidationError(f"{metadata_path}: attack_delivery_type_code={code} 未在数据库中注册")
+    cache[code] = row
+    return row
 
 
-def _upsert_risk_category(
+def _require_risk_category(
     session: Session,
-    *,
+    cache: dict[str, RiskCategory],
     code: str,
-    name: str,
-    sort_order: int,
-) -> tuple[RiskCategory, bool]:
+    metadata_path: Path,
+) -> RiskCategory:
+    row = cache.get(code)
+    if row is not None:
+        return row
     row = session.execute(select(RiskCategory).where(RiskCategory.code == code)).scalar_one_or_none()
     if row is None:
-        row = RiskCategory(
-            code=code,
-            name=name,
-            meaning=None,
-            description=None,
-            sort_order=sort_order,
-            is_active=True,
-        )
-        session.add(row)
-        session.flush()
-        return row, True
-
-    row.name = name
-    row.sort_order = sort_order
-    row.is_active = True
-    return row, False
+        raise ImportValidationError(f"{metadata_path}: risk_category_code={code} 未在数据库中注册")
+    cache[code] = row
+    return row
 
 
-def _upsert_risk_subtype(
+def _require_risk_subtype(
     session: Session,
-    *,
-    category_id: int,
+    cache: dict[str, RiskSubtype],
     code: str,
-    name: str,
-    sort_order: int,
-) -> tuple[RiskSubtype, bool]:
+    metadata_path: Path,
+) -> RiskSubtype:
+    row = cache.get(code)
+    if row is not None:
+        return row
     row = session.execute(select(RiskSubtype).where(RiskSubtype.code == code)).scalar_one_or_none()
     if row is None:
-        row = RiskSubtype(
-            category_id=category_id,
-            code=code,
-            name=name,
-            description=None,
-            sort_order=sort_order,
-            is_active=True,
-        )
-        session.add(row)
-        session.flush()
-        return row, True
-
-    row.category_id = category_id
-    row.name = name
-    row.sort_order = sort_order
-    row.is_active = True
-    return row, False
+        raise ImportValidationError(f"{metadata_path}: risk_subtype_code={code} 未在数据库中注册")
+    cache[code] = row
+    return row
 
 
-def _upsert_asset_type(session: Session, *, code: str, name: str) -> tuple[AssetType, bool]:
+def _require_asset_type(
+    session: Session,
+    cache: dict[str, AssetType | None],
+    code: str,
+    metadata_path: Path,
+) -> AssetType:
+    cached = cache.get(code)
+    if cached is not None:
+        return cached
     row = session.execute(select(AssetType).where(AssetType.code == code)).scalar_one_or_none()
     if row is None:
-        row = AssetType(code=code, name=name, description=None, is_active=True)
-        session.add(row)
-        session.flush()
-        return row, True
-
-    row.name = name
-    row.is_active = True
-    return row, False
+        raise ImportValidationError(f"{metadata_path}: asset_type_code={code} 未在数据库中注册")
+    cache[code] = row
+    return row
 
 
 def _upsert_benchmark_sample(

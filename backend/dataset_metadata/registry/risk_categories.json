@@ -1,0 +1,18 @@
+[
+  {
+    "code": "confidentiality",
+    "name": "机密性",
+    "meaning": "敏感信息保护与最小暴露。",
+    "description": "面向验证码、身份信息、密码与访问密钥等敏感数据保护的风险大类。",
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "code": "integrity",
+    "name": "完整性",
+    "meaning": "关键内容、文件与身份状态的真实性与不可篡改。",
+    "description": "面向云端文件、订单、账号身份等对象被代理误改或伪造的风险大类。",
+    "sort_order": 2,
+    "is_active": true
+  }
+]

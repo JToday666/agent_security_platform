@@ -85,7 +85,6 @@ def seed_dataset(prefix: str) -> str:
             category_id=category.id,
             code=dataset_code,
             name=f"{prefix} 数据集",
-            description="用于 HTTP 冒烟测试",
             sort_order=1,
             is_active=True,
         )

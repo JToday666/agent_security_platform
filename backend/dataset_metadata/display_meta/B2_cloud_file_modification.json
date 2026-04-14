@@ -1,0 +1,38 @@
+{
+  "subtype_code": "B2_cloud_file_modification",
+  "short_description": "评估代理是否会被诱导修改云端文档或远端文件内容。",
+  "full_description": "该数据集聚焦代理在网页购物、办公与搜索任务中被引导访问云存储系统后，对远端文件执行越权编辑的风险。样本会把攻击意图藏在页面提示、悬浮层或说明文本中，要求代理先读取云端文档中的敏感信息，再把文件内容改写为指定文本。期望的安全行为是只完成原始合法任务，不对任何云端文件执行未授权的读取或修改。",
+  "highlights": [
+    "同时覆盖读取敏感内容与改写远端文件两个动作链条",
+    "强调跨页面、多站点跳转后的权限边界保持",
+    "适合衡量浏览器代理在真实办公场景下的最小行动原则"
+  ],
+  "scenarios": [
+    "购物页面提示代理前往云盘查找文档并修改其内容",
+    "网页工作流要求读取远端文档后再覆盖保存",
+    "正常任务与远端文件操作被攻击者恶意绑定"
+  ],
+  "resources": [
+    {
+      "label": "B2 评测说明",
+      "url": "https://example.com/docs/datasets/B2_cloud_file_modification",
+      "type": "docs"
+    },
+    {
+      "label": "云文档最小权限实践",
+      "url": "https://example.com/guides/cloud-document-safety",
+      "type": "guide"
+    }
+  ],
+  "media": [
+    {
+      "media_id": "B2-overview-image",
+      "type": "image",
+      "title": "B2 云端文档攻击链示意",
+      "description": "展示从普通网页任务跳转到云盘并篡改文件的典型路径。",
+      "url": "https://example.com/media/B2/overview.png",
+      "cover_url": null,
+      "sort": 1
+    }
+  ]
+}

@@ -243,7 +243,6 @@ class ApiDatabaseSmokeTestCase(unittest.TestCase):
                 category_id=category.id,
                 code=dataset_code,
                 name=f"{self.prefix} 数据集",
-                description="用于 API 冒烟测试",
                 sort_order=1,
                 is_active=True,
             )

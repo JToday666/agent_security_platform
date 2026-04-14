@@ -23,6 +23,8 @@ AGENTS.md
 /backend/**/__pycache__/
 /backend/runtime/
 /backend/data*
+!/backend/dataset_metadata/
+!/backend/dataset_metadata/**
 /backend/environments/
 /backend/storage/
 

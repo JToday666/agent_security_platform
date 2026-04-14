@@ -68,6 +68,7 @@ class SchemaModelTestCase(unittest.TestCase):
 
     def test_risk_subtype_code_is_globally_unique(self) -> None:
         self.assertTrue(RiskSubtype.__table__.c.code.unique)
+        self.assertNotIn("description", RiskSubtype.__table__.c)
 
     def test_sample_oracle_updated_at_has_server_default(self) -> None:
         column = SampleOracle.__table__.c.updated_at
