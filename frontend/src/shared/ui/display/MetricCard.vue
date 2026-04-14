@@ -19,7 +19,7 @@ withDefaults(
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .metric-card {
   border-radius: 1.2rem;
   padding: 1rem 1.05rem;

@@ -94,10 +94,28 @@
             <label class="category-main">
               <input
                 type="checkbox"
-                class="category-checkbox"
+                class="selection-input"
                 :checked="isFullySelected(category)"
                 @change="$emit('toggle-category', category.categoryId)"
               />
+              <span
+                class="selection-box"
+                :class="{
+                  'selection-box--checked': isFullySelected(category),
+                  'selection-box--partial': isPartiallySelected(category),
+                }"
+                aria-hidden="true"
+              >
+                <AppIcon
+                  v-if="isFullySelected(category)"
+                  icon="lucide:check"
+                  class="selection-box-icon"
+                />
+                <span
+                  v-else-if="isPartiallySelected(category)"
+                  class="selection-box-dash"
+                ></span>
+              </span>
               <div class="category-copy">
                 <span class="category-name">{{ category.name }}</span>
                 <span v-if="category.meaning" class="category-meaning">
@@ -113,9 +131,14 @@
               <button
                 class="expand-btn"
                 type="button"
+                :aria-label="expandedCategoryIds.includes(category.categoryId) ? '收起' : '展开'"
+                :title="expandedCategoryIds.includes(category.categoryId) ? '收起' : '展开'"
                 @click="$emit('toggle-expanded', category.categoryId)"
               >
-                {{ expandedCategoryIds.includes(category.categoryId) ? "收起" : "展开" }}
+                <AppIcon
+                  :icon="expandedCategoryIds.includes(category.categoryId) ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+                  class="expand-btn-icon"
+                />
               </button>
             </div>
           </div>
@@ -131,9 +154,23 @@
             >
               <input
                 type="checkbox"
+                class="selection-input"
                 :checked="selectedDatasetIds.includes(dataset.datasetId)"
                 @change="$emit('toggle-dataset', dataset.datasetId)"
               />
+              <span
+                class="selection-box"
+                :class="{
+                  'selection-box--checked': selectedDatasetIds.includes(dataset.datasetId),
+                }"
+                aria-hidden="true"
+              >
+                <AppIcon
+                  v-if="selectedDatasetIds.includes(dataset.datasetId)"
+                  icon="lucide:check"
+                  class="selection-box-icon"
+                />
+              </span>
               <div class="dataset-copy">
                 <span class="dataset-name">{{ dataset.name }}</span>
                 <span class="dataset-description">
@@ -156,17 +193,18 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { DatasetCategoryViewModel } from "@/shared/types/DatasetTypes";
+import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
 import type { SubmitDatasetCatalogStatus } from "@/modules/submission/composables/useSubmitDatasetCatalog";
 import {
   getCategoryTheme,
   isCategoryFullySelected,
-} from "@/modules/dataset/lib";
+} from "@/modules/dataset/lib/dataset-utils";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
 import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
+import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 
 const props = defineProps<{
   categories: DatasetCategoryViewModel[];
@@ -253,6 +291,14 @@ const selectedCategoryCount = computed(
 const isFullySelected = (category: DatasetCategoryViewModel) =>
   isCategoryFullySelected(category, props.selectedDatasetIds);
 
+const isPartiallySelected = (category: DatasetCategoryViewModel) => {
+  const selectedCount = category.subcategories.filter((item) =>
+    props.selectedDatasetIds.includes(item.datasetId),
+  ).length;
+
+  return selectedCount > 0 && selectedCount < category.subcategories.length;
+};
+
 const getCategoryBlockStyle = (categoryId: string) => {
   const theme = getCategoryTheme(categoryId);
 
@@ -266,7 +312,7 @@ const getCategoryBlockStyle = (categoryId: string) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .toolbar {
   display: grid;
   grid-template-columns: minmax(240px, 1.4fr) minmax(0, 1fr);
@@ -322,16 +368,52 @@ const getCategoryBlockStyle = (categoryId: string) => {
 }
 
 .category-main {
+  position: relative;
   display: flex;
   align-items: flex-start;
   gap: 0.8rem;
   min-width: 0;
 }
 
-.category-checkbox {
-  width: 1rem;
-  height: 1rem;
-  margin-top: 0.1rem;
+.selection-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.selection-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.08rem;
+  border-radius: 0.34rem;
+  border: 1px solid rgba(148, 163, 184, 0.34);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  transition: background var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+  flex-shrink: 0;
+}
+
+.selection-box--checked,
+.selection-box--partial {
+  border-color: rgba(37, 99, 235, 0.92);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.98), rgba(59, 130, 246, 0.94));
+  box-shadow: 0 8px 18px -14px rgba(37, 99, 235, 0.74);
+}
+
+.selection-box-icon {
+  width: 0.82rem;
+  height: 0.82rem;
+  color: #ffffff;
+}
+
+.selection-box-dash {
+  width: 0.56rem;
+  height: 0.12rem;
+  border-radius: 999px;
+  background: #ffffff;
 }
 
 .category-copy {
@@ -362,11 +444,28 @@ const getCategoryBlockStyle = (categoryId: string) => {
 }
 
 .expand-btn {
-  border: none;
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
   color: var(--category-text, #334155);
-  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 10px 20px -18px rgba(15, 23, 42, 0.32);
+  transition: transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard), background var(--duration-fast) var(--ease-standard);
+}
+
+.expand-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px -18px rgba(15, 23, 42, 0.36);
+}
+
+.expand-btn-icon {
+  width: 1rem;
+  height: 1rem;
 }
 
 .dataset-list {
@@ -377,6 +476,7 @@ const getCategoryBlockStyle = (categoryId: string) => {
 }
 
 .dataset-item {
+  position: relative;
   display: flex;
   align-items: flex-start;
   gap: 0.7rem;

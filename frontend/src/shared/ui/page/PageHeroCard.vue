@@ -69,7 +69,7 @@ withDefaults(
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .hero-card {
   position: relative;
   overflow: hidden;

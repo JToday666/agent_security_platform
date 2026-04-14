@@ -122,7 +122,7 @@ const remainingCount = computed(
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .action-card {
   border-radius: 1.35rem;
   padding: 1.1rem;

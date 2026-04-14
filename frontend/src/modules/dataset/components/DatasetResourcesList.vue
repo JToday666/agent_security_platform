@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import type { DatasetResourceLink } from "@/shared/types/DatasetTypes";
+import type { DatasetResourceLink } from "@/shared/types/dataset-types";
 import Button from "@/shared/ui/actions/UiButton.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 
@@ -47,7 +47,7 @@ const typeLabels: Record<DatasetResourceLink["type"], string> = {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .resource-list {
   display: flex;
   flex-direction: column;

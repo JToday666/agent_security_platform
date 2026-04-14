@@ -1,15 +1,15 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { RouteLocation } from "@/app/router/RouteNames";
+import { RouteLocation } from "@/app/router/route-names";
 import {
   getEvaluationDetail,
   postEvaluationAction,
-} from "@/modules/evaluation/api";
-import { shouldPollEvaluation } from "@/modules/evaluation/lib";
+} from "@/modules/evaluation/api/evaluation-api";
+import { shouldPollEvaluation } from "@/modules/evaluation/lib/evaluation-status";
 import type {
   EvaluationAction,
   EvaluationDetail,
-} from "@/shared/types/AgentTypes";
+} from "@/shared/types/agent-types";
 
 const POLL_INTERVAL_MS = 15_000;
 

@@ -195,14 +195,14 @@
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useUserStore } from "@/modules/account/stores/UserStore";
+import { useUserStore } from "@/modules/account/stores/userStore";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
-import { RouteLocation } from "@/app/router/RouteNames";
-import { EXPLORE_NAV_ITEMS, WORKSPACE_NAV_ITEMS } from "@/app/shell/NavItems";
-import { resolveShellContext } from "@/app/shell/ShellContext";
-import { getNavLinkStateProps } from "@/app/shell/navLinkState";
+import { RouteLocation } from "@/app/router/route-names";
+import { EXPLORE_NAV_ITEMS, WORKSPACE_NAV_ITEMS } from "@/app/shell/nav-items";
+import { resolveShellContext } from "@/app/shell/shell-context";
+import { getNavLinkStateProps } from "@/app/shell/nav-link-state";
 
 const MOBILE_NAV_BREAKPOINT = 1024;
 const SCROLL_THRESHOLD = 10;
@@ -360,7 +360,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .navbar {
   position: fixed;
   inset: 0 0 auto;

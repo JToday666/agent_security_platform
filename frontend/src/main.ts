@@ -1,10 +1,10 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import { createPinia } from "pinia";
-import router from "./app/router";
-import { useUserStore } from "./modules/account/stores/UserStore";
-import { RouteLocation } from "./app/router/RouteNames";
-import "./app/styles";
+import router from "./app/router/router";
+import { useUserStore } from "./modules/account/stores/userStore";
+import { RouteLocation } from "./app/router/route-names";
+import "./app/styles/main.scss";
 
 const app = createApp(App);
 const pinia = createPinia();

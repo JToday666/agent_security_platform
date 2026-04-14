@@ -44,18 +44,18 @@
 import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
-import { RouteLocation } from "@/app/router/RouteNames";
+import { RouteLocation } from "@/app/router/route-names";
 import type {
   DatasetCategoryViewModel,
   DatasetSubcategory,
-} from "@/shared/types/DatasetTypes";
-import { useUserStore } from "@/modules/account/stores/UserStore";
+} from "@/shared/types/dataset-types";
+import { useUserStore } from "@/modules/account/stores/userStore";
 import Button from "@/shared/ui/actions/UiButton.vue";
 import {
   formatDateLabel,
   formatSampleCount,
   getCategoryTheme,
-} from "@/modules/dataset/lib";
+} from "@/modules/dataset/lib/dataset-utils";
 
 const props = defineProps<{
   dataset: DatasetSubcategory;
@@ -99,7 +99,7 @@ const handleSubmitClick = () => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .dataset-card {
   position: relative;
   overflow: hidden;

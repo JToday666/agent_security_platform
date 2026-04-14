@@ -117,8 +117,7 @@ const contactItems: ContactItem[] = [
 ];
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
 .contact-page {
   padding-bottom: 2.3rem;
 }
@@ -147,11 +146,13 @@ const contactItems: ContactItem[] = [
 }
 
 .contact-hero__description {
-  max-width: 56ch;
+  width: 100%;
+  max-width: none;
   margin: 0;
   color: var(--color-text-muted);
   font-size: 0.98rem;
   line-height: 1.66;
+  white-space: nowrap;
 }
 
 .contact-grid {
@@ -255,15 +256,8 @@ const contactItems: ContactItem[] = [
     grid-template-columns: 1fr;
   }
 
-  .contact-item {
-    min-height: auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .info-value,
+  .contact-hero__description,
   .info-value--single-line {
-    font-size: 0.95rem;
     white-space: normal;
   }
 }

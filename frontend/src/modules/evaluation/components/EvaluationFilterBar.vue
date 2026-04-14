@@ -42,7 +42,7 @@ import type {
   EvaluationRecordFilterMethod,
   EvaluationRecordFilterStatus,
   EvaluationRecordFilterVisibility,
-} from "@/modules/evaluation/lib";
+} from "@/modules/evaluation/lib/evaluation-record-filters";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import SectionCard from "@/shared/ui/page/SectionCard.vue";
 
@@ -96,7 +96,7 @@ const handleSubmitMethodChange = (value: string) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .filter-grid {
   display: grid;
   grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(140px, 0.8fr));

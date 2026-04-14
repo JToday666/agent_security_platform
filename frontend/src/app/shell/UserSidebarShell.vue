@@ -35,8 +35,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
-import { WORKSPACE_SIDEBAR_ITEMS } from "@/app/shell/NavItems";
-import { getNavLinkStateProps } from "@/app/shell/navLinkState";
+import { WORKSPACE_SIDEBAR_ITEMS } from "@/app/shell/nav-items";
+import { getNavLinkStateProps } from "@/app/shell/nav-link-state";
 
 const collapsed = ref(false);
 
@@ -61,7 +61,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .user-sidebar {
   position: fixed;
   left: 0;

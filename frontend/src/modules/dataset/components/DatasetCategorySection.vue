@@ -28,8 +28,8 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { DatasetCategoryViewModel } from "@/shared/types/DatasetTypes";
-import { getCategoryTheme } from "@/modules/dataset/lib";
+import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
+import { getCategoryTheme } from "@/modules/dataset/lib/dataset-utils";
 import DatasetSubcategoryCard from "@/modules/dataset/components/DatasetSubcategoryCard.vue";
 
 const props = defineProps<{
@@ -56,7 +56,7 @@ const statCardStyle = computed(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .category-section + .category-section {
   margin-top: 2rem;
 }

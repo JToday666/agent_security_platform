@@ -90,7 +90,7 @@ const handleConfirm = () => {
 const afterLeave = () => {};
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .confirm-overlay {
   background-color: var(--overlay-dark-40);
   backdrop-filter: blur(var(--blur-4));

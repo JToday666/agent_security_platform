@@ -32,7 +32,7 @@ withDefaults(
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .section-card {
   display: flex;
   flex-direction: column;

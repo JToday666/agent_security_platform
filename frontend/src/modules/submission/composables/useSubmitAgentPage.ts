@@ -1,31 +1,31 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
-import { RouteLocation } from "@/app/router/RouteNames";
+import { RouteLocation } from "@/app/router/route-names";
 import {
   getSubmitMeta,
   precheckAgent,
   submitAgent,
-} from "@/modules/evaluation/api";
+} from "@/modules/evaluation/api/evaluation-api";
 import {
   toggleCategoryDatasets as toggleCategoryDatasetsValue,
   toggleDatasetId,
-} from "@/modules/dataset/lib";
-import { useSubmitDraftStore } from "@/modules/submission/stores/SubmitDraftStore";
+} from "@/modules/dataset/lib/dataset-utils";
+import { useSubmitDraftStore } from "@/modules/submission/stores/submitDraftStore";
 import { useSubmitDatasetCatalog } from "./useSubmitDatasetCatalog";
 import {
   MAX_SUBMIT_DATASET_COUNT,
   normalizeDifficulty,
   normalizeTimeoutMinutes,
-  resolveDatasetIdsFromQuery,
   validateSubmitPayload,
-} from "@/modules/submission/lib";
+} from "@/modules/submission/model/parameter-validator";
+import { resolveDatasetIdsFromQuery } from "@/modules/submission/lib/submit-query-utils";
 import type {
   PendingSubmitRequest,
   SubmitAgentPayload,
   SubmitFieldErrors,
   SubmitMetaResponse,
-} from "@/shared/types/AgentTypes";
+} from "@/shared/types/agent-types";
 
 interface SubmitPayloadSnapshot {
   agentName: string;

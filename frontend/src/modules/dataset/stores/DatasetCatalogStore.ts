@@ -4,16 +4,16 @@ import {
   getDatasetCatalog,
   getDatasetDetail,
   type DatasetServiceError,
-} from "@/modules/dataset/api/DatasetService";
+} from "@/modules/dataset/api/dataset-api";
 import type {
   DatasetCategory,
   DatasetDetail,
-} from "@/shared/types/DatasetTypes";
+} from "@/shared/types/dataset-types";
 import {
   findDatasetSummary,
   getEnabledCategories,
   resolveActiveCategoryId,
-} from "@/modules/dataset/lib";
+} from "@/modules/dataset/lib/dataset-utils";
 
 interface DatasetDetailFetchResult {
   detail: DatasetDetail | null;

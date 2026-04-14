@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import type { DatasetMediaItem } from "@/shared/types/DatasetTypes";
+import type { DatasetMediaItem } from "@/shared/types/dataset-types";
 
 defineProps<{
   media: DatasetMediaItem[];
@@ -55,7 +55,7 @@ const markFailed = (mediaId: string) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .empty-card {
   padding: 1.4rem;
   border-radius: 1.2rem;

@@ -24,13 +24,13 @@
 </template>
 
 <script setup lang="ts">
-import { RouteLocation } from "@/app/router/RouteNames";
+import { RouteLocation } from "@/app/router/route-names";
 import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
 import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .not-found-card {
   gap: 0.9rem;
 }

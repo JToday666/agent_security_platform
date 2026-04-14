@@ -48,9 +48,9 @@
 </template>
 
 <script setup lang="ts">
-import type { DatasetCategoryViewModel } from "@/shared/types/DatasetTypes";
-import type { DatasetCatalogSortKey } from "@/modules/dataset/lib";
-import { getCategoryTheme } from "@/modules/dataset/lib";
+import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
+import type { DatasetCatalogSortKey } from "@/modules/dataset/model/dataset-catalog-view";
+import { getCategoryTheme } from "@/modules/dataset/lib/dataset-utils";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
@@ -100,7 +100,7 @@ const getChipStyle = (categoryId: string, active: boolean) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .toolbar {
   display: grid;
   grid-template-columns: minmax(240px, 1.4fr) minmax(180px, 0.8fr) auto;

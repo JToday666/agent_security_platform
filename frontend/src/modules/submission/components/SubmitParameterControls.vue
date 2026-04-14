@@ -75,12 +75,12 @@ import UiToggleField from "@/shared/ui/forms/UiToggleField.vue";
 import type {
   SubmitFormState,
   SubmitMetaResponse,
-} from "@/shared/types/AgentTypes";
+} from "@/shared/types/agent-types";
 import {
   getRangeSoftWarning,
   normalizeDifficulty,
   normalizeTimeoutMinutes,
-} from "@/modules/submission/lib";
+} from "@/modules/submission/model/parameter-validator";
 
 const props = defineProps<{
   meta: SubmitMetaResponse;
@@ -140,7 +140,7 @@ const handleTimeoutBlur = () => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .field-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

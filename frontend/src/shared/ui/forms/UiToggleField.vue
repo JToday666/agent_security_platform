@@ -34,7 +34,7 @@ defineEmits<{
 }>();
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .ui-toggle-field {
   display: flex;
   align-items: center;

@@ -1,13 +1,13 @@
 <template>
-  <div class="content detail-page layout-page-shell layout-page-shell--wide">
+  <div class="content detail-page layout-page-shell">
     <PageHeroCard
       :title="detail?.agentName || '评测详情'"
-      :description="detail ? detail.progress.statusText : '查看任务状态与评测结果。'"
-      tone="workspace"
+      :description="detail?.description || '查看任务状态、报告摘要和详细指标。'"
+      density="compact"
       title-tone="brand"
     >
       <template #actions>
-        <UiButton variant="secondary" @click="goBack">返回评测记录</UiButton>
+        <UiButton variant="secondary" @click="goBack">返回记录</UiButton>
       </template>
     </PageHeroCard>
 
@@ -25,38 +25,37 @@
     <template v-else-if="detail">
       <section class="status-grid">
         <article class="status-card ui-surface-white">
-          <span class="status-label">任务状态</span>
-          <strong class="status-value">{{ getEvaluationStatusLabel(detail.status) }}</strong>
-          <StatusTag kind="evaluation" :value="detail.status" size="sm" icon-only />
+          <div class="status-head">
+            <span class="status-label">任务状态</span>
+            <StatusTag kind="evaluation" :value="detail.status" size="sm" />
+          </div>
         </article>
 
         <article class="status-card ui-surface-white">
-          <span class="status-label">提交方式</span>
-          <strong class="status-value">{{ detail.submitMethod.toUpperCase() }}</strong>
-          <StatusTag kind="method" :value="detail.submitMethod" size="sm" icon-only />
+          <div class="status-head">
+            <span class="status-label">提交方式</span>
+            <StatusTag kind="method" :value="detail.submitMethod" size="sm" />
+          </div>
         </article>
 
         <article class="status-card ui-surface-white">
-          <span class="status-label">数据集数量</span>
-          <strong class="status-value">{{ detail.datasetNames.length }}</strong>
+          <div class="status-head">
+            <span class="status-label">数据集数量</span>
+            <strong class="status-count">{{ detail.datasetNames.length }}</strong>
+          </div>
         </article>
 
         <article class="status-card ui-surface-white">
-          <span class="status-label">报告状态</span>
-          <strong class="status-value">{{ reportLabel }}</strong>
-          <StatusTag kind="report" :value="reportTagValue" size="sm" icon-only />
+          <div class="status-head">
+            <span class="status-label">报告状态</span>
+            <StatusTag kind="report" :value="reportTagValue" size="sm" />
+          </div>
         </article>
       </section>
 
-      <InlineNotice
-        v-if="error"
-        tone="danger"
-        title="操作未完成"
-        :message="error"
-      />
+      <InlineNotice v-if="error" tone="danger" title="操作未完成" :message="error" />
 
-      
-        <section v-if="hasAvailableActions(detail.controls)" class="actions-panel ui-surface-white">
+      <section v-if="hasAvailableActions(detail.controls)" class="actions-panel ui-surface-white">
         <div class="panel-head panel-head--compact">
           <div>
             <h2>任务操作</h2>
@@ -123,11 +122,7 @@
           </span>
         </div>
 
-        <InlineNotice
-          v-if="!detail.report"
-          tone="info"
-          :message="reportStateText"
-        />
+        <InlineNotice v-if="!detail.report" tone="info" :message="reportStateText" />
 
         <template v-else>
           <div class="summary-metrics">
@@ -201,11 +196,7 @@
               <p>{{ metric.description }}</p>
             </article>
           </div>
-          <InlineNotice
-            v-else
-            tone="info"
-            message="当前结果未返回详细指标。"
-          />
+          <InlineNotice v-else tone="info" message="当前结果未返回详细指标。" />
         </template>
       </section>
     </template>
@@ -231,14 +222,13 @@ import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 import MetricCard from "@/shared/ui/display/MetricCard.vue";
 import StatusTag from "@/shared/ui/display/StatusTag.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
-import { formatDateTimeLabel } from "@/modules/dataset/lib";
+import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
 import { useEvaluationDetailPage } from "@/modules/evaluation/composables/useEvaluationDetailPage";
 import {
   formatEvaluationScore,
-  getEvaluationStatusLabel,
   hasAvailableActions,
   hasVisibleScore,
-} from "@/modules/evaluation/lib";
+} from "@/modules/evaluation/lib/evaluation-status";
 
 const {
   detail,
@@ -277,18 +267,6 @@ const reportTagValue = computed(() => {
   }
 
   return "pending";
-});
-
-const reportLabel = computed(() => {
-  if (reportTagValue.value === "available") {
-    return "已生成";
-  }
-
-  if (reportTagValue.value === "missing") {
-    return "未返回";
-  }
-
-  return "生成中";
 });
 
 const summaryMetrics = computed(() => {
@@ -336,7 +314,7 @@ const summaryMetrics = computed(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .detail-page {
   padding-bottom: 2.5rem;
 }
@@ -360,18 +338,23 @@ const summaryMetrics = computed(() => {
   padding: 1.15rem;
 }
 
+.status-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
 .status-label {
   color: var(--color-text-subtle);
   font-size: 0.82rem;
 }
 
-.status-value {
-  display: block;
-  margin: 0.42rem 0 0.55rem;
+.status-count {
   color: var(--color-text-dark);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  line-height: 1;
 }
-
 
 .panel-head {
   display: flex;
@@ -389,11 +372,6 @@ const summaryMetrics = computed(() => {
   margin: 0.42rem 0 0;
   color: var(--color-text-subtle);
   line-height: 1.68;
-}
-
-.panel-head strong {
-  color: var(--color-primary);
-  font-size: 1.35rem;
 }
 
 .actions-panel,
@@ -513,7 +491,8 @@ const summaryMetrics = computed(() => {
   }
 
   .panel-head,
-  .action-buttons {
+  .action-buttons,
+  .status-head {
     flex-direction: column;
     align-items: stretch;
   }

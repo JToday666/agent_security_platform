@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { RouteLocation } from "@/app/router/RouteNames";
+import { RouteLocation } from "@/app/router/route-names";
 import SubmitActionBar from "@/modules/submission/components/SubmitActionBar.vue";
 import SubmitBasicInfoForm from "@/modules/submission/components/SubmitBasicInfoForm.vue";
 import SubmitDatasetPanel from "@/modules/submission/components/SubmitDatasetPanel.vue";
@@ -146,7 +146,7 @@ const {
 } = useSubmitAgentPage();
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .submit-page {
   padding-bottom: 2.5rem;
 }

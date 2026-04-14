@@ -19,10 +19,13 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { EvaluationStatus, SubmitMethod } from "@/shared/types/AgentTypes";
+import type { EvaluationStatus, SubmitMethod } from "@/shared/types/agent-types";
 import AppIcon from "../branding/AppIcon.vue";
 import Tag from "./UiTag.vue";
-import { getEvaluationStatusLabel, getEvaluationStatusTone } from "@/modules/evaluation/lib";
+import {
+  getEvaluationStatusLabel,
+  getEvaluationStatusTone,
+} from "@/modules/evaluation/lib/evaluation-status";
 
 type StatusTagKind = "evaluation" | "visibility" | "method" | "report";
 
@@ -88,18 +91,18 @@ const resolved = computed(() => {
   }
 
   if (props.value === "available") {
-    return { label: "报告可用", tone: "success" as const, icon: "lucide:file-check-2" };
+    return { label: "已生成", tone: "success" as const, icon: "lucide:file-check-2" };
   }
 
   if (props.value === "pending") {
-    return { label: "报告生成中", tone: "warning" as const, icon: "lucide:file-clock" };
+    return { label: "生成中", tone: "warning" as const, icon: "lucide:file-clock" };
   }
 
-  return { label: "报告未生成", tone: "muted" as const, icon: "lucide:file-minus" };
+  return { label: "未生成", tone: "muted" as const, icon: "lucide:file-minus" };
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .status-tag--icon-only {
   padding-inline: 0.48rem;
 }
