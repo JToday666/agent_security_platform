@@ -1,161 +1,264 @@
 # Agent Security Platform
 
-## 项目结构
+Agent Security Platform 是一个面向 Agent API 的安全测试平台仓库。当前仓库包含 Vue 3 前端控制台、FastAPI 后端服务、基于 PostgreSQL 轮询的 worker，以及前后端共享的接口契约文档。
 
-- `frontend/`: Vue 3 + TypeScript 前端。
-- `backend/`: FastAPI 后端。
-- `share/`: 当前前后端接口约定文档。
+## 项目简介
 
-## 当前前端约定
+平台当前聚焦一条可联调的主链路：
 
-前端源码根目录为 `frontend/src`，主要分为三层：
+- 展示数据集目录与详情
+- 提交 Agent 评测任务
+- 查看评测记录与详情
+- 对任务执行暂停、恢复、终止、取消等动作
+- 在前端真实 API 模式与 Mock 模式之间切换
 
-- `app/`: 路由、布局、Shell 与全局装配。
-- `modules/`: 业务模块，按 `public / dataset / submission / evaluation / account` 划分。
-- `shared/`: 跨模块共享的 UI、类型、通用 API 能力与工具函数。
+当前仓库适合作为以下工作的统一入口：
 
-### `shared/ui` 目录
+- 前端页面与交互联调
+- 后端接口与状态流转联调
+- 提交链路与评测记录链路联调
+- 跨端接口契约核对
+- 项目级设计和拆解文档查阅
 
-本轮已按职责拆分为以下子目录：
+## 当前进度概览
 
-- `shared/ui/actions/`: 按钮等交互动作组件。
-- `shared/ui/branding/`: 品牌 Logo、图标等品牌元素。
-- `shared/ui/display/`: 标签、指标卡、状态标签等展示组件。
-- `shared/ui/feedback/`: 弹窗、提示条、页面状态卡等反馈组件。
-- `shared/ui/forms/`: 表单字段、切换卡、选项卡等表单组件。
-- `shared/ui/page/`: Hero、Section 等页面级公共外壳。
+| 子系统              | 当前状态                                                                                                                                           |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 前端 `frontend/`    | 已实现首页、数据集目录/详情、排行榜、联系页、登录注册、个人资料、提交评测页、评测记录页、评测详情页，以及真实 API / Mock API 双模式切换。          |
+| 后端 API `backend/` | 已实现 `/api/v1/auth/*`、`/api/v1/user/*`、`/api/v1/datasets/*`、`/api/v1/agents/*`、`/api/v1/evaluations/*`，统一返回 `{ code, data, message }`。 |
+| Worker              | 已具备 PostgreSQL 轮询领取任务、心跳续约、暂停/恢复/终止/取消状态处理，以及评测完成后的结果汇总链路。                                              |
+| 数据与迁移          | 已具备 SQLAlchemy 模型、Alembic 迁移链路、运行时目录和上传目录收口。                                                                               |
+| 接口契约 `share/`   | 已形成统一 API 协议总表和用户、数据集/提交、评测三个补充说明文档，供前后端共同对齐。                                                               |
 
-拆分目的：
+## 已知边界
 
-- 降低 `shared/ui` 平铺文件过多带来的查找成本。
-- 让通用外壳、表单、反馈、展示组件边界更清晰。
-- 在不改变页面视觉的前提下，减少后续扩展时的目录混乱。
+当前仓库已经具备前后端主链路联调能力，但以下能力仍处于未完全落地或后续增强阶段：
 
-### `shared/api` 目录
+- 样本复制到隔离目录，以及按样本启动本地页面或辅助服务的能力尚未完全打通。
+- 执行过程中的日志、页面访问、网络请求、工具调用和运行产物采集仍待继续完善。
+- `success_oracle` / `harm_oracle` 的人工辅助与半自动判定能力仍待补齐。
+- 可追溯的最终报告、证据沉淀和统计汇总仍需继续增强。
+- worker 当前是 PostgreSQL 轮询版，启动/停止观测、健康检查与异常恢复策略仍有完善空间。
 
-前端共享 API 工具已从原先的 `shared/api/core` 平铺到 `shared/api`：
+这些边界不会改变当前前端、后端和接口契约的阅读入口，但会影响真实执行深度与后续运维能力判断。
 
-- `Config.ts`
-- `HttpClient.ts`
-- `ApiRuntime.ts`
-- `MemoryCache.ts`
-- `MockApiUtils.ts`
+## 仓库结构
 
-当前目录规模下，直接平铺比仅保留一个 `core` 子目录更简洁，减少了一层无实际收益的路径嵌套。
+| 路径        | 职责                                                             |
+| ----------- | ---------------------------------------------------------------- |
+| `frontend/` | 前端工程，负责页面、状态管理、路由、共享 UI，以及前端 Mock API。 |
+| `backend/`  | FastAPI 后端、数据库模型、业务模块、worker、迁移和后端测试。     |
+| `share/`    | 跨端接口契约主维护目录；字段语义、路径和请求响应约定以此处为准。 |
+| `docs/`     | 项目级设计说明、任务拆解、附录和参考性资料。                     |
+| `README.md` | 项目级入口文档，不复制前后端内部实现细节。                       |
 
-## 当前页面补充
+当前协作边界如下：
 
-### 数据集详情页
+- 接口路径、字段语义、错误码约定：以 `share/` 为主。
+- 前端分层、页面职责、运行时链路：以 `frontend/docs/` 为主。
+- 后端分层、领域规则、数据库与接口实现状态：以 `backend/docs/` 为主。
+- 平台级设计背景、数据库附录与阶段任务拆解：以根目录 `docs/` 为主。
 
-- “准备发起评测”区块中的标题、说明与按钮为居中排布。
-- 该区块用于承接从数据集详情直接进入提交页的入口。
+## 项目协作图
 
-### 评测报告详情页
-
-- 顶部摘要区仅保留状态文字和图标标记，不再在彩色标记中重复展示相同文案。
-- 数据集数量卡片仅展示数量，不再展示具体数据集名称列表。
-
-### 提交评测页
-
-- API Token 文案已改为面向用户的说明，不再使用开发者导向描述。
-- 目录刷新后若移除了失效数据集或展开状态，页面不再显示黄色提示，内部仅静默同步状态。
-- 提交页草稿仍只保留在当前页面会话内，不写入 durable localStorage。
-
-### 联系我们页
-
-- Hero 区中 logo、标题与长文案均为居中布局，分别独占一行。
-
-## 前端运行
-
-```bash
-cd frontend
-npm install
-npm run dev
-npm run test
-npm run type-check
-npm run build
+```mermaid
+flowchart LR
+    FE["frontend/<br/>Vue 3 + TypeScript"] -->|"/api/v1 /uploads"| BE["backend/<br/>FastAPI API"]
+    FE -.-> MOCK["Frontend Mock API"]
+    BE --> DB["PostgreSQL"]
+    BE --> RT["backend/runtime/<br/>uploads / credentials / workdir"]
+    WK["backend/worker.py<br/>Polling Worker"] --> DB
+    WK --> RT
+    CONTRACT["share/<br/>接口契约"] -.-> FE
+    CONTRACT -.-> BE
+    DOCS["docs/<br/>项目级设计文档"] -.-> FE
+    DOCS -.-> BE
 ```
+
+## 环境准备
+
+| 工具       | 要求                         | 说明                                                                   |
+| ---------- | ---------------------------- | ---------------------------------------------------------------------- |
+| Node.js    | `>=24.14.1 <25`              | 前端 `package.json` 中已明确约束。                                     |
+| npm        | 推荐 `11.12.1`               | 前端 `packageManager` 当前为 `npm@11.12.1`。                           |
+| Python     | `>=3.12`，推荐 `3.12`        | 后端 `pyproject.toml` 要求 `>=3.12`，`.python-version` 当前为 `3.12`。 |
+| uv         | 可执行 `uv sync` 和 `uv run` | 后端使用 uv 管理依赖、运行和迁移。                                     |
+| PostgreSQL | 需要本地可用实例             | 仓库未锁定具体次版本，建议与团队开发环境保持一致。                     |
 
 ## 环境变量
 
-前端当前只使用以下环境变量：
+### 前端
 
-- `VITE_API_BASE_URL`
-- `VITE_BACKEND_TARGET`
-- `VITE_ENABLE_API_MOCK`
+前端当前只使用以下三个环境变量：
 
-说明：
-
-- `VITE_API_BASE_URL` 控制前端请求基地址。
-- `VITE_BACKEND_TARGET` 只用于 Vite 本地代理目标，不属于前端运行时业务配置。
-- `VITE_ENABLE_API_MOCK=true` 时，数据集、提交、评测相关链路统一走前端 mock 实现。
+| 变量                   | 推荐本地值              | 说明                                |
+| ---------------------- | ----------------------- | ----------------------------------- |
+| `VITE_API_BASE_URL`    | `/api/v1`               | 前端运行时 API 基地址。             |
+| `VITE_BACKEND_TARGET`  | `http://127.0.0.1:8000` | 仅用于 Vite 开发代理目标。          |
+| `VITE_ENABLE_API_MOCK` | `false`                 | `true` 时优先走前端 Mock 数据链路。 |
 
 推荐本地联调配置：
 
 ```env
 VITE_API_BASE_URL=/api/v1
-VITE_BACKEND_TARGET=http://127.0.0.1:8001
+VITE_BACKEND_TARGET=http://127.0.0.1:8000
 VITE_ENABLE_API_MOCK=false
 ```
 
-直接访问后端：
+若需要跳过本地代理，直接访问后端：
 
 ```env
-VITE_API_BASE_URL=http://127.0.0.1:8001/api/v1
+VITE_API_BASE_URL=http://127.0.0.1:8000/api/v1
 VITE_ENABLE_API_MOCK=false
 ```
 
-显式启用前端 mock：
+若只演示前端流程，不依赖真实后端：
 
 ```env
 VITE_ENABLE_API_MOCK=true
 ```
 
-## 测试
+### 后端
 
-前端测试已迁移到 Vitest：
+根目录不展开所有高级运行参数，只列最小必填项。其余配置定义在 [backend/app/shared/config.py](./backend/app/shared/config.py)。
 
-- `npm run test`: 运行 `src/**/*.vitest.ts`
-- `npm run type-check`: 运行 `vue-tsc -b`
+| 变量                | 推荐本地值                | 说明               |
+| ------------------- | ------------------------- | ------------------ |
+| `PROJECT_NAME`      | `Agent Security Platform` | FastAPI 应用标题。 |
+| `FASTAPI_HOST`      | `127.0.0.1`               | 本地开发监听地址。 |
+| `FASTAPI_PORT`      | `8000`                    | 本地开发标准端口。 |
+| `POSTGRES_HOST`     | `localhost`               | PostgreSQL 主机。  |
+| `POSTGRES_PORT`     | `5432`                    | PostgreSQL 端口。  |
+| `POSTGRES_DB`       | `<your_db_name>`          | 本地数据库名。     |
+| `POSTGRES_USER`     | `postgres`                | 本地数据库用户名。 |
+| `POSTGRES_PASSWORD` | `<your_db_password>`      | 本地数据库密码。   |
+| `SQLALCHEMY_ECHO`   | `false`                   | 是否打印 SQL。     |
 
-组件测试链路已不再依赖旧的重复测试文件结构，目录与依赖均已按当前工程状态收口。
+推荐本地 `.env` 示例：
 
-## 缓存与持久化边界
+```env
+PROJECT_NAME="Agent Security Platform"
+FASTAPI_HOST=127.0.0.1
+FASTAPI_PORT=8000
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=<your_db_name>
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=<your_db_password>
+SQLALCHEMY_ECHO=false
+```
 
-### 内存缓存
+## 启动与联调
 
-当前前端只对以下读取接口做内存缓存：
+推荐按“后端 API -> worker -> 前端”的顺序启动。
 
-- `GET /datasets/catalog`
-- `GET /datasets/{datasetId}`
-- `GET /agents/submit-meta`
+### 1. 启动后端 API
 
-其中：
+在 `backend/` 目录执行：
 
-- 数据集目录页和提交页都支持 `force` 刷新，能够绕过内存缓存重新请求。
-- 评测记录与评测详情不做 durable 本地缓存，详情页仅按页面逻辑轮询或动作后刷新。
+```bash
+uv sync
+uv run alembic upgrade head
+uv run python run.py
+```
 
-### localStorage
+等价的显式启动命令：
 
-当前允许写入 localStorage 的内容只有：
+```bash
+uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
 
-- 用户 token
-- 登录后跳转地址
-- 会话级滚动位置
-- mock 评测记录（仅 mock 链路）
+### 2. 启动 worker
 
-提交页草稿不再写入 localStorage，只在当前页面会话内保留。
+在新的终端窗口中进入 `backend/` 目录执行：
 
-## 文档
+```bash
+uv run python worker.py
+```
 
-- [share/database&submit接口.md](./share/database&submit接口.md)
-- [share/evaluations接口.md](./share/evaluations接口.md)
-- [share/user接口.md](./share/user接口.md)
-- [share/API接口协议.md](./share/API接口协议.md)
+### 3. 启动前端
 
-## 文本编码
+在 `frontend/` 目录执行：
 
-本轮修改后的文本文件统一为：
+```bash
+npm install
+npm run dev
+```
 
-- UTF-8 无 BOM
-- CRLF 行尾
+### 4. 访问入口
+
+- 前端开发地址：以 Vite 终端输出为准，常见为 `http://127.0.0.1:5173`
+- OpenAPI：`http://127.0.0.1:8000/docs`
+- 服务根路径：`http://127.0.0.1:8000/`
+- API 根路径：`http://127.0.0.1:8000/api/`
+- API v1 根路径：`http://127.0.0.1:8000/api/v1/`
+
+## 调试与验证
+
+### 前端最小验证
+
+在 `frontend/` 目录执行：
+
+```bash
+npm run test
+npm run type-check
+npm run build
+```
+
+### 后端最小验证
+
+在 `backend/` 目录执行：
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
+
+若要做真实 HTTP 冒烟，请先保证后端 API 和数据库已启动，再执行：
+
+```bash
+uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
+```
+
+### 联调排查建议
+
+- 前端报 401 或登录态异常时，先看 `frontend/docs/02-架构/应用启动与运行时说明.md`。
+- 接口字段、错误码或路径不一致时，先以 `share/` 下协议文档为准。
+- 评测状态流转、动作语义和 worker 行为判断时，先看 `backend/docs/` 下的接口状态和领域文档。
+
+## 文档索引与阅读顺序
+
+### 第一步：先看项目级资料
+
+- [根目录 README](./README.md)
+- [Agent 安全测试平台设计说明书](./docs/Agent%20安全测试平台设计说明书.md)
+- [任务拆解清单](./docs/任务拆解清单.md)
+- [样本数据导入规范](./docs/样本数据导入规范.md)
+- [附录](./docs/附录.md)
+- [算法分享](./docs/算法分享.md)
+
+### 第二步：进入前端文档
+
+- [frontend/README.md](./frontend/README.md)
+- [前端文档地图](./frontend/docs/01-总览/文档地图.md)
+- [前端架构说明](./frontend/docs/01-总览/前端架构说明.md)
+- [关键链路说明](./frontend/docs/04-流程/关键链路说明.md)
+
+### 第三步：进入后端文档
+
+- [backend/README.md](./backend/README.md)
+- [后端文档地图](./backend/docs/01-总览/文档地图.md)
+- [后端架构说明](./backend/docs/01-总览/后端架构说明.md)
+- [接口索引与实现状态](./backend/docs/04-接口/接口索引与实现状态.md)
+
+### 第四步：核对跨端接口契约
+
+- [API 接口协议总表](./share/API接口协议.md)
+- [用户接口补充说明](./share/user接口.md)
+- [数据集与提交接口补充说明](./share/database&submit接口.md)
+- [评测记录与报告接口补充说明](./share/evaluations接口.md)
+
+## 维护说明
+
+- 根目录 README 只保留项目级事实、协作入口和联调方式。
+- 前后端内部实现细节、字段语义、模块说明不在这里重复维护。
+- 文本文件统一使用 UTF-8 无 BOM 与 CRLF 行尾。
