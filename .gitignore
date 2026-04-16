@@ -16,7 +16,6 @@
 .env
 /backend/.env
 /frontend/.env
-/frontend/.env.*
 !/frontend/.env.example
 
 # Project tooling
@@ -49,9 +48,6 @@ AGENTS.md
 /frontend/cypress/screenshots/
 /frontend/*.local
 /__screenshots__/
-
-# Frontend local docs
-/frontend/README.md
 
 # Logs
 logs/

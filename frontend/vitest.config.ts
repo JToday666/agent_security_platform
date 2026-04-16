@@ -11,7 +11,7 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
-    include: ["src/**/*.vitest.ts"],
+    include: ["src/**/*.test.ts"],
     pool: "threads",
     maxWorkers: 1,
     fileParallelism: false,

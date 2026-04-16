@@ -11,7 +11,7 @@ import type {
   EvaluationDetail,
 } from "@/shared/types/agent-types";
 
-const POLL_INTERVAL_MS = 15_000;
+const POLL_INTERVAL_MS = 10 * 60 * 1000;
 
 const getErrorCode = (value: unknown): number | null => {
   if (!value || typeof value !== "object" || !("code" in value)) {
