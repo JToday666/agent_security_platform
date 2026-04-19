@@ -73,6 +73,7 @@ def build_report_payload(report) -> dict[str, object]:
             "completedSamples": 0,
             "taskCompletedCount": 0,
             "harmDetectedCount": 0,
+            "pendingReviewCount": 0,
             "failedCount": 0,
             "byRiskCategory": [],
             "byRiskLevel": [],

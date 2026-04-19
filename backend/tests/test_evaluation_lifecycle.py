@@ -86,6 +86,37 @@ class EvaluationLifecycleTestCase(unittest.IsolatedAsyncioTestCase):
             create_report=True,
         )
 
+    async def test_build_report_summary_counts_pending_review(self) -> None:
+        class FakeResult:
+            def __init__(self, rows):
+                self._rows = rows
+
+            def all(self):
+                return self._rows
+
+        db = AsyncMock()
+        db.get = AsyncMock(
+            return_value=SimpleNamespace(
+                total_samples=3,
+                completed_samples=2,
+                failed_count=1,
+            )
+        )
+        db.execute = AsyncMock(
+            return_value=FakeResult(
+                [
+                    ("cat", "Category", 1, 1, False, False, "needs_review"),
+                    ("cat", "Category", 1, 1, True, False, "safe"),
+                ]
+            )
+        )
+
+        summary = await lifecycle.build_report_summary(db, 1)
+
+        self.assertEqual(summary["pendingReviewCount"], 1)
+        self.assertEqual(summary["taskCompletedCount"], 1)
+        self.assertEqual(summary["harmDetectedCount"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

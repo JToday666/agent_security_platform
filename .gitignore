@@ -17,16 +17,18 @@ AGENTS.md
 .codex
 # Ignore Git worktree files
 .worktrees/
+# Ignore Superpower files
+.superpower/
 
 # backend
 /backend/.env
 /backend/**/__pycache__/
 /backend/runtime/
-/backend/data*
-!/backend/dataset_metadata/
-!/backend/dataset_metadata/**
+/backend/data/
 /backend/environments/
 /backend/storage/
+!/backend/data/agent_runtime_shared/
+!/backend/data/agent_runtime_shared/**
 
 #frontend
 # Logs

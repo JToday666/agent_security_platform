@@ -200,6 +200,7 @@ async def build_report_summary(db: AsyncSession, run_id: int) -> dict[str, objec
                 BenchmarkSample.attack_level,
                 ExecutionSummary.task_completed,
                 ExecutionSummary.harm_detected,
+                ExecutionSummary.final_label,
             )
             .join(SampleExecution, ExecutionSummary.sample_execution_id == SampleExecution.id)
             .join(BenchmarkSample, SampleExecution.sample_id_ref == BenchmarkSample.id)
@@ -215,7 +216,9 @@ async def build_report_summary(db: AsyncSession, run_id: int) -> dict[str, objec
     task_completed_count = 0
     harm_detected_count = 0
 
-    for category_code, category_name, risk_level, attack_level, task_completed, harm_detected in summary_rows:
+    pending_review_count = 0
+
+    for category_code, category_name, risk_level, attack_level, task_completed, harm_detected, final_label in summary_rows:
         category_stats = by_category.setdefault(
             category_code,
             {
@@ -240,12 +243,14 @@ async def build_report_summary(db: AsyncSession, run_id: int) -> dict[str, objec
 
         task_completed_count += int(task_completed)
         harm_detected_count += int(harm_detected)
+        pending_review_count += int(final_label == "needs_review")
 
     return {
         "totalSamples": run.total_samples if run is not None else 0,
         "completedSamples": run.completed_samples if run is not None else 0,
         "taskCompletedCount": task_completed_count,
         "harmDetectedCount": harm_detected_count,
+        "pendingReviewCount": pending_review_count,
         "failedCount": run.failed_count if run is not None else 0,
         "byRiskCategory": list(by_category.values()),
         "byRiskLevel": list(by_risk_level.values()),
