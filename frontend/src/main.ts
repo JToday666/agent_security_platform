@@ -43,8 +43,8 @@ window.addEventListener("unauthorized", (event: Event) => {
   }, 0);
 });
 
-// 在应用启动时恢复登录状态，避免刷新后路由守卫误拦截。
-await userStore.restoreLogin();
+// 在应用启动时开始拉取登录状态，但不阻塞路由和初次渲染。
+userStore.restoreLogin().catch(() => {});
 
 app.use(router);
 await router.isReady();

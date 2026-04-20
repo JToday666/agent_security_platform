@@ -78,13 +78,13 @@
 | ---------------------------- | ---------------------------------- |
 | `feedback/ConfirmDialog.vue` | 通用确认弹窗                       |
 | `feedback/InlineNotice.vue`  | 行内提示                           |
-| `feedback/PageStateCard.vue` | 统一的加载 / 空态 / 错误态页面卡片 |
+| `feedback/PageStateCard.vue` | 统一的加载 / 空态 / 错误态页面卡片，默认在卡片内居中展示 |
 
 适用场景：
 
 - 提交确认
 - 错误提示
-- 页面加载态、空态和失败态
+- 页面加载态、空态和失败态。该卡片会配合全局 `layout-state-card` 样式在卡片内垂直/水平居中展示，适合页面级状态。
 
 ### 2.5 forms
 

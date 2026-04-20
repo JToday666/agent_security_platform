@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import {
@@ -10,8 +10,8 @@ import type {
   EvaluationAction,
   EvaluationDetail,
 } from "@/shared/types/agent-types";
-
-const POLL_INTERVAL_MS = 10 * 60 * 1000;
+import { useAsyncState } from "@/shared/composables/useAsyncState";
+import { usePolling } from "@/shared/composables/usePolling";
 
 const getErrorCode = (value: unknown): number | null => {
   if (!value || typeof value !== "object" || !("code" in value)) {
@@ -27,18 +27,53 @@ export const useEvaluationDetailPage = () => {
   const router = useRouter();
   const evaluationId = computed(() => String(route.params.evaluationId ?? ""));
 
-  const detail = ref<EvaluationDetail | null>(null);
-  const loading = ref(true);
-  const error = ref("");
-  const actionLoading = ref(false);
-  const pendingAction = ref<EvaluationAction | null>(null);
-  const actionDialogVisible = ref(false);
-  const actionDialogTitle = ref("");
-  const actionDialogMessage = ref("");
-  const actionDialogConfirmText = ref("确认");
-  const actionDialogDanger = ref(false);
+  const {
+    data: detail,
+    loading,
+    error,
+    startLoading,
+    stopLoading,
+    setError,
+  } = useAsyncState<EvaluationDetail>();
 
-  let pollTimer: number | null = null;
+  const {
+    data: pendingAction,
+    loading: actionLoading,
+    startLoading: startActionLoading,
+    stopLoading: stopActionLoading,
+  } = useAsyncState<EvaluationAction>();
+
+  const actionDialogVisible = computed({
+    get: () => pendingAction.value !== null,
+    set: (v) => {
+      if (!v) pendingAction.value = null;
+    },
+  });
+
+  const actionDialogTitle = computed(() => {
+    if (pendingAction.value === "pause") return "暂停任务";
+    if (pendingAction.value === "terminate") return "终止任务";
+    if (pendingAction.value === "cancel") return "取消任务";
+    return "";
+  });
+
+  const actionDialogMessage = computed(() => {
+    if (pendingAction.value === "pause")
+      return "暂停会在当前数据集执行完成后生效，每个任务最多只允许暂停一次。";
+    if (pendingAction.value === "terminate")
+      return "终止会在当前数据集执行完成后结束剩余队列，并生成最终报告。";
+    if (pendingAction.value === "cancel")
+      return "取消会立即中断当前任务，并且不会生成最终报告。";
+    return "";
+  });
+
+  const actionDialogConfirmText = computed(() => {
+    if (pendingAction.value === "pause") return "确认暂停";
+    if (pendingAction.value === "terminate") return "确认终止";
+    return "确认取消";
+  });
+
+  const actionDialogDanger = computed(() => pendingAction.value === "cancel");
 
   const reportStateText = computed(() => {
     if (detail.value?.report) {
@@ -66,45 +101,37 @@ export const useEvaluationDetailPage = () => {
     return "报告尚未生成，请等待任务继续执行。";
   });
 
-  const clearPolling = () => {
-    if (pollTimer !== null) {
-      window.clearInterval(pollTimer);
-      pollTimer = null;
+  const doLoadDetail = async () => {
+    try {
+      detail.value = await getEvaluationDetail(evaluationId.value);
+      error.value = "";
+      syncPolling();
+    } catch (loadError) {
+      setError(loadError, "评测详情加载失败。");
+      poll.stop();
     }
-  };
-
-  const syncPolling = () => {
-    clearPolling();
-
-    if (!detail.value || !shouldPollEvaluation(detail.value.status)) {
-      return;
-    }
-
-    pollTimer = window.setInterval(() => {
-      void loadDetail(true);
-    }, POLL_INTERVAL_MS);
   };
 
   const loadDetail = async (silent = false) => {
     if (!silent || !detail.value) {
-      loading.value = true;
+      startLoading();
     }
 
     if (!silent) {
       error.value = "";
     }
 
-    try {
-      detail.value = await getEvaluationDetail(evaluationId.value);
-      error.value = "";
-      syncPolling();
-    } catch (loadError) {
-      error.value =
-        loadError instanceof Error ? loadError.message : "评测详情加载失败。";
-      clearPolling();
-    } finally {
-      loading.value = false;
-    }
+    await doLoadDetail();
+
+    stopLoading();
+  };
+
+  const poll = usePolling(doLoadDetail, () => {
+    return Boolean(detail.value && shouldPollEvaluation(detail.value.status));
+  });
+
+  const syncPolling = () => {
+    poll.start();
   };
 
   const applyDetail = (nextDetail: EvaluationDetail) => {
@@ -119,42 +146,18 @@ export const useEvaluationDetailPage = () => {
 
   const openActionDialog = (action: EvaluationAction) => {
     pendingAction.value = action;
-    actionDialogDanger.value = action === "cancel";
-    actionDialogConfirmText.value =
-      action === "pause"
-        ? "确认暂停"
-        : action === "terminate"
-          ? "确认终止"
-          : "确认取消";
-
-    if (action === "pause") {
-      actionDialogTitle.value = "暂停任务";
-      actionDialogMessage.value =
-        "暂停会在当前数据集执行完成后生效，每个任务最多只允许暂停一次。";
-    } else if (action === "terminate") {
-      actionDialogTitle.value = "终止任务";
-      actionDialogMessage.value =
-        "终止会在当前数据集执行完成后结束剩余队列，并生成最终报告。";
-    } else {
-      actionDialogTitle.value = "取消任务";
-      actionDialogMessage.value =
-        "取消会立即中断当前任务，并且不会生成最终报告。";
-    }
-
-    actionDialogVisible.value = true;
   };
 
   const runAction = async (action: EvaluationAction) => {
-    actionLoading.value = true;
-    error.value = "";
+    startActionLoading();
 
     try {
       const nextDetail = await postEvaluationAction(evaluationId.value, action);
       applyDetail(nextDetail);
-    } catch (actionError) {
-      const code = getErrorCode(actionError);
+    } catch (actionErr) {
+      const code = getErrorCode(actionErr);
       const message =
-        actionError instanceof Error ? actionError.message : "任务操作失败。";
+        actionErr instanceof Error ? actionErr.message : "任务操作失败。";
       error.value = message;
 
       if (code === 40901 || code === 40902) {
@@ -162,7 +165,7 @@ export const useEvaluationDetailPage = () => {
         error.value = message;
       }
     } finally {
-      actionLoading.value = false;
+      stopActionLoading();
     }
   };
 
@@ -174,23 +177,17 @@ export const useEvaluationDetailPage = () => {
     const action = pendingAction.value;
     await runAction(action);
     pendingAction.value = null;
-    actionDialogVisible.value = false;
   };
 
   watch(evaluationId, async () => {
-    clearPolling();
+    poll.stop();
     detail.value = null;
     pendingAction.value = null;
-    actionDialogVisible.value = false;
     await loadDetail();
   });
 
   onMounted(async () => {
     await loadDetail();
-  });
-
-  onBeforeUnmount(() => {
-    clearPolling();
   });
 
   return {
