@@ -18,4 +18,19 @@ dependencies = [
     "sqlalchemy>=2.0.48",
     "uvicorn[standard]>=0.42.0",
     "openpyxl>=3.1.5",
+    "pytest>=9.0.3",
+    "pytest-asyncio>=1.3.0",
+    "pytest-cov>=7.1.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+asyncio_mode = "auto"
+addopts = "-ra --import-mode=importlib"
+markers = [
+    "db: tests that touch the real PostgreSQL database",
+    "integration: multi-module or HTTP integration tests",
+    "scripts: CLI and entrypoint tests",
+    "worker: worker and runtime execution tests",
 ]

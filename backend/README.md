@@ -104,7 +104,19 @@ PY
 自动化测试：
 
 ```bash
-uv run python -m unittest discover -s tests -v
+uv run pytest -q
+```
+
+按分层目录执行：
+
+```bash
+uv run pytest tests/api tests/modules tests/worker tests/scripts -q
+```
+
+查看后端与脚本覆盖明细：
+
+```bash
+uv run pytest --cov=app --cov=scripts --cov-report=term-missing
 ```
 
 真实 HTTP 冒烟：
