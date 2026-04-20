@@ -108,7 +108,6 @@ class RiskSubtype(Base):
     )
     code: Mapped[str] = mapped_column(Text, unique=True, nullable=False, comment="子类唯一特征码(全局唯一的公开数据集ID)")
     name: Mapped[str] = mapped_column(Text, nullable=False, comment="具体诱骗或攻击类别名")
-    description: Mapped[str | None] = mapped_column(Text, nullable=True, comment="相关背景资料及评测目的要求")
     sort_order: Mapped[int | None] = mapped_column(SmallInteger, nullable=True, comment="列表呈现时的排序支持")
     is_active: Mapped[bool] = mapped_column(
         Boolean, nullable=False, default=True, server_default=text("true"), comment="是否激活支持测算"
@@ -324,6 +323,6 @@ class SampleOracle(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now(), comment="生成时间"
     )
-    updated_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True, onupdate=func.now(), comment="更新的时间标印"
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now(), comment="更新的时间标印"
     )

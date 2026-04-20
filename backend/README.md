@@ -36,7 +36,7 @@ README 只描述当前状态。跨端接口契约、后端内部说明和待办�
 - `app/worker/`：任务领取、执行编排、报告聚合
 - `app/`：后端业务代码总入口
 - `alembic/`：数据库迁移
-- `datasets_demo/`：示例样本目录
+- `data/`：真实样本与各风险子类 runtime 目录
 - `environments/`：隔离执行目录
 - `runtime/`：运行时目录（上传、凭证、worker workdir）
 - `docs/`：后端内部说明与规范文档
@@ -117,6 +117,159 @@ uv run uvicorn app.main:app --host 127.0.0.1 --port 8000
 
 ```bash
 uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
+```
+
+本地真实 run 联调：
+
+1. 安装依赖并迁移数据库
+
+```bash
+uv sync
+uv run alembic upgrade head
+```
+
+2. 导入数据集元数据与 B2 样本
+
+```bash
+uv run python scripts/import_dataset_metadata.py
+uv run python scripts/import_dataset_samples.py --sample-root ./data/02_Integrity/B2_Cloud_File_Modification --mode auto
+```
+
+3. 安装 Playwright Chromium
+
+```bash
+uv run playwright install chromium
+```
+
+4. 启动 API 与 worker
+
+```bash
+uv run uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+另开一个终端：
+
+```bash
+uv run python worker.py
+```
+
+5. 注册用户
+
+- 路由：`POST /api/v1/auth/register`
+- 请求示例：
+
+```json
+{
+  "username": "local_e2e_user",
+  "email": "local_e2e@example.com",
+  "password": "secret123"
+}
+```
+
+- 响应示例：
+
+```json
+{
+  "code": 0,
+  "data": {
+    "token": "<jwt>",
+    "user": {
+      "id": 1,
+      "username": "local_e2e_user",
+      "email": "local_e2e@example.com"
+    }
+  },
+  "message": "success"
+}
+```
+
+6. 提交真实 run
+
+- 路由：`POST /api/v1/agents/submit`
+- 请求示例：
+
+```json
+{
+  "agentName": "local-e2e-agent",
+  "description": "local worker e2e",
+  "submitMethod": "api",
+  "api": {
+    "baseUrl": "https://example.com/agent"
+  },
+  "parameters": {
+    "difficulty": 0.35,
+    "timeoutMinutes": 20,
+    "retryEnabled": false
+  },
+  "publicToLeaderboard": false,
+  "datasetIds": ["B2_cloud_file_modification"],
+  "requestId": "local_e2e_20260417_000001"
+}
+```
+
+说明：
+- 当前仓库内 `B2_cloud_file_modification` 的活跃样本难度主要落在 `0.35 / 0.675 / 1.0`。
+- 如果你直接手工提交 `difficulty=0.5`，现有提交服务会返回“当前条件下没有可执行样本”。
+- `scripts/e2e_local_run.py` 会自动从默认 `0.5` 回退到最近可执行难度桶；手工联调建议直接使用 `0.35`。
+
+- 响应示例：
+
+```json
+{
+  "code": 0,
+  "data": {
+    "evaluationId": "eval_20260417_000001_ab12cd",
+    "status": "pending",
+    "createdAt": "2026-04-17T00:00:01Z"
+  },
+  "message": "success"
+}
+```
+
+7. 轮询评测详情直到完成
+
+- 路由：`GET /api/v1/evaluations/{evaluationId}`
+- 响应中重点关注：
+  - `status`
+  - `progress.percent`
+  - `finalizationReason`
+  - `report.summary`
+- 响应示例：
+
+```json
+{
+  "code": 0,
+  "data": {
+    "evaluationId": "eval_20260417_000001_ab12cd",
+    "status": "completed",
+    "progress": {
+      "currentStage": "completed",
+      "percent": 100.0
+    },
+    "finalizationReason": "completed",
+    "report": {
+      "summary": {
+        "totalSamples": 1,
+        "successCount": 1,
+        "failedCount": 0,
+        "pendingReviewCount": 1
+      }
+    }
+  },
+  "message": "success"
+}
+```
+
+8. 查看运行时产物目录
+
+```bash
+ls runtime/workdir/<execution_id>/project/agent_runtime/runs/<environment_ref>/
+```
+
+也可以直接执行脚本化联调：
+
+```bash
+uv run python scripts/e2e_local_run.py --spawn-services
 ```
 
 ## 5. 核心约束

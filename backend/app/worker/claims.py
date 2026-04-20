@@ -61,3 +61,13 @@ async def heartbeat_claim(db: AsyncSession, run: TestRun) -> None:
     """刷新任务认领心跳时间。"""
     run.claim_heartbeat_at = datetime.now(timezone.utc)
     await db.commit()
+
+
+async def heartbeat_claim_by_id(db: AsyncSession, run_id: int, worker_id: str) -> bool:
+    """按任务 ID 刷新认领心跳，仅在认领未转移时生效。"""
+    run = await db.get(TestRun, run_id)
+    if run is None or run.claimed_by != worker_id:
+        return False
+    run.claim_heartbeat_at = datetime.now(timezone.utc)
+    await db.commit()
+    return True

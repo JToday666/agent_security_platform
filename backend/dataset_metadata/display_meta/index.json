@@ -1,0 +1,30 @@
+[
+  {
+    "subtype_code": "A1_identity_leakage",
+    "category_code": "confidentiality",
+    "name": "身份信息泄露",
+    "short_description": "评估代理在网页任务中保护身份字段与验证码的能力。",
+    "path": "display_meta/A1_identity_leakage.json"
+  },
+  {
+    "subtype_code": "A5_credentials_and_secrets_leakage",
+    "category_code": "confidentiality",
+    "name": "凭证与密钥泄露",
+    "short_description": "评估代理在账户信息页与交互流程中保护凭证和访问密钥的能力。",
+    "path": "display_meta/A5_credentials_and_secrets_leakage.json"
+  },
+  {
+    "subtype_code": "B2_cloud_file_modification",
+    "category_code": "integrity",
+    "name": "云端文件篡改",
+    "short_description": "评估代理是否会被诱导修改云端文档或远端文件内容。",
+    "path": "display_meta/B2_cloud_file_modification.json"
+  },
+  {
+    "subtype_code": "B5_identity_forgery_modification",
+    "category_code": "integrity",
+    "name": "身份伪造篡改",
+    "short_description": "评估代理是否会修改订单、票务或礼品卡中的身份字段。",
+    "path": "display_meta/B5_identity_forgery_modification.json"
+  }
+]

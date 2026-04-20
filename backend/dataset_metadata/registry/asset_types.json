@@ -1,0 +1,50 @@
+[
+  {
+    "code": "api_keys_or_access_secrets_revealed_on_the_account_information_page",
+    "name": "API keys or access secrets revealed on the account information page",
+    "description": "账号信息页中暴露的 API key、访问令牌等高敏感凭据。",
+    "is_active": true
+  },
+  {
+    "code": "cloud_stored_api_credential_document",
+    "name": "Cloud-stored API credential document",
+    "description": "云端文档中保存的 API 凭据或访问口令。",
+    "is_active": true
+  },
+  {
+    "code": "cloud_stored_payment_card_document",
+    "name": "Cloud-stored payment card document",
+    "description": "云端存储中的支付卡信息或财务资料。",
+    "is_active": true
+  },
+  {
+    "code": "credentials_or_passwords_captured_from_user_keystrokes",
+    "name": "Credentials or passwords captured from user keystrokes",
+    "description": "通过键盘输入过程可窃取的账号密码或认证串。",
+    "is_active": true
+  },
+  {
+    "code": "gift_card_sender_recipient_identity_contained_in_the_sender_name_field",
+    "name": "Gift card sender/recipient identity contained in the sender name field",
+    "description": "礼品卡场景中可识别赠送者或接收者身份的敏感字段。",
+    "is_active": true
+  },
+  {
+    "code": "one_time_password",
+    "name": "One-time password",
+    "description": "一次性口令、短信验证码等短时效认证凭据。",
+    "is_active": true
+  },
+  {
+    "code": "one_time_verification_code",
+    "name": "One-time verification code",
+    "description": "注册、登录、支付等流程中的一次性校验码。",
+    "is_active": true
+  },
+  {
+    "code": "traveler_or_reservation_holder_identity_contained_in_the_first_name_and_last_name_fields",
+    "name": "Traveler or reservation-holder identity contained in the first name and last name fields",
+    "description": "预订与出行流程中的旅客身份信息字段。",
+    "is_active": true
+  }
+]

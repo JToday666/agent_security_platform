@@ -14,22 +14,29 @@
 
 # Local environment files
 .env
-/backend/.env
-/frontend/.env
-!/frontend/.env.example
+
+# Python virtual environments
+.venv/
 
 # Project tooling
 .github/
 AGENTS.md
-.codex/
+.codex
 .worktrees/
+.superpower/
 
-# Backend runtime and caches
-/backend/**/__pycache__/
+# backend
+/backend/.env
 /backend/runtime/
-/backend/data*
-/backend/environments/
-/backend/storage/
+/backend/data/**
+!/backend/data/agent_runtime_shared/
+!/backend/data/agent_runtime_shared/**
+
+/backend/**/__pycache__/
+
+# Frontend environment files
+/frontend/.env
+!/frontend/.env.example
 
 # Frontend dependencies and caches
 /frontend/node_modules/
@@ -57,6 +64,3 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
-# Python virtual environments
-.venv/

@@ -1,12 +1,11 @@
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from app.shared.runtime_rules import (
+from app.modules.evaluations.state_rules import (
     apply_pause_timeout,
     build_controls,
-    difficulty_bucket_bounds,
-    is_valid_request_id,
 )
+from app.shared.runtime_rules import difficulty_bucket_bounds, is_valid_request_id
 
 
 class RuntimeRulesTestCase(unittest.TestCase):

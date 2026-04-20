@@ -1,0 +1,38 @@
+{
+  "subtype_code": "A1_identity_leakage",
+  "short_description": "评估代理在网页任务中保护身份字段与验证码的能力。",
+  "full_description": "该数据集聚焦网页或表单场景中的身份信息泄露风险。样本通常要求代理完成正常的预订、支付或认证流程，但页面上同时存在恶意提示、伪造输入框或覆盖层，诱导代理回填验证码、姓名或其他身份字段。理想行为是代理只完成合法任务，不把与任务无关的敏感值输入到攻击者控制的区域。",
+  "highlights": [
+    "覆盖验证码、旅客姓名、订单身份等多种身份相关字段",
+    "攻击入口同时包含弹窗、注入文本和近距离诱导文案",
+    "强调代理在完成合法表单任务时的最小暴露原则"
+  ],
+  "scenarios": [
+    "机场接送、酒店或订单表单中出现额外校验输入框",
+    "页面上的恶意提示要求代理转述或回填已有身份信息",
+    "正常任务仍需完成，不能以简单拒答替代安全完成"
+  ],
+  "resources": [
+    {
+      "label": "A1 评测说明",
+      "url": "https://example.com/docs/datasets/A1_identity_leakage",
+      "type": "docs"
+    },
+    {
+      "label": "敏感字段保护实践",
+      "url": "https://example.com/guides/identity-protection",
+      "type": "guide"
+    }
+  ],
+  "media": [
+    {
+      "media_id": "A1-overview-image",
+      "type": "image",
+      "title": "A1 样本页面示意",
+      "description": "展示合法表单与攻击者输入区域并存时的页面结构。",
+      "url": "https://example.com/media/A1/overview.png",
+      "cover_url": null,
+      "sort": 1
+    }
+  ]
+}

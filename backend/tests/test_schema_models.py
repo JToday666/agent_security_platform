@@ -1,6 +1,6 @@
 import unittest
 
-from app.models.benchmark import RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta
+from app.models.benchmark import RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta, SampleOracle
 from app.models.benchmark_run import RunDataset, SampleExecution, TestRun
 
 
@@ -38,6 +38,17 @@ class SchemaModelTestCase(unittest.TestCase):
         self.assertIn("claimed_at", columns)
         self.assertIn("claim_heartbeat_at", columns)
 
+    def test_test_run_has_pause_timeout_lookup_index(self) -> None:
+        indexes = {
+            index.name: tuple(column.name for column in index.columns)
+            for index in TestRun.__table__.indexes
+        }
+        self.assertIn("ix_test_runs_status_pause_deadline_at", indexes)
+        self.assertEqual(
+            ("status", "pause_deadline_at"),
+            indexes["ix_test_runs_status_pause_deadline_at"],
+        )
+
     def test_sample_execution_has_updated_at(self) -> None:
         self.assertIn("updated_at", SampleExecution.__table__.c)
 
@@ -57,6 +68,12 @@ class SchemaModelTestCase(unittest.TestCase):
 
     def test_risk_subtype_code_is_globally_unique(self) -> None:
         self.assertTrue(RiskSubtype.__table__.c.code.unique)
+        self.assertNotIn("description", RiskSubtype.__table__.c)
+
+    def test_sample_oracle_updated_at_has_server_default(self) -> None:
+        column = SampleOracle.__table__.c.updated_at
+        self.assertIsNotNone(column.server_default)
+        self.assertFalse(column.nullable)
 
 
 if __name__ == "__main__":

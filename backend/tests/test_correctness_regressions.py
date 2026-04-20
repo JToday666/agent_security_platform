@@ -11,6 +11,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app.modules.auth.schemas import RegisterRequest
 from app.modules.auth.service import AuthService
+from app.modules.evaluations.schemas import EvaluationActionRequest
 from app.modules.evaluations.service import EvaluationService
 from app.modules.submissions.schemas import AgentSubmissionRequest
 from app.modules.submissions.service import SubmissionService
@@ -284,7 +285,7 @@ class CorrectnessRegressionTestCase(unittest.IsolatedAsyncioTestCase):
         service = EvaluationService(repository)
         current_user = SimpleNamespace(id=1, username="demo-user")
 
-        with patch("app.modules.evaluations.service.finalize_run", new=AsyncMock()) as finalize_mock:
+        with patch("app.modules.evaluations.service.lifecycle.finalize_run", new=AsyncMock()) as finalize_mock:
             response = await service.list_evaluations(current_user)
 
         self.assertEqual(response[0].status, "paused")
@@ -322,12 +323,92 @@ class CorrectnessRegressionTestCase(unittest.IsolatedAsyncioTestCase):
         service = EvaluationService(repository)
         current_user = SimpleNamespace(id=1, username="demo-user")
 
-        with patch("app.modules.evaluations.service.finalize_run", new=AsyncMock()) as finalize_mock:
+        with patch("app.modules.evaluations.service.lifecycle.finalize_run", new=AsyncMock()) as finalize_mock:
             response = await service.get_evaluation_detail("eval_1", current_user)
 
         self.assertEqual(response.status, "paused")
         self.assertEqual(repository.commit_calls, 0)
         finalize_mock.assert_not_awaited()
+
+    async def test_apply_action_pause_delegates_to_lifecycle_module(self) -> None:
+        now = datetime.now(timezone.utc)
+        run = SimpleNamespace(
+            id=1,
+            user_id=1,
+            public_id="eval_1",
+            agent_name="demo-agent",
+            description=None,
+            created_at=now,
+            updated_at=now,
+            status="running",
+            public_to_leaderboard=True,
+            submit_method="api",
+            finalization_reason=None,
+            pause_used=False,
+            pause_deadline_at=None,
+            execution_config={"parameters": {"difficulty": 0.5, "timeoutMinutes": 20, "retryEnabled": False}},
+            total_samples=1,
+            completed_samples=0,
+        )
+        repository = EvaluationReadOnlyRepositoryStub(run=run, datasets=[], report=None)
+        repository.db = AsyncMock()
+        service = EvaluationService(repository)
+        current_user = SimpleNamespace(id=1, username="demo-user")
+        lifecycle_module = SimpleNamespace(
+            reconcile_run_timeout=AsyncMock(return_value=False),
+            request_pause=unittest.mock.Mock(),
+        )
+
+        with patch.object(service.__class__, "_build_detail_snapshot", new=AsyncMock(return_value="snapshot")):
+            with patch("app.modules.evaluations.service.lifecycle", new=lifecycle_module, create=True):
+                response = await service.apply_action(
+                    "eval_1",
+                    EvaluationActionRequest(action="pause"),
+                    current_user,
+                )
+
+        self.assertEqual(response, "snapshot")
+        lifecycle_module.request_pause.assert_called_once()
+
+    async def test_apply_action_cancel_delegates_to_lifecycle_module(self) -> None:
+        now = datetime.now(timezone.utc)
+        run = SimpleNamespace(
+            id=1,
+            user_id=1,
+            public_id="eval_1",
+            agent_name="demo-agent",
+            description=None,
+            created_at=now,
+            updated_at=now,
+            status="running",
+            public_to_leaderboard=True,
+            submit_method="api",
+            finalization_reason=None,
+            pause_used=False,
+            pause_deadline_at=None,
+            execution_config={"parameters": {"difficulty": 0.5, "timeoutMinutes": 20, "retryEnabled": False}},
+            total_samples=1,
+            completed_samples=0,
+        )
+        repository = EvaluationReadOnlyRepositoryStub(run=run, datasets=[], report=None)
+        repository.db = AsyncMock()
+        service = EvaluationService(repository)
+        current_user = SimpleNamespace(id=1, username="demo-user")
+        lifecycle_module = SimpleNamespace(
+            reconcile_run_timeout=AsyncMock(return_value=False),
+            request_cancel=AsyncMock(return_value=None),
+        )
+
+        with patch.object(service.__class__, "_build_detail_snapshot", new=AsyncMock(return_value="snapshot")):
+            with patch("app.modules.evaluations.service.lifecycle", new=lifecycle_module, create=True):
+                response = await service.apply_action(
+                    "eval_1",
+                    EvaluationActionRequest(action="cancel"),
+                    current_user,
+                )
+
+        self.assertEqual(response, "snapshot")
+        lifecycle_module.request_cancel.assert_awaited_once()
 
 
 if __name__ == "__main__":

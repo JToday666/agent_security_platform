@@ -33,6 +33,7 @@ class TestRun(Base):
     __table_args__ = (
         UniqueConstraint("user_id", "request_id"),
         Index("ix_test_runs_status_updated_at", "status", "updated_at"),
+        Index("ix_test_runs_status_pause_deadline_at", "status", "pause_deadline_at"),
         Index(
             "ix_test_runs_worker_claim_lookup",
             "status",
