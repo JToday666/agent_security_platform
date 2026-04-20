@@ -4,12 +4,13 @@
 
 `backend/` 是 Agent Security Platform 的后端服务，基于 FastAPI + SQLAlchemy + PostgreSQL。
 
-当前仓库已落地两类能力：
+当前仓库已落地三类能力：
 
 - 用户认证与用户资料接口
-- 测评样本、测评任务、执行记录、判定结果、报告相关的数据模型与迁移
+- 数据集查询、任务提交、评测详情与动作控制接口
+- `synthetic_local` 驱动的样本运行闭环、基础产物采集和任务级摘要报告
 
-README 只描述当前状态。跨端接口契约、后端内部说明和待办事项分别在独立文档中维护。
+README 只描述当前状态。后端实现细节、领域说明和待办事项在独立文档中维护；`share/` 下材料仅作为前后端沟通参考，不作为后端实现真相源。
 
 ## 2. 当前能力与目录
 
@@ -27,6 +28,8 @@ README 只描述当前状态。跨端接口契约、后端内部说明和待办�
 - 统一 DB Session、鉴权依赖与全局异常处理
 - Alembic 迁移链路
 - 独立 worker 轮询执行链路
+- `runtime/workdir` 工作目录准备、probe backend 拉起、基础 artifact 收集
+- `synthetic_local` dispatch 闭环与 `run_reports.summary_json` 摘要写回
 - 运行时目录、上传目录、凭证目录统一收口到 `runtime/`
 
 核心目录：
@@ -34,10 +37,11 @@ README 只描述当前状态。跨端接口契约、后端内部说明和待办�
 - `app/shared/`：配置、DB、响应封装、异常、鉴权、共用规则
 - `app/modules/`：按业务域组织的 `router / service / repository / schemas`
 - `app/worker/`：任务领取、执行编排、报告聚合
+- `app/worker/runtime/`：runtime 准备、调度适配器、产物收集
 - `app/`：后端业务代码总入口
 - `alembic/`：数据库迁移
 - `data/`：真实样本与各风险子类 runtime 目录
-- `environments/`：隔离执行目录
+- `dataset_metadata/`：版本化数据集元数据与工作簿镜像
 - `runtime/`：运行时目录（上传、凭证、worker workdir）
 - `docs/`：后端内部说明与规范文档
 
@@ -107,6 +111,10 @@ PY
 uv run pytest -q
 ```
 
+说明：
+
+- 当前仓库的测试主入口是 `pytest`；`python -m unittest discover` 实际不会发现这些测试文件。
+
 按分层目录执行：
 
 ```bash
@@ -133,6 +141,29 @@ uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
 
 本地真实 run 联调：
 
+推荐优先直接执行脚本化联调：
+
+```bash
+uv run python scripts/e2e_local_run.py --spawn-services
+```
+
+该脚本会自动完成以下检查：
+
+- 确认数据库与 Alembic revision 可用
+- 确认 `B2_cloud_file_modification` 数据集已有可执行样本；若缺失则自动导入元数据与样本
+- 自动启动本地 API 与 worker
+- 注册测试用户、提交任务、轮询详情直至终态
+- 校验运行产物至少包含 `event_log`、`compile_result`、`replay_result`
+
+当前联调能力边界：
+
+- 这条链当前验证的是 `synthetic_local` runtime 闭环，不是真实被测 Agent API / Docker 调用
+- 详情接口里的 `score` 当前仍为 `null`
+- `run_reports` 当前只返回摘要，`report_uri` 仍为空
+- 当前还没有样本级 execution 查询接口
+
+如果需要手工分步联调，可按下面流程执行。
+
 1. 安装依赖并迁移数据库
 
 ```bash
@@ -140,7 +171,9 @@ uv sync
 uv run alembic upgrade head
 ```
 
-2. 预标准化原始样本并导入数据集元数据与 B2 样本
+2. 准备并导入数据集元数据与 B2 样本
+
+推荐的可重复流程是先标准化再导入：
 
 ```bash
 uv run python scripts/normalize_dataset_samples.py --input-root ./data/02_Integrity/B2_Cloud_File_Modification --output-dir /tmp/b2_normalized_samples
@@ -151,9 +184,11 @@ uv run python scripts/import_dataset_samples.py --sample-root /tmp/b2_normalized
 
 说明：
 
-- `backend/data/` 是原始样本源，不能直接传给 `import_dataset_samples.py`
+- `import_dataset_samples.py --mode auto` 可以直接识别 raw / standard 两类样本目录
+- 标准化流程更适合版本化回归、工作簿同步和可重复导入，因此仍然是推荐路径
 - `normalize_dataset_samples.py` 输出目录必须是显式指定的空目录
-- `import_dataset_*` 与 `sync_dataset_registry_from_samples.py` 统一消费标准化后的样本目录
+- `sync_dataset_registry_from_samples.py` 统一消费标准化后的样本目录
+- `scripts/e2e_local_run.py` 在本地联调时会按需要自动导入 `backend/data/02_Integrity/B2_Cloud_File_Modification`
 
 3. 安装 Playwright Chromium
 
@@ -263,17 +298,36 @@ uv run python worker.py
     "evaluationId": "eval_20260417_000001_ab12cd",
     "status": "completed",
     "progress": {
-      "currentStage": "completed",
-      "percent": 100.0
+      "percent": 100,
+      "totalDatasetCount": 1,
+      "completedDatasetCount": 1,
+      "runningDatasetId": null,
+      "runningDatasetName": null,
+      "pauseDeadlineAt": null,
+      "statusText": "评测已完成。"
     },
+    "controls": {
+      "canPause": false,
+      "canResume": false,
+      "canTerminate": false,
+      "canCancel": false,
+      "pauseUsed": false
+    },
+    "finalReportAvailable": true,
     "finalizationReason": "completed",
     "report": {
+      "reportStatus": "available",
       "summary": {
         "totalSamples": 1,
-        "successCount": 1,
+        "completedSamples": 1,
+        "taskCompletedCount": 0,
+        "harmDetectedCount": 0,
         "failedCount": 0,
-        "pendingReviewCount": 1
-      }
+        "byRiskCategory": [],
+        "byRiskLevel": [],
+        "byAttackLevel": []
+      },
+      "reportUri": null
     }
   },
   "message": "success"
@@ -285,6 +339,11 @@ uv run python worker.py
 ```bash
 ls runtime/workdir/<execution_id>/project/agent_runtime/runs/<environment_ref>/
 ```
+
+说明：
+
+- 当前可稳定看到的核心产物是 `events.jsonl`、`compile_result.json`、`replay_result.json`、`report.html` 等 runtime 基础证据
+- 更丰富的网络请求、工具调用和独立报告导出仍在后续待办中
 
 也可以直接执行脚本化联调：
 
@@ -307,15 +366,17 @@ uv run python scripts/e2e_local_run.py --spawn-services
 
 - [文档地图](./docs/01-总览/文档地图.md)
 - [后端架构说明](./docs/01-总览/后端架构说明.md)
+- [后端模块实现清单](./docs/01-总览/后端模块实现清单.md)
 - [测评领域说明](./docs/02-领域/测评领域说明.md)
 - [枚举与状态约定](./docs/02-领域/枚举与状态约定.md)
 - [数据库说明](./docs/03-数据/数据库说明.md)
 - [样本导入说明](./docs/03-数据/样本导入说明.md)
+- [数据集元数据维护说明](./docs/03-数据/数据集元数据维护说明.md)
 - [接口索引与实现状态](./docs/04-接口/接口索引与实现状态.md)
 - [响应与错误码约定](./docs/05-规范/响应与错误码约定.md)
 - [文档维护约定](./docs/05-规范/文档维护约定.md)
 
-跨端接口契约：
+跨端沟通参考：
 
 - [API 接口协议总表](../share/API接口协议.md)
 - [用户接口补充说明](../share/user接口.md)
