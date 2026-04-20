@@ -281,11 +281,60 @@ apply_import_plan = apply_sample_import_plan
 
 def _normalize_metadata_file(item: _DiscoveredMetadataFile, sample_root: Path) -> PlannedSample:
     """按识别出的元数据格式分派到对应的标准化逻辑。"""
-    if item.fmt == "legacy":
-        return _normalize_legacy_sample(item.path, sample_root)
-    if item.fmt == "standard":
-        return _normalize_standard_sample(item.path, sample_root)
-    raise ImportValidationError(f"{item.path}: 不支持的元数据格式 {item.fmt}")
+    return normalize_sample_metadata_file(item.path, sample_root, item.fmt)
+
+
+def normalize_sample_metadata_file(metadata_path: Path, sample_root: Path, fmt: str) -> PlannedSample:
+    """按指定格式把样本元数据归一化为 PlannedSample。"""
+    if fmt == "legacy":
+        return _normalize_legacy_sample(metadata_path, sample_root)
+    if fmt == "standard":
+        return _normalize_standard_sample(metadata_path, sample_root)
+    raise ImportValidationError(f"{metadata_path}: 不支持的元数据格式 {fmt}")
+
+
+def planned_sample_to_standard_task_payload(sample: PlannedSample) -> dict[str, object]:
+    """把 PlannedSample 转为标准 task.json payload。"""
+    payload: dict[str, object] = {
+        "schema_version": "1.0",
+        "sample_id": sample.sample_id,
+        "sample_name": sample.sample_name,
+        "dataset_source_code": sample.dataset_source_code,
+        "dataset_source_name": sample.dataset_source_name,
+        "entry_path": sample.entry_path,
+        "user_goal": sample.user_goal,
+        "attacker_is_user": sample.attacker_is_user,
+        "attack_delivery_type_code": sample.attack_delivery_type_code,
+        "attack_delivery_type_name": sample.attack_delivery_type_name,
+        "risk_category_code": sample.risk_category_code,
+        "risk_category_name": sample.risk_category_name,
+        "risk_subtype_code": sample.risk_subtype_code,
+        "risk_subtype_name": sample.risk_subtype_name,
+        "risk_level": _level_value_to_code(sample.risk_level, sample.metadata_path, "risk_level"),
+        "attack_level": _level_value_to_code(sample.attack_level, sample.metadata_path, "attack_level"),
+        "expected_safe_behavior": sample.expected_safe_behavior,
+        "oracles": [
+            {
+                "kind": "success" if oracle.oracle_kind == 1 else "harm",
+                "seq_no": oracle.seq_no,
+                "display_text": oracle.display_text,
+                "evaluator_type": oracle.evaluator_type,
+                "evaluator_config": oracle.evaluator_config,
+            }
+            for oracle in sample.oracles
+        ],
+    }
+    if sample.attacker_goal is not None:
+        payload["attacker_goal"] = sample.attacker_goal
+    if sample.asset_type_code is not None:
+        payload["asset_type_code"] = sample.asset_type_code
+    if sample.asset_type_name is not None:
+        payload["asset_type_name"] = sample.asset_type_name
+    if sample.risk_category_sort_order is not None:
+        payload["risk_category_sort_order"] = sample.risk_category_sort_order
+    if sample.risk_subtype_sort_order is not None:
+        payload["risk_subtype_sort_order"] = sample.risk_subtype_sort_order
+    return payload
 
 
 def _normalize_legacy_sample(metadata_path: Path, sample_root: Path) -> PlannedSample:
@@ -307,13 +356,8 @@ def _normalize_legacy_sample(metadata_path: Path, sample_root: Path) -> PlannedS
     if not isinstance(payload.get("attacker_is_user"), bool):
         raise ImportValidationError(f"{metadata_path}: attacker_is_user 必须是布尔值")
 
-    category_definition = LEGACY_CATEGORY_DEFINITIONS.get(primary_risk)
-    if category_definition is None:
-        raise ImportValidationError(f"{metadata_path}: 不支持的 primary_risk={primary_risk}")
-
-    subtype_definition = LEGACY_SUBTYPE_DEFINITIONS.get(secondary_risk)
-    if subtype_definition is None:
-        raise ImportValidationError(f"{metadata_path}: 不支持的 secondary_risk={secondary_risk}")
+    category_definition = normalize_legacy_category(primary_risk, metadata_path)
+    subtype_definition = normalize_legacy_subtype(secondary_risk, metadata_path)
 
     risk_level = _normalize_level(payload.get("risk_level"), metadata_path, "risk_level")
     attack_level = _normalize_level(payload.get("attack_level"), metadata_path, "attack_level")
@@ -405,10 +449,20 @@ def _normalize_standard_sample(metadata_path: Path, sample_root: Path) -> Planne
         attack_delivery_type_name=_optional_text(payload.get("attack_delivery_type_name")) or humanize_code(attack_delivery_type_code),
         risk_category_code=risk_category_code,
         risk_category_name=_optional_text(payload.get("risk_category_name")) or default_category_name(risk_category_code),
-        risk_category_sort_order=default_category_sort_order(risk_category_code),
+        risk_category_sort_order=_optional_sort_order(
+            payload.get("risk_category_sort_order"),
+            metadata_path,
+            "risk_category_sort_order",
+        )
+        or default_category_sort_order(risk_category_code),
         risk_subtype_code=risk_subtype_code,
         risk_subtype_name=_optional_text(payload.get("risk_subtype_name")) or default_subtype_name(risk_subtype_code),
-        risk_subtype_sort_order=default_subtype_sort_order(risk_subtype_code),
+        risk_subtype_sort_order=_optional_sort_order(
+            payload.get("risk_subtype_sort_order"),
+            metadata_path,
+            "risk_subtype_sort_order",
+        )
+        or default_subtype_sort_order(risk_subtype_code),
         asset_type_code=asset_type_code,
         asset_type_name=(
             _optional_text(payload.get("asset_type_name"))
@@ -555,6 +609,59 @@ def _normalize_level(value: object, metadata_path: Path, field_name: str) -> int
     return level
 
 
+def _level_value_to_code(value: int, metadata_path: Path, field_name: str) -> str:
+    """把数值档位转换回 low/medium/high。"""
+    for code, numeric in LEVEL_CODE_TO_VALUE.items():
+        if numeric == value:
+            return code
+    raise ImportValidationError(f"{metadata_path}: {field_name} 数值档位不合法")
+
+
+def normalize_legacy_category(raw_value: str, metadata_path: Path) -> dict[str, object]:
+    """把 legacy primary_risk 归一化为统一大类定义。"""
+    definition = LEGACY_CATEGORY_DEFINITIONS.get(raw_value)
+    if definition is not None:
+        return dict(definition)
+
+    match = re.fullmatch(r"(?P<order>\d+)_+(?P<label>.+)", raw_value.strip())
+    if match is None:
+        raise ImportValidationError(f"{metadata_path}: 不支持的 primary_risk={raw_value}")
+    label = match.group("label")
+    return {
+        "code": normalize_code(label),
+        "name": humanize_code(label),
+        "sort_order": int(match.group("order")),
+    }
+
+
+def normalize_legacy_subtype(raw_value: str, metadata_path: Path) -> dict[str, object]:
+    """把 legacy secondary_risk 归一化为统一子类定义。"""
+    definition = LEGACY_SUBTYPE_DEFINITIONS.get(raw_value)
+    if definition is not None:
+        return dict(definition)
+
+    match = re.fullmatch(r"(?P<prefix>[A-Za-z])(?P<order>\d+)_+(?P<label>.+)", raw_value.strip())
+    if match is None:
+        raise ImportValidationError(f"{metadata_path}: 不支持的 secondary_risk={raw_value}")
+    prefix = match.group("prefix").upper()
+    order = int(match.group("order"))
+    label = match.group("label")
+    return {
+        "code": f"{prefix}{order}_{normalize_code(label)}",
+        "name": humanize_code(label),
+        "sort_order": order,
+    }
+
+
+def _optional_sort_order(value: object, metadata_path: Path, field_name: str) -> int | None:
+    """解析可选排序字段。"""
+    if value is None:
+        return None
+    if not isinstance(value, int) or value <= 0:
+        raise ImportValidationError(f"{metadata_path}: {field_name} 必须是正整数")
+    return value
+
+
 def _normalize_dataset_source_code(raw_value: str) -> str:
     """规范旧数据源名称并映射为稳定 code。"""
     return DATASET_SOURCE_CODE_ALIASES.get(raw_value, normalize_code(raw_value))
@@ -632,6 +739,11 @@ def _detect_metadata_format(payload: object) -> str | None:
     if LEGACY_REQUIRED_KEYS.issubset(payload):
         return "legacy"
     return None
+
+
+def detect_metadata_format(payload: object) -> str | None:
+    """对外暴露元数据格式识别。"""
+    return _detect_metadata_format(payload)
 
 
 def _select_metadata_file_for_dir(

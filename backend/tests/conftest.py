@@ -16,7 +16,7 @@ if str(BACKEND_ROOT) not in sys.path:
 from app.main import app
 from app.shared.config import settings
 from tests.helpers.api_db import ApiDbHelper
-from tests.helpers.dataset_bundle import SampleBundleInfo, write_repo_like_sample_bundle
+from tests.helpers.dataset_bundle import RawSampleBundleInfo, SampleBundleInfo, write_raw_like_sample_bundle, write_repo_like_sample_bundle
 
 
 @pytest.fixture(scope="session")
@@ -69,3 +69,8 @@ def api_db_helper(session_factory) -> ApiDbHelper:
 @pytest.fixture
 def repo_sample_bundle(tmp_path: Path) -> SampleBundleInfo:
     return write_repo_like_sample_bundle(tmp_path / "samples")
+
+
+@pytest.fixture
+def raw_sample_bundle(tmp_path: Path) -> RawSampleBundleInfo:
+    return write_raw_like_sample_bundle(tmp_path / "raw_samples")

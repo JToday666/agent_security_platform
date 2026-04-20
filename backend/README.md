@@ -140,12 +140,20 @@ uv sync
 uv run alembic upgrade head
 ```
 
-2. 导入数据集元数据与 B2 样本
+2. 预标准化原始样本并导入数据集元数据与 B2 样本
 
 ```bash
-uv run python scripts/import_dataset_metadata.py
-uv run python scripts/import_dataset_samples.py --sample-root ./data/02_Integrity/B2_Cloud_File_Modification --mode auto
+uv run python scripts/normalize_dataset_samples.py --input-root ./data/02_Integrity/B2_Cloud_File_Modification --output-dir /tmp/b2_normalized_samples
+uv run python scripts/sync_dataset_registry_from_samples.py --sample-root /tmp/b2_normalized_samples --registry-root ./dataset_metadata
+uv run python scripts/import_dataset_metadata.py --registry-root ./dataset_metadata
+uv run python scripts/import_dataset_samples.py --sample-root /tmp/b2_normalized_samples --mode auto
 ```
+
+说明：
+
+- `backend/data/` 是原始样本源，不能直接传给 `import_dataset_samples.py`
+- `normalize_dataset_samples.py` 输出目录必须是显式指定的空目录
+- `import_dataset_*` 与 `sync_dataset_registry_from_samples.py` 统一消费标准化后的样本目录
 
 3. 安装 Playwright Chromium
 
