@@ -22,13 +22,12 @@ AGENTS.md
 
 # backend
 /backend/.env
-/backend/**/__pycache__/
 /backend/runtime/
-/backend/data/
-/backend/environments/
-/backend/storage/
+/backend/data/**
 !/backend/data/agent_runtime_shared/
 !/backend/data/agent_runtime_shared/**
+
+/backend/**/__pycache__/
 
 #frontend
 # Logs
