@@ -26,6 +26,7 @@ import type {
   SubmitFieldErrors,
   SubmitMetaResponse,
 } from "@/shared/types/agent-types";
+import { useAsyncState } from "@/shared/composables/useAsyncState";
 
 interface SubmitPayloadSnapshot {
   agentName: string;
@@ -77,11 +78,23 @@ export const useSubmitAgentPage = () => {
   const { form, expandedCategoryIds, pendingRequest } =
     storeToRefs(submitDraftStore);
 
-  const submitMeta = ref<SubmitMetaResponse | null>(null);
-  const pageLoading = ref(true);
-  const pageError = ref("");
-  const submitting = ref(false);
-  const submitError = ref("");
+  const {
+    data: submitMeta,
+    loading: pageLoading,
+    error: pageError,
+    startLoading,
+    stopLoading,
+    setError,
+  } = useAsyncState<SubmitMetaResponse>();
+
+  const {
+    loading: submitting,
+    error: submitError,
+    startLoading: startSubmitting,
+    stopLoading: stopSubmitting,
+    setError: setSubmitError,
+  } = useAsyncState<void>();
+
   const fieldErrors = ref<SubmitFieldErrors>({});
   const datasetSelectionNotice = ref("");
   const confirmDialogVisible = ref(false);
@@ -349,8 +362,7 @@ export const useSubmitAgentPage = () => {
   };
 
   const initializePage = async () => {
-    pageLoading.value = true;
-    pageError.value = "";
+    startLoading();
     clearFormErrors();
     datasetSelectionNotice.value = "";
     confirmDialogVisible.value = false;
@@ -378,10 +390,9 @@ export const useSubmitAgentPage = () => {
 
       await loadCatalog(true);
     } catch (error) {
-      pageError.value =
-        error instanceof Error ? error.message : "提交页初始化失败。";
+      setError(error, "提交页初始化失败。");
     } finally {
-      pageLoading.value = false;
+      stopLoading();
     }
   };
 
@@ -474,7 +485,7 @@ export const useSubmitAgentPage = () => {
       return;
     }
 
-    submitting.value = true;
+    startSubmitting();
 
     try {
       const payload = buildPayload("submit");
@@ -501,10 +512,9 @@ export const useSubmitAgentPage = () => {
       );
       confirmDialogVisible.value = true;
     } catch (error) {
-      submitError.value =
-        error instanceof Error ? error.message : "提交失败，请稍后重试。";
+      setSubmitError(error, "提交失败，请稍后重试。");
     } finally {
-      submitting.value = false;
+      stopSubmitting();
     }
   };
 
@@ -513,7 +523,7 @@ export const useSubmitAgentPage = () => {
       return;
     }
 
-    submitting.value = true;
+    startSubmitting();
     submitError.value = "";
 
     try {
@@ -524,10 +534,9 @@ export const useSubmitAgentPage = () => {
         RouteLocation.evaluationDetail(submitResult.evaluationId),
       );
     } catch (error) {
-      submitError.value =
-        error instanceof Error ? error.message : "提交失败，请稍后重试。";
+      setSubmitError(error, "提交失败，请稍后重试。");
     } finally {
-      submitting.value = false;
+      stopSubmitting();
     }
   };
 

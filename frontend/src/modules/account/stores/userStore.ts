@@ -57,6 +57,7 @@ export const useUserStore = defineStore("user", () => {
   const postLoginRedirect = ref<string | null>(
     sessionStorage.getItem(STORAGE_KEYS.user.postLoginRedirect),
   );
+  const initPromise = ref<Promise<boolean> | null>(null);
 
   const isLogin = computed(() => Boolean(token.value && currentUser.value));
   const username = computed(() => currentUser.value?.username || "");
@@ -83,25 +84,32 @@ export const useUserStore = defineStore("user", () => {
     avatarVersion.value = Date.now();
   };
 
-  const restoreLogin = async (): Promise<boolean> => {
-    const storedToken = localStorage.getItem(STORAGE_KEYS.user.token);
-    if (!storedToken) return false;
+  const restoreLogin = (): Promise<boolean> => {
+    if (initPromise.value) return initPromise.value;
 
-    token.value = storedToken;
+    const doRestore = async (): Promise<boolean> => {
+      const storedToken = localStorage.getItem(STORAGE_KEYS.user.token);
+      if (!storedToken) return false;
 
-    try {
-      const res = await request.get<UserPayload>("/auth/me");
-      if (res.success && res.data) {
-        setCurrentUser(res.data);
-        return true;
+      token.value = storedToken;
+
+      try {
+        const res = await request.get<UserPayload>("/auth/me");
+        if (res.success && res.data) {
+          setCurrentUser(res.data);
+          return true;
+        }
+
+        clearAuthState();
+        return false;
+      } catch {
+        clearAuthState();
+        return false;
       }
+    };
 
-      clearAuthState();
-      return false;
-    } catch {
-      clearAuthState();
-      return false;
-    }
+    initPromise.value = doRestore();
+    return initPromise.value;
   };
 
   const login = async (
@@ -233,6 +241,7 @@ export const useUserStore = defineStore("user", () => {
     showLogin,
     currentUser,
     token,
+    initPromise,
     isLogin,
     username,
     email,
