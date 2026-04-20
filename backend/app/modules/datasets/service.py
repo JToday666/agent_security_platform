@@ -25,6 +25,7 @@ class DatasetService:
     """封装数据集查询相关业务能力。"""
 
     def __init__(self, repository: DatasetRepository) -> None:
+        """绑定目录与详情查询共用的数据仓储。"""
         self.repository = repository
 
     async def get_catalog(self) -> DatasetCatalogResponse:

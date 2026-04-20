@@ -1,3 +1,5 @@
+"""用户模型定义，负责映射账号、权限与审计字段。"""
+
 from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, String, func, text
@@ -7,12 +9,7 @@ from app.shared.db.base import Base
 
 
 class User(Base):
-    """
-    用户模型 (User Model)
-    
-    用于存储系统用户账号信息、权限标识及状态等。
-    映射到数据库中的 `users` 表。
-    """
+    """定义用户表结构，供认证、资料管理等模块共享使用。"""
     __tablename__ = "users"
 
     # 主键 ID

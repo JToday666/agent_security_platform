@@ -1,4 +1,4 @@
-"""Artifact collection helpers for runtime executions."""
+"""运行时产物收集工具，负责整理样本执行后的可持久化文件。"""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from app.worker.runtime.preparation import PreparedRuntime
 
 @dataclass(slots=True)
 class ArtifactRecord:
-    """Normalized artifact ready to persist."""
+    """描述一条可写入数据库的运行时产物记录。"""
 
     artifact_type: str
     path: Path
@@ -19,6 +19,7 @@ class ArtifactRecord:
 
 
 def _artifact_record(execution_id: int, root: Path, path: Path, artifact_type: str) -> ArtifactRecord:
+    """将磁盘文件转换为统一的运行时产物描述。"""
     relative_path = path.relative_to(root).as_posix()
     stat = path.stat()
     return ArtifactRecord(
@@ -33,7 +34,7 @@ def _artifact_record(execution_id: int, root: Path, path: Path, artifact_type: s
 
 
 def collect_artifacts(prepared: PreparedRuntime) -> list[ArtifactRecord]:
-    """Collect runtime artifacts that should be indexed in the database."""
+    """收集样本执行目录中的关键产物，供执行结果持久化时调用。"""
     records: list[ArtifactRecord] = []
     root = prepared.work_dir
     candidates = [

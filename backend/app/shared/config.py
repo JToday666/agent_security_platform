@@ -47,6 +47,7 @@ class Settings(BaseSettings):
 
     @property
     def DATABASE_URL(self) -> URL:
+        """返回业务运行时使用的异步数据库连接地址。"""
         return URL.create(
             "postgresql+asyncpg",
             username=self.POSTGRES_USER,
@@ -58,6 +59,7 @@ class Settings(BaseSettings):
 
     @property
     def SYNC_DATABASE_URL(self) -> URL:
+        """返回 Alembic 迁移等同步场景使用的数据库连接地址。"""
         return URL.create(
             "postgresql+psycopg",
             username=self.POSTGRES_USER,
@@ -69,28 +71,34 @@ class Settings(BaseSettings):
 
     @property
     def runtime_root(self) -> Path:
+        """返回后端运行期文件的根目录。"""
         if self.RUNTIME_ROOT_DIR:
             return Path(self.RUNTIME_ROOT_DIR).expanduser().resolve()
         return BACKEND_DIR / "runtime"
 
     @property
     def uploads_root(self) -> Path:
+        """返回上传文件的统一存储目录。"""
         return self.runtime_root / "uploads"
 
     @property
     def avatars_root(self) -> Path:
+        """返回用户头像文件的存储目录。"""
         return self.uploads_root / "avatars"
 
     @property
     def credential_storage_dir(self) -> Path:
+        """返回凭据引用文件的落盘目录。"""
         return self.runtime_root / "credentials"
 
     @property
     def worker_workdir_root(self) -> Path:
+        """返回 worker 运行样本时使用的工作目录根路径。"""
         return self.runtime_root / "workdir"
 
     @property
     def CREDENTIAL_STORAGE_DIR(self) -> Path:
+        """兼容旧调用方的凭据目录别名。"""
         return self.credential_storage_dir
 
 

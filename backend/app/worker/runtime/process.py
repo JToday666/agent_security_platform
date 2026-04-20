@@ -1,4 +1,4 @@
-"""Probe runner process lifecycle helpers."""
+"""Probe runner 进程生命周期工具，负责启动、探活与关闭 runtime。"""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ SHARED_PROBE_BACKEND = BACKEND_DIR / "data" / "agent_runtime_shared" / "probe_ba
 
 @dataclass(slots=True)
 class RuntimeProcessHandle:
-    """Live probe runner process and associated metadata."""
+    """描述已启动 probe runner 进程及其关联句柄。"""
 
     prepared: PreparedRuntime
     process: asyncio.subprocess.Process
@@ -31,11 +31,12 @@ class RuntimeProcessHandle:
 
 
 def runtime_base_url(prepared: PreparedRuntime) -> str:
-    """Return the runtime base URL."""
+    """返回当前 runtime 对外暴露的基础访问地址。"""
     return f"http://{settings.WORKER_RUNNER_HOST}:{prepared.port}"
 
 
 def _build_direct_command(prepared: PreparedRuntime) -> list[str]:
+    """构造直接启动共享 probe backend 的命令。"""
     return [
         sys.executable,
         str(SHARED_PROBE_BACKEND),
@@ -53,6 +54,7 @@ def _build_direct_command(prepared: PreparedRuntime) -> list[str]:
 
 
 def _build_command(prepared: PreparedRuntime, isolation_mode: str) -> list[str]:
+    """按隔离模式构造最终的 probe runner 启动命令。"""
     direct = _build_direct_command(prepared)
     if isolation_mode != "namespace":
         return direct
@@ -75,6 +77,7 @@ def candidate_isolation_modes() -> list[str]:
 
 
 async def _wait_until_healthy(handle: RuntimeProcessHandle, timeout_seconds: float) -> None:
+    """轮询健康检查接口，直到 probe runner 可用或超时。"""
     deadline = asyncio.get_running_loop().time() + timeout_seconds
     health_url = f"{runtime_base_url(handle.prepared)}/__probe__/health"
     async with httpx.AsyncClient(timeout=httpx.Timeout(1.0)) as client:
@@ -97,6 +100,7 @@ async def _wait_until_healthy(handle: RuntimeProcessHandle, timeout_seconds: flo
 
 
 async def _spawn_process(prepared: PreparedRuntime, isolation_mode: str) -> RuntimeProcessHandle:
+    """启动单个 probe runner 进程并返回运行句柄。"""
     prepared.isolation_mode = isolation_mode
     stdout_handle = prepared.stdout_log.open("w", encoding="utf-8")
     stderr_handle = prepared.stderr_log.open("w", encoding="utf-8")

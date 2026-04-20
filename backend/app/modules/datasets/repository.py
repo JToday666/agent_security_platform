@@ -10,9 +10,11 @@ class DatasetRepository:
     """封装数据集目录与详情查询操作。"""
 
     def __init__(self, db: AsyncSession) -> None:
+        """绑定数据集查询流程共用的异步数据库会话。"""
         self.db = db
 
     async def get_catalog_rows(self):
+        """查询目录页所需的分类、子类与样本统计聚合结果。"""
         stmt = (
             select(
                 RiskCategory,
@@ -42,6 +44,7 @@ class DatasetRepository:
         return (await self.db.execute(stmt)).all()
 
     async def get_detail_row(self, dataset_id: str):
+        """查询单个数据集详情页所需的聚合信息。"""
         stmt = (
             select(
                 RiskCategory,

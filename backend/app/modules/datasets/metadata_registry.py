@@ -31,6 +31,8 @@ from app.modules.datasets.importer import (
 
 @dataclass(slots=True)
 class DatasetSourceRecord:
+    """描述 registry 中的数据源字典项。"""
+
     code: str
     name: str
     description: str | None = None
@@ -39,6 +41,8 @@ class DatasetSourceRecord:
 
 @dataclass(slots=True)
 class AttackDeliveryTypeRecord:
+    """描述 registry 中的攻击投递方式字典项。"""
+
     code: str
     name: str
     description: str | None = None
@@ -47,6 +51,8 @@ class AttackDeliveryTypeRecord:
 
 @dataclass(slots=True)
 class AssetTypeRecord:
+    """描述 registry 中的资产类型字典项。"""
+
     code: str
     name: str
     description: str | None = None
@@ -55,6 +61,8 @@ class AssetTypeRecord:
 
 @dataclass(slots=True)
 class RiskCategoryRecord:
+    """描述 registry 中的风险大类字典项。"""
+
     code: str
     name: str
     meaning: str | None = None
@@ -65,6 +73,8 @@ class RiskCategoryRecord:
 
 @dataclass(slots=True)
 class RiskSubtypeRecord:
+    """描述 registry 中的风险子类字典项。"""
+
     code: str
     category_code: str
     name: str
@@ -74,6 +84,8 @@ class RiskSubtypeRecord:
 
 @dataclass(slots=True)
 class DisplayMetaRecord:
+    """描述展示层使用的风险子类富文本资料。"""
+
     subtype_code: str
     short_description: str | None = None
     full_description: str | None = None
@@ -85,6 +97,8 @@ class DisplayMetaRecord:
 
 @dataclass(slots=True)
 class MetadataBundle:
+    """汇总一套可读写的版本化元数据内容。"""
+
     dataset_sources: list[DatasetSourceRecord] = field(default_factory=list)
     attack_delivery_types: list[AttackDeliveryTypeRecord] = field(default_factory=list)
     asset_types: list[AssetTypeRecord] = field(default_factory=list)
@@ -95,6 +109,8 @@ class MetadataBundle:
 
 @dataclass(slots=True)
 class MetadataImportResult:
+    """记录元数据入库后的新增与更新统计。"""
+
     created_sources: int = 0
     updated_sources: int = 0
     created_delivery_types: int = 0
@@ -175,6 +191,7 @@ def build_display_meta_index(bundle: MetadataBundle) -> list[dict[str, object]]:
     known_codes = set(subtype_by_code) | set(bundle.display_meta_by_code)
 
     def sort_key(code: str) -> tuple[int, int, str]:
+        """生成展示索引项的分类与子类排序键。"""
         subtype = subtype_by_code.get(code)
         category = category_by_code.get(subtype.category_code) if subtype else None
         return (
@@ -397,6 +414,7 @@ def apply_metadata_bundle(session: Session, bundle: MetadataBundle) -> MetadataI
 
 
 def _upsert_dataset_source(session: Session, record: DatasetSourceRecord) -> tuple[DatasetSource, bool]:
+    """按 code 幂等写入数据源字典项。"""
     row = session.execute(select(DatasetSource).where(DatasetSource.code == record.code)).scalar_one_or_none()
     if row is None:
         row = DatasetSource(
@@ -416,6 +434,7 @@ def _upsert_dataset_source(session: Session, record: DatasetSourceRecord) -> tup
 
 
 def _upsert_attack_delivery_type(session: Session, record: AttackDeliveryTypeRecord) -> tuple[AttackDeliveryType, bool]:
+    """按 code 幂等写入攻击投递方式字典项。"""
     row = session.execute(select(AttackDeliveryType).where(AttackDeliveryType.code == record.code)).scalar_one_or_none()
     if row is None:
         row = AttackDeliveryType(
@@ -435,6 +454,7 @@ def _upsert_attack_delivery_type(session: Session, record: AttackDeliveryTypeRec
 
 
 def _upsert_asset_type(session: Session, record: AssetTypeRecord) -> tuple[AssetType, bool]:
+    """按 code 幂等写入资产类型字典项。"""
     row = session.execute(select(AssetType).where(AssetType.code == record.code)).scalar_one_or_none()
     if row is None:
         row = AssetType(
@@ -454,6 +474,7 @@ def _upsert_asset_type(session: Session, record: AssetTypeRecord) -> tuple[Asset
 
 
 def _upsert_risk_category(session: Session, record: RiskCategoryRecord) -> tuple[RiskCategory, bool]:
+    """按 code 幂等写入风险大类字典项。"""
     row = session.execute(select(RiskCategory).where(RiskCategory.code == record.code)).scalar_one_or_none()
     if row is None:
         row = RiskCategory(
@@ -477,6 +498,7 @@ def _upsert_risk_category(session: Session, record: RiskCategoryRecord) -> tuple
 
 
 def _upsert_risk_subtype(session: Session, record: RiskSubtypeRecord, category_id: int) -> tuple[RiskSubtype, bool]:
+    """按 code 幂等写入风险子类字典项。"""
     row = session.execute(select(RiskSubtype).where(RiskSubtype.code == record.code)).scalar_one_or_none()
     if row is None:
         row = RiskSubtype(
@@ -502,6 +524,7 @@ def _upsert_display_meta(
     subtype_id: int,
     record: DisplayMetaRecord,
 ) -> tuple[RiskSubtypeDisplayMeta, bool]:
+    """按子类主键幂等写入展示元数据。"""
     row = session.execute(
         select(RiskSubtypeDisplayMeta).where(RiskSubtypeDisplayMeta.subtype_id == subtype_id)
     ).scalar_one_or_none()
@@ -529,6 +552,7 @@ def _upsert_display_meta(
 
 
 def _load_json_list(path: Path) -> list[dict[str, object]]:
+    """读取并校验顶层为数组的 JSON 文件。"""
     if not path.exists():
         return []
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -541,6 +565,7 @@ def _load_json_list(path: Path) -> list[dict[str, object]]:
 
 
 def _load_json_object(path: Path) -> dict[str, object]:
+    """读取并校验顶层为对象的 JSON 文件。"""
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise ImportValidationError(f"{path}: 顶层必须是对象")
@@ -548,5 +573,6 @@ def _load_json_object(path: Path) -> dict[str, object]:
 
 
 def _write_json(path: Path, payload: object) -> None:
+    """以统一格式写出 JSON 文件。"""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
