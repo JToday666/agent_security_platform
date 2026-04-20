@@ -1,54 +1,83 @@
-# 评测记录与报告接口补充说明
+# 评测接口说明
 
-> 本文档是 [`API接口协议.md`](./API接口协议.md) 的评测域补充说明。  
-> 精确路由、请求体、响应体和错误码以总协议为准。
+本文档描述当前前端在评测记录、评测详情和任务动作中的真实调用行为，并同步补充当前页面展示规则。
 
-## 1. 当前覆盖接口
+## 运行模式
 
-- `GET /api/v1/evaluations`
-- `GET /api/v1/evaluations/{evaluationId}`
-- `POST /api/v1/evaluations/{evaluationId}/actions`
+由 `VITE_ENABLE_API_MOCK` 统一控制：
 
-## 2. 页面交互流程
+- `false`: 调用真实后端评测接口。
+- `true`: 调用前端 mock 评测实现，并允许在 localStorage 中保存 mock 评测记录。
 
-### 2.1 用户中心 `/user`
+## 接口列表
 
-- 页面进入时调用 `GET /api/v1/evaluations`
-- 前端按 `createdAt` 倒序展示记录
-- 点击记录后跳转到 `/user/evaluation/{evaluationId}`
+### 1. 获取评测记录列表
 
-### 2.2 评测详情 `/user/evaluation/{evaluationId}`
+- 方法：`GET /evaluations`
+- 前端入口：`getEvaluationRecords()`
 
-- 页面进入时调用 `GET /api/v1/evaluations/{evaluationId}`
-- 若任务处于非终态，前端可轮询详情接口获取最新快照
-- 前端根据 `controls` 渲染暂停、继续、终止、取消按钮
-- 用户操作时调用 `POST /api/v1/evaluations/{evaluationId}/actions`
-- 动作接口直接返回最新详情快照，可用于刷新当前页面
+前端行为：
 
-## 3. 状态与动作补充
+- 不做 durable 本地缓存。
+- 仅在页面加载时请求，筛选行为在前端本地完成。
+- 返回结果会先经过前端适配与脱敏整理后再进入页面。
 
-### 3.1 状态枚举
+### 2. 获取评测详情
 
-```text
-pending | running | pausing | paused | terminating | canceling | completed | terminated | canceled | failed
-```
+- 方法：`GET /evaluations/{evaluationId}`
+- 前端入口：`getEvaluationDetail(evaluationId)`
 
-### 3.2 终态原因枚举
+前端行为：
 
-```text
-completed | terminated_by_user | auto_terminated_after_pause_timeout | canceled_by_user | failed
-```
+- 详情页首次进入会主动加载。
+- 非终态任务会继续按页面逻辑轮询或在动作后刷新。
+- 返回结果会先经过前端适配，再统一计算可用动作、进度文案和报告展示状态。
 
-### 3.3 动作语义
+### 3. 提交任务动作
 
-- `pause`：允许当前数据集跑完后进入 `paused`
-- `resume`：仅 `paused` 状态可恢复
-- `terminate`：结束剩余队列并生成最终报告
-- `cancel`：尽快取消任务，不生成最终报告
+- 方法：`POST /evaluations/{evaluationId}/actions`
+- 前端入口：`postEvaluationAction(evaluationId, action)`
+- `action` 取值：
+  - `pause`
+  - `resume`
+  - `terminate`
+  - `cancel`
 
-## 4. 前端显示约定
+前端动作规则：
 
-- `evaluationId` 是任务唯一公开标识。
-- `datasetIds` / `runningDatasetId` 仅用于内部联调和状态跟踪。
-- `datasetNames` / `runningDatasetName` / `statusText` 必须可直接展示给用户。
-- 不应向用户暴露 `A1`、`C2` 这类内部数据集代码。
+- `pause`: 仅运行中且未使用过暂停机会时允许。
+- `resume`: 仅暂停中允许。
+- `terminate`: 运行中或暂停中允许。
+- `cancel`: 排队中、运行中、暂停中允许。
+
+前端已将这些规则收口到共享模型逻辑，mock 存储与详情视图共用同一套判断。
+
+## 报告展示规则
+
+前端报告区遵循以下边界：
+
+- 只有后端或 mock 返回最终报告后，才展示报告摘要和指标。
+- 只有 `finalReportAvailable=true` 且 `score` 为数字时，才展示综合得分。
+- 记录页不直接做报告分数字段格式化输出，只负责筛选与列表展示。
+
+### 当前详情页摘要区规则
+
+- 顶部摘要模块中，任务状态、提交方式、报告状态使用图标标记承载视觉状态，不再在彩色标记中重复展示相同文字。
+- 数据集数量卡片只展示数量本身，不再在同一卡片中列出具体数据集名称。
+- 具体数据集名称如需展示，应由更下层的数据或报告内容承担，不在顶部摘要区重复堆叠。
+
+## mock 持久化边界
+
+仅在 `VITE_ENABLE_API_MOCK=true` 时：
+
+- mock 评测记录会写入 localStorage。
+- 真实后端模式下，评测记录与详情不写入 durable localStorage。
+
+## 页面状态
+
+当前评测页统一使用共享页面状态卡与提示组件处理：
+
+- 加载中
+- 请求失败
+- 空列表 / 无匹配结果
+- 行动后的错误提示

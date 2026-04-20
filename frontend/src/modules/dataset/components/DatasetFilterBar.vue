@@ -1,0 +1,147 @@
+<template>
+  <SectionCard
+    title="筛选与排序"
+    description="按风险域、名称和排序方式快速定位目标数据集。"
+  >
+    <div class="toolbar">
+      <FormField
+        label="搜索"
+        :model-value="search"
+        type="search"
+        placeholder="按名称或摘要搜索"
+        leading-icon="lucide:search"
+        @update:model-value="$emit('update:search', $event)"
+      />
+
+      <FormField
+        label="排序"
+        :model-value="sortKey"
+        type="select"
+        :options="sortOptions"
+        @update:model-value="handleSortKeyChange"
+      />
+
+      <UiButton
+        class="clear-btn"
+        variant="secondary"
+        :disabled="!search.trim()"
+        @click="$emit('clear-search')"
+      >
+        清空搜索
+      </UiButton>
+    </div>
+
+    <div class="chip-row">
+      <button
+        v-for="category in categories"
+        :key="category.categoryId"
+        type="button"
+        class="category-chip"
+        :class="{ active: activeCategoryId === category.categoryId }"
+        :style="getChipStyle(category.categoryId, activeCategoryId === category.categoryId)"
+        @click="$emit('select-category', category.categoryId)"
+      >
+        <span class="chip-name">{{ category.name }}</span>
+      </button>
+    </div>
+  </SectionCard>
+</template>
+
+<script setup lang="ts">
+import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
+import type { DatasetCatalogSortKey } from "@/modules/dataset/model/dataset-catalog-view";
+import { getCategoryTheme } from "@/modules/dataset/lib/dataset-utils";
+import FormField from "@/shared/ui/forms/FormField.vue";
+import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
+
+const emit = defineEmits<{
+  (event: "select-category", categoryId: string): void;
+  (event: "update:search", value: string): void;
+  (event: "update:sortKey", value: DatasetCatalogSortKey): void;
+  (event: "clear-search"): void;
+}>();
+
+defineProps<{
+  categories: DatasetCategoryViewModel[];
+  activeCategoryId: string;
+  search: string;
+  sortKey: DatasetCatalogSortKey;
+}>();
+
+const sortOptions: Array<{ label: string; value: DatasetCatalogSortKey }> = [
+  { label: "默认排序", value: "default" },
+  { label: "最近更新", value: "updated-desc" },
+  { label: "样本数从高到低", value: "samples-desc" },
+];
+
+const handleSortKeyChange = (value: string) => {
+  emit("update:sortKey", value as DatasetCatalogSortKey);
+};
+
+const getChipStyle = (categoryId: string, active: boolean) => {
+  const theme = getCategoryTheme(categoryId);
+
+  if (active) {
+    return {
+      background: theme.gradient,
+      color: "#ffffff",
+      border: `1px solid ${theme.solid}`,
+      boxShadow: `0 16px 28px -26px ${theme.shadow}`,
+    };
+  }
+
+  return {
+    background: "rgba(255, 255, 255, 0.78)",
+    color: theme.text,
+    border: `1px solid ${theme.border}`,
+    boxShadow: `0 12px 20px -24px ${theme.shadow}`,
+  };
+};
+</script>
+
+<style scoped lang="scss">
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.4fr) minmax(180px, 0.8fr) auto;
+  gap: 0.85rem;
+}
+
+.clear-btn {
+  align-self: end;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.category-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.82rem 1.05rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.category-chip:hover {
+  transform: translateY(-1px);
+}
+
+.chip-name {
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .clear-btn {
+    width: 100%;
+  }
+}
+</style>

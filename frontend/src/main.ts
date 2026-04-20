@@ -1,14 +1,10 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
 import { createPinia } from "pinia";
-import { useUserStore } from "./store/UserStore";
-import { RouteLocation } from "./router/RouteNames";
-import "./styles/Tokens.css";
-import "./styles/Primitives.css";
-import "./styles/Semantic.css";
-import "./styles/LayoutShared.css";
-import "./styles/Utilities.css";
+import router from "./app/router/router";
+import { useUserStore } from "./modules/account/stores/userStore";
+import { RouteLocation } from "./app/router/route-names";
+import "./app/styles/main.scss";
 
 const app = createApp(App);
 const pinia = createPinia();

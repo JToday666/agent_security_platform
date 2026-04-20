@@ -1,0 +1,413 @@
+<template>
+  <div class="content profile-page layout-page-shell layout-page-shell--narrow">
+    <PageHeroCard
+      title="个人资料"
+      description="管理头像、用户名和密码。"
+      tone="workspace"
+      title-tone="brand"
+    />
+
+    <div class="profile-grid">
+      <aside class="profile-side ui-surface-panel">
+        <div class="avatar-card ui-surface-white">
+          <div class="avatar-preview">
+            <img
+              v-if="avatarPreview || avatarDisplayUrl"
+              :src="avatarPreview || avatarDisplayUrl"
+              alt="头像"
+            />
+            <AppIcon v-else icon="lucide:image-plus" class="avatar-placeholder" />
+          </div>
+
+          <div class="avatar-copy">
+            <strong>{{ form.username || "未设置用户名" }}</strong>
+            <span>{{ form.email || "未绑定邮箱" }}</span>
+          </div>
+        </div>
+
+        <div class="upload-card ui-surface-muted">
+          <UiButton as="label" for="avatar" variant="primary" :loading="uploading">
+            选择新头像
+          </UiButton>
+          <input
+            id="avatar"
+            type="file"
+            accept="image/*"
+            class="hidden-input"
+            :disabled="uploading"
+            @change="onAvatarChange"
+          />
+          <p class="hint">支持 JPG、PNG，大小不超过 2MB。</p>
+          <div v-if="uploading" class="uploading-hint">正在上传头像...</div>
+        </div>
+      </aside>
+
+      <SectionCard
+        class="profile-main ui-surface-panel"
+        title="更新账号信息"
+        description="邮箱不可修改，您可以修改用户名与密码。"
+      >
+        <InlineNotice
+          v-if="message"
+          :tone="messageType === 'success' ? 'success' : 'danger'"
+          :message="message"
+        />
+
+        <form class="profile-form" @submit.prevent="handleSubmit">
+          <FormField
+            label="用户名"
+            :model-value="form.username"
+            type="text"
+            placeholder="请输入用户名"
+            leading-icon="lucide:user"
+            @update:model-value="form.username = $event"
+          />
+
+          <FormField
+            label="邮箱"
+            :model-value="form.email"
+            type="email"
+            readonly
+            help="邮箱不可修改。"
+            leading-icon="lucide:mail"
+            @update:model-value="form.email = $event"
+          />
+
+          <FormField
+            label="新密码"
+            :model-value="form.password"
+            type="password"
+            placeholder="留空表示不修改"
+            leading-icon="lucide:lock"
+            @update:model-value="form.password = $event"
+          />
+
+          <FormField
+            label="确认新密码"
+            :model-value="form.confirmPassword"
+            type="password"
+            placeholder="再次输入新密码"
+            leading-icon="lucide:shield-check"
+            @update:model-value="form.confirmPassword = $event"
+          />
+
+          <div class="form-actions">
+            <UiButton type="submit" variant="primary" :loading="submitting" block>
+              保存修改
+            </UiButton>
+            <UiButton
+              type="button"
+              variant="secondary"
+              :disabled="submitting"
+              block
+              @click="resetForm"
+            >
+              取消
+            </UiButton>
+          </div>
+        </form>
+      </SectionCard>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+import { useUserStore } from "@/modules/account/stores/userStore";
+import AppIcon from "@/shared/ui/branding/AppIcon.vue";
+import FormField from "@/shared/ui/forms/FormField.vue";
+import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
+import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
+import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
+
+const userStore = useUserStore();
+const { avatarDisplayUrl, currentUser } = storeToRefs(userStore);
+
+const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
+const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png"];
+const SUCCESS_MESSAGE_TIMEOUT_MS = 3000;
+
+const form = reactive({
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+});
+
+const avatarPreview = ref<string | null>(null);
+const submitting = ref(false);
+const uploading = ref(false);
+const message = ref("");
+const messageType = ref<"success" | "error">("success");
+let messageTimer: number | null = null;
+
+const clearMessageTimer = () => {
+  if (messageTimer !== null) {
+    window.clearTimeout(messageTimer);
+    messageTimer = null;
+  }
+};
+
+const clearMessage = () => {
+  clearMessageTimer();
+  message.value = "";
+};
+
+const setMessage = (
+  nextMessage: string,
+  type: "success" | "error",
+  autoDismiss = type === "success",
+) => {
+  clearMessageTimer();
+  message.value = nextMessage;
+  messageType.value = type;
+
+  if (!nextMessage || !autoDismiss) {
+    return;
+  }
+
+  messageTimer = window.setTimeout(() => {
+    message.value = "";
+    messageTimer = null;
+  }, SUCCESS_MESSAGE_TIMEOUT_MS);
+};
+
+const loadUserData = () => {
+  if (currentUser.value) {
+    form.username = currentUser.value.username || "";
+    form.email = currentUser.value.email || "";
+  }
+};
+
+onMounted(() => {
+  if (currentUser.value) {
+    loadUserData();
+  } else {
+    userStore
+      .fetchProfile()
+      .then(() => {
+        loadUserData();
+      })
+      .catch(() => {});
+  }
+});
+
+watch(currentUser, () => {
+  loadUserData();
+});
+
+onUnmounted(() => {
+  clearMessageTimer();
+});
+
+const onAvatarChange = async (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (!file) return;
+
+  if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
+    setMessage("仅支持 JPG、PNG 格式", "error", false);
+    target.value = "";
+    return;
+  }
+
+  if (file.size > MAX_AVATAR_SIZE) {
+    setMessage("头像大小不能超过 2MB", "error", false);
+    target.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (loadEvent) => {
+    avatarPreview.value = loadEvent.target?.result as string;
+  };
+  reader.readAsDataURL(file);
+
+  uploading.value = true;
+  clearMessage();
+  try {
+    await userStore.uploadAvatar(file);
+    avatarPreview.value = null;
+    setMessage("头像更新成功", "success");
+  } catch (error: any) {
+    setMessage(error.message || "头像上传失败", "error", false);
+    avatarPreview.value = null;
+  } finally {
+    uploading.value = false;
+    target.value = "";
+  }
+};
+
+const handleSubmit = async () => {
+  const normalizedUsername = form.username.trim();
+
+  if (normalizedUsername.length < 3) {
+    setMessage("用户名长度至少 3 位", "error", false);
+    return;
+  }
+
+  if (form.password && form.password.length < 6) {
+    setMessage("密码长度至少 6 位", "error", false);
+    return;
+  }
+
+  if (form.password && form.password !== form.confirmPassword) {
+    setMessage("两次输入的密码不一致", "error", false);
+    return;
+  }
+
+  const updateData: {
+    username?: string;
+    password?: string;
+  } = {};
+
+  if (normalizedUsername !== currentUser.value?.username) {
+    updateData.username = normalizedUsername;
+  }
+  if (form.password) {
+    updateData.password = form.password;
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    setMessage("没有要保存的修改", "error", false);
+    return;
+  }
+
+  submitting.value = true;
+  clearMessage();
+
+  try {
+    await userStore.updateProfile(updateData);
+    setMessage("信息更新成功", "success");
+    form.password = "";
+    form.confirmPassword = "";
+  } catch (error: any) {
+    setMessage(error.message || "更新失败", "error", false);
+  } finally {
+    submitting.value = false;
+  }
+};
+
+const resetForm = () => {
+  loadUserData();
+  form.password = "";
+  form.confirmPassword = "";
+  avatarPreview.value = null;
+  clearMessage();
+};
+</script>
+
+<style scoped lang="scss">
+.profile-page {
+  padding-bottom: 2.5rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.profile-side,
+.profile-main {
+  padding: 1.3rem;
+  border-radius: 1.5rem;
+}
+
+.avatar-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.3rem;
+  border-radius: 1.25rem;
+}
+
+.avatar-preview {
+  width: 106px;
+  height: 106px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 28px -20px rgba(79, 70, 229, 0.32);
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 2rem;
+  height: 2rem;
+  color: #94a3b8;
+}
+
+.avatar-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.28rem;
+  text-align: center;
+}
+
+.avatar-copy strong {
+  color: var(--color-text-dark);
+  font-size: 1.04rem;
+}
+
+.avatar-copy span {
+  color: var(--color-text-subtle);
+  font-size: 0.9rem;
+}
+
+.upload-card {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 1.2rem;
+}
+
+.hidden-input {
+  display: none;
+}
+
+.hint,
+.uploading-hint {
+  margin: 0.55rem 0 0;
+  color: var(--color-text-subtle);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-actions {
+    flex-direction: column;
+  }
+}
+</style>

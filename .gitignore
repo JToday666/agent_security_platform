@@ -1,23 +1,28 @@
-# Ignore VS Code workspace settings
+# IDE
 .vscode/
 !.vscode/extensions.json
-# Ignore GitHub workflow files
-.github/ 
-# Ignore virtual environment folders
-.venv/
-# Ignore JetBrains IDE project files
 .idea/
-# Ignore environment variable files
-.env
-# Ignore temporary files
+
+# Editor and system files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 ~$*
-# Ignore AGENTS.md file
+.DS_Store
+
+# Local environment files
+.env
+
+# Python virtual environments
+.venv/
+
+# Project tooling
+.github/
 AGENTS.md
-# Ignore Codex files
 .codex
-# Ignore Git worktree files
 .worktrees/
-# Ignore Superpower files
 .superpower/
 
 # backend
@@ -29,43 +34,33 @@ AGENTS.md
 
 /backend/**/__pycache__/
 
-#frontend
+# Frontend environment files
+/frontend/.env
+!/frontend/.env.example
+
+# Frontend dependencies and caches
+/frontend/node_modules/
+/frontend/.vite/
+/frontend/.eslintcache
+/frontend/*.tsbuildinfo
+/frontend/*.timestamp-*-*.mjs
+
+# Frontend build and test outputs
+/frontend/dist/
+/frontend/dist-ssr/
+/frontend/coverage/
+/frontend/playwright-report/
+/frontend/test-results/
+/frontend/cypress/videos/
+/frontend/cypress/screenshots/
+/frontend/*.local
+/__screenshots__/
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
-.DS_Store
-
-/frontend/node_modules
-/frontend/.DS_Store
-/frontend/dist
-/frontend/dist-ssr
-/frontend/coverage
-/frontend/*.local
-/frontend/scripts
-
-# Editor directories and files
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-*.tsbuildinfo
-
-.eslintcache
-
-# Cypress
-/frontend//cypress/videos/
-/frontend//cypress/screenshots/
-
-# Vitest
-__screenshots__/
-
-# Vite
-/frontend/*.timestamp-*-*.mjs
