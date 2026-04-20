@@ -1,3 +1,5 @@
+"""评测任务相关 ORM 模型，负责持久化运行快照、执行结果与报告。"""
+
 from datetime import datetime
 from decimal import Decimal
 

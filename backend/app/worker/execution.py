@@ -35,26 +35,30 @@ from app.worker.runtime.preparation import build_environment_ref, build_probe_to
 
 @dataclass(slots=True)
 class SampleJob:
-    """Immutable sample execution job snapshot."""
+    """描述待执行样本的轻量任务快照。"""
 
     execution_id: int
     sample: SampleRuntimeTarget
 
 
 def _now() -> datetime:
+    """返回当前 UTC 时间，供执行链路统一写审计字段。"""
     return datetime.now(timezone.utc)
 
 
 def _to_error_message(exc: Exception) -> str:
+    """把异常对象压缩为可持久化的错误摘要。"""
     text = f"{exc.__class__.__name__}: {exc}"
     return text[:2000]
 
 
 def _execution_timeout_seconds(timeout_seconds: int | None) -> int:
+    """解析单样本执行超时时间，缺省时回退到全局配置。"""
     return max(1, int(timeout_seconds or settings.WORKER_EXECUTION_TIMEOUT_SECONDS))
 
 
 def _summary_for_success(dispatch_mode: str) -> dict[str, object]:
+    """构造样本成功收集证据后的默认摘要。"""
     if dispatch_mode == "synthetic_local":
         return {
             "task_completed": False,
@@ -71,6 +75,7 @@ def _summary_for_success(dispatch_mode: str) -> dict[str, object]:
 
 
 def _summary_for_timeout() -> dict[str, object]:
+    """构造样本执行超时后的默认摘要。"""
     return {
         "task_completed": False,
         "harm_detected": False,
@@ -80,6 +85,7 @@ def _summary_for_timeout() -> dict[str, object]:
 
 
 def _validate_dispatch_results(prepared, compile_result: dict[str, object], replay_result: dict[str, object]) -> None:
+    """校验 runtime 输出的编译结果、回放结果与关键产物文件。"""
     if not (prepared.run_dir / "compile_result.json").exists():
         raise RuntimeDispatchError("compile_result.json not found")
     if not (prepared.run_dir / "replay_result.json").exists():
@@ -106,6 +112,7 @@ async def _persist_runtime_result(
     final_status: str,
     error_message: str | None = None,
 ) -> None:
+    """持久化样本执行摘要、产物记录与任务统计。"""
     artifacts = await asyncio.to_thread(collect_artifacts, prepared)
     finished_at = _now()
 
@@ -164,6 +171,7 @@ async def _persist_runtime_result(
 
 
 async def _mark_execution_runtime_ready(execution_id: int, prepared) -> None:
+    """在 runtime 就绪后回写执行记录中的运行环境信息。"""
     async with AsyncSessionLocal() as db:
         execution = await db.get(SampleExecution, execution_id)
         if execution is None:
@@ -177,6 +185,7 @@ async def _mark_execution_runtime_ready(execution_id: int, prepared) -> None:
 
 
 async def _mark_execution_state(execution_id: int, status: str) -> None:
+    """更新样本执行记录的当前状态。"""
     async with AsyncSessionLocal() as db:
         execution = await db.get(SampleExecution, execution_id)
         if execution is None:
@@ -187,6 +196,7 @@ async def _mark_execution_state(execution_id: int, status: str) -> None:
 
 
 async def _mark_execution_system_error(execution_id: int, run_id: int, dataset_id: int, exc: Exception) -> None:
+    """把系统级异常写回执行记录与任务统计。"""
     finished_at = _now()
     async with AsyncSessionLocal() as db:
         execution = await db.get(SampleExecution, execution_id)
@@ -217,6 +227,7 @@ async def _mark_execution_system_error(execution_id: int, run_id: int, dataset_i
 
 
 def _resolve_dispatch_mode(explicit_mode: str | None) -> str:
+    """解析当前样本执行使用的 runtime 调度模式。"""
     normalized = (explicit_mode or settings.WORKER_DISPATCH_MODE_DEFAULT or "synthetic_local").strip().lower()
     return normalized or "synthetic_local"
 
@@ -229,7 +240,7 @@ async def execute_sample(
     dispatch_mode: str | None = None,
     timeout_seconds: int | None = None,
 ) -> None:
-    """Execute a single sample against the shared __probe__ runtime."""
+    """执行单个样本；由数据集执行器并发调用，驱动完整 runtime 链路。"""
     execution_id = job.execution_id
     sample = job.sample
     timeout = _execution_timeout_seconds(timeout_seconds)
@@ -297,6 +308,7 @@ async def execute_sample(
 
 
 async def _load_sample_jobs(run_id: int, dataset_code: str) -> list[SampleJob]:
+    """加载指定任务与数据集下待执行的样本任务快照。"""
     async with AsyncSessionLocal() as db:
         rows = (
             await db.execute(
@@ -343,6 +355,7 @@ async def _load_sample_jobs(run_id: int, dataset_code: str) -> list[SampleJob]:
 
 
 async def _mark_dataset_completed(run_id: int, dataset_id: int, dataset_code: str) -> None:
+    """在数据集样本全部结束后回写数据集级完成状态。"""
     finished_at = _now()
     async with AsyncSessionLocal() as db:
         terminal_count = (
@@ -379,11 +392,12 @@ async def execute_dataset(
     dispatch_mode: str | None = None,
     timeout_seconds: int | None = None,
 ) -> None:
-    """Execute every sample in one dataset with bounded parallelism."""
+    """按受控并发执行单个数据集下的全部样本。"""
     jobs = await _load_sample_jobs(run_id, dataset_code)
     semaphore = asyncio.Semaphore(max(1, settings.WORKER_MAX_PARALLEL_EXECUTIONS_PER_RUN))
 
     async def run_job(job: SampleJob) -> None:
+        """在并发限制内执行单个样本任务。"""
         async with semaphore:
             await execute_sample(
                 run_id,

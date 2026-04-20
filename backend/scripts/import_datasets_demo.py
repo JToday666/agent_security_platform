@@ -12,12 +12,12 @@ from scripts.import_dataset_bundle import main as import_bundle_main
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Import the datasets_demo bundle into the database.")
+    parser = argparse.ArgumentParser(description="Import a dataset sample bundle into the database.")
     parser.add_argument(
         "--sample-root",
         type=Path,
-        default=BACKEND_ROOT / "datasets_demo",
-        help="Root directory containing datasets_demo samples.",
+        required=True,
+        help="Root directory containing dataset samples.",
     )
     parser.add_argument(
         "--registry-root",

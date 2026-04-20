@@ -20,6 +20,7 @@ class UserService:
     """封装用户资料相关业务能力。"""
 
     def __init__(self, repository: UserRepository) -> None:
+        """绑定用户资料服务使用的仓储实例。"""
         self.repository = repository
 
     async def get_profile(self, current_user) -> UserProfile:

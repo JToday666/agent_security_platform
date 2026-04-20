@@ -49,6 +49,7 @@ class SubmissionService:
     """封装评测任务提交相关业务能力。"""
 
     def __init__(self, repository: SubmissionRepository, credential_store: CredentialStore | None = None) -> None:
+        """绑定提交仓储与凭据存储组件，供提交入口链路调用。"""
         self.repository = repository
         self.credential_store = credential_store or FileCredentialStore(settings.credential_storage_dir, settings.SECRET_KEY)
 
@@ -156,6 +157,7 @@ class SubmissionService:
         )
 
     async def _validate_payload(self, payload: AgentSubmissionRequest) -> tuple[list[str], dict[str, object]]:
+        """校验提交请求并返回告警信息与样本筛选结果。"""
         agent_name = payload.agent_name.strip()
         if not agent_name:
             raise invalid_submission("智能体名称不能为空。")
@@ -213,6 +215,7 @@ class SubmissionService:
         }
 
     def _store_credentials(self, payload: AgentSubmissionRequest) -> str | None:
+        """按提交方式保存后续执行阶段需要的认证信息。"""
         if payload.submit_method == "api" and payload.api is not None and payload.api.token:
             return self.credential_store.store(
                 {
@@ -233,6 +236,7 @@ class SubmissionService:
         return None
 
     def _delete_credentials(self, credential_ref: str | None) -> None:
+        """删除已落盘的凭据引用，供失败回滚流程调用。"""
         if credential_ref is None:
             return
         self.credential_store.delete(credential_ref)

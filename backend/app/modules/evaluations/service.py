@@ -87,6 +87,7 @@ class EvaluationService:
     """封装评测任务查询与动作处理能力。"""
 
     def __init__(self, repository: EvaluationRepository) -> None:
+        """绑定任务查询与动作处理共用的仓储实例。"""
         self.repository = repository
 
     async def list_evaluations(self, current_user) -> list[EvaluationListItem]:
@@ -167,6 +168,7 @@ class EvaluationService:
         return await self._build_detail_snapshot(run=run, owner_name=owner_name)
 
     async def _get_run_for_user(self, evaluation_id: str, current_user):
+        """校验任务归属并返回当前用户可访问的任务记录。"""
         run = await self.repository.get_run_by_public_id(evaluation_id)
         if run is None:
             raise NotFoundError("评测记录不存在。")
@@ -175,6 +177,7 @@ class EvaluationService:
         return run
 
     async def _build_detail_snapshot(self, run, owner_name: str) -> EvaluationDetail:
+        """组装详情接口返回的完整任务快照。"""
         datasets = await self.repository.load_run_datasets(run.id)
         report = await self.repository.load_run_report(run.id)
         running_dataset = next((dataset for dataset in datasets if dataset.status == "running"), None)

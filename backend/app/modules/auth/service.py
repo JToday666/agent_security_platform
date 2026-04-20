@@ -18,6 +18,7 @@ class AuthService:
     """封装认证相关业务能力。"""
 
     def __init__(self, repository: AuthRepository) -> None:
+        """绑定认证流程使用的仓储实例。"""
         self.repository = repository
 
     async def login(self, username: str, password: str) -> AuthSessionData:

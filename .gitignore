@@ -31,6 +31,7 @@ AGENTS.md
 /backend/data/**
 !/backend/data/agent_runtime_shared/
 !/backend/data/agent_runtime_shared/**
+/backend/.coverage
 
 /backend/**/__pycache__/
 

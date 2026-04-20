@@ -13,9 +13,11 @@ class SubmissionRepository:
     """封装评测任务创建所需的数据库操作。"""
 
     def __init__(self, db: AsyncSession) -> None:
+        """绑定评测任务创建链路共用的异步数据库会话。"""
         self.db = db
 
     async def get_existing_run(self, user_id: int, request_id: str) -> TestRun | None:
+        """按用户与请求编号查询已存在的幂等任务。"""
         return (
             await self.db.execute(
                 select(TestRun).where(
@@ -26,6 +28,7 @@ class SubmissionRepository:
         ).scalar_one_or_none()
 
     async def resolve_dataset_selection(self, ordered_dataset_ids: list[str], difficulty: float):
+        """解析用户选择的数据集，并返回命中的样本与统计结果。"""
         dataset_stmt = (
             select(RiskSubtype.code, RiskSubtype.name)
             .join(
@@ -86,6 +89,7 @@ class SubmissionRepository:
         matched_counts: dict[str, int],
         sample_rows: list[BenchmarkSample],
     ) -> TestRun:
+        """创建任务、数据集快照、样本映射与执行记录整棵图结构。"""
         self.db.add(run)
         await self.db.flush()
 
@@ -132,10 +136,13 @@ class SubmissionRepository:
         return run
 
     async def commit(self) -> None:
+        """提交提交链路相关事务。"""
         await self.db.commit()
 
     async def rollback(self) -> None:
+        """回滚提交链路相关事务。"""
         await self.db.rollback()
 
     async def refresh(self, entity) -> None:
+        """刷新指定实体的数据库状态。"""
         await self.db.refresh(entity)

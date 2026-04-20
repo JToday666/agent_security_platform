@@ -26,6 +26,7 @@ class ProfileUpdateRequest(CamelModel):
     @field_validator("username")
     @classmethod
     def normalize_username(cls, value: str | None) -> str | None:
+        """规范用户名更新请求中的可选输入。"""
         if value is None:
             return value
         value = value.strip()

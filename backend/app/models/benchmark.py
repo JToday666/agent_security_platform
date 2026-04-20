@@ -1,3 +1,5 @@
+"""基准数据集相关 ORM 模型，描述样本、分类与展示元数据。"""
+
 from datetime import datetime
 from decimal import Decimal
 

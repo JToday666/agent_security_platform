@@ -21,7 +21,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--sample-root",
         type=Path,
-        default=BACKEND_ROOT / "datasets_demo",
+        required=True,
         help="Root directory containing dataset samples.",
     )
     parser.add_argument(

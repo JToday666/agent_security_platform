@@ -14,6 +14,7 @@ class LoginRequest(CamelModel):
     @field_validator("username")
     @classmethod
     def normalize_username(cls, value: str) -> str:
+        """清理登录标识前后空白，供登录接口入参复用。"""
         return value.strip()
 
 
@@ -27,6 +28,7 @@ class RegisterRequest(CamelModel):
     @field_validator("username")
     @classmethod
     def normalize_username(cls, value: str) -> str:
+        """规范注册用户名格式并拦截空白值。"""
         value = value.strip()
         if not value:
             raise ValueError("username cannot be empty")

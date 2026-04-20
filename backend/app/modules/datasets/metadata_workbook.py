@@ -236,6 +236,7 @@ def sync_metadata_from_workbook(xlsx_path: Path, registry_root: Path) -> Metadat
 
 
 def _append_sheet(workbook: Workbook, title: str, headers: list[str], rows) -> None:
+    """向工作簿追加一个带表头的数据工作表。"""
     sheet = workbook.create_sheet(title=title)
     sheet.append(headers)
     for row in rows:
@@ -243,10 +244,12 @@ def _append_sheet(workbook: Workbook, title: str, headers: list[str], rows) -> N
 
 
 def _sorted_display_meta(bundle: MetadataBundle) -> list[DisplayMetaRecord]:
+    """按 subtype code 排序展示元数据记录。"""
     return [bundle.display_meta_by_code[key] for key in sorted(bundle.display_meta_by_code)]
 
 
 def _read_simple_sheet(sheet, factory):
+    """按行读取简单结构工作表并映射为记录对象。"""
     items = []
     for row in sheet.iter_rows(min_row=2, values_only=True):
         if _is_blank_row(row):
@@ -256,6 +259,7 @@ def _read_simple_sheet(sheet, factory):
 
 
 def _fill_string_list_sheet(sheet, display_meta_by_code: dict[str, DisplayMetaRecord], field_name: str) -> None:
+    """把字符串列表工作表回填到展示元数据对象。"""
     grouped: dict[str, list[tuple[int, str]]] = {}
     for row in sheet.iter_rows(min_row=2, values_only=True):
         if _is_blank_row(row):
@@ -272,6 +276,7 @@ def _fill_string_list_sheet(sheet, display_meta_by_code: dict[str, DisplayMetaRe
 
 
 def _fill_resources_sheet(sheet, display_meta_by_code: dict[str, DisplayMetaRecord]) -> None:
+    """把资源列表工作表回填到展示元数据对象。"""
     grouped: dict[str, list[tuple[int, dict[str, object]]]] = {}
     for row in sheet.iter_rows(min_row=2, values_only=True):
         if _is_blank_row(row):
@@ -295,6 +300,7 @@ def _fill_resources_sheet(sheet, display_meta_by_code: dict[str, DisplayMetaReco
 
 
 def _fill_media_sheet(sheet, display_meta_by_code: dict[str, DisplayMetaRecord]) -> None:
+    """把媒体列表工作表回填到展示元数据对象。"""
     grouped: dict[str, list[tuple[int, dict[str, object]]]] = {}
     for row in sheet.iter_rows(min_row=2, values_only=True):
         if _is_blank_row(row):
@@ -322,11 +328,13 @@ def _fill_media_sheet(sheet, display_meta_by_code: dict[str, DisplayMetaRecord])
 
 
 def _require_display_meta(display_meta_by_code: dict[str, DisplayMetaRecord], subtype_code: str, sheet_name: str) -> None:
+    """校验工作表引用的 subtype 已在展示元数据表中定义。"""
     if subtype_code not in display_meta_by_code:
         raise ImportValidationError(f"{sheet_name}: subtype_code={subtype_code} 未在 risk_subtype_display_meta 中定义")
 
 
 def _require_text(value, field_name: str) -> str:
+    """读取必填文本单元格并校验非空。"""
     if value is None:
         raise ImportValidationError(f"{field_name} 不能为空")
     if not isinstance(value, str):
@@ -338,6 +346,7 @@ def _require_text(value, field_name: str) -> str:
 
 
 def _optional_text(value) -> str | None:
+    """读取可选文本单元格并去除空白。"""
     if value is None:
         return None
     if not isinstance(value, str):
@@ -347,12 +356,14 @@ def _optional_text(value) -> str | None:
 
 
 def _coerce_bool(value, field_name: str) -> bool:
+    """校验工作表中的布尔值字段。"""
     if isinstance(value, bool):
         return value
     raise ImportValidationError(f"{field_name} 必须是布尔值")
 
 
 def _coerce_optional_int(value, field_name: str) -> int | None:
+    """读取可选整数单元格。"""
     if value is None or value == "":
         return None
     if isinstance(value, int):
@@ -361,10 +372,12 @@ def _coerce_optional_int(value, field_name: str) -> int | None:
 
 
 def _coerce_required_int(value, field_name: str) -> int:
+    """读取必填整数单元格。"""
     if isinstance(value, int):
         return value
     raise ImportValidationError(f"{field_name} 必须是整数")
 
 
 def _is_blank_row(row) -> bool:
+    """判断一行单元格是否全部为空。"""
     return all(cell is None or cell == "" for cell in row)
