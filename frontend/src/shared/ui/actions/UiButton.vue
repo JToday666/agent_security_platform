@@ -164,6 +164,10 @@ const handleClick = (event: MouseEvent) => {
   transform: translateY(-1px);
 }
 
+.ui-button:active:not(.ui-button--disabled) {
+  transform: scale(0.98);
+}
+
 .ui-button--sm {
   padding: 0.54rem 0.82rem;
   font-size: 0.84rem;
@@ -190,17 +194,17 @@ const handleClick = (event: MouseEvent) => {
 }
 
 .ui-button--primary:hover:not(.ui-button--disabled) {
-  box-shadow: var(--shadow-primary-btn-hover);
+  box-shadow: var(--shadow-primary-btn-hover), var(--shadow-glow);
 }
 
 .ui-button--secondary {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(148, 163, 184, 0.24);
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(148, 163, 184, 0.2);
   color: var(--color-text-main);
 }
 
 .ui-button--ghost {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.44);
   color: var(--color-text-muted);
 }
 

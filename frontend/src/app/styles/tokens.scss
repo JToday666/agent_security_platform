@@ -43,13 +43,24 @@
     #6366f1 55%,
     #8b5cf6 100%
   );
+  --grad-title-bright: linear-gradient(
+    135deg,
+    #3b82f6 0%,
+    #6366f1 48%,
+    #8b5cf6 100%
+  );
   --grad-page-public: linear-gradient(
     180deg,
-    #f7f9fd 0%,
-    #f4f8ff 42%,
-    #eef4ff 100%
+    #f8fbff 0%,
+    #f3f8ff 42%,
+    #edf3ff 100%
   );
-  --grad-page-workspace: linear-gradient(180deg, #f8fafc 0%, #f7f9fc 100%);
+  --grad-page-workspace: linear-gradient(
+    180deg,
+    #f8fbff 0%,
+    #f5f8fd 58%,
+    #f2f5fb 100%
+  );
 
   /* Glass / blur */
   --glass-bg: rgba(255, 255, 255, 0.68);
@@ -72,13 +83,14 @@
     0 0 0 1px rgba(255, 255, 255, 0.82) inset;
   --shadow-primary-btn: 0 14px 28px -16px rgba(79, 70, 229, 0.56);
   --shadow-primary-btn-hover: 0 20px 36px -18px rgba(79, 70, 229, 0.62);
-  --shadow-surface-soft: 0 10px 30px -24px rgba(15, 23, 42, 0.16);
-  --shadow-surface-mid: 0 18px 40px -28px rgba(15, 23, 42, 0.18);
-  --shadow-surface-hover: 0 24px 48px -28px rgba(15, 23, 42, 0.24);
+  --shadow-surface-soft: 0 16px 32px -28px rgba(15, 23, 42, 0.12);
+  --shadow-surface-mid: 0 22px 42px -30px rgba(15, 23, 42, 0.16);
+  --shadow-surface-hover: 0 24px 46px -30px rgba(15, 23, 42, 0.18);
   --shadow-panel-elevated: 0 30px 60px -34px rgba(15, 23, 42, 0.24);
   --shadow-control: 0 10px 24px -20px rgba(15, 23, 42, 0.2);
   --shadow-focus-primary: 0 0 0 4px rgba(37, 99, 235, 0.12);
   --shadow-focus-accent: 0 0 0 4px rgba(99, 102, 241, 0.14);
+  --shadow-glow: 0 0 16px rgba(37, 99, 235, 0.4), 0 0 4px rgba(99, 102, 241, 0.2);
 
   /* Radius / spacing */
   --radius-4xl: 3.25rem;
@@ -111,8 +123,8 @@
 
   /* Layout constants */
   --nav-height: 76px;
-  --sidebar-width: 248px;
-  --sidebar-width-collapsed: 88px;
+  --sidebar-width: 14rem;
+  --sidebar-width-collapsed: 4.75rem;
   --sidebar-active-width: var(--sidebar-width);
   --page-max-width: 1240px;
   --page-max-width-wide: 1320px;
@@ -125,3 +137,4 @@
   --bp-md: 768px;
   --bp-sm: 640px;
 }
+

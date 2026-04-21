@@ -61,7 +61,6 @@
           v-if="isLogin"
           class="user-info"
           type="button"
-          title="查看个人资料"
           @click="goToProfile"
         >
           <span class="avatar">
@@ -365,7 +364,7 @@ onUnmounted(() => {
   position: fixed;
   inset: 0 0 auto;
   z-index: var(--z-nav);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.58);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.44);
   transition:
     transform var(--duration-base) var(--ease-standard),
     background var(--duration-base) var(--ease-standard),
@@ -378,29 +377,29 @@ onUnmounted(() => {
 
 .navbar--public {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.68));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.78));
   box-shadow:
-    0 18px 36px -30px rgba(79, 70, 229, 0.38),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.42);
+    0 18px 36px -30px rgba(79, 70, 229, 0.24),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.58);
 }
 
 .navbar--workspace {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.74));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
   box-shadow:
-    0 14px 28px -26px rgba(15, 23, 42, 0.2),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.54);
+    0 16px 30px -28px rgba(15, 23, 42, 0.16),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.58);
 }
 
 .nav-container {
-  max-width: min(1440px, calc(100vw - 32px));
+  max-width: min(1440px, 100vw);
   min-height: var(--nav-height);
   margin: 0 auto;
   padding: 0 1.25rem;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
 .brand-cluster {
@@ -411,15 +410,15 @@ onUnmounted(() => {
 }
 
 .brand-mark {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 1.1rem;
-  padding: 0.45rem;
+  width: 2.9rem;
+  height: 2.9rem;
+  border-radius: 999px;
+  padding: 0.4rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.76));
-  box-shadow: 0 18px 32px -26px rgba(79, 70, 229, 0.42);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.82));
+  box-shadow: 0 18px 30px -24px rgba(79, 70, 229, 0.24);
 }
 
 .brand-logo {
@@ -440,23 +439,30 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   min-width: 0;
+  padding: 0.32rem 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: var(--radius-pill-40);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.72));
+  box-shadow: 0 16px 30px -28px rgba(15, 23, 42, 0.14);
 }
 
 .nav-links--primary {
   justify-content: center;
   gap: 0.4rem;
+  min-height: 3.5rem;
 }
 
 .nav-links--secondary {
   gap: 0.35rem;
   justify-content: flex-end;
+  min-height: 3.3rem;
 }
 
 .nav-link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.68rem 0.92rem;
+  padding: 0.7rem 0.96rem;
   border-radius: var(--radius-pill);
   color: #334155;
   text-decoration: none;
@@ -486,7 +492,7 @@ onUnmounted(() => {
 }
 
 .nav-link--secondary {
-  padding-inline: 0.75rem;
+  padding-inline: 0.82rem;
   background: rgba(255, 255, 255, 0.5);
   font-size: 0.86rem;
 }
@@ -538,12 +544,12 @@ onUnmounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
-  padding: 0.36rem 0.44rem;
+  padding: 0.4rem 0.5rem;
   border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.76));
   cursor: pointer;
-  box-shadow: var(--shadow-control);
+  box-shadow: 0 16px 30px -26px rgba(15, 23, 42, 0.16);
   transition:
     transform var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),

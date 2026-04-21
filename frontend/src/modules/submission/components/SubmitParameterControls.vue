@@ -1,5 +1,5 @@
 <template>
-  <SectionCard
+  <SectionBlock
     title="评测参数"
     description="根据目标场景设置难度、超时和失败重试策略。"
   >
@@ -65,12 +65,12 @@
         description="当请求或执行链路失败时，允许平台自动重试一次。"
       />
     </div>
-  </SectionCard>
+  </SectionBlock>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 import UiToggleField from "@/shared/ui/forms/UiToggleField.vue";
 import type {
   SubmitFormState,

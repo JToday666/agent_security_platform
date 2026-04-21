@@ -1,13 +1,6 @@
 <template>
   <div class="content home-page layout-page-shell layout-page-shell--wide">
     <section class="hero-stage" aria-labelledby="home-hero-title">
-      <div class="hero-grid-lines" aria-hidden="true"></div>
-      <div class="hero-glow hero-glow--left" aria-hidden="true"></div>
-      <div class="hero-glow hero-glow--right" aria-hidden="true"></div>
-      <div class="hero-orb hero-orb--left" aria-hidden="true"></div>
-      <div class="hero-orb hero-orb--right" aria-hidden="true"></div>
-      <div class="hero-orb hero-orb--bottom" aria-hidden="true"></div>
-
       <div class="hero-shell">
         <BrandLogo class="hero-logo" alt="智能体安全评测平台标志" :priority="true" />
 
@@ -20,7 +13,12 @@
         </p>
 
         <div class="hero-actions">
-          <UiButton :to="RouteLocation.datasetList" variant="primary" size="lg">
+          <UiButton
+            :to="RouteLocation.datasetList"
+            variant="primary"
+            size="lg"
+            leading-icon="lucide:database"
+          >
             浏览数据集
           </UiButton>
           <UiButton
@@ -28,6 +26,7 @@
             :to="RouteLocation.agentSubmit"
             variant="primary"
             size="lg"
+            leading-icon="lucide:file-plus-2"
           >
             提交评测
           </UiButton>
@@ -35,7 +34,7 @@
             v-else
             variant="primary"
             size="lg"
-            class="hero-login-button"
+            leading-icon="lucide:log-in"
             @click="openLoginDialog"
           >
             登录 / 注册
@@ -44,22 +43,36 @@
             :to="isLogin ? RouteLocation.userCenter : RouteLocation.contact"
             variant="primary"
             size="lg"
-            :class="{ 'hero-contact-button': !isLogin }"
+            :leading-icon="isLogin ? 'lucide:clipboard-list' : 'lucide:messages-square'"
           >
             {{ isLogin ? "查看记录" : "联系我们" }}
           </UiButton>
         </div>
       </div>
+
+      <button
+        class="hero-anchor"
+        type="button"
+        aria-controls="home-quickstart"
+        @click="scrollToQuickstart"
+        @mousemove="handleQuickstartGlow"
+        @focus="handleQuickstartGlow"
+      >
+        <span class="hero-anchor__title ui-title-gradient">快速上手</span>
+        <span class="hero-anchor__description">
+          以标准化流程完成数据集浏览、评测提交、执行跟踪与结果复核。
+        </span>
+      </button>
     </section>
 
-    <section class="workflow-section">
-      <div class="section-head section-head--centered">
-        <h2>评测流程</h2>
-        <p>按顺序完成浏览、提交、跟踪和查看结果。</p>
-      </div>
-
+    <section
+      id="home-quickstart"
+      ref="quickstartSection"
+      class="workflow-section"
+      :class="{ 'workflow-section--visible': workflowVisible }"
+    >
       <div class="workflow-grid">
-        <HomeWorkflowCard
+        <HomeWorkflowStep
           v-for="item in workflowItems"
           :key="item.step"
           :step="item.step"
@@ -71,66 +84,49 @@
         />
       </div>
     </section>
-
-    <section v-if="isLogin" class="workspace-card ui-surface-panel">
-      <div class="workspace-copy">
-        <h2>{{ welcomeTitle }}</h2>
-        <p>继续管理评测任务，或更新个人资料。</p>
-      </div>
-
-      <div class="workspace-actions">
-        <UiButton :to="RouteLocation.userCenter" variant="secondary">
-          评测记录
-        </UiButton>
-        <UiButton :to="RouteLocation.userProfile" variant="secondary">
-          个人资料
-        </UiButton>
-        <UiButton variant="danger" @click="handleLogoutClick">
-          退出登录
-        </UiButton>
-      </div>
-    </section>
-
-    <ConfirmDialog
-      v-model="showLogoutConfirm"
-      title="确认退出登录"
-      message="确定退出当前账号吗？"
-      confirm-text="退出登录"
-      cancel-text="取消"
-      :danger="true"
-      :loading="logoutLoading"
-      @confirm="handleLogoutConfirm"
-      @cancel="handleLogoutCancel"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
 import { useUserStore } from "@/modules/account/stores/userStore";
-import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
 import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
-import HomeWorkflowCard from "@/modules/public/components/HomeWorkflowCard.vue";
+import HomeWorkflowStep from "@/modules/public/components/HomeWorkflowStep.vue";
 import { RouteLocation } from "@/app/router/route-names";
 
 const HERO_TITLE = "智能体安全评测平台";
 const HERO_DESCRIPTION =
   "安全·可靠·专业 的智能体评估系统，让每一次评测都有据可依";
 
-const router = useRouter();
 const userStore = useUserStore();
-const { isLogin, username } = storeToRefs(userStore);
+const { isLogin } = storeToRefs(userStore);
 
 const displayedTitle = ref("");
 const displayedDescription = ref("");
+const quickstartSection = ref<HTMLElement | null>(null);
+const workflowVisible = ref(false);
+
 const typingHandles: number[] = [];
+let prefersReducedMotion = false;
+let sectionObserver: IntersectionObserver | null = null;
 
 const scheduleTyping = (callback: () => void, delay: number) => {
   const handle = window.setTimeout(callback, delay);
   typingHandles.push(handle);
+};
+
+const clearTypingHandles = () => {
+  typingHandles.forEach((handle) => {
+    window.clearTimeout(handle);
+  });
+  typingHandles.length = 0;
+};
+
+const setHeroImmediately = () => {
+  displayedTitle.value = HERO_TITLE;
+  displayedDescription.value = HERO_DESCRIPTION;
 };
 
 const typeText = (
@@ -183,49 +179,85 @@ const workflowItems = computed(() => [
   },
 ]);
 
-const welcomeTitle = computed(() => {
-  const normalized = username.value.trim();
-  return normalized ? `欢迎回来，${normalized}` : "欢迎回到工作台";
-});
-
 const openLoginDialog = () => {
   userStore.openLoginDialog();
 };
 
-const showLogoutConfirm = ref(false);
-const logoutLoading = ref(false);
-
-const handleLogoutClick = () => {
-  showLogoutConfirm.value = true;
+const scrollToQuickstart = () => {
+  quickstartSection.value?.scrollIntoView({
+    behavior: prefersReducedMotion ? "auto" : "smooth",
+    block: "start",
+  });
 };
 
-const handleLogoutConfirm = () => {
-  logoutLoading.value = true;
-  setTimeout(() => {
-    userStore.logout();
-    void router.push(RouteLocation.home);
-    showLogoutConfirm.value = false;
-    logoutLoading.value = false;
-  }, 100);
+const handleQuickstartGlow = (event: MouseEvent | FocusEvent) => {
+  const target = event.currentTarget as HTMLElement | null;
+
+  if (!target) {
+    return;
+  }
+
+  const rect = target.getBoundingClientRect();
+  const x = event instanceof MouseEvent ? event.clientX - rect.left : rect.width / 2;
+  const y = event instanceof MouseEvent ? event.clientY - rect.top : rect.height / 2;
+
+  target.style.setProperty("--anchor-x", `${x}px`);
+  target.style.setProperty("--anchor-y", `${y}px`);
 };
 
-const handleLogoutCancel = () => {
-  showLogoutConfirm.value = false;
+const observeSections = async () => {
+  await nextTick();
+
+  sectionObserver?.disconnect();
+  sectionObserver = null;
+
+  if (prefersReducedMotion) {
+    workflowVisible.value = true;
+    return;
+  }
+
+  sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!(entry.target instanceof HTMLElement) || !entry.isIntersecting) {
+          return;
+        }
+
+        workflowVisible.value = true;
+      });
+    },
+    {
+      threshold: 0.18,
+    },
+  );
+
+  if (quickstartSection.value) {
+    sectionObserver.observe(quickstartSection.value);
+  }
 };
 
 onMounted(() => {
+  prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
   displayedTitle.value = "";
   displayedDescription.value = "";
+  workflowVisible.value = prefersReducedMotion;
 
-  const titleEndDelay = typeText(HERO_TITLE, displayedTitle, 240, 126);
-  typeText(HERO_DESCRIPTION, displayedDescription, titleEndDelay + 360, 52);
+  if (prefersReducedMotion) {
+    setHeroImmediately();
+  } else {
+    const titleEndDelay = typeText(HERO_TITLE, displayedTitle, 220, 118);
+    typeText(HERO_DESCRIPTION, displayedDescription, titleEndDelay + 320, 46);
+  }
+
+  void observeSections();
 });
 
 onBeforeUnmount(() => {
-  typingHandles.forEach((handle) => {
-    window.clearTimeout(handle);
-  });
-  typingHandles.length = 0;
+  clearTypingHandles();
+  sectionObserver?.disconnect();
 });
 </script>
 
@@ -236,207 +268,169 @@ onBeforeUnmount(() => {
 
 .hero-stage {
   position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - var(--nav-height) - 1rem);
+  padding: clamp(2.4rem, 6vw, 4.2rem) 0 1.6rem;
   isolation: isolate;
-  padding: clamp(3.2rem, 7vw, 5.2rem) 0 1.8rem;
-}
-
-.hero-grid-lines,
-.hero-glow,
-.hero-orb {
-  pointer-events: none;
-  position: absolute;
-}
-
-.hero-grid-lines {
-  inset: 0;
-  background:
-    linear-gradient(rgba(99, 102, 241, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(99, 102, 241, 0.045) 1px, transparent 1px);
-  background-size: 88px 88px;
-  mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.82), transparent 92%);
-  opacity: 0.62;
-}
-
-.hero-glow {
-  border-radius: 50%;
-  filter: blur(54px);
-  opacity: 0.78;
-  z-index: -2;
-}
-
-.hero-glow--left {
-  top: 8%;
-  left: 8%;
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent 72%);
-}
-
-.hero-glow--right {
-  right: 8%;
-  top: 16%;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.16), transparent 72%);
 }
 
 .hero-shell {
   position: relative;
   z-index: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  min-height: clamp(340px, 58vh, 520px);
+  gap: 1.15rem;
   text-align: center;
 }
 
 .hero-logo {
-  width: clamp(4rem, 7vw, 5rem);
+  width: clamp(4.15rem, 7.4vw, 5.4rem);
   flex-shrink: 0;
+  filter: drop-shadow(0 12px 28px rgba(79, 70, 229, 0.14));
 }
 
 .hero-title {
   margin: 0;
-  min-height: 1.1em;
-  font-size: clamp(3.2rem, 7vw, 5.8rem);
-  line-height: 0.95;
+  min-height: 1.22em;
+  padding-block: 0.08em 0.12em;
+  font-size: clamp(3.45rem, 7.3vw, 6.3rem);
+  line-height: 1.02;
   letter-spacing: -0.075em;
   text-wrap: balance;
+}
+
+.hero-title.ui-title-gradient {
+  text-shadow: 0 10px 24px rgba(99, 102, 241, 0.12);
 }
 
 .hero-description {
   min-height: 1.8em;
   margin: 0;
-  max-width: none;
-  color: var(--color-text-muted);
-  font-size: clamp(1rem, 1.45vw, 1.12rem);
-  line-height: 1.8;
+  max-width: 40ch;
+  color: rgba(71, 85, 105, 0.96);
+  font-size: clamp(1.02rem, 1.35vw, 1.12rem);
+  font-weight: 500;
+  line-height: 1.82;
   white-space: nowrap;
 }
-
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.85rem;
-  margin-top: 0.4rem;
+  gap: 0.95rem;
+  margin-top: 0.35rem;
 }
 
 .hero-actions :deep(.ui-button) {
-  min-width: 140px;
+  min-width: 166px;
+  min-height: 3.5rem;
 }
 
-.hero-login-button {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.96), rgba(129, 140, 248, 0.96));
-  box-shadow: 0 16px 28px -20px rgba(99, 102, 241, 0.56);
+.hero-actions :deep(.ui-button--primary) {
+  padding-inline: 1.5rem;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #2e6fff 0%, #3d6af3 54%, #5a4cf4 100%);
+  box-shadow: 0 22px 40px -24px rgba(59, 103, 245, 0.52);
 }
 
-.hero-login-button:hover:not(.ui-button--disabled) {
-  box-shadow: 0 18px 32px -20px rgba(99, 102, 241, 0.62);
+.hero-actions :deep(.ui-button--primary:hover:not(.ui-button--disabled)) {
+  box-shadow:
+    0 26px 46px -24px rgba(59, 103, 245, 0.56),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
-.hero-contact-button {
-  box-shadow: var(--shadow-primary-btn);
+.hero-actions :deep(.ui-button__content) {
+  white-space: nowrap;
+}
+
+.hero-anchor {
+  --anchor-x: 50%;
+  --anchor-y: 50%;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.62rem;
+  width: min(50rem, 100%);
+  margin: clamp(2.1rem, 4vw, 3rem) auto 0;
+  padding: 1.6rem 1rem 0.95rem;
+  border: 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  background: transparent;
+  cursor: pointer;
+  text-align: center;
+}
+
+.hero-anchor::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    240px circle at var(--anchor-x) var(--anchor-y),
+    rgba(99, 102, 241, 0.1),
+    transparent 60%
+  );
+  opacity: 0.62;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
+  pointer-events: none;
+}
+
+.hero-anchor:hover::before,
+.hero-anchor:focus-visible::before {
+  background: radial-gradient(
+    260px circle at var(--anchor-x) var(--anchor-y),
+    rgba(59, 130, 246, 0.14),
+    rgba(139, 92, 246, 0.05) 55%,
+    transparent 72%
+  );
+}
+
+.hero-anchor__title,
+.hero-anchor__description {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-anchor__title {
+  font-size: clamp(1.8rem, 3.5vw, 2.9rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.hero-anchor__description {
+  max-width: 42rem;
+  color: rgba(100, 116, 139, 0.96);
+  font-size: 0.98rem;
+  line-height: 1.75;
 }
 
 .workflow-section {
   margin-top: 0.85rem;
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-emphasized);
 }
 
-.section-head {
-  margin-bottom: 1rem;
-}
-
-.section-head--centered {
-  text-align: center;
-}
-
-.section-head h2,
-.workspace-copy h2 {
-  margin: 0;
-}
-
-.section-head p,
-.workspace-copy p {
-  margin: 0.42rem 0 0;
-  color: var(--color-text-subtle);
-  line-height: 1.72;
+.workflow-section--visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
 
 .workflow-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.95rem;
-}
-
-.workspace-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.1rem;
-  border-radius: 1.45rem;
-  padding: 1.18rem 1.24rem;
-}
-
-.workspace-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.75rem;
-}
-
-.hero-orb {
-  border-radius: 999px;
-  filter: blur(0.2px);
-}
-
-.hero-orb::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.28),
-    rgba(99, 102, 241, 0.12)
-  );
-}
-
-.hero-orb::after {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  border-radius: inherit;
-}
-
-.hero-orb--left {
-  top: 8%;
-  left: -2%;
-  width: 108px;
-  height: 108px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.16), rgba(255, 255, 255, 0.14));
-}
-
-.hero-orb--right {
-  right: 2%;
-  top: 6%;
-  width: 72px;
-  height: 72px;
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.16), rgba(255, 255, 255, 0.18));
-}
-
-.hero-orb--bottom {
-  right: 14%;
-  bottom: 4%;
-  width: 96px;
-  height: 96px;
-  background: linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(255, 255, 255, 0.16));
+  gap: 1.05rem;
 }
 
 @media (max-width: 1080px) {
@@ -451,16 +445,13 @@ onBeforeUnmount(() => {
 
 @media (max-width: 768px) {
   .hero-stage {
-    padding-top: 2.7rem;
-  }
-
-  .hero-shell {
     min-height: auto;
-    gap: 0.9rem;
+    padding-top: 2.25rem;
   }
 
   .hero-title {
-    font-size: clamp(2.5rem, 14vw, 4rem);
+    min-height: 1.18em;
+    font-size: clamp(2.7rem, 14vw, 4.2rem);
   }
 
   .hero-description {
@@ -468,11 +459,19 @@ onBeforeUnmount(() => {
     white-space: normal;
   }
 
-  .hero-actions,
-  .workspace-card,
-  .workspace-actions {
+  .hero-actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .hero-actions :deep(.ui-button) {
+    width: 100%;
+  }
+
+  .hero-anchor {
+    width: 100%;
+    margin-top: 1.8rem;
+    padding-top: 1.35rem;
   }
 
   .workflow-grid {

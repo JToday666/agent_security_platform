@@ -1,12 +1,12 @@
 <template>
   <div class="content not-found-page layout-page-shell">
-    <PageHeroCard
+    <PageHero
       eyebrow="404"
       title="页面未找到"
       description="当前地址不在系统支持范围内，请从导航或下方入口重新进入。"
     />
 
-    <SectionCard
+    <SectionBlock
       class="not-found-card layout-page-panel layout-page-panel--md"
       title="可用入口"
       description="您可以返回首页，或从评测目录重新开始浏览。"
@@ -19,14 +19,14 @@
           查看评测目录
         </UiButton>
       </template>
-    </SectionCard>
+    </SectionBlock>
   </div>
 </template>
 
 <script setup lang="ts">
 import { RouteLocation } from "@/app/router/route-names";
-import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import PageHero from "@/shared/ui/page/PageHero.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 </script>
 

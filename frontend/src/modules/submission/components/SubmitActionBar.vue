@@ -1,5 +1,5 @@
 <template>
-  <section class="action-card ui-surface-panel">
+  <section class="action-card ui-surface-glass">
     <div class="section-head">
       <h2>任务摘要</h2>
       <p>确认当前配置后即可创建评测任务。</p>
@@ -116,7 +116,10 @@ const props = withDefaults(
   },
 );
 
-const previewNames = computed(() => props.selectedDatasetNames.slice(0, 4));
+const compactPreviewLimit = 3;
+const previewNames = computed(() =>
+  props.selectedDatasetNames.slice(0, compactPreviewLimit),
+);
 const remainingCount = computed(
   () => props.selectedDatasetNames.length - previewNames.value.length,
 );
@@ -124,11 +127,12 @@ const remainingCount = computed(
 
 <style scoped lang="scss">
 .action-card {
-  border-radius: 1.35rem;
-  padding: 1.1rem;
+  max-height: calc(100vh - var(--nav-height) - 2.8rem);
+  border-radius: 1.2rem;
+  padding: 1rem 0.95rem;
   display: flex;
   flex-direction: column;
-  gap: 0.95rem;
+  gap: 0.82rem;
 }
 
 .section-head h2,
@@ -138,24 +142,24 @@ const remainingCount = computed(
 }
 
 .section-head p {
-  margin: 0.38rem 0 0;
+  margin: 0.32rem 0 0;
   color: var(--color-text-subtle);
-  line-height: 1.6;
+  line-height: 1.58;
 }
 
 .section-head--compact {
-  margin-top: 0.1rem;
+  margin-top: 0;
 }
 
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+  gap: 0.62rem;
 }
 
 .summary-item {
-  padding: 0.82rem 0.9rem;
-  border-radius: 1rem;
+  padding: 0.72rem 0.8rem;
+  border-radius: 0.95rem;
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(148, 163, 184, 0.14);
 }
@@ -166,16 +170,16 @@ const remainingCount = computed(
 }
 
 .summary-item dd {
-  margin: 0.4rem 0 0;
+  margin: 0.32rem 0 0;
   color: var(--color-text-dark);
-  font-size: 0.96rem;
+  font-size: 0.92rem;
   font-weight: 700;
 }
 
 .dataset-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.45rem;
 }
 
 .empty-text {
@@ -187,15 +191,19 @@ const remainingCount = computed(
 .notice-list {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 
 .action-row {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 @media (max-width: 768px) {
+  .action-card {
+    max-height: none;
+  }
+
   .summary-grid,
   .action-row {
     grid-template-columns: 1fr;

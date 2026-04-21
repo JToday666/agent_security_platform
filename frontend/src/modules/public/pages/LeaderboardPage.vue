@@ -1,20 +1,27 @@
 <template>
   <div class="content leaderboard-page layout-page-shell layout-page-shell--wide">
-    <PageHeroCard
+    <PageHero
       title="排行榜"
       description="当前版本仅展示已接入的真实能力，不提供模拟榜单。"
-      tone="showcase"
-      title-tone="brand"
     />
 
-    <section class="placeholder-card ui-surface-panel">
+    <section class="placeholder-card layout-page-panel layout-page-panel--md ui-surface-panel">
       <h2>公开结果暂未开放</h2>
+      <p>待真实公开任务接入后，排行榜会展示可复核的评测结果。</p>
 
       <div class="placeholder-actions">
-        <UiButton :to="RouteLocation.datasetList" variant="primary">
+        <UiButton
+          :to="RouteLocation.datasetList"
+          variant="primary"
+          leading-icon="lucide:database"
+        >
           浏览数据集
         </UiButton>
-        <UiButton :to="RouteLocation.contact" variant="secondary">
+        <UiButton
+          :to="RouteLocation.contact"
+          variant="secondary"
+          leading-icon="lucide:messages-square"
+        >
           联系我们
         </UiButton>
       </div>
@@ -23,9 +30,9 @@
 </template>
 
 <script setup lang="ts">
-import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
-import UiButton from "@/shared/ui/actions/UiButton.vue";
 import { RouteLocation } from "@/app/router/route-names";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
+import PageHero from "@/shared/ui/page/PageHero.vue";
 </script>
 
 <style scoped lang="scss">

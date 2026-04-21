@@ -1,5 +1,5 @@
 <template>
-  <SectionCard
+  <SectionBlock
     title="智能体信息"
     description="填写智能体名称、简介和接入信息，便于平台识别能力范围并发起评测。"
   >
@@ -78,12 +78,12 @@
         />
       </template>
     </div>
-  </SectionCard>
+  </SectionBlock>
 </template>
 
 <script setup lang="ts">
 import FormField from "@/shared/ui/forms/FormField.vue";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 import type {
   SubmitFieldErrors,
   SubmitFormState,

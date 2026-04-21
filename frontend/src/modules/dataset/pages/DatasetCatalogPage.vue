@@ -1,20 +1,18 @@
 <template>
   <div class="content dataset-page layout-page-shell">
-    <PageHeroCard
+    <PageHero
       title="数据集目录"
       description="按风险域浏览可用数据集，并查看说明。"
-      density="default"
-      tone="showcase"
     />
 
-    <PageStateCard
+    <PageStatePanel
       v-if="loading && !loaded"
       title="正在加载目录"
       message="请稍候。"
       :loading="true"
     />
 
-    <PageStateCard
+    <PageStatePanel
       v-else-if="error && !enabledCategories.length"
       title="目录加载失败"
       :message="error"
@@ -22,7 +20,7 @@
       @action="reloadCatalog"
     />
 
-    <PageStateCard
+    <PageStatePanel
       v-else-if="!activeCategory"
       title="当前暂无可用数据集"
       message="请稍后重试。"
@@ -47,7 +45,7 @@
         />
       </div>
 
-      <PageStateCard
+      <PageStatePanel
         v-else
         title="没有找到匹配的数据集"
         message="请尝试更换关键词或切换风险域。"
@@ -66,8 +64,8 @@ import {
   type DatasetCatalogSortKey,
 } from "@/modules/dataset/model/dataset-catalog-view";
 import { useDatasetCatalogStore } from "@/modules/dataset/stores/datasetCatalogStore";
-import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
-import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
+import PageHero from "@/shared/ui/page/PageHero.vue";
+import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 
 const datasetCatalogStore = useDatasetCatalogStore();
 const {

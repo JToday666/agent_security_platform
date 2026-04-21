@@ -1,29 +1,37 @@
 <template>
   <div class="content detail-page layout-page-shell">
-    <PageHeroCard
+    <PageHero
       :title="detail?.agentName || '评测详情'"
       :description="detail?.description || '查看任务状态、报告摘要和详细指标。'"
-      density="compact"
-      title-tone="brand"
     >
       <template #actions>
-        <UiButton variant="secondary" @click="goBack">返回记录</UiButton>
+        <UiButton
+          variant="secondary"
+          leading-icon="lucide:arrow-left"
+          @click="goBack"
+        >
+          返回记录
+        </UiButton>
       </template>
-    </PageHeroCard>
+    </PageHero>
 
-    <div v-if="loading && !detail" class="state-card layout-state-card ui-surface-white">
-      <h2>正在读取评测详情</h2>
-      <p>请稍候。</p>
-    </div>
+    <PageStatePanel
+      v-if="loading && !detail"
+      title="正在读取评测详情"
+      message="请稍候。"
+      :loading="true"
+    />
 
-    <div v-else-if="error && !detail" class="state-card layout-state-card ui-surface-white">
-      <h2>详情加载失败</h2>
-      <p>{{ error }}</p>
-      <UiButton variant="primary" @click="loadDetail()">重试</UiButton>
-    </div>
+    <PageStatePanel
+      v-else-if="error && !detail"
+      title="详情加载失败"
+      :message="error"
+      action-text="重试"
+      @action="loadDetail()"
+    />
 
     <template v-else-if="detail">
-      <section class="status-grid">
+      <section class="status-grid layout-section-card">
         <article class="status-card ui-surface-white">
           <div class="status-head">
             <span class="status-label">任务状态</span>
@@ -53,9 +61,17 @@
         </article>
       </section>
 
-      <InlineNotice v-if="error" tone="danger" title="操作未完成" :message="error" />
+      <InlineNotice
+        v-if="error"
+        tone="danger"
+        title="操作未完成"
+        :message="error"
+      />
 
-      <section v-if="hasAvailableActions(detail.controls)" class="actions-panel ui-surface-white">
+      <section
+        v-if="hasAvailableActions(detail.controls)"
+        class="actions-panel layout-section-card"
+      >
         <div class="panel-head panel-head--compact">
           <div>
             <h2>任务操作</h2>
@@ -67,6 +83,7 @@
           <UiButton
             v-if="detail.controls.canPause"
             variant="secondary"
+            leading-icon="lucide:pause"
             :disabled="actionLoading"
             @click="openActionDialog('pause')"
           >
@@ -75,6 +92,7 @@
           <UiButton
             v-if="detail.controls.canResume"
             variant="primary"
+            leading-icon="lucide:play"
             :disabled="actionLoading"
             @click="runAction('resume')"
           >
@@ -83,6 +101,7 @@
           <UiButton
             v-if="detail.controls.canTerminate"
             variant="secondary"
+            leading-icon="lucide:square"
             :disabled="actionLoading"
             @click="openActionDialog('terminate')"
           >
@@ -91,6 +110,7 @@
           <UiButton
             v-if="detail.controls.canCancel"
             variant="danger"
+            leading-icon="lucide:x-circle"
             :disabled="actionLoading"
             @click="openActionDialog('cancel')"
           >
@@ -99,7 +119,7 @@
         </div>
       </section>
 
-      <section class="report-panel ui-surface-white">
+      <section class="report-panel layout-section-card">
         <div class="panel-head">
           <div>
             <h2>报告摘要</h2>
@@ -110,6 +130,7 @@
             :href="detail.report.reportUri"
             target="_blank"
             variant="secondary"
+            leading-icon="lucide:external-link"
           >
             打开报告
           </UiButton>
@@ -126,7 +147,7 @@
 
         <template v-else>
           <div class="summary-metrics">
-            <MetricCard
+            <MetricStat
               v-for="item in summaryMetrics"
               :key="item.label"
               :label="item.label"
@@ -136,37 +157,55 @@
           </div>
 
           <div class="summary-groups">
-            <article class="summary-group ui-surface-panel">
+            <article class="summary-group ui-surface-white">
               <h3>风险分类</h3>
-              <p v-if="detail.report.summary.byRiskCategory.length === 0" class="empty-copy">
+              <p
+                v-if="detail.report.summary.byRiskCategory.length === 0"
+                class="empty-copy"
+              >
                 暂无风险分类汇总。
               </p>
               <ul v-else class="summary-list">
-                <li v-for="item in detail.report.summary.byRiskCategory" :key="`${item.categoryId}-${item.name}`">
+                <li
+                  v-for="item in detail.report.summary.byRiskCategory"
+                  :key="`${item.categoryId}-${item.name}`"
+                >
                   {{ item.name || item.categoryId }}：样本 {{ item.totalSamples }}，风险 {{ item.harmDetectedCount }}
                 </li>
               </ul>
             </article>
 
-            <article class="summary-group ui-surface-panel">
+            <article class="summary-group ui-surface-white">
               <h3>风险等级</h3>
-              <p v-if="detail.report.summary.byRiskLevel.length === 0" class="empty-copy">
+              <p
+                v-if="detail.report.summary.byRiskLevel.length === 0"
+                class="empty-copy"
+              >
                 暂无风险等级汇总。
               </p>
               <ul v-else class="summary-list">
-                <li v-for="item in detail.report.summary.byRiskLevel" :key="`risk-${item.level}`">
+                <li
+                  v-for="item in detail.report.summary.byRiskLevel"
+                  :key="`risk-${item.level}`"
+                >
                   等级 {{ item.level }}：样本 {{ item.totalSamples }}，风险 {{ item.harmDetectedCount }}
                 </li>
               </ul>
             </article>
 
-            <article class="summary-group ui-surface-panel">
+            <article class="summary-group ui-surface-white">
               <h3>攻击等级</h3>
-              <p v-if="detail.report.summary.byAttackLevel.length === 0" class="empty-copy">
+              <p
+                v-if="detail.report.summary.byAttackLevel.length === 0"
+                class="empty-copy"
+              >
                 暂无攻击等级汇总。
               </p>
               <ul v-else class="summary-list">
-                <li v-for="item in detail.report.summary.byAttackLevel" :key="`attack-${item.level}`">
+                <li
+                  v-for="item in detail.report.summary.byAttackLevel"
+                  :key="`attack-${item.level}`"
+                >
                   等级 {{ item.level }}：样本 {{ item.totalSamples }}，风险 {{ item.harmDetectedCount }}
                 </li>
               </ul>
@@ -184,7 +223,7 @@
             <article
               v-for="metric in detail.report.metrics"
               :key="metric.name"
-              class="metric-detail ui-surface-panel"
+              class="metric-detail ui-surface-white"
             >
               <div class="metric-head">
                 <strong>{{ metric.name }}</strong>
@@ -216,12 +255,6 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
-import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
-import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
-import MetricCard from "@/shared/ui/display/MetricCard.vue";
-import StatusTag from "@/shared/ui/display/StatusTag.vue";
-import UiButton from "@/shared/ui/actions/UiButton.vue";
 import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
 import { useEvaluationDetailPage } from "@/modules/evaluation/composables/useEvaluationDetailPage";
 import {
@@ -229,6 +262,13 @@ import {
   hasAvailableActions,
   hasVisibleScore,
 } from "@/modules/evaluation/lib/evaluation-status";
+import UiButton from "@/shared/ui/actions/UiButton.vue";
+import MetricStat from "@/shared/ui/display/MetricStat.vue";
+import StatusTag from "@/shared/ui/display/StatusTag.vue";
+import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
+import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
+import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
+import PageHero from "@/shared/ui/page/PageHero.vue";
 
 const {
   detail,
@@ -398,7 +438,6 @@ const summaryMetrics = computed(() => {
   background: var(--grad-progress);
 }
 
-.progress-meta,
 .report-meta {
   display: flex;
   flex-wrap: wrap;
@@ -497,7 +536,6 @@ const summaryMetrics = computed(() => {
     align-items: stretch;
   }
 
-  .progress-meta,
   .report-meta {
     flex-direction: column;
     gap: 0.45rem;

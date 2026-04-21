@@ -1,5 +1,9 @@
 <template>
-  <SectionCard title="筛选记录" description="按关键词、状态、可见性和提交方式筛选记录。">
+  <SectionBlock
+    title="筛选记录"
+    description="按关键词、状态、可见性和提交方式筛选记录。"
+    surface="panel"
+  >
     <div class="filter-grid">
       <FormField
         label="搜索"
@@ -7,6 +11,7 @@
         type="search"
         placeholder="按智能体名称或数据集搜索"
         leading-icon="lucide:search"
+        appearance="soft"
         @update:model-value="$emit('update:search', $event)"
       />
 
@@ -15,6 +20,8 @@
         :model-value="status"
         type="select"
         :options="statusOptions"
+        leading-icon="lucide:workflow"
+        appearance="soft"
         @update:model-value="handleStatusChange"
       />
 
@@ -23,6 +30,8 @@
         :model-value="visibility"
         type="select"
         :options="visibilityOptions"
+        leading-icon="lucide:eye"
+        appearance="soft"
         @update:model-value="handleVisibilityChange"
       />
 
@@ -31,10 +40,12 @@
         :model-value="submitMethod"
         type="select"
         :options="methodOptions"
+        leading-icon="lucide:waypoints"
+        appearance="soft"
         @update:model-value="handleSubmitMethodChange"
       />
     </div>
-  </SectionCard>
+  </SectionBlock>
 </template>
 
 <script setup lang="ts">
@@ -44,7 +55,7 @@ import type {
   EvaluationRecordFilterVisibility,
 } from "@/modules/evaluation/lib/evaluation-record-filters";
 import FormField from "@/shared/ui/forms/FormField.vue";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 
 defineProps<{
   search: string;
@@ -99,8 +110,8 @@ const handleSubmitMethodChange = (value: string) => {
 <style scoped lang="scss">
 .filter-grid {
   display: grid;
-  grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(140px, 0.8fr));
-  gap: 0.85rem;
+  grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(160px, 0.8fr));
+  gap: 0.9rem;
 }
 
 @media (max-width: 960px) {

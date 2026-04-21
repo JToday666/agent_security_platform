@@ -1,7 +1,7 @@
 :where(.layout-page-shell) {
   width: 100%;
   max-width: var(--page-max-width);
-  padding: 1.8rem 2rem 2.4rem;
+  padding: 1.4rem 2rem 2.6rem;
 }
 
 :where(.layout-app-shell) {
@@ -9,16 +9,18 @@
 }
 
 :where(.layout-app-content) {
-  flex: 1;
+  width: 100%;
   min-width: 0;
-  margin-left: var(--sidebar-active-width, var(--sidebar-width));
   position: relative;
   z-index: var(--z-content);
-  transition: margin-left var(--duration-base) var(--ease-standard);
 }
 
 :where(.layout-app-content) > :where(.content:not(.layout-page-shell)) {
   padding: 1.25rem 1.4rem 1.8rem;
+}
+
+:where(.user-layout) :where(.layout-page-shell) {
+  max-width: none;
 }
 
 :where(.layout-page-shell--wide) {
@@ -36,8 +38,8 @@
 :where(.layout-page-panel) {
   width: 100%;
   margin: 0 auto;
-  padding: 1.85rem 2rem;
-  border-radius: var(--radius-card-lg);
+  padding: 1.6rem 0;
+  border-radius: 0;
 }
 
 :where(.layout-page-panel--sm) {
@@ -103,14 +105,12 @@
 }
 
 :where(.layout-state-card) {
-  padding: 1.9rem 1.7rem;
-  border-radius: 1.4rem;
+  padding: 2rem 1.4rem;
+  border-radius: 1.25rem;
   text-align: center;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.96),
-    rgba(248, 250, 252, 0.94)
-  );
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(var(--blur-10));
+  -webkit-backdrop-filter: blur(var(--blur-10));
   border: 1px solid rgba(148, 163, 184, 0.14);
   box-shadow: var(--shadow-surface-soft);
   display: flex;
@@ -139,15 +139,12 @@
 }
 
 :where(.layout-section-card) {
-  border-radius: 1.45rem;
-  padding: 1.35rem;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.98),
-    rgba(248, 250, 252, 0.94)
-  );
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  box-shadow: var(--shadow-surface-soft);
+  border-radius: 0;
+  padding: 1.2rem 0 0.25rem;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: none;
 }
 
 :where(.layout-page-stack) {
@@ -186,20 +183,20 @@
 
 :where(.layout-page-grid) {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
-  gap: 0.9rem;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+  gap: 1.4rem;
   align-items: start;
 }
 
 :where(.layout-sticky-actions) {
   position: sticky;
-  top: calc(var(--nav-height) + 1rem);
+  top: calc(var(--nav-height) + 1.25rem);
   z-index: 4;
 }
 
 @media (max-width: 1180px) {
   :where(.layout-page-shell) {
-    padding-inline: 1.5rem;
+    padding-inline: 1.35rem;
   }
 
   :where(.layout-page-grid) {
@@ -212,10 +209,6 @@
 }
 
 @media (max-width: 1024px) {
-  :where(.layout-app-content) {
-    margin-left: 0;
-  }
-
   :where(.layout-app-content) > :where(.content:not(.layout-page-shell)) {
     padding: 1rem 1rem 1.4rem;
   }
@@ -231,8 +224,8 @@
   }
 
   :where(.layout-page-panel) {
-    padding: 1.25rem;
-    border-radius: 1.5rem;
+    padding: 1.1rem 0;
+    border-radius: 0;
   }
 
   :where(.layout-page-subtitle) {
@@ -244,8 +237,8 @@
   }
 
   :where(.layout-section-card) {
-    padding: 1.1rem;
-    border-radius: 1.2rem;
+    padding-top: 1rem;
+    border-radius: 0;
   }
 
   :where(.layout-two-column) {

@@ -1,7 +1,8 @@
 <template>
-  <SectionCard
+  <SectionBlock
     title="筛选与排序"
     description="按风险域、名称和排序方式快速定位目标数据集。"
+    surface="panel"
   >
     <div class="toolbar">
       <FormField
@@ -10,6 +11,7 @@
         type="search"
         placeholder="按名称或摘要搜索"
         leading-icon="lucide:search"
+        appearance="soft"
         @update:model-value="$emit('update:search', $event)"
       />
 
@@ -18,12 +20,15 @@
         :model-value="sortKey"
         type="select"
         :options="sortOptions"
+        leading-icon="lucide:arrow-up-down"
+        appearance="soft"
         @update:model-value="handleSortKeyChange"
       />
 
       <UiButton
         class="clear-btn"
         variant="secondary"
+        leading-icon="lucide:rotate-ccw"
         :disabled="!search.trim()"
         @click="$emit('clear-search')"
       >
@@ -44,16 +49,16 @@
         <span class="chip-name">{{ category.name }}</span>
       </button>
     </div>
-  </SectionCard>
+  </SectionBlock>
 </template>
 
 <script setup lang="ts">
-import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
-import type { DatasetCatalogSortKey } from "@/modules/dataset/model/dataset-catalog-view";
 import { getCategoryTheme } from "@/modules/dataset/lib/dataset-utils";
+import type { DatasetCatalogSortKey } from "@/modules/dataset/model/dataset-catalog-view";
 import FormField from "@/shared/ui/forms/FormField.vue";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
+import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
 
 const emit = defineEmits<{
   (event: "select-category", categoryId: string): void;
@@ -92,7 +97,7 @@ const getChipStyle = (categoryId: string, active: boolean) => {
   }
 
   return {
-    background: "rgba(255, 255, 255, 0.78)",
+    background: "rgba(255, 255, 255, 0.82)",
     color: theme.text,
     border: `1px solid ${theme.border}`,
     boxShadow: `0 12px 20px -24px ${theme.shadow}`,
@@ -103,8 +108,8 @@ const getChipStyle = (categoryId: string, active: boolean) => {
 <style scoped lang="scss">
 .toolbar {
   display: grid;
-  grid-template-columns: minmax(240px, 1.4fr) minmax(180px, 0.8fr) auto;
-  gap: 0.85rem;
+  grid-template-columns: minmax(240px, 1.4fr) minmax(220px, 0.92fr) auto;
+  gap: 0.95rem;
 }
 
 .clear-btn {
@@ -133,6 +138,16 @@ const getChipStyle = (categoryId: string, active: boolean) => {
 
 .chip-name {
   font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .clear-btn {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 768px) {

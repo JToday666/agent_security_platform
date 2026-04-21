@@ -1,7 +1,7 @@
 <template>
   <aside class="user-sidebar" :class="{ collapsed }">
     <div class="sidebar-top">
-      <strong v-if="!collapsed" class="sidebar-title">任务</strong>
+      <strong v-if="!collapsed" class="sidebar-title">工作台</strong>
 
       <button
         class="toggle-btn"
@@ -63,27 +63,30 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .user-sidebar {
-  position: fixed;
-  left: 0;
-  top: var(--nav-height);
-  width: var(--sidebar-width);
-  height: calc(100vh - var(--nav-height));
+  position: sticky;
+  top: calc(var(--nav-height) + 1rem);
   z-index: var(--z-sidebar);
+  width: 100%;
+  max-height: calc(100vh - var(--nav-height) - 2rem);
+  align-self: start;
   display: flex;
   flex-direction: column;
-  padding: 1rem 0.9rem 1rem 1rem;
-  border-right: 1px solid rgba(148, 163, 184, 0.12);
+  gap: 0.3rem;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 1rem 0.85rem 1rem 0.95rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 1.35rem;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.72));
-  box-shadow:
-    18px 0 40px -36px rgba(15, 23, 42, 0.18),
-    inset -1px 0 0 rgba(255, 255, 255, 0.44);
-  transition: width var(--duration-base) var(--ease-standard);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.78));
+  box-shadow: var(--shadow-glass-card);
+  transition:
+    padding var(--duration-base) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
 }
 
 .user-sidebar.collapsed {
-  width: var(--sidebar-width-collapsed);
-  padding-inline: 0.8rem;
+  padding-inline: 0.7rem;
 }
 
 .sidebar-top {
@@ -92,6 +95,10 @@ onUnmounted(() => {
   justify-content: space-between;
   gap: 0.8rem;
   margin-bottom: 1rem;
+}
+
+.user-sidebar.collapsed .sidebar-top {
+  justify-content: flex-end;
 }
 
 .sidebar-title {
@@ -134,6 +141,7 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 0.38rem;
+  min-width: 0;
 }
 
 .nav-item {
@@ -182,7 +190,7 @@ onUnmounted(() => {
 
 .user-sidebar.collapsed .nav-item {
   justify-content: center;
-  padding-inline: 0;
+  padding-inline: 0.45rem;
 }
 
 @media (max-width: 1024px) {

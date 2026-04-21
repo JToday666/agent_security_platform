@@ -1,21 +1,21 @@
 <template>
   <section
-    class="page-state-card layout-state-card ui-surface-white"
+    class="page-state-panel layout-state-card"
     :class="[
-      `page-state-card--${tone}`,
-      { 'page-state-card--loading': loading },
+      `page-state-panel--${tone}`,
+      { 'page-state-panel--loading': loading },
     ]"
   >
-    <h2 class="page-state-card__title">{{ title }}</h2>
-    <p class="page-state-card__message">{{ message }}</p>
+    <h2 class="page-state-panel__title">{{ title }}</h2>
+    <p class="page-state-panel__message">{{ message }}</p>
 
-    <div v-if="$slots.default" class="page-state-card__extra">
+    <div v-if="$slots.default" class="page-state-panel__extra">
       <slot />
     </div>
 
     <UiButton
       v-if="actionText"
-      class="page-state-card__action"
+      class="page-state-panel__action"
       :variant="actionVariant"
       :loading="loading"
       @click="$emit('action')"
@@ -51,47 +51,47 @@ defineEmits<{
 </script>
 
 <style scoped lang="scss">
-.page-state-card {
+.page-state-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 0.8rem;
 }
 
-.page-state-card--loading {
+.page-state-panel--loading {
   position: relative;
   overflow: hidden;
 }
 
-.page-state-card__title {
+.page-state-panel__title {
   margin: 0;
   color: var(--color-text-dark);
-  font-size: 1.2rem;
+  font-size: 1.18rem;
 }
 
-.page-state-card__message {
+.page-state-panel__message {
   margin: 0;
   color: var(--color-text-subtle);
   line-height: 1.72;
 }
 
-.page-state-card__extra {
+.page-state-panel__extra {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
 }
 
-.page-state-card__action {
+.page-state-panel__action {
   width: fit-content;
 }
 
-.page-state-card--danger {
+.page-state-panel--danger {
   border-color: rgba(239, 68, 68, 0.12);
 }
 
 @media (max-width: 768px) {
-  .page-state-card__action {
+  .page-state-panel__action {
     width: 100%;
   }
 }
