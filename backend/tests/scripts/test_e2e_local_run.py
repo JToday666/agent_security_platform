@@ -16,7 +16,7 @@ pytestmark = pytest.mark.scripts
 def load_e2e_module(backend_root: Path):
     return load_module_from_path(
         f"scripts_e2e_local_run_{uuid4().hex}",
-        backend_root / "scripts" / "e2e_local_run.py",
+        backend_root / "scripts" / "qa" / "e2e_local_run.py",
     )
 
 
@@ -221,4 +221,3 @@ def test_poll_evaluation_detail_uses_auth_headers(backend_root: Path) -> None:
     assert detail["status"] == "completed"
     assert seen_statuses == ["completed"]
     assert client.headers_seen == [{"Authorization": "Bearer demo"}]
-

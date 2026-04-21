@@ -1,3 +1,5 @@
+"""运行本地端到端提交流程，并校验 worker 真正完成一轮执行。"""
+
 from __future__ import annotations
 
 import argparse
@@ -13,17 +15,18 @@ from typing import Any
 from urllib.parse import urlparse
 
 import httpx
-from sqlalchemy import create_engine, select, text
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import select, text
 
-BACKEND_ROOT = Path(__file__).resolve().parents[1]
-if str(BACKEND_ROOT) not in sys.path:
-    sys.path.insert(0, str(BACKEND_ROOT))
+# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
+_BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
+if str(_BOOTSTRAP_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
 from app.models.benchmark import BenchmarkSample, RiskSubtype
 from app.models.benchmark_run import ExecutionArtifact, ExecutionSummary, RunDataset, RunReport, SampleExecution, TestRun
 from app.shared.config import settings
 from app.shared.runtime_rules import difficulty_bucket_bounds
+from scripts._common import BACKEND_CWD, build_sync_engine, build_sync_session_factory
 
 
 DATASET_ID = "B2_cloud_file_modification"
@@ -31,9 +34,12 @@ DEFAULT_BASE_URL = "http://127.0.0.1:8000"
 CORE_ARTIFACT_TYPES = {"event_log", "compile_result", "replay_result"}
 RUN_TERMINAL_STATUSES = {"completed", "terminated", "canceled", "failed"}
 SUCCESS_LABELS = {"needs_review", "timeout"}
+IMPORT_DATASET_METADATA_SCRIPT = "scripts/datasets/import_dataset_metadata.py"
+IMPORT_DATASET_SAMPLES_SCRIPT = "scripts/datasets/import_dataset_samples.py"
+DEFAULT_SAMPLE_ROOT = "./data/02_Integrity/B2_Cloud_File_Modification"
 
-SYNC_ENGINE = create_engine(settings.SYNC_DATABASE_URL, future=True)
-SessionLocal = sessionmaker(bind=SYNC_ENGINE, future=True)
+SYNC_ENGINE = build_sync_engine()
+SessionLocal = build_sync_session_factory(SYNC_ENGINE)
 
 
 @dataclass(slots=True)
@@ -63,6 +69,7 @@ class E2ELocalRunError(RuntimeError):
 
 
 def parse_args() -> argparse.Namespace:
+    """构造命令行参数解析器。"""
     parser = argparse.ArgumentParser(description="Submit a real local run and wait for the worker to complete it.")
     parser.add_argument("--spawn-services", action="store_true", help="Start the local API service and worker automatically.")
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="Base URL for an already running backend service.")
@@ -71,20 +78,24 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def session_scope() -> Session:
+def session_scope():
+    """返回脚本复用的同步 Session。"""
     return SessionLocal()
 
 
 def ensure(condition: bool, message: str) -> None:
+    """把断言失败统一提升为脚本级异常。"""
     if not condition:
         raise E2ELocalRunError(message)
 
 
 def utc_timestamp() -> str:
+    """生成用于请求号、日志文件名的 UTC 时间戳。"""
     return datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
 
 
 def check_envelope(response: httpx.Response, *, status_code: int) -> dict[str, Any]:
+    """校验接口是否符合统一 envelope 结构。"""
     ensure(
         response.status_code == status_code,
         f"{response.request.method} {response.request.url.path} expected {status_code}, got {response.status_code}: {response.text}",
@@ -96,6 +107,7 @@ def check_envelope(response: httpx.Response, *, status_code: int) -> dict[str, A
 
 
 def build_submission_payload(request_id: str, *, difficulty: float = 0.5) -> dict[str, Any]:
+    """构造本地 e2e 用的标准提交请求体。"""
     return {
         "agentName": "local-e2e-agent",
         "description": "local worker e2e",
@@ -115,10 +127,12 @@ def build_submission_payload(request_id: str, *, difficulty: float = 0.5) -> dic
 
 
 def is_terminal_run_status(status: str) -> bool:
+    """判断评测任务是否已经进入终态。"""
     return status in RUN_TERMINAL_STATUSES
 
 
 def count_active_samples(dataset_code: str) -> int:
+    """统计指定数据集当前可用的激活样本数。"""
     with session_scope() as session:
         rows = session.execute(
             select(BenchmarkSample.id)
@@ -133,6 +147,7 @@ def count_active_samples(dataset_code: str) -> int:
 
 
 def count_matching_samples_for_difficulty(dataset_code: str, difficulty: float) -> int:
+    """统计某个难度桶内可匹配的激活样本数。"""
     lower, upper, include_upper = difficulty_bucket_bounds(difficulty)
     with session_scope() as session:
         query = (
@@ -154,6 +169,7 @@ def count_matching_samples_for_difficulty(dataset_code: str, difficulty: float) 
 
 
 def list_active_difficulty_scores(dataset_code: str) -> list[float]:
+    """列出指定数据集当前可用的去重难度分值。"""
     with session_scope() as session:
         rows = session.execute(
             select(BenchmarkSample.difficulty_score)
@@ -170,6 +186,7 @@ def list_active_difficulty_scores(dataset_code: str) -> list[float]:
 
 
 def resolve_submission_difficulty(dataset_code: str, preferred_difficulty: float) -> tuple[float, bool]:
+    """优先使用期望难度；没有样本时回退到最接近的可用分值。"""
     if count_matching_samples_for_difficulty(dataset_code, preferred_difficulty) > 0:
         return preferred_difficulty, False
 
@@ -180,14 +197,16 @@ def resolve_submission_difficulty(dataset_code: str, preferred_difficulty: float
 
 
 def current_alembic_revision() -> str:
+    """读取当前数据库的 Alembic 版本号，便于诊断环境状态。"""
     with session_scope() as session:
         return str(session.execute(text("SELECT version_num FROM alembic_version LIMIT 1")).scalar_one())
 
 
 def run_command(command: list[str], description: str) -> subprocess.CompletedProcess[str]:
+    """在 backend 根目录执行外部命令，并把失败转成可读异常。"""
     completed = subprocess.run(
         command,
-        cwd=str(BACKEND_ROOT),
+        cwd=BACKEND_CWD,
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -201,12 +220,13 @@ def run_command(command: list[str], description: str) -> subprocess.CompletedPro
 
 
 def ensure_dataset_ready(dataset_code: str = DATASET_ID) -> int:
+    """确保 e2e 所需数据集已入库；为空时自动执行导入脚本。"""
     current_count = count_active_samples(dataset_code)
     if current_count > 0:
         return current_count
 
     run_command(
-        ["uv", "run", "python", "scripts/import_dataset_metadata.py"],
+        ["uv", "run", "python", IMPORT_DATASET_METADATA_SCRIPT],
         "import dataset metadata",
     )
     run_command(
@@ -214,9 +234,9 @@ def ensure_dataset_ready(dataset_code: str = DATASET_ID) -> int:
             "uv",
             "run",
             "python",
-            "scripts/import_dataset_samples.py",
+            IMPORT_DATASET_SAMPLES_SCRIPT,
             "--sample-root",
-            "./data/02_Integrity/B2_Cloud_File_Modification",
+            DEFAULT_SAMPLE_ROOT,
             "--mode",
             "auto",
         ],
@@ -229,6 +249,7 @@ def ensure_dataset_ready(dataset_code: str = DATASET_ID) -> int:
 
 
 def build_register_payload(prefix: str) -> dict[str, str]:
+    """生成唯一用户名邮箱，避免本地多次执行时冲突。"""
     return {
         "username": f"{prefix}_user",
         "email": f"{prefix}@example.com",
@@ -237,6 +258,7 @@ def build_register_payload(prefix: str) -> dict[str, str]:
 
 
 def read_log_tail(path: Path, max_chars: int = 3000) -> str:
+    """读取日志尾部，便于失败时快速定位原因。"""
     if not path.exists():
         return ""
     content = path.read_text(encoding="utf-8", errors="replace")
@@ -244,11 +266,12 @@ def read_log_tail(path: Path, max_chars: int = 3000) -> str:
 
 
 def start_service(name: str, command: list[str], log_path: Path) -> SpawnedService:
+    """启动本地服务进程并把输出重定向到日志文件。"""
     log_path.parent.mkdir(parents=True, exist_ok=True)
     log_handle = log_path.open("w", encoding="utf-8")
     process = subprocess.Popen(
         command,
-        cwd=str(BACKEND_ROOT),
+        cwd=BACKEND_CWD,
         stdout=log_handle,
         stderr=subprocess.STDOUT,
         text=True,
@@ -259,6 +282,7 @@ def start_service(name: str, command: list[str], log_path: Path) -> SpawnedServi
 
 
 def stop_service(service: SpawnedService) -> None:
+    """尽量优雅地关闭脚本拉起的子进程。"""
     if service.process.poll() is not None:
         return
     service.process.terminate()
@@ -270,12 +294,14 @@ def stop_service(service: SpawnedService) -> None:
 
 
 def service_log_dir() -> Path:
+    """返回本地 e2e 服务日志目录。"""
     directory = settings.runtime_root / "e2e_logs"
     directory.mkdir(parents=True, exist_ok=True)
     return directory
 
 
 def spawn_local_services(base_url: str) -> list[SpawnedService]:
+    """按 base URL 派生 host/port，并同时启动 API 与 worker。"""
     parsed = urlparse(base_url)
     host = parsed.hostname or "127.0.0.1"
     port = parsed.port or 8000
@@ -297,6 +323,7 @@ def spawn_local_services(base_url: str) -> list[SpawnedService]:
 
 
 def wait_for_api_ready(base_url: str, timeout_seconds: float) -> None:
+    """轮询版本根接口，直到 API 服务真正可用。"""
     deadline = time.monotonic() + timeout_seconds
     with httpx.Client(base_url=base_url.rstrip("/"), timeout=3.0) as client:
         while time.monotonic() < deadline:
@@ -318,6 +345,7 @@ def poll_evaluation_detail(
     poll_interval_seconds: float,
     headers: dict[str, str] | None = None,
 ) -> tuple[dict[str, Any], list[str]]:
+    """轮询评测详情接口，直到任务进入终态并返回状态轨迹。"""
     deadline = time.monotonic() + timeout_seconds
     seen_statuses: list[str] = []
     last_payload: dict[str, Any] | None = None
@@ -342,6 +370,7 @@ def poll_evaluation_detail(
 
 
 def collect_run_snapshot(evaluation_id: str) -> RunSnapshot:
+    """从数据库收集执行快照，便于统一校验产物与状态。"""
     with session_scope() as session:
         run = session.execute(select(TestRun).where(TestRun.public_id == evaluation_id)).scalar_one_or_none()
         ensure(run is not None, f"run not found in database: {evaluation_id}")
@@ -381,6 +410,7 @@ def collect_run_snapshot(evaluation_id: str) -> RunSnapshot:
 
 
 def validate_run_snapshot(snapshot: RunSnapshot) -> None:
+    """校验运行结果是否满足本地 e2e 的最低成功标准。"""
     ensure(
         snapshot.run_status == "completed",
         f"run did not complete successfully: status={snapshot.run_status}, finalizationReason={snapshot.finalization_reason}",
@@ -404,6 +434,7 @@ def validate_run_snapshot(snapshot: RunSnapshot) -> None:
 
 
 def print_summary(snapshot: RunSnapshot, seen_statuses: list[str]) -> None:
+    """打印便于排障的执行摘要。"""
     print(
         json.dumps(
             {
@@ -427,6 +458,7 @@ def print_summary(snapshot: RunSnapshot, seen_statuses: list[str]) -> None:
 
 
 def main() -> int:
+    """串起数据准备、服务探活、提交流程与结果校验。"""
     args = parse_args()
     if settings.WORKER_DISPATCH_MODE_DEFAULT != "synthetic_local":
         print(
@@ -445,6 +477,7 @@ def main() -> int:
         revision = current_alembic_revision()
         print(f"[e2e_local_run] database ready, alembic revision={revision}")
 
+        # 提交前先确保基础数据存在，否则无法创建可执行的评测任务。
         sample_count = ensure_dataset_ready(DATASET_ID)
         print(f"[e2e_local_run] dataset {DATASET_ID} ready with activeSamples={sample_count}")
         resolved_difficulty, adjusted = resolve_submission_difficulty(DATASET_ID, 0.5)
@@ -466,6 +499,7 @@ def main() -> int:
             wait_for_api_ready(base_url, timeout_seconds=10.0)
 
         with httpx.Client(base_url=base_url, timeout=10.0) as client:
+            # 先注册一个独立测试账号，再走真实提交链路。
             register_response = check_envelope(client.post("/api/v1/auth/register", json=register_payload), status_code=200)
             token = register_response["data"]["token"]
             headers = {"Authorization": f"Bearer {token}"}
@@ -491,6 +525,7 @@ def main() -> int:
             f"run never observed in running state, seenStatuses={seen_statuses}",
         )
 
+        # HTTP 返回成功后，再回到数据库核对执行产物是否齐全。
         snapshot = collect_run_snapshot(evaluation_id)
         if snapshot.run_status == "failed":
             print_summary(snapshot, seen_statuses)

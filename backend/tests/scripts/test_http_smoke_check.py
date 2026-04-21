@@ -17,12 +17,12 @@ pytestmark = pytest.mark.scripts
 def load_http_smoke_module(backend_root: Path):
     return load_module_from_path(
         f"http_smoke_check_{uuid4().hex}",
-        backend_root / "scripts" / "http_smoke_check.py",
+        backend_root / "scripts" / "qa" / "http_smoke_check.py",
     )
 
 
 def test_http_smoke_script_exists_and_supports_help(backend_root: Path) -> None:
-    script_path = backend_root / "scripts" / "http_smoke_check.py"
+    script_path = backend_root / "scripts" / "qa" / "http_smoke_check.py"
     assert script_path.exists()
 
     result = subprocess.run(
@@ -75,4 +75,3 @@ def test_check_envelope_rejects_nonstandard_response_shape(backend_root: Path) -
 
     with pytest.raises(AssertionError):
         module.check_envelope(DummyResponse(), status_code=200)
-

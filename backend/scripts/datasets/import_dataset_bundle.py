@@ -1,22 +1,23 @@
+"""按单次脚本入口同时导入数据集元数据与样本。"""
+
 from __future__ import annotations
 
 import argparse
 import sys
 from pathlib import Path
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-BACKEND_ROOT = Path(__file__).resolve().parents[1]
-if str(BACKEND_ROOT) not in sys.path:
-    sys.path.insert(0, str(BACKEND_ROOT))
+# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
+_BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
+if str(_BOOTSTRAP_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
 from app.modules.datasets.importer import ImportValidationError, build_sample_import_plan
 from app.modules.datasets.metadata_registry import apply_metadata_bundle, load_metadata_bundle
-from app.shared.config import settings
+from scripts._common import DATASET_METADATA_ROOT, sync_session_scope
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """构造命令行参数解析器。"""
     parser = argparse.ArgumentParser(description="Import dataset metadata and samples as a single bundle.")
     parser.add_argument(
         "--sample-root",
@@ -27,7 +28,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--registry-root",
         type=Path,
-        default=BACKEND_ROOT / "dataset_metadata",
+        default=DATASET_METADATA_ROOT,
         help="Root directory for registry/display_meta JSON files.",
     )
     parser.add_argument(
@@ -45,10 +46,12 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """先校验元数据与样本，再按需在同一事务中完成导入。"""
     args = build_parser().parse_args(argv)
     bundle = load_metadata_bundle(args.registry_root.resolve())
     sample_plan = build_sample_import_plan(args.sample_root.resolve(), mode=args.mode)
 
+    # dry-run 只做交叉校验，不写入数据库。
     if args.dry_run:
         _validate_sample_plan_against_bundle(sample_plan, bundle)
         print(
@@ -59,17 +62,13 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 0
 
-    engine = create_engine(settings.SYNC_DATABASE_URL, future=True)
-    session_factory = sessionmaker(bind=engine, future=True)
-    try:
-        with session_factory() as session:
-            metadata_result = apply_metadata_bundle(session, bundle)
-            from app.modules.datasets.importer import apply_sample_import_plan  # local import to keep script light
+    with sync_session_scope() as session:
+        metadata_result = apply_metadata_bundle(session, bundle)
+        # 延迟导入写库逻辑，避免仅做 dry-run 时加载完整导入依赖。
+        from app.modules.datasets.importer import apply_sample_import_plan
 
-            sample_result = apply_sample_import_plan(session, sample_plan)
-            session.commit()
-    finally:
-        engine.dispose()
+        sample_result = apply_sample_import_plan(session, sample_plan)
+        session.commit()
 
     print(
         "[import_dataset_bundle] imported "
@@ -81,6 +80,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _validate_sample_plan_against_bundle(sample_plan, bundle) -> None:
+    """校验样本引用的元数据编码是否都已在 bundle 中注册。"""
     source_codes = {item.code for item in bundle.dataset_sources}
     delivery_codes = {item.code for item in bundle.attack_delivery_types}
     asset_codes = {item.code for item in bundle.asset_types}

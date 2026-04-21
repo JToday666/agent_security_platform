@@ -1,22 +1,27 @@
+"""把原始样本目录规整成标准化 task.json bundle。"""
+
 from __future__ import annotations
 
 import argparse
 import sys
 from pathlib import Path
 
-BACKEND_ROOT = Path(__file__).resolve().parents[1]
-if str(BACKEND_ROOT) not in sys.path:
-    sys.path.insert(0, str(BACKEND_ROOT))
+# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
+_BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
+if str(_BOOTSTRAP_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
 from app.modules.datasets.normalizer import normalize_sample_bundle
+from scripts._common import DATA_ROOT
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """构造命令行参数解析器。"""
     parser = argparse.ArgumentParser(description="Normalize raw dataset samples into a standard task.json bundle.")
     parser.add_argument(
         "--input-root",
         type=Path,
-        default=BACKEND_ROOT / "data",
+        default=DATA_ROOT,
         help="Root directory containing raw dataset samples.",
     )
     parser.add_argument(
@@ -40,6 +45,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """对输入样本做标准化整理，并输出可继续导入的 bundle。"""
     args = build_parser().parse_args(argv)
     result = normalize_sample_bundle(
         input_root=args.input_root.resolve(),
@@ -47,6 +53,7 @@ def main(argv: list[str] | None = None) -> int:
         mode=args.mode,
         dry_run=args.dry_run,
     )
+    # dry-run 只做校验并返回统计，方便批量预检查。
     if args.dry_run:
         print(
             "[normalize_dataset_samples] validated "
