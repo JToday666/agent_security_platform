@@ -59,6 +59,7 @@
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -66,6 +67,7 @@
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -154,21 +156,12 @@
 /* Transitions */
 .fade-slide-y-enter-active,
 .fade-slide-y-leave-active {
-  transition: opacity var(--duration-base) var(--ease-standard),
-              transform var(--duration-base) var(--ease-standard);
+  transition:
+    opacity var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
 }
 .fade-slide-y-enter-from,
 .fade-slide-y-leave-to {
   opacity: 0;
   transform: translateY(-8px);
-}
-.page-shell-enter-active,
-.page-shell-leave-active {
-  transition: opacity var(--duration-base) var(--ease-standard),
-              transform var(--duration-base) var(--ease-standard);
-}
-.page-shell-enter-from,
-.page-shell-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
 }

@@ -126,20 +126,20 @@ npm run build
 
 以下规范作为新增文件、重命名文件时的统一标准。
 
-| 文件类型 / 目录                          | 命名风格                      | 示例                           |
-| ---------------------------------------- | ----------------------------- | ------------------------------ |
-| 普通 `.ts` / `.js` 文件                  | `kebab-case`                  | `user-service.ts`              |
-| 类型声明 `.d.ts`                         | `kebab-case`                  | `api-types.d.ts`               |
-| Vue 组件（`components / views / pages`） | `PascalCase`                  | `UserProfile.vue`              |
-| Composables                              | `camelCase`                   | `useAuth.ts`                   |
-| Pinia store 模块                         | `camelCase`                   | `userStore.ts`                 |
-| 路由文件                                 | `kebab-case`                  | `dataset-routes.ts`            |
-| API 文件                                 | `kebab-case`                  | `leaderboard-api.ts`           |
-| 工具函数                                 | `kebab-case`                  | `format-date.ts`               |
-| 自定义指令                               | `kebab-case`                  | `v-permission.ts`              |
-| 文件夹（普通）                           | `kebab-case`                  | `user-profile/`                |
-| 组件文件夹                               | `PascalCase`                  | `UserAvatar/`                  |
-| 视图文件夹                               | `PascalCase`                  | `EvaluationDetail/`            |
+| 文件类型 / 目录                          | 命名风格     | 示例                 |
+| ---------------------------------------- | ------------ | -------------------- |
+| 普通 `.ts` / `.js` 文件                  | `kebab-case` | `user-service.ts`    |
+| 类型声明 `.d.ts`                         | `kebab-case` | `api-types.d.ts`     |
+| Vue 组件（`components / views / pages`） | `PascalCase` | `UserProfile.vue`    |
+| Composables                              | `camelCase`  | `useAuth.ts`         |
+| Pinia store 模块                         | `camelCase`  | `userStore.ts`       |
+| 路由文件                                 | `kebab-case` | `dataset-routes.ts`  |
+| API 文件                                 | `kebab-case` | `leaderboard-api.ts` |
+| 工具函数                                 | `kebab-case` | `format-date.ts`     |
+| 自定义指令                               | `kebab-case` | `v-permission.ts`    |
+| 文件夹（普通）                           | `kebab-case` | `user-profile/`      |
+| 组件文件夹                               | `PascalCase` | `UserAvatar/`        |
+| 视图文件夹                               | `PascalCase` | `EvaluationDetail/`  |
 
 阅读和维护当前代码时，以仓库中的真实文件名为准。
 
