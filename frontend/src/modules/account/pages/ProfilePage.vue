@@ -1,15 +1,13 @@
 <template>
   <div class="content profile-page layout-page-shell layout-page-shell--narrow">
-    <PageHeroCard
+    <PageHero
       title="个人资料"
       description="管理头像、用户名和密码。"
-      tone="workspace"
-      title-tone="brand"
     />
 
     <div class="profile-grid">
-      <aside class="profile-side ui-surface-panel">
-        <div class="avatar-card ui-surface-white">
+      <aside class="profile-side">
+        <section class="avatar-panel ui-surface-panel">
           <div class="avatar-preview">
             <img
               v-if="avatarPreview || avatarDisplayUrl"
@@ -23,29 +21,51 @@
             <strong>{{ form.username || "未设置用户名" }}</strong>
             <span>{{ form.email || "未绑定邮箱" }}</span>
           </div>
-        </div>
 
-        <div class="upload-card ui-surface-muted">
-          <UiButton as="label" for="avatar" variant="primary" :loading="uploading">
-            选择新头像
+          <div class="upload-card ui-surface-muted">
+            <UiButton
+              as="label"
+              for="avatar"
+              variant="primary"
+              leading-icon="lucide:upload"
+              :loading="uploading"
+            >
+              选择新头像
+            </UiButton>
+            <input
+              id="avatar"
+              type="file"
+              accept="image/*"
+              class="hidden-input"
+              :disabled="uploading"
+              @change="onAvatarChange"
+            />
+            <p class="hint">支持 JPG、PNG，大小不超过 2MB。</p>
+            <div v-if="uploading" class="uploading-hint">正在上传头像...</div>
+          </div>
+        </section>
+
+        <SectionBlock
+          title="账号操作"
+          description="退出后需要重新登录才能继续访问工作台。"
+          surface="panel"
+        >
+          <UiButton
+            variant="danger"
+            leading-icon="lucide:log-out"
+            block
+            @click="handleLogoutClick"
+          >
+            退出登录
           </UiButton>
-          <input
-            id="avatar"
-            type="file"
-            accept="image/*"
-            class="hidden-input"
-            :disabled="uploading"
-            @change="onAvatarChange"
-          />
-          <p class="hint">支持 JPG、PNG，大小不超过 2MB。</p>
-          <div v-if="uploading" class="uploading-hint">正在上传头像...</div>
-        </div>
+        </SectionBlock>
       </aside>
 
-      <SectionCard
-        class="profile-main ui-surface-panel"
+      <SectionBlock
+        class="profile-main"
         title="更新账号信息"
         description="邮箱不可修改，您可以修改用户名与密码。"
+        surface="panel"
       >
         <InlineNotice
           v-if="message"
@@ -92,12 +112,19 @@
           />
 
           <div class="form-actions">
-            <UiButton type="submit" variant="primary" :loading="submitting" block>
+            <UiButton
+              type="submit"
+              variant="primary"
+              leading-icon="lucide:save"
+              :loading="submitting"
+              block
+            >
               保存修改
             </UiButton>
             <UiButton
               type="button"
               variant="secondary"
+              leading-icon="lucide:rotate-ccw"
               :disabled="submitting"
               block
               @click="resetForm"
@@ -106,23 +133,38 @@
             </UiButton>
           </div>
         </form>
-      </SectionCard>
+      </SectionBlock>
     </div>
+
+    <ConfirmDialog
+      v-model="showLogoutConfirm"
+      title="确认退出登录"
+      message="确定退出当前账号吗？"
+      confirm-text="退出登录"
+      cancel-text="取消"
+      :danger="true"
+      :loading="logoutLoading"
+      @confirm="handleLogoutConfirm"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+import { RouteLocation } from "@/app/router/route-names";
 import { useUserStore } from "@/modules/account/stores/userStore";
-import AppIcon from "@/shared/ui/branding/AppIcon.vue";
-import FormField from "@/shared/ui/forms/FormField.vue";
-import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
-import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
+import AppIcon from "@/shared/ui/branding/AppIcon.vue";
+import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
+import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
+import FormField from "@/shared/ui/forms/FormField.vue";
+import PageHero from "@/shared/ui/page/PageHero.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 
 const userStore = useUserStore();
+const router = useRouter();
 const { avatarDisplayUrl, currentUser } = storeToRefs(userStore);
 
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
@@ -141,6 +183,8 @@ const submitting = ref(false);
 const uploading = ref(false);
 const message = ref("");
 const messageType = ref<"success" | "error">("success");
+const showLogoutConfirm = ref(false);
+const logoutLoading = ref(false);
 let messageTimer: number | null = null;
 
 const clearMessageTimer = () => {
@@ -205,7 +249,10 @@ onUnmounted(() => {
 const onAvatarChange = async (event: Event) => {
   const target = event.target as HTMLInputElement;
   const file = target.files?.[0];
-  if (!file) return;
+
+  if (!file) {
+    return;
+  }
 
   if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
     setMessage("仅支持 JPG、PNG 格式", "error", false);
@@ -227,6 +274,7 @@ const onAvatarChange = async (event: Event) => {
 
   uploading.value = true;
   clearMessage();
+
   try {
     await userStore.uploadAvatar(file);
     avatarPreview.value = null;
@@ -266,6 +314,7 @@ const handleSubmit = async () => {
   if (normalizedUsername !== currentUser.value?.username) {
     updateData.username = normalizedUsername;
   }
+
   if (form.password) {
     updateData.password = form.password;
   }
@@ -297,6 +346,21 @@ const resetForm = () => {
   avatarPreview.value = null;
   clearMessage();
 };
+
+const handleLogoutClick = () => {
+  showLogoutConfirm.value = true;
+};
+
+const handleLogoutConfirm = () => {
+  logoutLoading.value = true;
+
+  window.setTimeout(() => {
+    userStore.logout();
+    void router.push(RouteLocation.home);
+    showLogoutConfirm.value = false;
+    logoutLoading.value = false;
+  }, 100);
+};
 </script>
 
 <style scoped lang="scss">
@@ -306,29 +370,26 @@ const resetForm = () => {
 
 .profile-grid {
   display: grid;
-  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+  grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
   gap: 1rem;
   align-items: start;
 }
 
-.profile-side,
-.profile-main {
+.profile-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.avatar-panel {
   padding: 1.3rem;
   border-radius: 1.5rem;
 }
 
-.avatar-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.3rem;
-  border-radius: 1.25rem;
-}
-
 .avatar-preview {
-  width: 106px;
-  height: 106px;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto;
   border-radius: 50%;
   background: #f1f5f9;
   display: flex;
@@ -356,6 +417,7 @@ const resetForm = () => {
   flex-direction: column;
   align-items: center;
   gap: 0.28rem;
+  margin-top: 1rem;
   text-align: center;
 }
 

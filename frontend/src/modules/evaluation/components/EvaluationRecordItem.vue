@@ -1,34 +1,43 @@
 <template>
-  <article class="record-card ui-surface-white ui-hover-card">
-    <div class="record-main">
-      <div class="record-copy">
-        <div class="record-head">
+  <article class="evaluation-record-item">
+    <div class="evaluation-record-item__main">
+      <div class="evaluation-record-item__copy">
+        <div class="evaluation-record-item__head">
           <h3>{{ record.agentName }}</h3>
-          <div class="record-tags">
+          <div class="evaluation-record-item__tags">
             <StatusTag kind="evaluation" :value="record.status" size="sm" />
-            <StatusTag kind="visibility" :value="record.publicToLeaderboard" size="sm" />
+            <StatusTag
+              kind="visibility"
+              :value="record.publicToLeaderboard"
+              size="sm"
+            />
             <StatusTag kind="method" :value="record.submitMethod" size="sm" />
           </div>
         </div>
 
-        <p class="record-datasets">
+        <p class="evaluation-record-item__datasets">
           数据集：{{ record.datasetNames.join("、") }}
         </p>
 
-        <p class="record-meta">
+        <p class="evaluation-record-item__meta">
           创建于 {{ createdAt }}
           <span v-if="finalizationReason"> · {{ finalizationReason }}</span>
         </p>
 
-        <div class="progress-row">
-          <div class="progress-bar">
-            <div class="progress-fill" :style="{ width: `${record.progressPercent}%` }"></div>
+        <div class="evaluation-record-item__progress">
+          <div class="evaluation-record-item__progress-bar">
+            <div
+              class="evaluation-record-item__progress-fill"
+              :style="{ width: `${record.progressPercent}%` }"
+            ></div>
           </div>
-          <span class="progress-text">{{ record.progressPercent }}%</span>
+          <span class="evaluation-record-item__progress-text">
+            {{ record.progressPercent }}%
+          </span>
         </div>
       </div>
 
-      <div class="record-actions">
+      <div class="evaluation-record-item__actions">
         <Button :to="detailTo" variant="primary">
           查看详情
         </Button>
@@ -61,58 +70,58 @@ const finalizationReason = computed(() =>
 </script>
 
 <style scoped lang="scss">
-.record-card {
-  border-radius: 1.35rem;
-  padding: 1.05rem 1.12rem;
+.evaluation-record-item {
+  padding: 1.15rem 0 0.2rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
 }
 
-.record-main {
+.evaluation-record-item__main {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.record-copy {
+.evaluation-record-item__copy {
   flex: 1;
   min-width: 0;
 }
 
-.record-head {
+.evaluation-record-item__head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.record-head h3 {
+.evaluation-record-item__head h3 {
   margin: 0;
   color: var(--color-text-dark);
-  font-size: 1.12rem;
+  font-size: 1.08rem;
 }
 
-.record-tags {
+.evaluation-record-item__tags {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.45rem;
 }
 
-.record-datasets,
-.record-meta {
-  margin: 0.62rem 0 0;
+.evaluation-record-item__datasets,
+.evaluation-record-item__meta {
+  margin: 0.6rem 0 0;
   color: var(--color-text-muted);
-  line-height: 1.7;
+  line-height: 1.68;
 }
 
-.progress-row {
+.evaluation-record-item__progress {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   margin-top: 0.92rem;
 }
 
-.progress-bar {
+.evaluation-record-item__progress-bar {
   flex: 1;
   height: 8px;
   border-radius: 999px;
@@ -120,33 +129,33 @@ const finalizationReason = computed(() =>
   background: rgba(226, 232, 240, 0.96);
 }
 
-.progress-fill {
+.evaluation-record-item__progress-fill {
   height: 100%;
   background: var(--grad-progress);
 }
 
-.progress-text {
+.evaluation-record-item__progress-text {
   min-width: 46px;
   color: var(--color-text-main);
   font-weight: 700;
   text-align: right;
 }
 
-.record-actions {
+.evaluation-record-item__actions {
   flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
-  .record-main,
-  .record-head {
+  .evaluation-record-item__main,
+  .evaluation-record-item__head {
     flex-direction: column;
   }
 
-  .record-tags {
+  .evaluation-record-item__tags {
     justify-content: flex-start;
   }
 
-  .record-actions {
+  .evaluation-record-item__actions {
     width: 100%;
   }
 }

@@ -9,13 +9,13 @@
         <p class="description">{{ category.description }}</p>
       </div>
 
-      <div class="stat-card ui-surface-white" :style="statCardStyle">
+      <div class="stat-card" :style="statCardStyle">
         <span>评测项数量</span>
         <strong>{{ category.subcategories.length }}</strong>
       </div>
     </header>
 
-    <div class="grid-auto-fit category-grid">
+    <div class="category-grid">
       <DatasetSubcategoryCard
         v-for="dataset in category.subcategories"
         :key="dataset.datasetId"
@@ -28,9 +28,9 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
-import { getCategoryTheme } from "@/modules/dataset/lib/dataset-utils";
 import DatasetSubcategoryCard from "@/modules/dataset/components/DatasetSubcategoryCard.vue";
+import { getCategoryTheme } from "@/modules/dataset/lib/dataset-utils";
+import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
 
 const props = defineProps<{
   category: DatasetCategoryViewModel;
@@ -40,9 +40,11 @@ const headerStyle = computed(() => {
   const theme = getCategoryTheme(props.category.categoryId);
 
   return {
-    backgroundImage: `linear-gradient(135deg, ${theme.soft}, rgba(255, 255, 255, 0.92))`,
+    backgroundImage: `linear-gradient(135deg, ${theme.soft}, rgba(255, 255, 255, 0.94))`,
     boxShadow: `0 20px 38px -30px ${theme.shadow}`,
     "--category-solid": theme.solid,
+    "--category-border": theme.border,
+    "--category-shadow": theme.shadow,
   };
 });
 
@@ -50,6 +52,8 @@ const statCardStyle = computed(() => {
   const theme = getCategoryTheme(props.category.categoryId);
 
   return {
+    color: theme.text,
+    background: `linear-gradient(180deg, rgba(255, 255, 255, 0.96), ${theme.soft})`,
     border: `1px solid ${theme.border}`,
     boxShadow: `0 14px 24px -26px ${theme.shadow}`,
   };
@@ -105,29 +109,37 @@ const statCardStyle = computed(() => {
 }
 
 .stat-card {
-  min-width: 120px;
-  padding: 1rem;
-  border-radius: 1rem;
-  color: var(--color-text-dark);
+  min-width: 148px;
+  padding: 1rem 1.1rem;
+  border-radius: 1.1rem;
   text-align: center;
 }
 
 .stat-card span {
   display: block;
-  color: var(--color-text-subtle);
   font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.82;
 }
 
 .stat-card strong {
   display: block;
   margin-top: 0.35rem;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  line-height: 1;
 }
 
 .category-grid {
-  --grid-min-size: 280px;
-  --grid-gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.1rem;
   margin-top: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
@@ -135,8 +147,13 @@ const statCardStyle = computed(() => {
     flex-direction: column;
   }
 
-  .stat-card {
+  .stat-card,
+  .category-grid {
     width: 100%;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

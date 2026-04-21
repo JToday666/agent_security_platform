@@ -1,26 +1,29 @@
 <template>
   <div class="content submit-page layout-page-shell layout-page-shell--wide">
-    <PageHeroCard
+    <PageHero
       title="提交评测"
-      description="填写智能体信息、选择数据集并确认运行参数后创建评测任务。"
-      tone="workspace"
-      title-tone="brand"
+      description="配置智能体标识、关联测试集与执行参数，初始化应用安全评测任务。"
+      description-wrap="single-line"
     >
       <template #actions>
-        <UiButton :to="RouteLocation.datasetList" variant="secondary">
+        <UiButton
+          :to="RouteLocation.datasetList"
+          variant="secondary"
+          leading-icon="lucide:database"
+        >
           浏览数据集
         </UiButton>
       </template>
-    </PageHeroCard>
+    </PageHero>
 
-    <PageStateCard
+    <PageStatePanel
       v-if="pageLoading"
       title="正在初始化提交页"
       message="请稍候。"
       :loading="true"
     />
 
-    <PageStateCard
+    <PageStatePanel
       v-else-if="pageError"
       title="页面初始化失败"
       :message="pageError"
@@ -30,18 +33,30 @@
 
     <form
       v-else-if="form && submitMeta"
-      class="submit-form layout-page-grid"
+      class="submit-interface"
       @submit.prevent="handleSubmit"
     >
-      <div class="submit-main layout-page-stack">
+      <div class="submit-interface__canvas">
         <SubmitMethodSelector
           :model-value="form.submitMethod"
           :methods="submitMeta.supportedMethods"
           @update:model-value="setSubmitMethod"
         />
-        <SubmitBasicInfoForm v-model="form" :field-errors="fieldErrors" />
-        <SubmitParameterControls v-model="form" :meta="submitMeta" />
+
+        <SubmitBasicInfoForm
+          class="submit-step-card"
+          v-model="form"
+          :field-errors="fieldErrors"
+        />
+
+        <SubmitParameterControls
+          class="submit-step-card"
+          v-model="form"
+          :meta="submitMeta"
+        />
+
         <SubmitDatasetPanel
+          class="submit-step-card"
           :categories="enabledCategories"
           :selected-dataset-ids="form.selectedDatasetIds"
           :expanded-category-ids="expandedCategoryIds"
@@ -55,19 +70,24 @@
           @toggle-expanded="toggleExpandedCategory"
           @retry="retryDatasetCatalog"
         />
-        <SectionCard
-          title="排行榜公开设置"
+
+        <SectionBlock
+          class="submit-step-card submit-step-card__wrapper"
+          :title="form.publicToLeaderboard ? '公开到排行榜' : '仅本人可见'"
           description="公开后，此次评测结果可参与排行榜展示；不公开时，仅本人可见。"
+          surface="panel"
         >
-          <UiToggleField
-            v-model="form.publicToLeaderboard"
-            :title="form.publicToLeaderboard ? '公开到排行榜' : '仅本人可见'"
-            description="可以随提交一起保存，默认按平台设置填充。"
-          />
-        </SectionCard>
+          <template #actions>
+            <UiToggleField
+              v-model="form.publicToLeaderboard"
+              title=""
+              class="leaderboard-toggle"
+            />
+          </template>
+        </SectionBlock>
       </div>
 
-      <div class="submit-side layout-sticky-actions">
+      <div class="submit-interface__inspector">
         <SubmitActionBar
           :agent-name="form.agentName.trim()"
           :submit-method="form.submitMethod"
@@ -100,18 +120,18 @@
 
 <script setup lang="ts">
 import { RouteLocation } from "@/app/router/route-names";
+import { useSubmitAgentPage } from "@/modules/submission/composables/useSubmitAgentPage";
 import SubmitActionBar from "@/modules/submission/components/SubmitActionBar.vue";
 import SubmitBasicInfoForm from "@/modules/submission/components/SubmitBasicInfoForm.vue";
 import SubmitDatasetPanel from "@/modules/submission/components/SubmitDatasetPanel.vue";
 import SubmitMethodSelector from "@/modules/submission/components/SubmitMethodSelector.vue";
 import SubmitParameterControls from "@/modules/submission/components/SubmitParameterControls.vue";
-import { useSubmitAgentPage } from "@/modules/submission/composables/useSubmitAgentPage";
-import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
-import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
-import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
+import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
+import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import UiToggleField from "@/shared/ui/forms/UiToggleField.vue";
+import PageHero from "@/shared/ui/page/PageHero.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 
 const {
   form,
@@ -151,23 +171,51 @@ const {
   padding-bottom: 2.5rem;
 }
 
-.submit-form {
+.submit-interface {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 320px);
+  gap: 1.4rem;
   align-items: start;
 }
 
-.submit-main,
-.submit-side {
+.submit-interface__canvas,
+.submit-interface__inspector {
   min-width: 0;
 }
 
-.submit-side {
+.submit-interface__canvas {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.submit-interface__inspector {
+  position: sticky;
+  top: calc(var(--nav-height) + 1.25rem);
   align-self: start;
-  height: fit-content;
+}
+
+.submit-step-card__wrapper :deep(.section-block__body) {
+  gap: 0;
+}
+
+:deep(.ui-toggle-field.leaderboard-toggle) {
+  padding: 0;
+  border-top: 0;
+  flex-shrink: 0;
+}
+
+:deep(.leaderboard-toggle .ui-toggle-field__copy) {
+  display: none;
 }
 
 @media (max-width: 1180px) {
-  .submit-side {
-    width: 100%;
+  .submit-interface {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-interface__inspector {
+    position: static;
   }
 }
 </style>

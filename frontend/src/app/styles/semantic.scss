@@ -34,7 +34,7 @@
 }
 
 :where(.ui-title-gradient) {
-  background: var(--grad-primary);
+  background: var(--grad-title-bright);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

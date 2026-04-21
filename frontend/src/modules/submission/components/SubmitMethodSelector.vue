@@ -1,16 +1,16 @@
 <template>
-  <SectionCard
+  <SectionBlock
     title="提交方式"
     description="选择本次提交使用的接入方式。"
   >
     <UiChoiceCardGroup v-model="model" :options="methodOptions" />
-  </SectionCard>
+  </SectionBlock>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import type { SubmitMethod } from "@/shared/types/agent-types";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 import UiChoiceCardGroup from "@/shared/ui/forms/UiChoiceCardGroup.vue";
 
 const props = defineProps<{

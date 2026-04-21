@@ -1,12 +1,15 @@
 <template>
   <div class="content contact-page layout-page-shell layout-page-shell--compact">
-    <section class="contact-hero" aria-labelledby="contact-hero-title">
-      <BrandLogo class="contact-logo contact-hero__logo" alt="智能体安全评测平台标识" />
-      <h1 id="contact-hero-title" class="contact-hero__title ui-title-gradient">联系我们</h1>
-      <p class="contact-hero__description">
-        如果您有任何问题、建议或合作想法，欢迎通过以下方式与我们取得联系。
-      </p>
-    </section>
+    <PageHero
+      title="联系我们"
+      description="如果您有任何问题、建议或合作想法，欢迎通过以下方式与我们取得联系。"
+      align="center"
+      description-wrap="single-line"
+    >
+      <template #prefix>
+        <BrandLogo class="contact-logo" alt="智能体安全评测平台标识" />
+      </template>
+    </PageHero>
 
     <section class="contact-grid contact-grid--quad">
       <article
@@ -14,8 +17,10 @@
         :key="item.title"
         class="contact-item ui-surface-white ui-hover-card"
       >
-        <div class="contact-item-head">
-          <AppIcon :icon="item.icon" class="icon" />
+        <div class="contact-item__head">
+          <span class="contact-icon-shell">
+            <AppIcon :icon="item.icon" class="icon" />
+          </span>
           <h2>{{ item.title }}</h2>
         </div>
 
@@ -27,7 +32,9 @@
           </template>
 
           <template v-else-if="item.type === 'text'">
-            <p class="info-value info-value--address">{{ item.text }}</p>
+            <p class="info-value info-value--address">
+              {{ item.text }}
+            </p>
           </template>
 
           <template v-else-if="item.type === 'social'">
@@ -40,7 +47,7 @@
                 rel="noopener noreferrer"
                 class="info-value info-value--single-line social-link"
               >
-                <AppIcon :icon="social.icon" class="social-brand-icon" />
+                <AppIcon :icon="social.icon" class="social-icon" />
                 <span>{{ social.name }}</span>
               </a>
             </div>
@@ -54,6 +61,7 @@
 <script setup lang="ts">
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
+import PageHero from "@/shared/ui/page/PageHero.vue";
 
 type ContactItem =
   | {
@@ -122,42 +130,13 @@ const contactItems: ContactItem[] = [
   padding-bottom: 2.3rem;
 }
 
-.contact-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 0.8rem 0 0.35rem;
-  text-align: center;
-}
-
 .contact-logo {
   width: clamp(3.8rem, 8vw, 4.4rem);
 }
 
-.contact-hero__title {
-  margin: 0;
-  color: var(--color-text-dark);
-  font-size: clamp(1.72rem, 3.45vw, 2.56rem);
-  font-weight: 800;
-  line-height: 1.06;
-  letter-spacing: -0.04em;
-  text-wrap: balance;
-}
-
-.contact-hero__description {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.98rem;
-  line-height: 1.66;
-  white-space: nowrap;
-}
-
 .contact-grid {
   display: grid;
-  gap: 0.85rem;
+  gap: 1rem;
   margin-top: 1rem;
 }
 
@@ -169,26 +148,45 @@ const contactItems: ContactItem[] = [
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.72rem;
-  min-height: 176px;
-  padding: 1.08rem 1rem;
-  border-radius: 1.2rem;
+  justify-content: center;
+  gap: 0.9rem;
+  min-height: 196px;
+  padding: 1.35rem 1.1rem;
+  border-radius: 1.3rem;
   text-align: center;
 }
 
-.contact-item-head {
+.contact-item__head {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.52rem;
+  gap: 0.6rem;
   width: 100%;
 }
 
-.contact-item-head h2 {
+.contact-item__head h2 {
   margin: 0;
   color: var(--color-text-dark);
   font-size: 1.02rem;
+}
+
+.contact-icon-shell {
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(219, 234, 254, 0.88), rgba(237, 233, 254, 0.82));
+  border: 1px solid rgba(99, 102, 241, 0.12);
+  box-shadow: 0 16px 28px -24px rgba(79, 70, 229, 0.28);
+}
+
+.icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  color: #4f46e5;
 }
 
 .info {
@@ -197,14 +195,8 @@ const contactItems: ContactItem[] = [
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.38rem;
+  gap: 0.42rem;
   width: 100%;
-}
-
-.icon {
-  width: 1.8rem;
-  height: 1.8rem;
-  color: #4f46e5;
 }
 
 .info-value {
@@ -214,6 +206,7 @@ const contactItems: ContactItem[] = [
   font-size: 0.94rem;
   line-height: 1.62;
   word-break: break-word;
+  text-align: center;
   transition: color var(--duration-fast) var(--ease-standard);
 }
 
@@ -226,29 +219,31 @@ const contactItems: ContactItem[] = [
   text-wrap: balance;
 }
 
-.info a:hover,
-.social-link:hover {
-  color: var(--color-primary);
-}
-
 .social-links {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.5rem 0.72rem;
+  width: 100%;
 }
 
-.social-links a {
+.social-link {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
 }
 
-.social-brand-icon {
+.social-icon {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
+}
+
+.info a:hover,
+.social-link:hover {
+  color: var(--color-primary);
 }
 
 @media (max-width: 768px) {
@@ -256,7 +251,6 @@ const contactItems: ContactItem[] = [
     grid-template-columns: 1fr;
   }
 
-  .contact-hero__description,
   .info-value--single-line {
     white-space: normal;
   }

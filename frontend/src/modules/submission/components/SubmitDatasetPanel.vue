@@ -1,5 +1,5 @@
 <template>
-  <SectionCard
+  <SectionBlock
     title="数据集选择"
     description="选择本次评测需要覆盖的数据集，可按名称快速筛选。"
   >
@@ -50,13 +50,13 @@
         tone="info"
         message="正在刷新可用数据集。"
       />
-      <PageStateCard
+      <PageStatePanel
         v-if="status === 'loading' && !categories.length"
         title="正在加载数据集"
         message="请稍候。"
         :loading="true"
       />
-      <PageStateCard
+      <PageStatePanel
         v-else-if="status === 'error' && !categories.length"
         title="数据集目录加载失败"
         :message="errorMessage || '请重试后继续提交。'"
@@ -64,7 +64,7 @@
         action-variant="secondary"
         @action="$emit('retry')"
       />
-      <PageStateCard
+      <PageStatePanel
         v-else-if="status === 'empty'"
         title="当前没有可用数据集"
         message="请稍后重试。"
@@ -183,12 +183,12 @@
       </div>
     </template>
 
-    <PageStateCard
+    <PageStatePanel
       v-else-if="categories.length && status !== 'loading'"
       title="没有匹配的数据集"
       message="请尝试更换搜索词，或直接清空搜索。"
     />
-  </SectionCard>
+  </SectionBlock>
 </template>
 
 <script setup lang="ts">
@@ -201,8 +201,8 @@ import {
 } from "@/modules/dataset/lib/dataset-utils";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
-import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
+import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 

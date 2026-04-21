@@ -2,9 +2,9 @@
 
 ## 1. 项目定位
 
-`frontend/` 是 Agent Security Platform 的前端工程，基于 Vite + Vue 3 + TypeScript + Pinia + Vue Router + Vitest。
+`frontend/` 是 Agent Security Platform 的前端工程，基于 Vite + Vue 3 + TypeScript + Pinia + Vue Router。
 
-当前前端已经覆盖以下能力：
+当前前端覆盖以下能力：
 
 - 公共页面：首页、数据集目录、数据集详情、排行榜、联系页、404
 - 账号能力：登录、注册、登录态恢复、个人资料与头像上传
@@ -27,7 +27,6 @@ README 只写前端当前状态、运行方式、命名规范和文档入口。�
 - `src/shared/`：共享 API、类型、工具、UI
 - `public/`：不经构建处理的静态资源
 - `vite.config.ts`：Vite 配置、`@` 别名与开发代理
-- `vitest.config.ts`：Vitest 运行配置
 - `.env.example`：环境变量模板
 
 ## 3. 快速开始
@@ -64,18 +63,6 @@ npm run preview
 npm run type-check
 ```
 
-运行测试：
-
-```bash
-npm run test
-```
-
-监视模式运行测试：
-
-```bash
-npm run test:watch
-```
-
 ## 4. 运行约束
 
 Node 版本要求来自 `package.json`：
@@ -97,7 +84,24 @@ Node 版本要求来自 `package.json`：
 - 想脱离后端独立演示评测链路时，可切到 `VITE_ENABLE_API_MOCK=true`
 - 若修改 API 基础路径或代理目标，优先同时检查 `src/shared/api/config.ts` 和 `vite.config.ts`
 
-## 5. 检查与验证
+## 5. 当前共享 UI 基线
+
+页面级共享 UI 目前统一收口为以下组件：
+
+- `src/shared/ui/page/PageHero.vue`
+  平铺页面头部容器，负责标题、说明、前缀区、动作区与对齐方式
+- `src/shared/ui/page/SectionBlock.vue`
+  内容分区容器，支持 `surface="line" | "panel"`
+- `src/shared/ui/feedback/PageStatePanel.vue`
+  页面级加载、空态、失败态容器
+- `src/shared/ui/display/MetricStat.vue`
+  指标摘要卡
+- `src/shared/ui/forms/UiSelect.vue`
+  统一下拉组件，供 `FormField` 的 `type="select"` 模式内部使用
+
+旧的页面级共享组件命名已全部收口，不再作为当前前端基线。
+
+## 6. 检查与验证
 
 文档任务之外的日常开发，最常用的最小验证组合如下：
 
@@ -105,12 +109,6 @@ Node 版本要求来自 `package.json`：
 
 ```bash
 npm run type-check
-```
-
-运行单元测试：
-
-```bash
-npm run test
 ```
 
 构建检查：
@@ -122,9 +120,9 @@ npm run build
 说明：
 
 - `npm run build` 实际会先执行 `type-check`，再执行 `build-only`
-- 当前 Vitest 配置只匹配 `src/**/*.test.ts`
+- 当前仓内不保留 `frontend/src` 下测试源码；日常验证以类型检查、构建和定向页面走查为主
 
-## 6. 前端命名规范
+## 7. 前端命名规范
 
 以下规范作为新增文件、重命名文件时的统一标准。
 
@@ -142,16 +140,10 @@ npm run build
 | 文件夹（普通）                           | `kebab-case`                  | `user-profile/`                |
 | 组件文件夹                               | `PascalCase`                  | `UserAvatar/`                  |
 | 视图文件夹                               | `PascalCase`                  | `EvaluationDetail/`            |
-| 测试文件                                 | 沿用被测文件基名 + `.test.ts` | `dataset-catalog-view.test.ts` |
 
-测试文件命名说明：
+阅读和维护当前代码时，以仓库中的真实文件名为准。
 
-- 若被测文件是 `kebab-case`，测试文件保持相同基名，例如 `dataset-catalog-view.test.ts`
-- 若被测文件是 `camelCase`，测试文件保持相同基名，例如 `userStore.test.ts`
-
-阅读和维护当前代码时，以仓库中的真实文件名为准；新增测试文件默认采用 `<sourceBase>.test.ts`。
-
-## 7. 文档索引与阅读顺序
+## 8. 文档索引与阅读顺序
 
 前端内部文档：
 
@@ -182,7 +174,7 @@ npm run build
 4. 需要追调用链时，看 [关键链路说明](./docs/04-流程/关键链路说明.md)
 5. 需要核对字段语义或请求契约时，看 `share/` 下接口文档
 
-## 8. 文档边界
+## 9. 文档边界
 
 - `frontend/README.md`：前端入口，只写当前状态、运行命令、命名规范、文档索引
 - `frontend/docs/`：前端内部结构、模块与流程说明

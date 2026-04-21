@@ -1,4 +1,4 @@
-import { ApiConfig } from "@/shared/api/config";
+import { ApiConfig } from "@/shared/api/Config";
 import type {
   EvaluationAction,
   EvaluationDetail,

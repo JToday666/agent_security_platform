@@ -1,5 +1,5 @@
 import request from "@/shared/api/http-client";
-import { ApiConfig } from "@/shared/api/config";
+import { ApiConfig } from "@/shared/api/Config";
 import {
   readMemoryCache,
   setMemoryCache,

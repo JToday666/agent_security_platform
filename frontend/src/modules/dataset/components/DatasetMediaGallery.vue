@@ -1,6 +1,6 @@
 <template>
   <section class="gallery">
-    <div v-if="!media.length" class="empty-card ui-surface-white">
+    <div v-if="!media.length" class="empty-card">
       <p>当前评测项暂未提供媒体资源。</p>
     </div>
 
@@ -8,7 +8,7 @@
       <article
         v-for="item in media"
         :key="item.mediaId"
-        class="media-card ui-surface-white"
+        class="media-card"
       >
         <div class="media-preview">
           <img
@@ -106,3 +106,4 @@ const markFailed = (mediaId: string) => {
   line-height: 1.7;
 }
 </style>
+

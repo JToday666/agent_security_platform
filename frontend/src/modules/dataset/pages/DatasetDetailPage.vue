@@ -1,35 +1,38 @@
 <template>
   <div class="content detail-page layout-page-shell">
-    <PageHeroCard
+    <PageHero
       :title="detail?.name || '数据集详情'"
       :description="detail?.shortDescription || '查看该数据集的说明、重点、资源与样例。'"
-      density="compact"
-      title-tone="brand"
     >
       <template #actions>
         <div class="hero-actions">
-          <UiButton :to="RouteLocation.datasetList" variant="secondary">
+          <UiButton
+            :to="RouteLocation.datasetList"
+            variant="secondary"
+            leading-icon="lucide:arrow-left"
+          >
             返回数据集目录
           </UiButton>
           <UiButton
             v-if="detail"
             variant="primary"
+            leading-icon="lucide:file-plus-2"
             @click="handleSubmitClick"
           >
             {{ isLogin ? "使用此数据集发起评测" : "登录后评测此数据集" }}
           </UiButton>
         </div>
       </template>
-    </PageHeroCard>
+    </PageHero>
 
-    <PageStateCard
+    <PageStatePanel
       v-if="loading"
       title="正在加载详情"
       message="请稍候。"
       :loading="true"
     />
 
-    <PageStateCard
+    <PageStatePanel
       v-else-if="error"
       :title="notFound ? '评测项不存在' : '详情加载失败'"
       :message="error"
@@ -37,7 +40,7 @@
       @action="loadDetail"
     />
 
-    <template v-else-if="detail">
+    <div v-else-if="detail" class="detail-stack layout-page-stack">
       <DatasetMetaBar
         :category-name="detail.category.name"
         :category-meaning="detail.category.meaning || '当前风险域'"
@@ -45,42 +48,47 @@
         :updated-at="formatDateLabel(detail.updatedAt ?? undefined)"
       />
 
-      <SectionCard title="详细说明">
+      <SectionBlock title="详细说明">
         <p class="long-copy">{{ detail.fullDescription || "暂无详细说明。" }}</p>
-      </SectionCard>
+      </SectionBlock>
 
       <div class="grid-layout layout-two-column">
-        <SectionCard title="评测重点">
+        <SectionBlock title="评测重点">
           <ul class="bullet-list">
             <li v-for="item in detail.highlights" :key="item">{{ item }}</li>
           </ul>
-        </SectionCard>
+        </SectionBlock>
 
-        <SectionCard title="典型场景">
+        <SectionBlock title="典型场景">
           <ul class="bullet-list">
             <li v-for="item in detail.scenarios" :key="item">{{ item }}</li>
           </ul>
-        </SectionCard>
+        </SectionBlock>
       </div>
 
       <DatasetResourcesList :resources="detail.resources" />
 
-      <SectionCard title="媒体资料">
+      <SectionBlock title="媒体资料" surface="panel">
         <DatasetMediaGallery :media="detail.media" />
-      </SectionCard>
+      </SectionBlock>
 
-      <SectionCard
-        class="cta-card ui-surface-panel"
+      <SectionBlock
+        class="cta-card"
         title="准备发起评测"
         description="当前数据集选定后，可直接进入提交页继续配置智能体接入方式与运行参数。"
+        surface="panel"
       >
         <template #actions>
-          <UiButton variant="primary" @click="handleSubmitClick">
+          <UiButton
+            variant="primary"
+            leading-icon="lucide:file-plus-2"
+            @click="handleSubmitClick"
+          >
             {{ isLogin ? "使用此数据集发起评测" : "登录后评测此数据集" }}
           </UiButton>
         </template>
-      </SectionCard>
-    </template>
+      </SectionBlock>
+    </div>
   </div>
 </template>
 
@@ -89,6 +97,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
+import { useUserStore } from "@/modules/account/stores/userStore";
 import DatasetMediaGallery from "@/modules/dataset/components/DatasetMediaGallery.vue";
 import DatasetMetaBar from "@/modules/dataset/components/DatasetMetaBar.vue";
 import DatasetResourcesList from "@/modules/dataset/components/DatasetResourcesList.vue";
@@ -97,12 +106,11 @@ import {
   formatSampleCount,
 } from "@/modules/dataset/lib/dataset-utils";
 import { useDatasetCatalogStore } from "@/modules/dataset/stores/datasetCatalogStore";
-import { useUserStore } from "@/modules/account/stores/userStore";
 import type { DatasetDetail as DatasetDetailType } from "@/shared/types/dataset-types";
-import PageHeroCard from "@/shared/ui/page/PageHeroCard.vue";
-import PageStateCard from "@/shared/ui/feedback/PageStateCard.vue";
-import SectionCard from "@/shared/ui/page/SectionCard.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
+import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
+import PageHero from "@/shared/ui/page/PageHero.vue";
+import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -181,32 +189,28 @@ onMounted(async () => {
 
 .long-copy {
   margin: 0;
-  color: #475569;
+  color: var(--color-text-muted);
   line-height: 1.85;
-}
-
-.grid-layout {
-  margin-top: 0.92rem;
 }
 
 .bullet-list {
   margin: 0;
   padding-left: 1.1rem;
-  color: #475569;
+  color: var(--color-text-muted);
   line-height: 1.85;
 }
 
-.cta-card :deep(.section-card__head) {
+.cta-card :deep(.section-block__head) {
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.cta-card :deep(.section-card__copy) {
+.cta-card :deep(.section-block__copy) {
   max-width: 34rem;
 }
 
-.cta-card :deep(.section-card__actions) {
+.cta-card :deep(.section-block__actions) {
   width: 100%;
   justify-content: center;
 }
@@ -215,10 +219,6 @@ onMounted(async () => {
   .hero-actions {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .cta-card :deep(.section-card__actions) {
-    justify-content: center;
   }
 }
 </style>
