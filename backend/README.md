@@ -136,7 +136,7 @@ uv run uvicorn app.main:app --host 127.0.0.1 --port 8000
 另开一个终端，在同样的 `backend/` 目录执行：
 
 ```bash
-uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
+uv run python scripts/qa/http_smoke_check.py --base-url http://127.0.0.1:8000
 ```
 
 本地真实 run 联调：
@@ -144,7 +144,7 @@ uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
 推荐优先直接执行脚本化联调：
 
 ```bash
-uv run python scripts/e2e_local_run.py --spawn-services
+uv run python scripts/qa/e2e_local_run.py --spawn-services
 ```
 
 该脚本会自动完成以下检查：
@@ -176,19 +176,19 @@ uv run alembic upgrade head
 推荐的可重复流程是先标准化再导入：
 
 ```bash
-uv run python scripts/normalize_dataset_samples.py --input-root ./data/02_Integrity/B2_Cloud_File_Modification --output-dir /tmp/b2_normalized_samples
-uv run python scripts/sync_dataset_registry_from_samples.py --sample-root /tmp/b2_normalized_samples --registry-root ./dataset_metadata
-uv run python scripts/import_dataset_metadata.py --registry-root ./dataset_metadata
-uv run python scripts/import_dataset_samples.py --sample-root /tmp/b2_normalized_samples --mode auto
+uv run python scripts/datasets/normalize_dataset_samples.py --input-root ./data/02_Integrity/B2_Cloud_File_Modification --output-dir /tmp/b2_normalized_samples
+uv run python scripts/datasets/sync_dataset_registry_from_samples.py --sample-root /tmp/b2_normalized_samples --registry-root ./dataset_metadata
+uv run python scripts/datasets/import_dataset_metadata.py --registry-root ./dataset_metadata
+uv run python scripts/datasets/import_dataset_samples.py --sample-root /tmp/b2_normalized_samples --mode auto
 ```
 
 说明：
 
-- `import_dataset_samples.py --mode auto` 可以直接识别 raw / standard 两类样本目录
+- `scripts/datasets/import_dataset_samples.py --mode auto` 可以直接识别 raw / standard 两类样本目录
 - 标准化流程更适合版本化回归、工作簿同步和可重复导入，因此仍然是推荐路径
-- `normalize_dataset_samples.py` 输出目录必须是显式指定的空目录
-- `sync_dataset_registry_from_samples.py` 统一消费标准化后的样本目录
-- `scripts/e2e_local_run.py` 在本地联调时会按需要自动导入 `backend/data/02_Integrity/B2_Cloud_File_Modification`
+- `scripts/datasets/normalize_dataset_samples.py` 输出目录必须是显式指定的空目录
+- `scripts/datasets/sync_dataset_registry_from_samples.py` 统一消费标准化后的样本目录
+- `scripts/qa/e2e_local_run.py` 在本地联调时会按需要自动导入 `backend/data/02_Integrity/B2_Cloud_File_Modification`
 
 3. 安装 Playwright Chromium
 
@@ -265,7 +265,7 @@ uv run python worker.py
 说明：
 - 当前仓库内 `B2_cloud_file_modification` 的活跃样本难度主要落在 `0.35 / 0.675 / 1.0`。
 - 如果你直接手工提交 `difficulty=0.5`，现有提交服务会返回“当前条件下没有可执行样本”。
-- `scripts/e2e_local_run.py` 会自动从默认 `0.5` 回退到最近可执行难度桶；手工联调建议直接使用 `0.35`。
+- `scripts/qa/e2e_local_run.py` 会自动从默认 `0.5` 回退到最近可执行难度桶；手工联调建议直接使用 `0.35`。
 
 - 响应示例：
 
@@ -348,7 +348,7 @@ ls runtime/workdir/<execution_id>/project/agent_runtime/runs/<environment_ref>/
 也可以直接执行脚本化联调：
 
 ```bash
-uv run python scripts/e2e_local_run.py --spawn-services
+uv run python scripts/qa/e2e_local_run.py --spawn-services
 ```
 
 ## 5. 核心约束

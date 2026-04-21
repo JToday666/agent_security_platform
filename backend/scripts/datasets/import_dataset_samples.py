@@ -1,21 +1,22 @@
+"""把样本目录中的 task 数据导入数据库。"""
+
 from __future__ import annotations
 
 import argparse
 import sys
 from pathlib import Path
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-BACKEND_ROOT = Path(__file__).resolve().parents[1]
-if str(BACKEND_ROOT) not in sys.path:
-    sys.path.insert(0, str(BACKEND_ROOT))
+# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
+_BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
+if str(_BOOTSTRAP_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
 from app.modules.datasets.importer import apply_sample_import_plan, build_sample_import_plan
-from app.shared.config import settings
+from scripts._common import sync_session_scope
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """构造命令行参数解析器。"""
     parser = argparse.ArgumentParser(description="Import dataset samples into the database.")
     parser.add_argument(
         "--sample-root",
@@ -38,20 +39,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """解析样本目录，先构建导入计划，再按需写库。"""
     args = build_parser().parse_args(argv)
     plan = build_sample_import_plan(args.sample_root.resolve(), mode=args.mode)
     print(f"[import_dataset_samples] validated samples={len(plan.samples)} from {args.sample_root.resolve()}")
+    # dry-run 只生成计划并打印统计，不落库。
     if args.dry_run:
         return 0
 
-    engine = create_engine(settings.SYNC_DATABASE_URL, future=True)
-    session_factory = sessionmaker(bind=engine, future=True)
-    try:
-        with session_factory() as session:
-            result = apply_sample_import_plan(session, plan)
-            session.commit()
-    finally:
-        engine.dispose()
+    # 真正导入阶段在单事务内写入样本与 oracle。
+    with sync_session_scope() as session:
+        result = apply_sample_import_plan(session, plan)
+        session.commit()
 
     print(
         "[import_dataset_samples] imported "

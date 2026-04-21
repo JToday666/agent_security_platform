@@ -9,25 +9,23 @@ import pytest
 
 
 SCRIPT_NAMES = [
-    "normalize_dataset_samples.py",
-    "bootstrap_dataset_metadata_from_db.py",
-    "generate_dataset_display_meta_index.py",
-    "sync_dataset_registry_from_samples.py",
-    "export_dataset_metadata_xlsx.py",
-    "sync_dataset_metadata_from_xlsx.py",
-    "import_dataset_metadata.py",
-    "import_dataset_samples.py",
-    "import_dataset_bundle.py",
-    "import_datasets_demo.py",
+    "datasets/normalize_dataset_samples.py",
+    "datasets/bootstrap_dataset_metadata_from_db.py",
+    "datasets/generate_dataset_display_meta_index.py",
+    "datasets/sync_dataset_registry_from_samples.py",
+    "datasets/export_dataset_metadata_xlsx.py",
+    "datasets/sync_dataset_metadata_from_xlsx.py",
+    "datasets/import_dataset_metadata.py",
+    "datasets/import_dataset_samples.py",
+    "datasets/import_dataset_bundle.py",
 ]
 SCRIPTS_REQUIRING_SAMPLE_ROOT = [
-    "sync_dataset_registry_from_samples.py",
-    "import_dataset_samples.py",
-    "import_dataset_bundle.py",
-    "import_datasets_demo.py",
+    "datasets/sync_dataset_registry_from_samples.py",
+    "datasets/import_dataset_samples.py",
+    "datasets/import_dataset_bundle.py",
 ]
 SCRIPTS_REQUIRING_OUTPUT_DIR = [
-    "normalize_dataset_samples.py",
+    "datasets/normalize_dataset_samples.py",
 ]
 
 
@@ -92,7 +90,7 @@ def test_import_bundle_and_import_samples_support_explicit_paths(
     bundle_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "import_dataset_bundle.py"),
+            str(backend_root / "scripts" / "datasets" / "import_dataset_bundle.py"),
             "--sample-root",
             str(repo_sample_bundle.sample_root),
             "--registry-root",
@@ -109,7 +107,7 @@ def test_import_bundle_and_import_samples_support_explicit_paths(
     samples_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "import_dataset_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "import_dataset_samples.py"),
             "--sample-root",
             str(repo_sample_bundle.sample_root),
             "--dry-run",
@@ -123,7 +121,7 @@ def test_import_bundle_and_import_samples_support_explicit_paths(
 
 
 @pytest.mark.scripts
-def test_sync_registry_and_demo_import_script_support_explicit_paths(
+def test_sync_registry_and_bundle_import_script_support_explicit_paths(
     backend_root: Path,
     repo_sample_bundle,
     tmp_path: Path,
@@ -134,7 +132,7 @@ def test_sync_registry_and_demo_import_script_support_explicit_paths(
     sync_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "sync_dataset_registry_from_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "sync_dataset_registry_from_samples.py"),
             "--sample-root",
             str(repo_sample_bundle.sample_root),
             "--registry-root",
@@ -147,10 +145,10 @@ def test_sync_registry_and_demo_import_script_support_explicit_paths(
     assert sync_result.returncode == 0, sync_result.stderr
     assert "display_meta=" in sync_result.stdout
 
-    demo_result = subprocess.run(
+    bundle_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "import_datasets_demo.py"),
+            str(backend_root / "scripts" / "datasets" / "import_dataset_bundle.py"),
             "--sample-root",
             str(repo_sample_bundle.sample_root),
             "--registry-root",
@@ -161,8 +159,8 @@ def test_sync_registry_and_demo_import_script_support_explicit_paths(
         capture_output=True,
         text=True,
     )
-    assert demo_result.returncode == 0, demo_result.stderr
-    assert "validated" in demo_result.stdout
+    assert bundle_result.returncode == 0, bundle_result.stderr
+    assert "validated" in bundle_result.stdout
 
 
 @pytest.mark.scripts
@@ -175,7 +173,7 @@ def test_normalize_script_generates_standard_bundle_consumable_by_sync_and_impor
     normalize_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "normalize_dataset_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "normalize_dataset_samples.py"),
             "--input-root",
             str(raw_sample_bundle.sample_root),
             "--output-dir",
@@ -192,7 +190,7 @@ def test_normalize_script_generates_standard_bundle_consumable_by_sync_and_impor
     sync_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "sync_dataset_registry_from_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "sync_dataset_registry_from_samples.py"),
             "--sample-root",
             str(normalized_root),
             "--registry-root",
@@ -208,7 +206,7 @@ def test_normalize_script_generates_standard_bundle_consumable_by_sync_and_impor
     import_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "import_dataset_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "import_dataset_samples.py"),
             "--sample-root",
             str(normalized_root),
             "--dry-run",

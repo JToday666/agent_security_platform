@@ -1,26 +1,27 @@
+"""把 registry/display_meta JSON 元数据导入数据库。"""
+
 from __future__ import annotations
 
 import argparse
 import sys
 from pathlib import Path
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-BACKEND_ROOT = Path(__file__).resolve().parents[1]
-if str(BACKEND_ROOT) not in sys.path:
-    sys.path.insert(0, str(BACKEND_ROOT))
+# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
+_BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
+if str(_BOOTSTRAP_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
 from app.modules.datasets.metadata_registry import apply_metadata_bundle, load_metadata_bundle
-from app.shared.config import settings
+from scripts._common import DATASET_METADATA_ROOT, sync_session_scope
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """构造命令行参数解析器。"""
     parser = argparse.ArgumentParser(description="Import dataset metadata JSON files into the database.")
     parser.add_argument(
         "--registry-root",
         type=Path,
-        default=BACKEND_ROOT / "dataset_metadata",
+        default=DATASET_METADATA_ROOT,
         help="Root directory for registry/display_meta JSON files.",
     )
     parser.add_argument(
@@ -32,6 +33,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """加载元数据 bundle，先校验，再按需写库。"""
     args = build_parser().parse_args(argv)
     bundle = load_metadata_bundle(args.registry_root.resolve())
     print(
@@ -43,17 +45,14 @@ def main(argv: list[str] | None = None) -> int:
         f"subtypes={len(bundle.risk_subtypes)} "
         f"display_meta={len(bundle.display_meta_by_code)}"
     )
+    # dry-run 只验证文件内容，不改动数据库。
     if args.dry_run:
         return 0
 
-    engine = create_engine(settings.SYNC_DATABASE_URL, future=True)
-    session_factory = sessionmaker(bind=engine, future=True)
-    try:
-        with session_factory() as session:
-            result = apply_metadata_bundle(session, bundle)
-            session.commit()
-    finally:
-        engine.dispose()
+    # 真正导入阶段复用统一同步会话，并在单事务中提交。
+    with sync_session_scope() as session:
+        result = apply_metadata_bundle(session, bundle)
+        session.commit()
 
     print(
         "[import_dataset_metadata] imported "

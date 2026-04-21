@@ -1,26 +1,28 @@
+"""对已启动后端服务执行一轮真实 HTTP 冒烟校验。"""
+
 from __future__ import annotations
 
 import argparse
 import io
 import sys
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 from uuid import uuid4
 
 import httpx
-from sqlalchemy import create_engine, delete, select
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import delete, select
 
-BACKEND_ROOT = Path(__file__).resolve().parents[1]
-if str(BACKEND_ROOT) not in sys.path:
-    sys.path.insert(0, str(BACKEND_ROOT))
+# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
+_BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
+if str(_BOOTSTRAP_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
 from app.models.benchmark import AttackDeliveryType, BenchmarkSample, DatasetSource, RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta
 from app.models.benchmark_run import ExecutionArtifact, ExecutionSummary, OracleResult, RunDataset, RunReport, RunSample, SampleExecution, TestRun
 from app.models.user import User
 from app.shared.config import settings
+from scripts._common import build_sync_engine, build_sync_session_factory
 
 
 @dataclass
@@ -33,11 +35,12 @@ class SmokeContext:
     avatar_path: Path | None = None
 
 
-SYNC_ENGINE = create_engine(settings.SYNC_DATABASE_URL, future=True)
-SessionLocal = sessionmaker(bind=SYNC_ENGINE, future=True)
+SYNC_ENGINE = build_sync_engine()
+SessionLocal = build_sync_session_factory(SYNC_ENGINE)
 
 
 def parse_args() -> argparse.Namespace:
+    """构造命令行参数解析器。"""
     parser = argparse.ArgumentParser(description="Run live HTTP smoke checks against a running backend service.")
     parser.add_argument("--base-url", default="http://127.0.0.1:8000", help="Running backend base URL.")
     parser.add_argument("--timeout", type=float, default=10.0, help="HTTP request timeout in seconds.")
@@ -45,16 +48,19 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def session_scope() -> Session:
+def session_scope():
+    """返回脚本复用的同步 Session。"""
     return SessionLocal()
 
 
 def ensure(condition: bool, message: str) -> None:
+    """把断言失败统一提升为 AssertionError。"""
     if not condition:
         raise AssertionError(message)
 
 
 def png_bytes() -> bytes:
+    """生成最小 PNG 内容，供头像上传接口使用。"""
     image = io.BytesIO()
     image.write(
         b"\x89PNG\r\n\x1a\n"
@@ -66,6 +72,7 @@ def png_bytes() -> bytes:
 
 
 def seed_dataset(prefix: str) -> str:
+    """插入一组最小可用数据集夹具，供接口链路校验复用。"""
     dataset_code = f"{prefix}_dataset"
     with session_scope() as session:
         category = RiskCategory(
@@ -128,6 +135,7 @@ def seed_dataset(prefix: str) -> str:
 
 
 def cleanup(context: SmokeContext) -> None:
+    """清理烟测写入的数据库记录与上传头像文件。"""
     with session_scope() as session:
         user_ids = list(
             (
@@ -194,6 +202,7 @@ def cleanup(context: SmokeContext) -> None:
 
 
 def check_envelope(response: httpx.Response, *, status_code: int) -> dict:
+    """校验接口状态码与统一 envelope 结构。"""
     ensure(response.status_code == status_code, f"{response.request.method} {response.request.url.path} expected {status_code}, got {response.status_code}: {response.text}")
     payload = response.json()
     ensure(isinstance(payload, dict), "response must be a JSON object")
@@ -202,6 +211,7 @@ def check_envelope(response: httpx.Response, *, status_code: int) -> dict:
 
 
 def main() -> int:
+    """执行匿名访问、用户链路、数据集链路与提交流程的冒烟检查。"""
     args = parse_args()
     prefix = f"http_smoke_{uuid4().hex[:8]}"
     context = SmokeContext(
@@ -213,6 +223,7 @@ def main() -> int:
 
     try:
         with httpx.Client(base_url=args.base_url.rstrip("/"), timeout=args.timeout) as client:
+            # 先验证匿名可访问入口以及统一响应结构。
             for path in ["/", "/api/", "/api/v1/"]:
                 payload = check_envelope(client.get(path), status_code=200)
                 ensure(payload["code"] == 0, f"{path} should return success envelope")
@@ -220,6 +231,7 @@ def main() -> int:
             unauthorized_payload = check_envelope(client.get("/api/v1/user/profile"), status_code=401)
             ensure(unauthorized_payload["code"] == 40100, "unauthorized profile should use 40100")
 
+            # 再串行覆盖认证、资料、数据集、提交与鉴权隔离等关键链路。
             register_payload = {
                 "username": f"{prefix}_user",
                 "email": context.user_email,
@@ -339,6 +351,7 @@ def main() -> int:
         print(f"HTTP smoke check failed: {exc}", file=sys.stderr)
         return 1
     finally:
+        # 默认清理烟测数据，避免重复执行时污染本地环境。
         if not args.keep_data:
             cleanup(context)
         SYNC_ENGINE.dispose()
