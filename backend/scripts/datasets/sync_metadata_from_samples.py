@@ -6,12 +6,11 @@ import argparse
 import sys
 from pathlib import Path
 
-# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
 _BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
 if str(_BOOTSTRAP_ROOT) not in sys.path:
     sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
-from app.modules.datasets.metadata_registry import sync_registry_from_samples
+from app.modules.datasets.ingestion.metadata import sync_metadata_from_samples
 from scripts._common import DATASET_METADATA_ROOT
 
 
@@ -42,9 +41,9 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     """扫描样本目录并同步生成 registry/display_meta 基础文件。"""
     args = build_parser().parse_args(argv)
-    bundle = sync_registry_from_samples(args.sample_root.resolve(), args.registry_root.resolve(), mode=args.mode)
+    bundle = sync_metadata_from_samples(args.sample_root.resolve(), args.registry_root.resolve(), mode=args.mode)
     print(
-        "[sync_dataset_registry_from_samples] synced "
+        "[sync_metadata_from_samples] synced "
         f"sources={len(bundle.dataset_sources)} "
         f"delivery_types={len(bundle.attack_delivery_types)} "
         f"asset_types={len(bundle.asset_types)} "

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from app.modules.datasets.metadata_registry import load_metadata_bundle, sync_registry_from_samples
+from app.modules.datasets.ingestion.metadata import load_metadata_bundle, sync_metadata_from_samples
 from tests.helpers.dataset_bundle import write_json
 
 
@@ -72,7 +72,7 @@ def test_sync_registry_from_samples_adds_missing_entries_without_overwriting_exi
         },
     )
 
-    sync_registry_from_samples(repo_sample_bundle.sample_root, registry_root)
+    sync_metadata_from_samples(repo_sample_bundle.sample_root, registry_root)
     bundle = load_metadata_bundle(registry_root)
 
     assert len(bundle.dataset_sources) == repo_sample_bundle.dataset_source_count
@@ -88,5 +88,7 @@ def test_sync_registry_from_samples_adds_missing_entries_without_overwriting_exi
     assert bundle.display_meta_by_code["A1_identity_leakage"].short_description == "原有短描述"
     assert (registry_root / "display_meta" / "B2_cloud_file_modification.json").exists()
 
+    index_path = registry_root / "display_meta" / "index.json"
+    assert index_path.exists()
     index_payload = load_metadata_bundle(registry_root)
     assert len(index_payload.display_meta_by_code) == repo_sample_bundle.subtype_count

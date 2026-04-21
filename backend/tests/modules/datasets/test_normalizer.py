@@ -5,12 +5,12 @@ from pathlib import Path
 
 import pytest
 
-from app.modules.datasets.importer import ImportValidationError
+from app.modules.datasets.ingestion.errors import ImportValidationError
 from tests.helpers.dataset_bundle import write_json, write_legacy_sample
 
 
 def test_normalize_sample_bundle_deduplicates_same_content_metadata_and_symlinks_resources(tmp_path: Path) -> None:
-    from app.modules.datasets.normalizer import normalize_sample_bundle
+    from app.modules.datasets.ingestion.normalize import normalize_sample_bundle
 
     sample_dir = tmp_path / "raw" / "01_Confidentiality" / "A3_Address_and_Location_Leakage" / "EIA_A3_10_high"
     write_legacy_sample(
@@ -41,7 +41,7 @@ def test_normalize_sample_bundle_deduplicates_same_content_metadata_and_symlinks
 
 
 def test_normalize_sample_bundle_rejects_conflicting_metadata_candidates(tmp_path: Path) -> None:
-    from app.modules.datasets.normalizer import normalize_sample_bundle
+    from app.modules.datasets.ingestion.normalize import normalize_sample_bundle
 
     sample_dir = tmp_path / "raw" / "01_Confidentiality" / "A3_Address_and_Location_Leakage" / "EIA_A3_10_high"
     write_legacy_sample(
@@ -132,7 +132,7 @@ def test_normalize_sample_bundle_maps_legacy_risk_codes_and_sort_orders(
     expected_subtype: str,
     expected_subtype_order: int,
 ) -> None:
-    from app.modules.datasets.normalizer import normalize_sample_bundle
+    from app.modules.datasets.ingestion.normalize import normalize_sample_bundle
 
     sample_root = tmp_path / "raw"
     sample_dir = sample_root / primary_risk / secondary_risk / f"{secondary_risk}_sample"

@@ -6,12 +6,11 @@ import argparse
 import sys
 from pathlib import Path
 
-# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
 _BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
 if str(_BOOTSTRAP_ROOT) not in sys.path:
     sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
-from app.modules.datasets.importer import apply_sample_import_plan, build_sample_import_plan
+from app.modules.datasets.ingestion.samples import apply_sample_import_plan, build_sample_import_plan
 from scripts._common import sync_session_scope
 
 
@@ -42,18 +41,16 @@ def main(argv: list[str] | None = None) -> int:
     """解析样本目录，先构建导入计划，再按需写库。"""
     args = build_parser().parse_args(argv)
     plan = build_sample_import_plan(args.sample_root.resolve(), mode=args.mode)
-    print(f"[import_dataset_samples] validated samples={len(plan.samples)} from {args.sample_root.resolve()}")
-    # dry-run 只生成计划并打印统计，不落库。
+    print(f"[import_samples] validated samples={len(plan.samples)} from {args.sample_root.resolve()}")
     if args.dry_run:
         return 0
 
-    # 真正导入阶段在单事务内写入样本与 oracle。
     with sync_session_scope() as session:
         result = apply_sample_import_plan(session, plan)
         session.commit()
 
     print(
-        "[import_dataset_samples] imported "
+        "[import_samples] imported "
         f"samples(created={result.created_samples}, updated={result.updated_samples}) "
         f"oracles(created={result.created_oracles}, updated={result.updated_oracles})"
     )

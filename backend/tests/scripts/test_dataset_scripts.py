@@ -9,23 +9,20 @@ import pytest
 
 
 SCRIPT_NAMES = [
-    "datasets/normalize_dataset_samples.py",
-    "datasets/bootstrap_dataset_metadata_from_db.py",
-    "datasets/generate_dataset_display_meta_index.py",
-    "datasets/sync_dataset_registry_from_samples.py",
-    "datasets/export_dataset_metadata_xlsx.py",
-    "datasets/sync_dataset_metadata_from_xlsx.py",
-    "datasets/import_dataset_metadata.py",
-    "datasets/import_dataset_samples.py",
-    "datasets/import_dataset_bundle.py",
+    "import_datasets.py",
+    "datasets/normalize_samples.py",
+    "datasets/bootstrap_metadata_from_db.py",
+    "datasets/sync_metadata_from_samples.py",
+    "datasets/import_metadata.py",
+    "datasets/import_samples.py",
 ]
 SCRIPTS_REQUIRING_SAMPLE_ROOT = [
-    "datasets/sync_dataset_registry_from_samples.py",
-    "datasets/import_dataset_samples.py",
-    "datasets/import_dataset_bundle.py",
+    "import_datasets.py",
+    "datasets/sync_metadata_from_samples.py",
+    "datasets/import_samples.py",
 ]
 SCRIPTS_REQUIRING_OUTPUT_DIR = [
-    "datasets/normalize_dataset_samples.py",
+    "datasets/normalize_samples.py",
 ]
 
 
@@ -85,12 +82,10 @@ def test_import_bundle_and_import_samples_support_explicit_paths(
     tmp_path: Path,
 ) -> None:
     registry_root = tmp_path / "dataset_metadata"
-    shutil.copytree(backend_root / "dataset_metadata", registry_root)
-
-    bundle_result = subprocess.run(
+    pipeline_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "datasets" / "import_dataset_bundle.py"),
+            str(backend_root / "scripts" / "import_datasets.py"),
             "--sample-root",
             str(repo_sample_bundle.sample_root),
             "--registry-root",
@@ -101,13 +96,14 @@ def test_import_bundle_and_import_samples_support_explicit_paths(
         capture_output=True,
         text=True,
     )
-    assert bundle_result.returncode == 0, bundle_result.stderr
-    assert "validated" in bundle_result.stdout
+    assert pipeline_result.returncode == 0, pipeline_result.stderr
+    assert "input_kind=standard" in pipeline_result.stdout
+    assert f"samples={repo_sample_bundle.sample_count}" in pipeline_result.stdout
 
     samples_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "datasets" / "import_dataset_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "import_samples.py"),
             "--sample-root",
             str(repo_sample_bundle.sample_root),
             "--dry-run",
@@ -127,12 +123,11 @@ def test_sync_registry_and_bundle_import_script_support_explicit_paths(
     tmp_path: Path,
 ) -> None:
     registry_root = tmp_path / "dataset_metadata"
-    shutil.copytree(backend_root / "dataset_metadata", registry_root)
 
     sync_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "datasets" / "sync_dataset_registry_from_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "sync_metadata_from_samples.py"),
             "--sample-root",
             str(repo_sample_bundle.sample_root),
             "--registry-root",
@@ -145,10 +140,10 @@ def test_sync_registry_and_bundle_import_script_support_explicit_paths(
     assert sync_result.returncode == 0, sync_result.stderr
     assert "display_meta=" in sync_result.stdout
 
-    bundle_result = subprocess.run(
+    pipeline_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "datasets" / "import_dataset_bundle.py"),
+            str(backend_root / "scripts" / "import_datasets.py"),
             "--sample-root",
             str(repo_sample_bundle.sample_root),
             "--registry-root",
@@ -159,8 +154,8 @@ def test_sync_registry_and_bundle_import_script_support_explicit_paths(
         capture_output=True,
         text=True,
     )
-    assert bundle_result.returncode == 0, bundle_result.stderr
-    assert "validated" in bundle_result.stdout
+    assert pipeline_result.returncode == 0, pipeline_result.stderr
+    assert "input_kind=standard" in pipeline_result.stdout
 
 
 @pytest.mark.scripts
@@ -173,7 +168,7 @@ def test_normalize_script_generates_standard_bundle_consumable_by_sync_and_impor
     normalize_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "datasets" / "normalize_dataset_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "normalize_samples.py"),
             "--input-root",
             str(raw_sample_bundle.sample_root),
             "--output-dir",
@@ -190,7 +185,7 @@ def test_normalize_script_generates_standard_bundle_consumable_by_sync_and_impor
     sync_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "datasets" / "sync_dataset_registry_from_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "sync_metadata_from_samples.py"),
             "--sample-root",
             str(normalized_root),
             "--registry-root",
@@ -206,7 +201,7 @@ def test_normalize_script_generates_standard_bundle_consumable_by_sync_and_impor
     import_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "datasets" / "import_dataset_samples.py"),
+            str(backend_root / "scripts" / "datasets" / "import_samples.py"),
             "--sample-root",
             str(normalized_root),
             "--dry-run",
@@ -217,3 +212,35 @@ def test_normalize_script_generates_standard_bundle_consumable_by_sync_and_impor
     )
     assert import_result.returncode == 0, import_result.stderr
     assert f"samples={raw_sample_bundle.sample_count}" in import_result.stdout
+
+
+@pytest.mark.scripts
+def test_import_datasets_detects_raw_input_and_normalizes_into_workspace(
+    backend_root: Path,
+    raw_sample_bundle,
+    tmp_path: Path,
+) -> None:
+    registry_root = tmp_path / "dataset_metadata"
+    workspace_dir = tmp_path / "workspace"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(backend_root / "scripts" / "import_datasets.py"),
+            "--sample-root",
+            str(raw_sample_bundle.sample_root),
+            "--registry-root",
+            str(registry_root),
+            "--workspace-dir",
+            str(workspace_dir),
+            "--dry-run",
+        ],
+        cwd=backend_root,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "input_kind=raw" in result.stdout
+    assert "normalized=yes" in result.stdout
+    assert (workspace_dir / "normalized_samples").exists()

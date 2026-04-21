@@ -41,7 +41,7 @@ README 只描述当前状态。后端实现细节、领域说明和待办事项�
 - `app/`：后端业务代码总入口
 - `alembic/`：数据库迁移
 - `data/`：真实样本与各风险子类 runtime 目录
-- `dataset_metadata/`：版本化数据集元数据与工作簿镜像
+- `dataset_metadata/`：版本化数据集元数据 JSON 真源
 - `runtime/`：运行时目录（上传、凭证、worker workdir）
 - `docs/`：后端内部说明与规范文档
 
@@ -173,21 +173,17 @@ uv run alembic upgrade head
 
 2. 准备并导入数据集元数据与 B2 样本
 
-推荐的可重复流程是先标准化再导入：
+推荐直接使用顶层脚本完成“识别输入类型 -> 必要时标准化 -> 回写/补齐 `dataset_metadata` -> 导入元数据 -> 导入样本”整条链路：
 
 ```bash
-uv run python scripts/datasets/normalize_dataset_samples.py --input-root ./data/02_Integrity/B2_Cloud_File_Modification --output-dir /tmp/b2_normalized_samples
-uv run python scripts/datasets/sync_dataset_registry_from_samples.py --sample-root /tmp/b2_normalized_samples --registry-root ./dataset_metadata
-uv run python scripts/datasets/import_dataset_metadata.py --registry-root ./dataset_metadata
-uv run python scripts/datasets/import_dataset_samples.py --sample-root /tmp/b2_normalized_samples --mode auto
+uv run python scripts/import_datasets.py --sample-root ./data/02_Integrity/B2_Cloud_File_Modification
 ```
 
 说明：
 
-- `scripts/datasets/import_dataset_samples.py --mode auto` 可以直接识别 raw / standard 两类样本目录
-- 标准化流程更适合版本化回归、工作簿同步和可重复导入，因此仍然是推荐路径
-- `scripts/datasets/normalize_dataset_samples.py` 输出目录必须是显式指定的空目录
-- `scripts/datasets/sync_dataset_registry_from_samples.py` 统一消费标准化后的样本目录
+- `scripts/import_datasets.py` 会自动识别 raw / standard 两类样本目录
+- raw 输入会先标准化，再回写 `dataset_metadata/` JSON 真源并继续导入
+- 如需分步执行，使用 `scripts/datasets/normalize_samples.py`、`sync_metadata_from_samples.py`、`import_metadata.py`、`import_samples.py`
 - `scripts/qa/e2e_local_run.py` 在本地联调时会按需要自动导入 `backend/data/02_Integrity/B2_Cloud_File_Modification`
 
 3. 安装 Playwright Chromium
