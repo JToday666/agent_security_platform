@@ -281,12 +281,12 @@ button {
 :where(.page-shell-enter-active, .page-shell-leave-active) {
   transition:
     opacity var(--duration-base) var(--ease-standard),
-    transform var(--duration-base) var(--ease-emphasized);
+    transform var(--duration-base) var(--ease-standard);
 }
 
 :where(.page-shell-enter-from, .page-shell-leave-to) {
   opacity: 0;
-  transform: translate3d(0, 18px, 0);
+  transform: translate3d(0, 10px, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {
