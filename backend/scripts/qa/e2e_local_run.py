@@ -34,8 +34,8 @@ DEFAULT_BASE_URL = "http://127.0.0.1:8000"
 CORE_ARTIFACT_TYPES = {"event_log", "compile_result", "replay_result"}
 RUN_TERMINAL_STATUSES = {"completed", "terminated", "canceled", "failed"}
 SUCCESS_LABELS = {"needs_review", "timeout"}
-IMPORT_DATASET_METADATA_SCRIPT = "scripts/datasets/import_dataset_metadata.py"
-IMPORT_DATASET_SAMPLES_SCRIPT = "scripts/datasets/import_dataset_samples.py"
+IMPORT_DATASET_METADATA_SCRIPT = "scripts/datasets/import_metadata.py"
+IMPORT_DATASET_SAMPLES_SCRIPT = "scripts/datasets/import_samples.py"
 DEFAULT_SAMPLE_ROOT = "./data/02_Integrity/B2_Cloud_File_Modification"
 
 SYNC_ENGINE = build_sync_engine()

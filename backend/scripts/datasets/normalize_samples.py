@@ -6,12 +6,11 @@ import argparse
 import sys
 from pathlib import Path
 
-# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
 _BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
 if str(_BOOTSTRAP_ROOT) not in sys.path:
     sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
-from app.modules.datasets.normalizer import normalize_sample_bundle
+from app.modules.datasets.ingestion.normalize import normalize_sample_bundle
 from scripts._common import DATA_ROOT
 
 
@@ -53,16 +52,15 @@ def main(argv: list[str] | None = None) -> int:
         mode=args.mode,
         dry_run=args.dry_run,
     )
-    # dry-run 只做校验并返回统计，方便批量预检查。
     if args.dry_run:
         print(
-            "[normalize_dataset_samples] validated "
+            "[normalize_samples] validated "
             f"samples={result.sample_count} input_root={result.input_root} output_dir={result.output_root}"
         )
         return 0
 
     print(
-        "[normalize_dataset_samples] wrote "
+        "[normalize_samples] wrote "
         f"samples={result.sample_count} "
         f"task_json={result.written_task_count} "
         f"symlinks={result.symlinked_file_count} "

@@ -6,12 +6,11 @@ import argparse
 import sys
 from pathlib import Path
 
-# 允许通过 `python scripts/...` 直接执行时正确导入 backend 包内模块。
 _BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
 if str(_BOOTSTRAP_ROOT) not in sys.path:
     sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
-from app.modules.datasets.metadata_registry import build_metadata_bundle_from_database, write_metadata_bundle
+from app.modules.datasets.ingestion.metadata import build_metadata_bundle_from_database, write_metadata_bundle
 from scripts._common import DATASET_METADATA_ROOT, sync_session_scope
 
 
@@ -35,7 +34,7 @@ def main(argv: list[str] | None = None) -> int:
     write_metadata_bundle(args.registry_root.resolve(), bundle)
 
     print(
-        "[bootstrap_dataset_metadata_from_db] wrote "
+        "[bootstrap_metadata_from_db] wrote "
         f"sources={len(bundle.dataset_sources)} "
         f"delivery_types={len(bundle.attack_delivery_types)} "
         f"asset_types={len(bundle.asset_types)} "

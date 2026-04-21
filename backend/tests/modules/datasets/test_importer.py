@@ -7,8 +7,9 @@ import pytest
 from sqlalchemy import func, select
 
 from app.models.benchmark import BenchmarkSample, RiskSubtype, RiskSubtypeDisplayMeta
-from app.modules.datasets.importer import ImportValidationError, apply_sample_import_plan, build_sample_import_plan
-from app.modules.datasets.metadata_registry import apply_metadata_bundle, load_metadata_bundle
+from app.modules.datasets.ingestion.errors import ImportValidationError
+from app.modules.datasets.ingestion.metadata import apply_metadata_bundle, load_metadata_bundle
+from app.modules.datasets.ingestion.samples import apply_sample_import_plan, build_sample_import_plan
 from tests.helpers.dataset_bundle import prefix_metadata_bundle, prefix_sample_plan, write_json, write_minimal_registry
 
 

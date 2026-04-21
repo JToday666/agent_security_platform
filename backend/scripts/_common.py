@@ -16,7 +16,6 @@ BACKEND_ROOT = Path(__file__).resolve().parents[1]
 BACKEND_CWD = str(BACKEND_ROOT)
 DATA_ROOT = BACKEND_ROOT / "data"
 DATASET_METADATA_ROOT = BACKEND_ROOT / "dataset_metadata"
-DATASET_METADATA_WORKBOOK = DATASET_METADATA_ROOT / "workbook" / "dataset_registry.xlsx"
 
 
 def ensure_backend_root_on_path() -> None:
