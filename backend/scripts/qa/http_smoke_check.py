@@ -19,6 +19,7 @@ if str(_BOOTSTRAP_ROOT) not in sys.path:
     sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
 from app.models.benchmark import AttackDeliveryType, BenchmarkSample, DatasetSource, RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta
+from app.models.agent import Agent
 from app.models.benchmark_run import ExecutionArtifact, ExecutionSummary, OracleResult, RunDataset, RunReport, RunSample, SampleExecution, TestRun
 from app.models.user import User
 from app.shared.config import settings
@@ -179,6 +180,8 @@ def cleanup(context: SmokeContext) -> None:
             session.execute(delete(RunSample).where(RunSample.run_id.in_(run_ids)))
             session.execute(delete(RunDataset).where(RunDataset.run_id.in_(run_ids)))
             session.execute(delete(TestRun).where(TestRun.id.in_(run_ids)))
+        if user_ids:
+            session.execute(delete(Agent).where(Agent.user_id.in_(user_ids)))
         if subtype_ids:
             sample_ids = list(
                 (
@@ -290,27 +293,57 @@ def main() -> int:
             missing_dataset = check_envelope(client.get(f"/api/v1/datasets/{prefix}_missing"), status_code=404)
             ensure(missing_dataset["code"] == 40400, "missing dataset should use 40400")
 
-            submit_meta = check_envelope(client.get("/api/v1/agents/submit-meta"), status_code=200)
-            ensure(submit_meta["data"]["supportedMethods"] == ["api", "docker"], "submit-meta should expose supported methods")
+            templates = check_envelope(client.get("/api/v1/agents/templates"), status_code=200)
+            ensure(templates["data"][0]["templateId"] == "http_submit_poll_basic", "agent templates should expose submit-poll template")
+
+            agent_payload = {
+                "templateId": "http_submit_poll_basic",
+                "name": f"{prefix} agent",
+                "description": "http smoke submit",
+                "invokeMode": "sync_response",
+                "connection": {"baseUrl": "https://agent.example.com", "invokePath": "/run", "requestTimeoutSeconds": 30},
+                "auth": {"type": "bearer", "config": {"token": "sk-http-smoke"}},
+                "platformInputMapping": {
+                    "task": "prompt",
+                    "entryUrl": "url",
+                    "timeoutSeconds": "timeout_sec",
+                    "sampleId": "case_id",
+                    "evaluationId": "evaluation_id",
+                    "maxSteps": "max_steps",
+                },
+                "taskRenderMode": "goal_only",
+                "customRequestBody": {"engine": "demo"},
+                "requestOptions": {},
+                "platformOutputMapping": {"status": "status", "finalAnswer": "answer", "errorMessage": "error"},
+                "terminalStatuses": ["completed", "failed"],
+                "successStatuses": ["completed"],
+            }
+            create_agent = check_envelope(client.post("/api/v1/agents", headers=headers, json=agent_payload), status_code=200)
+            agent_id = create_agent["data"]["agentId"]
+            with session_scope() as session:
+                agent = session.execute(select(Agent).where(Agent.public_id == agent_id)).scalar_one()
+                agent.status = "active"
+                session.commit()
+
+            submit_meta = check_envelope(client.get("/api/v1/evaluations/meta"), status_code=200)
+            ensure(submit_meta["data"]["submitMethods"] == ["api"], "evaluation meta should expose api submit method")
 
             submit_payload = {
-                "agentName": f"{prefix} agent",
-                "description": "http smoke submit",
                 "submitMethod": "api",
-                "api": {"baseUrl": "https://example.com/agent", "token": "sk-http-smoke"},
-                "parameters": {"difficulty": 0.5, "timeoutMinutes": 20, "retryEnabled": False},
+                "agentId": agent_id,
+                "parameters": {"difficulty": 0.5, "timeoutMinutes": 20, "maxSteps": 30},
                 "publicToLeaderboard": False,
                 "datasetIds": [context.dataset_code],
                 "requestId": f"{prefix}_request_001",
             }
-            precheck_result = check_envelope(client.post("/api/v1/agents/precheck", headers=headers, json=submit_payload), status_code=200)
-            ensure(precheck_result["data"] == {"ok": True, "warnings": []}, "precheck should succeed for seeded dataset")
+            precheck_result = check_envelope(client.post("/api/v1/evaluations/validate", headers=headers, json=submit_payload), status_code=200)
+            ensure(precheck_result["data"] == {"ok": True, "warnings": []}, "evaluation validate should succeed for seeded dataset")
 
-            submit_result = check_envelope(client.post("/api/v1/agents/submit", headers=headers, json=submit_payload), status_code=200)
+            submit_result = check_envelope(client.post("/api/v1/evaluations", headers=headers, json=submit_payload), status_code=200)
             context.evaluation_id = submit_result["data"]["evaluationId"]
             ensure(submit_result["data"]["status"] == "pending", "submit should create a pending evaluation")
 
-            repeat_submit = check_envelope(client.post("/api/v1/agents/submit", headers=headers, json=submit_payload), status_code=200)
+            repeat_submit = check_envelope(client.post("/api/v1/evaluations", headers=headers, json=submit_payload), status_code=200)
             ensure(repeat_submit["data"]["evaluationId"] == context.evaluation_id, "repeated submit should reuse the same evaluation")
 
             evaluation_list = check_envelope(client.get("/api/v1/evaluations", headers=headers), status_code=200)

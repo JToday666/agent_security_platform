@@ -4,7 +4,15 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.modules.evaluations.repository import EvaluationRepository
-from app.modules.evaluations.schemas import EvaluationActionRequest, EvaluationDetail, EvaluationListItem
+from app.modules.evaluations.schemas import (
+    EvaluationActionRequest,
+    EvaluationCreateRequest,
+    EvaluationCreateResponse,
+    EvaluationDetail,
+    EvaluationListItem,
+    EvaluationSubmitMeta,
+    EvaluationValidateResponse,
+)
 from app.modules.evaluations.service import EvaluationService
 from app.modules.auth.dependencies import get_current_user
 from app.shared.auth import get_db
@@ -24,6 +32,35 @@ async def list_evaluations(current_user=Depends(get_current_user), service: Eval
     """返回当前用户的评测任务列表。"""
     response = await service.list_evaluations(current_user=current_user)
     return success_payload([item.model_dump(by_alias=True) for item in response])
+
+
+@router.get("/meta", response_model=Envelope[EvaluationSubmitMeta])
+async def evaluation_submit_meta(service: EvaluationService = Depends(get_evaluation_service)):
+    """返回评测提交页元数据。"""
+    response = await service.get_submit_meta()
+    return success_payload(response.model_dump(by_alias=True))
+
+
+@router.post("/validate", response_model=Envelope[EvaluationValidateResponse])
+async def validate_evaluation_submission(
+    payload: EvaluationCreateRequest,
+    current_user=Depends(get_current_user),
+    service: EvaluationService = Depends(get_evaluation_service),
+):
+    """校验评测提交请求。"""
+    response = await service.validate_submission(payload, current_user)
+    return success_payload(response.model_dump(by_alias=True))
+
+
+@router.post("", response_model=Envelope[EvaluationCreateResponse])
+async def create_evaluation(
+    payload: EvaluationCreateRequest,
+    current_user=Depends(get_current_user),
+    service: EvaluationService = Depends(get_evaluation_service),
+):
+    """创建评测任务。"""
+    response = await service.create_evaluation(payload, current_user)
+    return success_payload(response.model_dump(by_alias=True))
 
 
 @router.get("/{evaluationId}", response_model=Envelope[EvaluationDetail])

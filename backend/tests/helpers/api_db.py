@@ -26,6 +26,7 @@ from app.models.benchmark_run import (
     SampleExecution,
     TestRun,
 )
+from app.models.agent import Agent
 from app.models.user import User
 from app.shared.security import create_access_token, hash_password
 
@@ -189,6 +190,8 @@ class ApiDbHelper:
                 session.execute(delete(RunSample).where(RunSample.run_id.in_(run_ids)))
                 session.execute(delete(RunDataset).where(RunDataset.run_id.in_(run_ids)))
                 session.execute(delete(TestRun).where(TestRun.id.in_(run_ids)))
+            if user_ids:
+                session.execute(delete(Agent).where(Agent.user_id.in_(user_ids)))
             if subtype_ids:
                 sample_ids = list((session.execute(select(BenchmarkSample.id).where(BenchmarkSample.risk_subtype_id.in_(subtype_ids)))).scalars())
             if sample_ids:

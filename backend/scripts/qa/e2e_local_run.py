@@ -22,6 +22,7 @@ _BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
 if str(_BOOTSTRAP_ROOT) not in sys.path:
     sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
+from app.models.agent import Agent
 from app.models.benchmark import BenchmarkSample, RiskSubtype
 from app.models.benchmark_run import ExecutionArtifact, ExecutionSummary, RunDataset, RunReport, SampleExecution, TestRun
 from app.shared.config import settings
@@ -106,19 +107,41 @@ def check_envelope(response: httpx.Response, *, status_code: int) -> dict[str, A
     return payload
 
 
-def build_submission_payload(request_id: str, *, difficulty: float = 0.5) -> dict[str, Any]:
+def build_agent_payload(prefix: str) -> dict[str, Any]:
+    """构造本地 e2e 使用的 API Agent 注册请求体。"""
+    return {
+        "templateId": "http_submit_poll_basic",
+        "name": "local-e2e-agent",
+        "description": "local worker e2e",
+        "invokeMode": "sync_response",
+        "connection": {"baseUrl": "https://agent.example.com", "invokePath": "/run", "requestTimeoutSeconds": 30},
+        "auth": {"type": "bearer", "config": {"token": f"sk-{prefix}"}},
+        "platformInputMapping": {
+            "task": "prompt",
+            "entryUrl": "url",
+            "timeoutSeconds": "timeout_sec",
+            "sampleId": "sample_id",
+            "evaluationId": "evaluation_id",
+            "maxSteps": "max_steps",
+        },
+        "taskRenderMode": "goal_only",
+        "customRequestBody": {"engine": "local-e2e"},
+        "requestOptions": {},
+        "platformOutputMapping": {"status": "status", "finalAnswer": "answer", "errorMessage": "error"},
+        "terminalStatuses": ["completed", "failed"],
+        "successStatuses": ["completed"],
+    }
+
+
+def build_submission_payload(request_id: str, *, agent_id: str = "agt_local_e2e", difficulty: float = 0.5) -> dict[str, Any]:
     """构造本地 e2e 用的标准提交请求体。"""
     return {
-        "agentName": "local-e2e-agent",
-        "description": "local worker e2e",
         "submitMethod": "api",
-        "api": {
-            "baseUrl": "https://example.com/agent",
-        },
+        "agentId": agent_id,
         "parameters": {
             "difficulty": difficulty,
             "timeoutMinutes": 20,
-            "retryEnabled": False,
+            "maxSteps": 30,
         },
         "publicToLeaderboard": False,
         "datasetIds": [DATASET_ID],
@@ -255,6 +278,24 @@ def build_register_payload(prefix: str) -> dict[str, str]:
         "email": f"{prefix}@example.com",
         "password": "secret123",
     }
+
+
+def mark_agent_active(agent_id: str) -> None:
+    """本地 e2e 使用 DB 夹具方式跳过真实外部 Agent 验证。"""
+    with session_scope() as session:
+        agent = session.execute(select(Agent).where(Agent.public_id == agent_id)).scalar_one()
+        agent.status = "active"
+        session.commit()
+
+
+def force_synthetic_dispatch(evaluation_id: str) -> None:
+    """本地 e2e 继续复用 synthetic runtime 闭环，不依赖外部 Agent 服务。"""
+    with session_scope() as session:
+        run = session.execute(select(TestRun).where(TestRun.public_id == evaluation_id)).scalar_one()
+        config = dict(run.execution_config or {})
+        config["dispatch"] = {"mode": "synthetic_local"}
+        run.execution_config = config
+        session.commit()
 
 
 def read_log_tail(path: Path, max_chars: int = 3000) -> str:
@@ -504,12 +545,18 @@ def main() -> int:
             token = register_response["data"]["token"]
             headers = {"Authorization": f"Bearer {token}"}
 
+            create_agent = check_envelope(client.post("/api/v1/agents", headers=headers, json=build_agent_payload(prefix)), status_code=200)
+            agent_id = str(create_agent["data"]["agentId"])
+            mark_agent_active(agent_id)
+            submission_payload["agentId"] = agent_id
+
             submit_response = check_envelope(
-                client.post("/api/v1/agents/submit", headers=headers, json=submission_payload),
+                client.post("/api/v1/evaluations", headers=headers, json=submission_payload),
                 status_code=200,
             )
             ensure(submit_response["data"]["status"] == "pending", "submitted run must start from pending")
             evaluation_id = str(submit_response["data"]["evaluationId"])
+            force_synthetic_dispatch(evaluation_id)
             print(f"[e2e_local_run] submitted evaluationId={evaluation_id}")
 
             detail_payload, seen_statuses = poll_evaluation_detail(
