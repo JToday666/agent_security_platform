@@ -31,9 +31,9 @@
       @action="loadAgents"
     />
 
-    <section v-else-if="agents.length" class="agent-list">
+    <section v-else class="agent-list">
       <div class="agent-list__summary">
-        <span>显示 {{ agents.length }} 个 Agent</span>
+        <span>{{ listSummaryText }}</span>
         <label class="archive-toggle">
           <input v-model="includeArchived" type="checkbox" />
           <span>显示已归档</span>
@@ -109,15 +109,15 @@
           </UiButton>
         </div>
       </article>
-    </section>
 
-    <PageStatePanel
-      v-else
-      title="还没有 Agent"
-      message="注册并验证 Agent 后即可创建 API 评测任务。"
-      action-text="注册智能体"
-      @action="$router.push(RouteLocation.agentRegister())"
-    />
+      <PageStatePanel
+        v-if="agents.length === 0"
+        :title="emptyStateTitle"
+        :message="emptyStateMessage"
+        action-text="注册智能体"
+        @action="$router.push(RouteLocation.agentRegister())"
+      />
+    </section>
 
     <InlineNotice
       v-if="actionError"
@@ -173,6 +173,21 @@ const archiveDialogMessage = computed(() =>
   archiveAgentTarget.value
     ? `归档后，${archiveAgentTarget.value.name} 不能再提交评测，但仍可复制新建。`
     : "",
+);
+const listSummaryText = computed(() =>
+  agents.value.length > 0
+    ? `显示 ${agents.value.length} 个 Agent`
+    : includeArchived.value
+      ? "暂无 Agent"
+      : "暂无可显示 Agent",
+);
+const emptyStateTitle = computed(() =>
+  includeArchived.value ? "还没有 Agent" : "当前没有可显示 Agent",
+);
+const emptyStateMessage = computed(() =>
+  includeArchived.value
+    ? "注册并验证 Agent 后即可创建评测任务。"
+    : "可切换显示已归档，或注册新的智能体。",
 );
 
 const formatVerification = (agent: AgentListItem): string => {

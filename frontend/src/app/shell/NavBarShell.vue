@@ -15,7 +15,8 @@
         </router-link>
 
         <router-link :to="RouteLocation.home" class="brand-title ui-title-gradient">
-          智能体安全评测平台
+          <span class="brand-title-prefix">AEGIS </span>
+          <span>智能体安全评测平台</span>
         </router-link>
       </div>
 

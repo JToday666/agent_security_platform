@@ -4,6 +4,7 @@
       eyebrow="404"
       title="页面未找到"
       description="当前地址不在系统支持范围内，请从导航或下方入口重新进入。"
+      align="center"
     />
 
     <SectionBlock
@@ -33,5 +34,15 @@ import UiButton from "@/shared/ui/actions/UiButton.vue";
 <style scoped lang="scss">
 .not-found-card {
   gap: 0.9rem;
+}
+
+.not-found-card :deep(.section-block__head),
+.not-found-card :deep(.section-block__copy) {
+  align-items: center;
+  text-align: center;
+}
+
+.not-found-card :deep(.section-block__actions) {
+  justify-content: center;
 }
 </style>

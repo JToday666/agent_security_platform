@@ -372,7 +372,11 @@
           :message="preview.missingMessage"
         />
 
-        <pre v-else class="code-preview"><code>{{ previewCode }}</code></pre>
+        <AgentCodePreview
+          v-else
+          :code="previewCode"
+          :language="previewLanguage"
+        />
 
         <UiButton
           v-if="!preview.missingMessage"
@@ -398,6 +402,7 @@ import {
   getAgentTemplates,
   verifyAgent,
 } from "@/modules/agent/api/agent-api";
+import AgentCodePreview from "@/modules/agent/components/AgentCodePreview.vue";
 import {
   buildAgentCreatePayload,
   buildAgentInvocationPreview,
@@ -495,6 +500,9 @@ const previewCode = computed(() => {
 
   return preview.value.curl;
 });
+const previewLanguage = computed(() =>
+  previewTab.value === "body" ? "json" : previewTab.value,
+);
 
 const initializePage = async () => {
   loading.value = true;
@@ -818,7 +826,7 @@ onMounted(async () => {
 .preview-pane__tabs button {
   min-height: 2.45rem;
   border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-card-sm);
   background: rgba(255, 255, 255, 0.76);
   color: var(--color-text-muted);
   font-weight: 700;
@@ -841,22 +849,14 @@ onMounted(async () => {
 }
 
 .preview-pane__tabs button.active {
-  color: var(--color-primary);
-  border-color: rgba(99, 102, 241, 0.22);
-  background: var(--grad-primary-soft);
-}
-
-.code-preview {
-  max-height: 620px;
-  overflow: auto;
-  margin: 0;
-  padding: 1rem;
-  border-radius: var(--radius-card-sm);
-  background: #0f172a;
-  color: #e2e8f0;
-  font-size: 0.82rem;
-  line-height: 1.6;
-  box-shadow: inset 0 0 0 1px rgba(226, 232, 240, 0.08);
+  color: #312e81;
+  border-color: rgba(99, 102, 241, 0.36);
+  background:
+    linear-gradient(180deg, rgba(238, 242, 255, 0.92), rgba(255, 255, 255, 0.88)),
+    var(--grad-primary-soft);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.78),
+    0 12px 24px rgba(79, 70, 229, 0.12);
 }
 
 @media (max-width: 1180px) {

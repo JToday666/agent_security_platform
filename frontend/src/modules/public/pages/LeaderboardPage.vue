@@ -3,6 +3,7 @@
     <PageHero
       title="排行榜"
       description="当前版本仅展示已接入的真实能力，不提供模拟榜单。"
+      align="center"
     />
 
     <section class="placeholder-card layout-page-panel layout-page-panel--md ui-surface-panel">
@@ -43,6 +44,7 @@ import PageHero from "@/shared/ui/page/PageHero.vue";
 .placeholder-card {
   border-radius: 1.5rem;
   padding: 1.5rem;
+  text-align: center;
 }
 
 .placeholder-card h2 {
@@ -59,6 +61,7 @@ import PageHero from "@/shared/ui/page/PageHero.vue";
 .placeholder-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.75rem;
   margin-top: 1rem;
 }

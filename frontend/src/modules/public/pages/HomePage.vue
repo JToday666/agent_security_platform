@@ -9,7 +9,8 @@
         </h1>
 
         <p class="hero-description">
-          {{ displayedDescription }}
+          <span>{{ displayedDescriptionPrimary }}</span>
+          <span>{{ displayedDescriptionSecondary }}</span>
         </p>
 
         <div class="hero-actions">
@@ -96,15 +97,18 @@ import UiButton from "@/shared/ui/actions/UiButton.vue";
 import HomeWorkflowStep from "@/modules/public/components/HomeWorkflowStep.vue";
 import { RouteLocation } from "@/app/router/route-names";
 
-const HERO_TITLE = "智能体安全评测平台";
-const HERO_DESCRIPTION =
-  "安全·可靠·专业 的智能体评估系统，让每一次评测都有据可依";
+const HERO_TITLE = "AEGIS 智能体安全评测平台";
+const HERO_DESCRIPTION_PRIMARY =
+  "Agents Evaluation and Guardrail Inspection System";
+const HERO_DESCRIPTION_SECONDARY =
+  "安全、可靠、专业的智能体评估系统，让每一次评测都有据可依";
 
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
 
 const displayedTitle = ref("");
-const displayedDescription = ref("");
+const displayedDescriptionPrimary = ref("");
+const displayedDescriptionSecondary = ref("");
 const quickstartSection = ref<HTMLElement | null>(null);
 const workflowVisible = ref(false);
 
@@ -126,7 +130,8 @@ const clearTypingHandles = () => {
 
 const setHeroImmediately = () => {
   displayedTitle.value = HERO_TITLE;
-  displayedDescription.value = HERO_DESCRIPTION;
+  displayedDescriptionPrimary.value = HERO_DESCRIPTION_PRIMARY;
+  displayedDescriptionSecondary.value = HERO_DESCRIPTION_SECONDARY;
 };
 
 const typeText = (
@@ -242,14 +247,26 @@ onMounted(() => {
   ).matches;
 
   displayedTitle.value = "";
-  displayedDescription.value = "";
+  displayedDescriptionPrimary.value = "";
+  displayedDescriptionSecondary.value = "";
   workflowVisible.value = prefersReducedMotion;
 
   if (prefersReducedMotion) {
     setHeroImmediately();
   } else {
     const titleEndDelay = typeText(HERO_TITLE, displayedTitle, 220, 118);
-    typeText(HERO_DESCRIPTION, displayedDescription, titleEndDelay + 320, 46);
+    const primaryEndDelay = typeText(
+      HERO_DESCRIPTION_PRIMARY,
+      displayedDescriptionPrimary,
+      titleEndDelay + 320,
+      46,
+    );
+    typeText(
+      HERO_DESCRIPTION_SECONDARY,
+      displayedDescriptionSecondary,
+      primaryEndDelay + 160,
+      42,
+    );
   }
 
   void observeSections();
@@ -309,14 +326,22 @@ onBeforeUnmount(() => {
 }
 
 .hero-description {
-  min-height: 1.8em;
-  margin: 0;
-  max-width: 40ch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  min-height: 3.74em;
+  margin: 0 auto;
+  max-width: min(72ch, 760px);
   color: rgba(71, 85, 105, 0.96);
   font-size: clamp(1.02rem, 1.35vw, 1.12rem);
   font-weight: 500;
-  line-height: 1.82;
-  white-space: nowrap;
+  line-height: 1.68;
+  text-align: center;
+}
+
+.hero-description span {
+  display: block;
+  min-height: 1.68em;
 }
 
 .hero-actions {
@@ -439,7 +464,7 @@ onBeforeUnmount(() => {
   }
 
   .hero-description {
-    white-space: normal;
+    max-width: min(64ch, 100%);
   }
 }
 
@@ -456,7 +481,8 @@ onBeforeUnmount(() => {
 
   .hero-description {
     max-width: 34ch;
-    white-space: normal;
+    min-height: 4.8em;
+    line-height: 1.58;
   }
 
   .hero-actions {
