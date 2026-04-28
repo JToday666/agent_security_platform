@@ -8,6 +8,9 @@ export const ROUTE_NAME = {
   NOT_FOUND: "NotFoundPage",
   USER_CENTER: "UserCenter",
   EVALUATION_DETAIL: "EvaluationDetail",
+  AGENT_MANAGEMENT: "AgentManagement",
+  AGENT_REGISTER: "AgentRegister",
+  AGENT_DETAIL: "AgentDetail",
   AGENT_SUBMIT: "AgentSubmit",
   USER_PROFILE: "UserProfile",
 } as const;
@@ -40,6 +43,21 @@ export const RouteLocation = {
   evaluationDetail: (evaluationId: string) => ({
     name: ROUTE_NAME.EVALUATION_DETAIL,
     params: { evaluationId },
+  }),
+  agentManagement: {
+    name: ROUTE_NAME.AGENT_MANAGEMENT,
+  },
+  agentRegister: (query?: { copyFrom?: string }) => ({
+    name: ROUTE_NAME.AGENT_REGISTER,
+    query,
+  }),
+  agentDetail: (agentId: string) => ({
+    name: ROUTE_NAME.AGENT_DETAIL,
+    params: { agentId },
+  }),
+  agentSubmitWithAgent: (agentId: string) => ({
+    name: ROUTE_NAME.AGENT_SUBMIT,
+    query: { agentId },
   }),
   agentSubmit: {
     name: ROUTE_NAME.AGENT_SUBMIT,

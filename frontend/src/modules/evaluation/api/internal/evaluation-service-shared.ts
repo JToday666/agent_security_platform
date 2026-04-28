@@ -93,7 +93,7 @@ export const ensureSubmitMeta = (payload: unknown): SubmitMetaResponse => {
     !Array.isArray(candidate.supportedMethods) ||
     !candidate.difficulty ||
     !candidate.timeoutMinutes ||
-    !candidate.retryEnabled ||
+    !candidate.maxSteps ||
     !candidate.publicToLeaderboard
   ) {
     throw createSubmitMetaError();
@@ -106,7 +106,7 @@ export const ensureSubmitMeta = (payload: unknown): SubmitMetaResponse => {
       ...candidate.timeoutMinutes,
       recommendedMax: candidate.timeoutMinutes.recommendedMax ?? 20,
     },
-    retryEnabled: candidate.retryEnabled,
+    maxSteps: candidate.maxSteps,
     publicToLeaderboard: candidate.publicToLeaderboard,
   };
 };
@@ -129,9 +129,9 @@ export const computeScore = (
 ): number => {
   const completionRatio = completedDatasetCount / getDatasetCount(record);
   const datasetFactor = record.datasetIds.length * 1.8;
-  const retryPenalty = record.parameters.retryEnabled ? 1.5 : 0;
   const difficultyBonus = record.parameters.difficulty * 7;
   const timeoutBonus = Math.min(record.parameters.timeoutMinutes, 24) * 0.18;
+  const stepBonus = Math.min(record.parameters.maxSteps, 60) * 0.02;
   const seed = record.agentName.length + record.evaluationId.length;
   const completionPenalty = (1 - completionRatio) * 10;
   const score =
@@ -139,8 +139,8 @@ export const computeScore = (
     datasetFactor +
     difficultyBonus +
     timeoutBonus -
-    retryPenalty -
     completionPenalty +
+    stepBonus +
     (seed % 4);
 
   return Number(Math.min(98.8, Math.max(70.6, score)).toFixed(1));

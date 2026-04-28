@@ -163,6 +163,7 @@ const buildStatusText = (
   reason: EvaluationFinalizationReason | null,
 ): string => {
   switch (status) {
+    case "queued":
     case "pending":
       return "任务已创建，正在等待调度。";
     case "running":

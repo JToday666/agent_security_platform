@@ -14,26 +14,22 @@ import {
 import {
   MAX_SUBMIT_DATASET_COUNT,
   normalizeDifficulty,
+  normalizeMaxSteps,
   normalizeTimeoutMinutes,
 } from "@/modules/submission/model/parameter-validator";
 
 const createDefaultForm = (meta: SubmitMetaResponse): SubmitFormState => ({
   submitMethod: meta.supportedMethods[0] ?? "api",
-  agentName: "",
-  description: "",
-  api: {
-    baseUrl: "",
-    token: "",
-  },
+  agentId: "",
   docker: {
     imageUri: "",
-    username: "",
-    password: "",
+    command: "",
+    envText: "",
   },
   parameters: {
     difficulty: meta.difficulty.default,
     timeoutMinutes: meta.timeoutMinutes.default,
-    retryEnabled: meta.retryEnabled.default,
+    maxSteps: meta.maxSteps.default,
   },
   publicToLeaderboard: meta.publicToLeaderboard.default,
   selectedDatasetIds: [],
@@ -56,7 +52,7 @@ const applyMetaDefaults = (
       form.parameters.timeoutMinutes,
       meta.timeoutMinutes,
     ),
-    retryEnabled: Boolean(form.parameters.retryEnabled),
+    maxSteps: normalizeMaxSteps(form.parameters.maxSteps, meta.maxSteps),
   },
   publicToLeaderboard: Boolean(form.publicToLeaderboard),
 });
@@ -133,12 +129,14 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     }
 
     form.value.submitMethod = method;
-    if (method === "api") {
-      form.value.api.token = "";
+  };
+
+  const setAgentId = (agentId: string) => {
+    if (!form.value) {
+      return;
     }
-    if (method === "docker") {
-      form.value.docker.password = "";
-    }
+
+    form.value.agentId = agentId;
   };
 
   const setExpandedCategoryIds = (value: string[]) => {
@@ -164,6 +162,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     syncWithCatalog,
     resetDraft,
     setSubmitMethod,
+    setAgentId,
     setExpandedCategoryIds,
     setPendingRequest,
     clearDraftAfterSubmit,

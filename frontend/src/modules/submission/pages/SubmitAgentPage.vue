@@ -46,7 +46,9 @@
         <SubmitBasicInfoForm
           class="submit-step-card"
           v-model="form"
-          :field-errors="fieldErrors"
+          :agents="availableAgents"
+          :agent-error-message="agentErrorMessage"
+          @select-agent="setAgentId"
         />
 
         <SubmitParameterControls
@@ -89,14 +91,14 @@
 
       <div class="submit-interface__inspector">
         <SubmitActionBar
-          :agent-name="form.agentName.trim()"
+          :agent-name="selectedAgent?.name || ''"
           :submit-method="form.submitMethod"
           :selected-category-count="selectedCategoryCount"
           :selected-dataset-count="form.selectedDatasetIds.length"
           :selected-dataset-names="selectedDatasetNames"
           :difficulty="form.parameters.difficulty"
           :timeout-minutes="form.parameters.timeoutMinutes"
-          :retry-enabled="form.parameters.retryEnabled"
+          :max-steps="form.parameters.maxSteps"
           :public-to-leaderboard="form.publicToLeaderboard"
           :submitting="submitting"
           :can-submit="canSubmit"
@@ -140,7 +142,9 @@ const {
   pageError,
   submitting,
   submitError,
-  fieldErrors,
+  availableAgents,
+  selectedAgent,
+  agentErrorMessage,
   expandedCategoryIds,
   datasetCatalogStatus,
   datasetCatalogErrorMessage,
@@ -153,6 +157,7 @@ const {
   confirmDialogMessage,
   canSubmit,
   setSubmitMethod,
+  setAgentId,
   initializePage,
   handleSubmit,
   confirmSubmit,

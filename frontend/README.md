@@ -9,13 +9,14 @@
 - 公共页面：首页、数据集目录、数据集详情、排行榜、联系页、404
 - 账号能力：登录、注册、登录态恢复、个人资料与头像上传
 - 数据集能力：目录加载、详情加载、分类筛选、排序、详情跳转提交页
+- 智能体能力：Agent 管理、注册、详情、验证、归档、复制新建
 - 评测能力：提交前预检查、正式提交、记录列表、详情查看、任务动作
 - 运行模式：真实后端 API 与 Mock API 双模式切换
 
 源码按三层组织：
 
 - `src/app/`：应用壳层，负责启动、路由、布局、导航、全局样式
-- `src/modules/`：业务模块层，按 `account / dataset / evaluation / public / submission` 分域
+- `src/modules/`：业务模块层，按 `account / agent / dataset / evaluation / public / submission` 分域
 - `src/shared/`：共享基础设施，收口 API 基础封装、类型、工具与共享 UI
 
 README 只写前端当前状态、运行方式、命名规范和文档入口。更细的内部说明在 `frontend/docs/`，跨端接口契约主维护在 `share/`。
@@ -81,7 +82,7 @@ Node 版本要求来自 `package.json`：
 运行建议：
 
 - 本地联调真实后端时，通常保持 `VITE_ENABLE_API_MOCK=false`
-- 想脱离后端独立演示评测链路时，可切到 `VITE_ENABLE_API_MOCK=true`
+- 想脱离后端独立演示数据集、Agent 注册提交和评测链路时，可切到 `VITE_ENABLE_API_MOCK=true`
 - 若修改 API 基础路径或代理目标，优先同时检查 `src/shared/api/config.ts` 和 `vite.config.ts`
 
 ## 5. 当前共享 UI 基线
@@ -153,6 +154,7 @@ npm run build
 - [路由布局与导航说明](./docs/02-架构/路由布局与导航说明.md)
 - [账号与鉴权模块说明](./docs/03-模块/账号与鉴权模块说明.md)
 - [数据集模块说明](./docs/03-模块/数据集模块说明.md)
+- [智能体模块说明](./docs/03-模块/智能体模块说明.md)
 - [提交评测模块说明](./docs/03-模块/提交评测模块说明.md)
 - [评测模块说明](./docs/03-模块/评测模块说明.md)
 - [公共页面与共享 UI 说明](./docs/03-模块/公共页面与共享UI说明.md)

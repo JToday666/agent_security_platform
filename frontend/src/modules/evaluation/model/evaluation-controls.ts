@@ -11,7 +11,10 @@ export const buildEvaluationControls = (
   canResume: status === "paused",
   canTerminate: status === "running" || status === "paused",
   canCancel:
-    status === "pending" || status === "running" || status === "paused",
+    status === "queued" ||
+    status === "pending" ||
+    status === "running" ||
+    status === "paused",
   pauseUsed,
 });
 

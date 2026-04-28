@@ -19,6 +19,7 @@ import {
 type UnknownRecord = Record<string, unknown>;
 
 const VALID_EVALUATION_STATUSES: EvaluationStatus[] = [
+  "queued",
   "pending",
   "running",
   "pausing",
@@ -87,6 +88,7 @@ const normalizeParameters = (
       0,
       Math.round(toNumberValue(candidate.timeoutMinutes, 15)),
     ),
+    maxSteps: Math.max(1, Math.round(toNumberValue(candidate.maxSteps, 30))),
     retryEnabled: toBooleanValue(candidate.retryEnabled),
   };
 };
@@ -132,10 +134,22 @@ export const adaptSubmitMeta = (value: unknown): SubmitMetaResponse => {
             item === "api" || item === "docker",
         )
     : [];
+  const submitMethods = Array.isArray(candidate.submitMethods)
+    ? candidate.submitMethods
+        .map((item) => toStringValue(item))
+        .filter(
+          (item): item is "api" | "docker" =>
+            item === "api" || item === "docker",
+        )
+    : [];
 
   return {
     supportedMethods:
-      supportedMethods.length > 0 ? supportedMethods : ["api", "docker"],
+      supportedMethods.length > 0
+        ? supportedMethods
+        : submitMethods.length > 0
+          ? submitMethods
+          : ["api", "docker"],
     difficulty: normalizeSubmitMetaRange(candidate.difficulty, {
       min: 0,
       max: 1,
@@ -149,11 +163,12 @@ export const adaptSubmitMeta = (value: unknown): SubmitMetaResponse => {
       default: 15,
       recommendedMax: 20,
     }),
-    retryEnabled: {
-      default: toBooleanValue(
-        (candidate.retryEnabled as UnknownRecord | undefined)?.default,
-      ),
-    },
+    maxSteps: normalizeSubmitMetaRange(candidate.maxSteps, {
+      min: 1,
+      max: 100,
+      step: 1,
+      default: 30,
+    }),
     publicToLeaderboard: {
       default: toBooleanValue(
         (candidate.publicToLeaderboard as UnknownRecord | undefined)?.default,

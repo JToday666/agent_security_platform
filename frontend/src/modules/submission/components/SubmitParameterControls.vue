@@ -59,11 +59,22 @@
         <small v-if="timeoutWarning" class="field-warning">{{ timeoutWarning }}</small>
       </label>
 
-      <UiToggleField
-        v-model="form.parameters.retryEnabled"
-        title="失败重试"
-        description="当请求或执行链路失败时，允许平台自动重试一次。"
-      />
+      <label class="field ui-surface-muted">
+        <span class="field-label">最大步数</span>
+        <input
+          type="number"
+          :value="form.parameters.maxSteps"
+          :min="meta.maxSteps.min"
+          :max="meta.maxSteps.max"
+          :step="meta.maxSteps.step"
+          class="number-input ui-input-pill ui-input-focus-ring"
+          @input="handleMaxStepsInput"
+          @blur="handleMaxStepsBlur"
+        />
+        <small class="field-help">
+          允许范围 {{ meta.maxSteps.min }} - {{ meta.maxSteps.max }} 步。
+        </small>
+      </label>
     </div>
   </SectionBlock>
 </template>
@@ -71,7 +82,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
-import UiToggleField from "@/shared/ui/forms/UiToggleField.vue";
 import type {
   SubmitFormState,
   SubmitMetaResponse,
@@ -79,6 +89,7 @@ import type {
 import {
   getRangeSoftWarning,
   normalizeDifficulty,
+  normalizeMaxSteps,
   normalizeTimeoutMinutes,
 } from "@/modules/submission/model/parameter-validator";
 
@@ -136,6 +147,20 @@ const handleTimeoutBlur = () => {
   form.value.parameters.timeoutMinutes = normalizeTimeoutMinutes(
     form.value.parameters.timeoutMinutes,
     props.meta.timeoutMinutes,
+  );
+};
+
+const handleMaxStepsInput = (event: Event) => {
+  form.value.parameters.maxSteps = normalizeMaxSteps(
+    getInputValue(event),
+    props.meta.maxSteps,
+  );
+};
+
+const handleMaxStepsBlur = () => {
+  form.value.parameters.maxSteps = normalizeMaxSteps(
+    form.value.parameters.maxSteps,
+    props.meta.maxSteps,
   );
 };
 </script>

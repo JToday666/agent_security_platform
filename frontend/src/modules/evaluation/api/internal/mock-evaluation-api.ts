@@ -24,6 +24,10 @@ import {
   MAX_SUBMIT_DATASET_COUNT,
   validateSubmitPayload,
 } from "@/modules/submission/model/parameter-validator";
+import {
+  getStoredMockAgentById,
+  getStoredMockAgents,
+} from "@/modules/agent/api/internal/mock-agent-store";
 import { adaptEvaluationRecord } from "@/modules/evaluation/api/adapters/agent-adapters";
 import {
   advanceStoredRecord,
@@ -80,6 +84,9 @@ const createStoredRecord = (
   payload: SubmitAgentPayload,
 ): StoredEvaluationRecord => {
   const createdAt = nowIso();
+  const agent = payload.agentId
+    ? getStoredMockAgentById(payload.agentId)
+    : null;
   const datasetIds = normalizeDatasetIds(
     Array.from(new Set(payload.selectedDatasetIds)).slice(
       0,
@@ -90,8 +97,8 @@ const createStoredRecord = (
   return {
     evaluationId: `eval_${Date.now()}`,
     requestId: payload.requestId,
-    agentName: payload.agentName.trim(),
-    description: payload.description?.trim(),
+    agentName: agent?.name ?? "未命名智能体",
+    description: agent?.description,
     createdAt,
     updatedAt: createdAt,
     status: "pending",
@@ -119,10 +126,14 @@ export const precheckMockAgent = async (
   payload: SubmitAgentPayload,
 ): Promise<PrecheckResponse> => {
   const meta = await getReferenceMeta();
+  const activeAgentIds = getStoredMockAgents()
+    .filter((agent) => agent.status === "active")
+    .map((agent) => agent.agentId);
   const validation = validateSubmitPayload(
     payload,
     meta,
     getReferenceDatasetIds(),
+    activeAgentIds,
   );
 
   if (!validation.valid) {
@@ -161,10 +172,14 @@ export const submitMockAgent = async (
   payload: SubmitAgentPayload,
 ): Promise<SubmitResponse> => {
   const meta = await getReferenceMeta();
+  const activeAgentIds = getStoredMockAgents()
+    .filter((agent) => agent.status === "active")
+    .map((agent) => agent.agentId);
   const validation = validateSubmitPayload(
     payload,
     meta,
     getReferenceDatasetIds(),
+    activeAgentIds,
   );
 
   if (!validation.valid) {
