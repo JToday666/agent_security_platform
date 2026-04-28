@@ -61,6 +61,12 @@
     #f5f8fd 58%,
     #f2f5fb 100%
   );
+  --grad-glow-bright: linear-gradient(
+    135deg,
+    rgba(96, 165, 250, 0.6) 0%,
+    rgba(167, 139, 250, 0.4) 50%,
+    rgba(251, 146, 60, 0.3) 100%
+  );
 
   /* Glass / blur */
   --glass-bg: rgba(255, 255, 255, 0.68);

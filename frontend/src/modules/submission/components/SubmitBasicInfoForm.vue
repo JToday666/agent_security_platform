@@ -6,8 +6,8 @@
     <InlineNotice
       v-if="form.submitMethod === 'docker'"
       tone="warning"
-      title="Docker 提交正在升级中"
-      message="首期请使用 API Agent 提交评测。"
+      title="Docker 提交暂不可用"
+      message="请使用 API Agent 提交评测。"
     />
 
     <div v-else class="agent-picker">

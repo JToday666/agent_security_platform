@@ -83,7 +83,7 @@ Node 版本要求来自 `package.json`：
 
 - 本地联调真实后端时，通常保持 `VITE_ENABLE_API_MOCK=false`
 - 想脱离后端独立演示数据集、Agent 注册提交和评测链路时，可切到 `VITE_ENABLE_API_MOCK=true`
-- 若修改 API 基础路径或代理目标，优先同时检查 `src/shared/api/config.ts` 和 `vite.config.ts`
+- 若修改 API 基础路径或代理目标，优先同时检查 `src/shared/api/Config.ts` 和 `vite.config.ts`
 
 ## 5. 当前共享 UI 基线
 
@@ -121,7 +121,7 @@ npm run build
 说明：
 
 - `npm run build` 实际会先执行 `type-check`，再执行 `build-only`
-- 当前仓内不保留 `frontend/src` 下测试源码；日常验证以类型检查、构建和定向页面走查为主
+- 当前仓内不保留 `frontend/src` 下测试源码；测试工具链仍保留，日常验证以类型检查、构建和定向页面走查为主
 
 ## 7. 前端命名规范
 

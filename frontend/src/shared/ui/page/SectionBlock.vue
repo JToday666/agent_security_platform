@@ -57,11 +57,26 @@ withDefaults(
 }
 
 .section-block--panel {
-  padding: 1.2rem;
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  border-radius: 1.35rem;
-  background: rgba(255, 255, 255, 0.76);
-  box-shadow: var(--shadow-surface-soft);
+  padding: 1.5rem;
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(255, 255, 255, 0.72) 100%
+  );
+  backdrop-filter: blur(var(--blur-12));
+  -webkit-backdrop-filter: blur(var(--blur-12));
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-card-md);
+  box-shadow: var(--shadow-glass-card);
+  transition: transform var(--duration-base) var(--ease-standard),
+              box-shadow var(--duration-base) var(--ease-standard);
+}
+
+.section-block--panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 28px 56px -24px rgba(15, 23, 42, 0.18),
+              0 0 0 1px rgba(255, 255, 255, 0.95) inset;
 }
 
 .section-block__head {

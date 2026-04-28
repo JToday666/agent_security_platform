@@ -87,6 +87,7 @@
 
 :where(.ui-glow-frame) {
   position: relative;
+  transition: transform var(--duration-base) var(--ease-standard);
 }
 
 :where(.ui-glow-frame)::before {
@@ -94,12 +95,8 @@
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(37, 99, 235, 0.38),
-    rgba(124, 58, 237, 0.28)
-  );
+  padding: 2px;
+  background: var(--grad-glow-bright);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -109,6 +106,16 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+  opacity: 0.8;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+:where(.ui-glow-frame:hover) {
+  transform: translateY(-1px);
+}
+
+:where(.ui-glow-frame:hover)::before {
+  opacity: 1;
 }
 
 :where(.ui-btn) {
