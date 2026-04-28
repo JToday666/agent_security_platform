@@ -21,9 +21,11 @@ from .benchmark_run import (
     SampleExecution,
     TestRun,
 )
+from .agent import Agent
 from .user import User
 
 __all__ = [
+    "Agent",
     "AssetType",
     "AttackDeliveryType",
     "BenchmarkSample",

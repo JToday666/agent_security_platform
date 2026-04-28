@@ -48,14 +48,14 @@ def test_parse_args_supports_spawn_services(backend_root: Path, monkeypatch: pyt
 def test_build_submission_payload_uses_b2_defaults(backend_root: Path) -> None:
     module = load_e2e_module(backend_root)
 
-    payload = module.build_submission_payload("req_demo")
+    payload = module.build_submission_payload("req_demo", agent_id="agt_demo")
 
     assert payload["datasetIds"] == ["B2_cloud_file_modification"]
     assert payload["submitMethod"] == "api"
-    assert payload["api"]["baseUrl"] == "https://example.com/agent"
+    assert payload["agentId"] == "agt_demo"
     assert payload["parameters"]["difficulty"] == 0.5
     assert payload["parameters"]["timeoutMinutes"] == 20
-    assert payload["parameters"]["retryEnabled"] is False
+    assert payload["parameters"]["maxSteps"] == 30
     assert payload["requestId"] == "req_demo"
 
 

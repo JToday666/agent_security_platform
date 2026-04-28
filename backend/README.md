@@ -7,8 +7,8 @@
 当前仓库已落地三类能力：
 
 - 用户认证与用户资料接口
-- 数据集查询、任务提交、评测详情与动作控制接口
-- `synthetic_local` 驱动的样本运行闭环、基础产物采集和任务级摘要报告
+- 数据集查询、Agent 注册验证、评测创建、评测详情与动作控制接口
+- 外部 API Agent 调用与 `synthetic_local` 本地闭环、基础产物采集和任务级摘要报告
 
 README 只描述当前状态。后端实现细节、领域说明和待办事项在独立文档中维护；`share/` 下材料仅作为前后端沟通参考，不作为后端实现真相源。
 
@@ -29,7 +29,8 @@ README 只描述当前状态。后端实现细节、领域说明和待办事项�
 - Alembic 迁移链路
 - 独立 worker 轮询执行链路
 - `runtime/workdir` 工作目录准备、probe backend 拉起、基础 artifact 收集
-- `synthetic_local` dispatch 闭环与 `run_reports.summary_json` 摘要写回
+- `external_agent_api` 调用链路、`synthetic_local` dispatch 闭环与 `run_reports.summary_json` 摘要写回
+- Agent 出站 HTTP 默认 SSRF 防护：仅允许 `http/https`，默认拒绝 localhost、回环、内网、链路本地、保留地址，并逐跳校验重定向
 - 运行时目录、上传目录、凭证目录统一收口到 `runtime/`
 
 核心目录：
@@ -157,7 +158,8 @@ uv run python scripts/qa/e2e_local_run.py --spawn-services
 
 当前联调能力边界：
 
-- 这条链当前验证的是 `synthetic_local` runtime 闭环，不是真实被测 Agent API / Docker 调用
+- 默认脚本化链路优先验证 `synthetic_local` runtime 闭环；外部 API Agent 主链已接入，但需要可访问的真实 Agent 服务
+- Docker 调用链当前不开放
 - 详情接口里的 `score` 当前仍为 `null`
 - `run_reports` 当前只返回摘要，`report_uri` 仍为空
 - 当前还没有样本级 execution 查询接口
@@ -234,23 +236,52 @@ uv run python worker.py
 }
 ```
 
-6. 提交真实 run
+6. 注册 API Agent 并提交真实 run
 
-- 路由：`POST /api/v1/agents/submit`
-- 请求示例：
+- 注册路由：`POST /api/v1/agents`
+- 验证路由：`POST /api/v1/agents/{agentId}/verify`
+- 提交路由：`POST /api/v1/evaluations`
+- Agent 注册请求示例：
 
 ```json
 {
-  "agentName": "local-e2e-agent",
+  "templateId": "http_submit_poll_basic",
+  "name": "local-e2e-agent",
   "description": "local worker e2e",
-  "submitMethod": "api",
-  "api": {
-    "baseUrl": "https://example.com/agent"
+  "invokeMode": "sync_response",
+  "connection": {
+    "baseUrl": "https://agent.example.com",
+    "invokePath": "/run",
+    "requestTimeoutSeconds": 30
   },
+  "auth": {"type": "bearer", "config": {"token": "sk-demo"}},
+  "platformInputMapping": {
+    "task": "prompt",
+    "entryUrl": "url",
+    "timeoutSeconds": "timeout_sec",
+    "sampleId": "sample_id",
+    "evaluationId": "evaluation_id",
+    "maxSteps": "max_steps"
+  },
+  "taskRenderMode": "goal_only",
+  "customRequestBody": {},
+  "requestOptions": {},
+  "platformOutputMapping": {"status": "status", "finalAnswer": "answer", "errorMessage": "error"},
+  "terminalStatuses": ["completed", "failed"],
+  "successStatuses": ["completed"]
+}
+```
+
+- Evaluation 提交请求示例：
+
+```json
+{
+  "submitMethod": "api",
+  "agentId": "agt_ab12cd34ef56",
   "parameters": {
     "difficulty": 0.35,
     "timeoutMinutes": 20,
-    "retryEnabled": false
+    "maxSteps": 30
   },
   "publicToLeaderboard": false,
   "datasetIds": ["B2_cloud_file_modification"],
@@ -270,12 +301,16 @@ uv run python worker.py
   "code": 0,
   "data": {
     "evaluationId": "eval_20260417_000001_ab12cd",
+    "submitMethod": "api",
+    "agentId": "agt_ab12cd34ef56",
     "status": "pending",
     "createdAt": "2026-04-17T00:00:01Z"
   },
   "message": "success"
 }
 ```
+
+Agent 验证通过后状态会变为 `active`。只有 `active` Agent 可以用于 `POST /api/v1/evaluations` 创建评测；评测创建时会把非敏感 Agent 配置冻结到 `test_runs.execution_config.frozenAgentSnapshot`，后续执行不依赖 Agent 详情的可变读取。
 
 7. 轮询评测详情直到完成
 
@@ -338,7 +373,7 @@ ls runtime/workdir/<execution_id>/project/agent_runtime/runs/<environment_ref>/
 
 说明：
 
-- 当前可稳定看到的核心产物是 `events.jsonl`、`compile_result.json`、`replay_result.json`、`report.html` 等 runtime 基础证据
+- 当前可稳定看到的核心产物是 `events.jsonl`、`compile_result.json`、`replay_result.json`、`report.html` 等 runtime 基础证据；外部 API Agent 链路还会按响应映射写入执行摘要
 - 更丰富的网络请求、工具调用和独立报告导出仍在后续待办中
 
 也可以直接执行脚本化联调：

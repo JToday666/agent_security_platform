@@ -238,6 +238,7 @@ async def execute_sample(
     job: SampleJob,
     *,
     dispatch_mode: str | None = None,
+    dispatch_config: dict[str, object] | None = None,
     timeout_seconds: int | None = None,
 ) -> None:
     """执行单个样本；由数据集执行器并发调用，驱动完整 runtime 链路。"""
@@ -276,7 +277,7 @@ async def execute_sample(
         await _mark_execution_runtime_ready(execution_id, prepared)
 
         adapter = resolve_dispatch_adapter(resolved_dispatch_mode)
-        dispatch_result = await adapter.dispatch(prepared, sample, timeout)
+        dispatch_result = await adapter.dispatch(prepared, sample, timeout, dispatch_config=dispatch_config)
 
         await _mark_execution_state(execution_id, "verifying")
         _validate_dispatch_results(prepared, dispatch_result.compile_result, dispatch_result.replay_result)
@@ -390,6 +391,7 @@ async def execute_dataset(
     dataset_code: str,
     *,
     dispatch_mode: str | None = None,
+    dispatch_config: dict[str, object] | None = None,
     timeout_seconds: int | None = None,
 ) -> None:
     """按受控并发执行单个数据集下的全部样本。"""
@@ -404,6 +406,7 @@ async def execute_dataset(
                 dataset_id,
                 job,
                 dispatch_mode=dispatch_mode,
+                dispatch_config=dispatch_config,
                 timeout_seconds=timeout_seconds,
             )
 

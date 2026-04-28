@@ -44,6 +44,9 @@ class Settings(BaseSettings):
     WORKER_DISPATCH_MODE_DEFAULT: str = "synthetic_local"
     WORKER_NAMESPACE_ISOLATION_ENABLED: bool = True
     RUNTIME_ROOT_DIR: str | None = None
+    AGENT_HTTP_ALLOW_PRIVATE_NETWORKS: bool = False
+    AGENT_HTTP_MAX_REDIRECTS: int = 3
+    AGENT_HTTP_RESPONSE_MAX_BYTES: int = 1_000_000
 
     @property
     def DATABASE_URL(self) -> URL:

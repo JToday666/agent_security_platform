@@ -10,12 +10,19 @@ def test_v1_router_registers_business_routes() -> None:
 
     assert "/v1/datasets/catalog" in route_paths
     assert "/v1/datasets/{datasetId}" in route_paths
-    assert "/v1/agents/submit-meta" in route_paths
-    assert "/v1/agents/precheck" in route_paths
-    assert "/v1/agents/submit" in route_paths
+    assert "/v1/agents/templates" in route_paths
+    assert "/v1/agents" in route_paths
+    assert "/v1/agents/{agentId}" in route_paths
+    assert "/v1/agents/{agentId}/verify" in route_paths
+    assert "/v1/agents/{agentId}/archive" in route_paths
+    assert "/v1/evaluations/meta" in route_paths
+    assert "/v1/evaluations/validate" in route_paths
     assert "/v1/evaluations" in route_paths
     assert "/v1/evaluations/{evaluationId}" in route_paths
     assert "/v1/evaluations/{evaluationId}/actions" in route_paths
+    assert "/v1/agents/submit-meta" not in route_paths
+    assert "/v1/agents/precheck" not in route_paths
+    assert "/v1/agents/submit" not in route_paths
 
 
 def test_root_and_meta_routes_return_envelope(client: TestClient) -> None:

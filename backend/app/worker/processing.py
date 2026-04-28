@@ -53,6 +53,20 @@ def resolve_dispatch_mode(run: TestRun) -> str:
     return settings.WORKER_DISPATCH_MODE_DEFAULT
 
 
+def resolve_dispatch_config(run: TestRun) -> dict[str, object]:
+    """Build dispatch config passed to runtime adapters."""
+    execution_config = run.execution_config if isinstance(run.execution_config, dict) else {}
+    parameters = execution_config.get("parameters") if isinstance(execution_config.get("parameters"), dict) else {}
+    config: dict[str, object] = {
+        "evaluationId": run.public_id,
+        "maxSteps": parameters.get("maxSteps") if isinstance(parameters, dict) else None,
+    }
+    frozen_agent_snapshot = execution_config.get("frozenAgentSnapshot")
+    if isinstance(frozen_agent_snapshot, dict):
+        config["frozenAgentSnapshot"] = frozen_agent_snapshot
+    return config
+
+
 async def _heartbeat_loop(run_id: int, worker_id: str, stop_event: asyncio.Event) -> None:
     """Refresh the run claim heartbeat while the run task is active."""
     while not stop_event.is_set():
@@ -126,6 +140,7 @@ async def process_claimed_run(run_id: int, worker_id: str) -> None:
                 dataset_id = current_dataset.id
                 dataset_code = current_dataset.dataset_code
                 dispatch_mode = resolve_dispatch_mode(run)
+                dispatch_config = resolve_dispatch_config(run)
                 timeout_seconds = resolve_timeout_seconds(run)
 
             await execute_dataset(
@@ -133,6 +148,7 @@ async def process_claimed_run(run_id: int, worker_id: str) -> None:
                 dataset_id,
                 dataset_code,
                 dispatch_mode=dispatch_mode,
+                dispatch_config=dispatch_config,
                 timeout_seconds=timeout_seconds,
             )
 

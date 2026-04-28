@@ -2,6 +2,8 @@
 
 from typing import Literal
 
+from pydantic import Field
+
 from app.shared.schemas import CamelModel
 
 
@@ -10,7 +12,69 @@ class EvaluationParameters(CamelModel):
 
     difficulty: float
     timeout_minutes: int
-    retry_enabled: bool
+    retry_enabled: bool = False
+    max_steps: int | None = None
+
+
+class EvaluationSubmitParameters(CamelModel):
+    """创建评测任务时的运行参数。"""
+
+    difficulty: float
+    timeout_minutes: int
+    max_steps: int = Field(default=30, ge=1, le=100)
+
+
+class EvaluationCreateRequest(CamelModel):
+    """创建评测任务请求体。"""
+
+    request_id: str
+    submit_method: Literal["api"]
+    agent_id: str
+    dataset_ids: list[str]
+    parameters: EvaluationSubmitParameters
+    public_to_leaderboard: bool
+
+
+class EvaluationMetaRange(CamelModel):
+    """提交页数值配置范围。"""
+
+    min: int | float
+    max: int | float
+    step: int | float | None = None
+    default: int | float
+
+
+class EvaluationMetaToggle(CamelModel):
+    """提交页开关默认值。"""
+
+    default: bool
+
+
+class EvaluationSubmitMeta(CamelModel):
+    """提交测评页元数据。"""
+
+    submit_methods: list[str]
+    difficulty: EvaluationMetaRange
+    timeout_minutes: EvaluationMetaRange
+    max_steps: EvaluationMetaRange
+    public_to_leaderboard: EvaluationMetaToggle
+
+
+class EvaluationValidateResponse(CamelModel):
+    """评测提交校验响应。"""
+
+    ok: bool
+    warnings: list[dict[str, str] | str]
+
+
+class EvaluationCreateResponse(CamelModel):
+    """创建评测任务响应。"""
+
+    evaluation_id: str
+    submit_method: str
+    agent_id: str
+    status: str
+    created_at: str
 
 
 class EvaluationListItem(CamelModel):
