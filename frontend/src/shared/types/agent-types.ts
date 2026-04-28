@@ -1,5 +1,6 @@
 export type SubmitMethod = "api" | "docker";
 export type EvaluationStatus =
+  | "queued"
   | "pending"
   | "running"
   | "pausing"
@@ -23,37 +24,24 @@ export type EvaluationAction = "pause" | "resume" | "terminate" | "cancel";
 export interface SubmitParameters {
   difficulty: number;
   timeoutMinutes: number;
-  retryEnabled: boolean;
-}
-
-export interface SubmitApiPayload {
-  baseUrl: string;
-  token?: string;
+  maxSteps: number;
+  retryEnabled?: boolean;
 }
 
 export interface SubmitDockerPayload {
   imageUri: string;
-  username?: string;
-  password?: string;
+  command: string;
+  env: Record<string, string>;
 }
 
 export interface SubmitAgentPayload {
-  agentName: string;
-  description?: string;
   submitMethod: SubmitMethod;
-  api?: SubmitApiPayload | null;
+  agentId?: string | null;
   docker?: SubmitDockerPayload | null;
   parameters: SubmitParameters;
   publicToLeaderboard: boolean;
   selectedDatasetIds: string[];
   requestId: string;
-}
-
-export interface SubmitAgentApiPayload extends Omit<
-  SubmitAgentPayload,
-  "selectedDatasetIds"
-> {
-  datasetIds: string[];
 }
 
 export interface RangeMeta {
@@ -72,7 +60,7 @@ export interface SubmitMetaResponse {
   supportedMethods: SubmitMethod[];
   difficulty: RangeMeta;
   timeoutMinutes: RangeMeta;
-  retryEnabled: BooleanMeta;
+  maxSteps: RangeMeta;
   publicToLeaderboard: BooleanMeta;
 }
 
@@ -94,9 +82,8 @@ export interface PendingSubmitRequest {
 }
 
 export interface SubmitFieldErrors {
-  agentName?: string;
-  apiBaseUrl?: string;
-  dockerImageUri?: string;
+  agentId?: string;
+  docker?: string;
   selectedDatasetIds?: string;
   requestId?: string;
 }
@@ -192,16 +179,11 @@ export interface EvaluationActionRequest {
 
 export interface SubmitFormState {
   submitMethod: SubmitMethod;
-  agentName: string;
-  description: string;
-  api: {
-    baseUrl: string;
-    token: string;
-  };
+  agentId: string;
   docker: {
     imageUri: string;
-    username: string;
-    password: string;
+    command: string;
+    envText: string;
   };
   parameters: SubmitParameters;
   publicToLeaderboard: boolean;

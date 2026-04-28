@@ -1,8 +1,4 @@
 import type {
-  SubmitAgentApiPayload,
-  SubmitAgentPayload,
-} from "@/shared/types/agent-types";
-import type {
   DatasetCatalogResponse,
   DatasetDetail,
   DatasetCatalogResponse as FrontendDatasetCatalogResponse,
@@ -101,20 +97,6 @@ const sortDatasetCategories = (
   toNumberValue(left.sort, Number.MAX_SAFE_INTEGER) -
     toNumberValue(right.sort, Number.MAX_SAFE_INTEGER) ||
   left.categoryId.localeCompare(right.categoryId);
-
-export const buildSubmitAgentApiPayload = (
-  payload: SubmitAgentPayload,
-): SubmitAgentApiPayload => ({
-  agentName: payload.agentName,
-  description: payload.description,
-  submitMethod: payload.submitMethod,
-  api: payload.api,
-  docker: payload.docker,
-  parameters: payload.parameters,
-  publicToLeaderboard: payload.publicToLeaderboard,
-  requestId: payload.requestId,
-  datasetIds: payload.selectedDatasetIds,
-});
 
 export const adaptDatasetCatalog = (
   payload: DatasetCatalogResponse,

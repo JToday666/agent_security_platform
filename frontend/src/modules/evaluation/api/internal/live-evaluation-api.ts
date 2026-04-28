@@ -1,6 +1,5 @@
 import request from "@/shared/api/http-client";
 import { withMemoryCache } from "@/shared/api/memory-cache";
-import { buildSubmitAgentApiPayload } from "@/modules/dataset/api/adapters/dataset-adapters";
 import {
   adaptEvaluationDetail,
   adaptEvaluationRecord,
@@ -16,6 +15,7 @@ import type {
   SubmitMetaResponse,
   SubmitResponse,
 } from "@/shared/types/agent-types";
+import { buildEvaluationCreatePayload } from "@/modules/submission/model/parameter-validator";
 import {
   createServiceError,
   SUBMIT_META_CACHE_KEY,
@@ -29,7 +29,7 @@ export const getLiveSubmitMeta = async (): Promise<SubmitMetaResponse> =>
   withMemoryCache(
     SUBMIT_META_CACHE_KEY,
     async () => {
-      const response = await request.get<unknown>("/agents/submit-meta");
+      const response = await request.get<unknown>("/evaluations/meta");
 
       if (!response.success || !response.data) {
         throw createServiceError(
@@ -46,24 +46,36 @@ export const getLiveSubmitMeta = async (): Promise<SubmitMetaResponse> =>
 export const precheckLiveAgent = async (
   payload: SubmitAgentPayload,
 ): Promise<PrecheckResponse> => {
-  const response = await request.post<PrecheckResponse>(
-    "/agents/precheck",
-    buildSubmitAgentApiPayload(payload),
+  const response = await request.post<{
+    ok: boolean;
+    warnings?: Array<string | { message?: string }>;
+  }>(
+    "/evaluations/validate",
+    buildEvaluationCreatePayload(payload),
   );
 
   if (!response.success || !response.data) {
     throw createServiceError(response.message || "预检查失败。", response.code);
   }
 
-  return response.data;
+  return {
+    ok: Boolean(response.data.ok),
+    warnings: Array.isArray(response.data.warnings)
+      ? response.data.warnings
+          .map((item) =>
+            typeof item === "string" ? item : item.message?.trim() ?? "",
+          )
+          .filter((item) => item.length > 0)
+      : [],
+  };
 };
 
 export const submitLiveAgent = async (
   payload: SubmitAgentPayload,
 ): Promise<SubmitResponse> => {
   const response = await request.post<SubmitResponse>(
-    "/agents/submit",
-    buildSubmitAgentApiPayload(payload),
+    "/evaluations",
+    buildEvaluationCreatePayload(payload),
   );
 
   if (!response.success || !response.data) {

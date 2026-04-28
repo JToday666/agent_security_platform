@@ -227,8 +227,11 @@ export const referenceSubmitMeta: SubmitMetaResponse = {
     default: 15,
     recommendedMax: 20,
   },
-  retryEnabled: {
-    default: false,
+  maxSteps: {
+    min: 1,
+    max: 100,
+    step: 1,
+    default: 30,
   },
   publicToLeaderboard: {
     default: true,
@@ -339,6 +342,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     parameters: {
       difficulty: 0.5,
       timeoutMinutes: 18,
+      maxSteps: 30,
       retryEnabled: false,
     },
   },
@@ -361,6 +365,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     parameters: {
       difficulty: 0.7,
       timeoutMinutes: 20,
+      maxSteps: 36,
       retryEnabled: true,
     },
   },
@@ -383,6 +388,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     parameters: {
       difficulty: 0.4,
       timeoutMinutes: 17,
+      maxSteps: 28,
       retryEnabled: false,
     },
   },
@@ -405,6 +411,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     parameters: {
       difficulty: 0.6,
       timeoutMinutes: 19,
+      maxSteps: 34,
       retryEnabled: true,
     },
   },

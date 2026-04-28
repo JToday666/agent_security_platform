@@ -48,6 +48,20 @@ export const WORKSPACE_NAV_ITEMS: AppNavItem[] = [
     exact: true,
   },
   {
+    key: "agents",
+    label: "智能体管理",
+    icon: "lucide:bot",
+    to: RouteLocation.agentManagement,
+    requiresAuth: true,
+  },
+  {
+    key: "register-agent",
+    label: "注册智能体",
+    icon: "lucide:bot-message-square",
+    to: RouteLocation.agentRegister(),
+    requiresAuth: true,
+  },
+  {
     key: "submit",
     label: "提交评测",
     icon: "lucide:file-plus-2",

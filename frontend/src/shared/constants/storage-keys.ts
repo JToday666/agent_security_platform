@@ -5,6 +5,7 @@ export const STORAGE_KEYS = {
   // Mock 相关数据（删除 Mock 时一起清理）
   mock: {
     evaluations: "agent-platform:mock-evaluations:v1",
+    agents: "agent-platform:mock-agents:v1",
   },
   // 应用数据持久化
   session: {

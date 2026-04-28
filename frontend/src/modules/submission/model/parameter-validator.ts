@@ -56,6 +56,18 @@ export const normalizeTimeoutMinutes = (
   return Math.round(normalizeToStep(clamped, meta));
 };
 
+export const normalizeMaxSteps = (
+  value: unknown,
+  meta: RangeMeta,
+): number => {
+  const clamped = clamp(
+    toFiniteNumber(value, meta.default),
+    meta.min,
+    meta.max,
+  );
+  return Math.round(normalizeToStep(clamped, meta));
+};
+
 export const isStepAligned = (value: number, meta: RangeMeta): boolean => {
   const stepped = (value - meta.min) / meta.step;
   return Number.isInteger(Number(stepped.toFixed(6)));
@@ -81,6 +93,24 @@ export interface ValidationResult {
   fieldErrors: SubmitFieldErrors;
 }
 
+export interface EvaluationCreatePayload {
+  requestId: string;
+  submitMethod: "api" | "docker";
+  agentId?: string;
+  docker?: {
+    imageUri: string;
+    command: string;
+    env: Record<string, string>;
+  };
+  datasetIds: string[];
+  parameters: {
+    difficulty: number;
+    timeoutMinutes: number;
+    maxSteps: number;
+  };
+  publicToLeaderboard: boolean;
+}
+
 export const isValidHttpUrl = (value: string): boolean => {
   try {
     const url = new URL(value);
@@ -94,48 +124,36 @@ export const validateSubmitPayload = (
   payload: SubmitAgentPayload,
   meta: SubmitMetaResponse,
   validDatasetIds: string[],
+  activeAgentIds: string[] = [],
 ): ValidationResult => {
   const errors: string[] = [];
   const fieldErrors: SubmitFieldErrors = {};
-
-  const agentName = payload.agentName.trim();
-  if (!agentName) {
-    errors.push("请填写智能体名称。");
-    fieldErrors.agentName = "请填写智能体名称";
-  } else if (agentName.length > 100) {
-    errors.push("智能体名称长度不能超过 100 个字符。");
-    fieldErrors.agentName = "智能体名称长度不能超过 100 个字符";
-  }
 
   if (!meta.supportedMethods.includes(payload.submitMethod)) {
     errors.push("当前提交方式不可用。");
   }
 
   if (payload.submitMethod === "api") {
-    const baseUrl = payload.api?.baseUrl.trim() ?? "";
-    if (!baseUrl) {
-      errors.push("API 模式下必须填写服务地址。");
-      fieldErrors.apiBaseUrl = "请填写服务地址";
-    } else if (!isValidHttpUrl(baseUrl)) {
-      errors.push("API 地址格式不正确。");
-      fieldErrors.apiBaseUrl = "API 地址格式不正确";
+    const agentId = payload.agentId?.trim() ?? "";
+    if (!agentId || !activeAgentIds.includes(agentId)) {
+      errors.push("请选择可评测智能体。");
+      fieldErrors.agentId = "请选择可评测智能体";
     }
   }
 
   if (payload.submitMethod === "docker") {
-    const imageUri = payload.docker?.imageUri.trim() ?? "";
-    if (!imageUri) {
-      errors.push("Docker 模式下必须填写镜像地址。");
-      fieldErrors.dockerImageUri = "请填写镜像地址";
-    }
+    errors.push("Docker 提交功能正在升级中。");
+    fieldErrors.docker = "Docker 提交功能正在升级中";
   }
 
-  const { difficulty, timeoutMinutes } = payload.parameters;
+  const { difficulty, timeoutMinutes, maxSteps } = payload.parameters;
   const difficultyOutOfRange =
     difficulty < meta.difficulty.min || difficulty > meta.difficulty.max;
   const timeoutOutOfRange =
     timeoutMinutes < meta.timeoutMinutes.min ||
     timeoutMinutes > meta.timeoutMinutes.max;
+  const maxStepsOutOfRange =
+    maxSteps < meta.maxSteps.min || maxSteps > meta.maxSteps.max;
 
   if (
     difficultyOutOfRange ||
@@ -153,6 +171,15 @@ export const validateSubmitPayload = (
     !isStepAligned(timeoutMinutes, meta.timeoutMinutes)
   ) {
     errors.push("超时时间超出允许范围。");
+  }
+
+  if (
+    maxStepsOutOfRange ||
+    maxSteps !== normalizeMaxSteps(maxSteps, meta.maxSteps) ||
+    !Number.isInteger(maxSteps) ||
+    !isStepAligned(maxSteps, meta.maxSteps)
+  ) {
+    errors.push("最大步数超出允许范围。");
   }
 
   if (payload.selectedDatasetIds.length === 0) {
@@ -190,5 +217,43 @@ export const validateSubmitPayload = (
     valid: errors.length === 0,
     errors,
     fieldErrors,
+  };
+};
+
+export const buildEvaluationCreatePayload = (
+  payload: SubmitAgentPayload,
+): EvaluationCreatePayload => {
+  const basePayload = {
+    requestId: payload.requestId,
+    submitMethod: payload.submitMethod,
+    datasetIds: payload.selectedDatasetIds,
+    parameters: {
+      difficulty: payload.parameters.difficulty,
+      timeoutMinutes: payload.parameters.timeoutMinutes,
+      maxSteps: payload.parameters.maxSteps,
+    },
+    publicToLeaderboard: payload.publicToLeaderboard,
+  } satisfies Omit<EvaluationCreatePayload, "agentId" | "docker">;
+
+  if (payload.submitMethod === "api") {
+    return {
+      ...basePayload,
+      agentId: payload.agentId?.trim() ?? "",
+    };
+  }
+
+  return {
+    ...basePayload,
+    docker: payload.docker
+      ? {
+          imageUri: payload.docker.imageUri.trim(),
+          command: payload.docker.command.trim(),
+          env: payload.docker.env,
+        }
+      : {
+          imageUri: "",
+          command: "",
+          env: {},
+        },
   };
 };

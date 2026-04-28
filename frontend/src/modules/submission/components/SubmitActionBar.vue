@@ -8,7 +8,7 @@
     <dl class="summary-grid">
       <div class="summary-item">
         <dt>智能体名称</dt>
-        <dd>{{ agentName || "未填写" }}</dd>
+        <dd>{{ agentName || "未选择" }}</dd>
       </div>
       <div class="summary-item">
         <dt>提交方式</dt>
@@ -38,8 +38,8 @@
         <dd>{{ timeoutMinutes }} 分钟</dd>
       </div>
       <div class="summary-item">
-        <dt>自动重试</dt>
-        <dd>{{ retryEnabled ? "开启" : "关闭" }}</dd>
+        <dt>最大步数</dt>
+        <dd>{{ maxSteps }} 步</dd>
       </div>
       <div class="summary-item">
         <dt>公开结果</dt>
@@ -105,7 +105,7 @@ const props = withDefaults(
     selectedDatasetNames: string[];
     difficulty: number;
     timeoutMinutes: number;
-    retryEnabled: boolean;
+    maxSteps: number;
     publicToLeaderboard: boolean;
     submitting: boolean;
     canSubmit: boolean;

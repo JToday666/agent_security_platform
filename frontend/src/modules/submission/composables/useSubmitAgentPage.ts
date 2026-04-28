@@ -7,6 +7,8 @@ import {
   precheckAgent,
   submitAgent,
 } from "@/modules/evaluation/api/evaluation-api";
+import { getAgents } from "@/modules/agent/api/agent-api";
+import { getAgentSubmitDisabledReason } from "@/modules/agent/model/agent-display";
 import {
   toggleCategoryDatasets as toggleCategoryDatasetsValue,
   toggleDatasetId,
@@ -16,9 +18,11 @@ import { useSubmitDatasetCatalog } from "./useSubmitDatasetCatalog";
 import {
   MAX_SUBMIT_DATASET_COUNT,
   normalizeDifficulty,
+  normalizeMaxSteps,
   normalizeTimeoutMinutes,
   validateSubmitPayload,
 } from "@/modules/submission/model/parameter-validator";
+import { filterAvailableSubmitAgents } from "@/modules/submission/model/submit-agent-options";
 import { resolveDatasetIdsFromQuery } from "@/modules/submission/lib/submit-query-utils";
 import type {
   PendingSubmitRequest,
@@ -26,14 +30,12 @@ import type {
   SubmitFieldErrors,
   SubmitMetaResponse,
 } from "@/shared/types/agent-types";
+import type { AgentListItem } from "@/shared/types/agent-registry-types";
 import { useAsyncState } from "@/shared/composables/useAsyncState";
 
 interface SubmitPayloadSnapshot {
-  agentName: string;
-  description: string;
   submitMethod: SubmitAgentPayload["submitMethod"];
-  apiBaseUrl: string;
-  dockerImageUri: string;
+  agentId: string;
   parameters: SubmitAgentPayload["parameters"];
   publicToLeaderboard: boolean;
   datasetIds: string[];
@@ -95,8 +97,10 @@ export const useSubmitAgentPage = () => {
     setError: setSubmitError,
   } = useAsyncState<void>();
 
+  const agents = ref<AgentListItem[]>([]);
   const fieldErrors = ref<SubmitFieldErrors>({});
   const datasetSelectionNotice = ref("");
+  const agentSelectionNotice = ref("");
   const confirmDialogVisible = ref(false);
   const confirmDialogTitle = ref("确认提交");
   const confirmDialogMessage = ref("");
@@ -104,6 +108,7 @@ export const useSubmitAgentPage = () => {
 
   let activeCatalogController: AbortController | null = null;
   let appliedDatasetQuerySignature = "";
+  let appliedAgentQueryValue = "";
 
   const enabledCategories = computed(
     () => datasetCatalog.enabledCategories.value,
@@ -111,6 +116,23 @@ export const useSubmitAgentPage = () => {
   const validDatasetIds = computed(() => datasetCatalog.datasetIds.value);
   const datasetCatalogReady = computed(
     () => datasetCatalogStatus.value === "ready",
+  );
+  const availableAgents = computed(() =>
+    filterAvailableSubmitAgents(agents.value),
+  );
+  const activeAgentIds = computed(() =>
+    availableAgents.value.map((agent) => agent.agentId),
+  );
+  const selectedAgent = computed(() => {
+    const agentId = form.value?.agentId;
+    if (!agentId) {
+      return null;
+    }
+
+    return availableAgents.value.find((agent) => agent.agentId === agentId) ?? null;
+  });
+  const selectedAgentSubmitDisabledReason = computed(() =>
+    selectedAgent.value ? getAgentSubmitDisabledReason(selectedAgent.value) : "",
   );
   const selectedCategoryCount = computed(
     () =>
@@ -140,10 +162,17 @@ export const useSubmitAgentPage = () => {
   const selectionErrorMessage = computed(
     () => fieldErrors.value.selectedDatasetIds || datasetSelectionNotice.value,
   );
+  const agentErrorMessage = computed(
+    () =>
+      fieldErrors.value.agentId ||
+      agentSelectionNotice.value ||
+      selectedAgentSubmitDisabledReason.value,
+  );
 
   const clearFormErrors = () => {
     submitError.value = "";
     fieldErrors.value = {};
+    agentSelectionNotice.value = "";
   };
 
   const abortActiveCatalogRequest = () => {
@@ -210,6 +239,38 @@ export const useSubmitAgentPage = () => {
     setSelectedDatasetIds(resolvedDatasetIds);
   };
 
+  const applyAgentQuerySelection = () => {
+    if (!form.value || form.value.submitMethod !== "api") {
+      return;
+    }
+
+    const queryValue =
+      typeof route.query.agentId === "string" ? route.query.agentId.trim() : "";
+
+    if (queryValue && queryValue !== appliedAgentQueryValue) {
+      appliedAgentQueryValue = queryValue;
+      const availableAgent = availableAgents.value.find(
+        (item) => item.agentId === queryValue,
+      );
+      if (availableAgent) {
+        form.value.agentId = availableAgent.agentId;
+        agentSelectionNotice.value = "";
+        return;
+      }
+
+      const blockedAgent = agents.value.find(
+        (item) => item.agentId === queryValue,
+      );
+      agentSelectionNotice.value = blockedAgent
+        ? getAgentSubmitDisabledReason(blockedAgent) || "链接中的 Agent 不可用，已忽略。"
+        : "链接中的 Agent 不可用，已忽略。";
+    }
+
+    if (!form.value.agentId || !activeAgentIds.value.includes(form.value.agentId)) {
+      form.value.agentId = activeAgentIds.value[0] ?? "";
+    }
+  };
+
   const buildPayloadSnapshot = (): SubmitPayloadSnapshot | null => {
     if (!form.value || !submitMeta.value) {
       return null;
@@ -220,15 +281,8 @@ export const useSubmitAgentPage = () => {
     ).sort();
 
     return {
-      agentName: form.value.agentName.trim(),
-      description: form.value.description.trim(),
       submitMethod: form.value.submitMethod,
-      apiBaseUrl:
-        form.value.submitMethod === "api" ? form.value.api.baseUrl.trim() : "",
-      dockerImageUri:
-        form.value.submitMethod === "docker"
-          ? form.value.docker.imageUri.trim()
-          : "",
+      agentId: form.value.submitMethod === "api" ? form.value.agentId.trim() : "",
       parameters: {
         difficulty: normalizeDifficulty(
           form.value.parameters.difficulty,
@@ -238,7 +292,10 @@ export const useSubmitAgentPage = () => {
           form.value.parameters.timeoutMinutes,
           submitMeta.value.timeoutMinutes,
         ),
-        retryEnabled: Boolean(form.value.parameters.retryEnabled),
+        maxSteps: normalizeMaxSteps(
+          form.value.parameters.maxSteps,
+          submitMeta.value.maxSteps,
+        ),
       },
       publicToLeaderboard: Boolean(form.value.publicToLeaderboard),
       datasetIds,
@@ -284,22 +341,14 @@ export const useSubmitAgentPage = () => {
           : "preview_request_id";
 
     return {
-      agentName: snapshot.agentName,
-      description: snapshot.description,
       submitMethod: snapshot.submitMethod,
-      api:
-        snapshot.submitMethod === "api"
-          ? {
-              baseUrl: form.value?.api.baseUrl.trim() ?? "",
-              token: form.value?.api.token.trim() ?? "",
-            }
-          : null,
+      agentId: snapshot.submitMethod === "api" ? snapshot.agentId : null,
       docker:
         snapshot.submitMethod === "docker"
           ? {
               imageUri: form.value?.docker.imageUri.trim() ?? "",
-              username: form.value?.docker.username.trim() ?? "",
-              password: form.value?.docker.password.trim() ?? "",
+              command: form.value?.docker.command.trim() ?? "",
+              env: {},
             }
           : null,
       parameters: snapshot.parameters,
@@ -314,7 +363,7 @@ export const useSubmitAgentPage = () => {
     payload: SubmitAgentPayload,
   ): string => {
     const header = [
-      `智能体名称：${payload.agentName}`,
+      `智能体名称：${selectedAgent.value?.name ?? "未选择"}`,
       `提交方式：${payload.submitMethod.toUpperCase()}`,
       `数据集数量：${payload.selectedDatasetIds.length}`,
     ].join("\n");
@@ -368,9 +417,14 @@ export const useSubmitAgentPage = () => {
     confirmDialogVisible.value = false;
     confirmedPayload.value = null;
     appliedDatasetQuerySignature = "";
+    appliedAgentQueryValue = "";
 
     try {
-      const meta = await getSubmitMeta();
+      const [meta, agentList] = await Promise.all([
+        getSubmitMeta(),
+        getAgents({ includeArchived: false }),
+      ]);
+      agents.value = agentList;
       submitMeta.value = meta;
       submitDraftStore.applyMeta(meta);
 
@@ -386,9 +440,14 @@ export const useSubmitAgentPage = () => {
         form.value.parameters.timeoutMinutes,
         meta.timeoutMinutes,
       );
+      form.value.parameters.maxSteps = normalizeMaxSteps(
+        form.value.parameters.maxSteps,
+        meta.maxSteps,
+      );
       setSelectedDatasetIds(form.value.selectedDatasetIds);
 
       await loadCatalog(true);
+      applyAgentQuerySelection();
     } catch (error) {
       setError(error, "提交页初始化失败。");
     } finally {
@@ -465,7 +524,9 @@ export const useSubmitAgentPage = () => {
     confirmDialogVisible.value = false;
     confirmedPayload.value = null;
     appliedDatasetQuerySignature = "";
+    appliedAgentQueryValue = "";
     applyDatasetQuerySelection();
+    applyAgentQuerySelection();
   };
 
   const handleSubmit = async () => {
@@ -474,6 +535,11 @@ export const useSubmitAgentPage = () => {
     }
 
     clearFormErrors();
+
+    if (form.value.submitMethod === "docker") {
+      submitError.value = "Docker 提交功能正在升级中。";
+      return;
+    }
 
     if (datasetCatalogStatus.value === "empty") {
       submitError.value = "当前没有可用数据集，无法提交。";
@@ -493,6 +559,7 @@ export const useSubmitAgentPage = () => {
         payload,
         submitMeta.value,
         validDatasetIds.value,
+        activeAgentIds.value,
       );
 
       if (!validation.valid) {
@@ -545,11 +612,16 @@ export const useSubmitAgentPage = () => {
       return false;
     }
 
+    if (form.value.submitMethod === "docker") {
+      return false;
+    }
+
     const payload = buildPayload("preview");
     return validateSubmitPayload(
       payload,
       submitMeta.value,
       validDatasetIds.value,
+      activeAgentIds.value,
     ).valid;
   });
 
@@ -584,6 +656,27 @@ export const useSubmitAgentPage = () => {
       if (normalized !== value) {
         form.value.parameters.timeoutMinutes = normalized;
       }
+    },
+  );
+
+  watch(
+    () => form.value?.parameters.maxSteps,
+    (value) => {
+      if (!form.value || !submitMeta.value || typeof value !== "number") {
+        return;
+      }
+
+      const normalized = normalizeMaxSteps(value, submitMeta.value.maxSteps);
+      if (normalized !== value) {
+        form.value.parameters.maxSteps = normalized;
+      }
+    },
+  );
+
+  watch(
+    () => form.value?.submitMethod,
+    () => {
+      applyAgentQuerySelection();
     },
   );
 
@@ -632,6 +725,15 @@ export const useSubmitAgentPage = () => {
     },
   );
 
+  watch(
+    () => route.query.agentId,
+    () => {
+      if (!pageLoading.value) {
+        applyAgentQuerySelection();
+      }
+    },
+  );
+
   onMounted(async () => {
     await initializePage();
   });
@@ -648,6 +750,11 @@ export const useSubmitAgentPage = () => {
     submitting,
     submitError,
     fieldErrors,
+    agents,
+    availableAgents,
+    selectedAgent,
+    selectedAgentSubmitDisabledReason,
+    agentErrorMessage,
     expandedCategoryIds,
     datasetCatalogStatus,
     datasetCatalogErrorMessage,
@@ -660,6 +767,7 @@ export const useSubmitAgentPage = () => {
     confirmDialogMessage,
     canSubmit,
     setSubmitMethod: submitDraftStore.setSubmitMethod,
+    setAgentId: submitDraftStore.setAgentId,
     initializePage,
     handleSubmit,
     confirmSubmit,

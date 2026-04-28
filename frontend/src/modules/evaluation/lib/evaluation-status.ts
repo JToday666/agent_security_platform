@@ -16,6 +16,7 @@ const isTerminalEvaluationStatus = (status: EvaluationStatus): boolean =>
 
 export const getEvaluationStatusLabel = (status: EvaluationStatus): string => {
   switch (status) {
+    case "queued":
     case "pending":
       return "排队中";
     case "running":
@@ -60,6 +61,7 @@ export const getFinalizationReasonLabel = (
 
 export const getEvaluationStatusTone = (status: EvaluationStatus): string => {
   switch (status) {
+    case "queued":
     case "pending":
     case "pausing":
     case "terminating":
