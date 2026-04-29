@@ -1,64 +1,49 @@
-# 用户接口补充说明
+# 用户及认证接口协议
 
-## 当前有效行为
+## 1. 用户登录
 
-本文件补充说明前端当前对认证和用户资料接口的消费方式。
+`POST /api/v1/auth/login`
 
-### 默认真实后端
+- **作用**：验证凭据发还 Token。
+- **请求体**：
 
-默认情况下，以下接口全部走真实后端：
+```json
+{
+  "username": "user1",
+  "password": "password123"
+}
+```
 
-- `POST /api/v1/auth/login`
-- `POST /api/v1/auth/register`
-- `GET /api/v1/auth/me`
-- `GET /api/v1/user/profile`
-- `PUT /api/v1/user/profile`
-- `POST /api/v1/user/avatar`
+- **响应**：
 
-本轮未引入新的 auth mock。
+```json
+{
+  "code": 0,
+  "data": {
+    "token": "eyJhbGci...",
+    "expiresIn": 86400
+  },
+  "message": "success"
+}
+```
 
-## 前端状态管理约束
+## 2. 获取当前用户信息
 
-### 用户资料以内存态为准
+`GET /api/v1/auth/profile`
 
-前端当前以运行时内存态作为用户资料真相源，不再把资料快照写入 localStorage 并当作长期真相。
+- **作用**：带上 Token 获取登录者信息。
+- **响应**：
 
-### localStorage 允许范围
+```json
+{
+  "code": 0,
+  "data": {
+    "userId": "usr_x",
+    "username": "user1",
+    "avatar": "https://..."
+  },
+  "message": "success"
+}
+```
 
-允许写入：
-
-- token
-- 登录回跳地址
-- 会话滚动位置
-- mock 评测记录（仅 mock 链路）
-
-不再写入：
-
-- 用户资料快照
-- 评测结果快照
-- 提交结果快照
-- 提交草稿
-
-## 错误处理
-
-前端请求层当前优先按统一 envelope 解析：
-
-- `message`
-- `data.errors[]`
-
-`detail` 只保留兼容兜底，不再作为主路径。
-
-### 未登录处理
-
-当后端返回未登录状态时：
-
-- 前端统一触发未授权事件
-- 清理当前登录态
-- 保留登录后回跳地址
-- 打开登录弹窗
-
-## 头像与资料显示
-
-- 头像 URL 统一做 API 资源地址归一化
-- `avatarUrl`、`username`、`email` 为空时，页面必须有安全降级显示
-- 不允许空字段导致页面崩溃或直接显示 `undefined`
+_备注：前端仅维护在内存状态，错误或 401 时跳转登录，不使用 LocalStorage 存储用户信息。_
