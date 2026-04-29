@@ -66,10 +66,11 @@
         >
           <span class="avatar">
             <img
-              v-if="avatarDisplayUrl"
+              v-if="avatarDisplayUrl && !hasAvatarError"
               :src="avatarDisplayUrl"
               alt=""
               class="avatar-image"
+              @error="hasAvatarError = true"
             />
             <span v-else class="default-avatar">{{ usernameInitial }}</span>
           </span>
@@ -127,10 +128,11 @@
       >
         <span class="avatar">
           <img
-            v-if="avatarDisplayUrl"
+            v-if="avatarDisplayUrl && !hasAvatarError"
             :src="avatarDisplayUrl"
             alt=""
             class="avatar-image"
+            @error="hasAvatarError = true"
           />
           <span v-else class="default-avatar">{{ usernameInitial }}</span>
         </span>
@@ -215,6 +217,11 @@ const { avatarDisplayUrl, isLogin, username } = storeToRefs(userStore);
 
 const isVisible = ref(true);
 const mobileMenuOpen = ref(false);
+const hasAvatarError = ref(false);
+
+watch(avatarDisplayUrl, () => {
+  hasAvatarError.value = false;
+});
 
 const shellContext = computed(() =>
   resolveShellContext(route.name ? String(route.name) : undefined),
