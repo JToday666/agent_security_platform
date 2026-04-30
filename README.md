@@ -44,13 +44,13 @@ Agent Security Platform 是一个面向 Agent API 的安全测试平台仓库。
 
 ## 仓库结构
 
-| 路径        | 职责                                                             |
-| ----------- | ---------------------------------------------------------------- |
-| `frontend/` | 前端工程，负责页面、状态管理、路由、共享 UI，以及前端 Mock API。 |
-| `backend/`  | FastAPI 后端、数据库模型、业务模块、worker、迁移和后端测试。     |
+| 路径        | 职责                                                               |
+| ----------- | ------------------------------------------------------------------ |
+| `frontend/` | 前端工程，负责页面、状态管理、路由、共享 UI，以及前端 Mock API。   |
+| `backend/`  | FastAPI 后端、数据库模型、业务模块、worker、迁移和后端测试。       |
 | `share/`    | 前后端沟通参考材料目录；保留接口协议总表和补充说明，便于协作对齐。 |
-| `docs/`     | 项目级设计说明、任务拆解、附录和参考性资料。                     |
-| `README.md` | 项目级入口文档，不复制前后端内部实现细节。                       |
+| `docs/`     | 项目级设计说明、任务拆解、附录和参考性资料。                       |
+| `README.md` | 项目级入口文档，不复制前后端内部实现细节。                         |
 
 当前协作边界如下：
 
@@ -81,7 +81,7 @@ flowchart LR
 | 工具       | 要求                         | 说明                                                                   |
 | ---------- | ---------------------------- | ---------------------------------------------------------------------- |
 | Node.js    | `>=24.14.1 <25`              | 前端 `package.json` 中已明确约束。                                     |
-| npm        | 推荐 `11.12.1`               | 前端 `packageManager` 当前为 `npm@11.12.1`。                           |
+| pnpm       | 推荐 `10.33.2`               | 前端 `packageManager` 当前为 `pnpm@10.33.2`。                          |
 | Python     | `>=3.12`，推荐 `3.12`        | 后端 `pyproject.toml` 要求 `>=3.12`，`.python-version` 当前为 `3.12`。 |
 | uv         | 可执行 `uv sync` 和 `uv run` | 后端使用 uv 管理依赖、运行和迁移。                                     |
 | PostgreSQL | 需要本地可用实例             | 仓库未锁定具体次版本，建议与团队开发环境保持一致。                     |
@@ -182,8 +182,8 @@ uv run python worker.py
 在 `frontend/` 目录执行：
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 ### 4. 访问入口
@@ -201,9 +201,9 @@ npm run dev
 在 `frontend/` 目录执行：
 
 ```bash
-npm run test
-npm run type-check
-npm run build
+pnpm test
+pnpm type-check
+pnpm build
 ```
 
 ### 后端最小验证

@@ -37,31 +37,31 @@ README 只写前端当前状态、运行方式、命名规范和文档入口。�
 安装依赖：
 
 ```bash
-npm install
+pnpm install
 ```
 
 启动开发环境：
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 构建生产包：
 
 ```bash
-npm run build
+pnpm build
 ```
 
 本地预览构建结果：
 
 ```bash
-npm run preview
+pnpm preview
 ```
 
 仅做类型检查：
 
 ```bash
-npm run type-check
+pnpm type-check
 ```
 
 ## 4. 运行约束
@@ -109,18 +109,18 @@ Node 版本要求来自 `package.json`：
 类型检查：
 
 ```bash
-npm run type-check
+pnpm type-check
 ```
 
 构建检查：
 
 ```bash
-npm run build
+pnpm build
 ```
 
 说明：
 
-- `npm run build` 实际会先执行 `type-check`，再执行 `build-only`
+- `pnpm build` 实际会先执行 `type-check`，再执行 `build-only`
 - 当前仓内不保留 `frontend/src` 下测试源码；测试工具链仍保留，日常验证以类型检查、构建和定向页面走查为主
 
 ## 7. 前端命名规范
