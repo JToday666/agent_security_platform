@@ -257,10 +257,14 @@ class EvaluationService:
         """返回当前用户的评测任务列表。"""
         runs = await self.repository.list_runs_for_user(current_user.id)
         datasets_by_run, reports_by_run = await self.repository.load_related_for_runs([run.id for run in runs])
+        scores_by_run = {}
+        if hasattr(self.repository, "load_scores_for_runs"):
+            scores_by_run = await self.repository.load_scores_for_runs([run.id for run in runs])
         items: list[EvaluationListItem] = []
         for run in runs:
             datasets = datasets_by_run.get(run.id, [])
             report = reports_by_run.get(run.id)
+            score = scores_by_run.get(run.id)
             items.append(
                 EvaluationListItem.model_validate(
                     {
@@ -277,7 +281,7 @@ class EvaluationService:
                         "datasetIds": [dataset.dataset_code for dataset in datasets],
                         "datasetNames": [dataset.dataset_name for dataset in datasets],
                         "submitMethod": run.submit_method,
-                        "score": None,
+                        "score": None if score is None else float(score.official_conservative_score),
                         "ownerName": current_user.username,
                         "parameters": build_parameters(run),
                     }
@@ -391,6 +395,7 @@ class EvaluationService:
         """组装详情接口返回的完整任务快照。"""
         datasets = await self.repository.load_run_datasets(run.id)
         report = await self.repository.load_run_report(run.id)
+        score = await self.repository.load_run_score(run.id) if hasattr(self.repository, "load_run_score") else None
         running_dataset = next((dataset for dataset in datasets if dataset.status == "running"), None)
         completed_dataset_count = sum(int(dataset.status in TERMINAL_STATUSES) for dataset in datasets)
         final_report_available = report is not None and report.report_status == "available"
@@ -402,7 +407,7 @@ class EvaluationService:
                 "createdAt": to_zulu(run.created_at),
                 "updatedAt": to_zulu(run.updated_at),
                 "status": run.status,
-                "score": None,
+                "score": None if score is None else float(score.official_conservative_score),
                 "publicToLeaderboard": run.public_to_leaderboard,
                 "datasetIds": [dataset.dataset_code for dataset in datasets],
                 "datasetNames": [dataset.dataset_name for dataset in datasets],

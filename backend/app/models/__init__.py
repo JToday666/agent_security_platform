@@ -21,6 +21,16 @@ from .benchmark_run import (
     SampleExecution,
     TestRun,
 )
+from .scoring import (
+    BenchmarkVersion,
+    BenchmarkVersionItem,
+    DifficultyVersion,
+    DifficultyVersionItem,
+    EvaluationScore,
+    LeaderboardEntry,
+    LeaderboardSnapshot,
+    ScoreModelVersion,
+)
 from .agent import Agent
 from .user import User
 
@@ -29,9 +39,16 @@ __all__ = [
     "AssetType",
     "AttackDeliveryType",
     "BenchmarkSample",
+    "BenchmarkVersion",
+    "BenchmarkVersionItem",
     "DatasetSource",
+    "DifficultyVersion",
+    "DifficultyVersionItem",
+    "EvaluationScore",
     "ExecutionArtifact",
     "ExecutionSummary",
+    "LeaderboardEntry",
+    "LeaderboardSnapshot",
     "OracleResult",
     "RiskCategory",
     "RiskSubtype",
@@ -42,6 +59,7 @@ __all__ = [
     "SampleDifficultyStat",
     "SampleExecution",
     "SampleOracle",
+    "ScoreModelVersion",
     "TestRun",
     "User",
 ]

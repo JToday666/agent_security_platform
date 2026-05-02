@@ -247,6 +247,34 @@ class RunSample(Base):
         comment="关联的基准测试样本的主键ID"
     )
     order_no: Mapped[int | None] = mapped_column(Integer, nullable=True, comment="如果在该任务中指定了样本编排执行顺序，记录其序号")
+    difficulty_version_code: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        default="legacy_current",
+        server_default=text("'legacy_current'"),
+        comment="本次运行冻结使用的难度版本编号",
+    )
+    difficulty_score_snapshot: Mapped[Decimal] = mapped_column(
+        Numeric(4, 3),
+        nullable=False,
+        default=Decimal("0.500"),
+        server_default=text("0.500"),
+        comment="本次运行冻结的综合难度快照",
+    )
+    completion_difficulty_snapshot: Mapped[Decimal] = mapped_column(
+        Numeric(4, 3),
+        nullable=False,
+        default=Decimal("0.500"),
+        server_default=text("0.500"),
+        comment="本次运行冻结的完成难度快照",
+    )
+    safety_difficulty_snapshot: Mapped[Decimal] = mapped_column(
+        Numeric(4, 3),
+        nullable=False,
+        default=Decimal("0.500"),
+        server_default=text("0.500"),
+        comment="本次运行冻结的安全难度快照",
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,
@@ -490,6 +518,20 @@ class SampleDifficultyStat(Base):
         server_default=text("0"),
         comment="历史所有跑过该用例的累计有效运行次数记录"
     )
+    completed_count: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default=text("0"),
+        comment="历史完成良性任务目标的次数",
+    )
+    unfinished_count: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default=text("0"),
+        comment="历史未完成、超时、系统错误或需复核的次数",
+    )
     harm_count: Mapped[int] = mapped_column(
         Integer,
         nullable=False,
@@ -504,9 +546,51 @@ class SampleDifficultyStat(Base):
         server_default=text("0"),
         comment="防御生效且依然完成了良性目标的次数记录"
     )
+    minor_harm_count: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default=text("0"),
+        comment="历史轻微安全损害次数",
+    )
+    major_harm_count: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default=text("0"),
+        comment="历史重大安全损害次数",
+    )
+    critical_harm_count: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default=text("0"),
+        comment="历史致命安全损害次数",
+    )
     harm_rate: Mapped[Decimal] = mapped_column(Numeric(5, 4), nullable=False, comment="根据上述指标计算出来的安全损害检出历史比率(反应其杀伤力)")
     safe_completion_rate: Mapped[Decimal] = mapped_column(Numeric(5, 4), nullable=False, comment="成功防御的安全通过率")
     inferred_difficulty: Mapped[Decimal] = mapped_column(Numeric(4, 3), nullable=False, comment="统计算法归一化后的相对防御难度指标量化分级")
+    candidate_completion_difficulty: Mapped[Decimal] = mapped_column(
+        Numeric(4, 3),
+        nullable=False,
+        default=Decimal("0.500"),
+        server_default=text("0.500"),
+        comment="基于统计数据推断的候选完成难度",
+    )
+    candidate_safety_difficulty: Mapped[Decimal] = mapped_column(
+        Numeric(4, 3),
+        nullable=False,
+        default=Decimal("0.500"),
+        server_default=text("0.500"),
+        comment="基于统计数据推断的候选安全难度",
+    )
+    candidate_difficulty_score: Mapped[Decimal] = mapped_column(
+        Numeric(4, 3),
+        nullable=False,
+        default=Decimal("0.500"),
+        server_default=text("0.500"),
+        comment="基于统计数据推断的候选综合难度",
+    )
     algorithm_version: Mapped[str] = mapped_column(Text, nullable=False, comment="计算当前统计维度所使用的衰减与算阶算法版本约定")
     last_execution_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),

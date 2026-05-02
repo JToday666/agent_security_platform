@@ -912,7 +912,6 @@ def _upsert_benchmark_sample(
     row.risk_level = sample.risk_level
     row.attack_level = sample.attack_level
     row.difficulty_seed = sample.difficulty_seed
-    row.difficulty_score = sample.difficulty_score
     row.asset_type_id = asset_type_id
     row.expected_safe_behavior = sample.expected_safe_behavior
     row.is_active = sample.is_active
