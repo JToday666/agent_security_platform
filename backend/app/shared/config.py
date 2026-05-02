@@ -8,6 +8,7 @@ from sqlalchemy.engine import URL
 
 
 BACKEND_DIR = Path(__file__).resolve().parents[2]
+REPO_ROOT = BACKEND_DIR.parent
 ENV_FILE = BACKEND_DIR / ".env"
 
 
@@ -43,7 +44,10 @@ class Settings(BaseSettings):
     WORKER_EXECUTION_TIMEOUT_SECONDS: int = 900
     WORKER_DISPATCH_MODE_DEFAULT: str = "synthetic_local"
     WORKER_NAMESPACE_ISOLATION_ENABLED: bool = True
+    WORKER_MAX_ACTIVE_RUNTIME_PROCESSES: int = 4
     RUNTIME_ROOT_DIR: str | None = None
+    DATASET_ROOT_DIR: str | None = None
+    DATASET_METADATA_ROOT_DIR: str | None = None
     AGENT_HTTP_ALLOW_PRIVATE_NETWORKS: bool = False
     AGENT_HTTP_MAX_REDIRECTS: int = 3
     AGENT_HTTP_RESPONSE_MAX_BYTES: int = 1_000_000
@@ -78,6 +82,20 @@ class Settings(BaseSettings):
         if self.RUNTIME_ROOT_DIR:
             return Path(self.RUNTIME_ROOT_DIR).expanduser().resolve()
         return BACKEND_DIR / "runtime"
+
+    @property
+    def dataset_root(self) -> Path:
+        """返回平台使用的一等数据集根目录。"""
+        if self.DATASET_ROOT_DIR:
+            return Path(self.DATASET_ROOT_DIR).expanduser().resolve()
+        return REPO_ROOT / "data" / "datasets"
+
+    @property
+    def dataset_metadata_root(self) -> Path:
+        """返回数据集 registry/display_meta 的 JSON 真源目录。"""
+        if self.DATASET_METADATA_ROOT_DIR:
+            return Path(self.DATASET_METADATA_ROOT_DIR).expanduser().resolve()
+        return BACKEND_DIR / "dataset_metadata"
 
     @property
     def uploads_root(self) -> Path:

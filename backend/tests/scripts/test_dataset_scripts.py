@@ -11,6 +11,7 @@ import pytest
 SCRIPT_NAMES = [
     "import_datasets.py",
     "datasets/normalize_samples.py",
+    "datasets/standardize_task_json.py",
     "datasets/bootstrap_metadata_from_db.py",
     "datasets/sync_metadata_from_samples.py",
     "datasets/import_metadata.py",
@@ -244,3 +245,32 @@ def test_import_datasets_detects_raw_input_and_normalizes_into_workspace(
     assert "input_kind=raw" in result.stdout
     assert "normalized=yes" in result.stdout
     assert (workspace_dir / "normalized_samples").exists()
+
+
+@pytest.mark.scripts
+def test_standardize_task_json_rewrites_only_task_json(
+    backend_root: Path,
+    raw_sample_bundle,
+) -> None:
+    task_path = raw_sample_bundle.sample_root / "01_Confidentiality" / "A3_Address_and_Location_Leakage" / "EIA_A3_10_high" / "task.json"
+    sidecar_path = task_path.with_name("CarRentalse-Receipts.json")
+    before_sidecar = sidecar_path.read_text(encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(backend_root / "scripts" / "datasets" / "standardize_task_json.py"),
+            "--sample-root",
+            str(raw_sample_bundle.sample_root),
+            "--write",
+        ],
+        cwd=backend_root,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "samples=2" in result.stdout
+    assert "changed=1" in result.stdout
+    assert '"schema_version": "1.0"' in task_path.read_text(encoding="utf-8")
+    assert sidecar_path.read_text(encoding="utf-8") == before_sidecar

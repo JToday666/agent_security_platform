@@ -8,10 +8,11 @@ from datetime import datetime, timezone
 
 from sqlalchemy import delete, func, select, update
 
-from app.models.benchmark import BenchmarkSample, RiskSubtype
+from app.models.benchmark import BenchmarkSample, RiskSubtype, SampleOracle
 from app.models.benchmark_run import (
     ExecutionArtifact,
     ExecutionSummary,
+    OracleResult,
     RunDataset,
     RunSample,
     SampleExecution,
@@ -31,6 +32,11 @@ from app.worker.runtime import (
 )
 from app.worker.runtime.ports import allocate_tcp_port
 from app.worker.runtime.preparation import build_environment_ref, build_probe_token
+from app.worker.oracle_evaluator import EVALUATOR_VERSION, evaluate_oracles_from_artifacts
+
+
+_RUNTIME_PROCESS_SEMAPHORE: asyncio.Semaphore | None = None
+_RUNTIME_PROCESS_SEMAPHORE_LIMIT: int | None = None
 
 
 @dataclass(slots=True)
@@ -84,6 +90,17 @@ def _summary_for_timeout() -> dict[str, object]:
     }
 
 
+def _runtime_process_semaphore() -> asyncio.Semaphore:
+    """返回按配置懒加载的全局 runtime 进程并发闸门。"""
+    global _RUNTIME_PROCESS_SEMAPHORE
+    global _RUNTIME_PROCESS_SEMAPHORE_LIMIT
+    limit = max(1, int(settings.WORKER_MAX_ACTIVE_RUNTIME_PROCESSES))
+    if _RUNTIME_PROCESS_SEMAPHORE is None or _RUNTIME_PROCESS_SEMAPHORE_LIMIT != limit:
+        _RUNTIME_PROCESS_SEMAPHORE = asyncio.Semaphore(limit)
+        _RUNTIME_PROCESS_SEMAPHORE_LIMIT = limit
+    return _RUNTIME_PROCESS_SEMAPHORE
+
+
 def _validate_dispatch_results(prepared, compile_result: dict[str, object], replay_result: dict[str, object]) -> None:
     """校验 runtime 输出的编译结果、回放结果与关键产物文件。"""
     if not (prepared.run_dir / "compile_result.json").exists():
@@ -123,14 +140,47 @@ async def _persist_runtime_result(
 
         await db.execute(delete(ExecutionArtifact).where(ExecutionArtifact.sample_execution_id == execution_id))
         await db.execute(delete(ExecutionSummary).where(ExecutionSummary.sample_execution_id == execution_id))
+        await db.execute(delete(OracleResult).where(OracleResult.sample_execution_id == execution_id))
+
+        summary_payload = summary
+        if summary_payload is None:
+            oracle_rows = (
+                await db.execute(
+                    select(SampleOracle).where(
+                        SampleOracle.sample_id_ref == execution.sample_id_ref,
+                        SampleOracle.is_active.is_(True),
+                    )
+                )
+            ).scalars().all()
+            if oracle_rows:
+                evaluation_bundle = await asyncio.to_thread(
+                    evaluate_oracles_from_artifacts,
+                    oracle_rows,
+                    prepared.run_dir,
+                )
+                for result in evaluation_bundle.results:
+                    db.add(
+                        OracleResult(
+                            sample_execution_id=execution_id,
+                            oracle_id=result.oracle_id,
+                            matched=result.matched,
+                            score=result.score,
+                            evidence_summary=result.evidence_summary,
+                            evidence_ref=result.evidence_ref,
+                            evaluator_version=EVALUATOR_VERSION,
+                        )
+                    )
+                summary_payload = evaluation_bundle.summary
+            else:
+                summary_payload = _summary_for_success("no_oracles")
 
         db.add(
             ExecutionSummary(
                 sample_execution_id=execution_id,
-                task_completed=bool(summary["task_completed"]),
-                harm_detected=bool(summary["harm_detected"]),
-                summary_text=str(summary["summary_text"]),
-                final_label=str(summary["final_label"]),
+                task_completed=bool(summary_payload["task_completed"]),
+                harm_detected=bool(summary_payload["harm_detected"]),
+                summary_text=str(summary_payload["summary_text"]),
+                final_label=str(summary_payload["final_label"]),
             )
         )
 
@@ -272,40 +322,41 @@ async def execute_sample(
     )
     handle = None
 
-    try:
-        handle = await launch_runtime(prepared)
-        await _mark_execution_runtime_ready(execution_id, prepared)
+    async with _runtime_process_semaphore():
+        try:
+            handle = await launch_runtime(prepared)
+            await _mark_execution_runtime_ready(execution_id, prepared)
 
-        adapter = resolve_dispatch_adapter(resolved_dispatch_mode)
-        dispatch_result = await adapter.dispatch(prepared, sample, timeout, dispatch_config=dispatch_config)
+            adapter = resolve_dispatch_adapter(resolved_dispatch_mode)
+            dispatch_result = await adapter.dispatch(prepared, sample, timeout, dispatch_config=dispatch_config)
 
-        await _mark_execution_state(execution_id, "verifying")
-        _validate_dispatch_results(prepared, dispatch_result.compile_result, dispatch_result.replay_result)
+            await _mark_execution_state(execution_id, "verifying")
+            _validate_dispatch_results(prepared, dispatch_result.compile_result, dispatch_result.replay_result)
 
-        await _persist_runtime_result(
-            execution_id,
-            run_id,
-            dataset_id,
-            prepared=prepared,
-            summary=_summary_for_success(dispatch_result.mode),
-            success=True,
-            final_status="done",
-        )
-    except RuntimeDispatchTimeout:
-        await _persist_runtime_result(
-            execution_id,
-            run_id,
-            dataset_id,
-            prepared=prepared,
-            summary=_summary_for_timeout(),
-            success=True,
-            final_status="done",
-        )
-    except Exception as exc:
-        await _mark_execution_system_error(execution_id, run_id, dataset_id, exc)
-    finally:
-        if handle is not None:
-            await stop_runtime(handle)
+            await _persist_runtime_result(
+                execution_id,
+                run_id,
+                dataset_id,
+                prepared=prepared,
+                summary=None,
+                success=True,
+                final_status="done",
+            )
+        except RuntimeDispatchTimeout:
+            await _persist_runtime_result(
+                execution_id,
+                run_id,
+                dataset_id,
+                prepared=prepared,
+                summary=_summary_for_timeout(),
+                success=True,
+                final_status="done",
+            )
+        except Exception as exc:
+            await _mark_execution_system_error(execution_id, run_id, dataset_id, exc)
+        finally:
+            if handle is not None:
+                await stop_runtime(handle)
 
 
 async def _load_sample_jobs(run_id: int, dataset_code: str) -> list[SampleJob]:

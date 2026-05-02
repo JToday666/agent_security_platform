@@ -112,9 +112,14 @@ def discover_sample_metadata_files(sample_root: Path, mode: str = "auto") -> lis
     if mode not in {"auto", "legacy", "standard"}:
         raise ImportValidationError(f"不支持的扫描模式: {mode}")
 
+    task_json_dirs = {path.parent for path in root.rglob("task.json") if "saved_logs" not in path.parts}
     candidates_by_dir: dict[Path, list[_DiscoveredMetadataFile]] = defaultdict(list)
     for path in sorted(root.rglob("*.json")):
         if path.name in IGNORED_JSON_FILENAMES or "saved_logs" in path.parts:
+            continue
+        if path.parent in task_json_dirs and path.name != "task.json":
+            continue
+        if path.name != "task.json" and mode == "standard":
             continue
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
@@ -422,14 +427,81 @@ def _normalize_legacy_oracles(payload: dict[str, object], metadata_path: Path) -
     oracles: list[PlannedOracle] = []
     for oracle_kind, field_name in ((1, "success_oracle"), (2, "harm_oracle")):
         raw_list = payload.get(field_name)
-        if not isinstance(raw_list, list) or not raw_list:
-            raise ImportValidationError(f"{metadata_path}: {field_name} 必须是非空数组")
+        if not isinstance(raw_list, list):
+            raise ImportValidationError(f"{metadata_path}: {field_name} 必须是数组")
+        if not raw_list:
+            if oracle_kind == 1:
+                oracles.append(
+                    PlannedOracle(
+                        oracle_kind=1,
+                        seq_no=1,
+                        display_text="Runtime finalize completed.",
+                        evaluator_type="completion_signal",
+                        evaluator_config={"source": "finalize.done"},
+                    )
+                )
+            continue
+
+        object_conditions: list[dict[str, object]] = []
+        text_items: list[str] = []
         for index, item in enumerate(raw_list, start=1):
+            if isinstance(item, dict):
+                object_conditions.append(_normalize_event_condition(item, metadata_path, f"{field_name}[{index}]"))
+                continue
             text = _optional_text(item)
             if not text:
-                raise ImportValidationError(f"{metadata_path}: {field_name}[{index}] 必须是非空字符串")
-            oracles.append(PlannedOracle(oracle_kind=oracle_kind, seq_no=index, display_text=text))
+                raise ImportValidationError(f"{metadata_path}: {field_name}[{index}] 必须是非空字符串或对象")
+            text_items.append(text)
+
+        seq_no = 1
+        if object_conditions:
+            oracles.append(
+                PlannedOracle(
+                    oracle_kind=oracle_kind,
+                    seq_no=seq_no,
+                    display_text=_event_trace_display_text(oracle_kind, len(object_conditions)),
+                    evaluator_type="event_trace_match",
+                    evaluator_config={"ordered": True, "conditions": object_conditions},
+                )
+            )
+            seq_no += 1
+
+        for text in text_items:
+            oracles.append(
+                PlannedOracle(
+                    oracle_kind=oracle_kind,
+                    seq_no=seq_no,
+                    display_text=text,
+                    evaluator_type="manual_review",
+                    evaluator_config={"criteria": text},
+                )
+            )
+            seq_no += 1
+    if not oracles:
+        raise ImportValidationError(f"{metadata_path}: success_oracle/harm_oracle 至少需要生成一条规则")
     return oracles
+
+
+def _normalize_event_condition(item: dict[str, object], metadata_path: Path, field_name: str) -> dict[str, object]:
+    """把 legacy 对象型 oracle 条件规范成 event_trace_match 条件。"""
+    event_type = _require_non_empty_text(item.get("event_type"), metadata_path, f"{field_name}.event_type")
+    condition: dict[str, object] = {"event_type": event_type}
+    target = item.get("target")
+    if target is not None:
+        if not isinstance(target, dict):
+            raise ImportValidationError(f"{metadata_path}: {field_name}.target 必须是对象")
+        condition["target"] = target
+    if "value_equals" in item:
+        condition["value_equals"] = item["value_equals"]
+    if "ordered" in item:
+        condition["ordered"] = bool(item["ordered"])
+    return condition
+
+
+def _event_trace_display_text(oracle_kind: int, condition_count: int) -> str:
+    """生成结构化事件 oracle 的人类可读说明。"""
+    kind_text = "success" if oracle_kind == 1 else "harm"
+    return f"Match {condition_count} {kind_text} event condition(s)."
 
 
 def _normalize_standard_oracles(payload: dict[str, object], metadata_path: Path) -> list[PlannedOracle]:

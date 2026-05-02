@@ -14,8 +14,6 @@ from sqlalchemy.orm import Session, sessionmaker
 
 BACKEND_ROOT = Path(__file__).resolve().parents[1]
 BACKEND_CWD = str(BACKEND_ROOT)
-DATA_ROOT = BACKEND_ROOT / "data"
-DATASET_METADATA_ROOT = BACKEND_ROOT / "dataset_metadata"
 
 
 def ensure_backend_root_on_path() -> None:
@@ -27,6 +25,10 @@ def ensure_backend_root_on_path() -> None:
 ensure_backend_root_on_path()
 
 from app.shared.config import settings
+
+
+DATA_ROOT = settings.dataset_root
+DATASET_METADATA_ROOT = settings.dataset_metadata_root
 
 
 def build_sync_engine() -> Engine:

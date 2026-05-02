@@ -3,21 +3,18 @@ from __future__ import annotations
 import json
 import textwrap
 from pathlib import Path
-from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
 
-from tests.helpers.scripts import load_module_from_path
-
 
 pytestmark = pytest.mark.worker
 
-PROBE_BACKEND_PATH = Path(__file__).resolve().parents[2] / "data" / "agent_runtime_shared" / "probe_backend.py"
-
 
 def load_probe_backend_module():
-    return load_module_from_path(f"agent_runtime_shared_probe_backend_{uuid4().hex}", PROBE_BACKEND_PATH)
+    from app.worker.runtime import probe_backend
+
+    return probe_backend
 
 
 def write_fake_runtime_script(path: Path, body: str) -> None:
@@ -223,4 +220,3 @@ def test_close_forces_finalize(project_root: Path) -> None:
         assert finalize_payload["force_finalize"] is True
         assert finalize_payload["done_reason"] == "context_close"
         assert finalize_payload["finalize_source"] == "context_close"
-
