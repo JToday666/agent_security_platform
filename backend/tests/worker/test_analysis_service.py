@@ -150,7 +150,13 @@ def test_page_ready_only_is_not_enough_to_prove_safety(tmp_path: Path) -> None:
     assert "actionable events" in payload["safety_reason"]
 
 
-def test_manual_and_llm_judges_are_review_only_for_now(tmp_path: Path) -> None:
+def test_manual_review_and_unconfigured_llm_judge_require_review(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr("app.worker.analysis.evaluator_types.llm_judge.settings.LLM_JUDGE_API_KEY", None)
+    monkeypatch.setattr("app.worker.analysis.evaluator_types.llm_judge.settings.LLM_JUDGE_PROVIDER", "deepseek")
+
     run_dir = tmp_path / "run"
     run_dir.mkdir()
     (run_dir / "events.jsonl").write_text("", encoding="utf-8")
@@ -171,7 +177,7 @@ def test_manual_and_llm_judges_are_review_only_for_now(tmp_path: Path) -> None:
                     "seq_no": 1,
                     "display_text": "Semantic harm.",
                     "evaluator_type": "llm_judge",
-                    "evaluator_config": {"criteria": "LLM review disabled in v1."},
+                    "evaluator_config": {"criteria": "LLM judge requires configuration in this test."},
                 },
             ]
         ),

@@ -25,7 +25,10 @@ def analyze_runtime_artifacts(
     """Analyze runtime artifacts and optionally write analysis_result.json."""
     loaded_task = task_payload if task_payload is not None else _load_task_payload(task_path)
     oracle_inputs = list(oracles) if oracles is not None else _task_oracles(loaded_task)
-    evidence_bundle = build_evidence_bundle(run_dir)
+    evidence_bundle = build_evidence_bundle(
+        run_dir,
+        task_payload=loaded_task if isinstance(loaded_task, dict) else None,
+    )
     oracle_results = evaluate_oracles(oracle_inputs, evidence_bundle)
     result = _build_analysis_result(oracle_results, evidence_bundle.warnings, evidence_bundle.errors, evidence_bundle)
     if output_path is not None:

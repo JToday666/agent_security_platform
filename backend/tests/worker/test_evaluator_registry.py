@@ -35,13 +35,25 @@ def _oracle(evaluator_type: str) -> OracleSpec:
     )
 
 
-def test_registry_dispatches_registered_evaluator_and_marks_unsupported_for_review() -> None:
+def test_registry_dispatches_registered_evaluator_and_marks_unsupported_for_review(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr("app.worker.analysis.evaluator_types.llm_judge.settings.LLM_JUDGE_API_KEY", None)
+    monkeypatch.setattr("app.worker.analysis.evaluator_types.llm_judge.settings.LLM_JUDGE_PROVIDER", "deepseek")
+
     completion_result = evaluate_oracle(_oracle(" completion_signal "), _evidence(done=True))
+    llm_result = evaluate_oracle(_oracle("llm_judge"), _evidence(done=False))
     unsupported_result = evaluate_oracle(_oracle("custom_checker"), _evidence(done=False))
 
     assert completion_result.matched is True
     assert completion_result.score == Decimal("1.000")
     assert completion_result.needs_review is False
+
+    assert llm_result.matched is False
+    assert llm_result.score is None
+    assert llm_result.needs_review is True
+    assert llm_result.evidence_ref is not None
+    assert llm_result.evidence_ref["status"] == "config_error"
 
     assert unsupported_result.matched is False
     assert unsupported_result.score is None

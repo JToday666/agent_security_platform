@@ -8,6 +8,7 @@ from typing import Callable
 from app.worker.analysis.evidence import EvidenceBundle
 from app.worker.analysis.evaluator_types.completion import evaluate_completion_signal
 from app.worker.analysis.evaluator_types.event_trace import evaluate_event_trace_match
+from app.worker.analysis.evaluator_types.llm_judge import evaluate_llm_judge
 from app.worker.analysis.evaluator_types.review import evaluate_review_required
 from app.worker.analysis.schema import OracleMatchResult, OracleSpec
 
@@ -19,7 +20,7 @@ EVALUATORS: dict[str, EvaluatorFn] = {
     "event_trace_match": evaluate_event_trace_match,
     "completion_signal": evaluate_completion_signal,
     "manual_review": evaluate_review_required,
-    "llm_judge": evaluate_review_required,
+    "llm_judge": evaluate_llm_judge,
 }
 
 

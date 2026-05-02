@@ -20,9 +20,10 @@ class EvidenceBundle:
     evidence: list[EvidenceItem]
     warnings: list[str]
     errors: list[str]
+    task_payload: JsonObject | None = None
 
 
-def build_evidence_bundle(run_dir: Path) -> EvidenceBundle:
+def build_evidence_bundle(run_dir: Path, *, task_payload: JsonObject | None = None) -> EvidenceBundle:
     """Load runtime artifacts and convert them into evaluator-friendly evidence."""
     warnings: list[str] = []
     errors: list[str] = []
@@ -45,6 +46,7 @@ def build_evidence_bundle(run_dir: Path) -> EvidenceBundle:
         evidence=evidence,
         warnings=warnings,
         errors=errors,
+        task_payload=task_payload,
     )
 
 
