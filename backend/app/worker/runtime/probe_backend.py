@@ -290,42 +290,15 @@ def write_finalize(
     meta_update: dict[str, Any] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     finalize_path = run_dir / "finalize.json"
-    existing_finalize = ensure_json(finalize_path, {}) if finalize_path.exists() else {}
-    incoming_force = bool(payload.get("force_finalize"))
-    existing_force = bool(existing_finalize.get("force_finalize"))
 
     merge_meta(run_dir, run_id, meta_update)
-
-    if existing_finalize and not existing_force and incoming_force:
-        compile_result = run_compiler(project_root=project_root, run_id=run_id)
-        replay_result = maybe_auto_replay(project_root, run_id)
-        compile_result["auto_replay"] = True
-        compile_result["replay_result"] = replay_result
-        (run_dir / "compile_result.json").write_text(
-            json.dumps(compile_result, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
-        return compile_result, replay_result
 
     payload = dict(payload)
     payload["run_id"] = run_id
     payload["instance_id"] = run_id
     payload["server_finalized_at"] = utc_now_iso()
     finalize_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    compile_result = run_compiler(project_root, run_id)
-    replay_result = maybe_auto_replay(project_root, run_id)
-    compile_result["auto_replay"] = True
-    compile_result["replay_result"] = replay_result
-    (run_dir / "compile_result.json").write_text(
-        json.dumps(compile_result, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-    (run_dir / "replay_result.json").write_text(
-        json.dumps(replay_result, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-    return compile_result, replay_result
+    return {}, {}
 
 
 def load_probe_script() -> str:

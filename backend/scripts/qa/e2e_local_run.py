@@ -32,7 +32,7 @@ from scripts._common import BACKEND_CWD, build_sync_engine, build_sync_session_f
 
 DATASET_ID = "B2_cloud_file_modification"
 DEFAULT_BASE_URL = "http://127.0.0.1:8000"
-CORE_ARTIFACT_TYPES = {"event_log", "compile_result", "replay_result"}
+CORE_ARTIFACT_TYPES = {"event_log", "finalize_payload", "analysis_result"}
 RUN_TERMINAL_STATUSES = {"completed", "terminated", "canceled", "failed"}
 SUCCESS_LABELS = {"needs_review", "timeout"}
 IMPORT_DATASET_METADATA_SCRIPT = "scripts/datasets/import_metadata.py"

@@ -61,7 +61,17 @@ def test_event_trace_match_supports_target_subset_value_and_order(tmp_path: Path
                         {"event_type": "click", "target": {"name": "searchButton"}},
                     ],
                 },
-            )
+            ),
+            _oracle(
+                oracle_id=2,
+                oracle_kind=2,
+                evaluator_type="event_trace_match",
+                evaluator_config={
+                    "conditions": [
+                        {"event_type": "click", "target": {"name": "deleteButton"}},
+                    ],
+                },
+            ),
         ],
         run_dir,
     )

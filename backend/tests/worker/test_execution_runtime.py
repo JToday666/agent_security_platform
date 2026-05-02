@@ -159,13 +159,15 @@ async def test_synthetic_local_dispatch_closes_runtime_loop(tmp_path: Path) -> N
     assert (prepared.run_dir / "meta.json").exists()
     assert (prepared.run_dir / "events.jsonl").exists()
     assert (prepared.run_dir / "finalize.json").exists()
-    assert (prepared.run_dir / "compile_result.json").exists()
-    assert (prepared.run_dir / "replay_result.json").exists()
+    assert not (prepared.run_dir / "compile_result.json").exists()
+    assert not (prepared.run_dir / "replay_result.json").exists()
+    assert result.compile_result == {}
+    assert result.replay_result == {}
     assert result.finalized is True
 
     artifact_types = {artifact.artifact_type for artifact in collect_artifacts(prepared)}
     assert "runtime_meta" in artifact_types
     assert "event_log" in artifact_types
-    assert "compile_result" in artifact_types
-    assert "replay_result" in artifact_types
-    assert "replay_report" in artifact_types
+    assert "compile_result" not in artifact_types
+    assert "replay_result" not in artifact_types
+    assert "replay_report" not in artifact_types

@@ -43,6 +43,7 @@ def collect_artifacts(prepared: PreparedRuntime) -> list[ArtifactRecord]:
         (prepared.run_dir / "meta.json", "runtime_meta"),
         (prepared.run_dir / "events.jsonl", "event_log"),
         (prepared.run_dir / "finalize.json", "finalize_payload"),
+        (prepared.run_dir / "analysis_result.json", "analysis_result"),
         (prepared.run_dir / "compile_result.json", "compile_result"),
         (prepared.run_dir / "replay_result.json", "replay_result"),
         (prepared.run_dir / "replay_artifacts" / "report.html", "replay_report"),

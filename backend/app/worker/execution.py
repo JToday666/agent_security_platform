@@ -32,6 +32,7 @@ from app.worker.runtime import (
 )
 from app.worker.runtime.ports import allocate_tcp_port
 from app.worker.runtime.preparation import build_environment_ref, build_probe_token
+from app.worker.analysis.service import analyze_runtime_artifacts, summary_from_analysis
 from app.worker.oracle_evaluator import EVALUATOR_VERSION, evaluate_oracles_from_artifacts
 
 
@@ -101,21 +102,12 @@ def _runtime_process_semaphore() -> asyncio.Semaphore:
     return _RUNTIME_PROCESS_SEMAPHORE
 
 
-def _validate_dispatch_results(prepared, compile_result: dict[str, object], replay_result: dict[str, object]) -> None:
-    """校验 runtime 输出的编译结果、回放结果与关键产物文件。"""
-    if not (prepared.run_dir / "compile_result.json").exists():
-        raise RuntimeDispatchError("compile_result.json not found")
-    if not (prepared.run_dir / "replay_result.json").exists():
-        raise RuntimeDispatchError("replay_result.json not found")
-
-    if not compile_result:
-        raise RuntimeDispatchError("compile result is empty")
-    if compile_result.get("ok") is False:
-        raise RuntimeDispatchError(str(compile_result.get("error") or "compiler returned ok=false"))
-    if replay_result.get("ok") is False:
-        raise RuntimeDispatchError(str(replay_result.get("error") or "replay returned ok=false"))
-    if not replay_result:
-        raise RuntimeDispatchError("replay result is empty")
+def _validate_dispatch_results(prepared, finalized: bool) -> None:
+    """校验 runtime 已完成收尾并写出最小判定证据。"""
+    if not finalized:
+        raise RuntimeDispatchError("runtime dispatch did not finalize")
+    if not (prepared.run_dir / "finalize.json").exists():
+        raise RuntimeDispatchError("finalize.json not found")
 
 
 async def _persist_runtime_result(
@@ -130,7 +122,6 @@ async def _persist_runtime_result(
     error_message: str | None = None,
 ) -> None:
     """持久化样本执行摘要、产物记录与任务统计。"""
-    artifacts = await asyncio.to_thread(collect_artifacts, prepared)
     finished_at = _now()
 
     async with AsyncSessionLocal() as db:
@@ -143,6 +134,8 @@ async def _persist_runtime_result(
         await db.execute(delete(OracleResult).where(OracleResult.sample_execution_id == execution_id))
 
         summary_payload = summary
+        analysis_output_path = prepared.run_dir / "analysis_result.json"
+        task_path = prepared.sample_dir / "task.json"
         if summary_payload is None:
             oracle_rows = (
                 await db.execute(
@@ -157,6 +150,8 @@ async def _persist_runtime_result(
                     evaluate_oracles_from_artifacts,
                     oracle_rows,
                     prepared.run_dir,
+                    task_path=task_path if task_path.exists() else None,
+                    output_path=analysis_output_path,
                 )
                 for result in evaluation_bundle.results:
                     db.add(
@@ -172,7 +167,22 @@ async def _persist_runtime_result(
                     )
                 summary_payload = evaluation_bundle.summary
             else:
-                summary_payload = _summary_for_success("no_oracles")
+                analysis_result = await asyncio.to_thread(
+                    analyze_runtime_artifacts,
+                    run_dir=prepared.run_dir,
+                    task_path=task_path if task_path.exists() else None,
+                    output_path=analysis_output_path,
+                )
+                summary_payload = summary_from_analysis(analysis_result)
+        elif task_path.exists():
+            await asyncio.to_thread(
+                analyze_runtime_artifacts,
+                run_dir=prepared.run_dir,
+                task_path=task_path,
+                output_path=analysis_output_path,
+            )
+
+        artifacts = await asyncio.to_thread(collect_artifacts, prepared)
 
         db.add(
             ExecutionSummary(
@@ -331,7 +341,7 @@ async def execute_sample(
             dispatch_result = await adapter.dispatch(prepared, sample, timeout, dispatch_config=dispatch_config)
 
             await _mark_execution_state(execution_id, "verifying")
-            _validate_dispatch_results(prepared, dispatch_result.compile_result, dispatch_result.replay_result)
+            _validate_dispatch_results(prepared, dispatch_result.finalized)
 
             await _persist_runtime_result(
                 execution_id,
