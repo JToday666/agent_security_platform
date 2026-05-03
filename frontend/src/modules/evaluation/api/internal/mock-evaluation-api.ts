@@ -62,6 +62,171 @@ const MOCK_SUBMIT_VALIDATION_DELAY_MS = 520;
 const MOCK_SUBMIT_CREATED_DELAY_MS = 780;
 const MOCK_ACTION_DELAY_MS = 420;
 
+type MockTrendItem = EvaluationScoreTrend["items"][number];
+
+const MOCK_TREND_ITEMS: MockTrendItem[] = [
+  {
+    evaluationId: "eval_20260330_004",
+    agentName: "Ops Control Auditor",
+    createdAt: "2026-03-18T03:20:00Z",
+    finishedAt: "2026-03-18T03:58:00Z",
+    scores: {
+      conservativeScore: 82.4,
+      performanceScore: 85.1,
+      hardScore: 70.8,
+      confidence: 74.2,
+      unsafeRate: 12.6,
+      completionScore: 88.2,
+      safetyScore: 84.1,
+      timeScore: 78.5,
+    },
+  },
+  {
+    evaluationId: "eval_20260331_003",
+    agentName: "Civic Safety Writer",
+    createdAt: "2026-03-20T06:40:00Z",
+    finishedAt: "2026-03-20T07:04:00Z",
+    scores: {
+      conservativeScore: 84.7,
+      performanceScore: 87.2,
+      hardScore: 73.6,
+      confidence: 75.8,
+      unsafeRate: 10.8,
+      completionScore: 89.4,
+      safetyScore: 85.9,
+      timeScore: 80.2,
+    },
+  },
+  {
+    evaluationId: "eval_20260401_002",
+    agentName: "Boundary Sentinel",
+    createdAt: "2026-03-22T09:10:00Z",
+    finishedAt: "2026-03-22T09:43:00Z",
+    scores: {
+      conservativeScore: 86.1,
+      performanceScore: 88.5,
+      hardScore: 76.4,
+      confidence: 78.1,
+      unsafeRate: 9.5,
+      completionScore: 90.8,
+      safetyScore: 87.2,
+      timeScore: 81.6,
+    },
+  },
+  {
+    evaluationId: "eval_20260402_001",
+    agentName: "Guardian Mesh v2.4",
+    createdAt: "2026-03-24T01:15:00Z",
+    finishedAt: "2026-03-24T01:47:00Z",
+    scores: {
+      conservativeScore: 88.9,
+      performanceScore: 91.2,
+      hardScore: 79.1,
+      confidence: 80.5,
+      unsafeRate: 8.1,
+      completionScore: 92.4,
+      safetyScore: 90.2,
+      timeScore: 82.4,
+    },
+  },
+  {
+    evaluationId: "eval_20260330_004",
+    agentName: "Ops Control Auditor",
+    createdAt: "2026-03-26T03:20:00Z",
+    finishedAt: "2026-03-26T03:55:00Z",
+    scores: {
+      conservativeScore: 87.3,
+      performanceScore: 90.6,
+      hardScore: 78.2,
+      confidence: 81.4,
+      unsafeRate: 8.9,
+      completionScore: 91.8,
+      safetyScore: 88.6,
+      timeScore: 83.1,
+    },
+  },
+  {
+    evaluationId: "eval_20260331_003",
+    agentName: "Civic Safety Writer",
+    createdAt: "2026-03-28T06:40:00Z",
+    finishedAt: "2026-03-28T07:02:00Z",
+    scores: {
+      conservativeScore: 89.5,
+      performanceScore: 91.9,
+      hardScore: 80.3,
+      confidence: 82.7,
+      unsafeRate: 7.4,
+      completionScore: 93.1,
+      safetyScore: 90.4,
+      timeScore: 84.3,
+    },
+  },
+  {
+    evaluationId: "eval_20260401_002",
+    agentName: "Boundary Sentinel",
+    createdAt: "2026-03-30T09:10:00Z",
+    finishedAt: "2026-03-30T09:45:00Z",
+    scores: {
+      conservativeScore: 90.8,
+      performanceScore: 93.2,
+      hardScore: 82.5,
+      confidence: 84.6,
+      unsafeRate: 6.5,
+      completionScore: 94.2,
+      safetyScore: 91.8,
+      timeScore: 85.6,
+    },
+  },
+  {
+    evaluationId: "eval_20260402_001",
+    agentName: "Guardian Mesh v2.4",
+    createdAt: "2026-04-01T01:15:00Z",
+    finishedAt: "2026-04-01T01:46:00Z",
+    scores: {
+      conservativeScore: 92.4,
+      performanceScore: 94.5,
+      hardScore: 84.1,
+      confidence: 86.2,
+      unsafeRate: 5.8,
+      completionScore: 95.3,
+      safetyScore: 93.2,
+      timeScore: 86.8,
+    },
+  },
+  {
+    evaluationId: "eval_20260401_002",
+    agentName: "Boundary Sentinel",
+    createdAt: "2026-04-02T09:10:00Z",
+    finishedAt: "2026-04-02T09:44:00Z",
+    scores: {
+      conservativeScore: 91.7,
+      performanceScore: 93.8,
+      hardScore: 83.6,
+      confidence: 86.9,
+      unsafeRate: 6.1,
+      completionScore: 94.7,
+      safetyScore: 92.4,
+      timeScore: 87.1,
+    },
+  },
+  {
+    evaluationId: "eval_20260402_001",
+    agentName: "Guardian Mesh v2.4",
+    createdAt: "2026-04-03T01:15:00Z",
+    finishedAt: "2026-04-03T01:45:00Z",
+    scores: {
+      conservativeScore: 94.2,
+      performanceScore: 96.1,
+      hardScore: 86.4,
+      confidence: 89.3,
+      unsafeRate: 4.4,
+      completionScore: 96.8,
+      safetyScore: 94.9,
+      timeScore: 88.2,
+    },
+  },
+];
+
 const getReferenceMeta = async (): Promise<SubmitMetaResponse> => {
   const result = await resolveMockEnvelope(
     createSuccessEnvelope(referenceSubmitMeta),
@@ -267,13 +432,37 @@ const getTrendDateTime = (record: EvaluationRecord): number => {
   return Number.isNaN(time) ? 0 : time;
 };
 
+const getTrendItemDateTime = (item: MockTrendItem): number => {
+  const value = item.finishedAt ?? item.createdAt;
+  const time = new Date(value).getTime();
+  return Number.isNaN(time) ? 0 : time;
+};
+
+const buildTrendItemFromRecord = (record: EvaluationRecord): MockTrendItem => ({
+  evaluationId: record.evaluationId,
+  agentName: record.agentName,
+  createdAt: record.createdAt,
+  finishedAt: record.finishedAt ?? record.updatedAt,
+  scores: buildTrendScores(record),
+});
+
 export const getMockEvaluationScoreTrend = async (
   scope: EvaluationScoreTrendScope,
 ): Promise<EvaluationScoreTrend> => {
-  const records = getMergedRecords()
+  const dynamicItems = getMergedRecords()
     .filter(isTrendRecord)
-    .sort((left, right) => getTrendDateTime(left) - getTrendDateTime(right));
-  const scopedRecords = scope === "recent10" ? records.slice(-10) : records;
+    .sort((left, right) => getTrendDateTime(left) - getTrendDateTime(right))
+    .map(buildTrendItemFromRecord);
+  const dynamicKeys = new Set(
+    dynamicItems.map((item) => `${item.evaluationId}:${item.finishedAt}`),
+  );
+  const seedItems = MOCK_TREND_ITEMS.filter(
+    (item) => !dynamicKeys.has(`${item.evaluationId}:${item.finishedAt}`),
+  );
+  const items = [...seedItems, ...dynamicItems].sort(
+    (left, right) => getTrendItemDateTime(left) - getTrendItemDateTime(right),
+  );
+  const scopedItems = scope === "recent10" ? items.slice(-10) : items;
 
   const result = await resolveMockEnvelope(
     createSuccessEnvelope({
@@ -290,13 +479,7 @@ export const getMockEvaluationScoreTrend = async (
           metrics: ["conservativeScore", "confidence", "unsafeRate"],
         },
       },
-      items: scopedRecords.map((record) => ({
-        evaluationId: record.evaluationId,
-        agentName: record.agentName,
-        createdAt: record.createdAt,
-        finishedAt: record.finishedAt ?? record.updatedAt,
-        scores: buildTrendScores(record),
-      })),
+      items: scopedItems,
     } satisfies EvaluationScoreTrend),
   );
 

@@ -1,18 +1,20 @@
 # Agent Security Platform
 
-Agent Security Platform 是一个面向 Agent API 的安全测试平台仓库。当前仓库包含 Vue 3 前端控制台、FastAPI 后端服务、基于 PostgreSQL 轮询的 worker，以及前后端共享的接口契约文档。
+Agent Security Platform 是一个面向 Agent API 的安全测试平台仓库，包含 Vue 前端控制台、FastAPI 后端服务、基于 PostgreSQL 轮询的 worker，以及前后端共享的接口契约文档。
 
 ## 项目简介
 
-平台当前聚焦一条可联调的主链路：
+平台聚焦一条可联调的主链路：
 
 - 展示数据集目录与详情
 - 提交 Agent 评测任务
-- 查看评测记录与详情
+- 查看评测历史、分数趋势和评测详情
+- 阅读评分报告、能力结构、样本结果、风险归因、样本定位和代表样本证据
+- 触发样本明细下载入口并处理下载失败反馈
 - 对任务执行暂停、恢复、终止、取消等动作
 - 在前端真实 API 模式与 Mock 模式之间切换
 
-当前仓库适合作为以下工作的统一入口：
+仓库适合作为以下工作的统一入口：
 
 - 前端页面与交互联调
 - 后端接口与状态流转联调
@@ -20,24 +22,24 @@ Agent Security Platform 是一个面向 Agent API 的安全测试平台仓库。
 - 跨端接口契约核对
 - 项目级设计和拆解文档查阅
 
-## 当前进度概览
+## 能力概览
 
-| 子系统              | 当前状态                                                                                                                                           |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 前端 `frontend/`    | 已实现首页、数据集目录/详情、排行榜、联系页、登录注册、个人资料、提交评测页、评测记录页、评测详情页，以及真实 API / Mock API 双模式切换。          |
-| 后端 API `backend/` | 已实现 `/api/v1/auth/*`、`/api/v1/user/*`、`/api/v1/datasets/*`、`/api/v1/agents/*`、`/api/v1/evaluations/*`，统一返回 `{ code, data, message }`。 |
-| Worker              | 已具备 PostgreSQL 轮询领取任务、心跳续约、暂停/恢复/终止/取消状态处理，以及评测完成后的结果汇总链路。                                              |
-| 数据与迁移          | 已具备 SQLAlchemy 模型、Alembic 迁移链路、运行时目录和上传目录收口。                                                                               |
-| 接口契约 `share/`   | 保留统一 API 协议总表和用户、数据集/提交、评测三个补充说明文档，当前主要作为前后端沟通参考材料。                                                   |
+| 子系统              | 当前状态                                                                                                                                                                    |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 前端 `frontend/`    | 已实现首页、数据集目录/详情、排行榜、联系页、登录注册、个人资料、提交评测页、评测历史页、趋势分析、评测详情页、评分报告阅读流、代表样本证据，以及真实 API / Mock API 双模式切换。 |
+| 后端 API `backend/` | 已实现 `/api/v1/auth/*`、`/api/v1/user/*`、`/api/v1/datasets/*`、`/api/v1/agents/*`、`/api/v1/evaluations/*`，统一返回 `{ code, data, message }`。                          |
+| Worker              | 已具备 PostgreSQL 轮询领取任务、心跳续约、暂停/恢复/终止/取消状态处理，以及评测完成后的结果汇总链路。                                                                       |
+| 数据与迁移          | 已具备 SQLAlchemy 模型、Alembic 迁移链路、运行时目录和上传目录收口。                                                                                                        |
+| 接口契约 `share/`   | 保留统一 API 协议总表和用户、数据集、提交、Agent、报告接口补充说明文档，主要作为前后端沟通参考材料。                                                                        |
 
 ## 已知边界
 
-当前仓库已经具备前后端主链路联调能力，但以下能力仍处于持续增强阶段：
+仓库具备前后端主链路联调能力，但以下能力仍处于持续增强阶段：
 
 - 当前默认执行闭环以 `synthetic_local` runtime 为主，能够完成任务领取、样本执行、核心产物采集和报告摘要写回；更真实的 Agent 适配与调度模式仍在继续完善。
 - 执行过程中的日志、页面访问、网络请求、工具调用等证据采集已具备基础链路，但产物种类与可观测性仍可继续扩充。
 - 结构化 evaluator / oracle 能力仍在逐步补齐，当前不少样本仍依赖 `needs_review` 这类人工复核口径。
-- 可下载报告、证据沉淀和更细粒度的统计展示仍需继续增强。
+- 样本明细下载依赖后端导出文件；文件缺失时前端展示局部失败反馈。
 - worker 当前是 PostgreSQL 轮询版，启动/停止观测、健康检查与异常恢复策略仍有完善空间。
 
 这些边界不会改变当前前端、后端和接口契约的阅读入口，但会影响真实执行深度与后续运维能力判断。
@@ -64,7 +66,7 @@ Agent Security Platform 是一个面向 Agent API 的安全测试平台仓库。
 
 ```mermaid
 flowchart LR
-    FE["frontend/<br/>Vue 3 + TypeScript"] -->|"/api/v1 /uploads"| BE["backend/<br/>FastAPI API"]
+    FE["frontend/<br/>Vue + TypeScript"] -->|"/api/v1 /uploads"| BE["backend/<br/>FastAPI API"]
     FE -.-> MOCK["Frontend Mock API"]
     BE --> DB["PostgreSQL"]
     BE --> RT["var/backend<br/>uploads / credentials / workdir"]
@@ -78,13 +80,13 @@ flowchart LR
 
 ## 环境准备
 
-| 工具       | 要求                         | 说明                                                                   |
-| ---------- | ---------------------------- | ---------------------------------------------------------------------- |
-| Node.js    | `>=24.14.1 <25`              | 前端 `package.json` 中已明确约束。                                     |
-| pnpm       | 推荐 `10.33.2`               | 前端 `packageManager` 当前为 `pnpm@10.33.2`。                          |
-| Python     | `>=3.12`，推荐 `3.12`        | 后端 `pyproject.toml` 要求 `>=3.12`，`.python-version` 当前为 `3.12`。 |
-| uv         | 可执行 `uv sync` 和 `uv run` | 后端使用 uv 管理依赖、运行和迁移。                                     |
-| PostgreSQL | 需要本地可用实例             | 仓库未锁定具体次版本，建议与团队开发环境保持一致。                     |
+| 工具       | 要求                            | 说明                               |
+| ---------- | ------------------------------- | ---------------------------------- |
+| Node.js    | 以 `frontend/package.json` 为准 | 前端运行、构建和类型检查使用。     |
+| pnpm       | 以 `frontend/package.json` 为准 | 前端依赖安装和脚本执行使用。       |
+| Python     | 以后端配置文件为准              | 后端 API、迁移和 worker 使用。     |
+| uv         | 可执行 `uv sync` 和 `uv run`    | 后端使用 uv 管理依赖、运行和迁移。 |
+| PostgreSQL | 需要本地可用实例                | 本地数据库配置通过环境变量指定。   |
 
 ## 环境变量
 
@@ -203,7 +205,7 @@ pnpm dev
 ```bash
 pnpm test
 pnpm type-check
-pnpm build
+pnpm build-only
 ```
 
 ### 后端最小验证
@@ -255,8 +257,10 @@ uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
 
 - [API 接口协议总表](./share/API接口协议.md)
 - [用户接口补充说明](./share/user接口.md)
-- [数据集与提交接口补充说明](./share/database&submit接口.md)
-- [评测记录与报告接口补充说明](./share/evaluations接口.md)
+- [数据集接口补充说明](./share/database接口.md)
+- [提交接口补充说明](./share/submit接口.md)
+- [Agent 接口补充说明](./share/agent接口.md)
+- [报告接口补充说明](./share/report接口.md)
 
 ## 维护说明
 
