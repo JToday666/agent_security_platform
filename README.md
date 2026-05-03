@@ -182,7 +182,7 @@ uv run python worker.py
 在 `frontend/` 目录执行：
 
 ```bash
-pnpm install
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 

@@ -469,6 +469,7 @@ onUnmounted(() => {
 .nav-link {
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
   gap: 0.5rem;
   padding: 0.7rem 0.96rem;
   border-radius: var(--radius-pill);
@@ -788,8 +789,12 @@ onUnmounted(() => {
     font-size: 1rem;
   }
 
+  .nav-links {
+    gap: 0.2rem;
+  }
+
   .nav-link {
-    padding: 0.62rem 0.8rem;
+    padding: 0.5rem 0.6rem;
     font-size: 0.88rem;
   }
 

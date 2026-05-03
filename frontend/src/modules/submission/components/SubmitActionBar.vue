@@ -196,6 +196,7 @@ const remainingCount = computed(
 
 .action-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.65rem;
 }
 

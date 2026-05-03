@@ -139,6 +139,7 @@ const afterLeave = () => {};
 
 .button-group {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
 }
