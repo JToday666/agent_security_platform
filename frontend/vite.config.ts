@@ -8,6 +8,30 @@ export default defineConfig(({ mode }) => {
   const backendTarget = env.VITE_BACKEND_TARGET || "http://127.0.0.1:8000";
 
   return {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              if (
+                id.includes("vue") ||
+                id.includes("pinia") ||
+                id.includes("vue-router")
+              ) {
+                return "vue-vendor";
+              }
+              if (id.includes("element-plus")) {
+                return "element-plus";
+              }
+              if (id.includes("lucide")) {
+                return "lucide-icons";
+              }
+              return "vendor";
+            }
+          },
+        },
+      },
+    },
     plugins: [vue()],
     resolve: {
       alias: {
