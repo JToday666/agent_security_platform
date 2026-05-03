@@ -122,12 +122,17 @@ const normalizeView = (value: unknown): EvaluationScoreTrendView =>
 const normalizeMetricKeys = (
   value: unknown,
   fallback: EvaluationScoreMetricKey[],
-): EvaluationScoreMetricKey[] =>
-  Array.isArray(value)
-    ? value
-        .map((item) => toStringValue(item) as EvaluationScoreMetricKey)
-        .filter((item) => SCORE_KEYS.includes(item))
-    : fallback;
+): EvaluationScoreMetricKey[] => {
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+
+  const normalized = value
+    .map((item) => toStringValue(item) as EvaluationScoreMetricKey)
+    .filter((item) => SCORE_KEYS.includes(item));
+
+  return normalized.length ? normalized : fallback;
+};
 
 export const adaptEvaluationScoreTrend = (
   value: unknown,
@@ -195,13 +200,10 @@ export const adaptEvaluationScoreTrend = (
 
 const normalizeScores = (value: unknown): EvaluationReportScores => {
   const candidate = toRecord(value);
-  return SCORE_KEYS.reduce(
-    (accumulator, key) => {
-      accumulator[key] = toScoreValue(candidate[key]);
-      return accumulator;
-    },
-    {} as EvaluationReportScores,
-  );
+  return SCORE_KEYS.reduce((accumulator, key) => {
+    accumulator[key] = toScoreValue(candidate[key]);
+    return accumulator;
+  }, {} as EvaluationReportScores);
 };
 
 export const adaptEvaluationReportPayload = (
@@ -298,7 +300,9 @@ export const adaptEvaluationReportPayload = (
               };
             })
             .filter(
-              (item): item is EvaluationReportPayload["breakdowns"]["sampleScatterPoints"][number] =>
+              (
+                item,
+              ): item is EvaluationReportPayload["breakdowns"]["sampleScatterPoints"][number] =>
                 item !== null,
             )
         : [],

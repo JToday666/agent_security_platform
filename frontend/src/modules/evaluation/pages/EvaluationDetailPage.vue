@@ -209,7 +209,6 @@ import EvaluationEvidenceSection from "@/modules/evaluation/components/Evaluatio
 import EvaluationReportSection from "@/modules/evaluation/components/EvaluationReportSection.vue";
 import { useEvaluationDetailPage } from "@/modules/evaluation/composables/useEvaluationDetailPage";
 import {
-  formatEvaluationScore,
   hasAvailableActions,
 } from "@/modules/evaluation/lib/evaluation-status";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
@@ -265,11 +264,8 @@ const scoreTone = computed<DetailTone>(() =>
 );
 
 const primaryScore = computed(() =>
-  detail.value
-    ? formatEvaluationScore(
-        detail.value.score,
-        detail.value.finalReportAvailable,
-      )
+  detail.value?.finalReportAvailable && typeof detail.value.score === "number"
+    ? detail.value.score.toFixed(1)
     : "--",
 );
 
@@ -455,6 +451,9 @@ const detailGroups = computed(() => {
 
 <style scoped lang="scss">
 .detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
   padding-bottom: 2.5rem;
 }
 
@@ -462,7 +461,7 @@ const detailGroups = computed(() => {
 .sample-outcome,
 .detail-section {
   position: relative;
-  padding-top: 1.35rem;
+  padding-top: 1.65rem;
   border-top: 1px solid rgba(148, 163, 184, 0.18);
 }
 
@@ -481,10 +480,10 @@ const detailGroups = computed(() => {
 .summary-band {
   display: grid;
   grid-template-columns: minmax(170px, 0.28fr) minmax(0, 1fr) auto;
-  gap: 1.25rem;
+  gap: 1.45rem;
   align-items: stretch;
   overflow: hidden;
-  padding: 1.35rem 1.1rem 1.1rem;
+  padding: 1.5rem 1.2rem 1.2rem;
   border: 1px solid rgba(148, 163, 184, 0.16);
   background:
     radial-gradient(circle at 3% 10%, rgba(37, 99, 235, 0.12), transparent 32%),
@@ -516,11 +515,12 @@ const detailGroups = computed(() => {
 .score-display strong {
   margin-top: 0.2rem;
   color: var(--color-text-dark);
-  font-size: clamp(2.6rem, 6vw, 4.8rem);
+  font-size: clamp(2.55rem, 5.4vw, 4.65rem);
   font-variant-numeric: tabular-nums;
   font-weight: 900;
   letter-spacing: 0;
   line-height: 0.95;
+  white-space: nowrap;
 }
 
 .score-display small {
@@ -625,7 +625,7 @@ const detailGroups = computed(() => {
 .detail-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .section-head {
@@ -723,7 +723,7 @@ const detailGroups = computed(() => {
 .detail-groups {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 .detail-group {

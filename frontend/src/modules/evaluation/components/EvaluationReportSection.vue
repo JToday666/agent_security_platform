@@ -35,95 +35,132 @@
       </div>
 
       <div class="report-flow">
-        <section class="report-unit report-unit--lead">
+        <section class="report-unit report-unit--ability">
           <div class="report-unit__copy">
-            <span>结构画像</span>
+            <span>能力结构</span>
             <h3>{{ insightItems[0]?.title }}</h3>
             <strong>{{ insightItems[0]?.value }}</strong>
             <p>{{ insightItems[0]?.caption }}</p>
           </div>
-          <ReportRadarChart :report="report" />
-        </section>
-
-        <section class="report-unit report-unit--split">
-          <div class="metric-table-wrap">
-            <table class="metric-table">
-              <thead>
-                <tr>
-                  <th>指标</th>
-                  <th>数值</th>
-                  <th>解释</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="row in metricRows"
-                  :key="row.key"
-                  :class="`metric-row--${row.tone}`"
-                >
-                  <th scope="row">{{ row.label }}</th>
-                  <td class="metric-value">{{ row.value }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="report-unit__chart">
-            <div class="report-unit__copy">
-              <span>样本分布</span>
-              <h3>{{ insightItems[1]?.title }}</h3>
-              <strong>{{ insightItems[1]?.value }}</strong>
-              <p>{{ insightItems[1]?.caption }}</p>
+          <div class="ability-layout">
+            <div class="metric-table-wrap">
+              <table class="metric-table metric-table--compact">
+                <thead>
+                  <tr>
+                    <th>指标</th>
+                    <th>分数</th>
+                    <th>解释</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="row in radarMetricRows"
+                    :key="row.key"
+                    :class="`metric-row--${row.tone}`"
+                  >
+                    <th scope="row">{{ row.label }}</th>
+                    <td class="metric-value">{{ row.value }}</td>
+                    <td>{{ row.description }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <ReportOutcomeDonutChart :report="report" />
+            <ReportRadarChart :report="report" />
+          </div>
+
+          <div class="confidence-strip">
+            <div class="confidence-strip__copy">
+              <span>{{ confidenceSummary?.label }}</span>
+              <strong>{{ confidenceSummary?.value }}</strong>
+              <p>{{ confidenceSummary?.caption }}</p>
+            </div>
+            <ReportConfidenceIntervalChart :report="report" />
           </div>
         </section>
 
-        <div class="chart-grid">
+        <section class="report-unit report-unit--results">
+          <div class="report-unit__copy">
+            <span>样本结果</span>
+            <h3>{{ insightItems[1]?.title }}</h3>
+            <strong>{{ insightItems[1]?.value }}</strong>
+            <p>{{ insightItems[1]?.caption }}</p>
+          </div>
+
+          <div class="result-layout">
+            <div class="chart-pane">
+              <ReportOutcomeDonutChart :report="report" />
+            </div>
+            <div v-if="rateOverviewRows.length" class="chart-pane chart-pane--rates">
+              <div class="chart-pane__head">
+                <span>结果率概览</span>
+                <p>完成率、成功率和条件成功率用于判断样本质量。</p>
+              </div>
+              <ReportRateOverviewChart :report="report" />
+            </div>
+          </div>
+        </section>
+
+        <div class="chart-grid chart-grid--risk">
           <section class="chart-unit">
             <div class="chart-unit__head">
               <span>难度表现</span>
-              <h3>{{ insightItems[2]?.title }}</h3>
-              <p>{{ insightItems[2]?.caption }}</p>
+              <h3>{{ difficultyInsight?.title }}</h3>
+              <p>{{ difficultyInsight?.caption }}</p>
             </div>
-            <ReportDifficultyBarChart :report="report" />
+            <ReportDifficultyBarChart
+              :report="report"
+              @preview="handleDifficultyPreview"
+              @select="handleDifficultySelect"
+            />
           </section>
 
           <section class="chart-unit">
             <div class="chart-unit__head">
               <span>风险类型</span>
-              <h3>{{ insightItems[3]?.title }}</h3>
-              <p>{{ insightItems[3]?.caption }}</p>
+              <h3>{{ datasetInsight?.title }}</h3>
+              <p>{{ datasetInsight?.caption }}</p>
             </div>
-            <ReportDatasetStackedBarChart :report="report" />
+            <ReportDatasetStackedBarChart
+              :report="report"
+              @preview="handleDatasetPreview"
+              @select="handleDatasetSelect"
+            />
           </section>
+        </div>
 
-          <section class="chart-unit chart-unit--wide">
-            <div class="chart-unit__head">
+        <section class="chart-unit chart-unit--wide">
+          <div class="sample-location-layout">
+            <div class="report-unit__copy">
               <span>样本定位</span>
               <h3>{{ insightItems[4]?.title }}</h3>
+              <strong>{{ insightItems[4]?.value }}</strong>
               <p>{{ insightItems[4]?.caption }}</p>
             </div>
             <ReportSampleScatterChart :report="report" />
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
     </template>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import {
-  buildMetricRows,
+  buildConfidenceSummary,
+  buildRadarMetricRows,
+  buildRateOverviewRows,
   buildReportHighlights,
   buildReportInsights,
+  resolveDatasetSummaryInsight,
+  resolveDifficultyBucketInsight,
 } from "@/modules/evaluation/lib/evaluation-report-view";
+import ReportConfidenceIntervalChart from "@/modules/evaluation/components/charts/ReportConfidenceIntervalChart.vue";
 import ReportDatasetStackedBarChart from "@/modules/evaluation/components/charts/ReportDatasetStackedBarChart.vue";
 import ReportDifficultyBarChart from "@/modules/evaluation/components/charts/ReportDifficultyBarChart.vue";
 import ReportOutcomeDonutChart from "@/modules/evaluation/components/charts/ReportOutcomeDonutChart.vue";
 import ReportRadarChart from "@/modules/evaluation/components/charts/ReportRadarChart.vue";
+import ReportRateOverviewChart from "@/modules/evaluation/components/charts/ReportRateOverviewChart.vue";
 import ReportSampleScatterChart from "@/modules/evaluation/components/charts/ReportSampleScatterChart.vue";
 import type { EvaluationReportPayload } from "@/shared/types/agent-types";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
@@ -140,16 +177,74 @@ defineEmits<{
   (event: "retry"): void;
 }>();
 
-const metricRows = computed(() =>
-  props.report ? buildMetricRows(props.report) : [],
-);
-
 const reportHighlights = computed(() =>
   props.report ? buildReportHighlights(props.report) : [],
 );
 
+const radarMetricRows = computed(() =>
+  props.report ? buildRadarMetricRows(props.report) : [],
+);
+
+const rateOverviewRows = computed(() =>
+  props.report ? buildRateOverviewRows(props.report) : [],
+);
+
+const confidenceSummary = computed(() =>
+  props.report ? buildConfidenceSummary(props.report) : null,
+);
+
 const insightItems = computed(() =>
   props.report ? buildReportInsights(props.report) : [],
+);
+
+const previewDifficultyBucket = ref<string | null>(null);
+const lockedDifficultyBucket = ref<string | null>(null);
+const previewDatasetId = ref<string | null>(null);
+const lockedDatasetId = ref<string | null>(null);
+
+const activeDifficultyBucket = computed(
+  () => previewDifficultyBucket.value ?? lockedDifficultyBucket.value,
+);
+const activeDatasetId = computed(
+  () => previewDatasetId.value ?? lockedDatasetId.value,
+);
+
+const difficultyInsight = computed(() =>
+  props.report
+    ? resolveDifficultyBucketInsight(props.report, activeDifficultyBucket.value)
+    : null,
+);
+
+const datasetInsight = computed(() =>
+  props.report
+    ? resolveDatasetSummaryInsight(props.report, activeDatasetId.value)
+    : null,
+);
+
+const handleDifficultyPreview = (bucket: string | null) => {
+  previewDifficultyBucket.value = bucket;
+};
+
+const handleDifficultySelect = (bucket: string) => {
+  lockedDifficultyBucket.value = bucket;
+};
+
+const handleDatasetPreview = (datasetId: string | null) => {
+  previewDatasetId.value = datasetId;
+};
+
+const handleDatasetSelect = (datasetId: string) => {
+  lockedDatasetId.value = datasetId;
+};
+
+watch(
+  () => props.report?.evaluationId,
+  () => {
+    previewDifficultyBucket.value = null;
+    lockedDifficultyBucket.value = null;
+    previewDatasetId.value = null;
+    lockedDatasetId.value = null;
+  },
 );
 </script>
 
@@ -163,8 +258,8 @@ const insightItems = computed(() =>
 
 .report-section {
   position: relative;
-  gap: 1.2rem;
-  padding-top: 1.35rem;
+  gap: 1.45rem;
+  padding-top: 1.65rem;
   border-top: 1px solid rgba(148, 163, 184, 0.18);
 }
 
@@ -280,7 +375,7 @@ const insightItems = computed(() =>
 }
 
 .report-flow {
-  gap: 1.25rem;
+  gap: 1.55rem;
 }
 
 .report-unit,
@@ -296,20 +391,12 @@ const insightItems = computed(() =>
   animation: report-unit-enter var(--duration-fade-in) var(--ease-emphasized) both;
 }
 
-.report-unit--lead {
-  display: grid;
-  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr);
+.report-unit--ability,
+.report-unit--results {
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
-  align-items: center;
-  padding: 1rem 1rem 0.35rem;
-}
-
-.report-unit--split {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-  gap: 1.2rem;
-  align-items: stretch;
-  padding: 1rem;
+  padding: 1.1rem 1rem 0.7rem;
 }
 
 .report-unit__copy {
@@ -322,10 +409,71 @@ const insightItems = computed(() =>
   font-size: 1rem;
 }
 
-.report-unit__chart {
+.ability-layout,
+.result-layout,
+.sample-location-layout {
+  display: grid;
   min-width: 0;
-  padding-left: 1rem;
-  border-left: 1px solid rgba(148, 163, 184, 0.14);
+  gap: 1.15rem;
+  align-items: stretch;
+}
+
+.ability-layout {
+  grid-template-columns: minmax(0, 1.06fr) minmax(320px, 0.94fr);
+}
+
+.result-layout {
+  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1fr);
+}
+
+.sample-location-layout {
+  grid-template-columns: minmax(220px, 0.28fr) minmax(0, 1fr);
+  align-items: center;
+}
+
+.confidence-strip {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  min-width: 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.confidence-strip__copy span,
+.chart-pane__head span {
+  display: block;
+  color: var(--color-text-subtle);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.confidence-strip__copy strong {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--color-text-dark);
+  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+}
+
+.confidence-strip__copy p,
+.chart-pane__head p {
+  margin: 0.35rem 0 0;
+  color: var(--color-text-subtle);
+  line-height: 1.62;
+}
+
+.chart-pane {
+  min-width: 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.chart-pane--rates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .metric-table-wrap {
@@ -337,6 +485,10 @@ const insightItems = computed(() =>
   width: 100%;
   min-width: 640px;
   border-collapse: collapse;
+}
+
+.metric-table--compact {
+  min-width: 560px;
 }
 
 .metric-table th,
@@ -396,21 +548,33 @@ const insightItems = computed(() =>
 .chart-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .chart-unit {
-  gap: 0.7rem;
-  padding: 1rem 1rem 0.35rem;
+  gap: 0.85rem;
+  padding: 1.1rem 1rem 0.45rem;
 }
 
 .chart-unit--wide {
   grid-column: 1 / -1;
 }
 
-.chart-unit :deep(.report-chart),
-.report-unit :deep(.report-chart) {
+.ability-layout :deep(.report-chart),
+.chart-unit :deep(.report-chart) {
   height: 330px;
+}
+
+.result-layout .chart-pane :deep(.report-chart) {
+  height: 320px;
+}
+
+.chart-pane--rates :deep(.report-chart) {
+  height: 260px;
+}
+
+.confidence-strip :deep(.report-chart) {
+  height: 150px;
 }
 
 .chart-unit--wide :deep(.report-chart) {
@@ -431,17 +595,12 @@ const insightItems = computed(() =>
 
 @media (max-width: 1080px) {
   .report-highlights,
-  .report-unit--lead,
-  .report-unit--split,
+  .ability-layout,
+  .result-layout,
+  .sample-location-layout,
+  .confidence-strip,
   .chart-grid {
     grid-template-columns: 1fr;
-  }
-
-  .report-unit__chart {
-    padding-left: 0;
-    border-left: 0;
-    border-top: 1px solid rgba(148, 163, 184, 0.14);
-    padding-top: 1rem;
   }
 }
 
@@ -456,9 +615,15 @@ const insightItems = computed(() =>
   }
 
   .chart-unit :deep(.report-chart),
-  .report-unit :deep(.report-chart),
+  .ability-layout :deep(.report-chart),
+  .result-layout .chart-pane :deep(.report-chart),
   .chart-unit--wide :deep(.report-chart) {
     height: 300px;
+  }
+
+  .confidence-strip :deep(.report-chart),
+  .chart-pane--rates :deep(.report-chart) {
+    height: 230px;
   }
 }
 
