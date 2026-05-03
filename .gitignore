@@ -23,6 +23,7 @@ AGENTS.md
 
 # Data files
 /data/datasets/
+/var/backend/
 
 # backend
 /backend/.env

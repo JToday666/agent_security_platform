@@ -6,9 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.modules.auth.dependencies import get_current_user
 from app.modules.difficulty.schemas import DifficultyPublishResult, DifficultyRecalculateRequest, DifficultyVersionResult
 from app.modules.difficulty.service import DifficultyService
-from app.shared.auth import get_db
-from app.shared.http import success_payload
-from app.shared.schemas import Envelope
+from app.platform.auth import get_db
+from app.platform.http import success_payload
+from app.platform.schemas import Envelope
 
 router = APIRouter(prefix="/difficulty", tags=["difficulty"])
 

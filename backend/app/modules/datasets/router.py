@@ -6,9 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.modules.datasets.repository import DatasetRepository
 from app.modules.datasets.schemas import DatasetCatalogResponse, DatasetDetailResponse
 from app.modules.datasets.service import DatasetService
-from app.shared.auth import get_db
-from app.shared.http import success_payload
-from app.shared.schemas import Envelope
+from app.platform.auth import get_db
+from app.platform.http import success_payload
+from app.platform.schemas import Envelope
 
 router = APIRouter(prefix="/datasets", tags=["datasets"])
 

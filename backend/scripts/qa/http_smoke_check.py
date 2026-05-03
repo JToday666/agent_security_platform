@@ -22,7 +22,7 @@ from app.models.benchmark import AttackDeliveryType, BenchmarkSample, DatasetSou
 from app.models.agent import Agent
 from app.models.benchmark_run import ExecutionArtifact, ExecutionSummary, OracleResult, RunDataset, RunReport, RunSample, SampleExecution, TestRun
 from app.models.user import User
-from app.shared.config import settings
+from app.platform.config import settings
 from scripts._common import build_sync_engine, build_sync_session_factory
 
 

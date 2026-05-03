@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from uuid import uuid4
 
-from app.shared.config import settings
+from app.platform.config import settings
 from app.worker.runtime.exceptions import RuntimePreparationError
 
 

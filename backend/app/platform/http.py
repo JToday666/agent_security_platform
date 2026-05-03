@@ -6,7 +6,7 @@ from typing import Any
 
 from fastapi.responses import JSONResponse
 
-from app.shared.schemas import Envelope, ValidationErrorData, ValidationErrorItem
+from app.platform.schemas import Envelope, ValidationErrorData, ValidationErrorItem
 
 
 def success_payload(data: Any = None, message: str = "success") -> dict[str, Any]:

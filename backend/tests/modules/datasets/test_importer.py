@@ -291,7 +291,7 @@ def test_repo_seed_metadata_and_generated_samples_are_importable_and_idempotent(
     repo_sample_bundle,
 ) -> None:
     prefix = f"seed_{uuid4().hex[:8]}"
-    metadata_bundle = prefix_metadata_bundle(load_metadata_bundle(backend_root / "dataset_metadata"), prefix)
+    metadata_bundle = prefix_metadata_bundle(load_metadata_bundle(backend_root.parent / "data" / "metadata"), prefix)
     sample_plan = prefix_sample_plan(build_sample_import_plan(repo_sample_bundle.sample_root), prefix)
 
     first_metadata_result = apply_metadata_bundle(db_session, metadata_bundle)

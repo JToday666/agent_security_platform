@@ -14,7 +14,7 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.main import app
-from app.shared.config import settings
+from app.platform.config import settings
 from tests.helpers.api_db import ApiDbHelper
 from tests.helpers.dataset_bundle import RawSampleBundleInfo, SampleBundleInfo, write_raw_like_sample_bundle, write_repo_like_sample_bundle
 

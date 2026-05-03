@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.shared.runtime_rules import difficulty_bucket_bounds, is_valid_request_id
+from app.platform.runtime_rules import difficulty_bucket_bounds, is_valid_request_id
 
 
 def test_request_id_validation() -> None:

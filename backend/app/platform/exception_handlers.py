@@ -7,8 +7,8 @@ from typing import Any
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 
-from app.shared.errors import DomainError, ValidationDomainError
-from app.shared.http import build_validation_error_data, json_error_response
+from app.platform.errors import DomainError, ValidationDomainError
+from app.platform.http import build_validation_error_data, json_error_response
 
 
 def _loc_to_field(loc: tuple[Any, ...]) -> str:

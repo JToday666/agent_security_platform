@@ -6,9 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.modules.auth.dependencies import get_current_user
 from app.modules.leaderboards.schemas import LeaderboardSnapshotCreateRequest, LeaderboardSnapshotResponse
 from app.modules.leaderboards.service import LeaderboardService
-from app.shared.auth import get_db
-from app.shared.http import success_payload
-from app.shared.schemas import Envelope
+from app.platform.auth import get_db
+from app.platform.http import success_payload
+from app.platform.schemas import Envelope
 
 router = APIRouter(prefix="/leaderboards", tags=["leaderboards"])
 

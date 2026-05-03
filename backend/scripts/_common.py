@@ -24,7 +24,7 @@ def ensure_backend_root_on_path() -> None:
 
 ensure_backend_root_on_path()
 
-from app.shared.config import settings
+from app.platform.config import settings
 
 
 DATA_ROOT = settings.dataset_root

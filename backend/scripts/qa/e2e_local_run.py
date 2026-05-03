@@ -25,8 +25,8 @@ if str(_BOOTSTRAP_ROOT) not in sys.path:
 from app.models.agent import Agent
 from app.models.benchmark import BenchmarkSample, RiskSubtype
 from app.models.benchmark_run import ExecutionArtifact, ExecutionSummary, RunDataset, RunReport, SampleExecution, TestRun
-from app.shared.config import settings
-from app.shared.runtime_rules import difficulty_bucket_bounds
+from app.platform.config import settings
+from app.platform.runtime_rules import difficulty_bucket_bounds
 from scripts._common import BACKEND_CWD, build_sync_engine, build_sync_session_factory
 
 

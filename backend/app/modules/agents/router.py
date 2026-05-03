@@ -1,9 +1,8 @@
 """Agent registration and management routes."""
 
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.modules.agents.repository import AgentRepository
+from app.modules.agents.dependencies import get_agent_service
 from app.modules.agents.schemas import (
     AgentArchiveResponse,
     AgentCreateRequest,
@@ -15,16 +14,10 @@ from app.modules.agents.schemas import (
 )
 from app.modules.agents.service import AgentService
 from app.modules.auth.dependencies import get_current_user
-from app.shared.auth import get_db
-from app.shared.http import success_payload
-from app.shared.schemas import Envelope
+from app.platform.http import success_payload
+from app.platform.schemas import Envelope
 
 router = APIRouter(prefix="/agents", tags=["agents"])
-
-
-def get_agent_service(db: AsyncSession = Depends(get_db)) -> AgentService:
-    """Return the Agent service for route handlers."""
-    return AgentService(AgentRepository(db))
 
 
 @router.get("/templates", response_model=Envelope[list[AgentTemplate]])

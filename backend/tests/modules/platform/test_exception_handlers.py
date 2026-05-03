@@ -3,8 +3,8 @@ from __future__ import annotations
 from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient
 
-from app.shared.errors import NotFoundError
-from app.shared.exception_handlers import _loc_to_field, register_exception_handlers
+from app.platform.errors import NotFoundError
+from app.platform.exception_handlers import _loc_to_field, register_exception_handlers
 
 
 def build_exception_test_client() -> TestClient:

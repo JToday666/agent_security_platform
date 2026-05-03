@@ -1,7 +1,7 @@
 """评分模块 API 模型。"""
 
 from app.modules.scoring.engine import DEFAULT_BENCHMARK_VERSION, DEFAULT_SCORE_MODEL_VERSION
-from app.shared.schemas import CamelModel
+from app.platform.schemas import CamelModel
 
 
 class ScoreRecalculateRequest(CamelModel):

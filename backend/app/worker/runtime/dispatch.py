@@ -12,8 +12,8 @@ from urllib.parse import urlparse
 import httpx
 
 from app.modules.agents.invocation import AgentInvocationClient
-from app.shared.config import settings
-from app.shared.credentials import FileCredentialStore
+from app.platform.config import settings
+from app.platform.credentials import FileCredentialStore
 from app.worker.runtime.exceptions import RuntimeDispatchError, RuntimeDispatchTimeout
 from app.worker.runtime.preparation import PreparedRuntime, SampleRuntimeTarget
 from app.worker.runtime.process import runtime_base_url

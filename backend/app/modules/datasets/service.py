@@ -7,7 +7,7 @@ from typing import Any
 
 from app.modules.datasets.repository import DatasetRepository
 from app.modules.datasets.schemas import DatasetCatalogResponse, DatasetCategoryInfo, DatasetDetailResponse
-from app.shared.errors import NotFoundError
+from app.platform.errors import NotFoundError
 
 
 def latest_datetime(*values: datetime | None) -> datetime:

@@ -28,22 +28,23 @@ README 只描述当前状态。后端实现细节、领域说明和待办事项�
 - 统一 DB Session、鉴权依赖与全局异常处理
 - Alembic 迁移链路
 - 独立 worker 轮询执行链路
-- `runtime/workdir` 工作目录准备、probe backend 拉起、基础 artifact 收集
+- `var/backend/workdir` 工作目录准备、probe backend 拉起、基础 artifact 收集
 - `external_agent_api` 调用链路、`synthetic_local` dispatch 闭环与 `run_reports.summary_json` 摘要写回
 - Agent 出站 HTTP 默认 SSRF 防护：仅允许 `http/https`，默认拒绝 localhost、回环、内网、链路本地、保留地址，并逐跳校验重定向
-- 运行时目录、上传目录、凭证目录统一收口到 `runtime/`
+- 运行时目录、上传目录、凭证目录统一收口到仓库根目录 `var/backend/`
 
 核心目录：
 
-- `app/shared/`：配置、DB、响应封装、异常、鉴权、共用规则
+- `app/platform/`：配置、DB、响应封装、异常、鉴权、凭据存储、共用规则的平台内核
+- `app/shared/`：历史兼容导出层，新代码不再直接依赖
 - `app/modules/`：按业务域组织的 `router / service / repository / schemas`
 - `app/worker/`：任务领取、执行编排、报告聚合
 - `app/worker/runtime/`：runtime 准备、调度适配器、产物收集
 - `app/`：后端业务代码总入口
 - `alembic/`：数据库迁移
 - `data/`：真实样本与各风险子类 runtime 目录
-- `dataset_metadata/`：版本化数据集元数据 JSON 真源
-- `runtime/`：运行时目录（上传、凭证、worker workdir）
+- `data/metadata/`：版本化数据集元数据 JSON 真源
+- `var/backend/`：运行时目录（上传、凭证、worker workdir）
 - `docs/`：后端内部说明与规范文档
 
 ## 3. 快速启动
@@ -94,7 +95,7 @@ uv run alembic current
 uv run python - <<'PY'
 import asyncio
 from sqlalchemy import text
-from app.shared.db.session import AsyncSessionLocal, engine
+from app.platform.db.session import AsyncSessionLocal, engine
 
 async def main() -> None:
     async with AsyncSessionLocal() as session:
@@ -175,7 +176,7 @@ uv run alembic upgrade head
 
 2. 准备并导入数据集元数据与 B2 样本
 
-推荐直接使用顶层脚本完成“识别输入类型 -> 必要时标准化 -> 回写/补齐 `dataset_metadata` -> 导入元数据 -> 导入样本”整条链路：
+推荐直接使用顶层脚本完成“识别输入类型 -> 必要时标准化 -> 回写/补齐 `data/metadata` -> 导入元数据 -> 导入样本”整条链路：
 
 ```bash
 uv run python scripts/import_datasets.py --sample-root ./data/02_Integrity/B2_Cloud_File_Modification
@@ -184,7 +185,7 @@ uv run python scripts/import_datasets.py --sample-root ./data/02_Integrity/B2_Cl
 说明：
 
 - `scripts/import_datasets.py` 会自动识别 raw / standard 两类样本目录
-- raw 输入会先标准化，再回写 `dataset_metadata/` JSON 真源并继续导入
+- raw 输入会先标准化，再回写 `data/metadata/` JSON 真源并继续导入
 - 如需分步执行，使用 `scripts/datasets/normalize_samples.py`、`sync_metadata_from_samples.py`、`import_metadata.py`、`import_samples.py`
 - `scripts/qa/e2e_local_run.py` 在本地联调时会按需要自动导入 `backend/data/02_Integrity/B2_Cloud_File_Modification`
 
@@ -368,7 +369,7 @@ Agent 验证通过后状态会变为 `active`。只有 `active` Agent 可以用�
 8. 查看运行时产物目录
 
 ```bash
-ls runtime/workdir/<execution_id>/project/agent_runtime/runs/<environment_ref>/
+ls ../var/backend/workdir/<execution_id>/project/agent_runtime/runs/<environment_ref>/
 ```
 
 说明：
@@ -386,8 +387,8 @@ uv run python scripts/qa/e2e_local_run.py --spawn-services
 
 - 新增 API 路由使用 `/api/v1` 前缀
 - 业务响应统一使用 `{ code, data, message }`
-- 复用 `app.shared.auth` 中的 `get_db`、`get_current_user`
-- 统一通过 `app.shared.http` 返回成功 envelope，通过 `app.shared.errors` 抛出业务异常
+- 复用 `app.platform.auth` 中的 `get_db`，登录态依赖在 `app.modules.auth.dependencies`
+- 统一通过 `app.platform.http` 返回成功 envelope，通过 `app.platform.errors` 抛出业务异常
 - 数据库结构变更必须通过 Alembic 迁移交付
 - 新增模型后先注册到 `app/models/__init__.py`
 

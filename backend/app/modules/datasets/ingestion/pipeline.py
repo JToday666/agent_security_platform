@@ -2,35 +2,18 @@
 
 from __future__ import annotations
 
-from contextlib import ExitStack, contextmanager
+from contextlib import ExitStack
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Iterator
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
-
+from app.modules.datasets.ingestion.database import apply_ingestion_bundle
 from app.modules.datasets.ingestion.metadata import (
-    apply_metadata_bundle,
     build_metadata_bundle_from_samples,
     write_metadata_bundle,
 )
 from app.modules.datasets.ingestion.normalize import detect_sample_root_kind, normalize_sample_bundle
-from app.modules.datasets.ingestion.samples import apply_sample_import_plan, build_sample_import_plan
+from app.modules.datasets.ingestion.samples import build_sample_import_plan
 from app.modules.datasets.ingestion.types import ImportPipelineResult
-from app.shared.config import settings
-
-
-@contextmanager
-def sync_session_scope() -> Iterator[Session]:
-    """提供供导入 pipeline 使用的同步会话。"""
-    engine = create_engine(settings.SYNC_DATABASE_URL, future=True)
-    session_factory = sessionmaker(bind=engine, future=True)
-    try:
-        with session_factory() as session:
-            yield session
-    finally:
-        engine.dispose()
 
 
 def run_import_pipeline(
@@ -68,10 +51,10 @@ def run_import_pipeline(
         sample_result = None
         if not dry_run:
             write_metadata_bundle(registry_root, metadata_bundle)
-            with sync_session_scope() as session:
-                metadata_result = apply_metadata_bundle(session, metadata_bundle)
-                sample_result = apply_sample_import_plan(session, sample_plan)
-                session.commit()
+            metadata_result, sample_result = apply_ingestion_bundle(
+                metadata_bundle=metadata_bundle,
+                sample_plan=sample_plan,
+            )
 
         return ImportPipelineResult(
             input_kind=input_kind,

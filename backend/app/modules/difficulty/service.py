@@ -20,7 +20,7 @@ from app.modules.difficulty.calibration import (
     publish_difficulty_value,
 )
 from app.modules.difficulty.schemas import DifficultyPublishResult, DifficultyVersionResult
-from app.shared.errors import ConflictError, NotFoundError
+from app.platform.errors import ConflictError, NotFoundError
 
 
 def _decimal(value: float, digits: str = "0.001") -> Decimal:

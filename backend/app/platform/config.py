@@ -89,7 +89,7 @@ class Settings(BaseSettings):
         """返回后端运行期文件的根目录。"""
         if self.RUNTIME_ROOT_DIR:
             return Path(self.RUNTIME_ROOT_DIR).expanduser().resolve()
-        return BACKEND_DIR / "runtime"
+        return REPO_ROOT / "var" / "backend"
 
     @property
     def dataset_root(self) -> Path:
@@ -103,7 +103,7 @@ class Settings(BaseSettings):
         """返回数据集 registry/display_meta 的 JSON 真源目录。"""
         if self.DATASET_METADATA_ROOT_DIR:
             return Path(self.DATASET_METADATA_ROOT_DIR).expanduser().resolve()
-        return BACKEND_DIR / "dataset_metadata"
+        return REPO_ROOT / "data" / "metadata"
 
     @property
     def uploads_root(self) -> Path:
@@ -124,11 +124,6 @@ class Settings(BaseSettings):
     def worker_workdir_root(self) -> Path:
         """返回 worker 运行样本时使用的工作目录根路径。"""
         return self.runtime_root / "workdir"
-
-    @property
-    def CREDENTIAL_STORAGE_DIR(self) -> Path:
-        """兼容旧调用方的凭据目录别名。"""
-        return self.credential_storage_dir
 
 
 settings = Settings()

@@ -6,7 +6,7 @@ import pytest
 
 from app.modules.agents.schemas import AgentCreateRequest
 from app.modules.agents.service import AgentService
-from app.shared.errors import ValidationDomainError
+from app.platform.errors import ValidationDomainError
 
 
 def build_agent_payload(**overrides) -> AgentCreateRequest:

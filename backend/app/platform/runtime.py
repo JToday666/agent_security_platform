@@ -1,6 +1,6 @@
 """运行时目录初始化工具。"""
 
-from app.shared.config import settings
+from app.platform.config import settings
 
 
 def ensure_runtime_dirs() -> None:

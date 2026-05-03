@@ -1,9 +1,8 @@
 """评测任务模块路由，负责任务查询与动作接口。"""
 
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.modules.evaluations.repository import EvaluationRepository
+from app.modules.evaluations.dependencies import get_evaluation_service
 from app.modules.evaluations.schemas import (
     EvaluationActionRequest,
     EvaluationCreateRequest,
@@ -15,16 +14,10 @@ from app.modules.evaluations.schemas import (
 )
 from app.modules.evaluations.service import EvaluationService
 from app.modules.auth.dependencies import get_current_user
-from app.shared.auth import get_db
-from app.shared.http import success_payload
-from app.shared.schemas import Envelope
+from app.platform.http import success_payload
+from app.platform.schemas import Envelope
 
 router = APIRouter(prefix="/evaluations", tags=["evaluations"])
-
-
-def get_evaluation_service(db: AsyncSession = Depends(get_db)) -> EvaluationService:
-    """返回评测任务模块使用的服务实例。"""
-    return EvaluationService(EvaluationRepository(db))
 
 
 @router.get("", response_model=Envelope[list[EvaluationListItem]])

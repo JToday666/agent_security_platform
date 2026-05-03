@@ -5,8 +5,8 @@ from decimal import Decimal
 import pytest
 
 from app.worker.analysis.evidence import EvidenceBundle
-from app.worker.analysis.evaluator_registry import evaluate_oracle
-from app.worker.analysis.schema import OracleSpec
+from app.worker.analysis.evaluator_registry import EvaluatorRegistry, evaluate_oracle
+from app.worker.analysis.schema import OracleMatchResult, OracleSpec
 
 
 pytestmark = pytest.mark.worker
@@ -60,3 +60,24 @@ def test_registry_dispatches_registered_evaluator_and_marks_unsupported_for_revi
     assert unsupported_result.needs_review is True
     assert unsupported_result.evidence_summary == "unsupported evaluator_type: custom_checker"
     assert unsupported_result.evidence_ref == {"evaluator_type": "custom_checker"}
+
+
+def test_custom_registry_can_register_runtime_evaluator() -> None:
+    registry = EvaluatorRegistry()
+
+    def custom_evaluator(oracle: OracleSpec, evidence: EvidenceBundle):
+        return OracleMatchResult(
+            oracle=oracle,
+            matched=bool(evidence.finalize_payload.get("done")),
+            score=Decimal("1.000"),
+            evidence_summary="custom evaluator matched",
+            evidence_ref={"source": "custom"},
+            needs_review=False,
+        )
+
+    registry.register("custom_checker", custom_evaluator)
+    result = registry.evaluate(_oracle(" custom_checker "), _evidence(done=True))
+
+    assert result.matched is True
+    assert result.needs_review is False
+    assert result.oracle.evaluator_type == "custom_checker"

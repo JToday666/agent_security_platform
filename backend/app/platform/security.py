@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 
 import jwt
 
-from app.shared.config import settings
+from app.platform.config import settings
 
 
 def hash_password(password: str) -> str:

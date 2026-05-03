@@ -2,8 +2,8 @@
 
 from fastapi import APIRouter
 
-from app.shared.http import success_payload
-from app.shared.schemas import Envelope, MessagePayload
+from app.platform.http import success_payload
+from app.platform.schemas import Envelope, MessagePayload
 
 from app.modules.auth.router import router as auth_router
 from app.modules.agents.router import router as agents_router

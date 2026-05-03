@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.benchmark_run import TestRun
 from app.models.scoring import EvaluationScore, LeaderboardEntry, LeaderboardSnapshot
 from app.modules.leaderboards.schemas import LeaderboardEntryItem, LeaderboardSnapshotResponse
-from app.shared.errors import NotFoundError
+from app.platform.errors import NotFoundError
 
 
 class LeaderboardService:

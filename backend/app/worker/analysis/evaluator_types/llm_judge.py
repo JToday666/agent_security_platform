@@ -9,7 +9,7 @@ from typing import Any
 
 import httpx
 
-from app.shared.config import settings
+from app.platform.config import settings
 from app.worker.analysis.evidence import EvidenceBundle
 from app.worker.analysis.schema import JsonObject, OracleMatchResult, OracleSpec
 

@@ -1,6 +1,6 @@
 """排行榜 API 模型。"""
 
-from app.shared.schemas import CamelModel
+from app.platform.schemas import CamelModel
 
 
 class LeaderboardSnapshotCreateRequest(CamelModel):

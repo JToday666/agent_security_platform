@@ -2,15 +2,23 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
 from datetime import datetime, timezone
-from uuid import uuid4
 
 from sqlalchemy.exc import IntegrityError
 
 from app.models.benchmark_run import TestRun
+from app.modules.agents.application.mappers import runtime_snapshot as agent_runtime_snapshot
 from app.modules.evaluations import lifecycle
+from app.modules.evaluations.application.ids import generate_public_id, request_fingerprint
+from app.modules.evaluations.application.mappers import (
+    build_parameters,
+    build_progress_percent,
+    build_report_payload,
+    build_status_text,
+    to_zulu,
+)
+from app.modules.evaluations.application.validation import invalid_evaluation, validate_submission_payload
+from app.modules.evaluations.domain.constants import DIFFICULTY_META, MAX_STEPS_META, TIMEOUT_META
 from app.modules.evaluations.repository import EvaluationRepository
 from app.modules.evaluations.schemas import (
     EvaluationActionRequest,
@@ -22,117 +30,7 @@ from app.modules.evaluations.schemas import (
     EvaluationValidateResponse,
 )
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES, build_controls
-from app.shared.errors import ConflictError, ForbiddenError, NotFoundError, ValidationDomainError
-from app.shared.runtime_rules import difficulty_bucket_bounds, is_valid_request_id
-
-
-DIFFICULTY_META = {"min": 0, "max": 1, "step": 0.1, "default": 0.5}
-TIMEOUT_META = {"min": 15, "max": 30, "step": 1, "default": 15}
-MAX_STEPS_META = {"min": 1, "max": 100, "default": 30}
-
-
-def to_zulu(value: datetime) -> str:
-    """将时间转换为接口使用的 UTC 字符串。"""
-    return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
-
-
-def invalid_evaluation(message: str) -> ValidationDomainError:
-    """构造评测提交参数错误。"""
-    return ValidationDomainError(message, http_status=400, code=40002)
-
-
-def generate_public_id() -> str:
-    """生成对外评测任务编号。"""
-    return f"eval_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:6]}"
-
-
-def request_fingerprint(payload: EvaluationCreateRequest) -> str:
-    """对提交请求体做稳定哈希，供 requestId 幂等校验。"""
-    encoded = json.dumps(payload.model_dump(by_alias=True), ensure_ascii=True, sort_keys=True, separators=(",", ":"))
-    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
-
-
-def agent_runtime_snapshot(agent) -> dict[str, object]:
-    """冻结 Agent 运行配置，供 worker 后续调用。"""
-    return {
-        "agentId": agent.public_id,
-        "templateId": agent.template_id,
-        "name": agent.name,
-        "description": agent.description,
-        "invokeMode": agent.invoke_mode,
-        "connection": agent.connection,
-        "auth": {"type": agent.auth_type, **agent.auth_public_config, "credentialRef": agent.credential_ref},
-        "platformInputMapping": agent.platform_input_mapping,
-        "taskRenderMode": agent.task_render_mode,
-        "customRequestBody": agent.custom_request_body,
-        "requestOptions": agent.request_options,
-        "platformOutputMapping": agent.platform_output_mapping,
-        "terminalStatuses": agent.terminal_statuses,
-        "successStatuses": agent.success_statuses,
-    }
-
-
-def build_parameters(run) -> dict[str, object]:
-    """整理评测任务保存的运行参数。"""
-    return run.execution_config.get(
-        "parameters",
-        {"difficulty": 0.5, "timeoutMinutes": 15, "retryEnabled": False},
-    )
-
-
-def build_progress_percent(run, datasets: list) -> int:
-    """计算评测任务当前进度百分比。"""
-    if run.total_samples > 0:
-        return max(0, min(100, round((run.completed_samples / run.total_samples) * 100)))
-    if not datasets:
-        return 0
-    completed = sum(int(dataset.status in TERMINAL_STATUSES) for dataset in datasets)
-    return max(0, min(100, round((completed / len(datasets)) * 100)))
-
-
-def build_status_text(status: str, running_dataset_name: str | None) -> str:
-    """生成面向前端展示的状态文案。"""
-    if status == "pending":
-        return "任务已创建，等待开始评测。"
-    if status == "running":
-        if running_dataset_name is None:
-            return "任务正在评测中。"
-        return f"当前正在评测数据集 {running_dataset_name}。"
-    if status == "pausing":
-        return "当前数据集完成后任务将进入暂停状态。"
-    if status == "paused":
-        return "任务已暂停，请在截止时间前恢复。"
-    if status == "terminating":
-        return "当前数据集完成后任务将终止并生成报告。"
-    if status == "canceling":
-        return "任务正在取消，请稍候。"
-    if status == "completed":
-        return "评测已完成。"
-    if status == "terminated":
-        return "评测已终止。"
-    if status == "canceled":
-        return "评测已取消。"
-    return "评测执行失败。"
-
-
-def build_report_payload(report) -> dict[str, object]:
-    """整理评测报告响应体。"""
-    return {
-        "reportStatus": report.report_status,
-        "summary": report.summary_json
-        or {
-            "totalSamples": 0,
-            "completedSamples": 0,
-            "taskCompletedCount": 0,
-            "harmDetectedCount": 0,
-            "pendingReviewCount": 0,
-            "failedCount": 0,
-            "byRiskCategory": [],
-            "byRiskLevel": [],
-            "byAttackLevel": [],
-        },
-        "reportUri": report.report_uri,
-    }
+from app.platform.errors import ConflictError, ForbiddenError, NotFoundError
 
 
 class EvaluationService:
@@ -156,7 +54,7 @@ class EvaluationService:
 
     async def validate_submission(self, payload: EvaluationCreateRequest, current_user) -> EvaluationValidateResponse:
         """校验评测提交请求。"""
-        warnings, _selection, _agent = await self._validate_submission_payload(payload, current_user)
+        warnings, _selection, _agent = await validate_submission_payload(self.repository, payload, current_user)
         return EvaluationValidateResponse(ok=True, warnings=warnings)
 
     async def create_evaluation(self, payload: EvaluationCreateRequest, current_user) -> EvaluationCreateResponse:
@@ -174,7 +72,7 @@ class EvaluationService:
                 created_at=to_zulu(existing.created_at),
             )
 
-        warnings, selection, agent = await self._validate_submission_payload(payload, current_user)
+        warnings, selection, agent = await validate_submission_payload(self.repository, payload, current_user)
         public_id = generate_public_id()
         now = datetime.now(timezone.utc)
         frozen_agent_snapshot = agent_runtime_snapshot(agent)
@@ -288,54 +186,6 @@ class EvaluationService:
                 )
             )
         return items
-
-    async def _validate_submission_payload(self, payload: EvaluationCreateRequest, current_user):
-        """校验新评测提交请求并返回样本选择与 Agent。"""
-        if payload.submit_method != "api":
-            raise invalid_evaluation("提交方式参数不合法，请检查后重试。")
-        if not is_valid_request_id(payload.request_id):
-            raise invalid_evaluation("requestId 格式不正确，请重试。")
-        if not (DIFFICULTY_META["min"] <= payload.parameters.difficulty <= DIFFICULTY_META["max"]):
-            raise invalid_evaluation("运行参数超出允许范围，请检查后重试。")
-        if not (TIMEOUT_META["min"] <= payload.parameters.timeout_minutes <= TIMEOUT_META["max"]):
-            raise invalid_evaluation("运行参数超出允许范围，请检查后重试。")
-        if not (MAX_STEPS_META["min"] <= payload.parameters.max_steps <= MAX_STEPS_META["max"]):
-            raise invalid_evaluation("运行参数超出允许范围，请检查后重试。")
-        if not payload.dataset_ids:
-            raise invalid_evaluation("请至少选择一个评测项")
-
-        agent = await self.repository.get_agent_by_public_id(payload.agent_id)
-        if agent is None:
-            raise NotFoundError("Agent 不存在。")
-        if agent.user_id != current_user.id:
-            raise ForbiddenError("无权访问该 Agent。")
-        if agent.status != "active":
-            raise ConflictError(
-                f"Agent 当前状态为 {agent.status}，不能提交评测。",
-                code=40901,
-                data={"agentId": agent.public_id, "status": agent.status},
-            )
-
-        ordered_dataset_ids = list(dict.fromkeys(payload.dataset_ids))
-        if len(ordered_dataset_ids) != len(payload.dataset_ids):
-            raise invalid_evaluation("选择了重复或失效数据集。")
-
-        selection = await self.repository.resolve_dataset_selection(ordered_dataset_ids, payload.parameters.difficulty)
-        if len(selection["dataset_names"]) != len(ordered_dataset_ids):
-            raise invalid_evaluation("选择了重复或失效数据集。")
-        if not selection["sample_rows"]:
-            raise invalid_evaluation("当前条件下没有可执行样本，请调整评测项或难度。")
-
-        difficulty_bucket_bounds(payload.parameters.difficulty)
-        warnings: list[dict[str, str]] = []
-        if payload.public_to_leaderboard:
-            warnings.append({"code": "PUBLIC_LEADERBOARD", "message": "本次结果将进入公开排行榜，请确认描述中不包含敏感信息。"})
-        return warnings, {
-            "dataset_ids": ordered_dataset_ids,
-            "dataset_names": selection["dataset_names"],
-            "sample_rows": selection["sample_rows"],
-            "matched_counts": selection["matched_counts"],
-        }, agent
 
     async def get_evaluation_detail(self, evaluation_id: str, current_user) -> EvaluationDetail:
         """返回指定评测任务的完整详情。"""

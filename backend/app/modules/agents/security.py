@@ -6,7 +6,7 @@ import ipaddress
 import socket
 from urllib.parse import urlparse
 
-from app.shared.config import settings
+from app.platform.config import settings
 
 
 class AgentUrlSecurityError(ValueError):

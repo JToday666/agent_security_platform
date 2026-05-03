@@ -4,7 +4,7 @@ from typing import Any, Literal
 
 from pydantic import Field
 
-from app.shared.schemas import CamelModel
+from app.platform.schemas import CamelModel
 
 
 InvokeMode = Literal["sync_response", "submit_poll"]

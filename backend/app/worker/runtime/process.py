@@ -12,7 +12,7 @@ from typing import IO
 
 import httpx
 
-from app.shared.config import settings
+from app.platform.config import settings
 from app.worker.runtime.exceptions import RuntimeStartupError
 from app.worker.runtime.preparation import PreparedRuntime
 

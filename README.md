@@ -67,7 +67,7 @@ flowchart LR
     FE["frontend/<br/>Vue 3 + TypeScript"] -->|"/api/v1 /uploads"| BE["backend/<br/>FastAPI API"]
     FE -.-> MOCK["Frontend Mock API"]
     BE --> DB["PostgreSQL"]
-    BE --> RT["backend/runtime/<br/>uploads / credentials / workdir"]
+    BE --> RT["var/backend<br/>uploads / credentials / workdir"]
     WK["backend/worker.py<br/>Polling Worker"] --> DB
     WK --> RT
     CONTRACT["share/<br/>接口契约"] -.-> FE
@@ -121,7 +121,7 @@ VITE_ENABLE_API_MOCK=true
 
 ### 后端
 
-根目录不展开所有高级运行参数，只列最小必填项。其余配置定义在 [backend/app/shared/config.py](./backend/app/shared/config.py)。
+根目录不展开所有高级运行参数，只列最小必填项。其余配置定义在 [backend/app/platform/config.py](./backend/app/platform/config.py)，`app/shared/config.py` 仅保留兼容导出。
 
 | 变量                | 推荐本地值                | 说明               |
 | ------------------- | ------------------------- | ------------------ |

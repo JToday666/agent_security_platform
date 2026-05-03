@@ -36,7 +36,7 @@ from app.models.scoring import (
 )
 from app.models.agent import Agent
 from app.models.user import User
-from app.shared.security import create_access_token, hash_password
+from app.platform.security import create_access_token, hash_password
 
 
 @dataclass(slots=True)

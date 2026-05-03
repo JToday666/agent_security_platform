@@ -553,20 +553,20 @@ Host: 127.0.0.1:8000
 }
 ```
 
-## 5. 提交接口
+## 5. Agent 注册与评测提交接口
 
-### 5.1 获取提交页元数据
+旧提交接口 `GET /api/v1/agents/submit-meta`、`POST /api/v1/agents/precheck`、`POST /api/v1/agents/submit` 已移除，不再作为有效契约。
 
-- 路由：`GET /api/v1/agents/submit-meta`
+当前流程：
+
+- 先通过 `/api/v1/agents/*` 注册、验证和管理 Agent 配置。
+- 再通过 `/api/v1/evaluations/*` 获取提交元数据、校验请求并创建评测任务。
+
+### 5.1 获取评测提交元数据
+
+- 路由：`GET /api/v1/evaluations/meta`
 - 鉴权：否
 - 请求类型：无
-
-请求示例：
-
-```http
-GET /api/v1/agents/submit-meta HTTP/1.1
-Host: 127.0.0.1:8000
-```
 
 成功响应示例：
 
@@ -574,46 +574,19 @@ Host: 127.0.0.1:8000
 {
   "code": 0,
   "data": {
-    "supportedMethods": ["api", "docker"],
-    "difficulty": {
-      "min": 0,
-      "max": 1,
-      "step": 0.1,
-      "default": 0.5
-    },
-    "timeoutMinutes": {
-      "min": 15,
-      "max": 30,
-      "step": 1,
-      "default": 15,
-      "recommendedMax": 20
-    },
-    "retryEnabled": {
-      "default": false
-    },
-    "publicToLeaderboard": {
-      "default": true
-    }
+    "submitMethods": ["api"],
+    "difficulty": { "min": 0, "max": 1, "step": 0.1, "default": 0.5 },
+    "timeoutMinutes": { "min": 15, "max": 30, "step": 1, "default": 15 },
+    "maxSteps": { "min": 1, "max": 100, "step": 1, "default": 30 },
+    "publicToLeaderboard": { "default": true }
   },
   "message": "success"
 }
 ```
 
-失败响应示例：
+### 5.2 校验评测提交请求
 
-```json
-{
-  "code": 50000,
-  "data": {
-    "errorType": "RuntimeError"
-  },
-  "message": "服务内部错误，请稍后重试。"
-}
-```
-
-### 5.2 提交前预检查
-
-- 路由：`POST /api/v1/agents/precheck`
+- 路由：`POST /api/v1/evaluations/validate`
 - 鉴权：是
 - 请求类型：`application/json`
 
@@ -621,22 +594,16 @@ Host: 127.0.0.1:8000
 
 ```json
 {
-  "agentName": "安全卫士 v1.0",
-  "description": "夜间回归任务",
+  "requestId": "eval_20260409_demo001",
   "submitMethod": "api",
-  "api": {
-    "baseUrl": "https://example.com/agent",
-    "token": "sk-demo"
-  },
-  "docker": null,
+  "agentId": "agent_20260409_demo001",
+  "datasetIds": ["A1_identity_leakage"],
   "parameters": {
     "difficulty": 0.5,
     "timeoutMinutes": 20,
-    "retryEnabled": false
+    "maxSteps": 30
   },
-  "publicToLeaderboard": false,
-  "datasetIds": ["A1_identity_leakage"],
-  "requestId": "submit_20260409_demo001"
+  "publicToLeaderboard": false
 }
 ```
 
@@ -653,31 +620,12 @@ Host: 127.0.0.1:8000
 }
 ```
 
-失败响应示例：
+### 5.3 创建评测任务
 
-```json
-{
-  "code": 40002,
-  "data": null,
-  "message": "请至少选择一个评测项"
-}
-```
-
-约束：
-
-- `submitMethod` 只允许 `api` 或 `docker`
-- `requestId` 长度 `6-128`，首字符必须是字母或数字，后续仅允许字母、数字、`_`、`-`
-- `datasetIds` 不能为空，且不允许重复
-- 当 `submitMethod = "api"` 时必须提供 `api`，不得同时提供 `docker`
-- 当 `submitMethod = "docker"` 时必须提供 `docker`，不得同时提供 `api`
-
-### 5.3 正式提交评测任务
-
-- 路由：`POST /api/v1/agents/submit`
+- 路由：`POST /api/v1/evaluations`
 - 鉴权：是
 - 请求类型：`application/json`
-- 请求体：与 `POST /api/v1/agents/precheck` 相同
-- 幂等：相同用户 + 相同 `requestId` 重复提交时，直接返回已存在任务
+- 请求体：与 `POST /api/v1/evaluations/validate` 相同
 
 成功响应示例：
 
@@ -686,20 +634,12 @@ Host: 127.0.0.1:8000
   "code": 0,
   "data": {
     "evaluationId": "eval_20260409_062754_290fd4",
+    "submitMethod": "api",
+    "agentId": "agent_20260409_demo001",
     "status": "pending",
     "createdAt": "2026-04-09T06:27:54Z"
   },
   "message": "success"
-}
-```
-
-失败响应示例：
-
-```json
-{
-  "code": 40100,
-  "data": null,
-  "message": "未登录或登录已失效。"
 }
 ```
 

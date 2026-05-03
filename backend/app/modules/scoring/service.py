@@ -21,7 +21,7 @@ from app.modules.scoring.engine import (
 )
 from app.modules.scoring.schemas import EvaluationScoreResponse
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES
-from app.shared.errors import ForbiddenError, NotFoundError, ValidationDomainError
+from app.platform.errors import ForbiddenError, NotFoundError, ValidationDomainError
 
 
 def _decimal(value: float, digits: str = "0.001") -> Decimal:

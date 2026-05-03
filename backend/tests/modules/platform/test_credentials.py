@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from app.shared.credentials import FileCredentialStore
+from app.platform.credentials import FileCredentialStore
 
 
 def test_store_roundtrip_uses_reference_not_plaintext(tmp_path: Path) -> None:

@@ -1,4 +1,4 @@
-# 数据集与提交流程接口说明
+# 数据集与评测流程接口说明
 
 本文档描述当前前端在数据集浏览与提交流程中的真实调用行为，并同步补充当前页面呈现规则。
 
@@ -7,7 +7,7 @@
 由 `VITE_ENABLE_API_MOCK` 统一控制：
 
 - `false`: 调用真实后端接口。
-- `true`: 数据集、提交预检、提交创建统一走前端 mock 实现。
+- `true`: 数据集、评测校验、评测创建统一走前端 mock 实现。
 
 前端不再区分旧的“局部 live / 局部 mock”开关，也不再维护提交草稿的 localStorage 持久化版本。
 
@@ -41,11 +41,24 @@
 - 详情页主动刷新时会透传 `force=true`。
 - 请求前会先做 `datasetId` 规范化。
 
-## 提交流程接口
+## 评测流程接口
 
-### 1. 获取提交元数据
+旧提交接口 `/agents/submit-meta`、`/agents/precheck`、`/agents/submit` 已移除。当前真实流程先注册并验证 Agent，再创建评测任务。
 
-- 方法：`GET /agents/submit-meta`
+### 1. 注册或选择 Agent
+
+- 方法：`POST /agents`、`GET /agents`、`POST /agents/{agentId}/verify`
+- 前端入口：Agent 注册、列表、验证相关 API
+
+前端行为：
+
+- 创建 Agent 时提交运行配置和鉴权配置。
+- 详情与列表接口不会返回明文凭据。
+- 只有可提交评测的 Agent 才进入评测创建流程。
+
+### 2. 获取评测提交元数据
+
+- 方法：`GET /evaluations/meta`
 - 前端入口：`getSubmitMeta()`
 
 返回内容用于控制：
@@ -53,30 +66,28 @@
 - 支持的提交方式
 - 难度范围
 - 超时时间范围
-- 是否允许失败重试
+- 最大步数范围
 - 是否默认公开到排行榜
 
-该接口有内存缓存。
+### 3. 提交前校验
 
-### 2. 提交前预检
-
-- 方法：`POST /agents/precheck`
+- 方法：`POST /evaluations/validate`
 - 前端入口：`precheckAgent(payload)`
 
 前端行为：
 
 - 点击“提交任务”后先构建 payload，再做字段校验。
-- 校验通过后调用预检接口。
-- 预检返回的 warning 只用于确认弹窗提示，不会写入本地持久化。
+- 校验通过后调用评测校验接口。
+- 返回的 warning 只用于确认弹窗提示，不会写入本地持久化。
 
-### 3. 创建评测任务
+### 4. 创建评测任务
 
-- 方法：`POST /agents/submit`
+- 方法：`POST /evaluations`
 - 前端入口：`submitAgent(payload)`
 
 前端行为：
 
-- 最终提交使用与预检一致的业务 payload。
+- 最终提交使用与校验一致的业务 payload。
 - `requestId` 在前端生成，用于当前会话内避免重复提交。
 - 提交成功后清空当前页面内存中的草稿状态。
 
