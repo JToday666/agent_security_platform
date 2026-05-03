@@ -12,8 +12,8 @@ from urllib.parse import urlparse
 import httpx
 
 from app.modules.agents.invocation import AgentInvocationClient
-from app.shared.config import settings
-from app.shared.credentials import FileCredentialStore
+from app.platform.config import settings
+from app.platform.credentials import FileCredentialStore
 from app.worker.runtime.exceptions import RuntimeDispatchError, RuntimeDispatchTimeout
 from app.worker.runtime.preparation import PreparedRuntime, SampleRuntimeTarget
 from app.worker.runtime.process import runtime_base_url
@@ -196,12 +196,12 @@ class DeferredDispatchAdapter(BaseDispatchAdapter):
         replay_path = prepared.run_dir / "replay_result.json"
 
         while True:
-            if finalize_path.exists() and compile_path.exists() and replay_path.exists():
+            if finalize_path.exists():
                 return DispatchResult(
                     mode=self.mode,
                     finalized=True,
-                    compile_result=json.loads(compile_path.read_text(encoding="utf-8")),
-                    replay_result=json.loads(replay_path.read_text(encoding="utf-8")),
+                    compile_result=json.loads(compile_path.read_text(encoding="utf-8")) if compile_path.exists() else {},
+                    replay_result=json.loads(replay_path.read_text(encoding="utf-8")) if replay_path.exists() else {},
                     dispatch_context_path=dispatch_context_path,
                 )
             if asyncio.get_running_loop().time() >= deadline:

@@ -12,8 +12,8 @@ from sqlalchemy import select
 from app.models.benchmark_run import RunDataset, TestRun
 from app.modules.evaluations import lifecycle
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES
-from app.shared.config import settings
-from app.shared.db.session import AsyncSessionLocal
+from app.platform.config import settings
+from app.platform.db.session import AsyncSessionLocal
 from app.worker.claims import heartbeat_claim_by_id
 from app.worker.execution import execute_dataset
 

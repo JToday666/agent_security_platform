@@ -9,6 +9,7 @@ from app.models.agent import Agent
 from app.models.benchmark import BenchmarkSample, RiskSubtype
 from app.models.benchmark_run import RunDataset, RunReport, TestRun
 from app.models.benchmark_run import RunSample, SampleExecution
+from app.models.scoring import DifficultyVersion, DifficultyVersionItem, EvaluationScore
 
 
 class EvaluationRepository:
@@ -133,13 +134,51 @@ class EvaluationRepository:
             )
         self.db.add_all(run_datasets)
 
+        current_difficulty_version = (
+            await self.db.execute(
+                select(DifficultyVersion)
+                .where(DifficultyVersion.status == "published")
+                .order_by(DifficultyVersion.published_at.desc(), DifficultyVersion.id.desc())
+                .limit(1)
+            )
+        ).scalar_one_or_none()
+        difficulty_items: dict[int, DifficultyVersionItem] = {}
+        if current_difficulty_version is not None and sample_rows:
+            item_rows = list(
+                (
+                    await self.db.execute(
+                        select(DifficultyVersionItem).where(
+                            DifficultyVersionItem.version_id == current_difficulty_version.id,
+                            DifficultyVersionItem.sample_id_ref.in_([sample.id for sample in sample_rows]),
+                        )
+                    )
+                ).scalars()
+            )
+            difficulty_items = {item.sample_id_ref: item for item in item_rows}
+
         run_samples: list[RunSample] = []
         for global_order, sample_row in enumerate(sample_rows, start=1):
+            difficulty_item = difficulty_items.get(sample_row.id)
+            difficulty_version_code = (
+                current_difficulty_version.version_code
+                if current_difficulty_version is not None and difficulty_item is not None
+                else "legacy_current"
+            )
             run_samples.append(
                 RunSample(
                     run_id=run.id,
                     sample_id_ref=sample_row.id,
                     order_no=global_order,
+                    difficulty_version_code=difficulty_version_code,
+                    difficulty_score_snapshot=(
+                        difficulty_item.difficulty_score if difficulty_item is not None else sample_row.difficulty_score
+                    ),
+                    completion_difficulty_snapshot=(
+                        difficulty_item.completion_difficulty if difficulty_item is not None else sample_row.difficulty_score
+                    ),
+                    safety_difficulty_snapshot=(
+                        difficulty_item.safety_difficulty if difficulty_item is not None else sample_row.difficulty_score
+                    ),
                 )
             )
         self.db.add_all(run_samples)
@@ -203,6 +242,23 @@ class EvaluationRepository:
         )
         reports_by_run = {report.run_id: report for report in report_rows}
         return dict(datasets_by_run), reports_by_run
+
+    async def load_scores_for_runs(self, run_ids: list[int]) -> dict[int, EvaluationScore]:
+        """批量加载评测任务评分。"""
+        if not run_ids:
+            return {}
+        rows = list(
+            (
+                await self.db.execute(select(EvaluationScore).where(EvaluationScore.run_id.in_(run_ids)))
+            ).scalars()
+        )
+        return {row.run_id: row for row in rows}
+
+    async def load_run_score(self, run_id: int) -> EvaluationScore | None:
+        """加载单个评测任务评分。"""
+        return (
+            await self.db.execute(select(EvaluationScore).where(EvaluationScore.run_id == run_id))
+        ).scalar_one_or_none()
 
     async def commit(self) -> None:
         """提交评测任务相关事务。"""

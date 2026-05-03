@@ -8,8 +8,8 @@ import logging
 from app.models.benchmark_run import TestRun
 from app.modules.evaluations.lifecycle import mark_run_failed, reconcile_expired_paused_runs
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES
-from app.shared.config import settings
-from app.shared.db.session import AsyncSessionLocal
+from app.platform.config import settings
+from app.platform.db.session import AsyncSessionLocal
 from app.worker.claims import claim_next_run
 from app.worker.processing import process_claimed_run
 

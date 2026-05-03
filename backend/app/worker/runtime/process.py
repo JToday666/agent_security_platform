@@ -12,12 +12,12 @@ from typing import IO
 
 import httpx
 
-from app.shared.config import BACKEND_DIR, settings
+from app.platform.config import settings
 from app.worker.runtime.exceptions import RuntimeStartupError
 from app.worker.runtime.preparation import PreparedRuntime
 
 
-SHARED_PROBE_BACKEND = BACKEND_DIR / "data" / "agent_runtime_shared" / "probe_backend.py"
+SHARED_PROBE_BACKEND = Path(__file__).resolve().with_name("probe_backend.py")
 
 
 @dataclass(slots=True)

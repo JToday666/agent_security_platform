@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import Field
 
-from app.shared.schemas import CamelModel
+from app.platform.schemas import CamelModel
 
 
 class EvaluationParameters(CamelModel):

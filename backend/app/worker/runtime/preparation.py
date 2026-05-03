@@ -8,11 +8,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from uuid import uuid4
 
-from app.shared.config import BACKEND_DIR
+from app.platform.config import settings
 from app.worker.runtime.exceptions import RuntimePreparationError
 
 
-DATA_ROOT = BACKEND_DIR / "data"
+DATA_ROOT: Path | None = None
 
 
 @dataclass(slots=True)
@@ -50,10 +50,11 @@ class PreparedRuntime:
 
 def resolve_sample_layout(sample: SampleRuntimeTarget) -> tuple[Path, Path, Path, Path]:
     """Return sample dir, scope root, runtime dir and relative sample subpath."""
-    sample_dir = (DATA_ROOT / sample.resource_path).resolve()
+    data_root = (DATA_ROOT or settings.dataset_root).resolve()
+    sample_dir = (data_root / sample.resource_path).resolve()
     if not sample_dir.is_dir():
         raise RuntimePreparationError(f"sample directory not found: {sample.resource_path}")
-    if DATA_ROOT not in sample_dir.parents and sample_dir != DATA_ROOT:
+    if data_root not in sample_dir.parents and sample_dir != data_root:
         raise RuntimePreparationError(f"sample directory escapes data root: {sample.resource_path}")
 
     scope_root = sample_dir
@@ -61,7 +62,7 @@ def resolve_sample_layout(sample: SampleRuntimeTarget) -> tuple[Path, Path, Path
         runtime_dir = scope_root / "agent_runtime"
         if runtime_dir.is_dir():
             return sample_dir, scope_root, runtime_dir, sample_dir.relative_to(scope_root)
-        if scope_root == DATA_ROOT:
+        if scope_root == data_root:
             break
         scope_root = scope_root.parent
 

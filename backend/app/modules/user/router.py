@@ -7,9 +7,9 @@ from app.modules.user.repository import UserRepository
 from app.modules.user.schemas import AvatarUploadData, ProfileUpdateRequest, UserProfile
 from app.modules.user.service import UserService
 from app.modules.auth.dependencies import get_current_user
-from app.shared.auth import get_db
-from app.shared.http import success_payload
-from app.shared.schemas import Envelope
+from app.platform.auth import get_db
+from app.platform.http import success_payload
+from app.platform.schemas import Envelope
 
 router = APIRouter(prefix="/user", tags=["user"])
 

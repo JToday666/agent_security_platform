@@ -2,8 +2,8 @@
 
 from fastapi import APIRouter
 
-from app.shared.http import success_payload
-from app.shared.schemas import Envelope, MessagePayload
+from app.platform.http import success_payload
+from app.platform.schemas import Envelope, MessagePayload
 from .v1.api import api_router as api_v1_router
 
 api_router = APIRouter(prefix="/api", tags=["api"])

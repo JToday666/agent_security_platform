@@ -99,9 +99,14 @@ def normalize_sample_bundle(
 
 def _discover_selected_metadata(sample_root: Path, mode: str) -> list[tuple[Path, _SelectedMetadata]]:
     """发现并挑选每个样本目录中唯一可用的元数据文件。"""
+    task_json_dirs = {path.parent for path in sample_root.rglob("task.json") if "saved_logs" not in path.parts}
     candidates_by_dir: dict[Path, list[_MetadataCandidate]] = defaultdict(list)
     for path in sorted(sample_root.rglob("*.json")):
         if path.name in IGNORED_JSON_FILENAMES or "saved_logs" in path.parts:
+            continue
+        if path.parent in task_json_dirs and path.name != "task.json":
+            continue
+        if path.name != "task.json" and mode == "standard":
             continue
         payload = _load_candidate_payload(path)
         fmt = detect_metadata_format(payload)

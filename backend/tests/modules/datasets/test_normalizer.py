@@ -5,7 +5,6 @@ from pathlib import Path
 
 import pytest
 
-from app.modules.datasets.ingestion.errors import ImportValidationError
 from tests.helpers.dataset_bundle import write_json, write_legacy_sample
 
 
@@ -35,12 +34,12 @@ def test_normalize_sample_bundle_deduplicates_same_content_metadata_and_symlinks
     assert task_payload["risk_category_sort_order"] == 1
     assert task_payload["risk_subtype_code"] == "A3_address_and_location_leakage"
     assert task_payload["risk_subtype_sort_order"] == 3
-    assert not (normalized_sample_dir / "CarRentalse-Receipts.json").exists()
+    assert (normalized_sample_dir / "CarRentalse-Receipts.json").is_symlink()
     assert (normalized_sample_dir / "index.html").is_symlink()
     assert (normalized_sample_dir / "assets" / "readme.txt").is_symlink()
 
 
-def test_normalize_sample_bundle_rejects_conflicting_metadata_candidates(tmp_path: Path) -> None:
+def test_normalize_sample_bundle_ignores_sidecar_json_when_task_json_exists(tmp_path: Path) -> None:
     from app.modules.datasets.ingestion.normalize import normalize_sample_bundle
 
     sample_dir = tmp_path / "raw" / "01_Confidentiality" / "A3_Address_and_Location_Leakage" / "EIA_A3_10_high"
@@ -72,8 +71,12 @@ def test_normalize_sample_bundle_rejects_conflicting_metadata_candidates(tmp_pat
         },
     )
 
-    with pytest.raises(ImportValidationError, match="内容不一致"):
-        normalize_sample_bundle(tmp_path / "raw", tmp_path / "normalized")
+    normalize_sample_bundle(tmp_path / "raw", tmp_path / "normalized")
+
+    normalized_sample_dir = tmp_path / "normalized" / "01_Confidentiality" / "A3_Address_and_Location_Leakage" / "EIA_A3_10_high"
+    task_payload = json.loads((normalized_sample_dir / "task.json").read_text(encoding="utf-8"))
+    assert task_payload["sample_id"] == "EIA_A3_10_high"
+    assert (normalized_sample_dir / "CarRentalse-Receipts.json").is_symlink()
 
 
 @pytest.mark.parametrize(

@@ -23,12 +23,20 @@ from app.models.benchmark_run import (
     RunDataset,
     RunReport,
     RunSample,
+    SampleDifficultyStat,
     SampleExecution,
     TestRun,
 )
+from app.models.scoring import (
+    DifficultyVersion,
+    DifficultyVersionItem,
+    EvaluationScore,
+    LeaderboardEntry,
+    LeaderboardSnapshot,
+)
 from app.models.agent import Agent
 from app.models.user import User
-from app.shared.security import create_access_token, hash_password
+from app.platform.security import create_access_token, hash_password
 
 
 @dataclass(slots=True)
@@ -180,6 +188,20 @@ class ApiDbHelper:
 
             if run_ids:
                 sample_execution_ids = list((session.execute(select(SampleExecution.id).where(SampleExecution.run_id.in_(run_ids)))).scalars())
+                score_ids = list((session.execute(select(EvaluationScore.id).where(EvaluationScore.run_id.in_(run_ids)))).scalars())
+                if score_ids:
+                    snapshot_ids = list(
+                        (
+                            session.execute(
+                                select(LeaderboardEntry.snapshot_id).where(LeaderboardEntry.score_id.in_(score_ids))
+                            )
+                        ).scalars()
+                    )
+                    session.execute(delete(LeaderboardEntry).where(LeaderboardEntry.score_id.in_(score_ids)))
+                    if snapshot_ids:
+                        session.execute(delete(LeaderboardEntry).where(LeaderboardEntry.snapshot_id.in_(snapshot_ids)))
+                        session.execute(delete(LeaderboardSnapshot).where(LeaderboardSnapshot.id.in_(snapshot_ids)))
+                    session.execute(delete(EvaluationScore).where(EvaluationScore.id.in_(score_ids)))
                 session.execute(delete(RunReport).where(RunReport.run_id.in_(run_ids)))
             if sample_execution_ids:
                 session.execute(delete(ExecutionArtifact).where(ExecutionArtifact.sample_execution_id.in_(sample_execution_ids)))
@@ -195,6 +217,8 @@ class ApiDbHelper:
             if subtype_ids:
                 sample_ids = list((session.execute(select(BenchmarkSample.id).where(BenchmarkSample.risk_subtype_id.in_(subtype_ids)))).scalars())
             if sample_ids:
+                session.execute(delete(SampleDifficultyStat).where(SampleDifficultyStat.sample_id_ref.in_(sample_ids)))
+                session.execute(delete(DifficultyVersionItem).where(DifficultyVersionItem.sample_id_ref.in_(sample_ids)))
                 session.execute(delete(BenchmarkSample).where(BenchmarkSample.id.in_(sample_ids)))
             if subtype_ids:
                 session.execute(delete(RiskSubtypeDisplayMeta).where(RiskSubtypeDisplayMeta.subtype_id.in_(subtype_ids)))
@@ -202,6 +226,14 @@ class ApiDbHelper:
             session.execute(delete(RiskCategory).where(RiskCategory.code.like(f"{self.prefix}%")))
             session.execute(delete(DatasetSource).where(DatasetSource.code.like(f"{self.prefix}%")))
             session.execute(delete(AttackDeliveryType).where(AttackDeliveryType.code.like(f"{self.prefix}%")))
+            version_ids = list(
+                (
+                    session.execute(select(DifficultyVersion.id).where(DifficultyVersion.version_code.like(f"{self.prefix}%")))
+                ).scalars()
+            )
+            if version_ids:
+                session.execute(delete(DifficultyVersionItem).where(DifficultyVersionItem.version_id.in_(version_ids)))
+                session.execute(delete(DifficultyVersion).where(DifficultyVersion.id.in_(version_ids)))
             if user_ids:
                 session.execute(delete(User).where(User.id.in_(user_ids)))
             session.commit()

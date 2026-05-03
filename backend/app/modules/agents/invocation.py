@@ -10,7 +10,7 @@ from urllib.parse import urljoin
 import httpx
 
 from app.modules.agents.security import validate_agent_base_url
-from app.shared.config import settings
+from app.platform.config import settings
 
 
 class AgentInvocationError(RuntimeError):

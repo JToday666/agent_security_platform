@@ -10,8 +10,8 @@ from sqlalchemy.exc import IntegrityError
 
 from app.modules.user.schemas import ProfileUpdateRequest
 from app.modules.user.service import UserService
-from app.shared.config import settings
-from app.shared.errors import ConflictError
+from app.platform.config import settings
+from app.platform.errors import ConflictError
 
 
 def make_integrity_error(detail: str) -> IntegrityError:

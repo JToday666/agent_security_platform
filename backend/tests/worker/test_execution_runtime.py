@@ -15,16 +15,59 @@ from app.worker.runtime import (
     resolve_dispatch_adapter,
     stop_runtime,
 )
+from app.worker import execution
 from app.worker.runtime import preparation as runtime_preparation
 from app.worker.runtime.ports import allocate_tcp_port
 from app.worker.runtime.preparation import (
     SampleRuntimeTarget,
     build_environment_ref,
     build_probe_token,
+    resolve_sample_layout,
 )
 
 
 pytestmark = pytest.mark.worker
+
+
+def test_resolve_sample_layout_uses_configured_dataset_root(tmp_path: Path) -> None:
+    data_root = tmp_path / "datasets"
+    subtype_root = data_root / "01_Confidentiality" / "A3_Address_and_Location_Leakage"
+    sample_root = subtype_root / "EIA_A3_1_high"
+    (sample_root / "site").mkdir(parents=True)
+    (sample_root / "site" / "index.html").write_text("<html></html>\n", encoding="utf-8")
+    (subtype_root / "agent_runtime").mkdir(parents=True)
+
+    sample = SampleRuntimeTarget(
+        sample_db_id=1,
+        sample_id="EIA_A3_1_high",
+        sample_name="EIA_A3_1_high",
+        resource_path="01_Confidentiality/A3_Address_and_Location_Leakage/EIA_A3_1_high",
+        entry_path="site/index.html",
+        user_goal="open the page",
+    )
+
+    with patch.object(runtime_preparation.settings, "DATASET_ROOT_DIR", str(data_root)):
+        sample_dir, scope_root, runtime_dir, sample_subpath = resolve_sample_layout(sample)
+
+    assert sample_dir == sample_root.resolve()
+    assert scope_root == subtype_root.resolve()
+    assert runtime_dir == (subtype_root / "agent_runtime").resolve()
+    assert sample_subpath.as_posix() == "EIA_A3_1_high"
+
+
+def test_runtime_process_semaphore_tracks_configured_global_limit() -> None:
+    with patch.object(execution.settings, "WORKER_MAX_ACTIVE_RUNTIME_PROCESSES", 3):
+        first = execution._runtime_process_semaphore()
+        second = execution._runtime_process_semaphore()
+
+    assert first is second
+    assert first._value == 3
+
+    with patch.object(execution.settings, "WORKER_MAX_ACTIVE_RUNTIME_PROCESSES", 1):
+        resized = execution._runtime_process_semaphore()
+
+    assert resized is not first
+    assert resized._value == 1
 
 
 @pytest.mark.asyncio
@@ -116,14 +159,15 @@ async def test_synthetic_local_dispatch_closes_runtime_loop(tmp_path: Path) -> N
     assert (prepared.run_dir / "meta.json").exists()
     assert (prepared.run_dir / "events.jsonl").exists()
     assert (prepared.run_dir / "finalize.json").exists()
-    assert (prepared.run_dir / "compile_result.json").exists()
-    assert (prepared.run_dir / "replay_result.json").exists()
+    assert not (prepared.run_dir / "compile_result.json").exists()
+    assert not (prepared.run_dir / "replay_result.json").exists()
+    assert result.compile_result == {}
+    assert result.replay_result == {}
     assert result.finalized is True
 
     artifact_types = {artifact.artifact_type for artifact in collect_artifacts(prepared)}
     assert "runtime_meta" in artifact_types
     assert "event_log" in artifact_types
-    assert "compile_result" in artifact_types
-    assert "replay_result" in artifact_types
-    assert "replay_report" in artifact_types
-
+    assert "compile_result" not in artifact_types
+    assert "replay_result" not in artifact_types
+    assert "replay_report" not in artifact_types

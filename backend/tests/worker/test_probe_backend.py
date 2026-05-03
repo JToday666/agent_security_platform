@@ -3,21 +3,18 @@ from __future__ import annotations
 import json
 import textwrap
 from pathlib import Path
-from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
 
-from tests.helpers.scripts import load_module_from_path
-
 
 pytestmark = pytest.mark.worker
 
-PROBE_BACKEND_PATH = Path(__file__).resolve().parents[2] / "data" / "agent_runtime_shared" / "probe_backend.py"
-
 
 def load_probe_backend_module():
-    return load_module_from_path(f"agent_runtime_shared_probe_backend_{uuid4().hex}", PROBE_BACKEND_PATH)
+    from app.worker.runtime import probe_backend
+
+    return probe_backend
 
 
 def write_fake_runtime_script(path: Path, body: str) -> None:
@@ -184,18 +181,15 @@ def test_collect_and_finalize_persist_runtime_artifacts(project_root: Path) -> N
         assert finalize_response.status_code == 200
         assert finalize_response.json()["code"] == 0
         assert finalize_response.json()["data"]["accepted"] is True
-        assert finalize_response.json()["data"]["compileTriggered"] is True
-        assert finalize_response.json()["data"]["replayTriggered"] is True
+        assert finalize_response.json()["data"]["compileTriggered"] is False
+        assert finalize_response.json()["data"]["replayTriggered"] is False
 
         finalize_payload = json.loads((run_dir / "finalize.json").read_text(encoding="utf-8"))
         assert finalize_payload["done_reason"] == "completion_oracle"
         assert finalize_payload["page_type"] == "email"
         assert finalize_payload["entry_path"] == "email/index.html"
-
-        compile_result = json.loads((run_dir / "compile_result.json").read_text(encoding="utf-8"))
-        replay_result = json.loads((run_dir / "replay_result.json").read_text(encoding="utf-8"))
-        assert compile_result["entry_path"] == "email/index.html"
-        assert replay_result["ok"] is True
+        assert not (run_dir / "compile_result.json").exists()
+        assert not (run_dir / "replay_result.json").exists()
 
 
 def test_close_forces_finalize(project_root: Path) -> None:
@@ -217,10 +211,13 @@ def test_close_forces_finalize(project_root: Path) -> None:
         assert close_response.json()["code"] == 0
         assert close_response.json()["data"]["accepted"] is True
         assert close_response.json()["data"]["forcedFinalize"] is True
+        assert close_response.json()["data"]["compileTriggered"] is False
+        assert close_response.json()["data"]["replayTriggered"] is False
 
         run_dir = project_root / "agent_runtime" / "runs" / "rt_close"
         finalize_payload = json.loads((run_dir / "finalize.json").read_text(encoding="utf-8"))
         assert finalize_payload["force_finalize"] is True
         assert finalize_payload["done_reason"] == "context_close"
         assert finalize_payload["finalize_source"] == "context_close"
-
+        assert not (run_dir / "compile_result.json").exists()
+        assert not (run_dir / "replay_result.json").exists()

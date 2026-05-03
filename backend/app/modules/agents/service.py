@@ -3,9 +3,16 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from uuid import uuid4
 
 from app.models.agent import Agent
+from app.modules.agents.application.ids import generate_agent_id
+from app.modules.agents.application.mappers import runtime_snapshot, to_detail, to_summary, to_zulu
+from app.modules.agents.domain.policies import (
+    actions_for_status,
+    invalid_agent,
+    split_auth_config,
+    validate_create_payload,
+)
 from app.modules.agents.invocation import AgentInvocationClient
 from app.modules.agents.repository import AgentRepository
 from app.modules.agents.schemas import (
@@ -16,42 +23,10 @@ from app.modules.agents.schemas import (
     AgentVerificationRequest,
     AgentVerificationResponse,
 )
-from app.modules.agents.security import AgentUrlSecurityError, validate_agent_base_url
 from app.modules.agents.templates import list_agent_templates
-from app.shared.config import settings
-from app.shared.credentials import CredentialStore, FileCredentialStore
-from app.shared.errors import ConflictError, ForbiddenError, NotFoundError, ValidationDomainError
-
-
-def invalid_agent(message: str) -> ValidationDomainError:
-    """Build a stable Agent validation error."""
-    return ValidationDomainError(message, http_status=400, code=40002)
-
-
-def to_zulu(value: datetime | None) -> str | None:
-    """Format datetimes for public API responses."""
-    if value is None:
-        return None
-    return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
-
-
-def generate_agent_id() -> str:
-    """Generate a public Agent identifier."""
-    return f"agt_{uuid4().hex[:12]}"
-
-
-def actions_for_status(status: str) -> dict[str, bool]:
-    """Derive frontend actions from Agent status."""
-    return {
-        "canSubmitEvaluation": status == "active",
-        "canVerify": status in {"draft", "active", "invalid"},
-        "canArchive": status in {"draft", "verifying", "active", "invalid"},
-        "canCopyCreate": status in {"draft", "verifying", "active", "invalid", "archived"},
-    }
-
-
-def _top_level_field(value: str) -> bool:
-    return bool(value and "." not in value and "[" not in value and "]" not in value)
+from app.platform.credentials import CredentialStore
+from app.platform.errors import ConflictError, ForbiddenError, NotFoundError
+from app.platform.storage import default_credential_store
 
 
 class AgentService:
@@ -64,7 +39,7 @@ class AgentService:
         invocation_client: AgentInvocationClient | None = None,
     ) -> None:
         self.repository = repository
-        self.credential_store = credential_store or FileCredentialStore(settings.credential_storage_dir, settings.SECRET_KEY)
+        self.credential_store = credential_store or default_credential_store()
         self.invocation_client = invocation_client or AgentInvocationClient()
 
     async def list_templates(self):
@@ -73,9 +48,9 @@ class AgentService:
 
     async def create_agent(self, payload: AgentCreateRequest, current_user) -> AgentSummary:
         """Create a draft Agent and persist any submitted credential separately."""
-        self._validate_create_payload(payload)
+        validate_create_payload(payload)
         now = datetime.now(timezone.utc)
-        public_config, credential_payload = self._split_auth_config(payload)
+        public_config, credential_payload = split_auth_config(payload)
         credential_ref = self.credential_store.store(credential_payload) if credential_payload else None
         agent = Agent(
             public_id=generate_agent_id(),
@@ -108,17 +83,17 @@ class AgentService:
             if credential_ref is not None:
                 self.credential_store.delete(credential_ref)
             raise
-        return self._summary(agent, include_actions=False)
+        return to_summary(agent, include_actions=False)
 
     async def list_agents(self, current_user, *, include_archived: bool = False, status: str | None = None) -> list[AgentSummary]:
         """List Agents for the current user."""
         agents = await self.repository.list_for_user(current_user.id, include_archived=include_archived, status=status)
-        return [self._summary(agent, include_actions=True) for agent in agents]
+        return [to_summary(agent, include_actions=True) for agent in agents]
 
     async def get_agent_detail(self, agent_id: str, current_user) -> AgentDetail:
         """Return non-sensitive Agent detail."""
         agent = await self._get_owned_agent(agent_id, current_user)
-        return self._detail(agent)
+        return to_detail(agent)
 
     async def verify_agent(self, agent_id: str, payload: AgentVerificationRequest, current_user) -> AgentVerificationResponse:
         """Run a lightweight live verification against the external Agent."""
@@ -140,7 +115,7 @@ class AgentService:
         try:
             credential_payload = self.credential_store.load(agent.credential_ref) if agent.credential_ref else {}
             result = await self.invocation_client.invoke(
-                agent_snapshot=self._runtime_snapshot(agent),
+                agent_snapshot=runtime_snapshot(agent),
                 credential_payload=credential_payload,
                 platform_values={
                     "task": "Agent verification probe",
@@ -196,112 +171,3 @@ class AgentService:
         if agent.user_id != current_user.id:
             raise ForbiddenError("无权访问该 Agent。")
         return agent
-
-    def _validate_create_payload(self, payload: AgentCreateRequest) -> None:
-        name = payload.name.strip()
-        if not name:
-            raise invalid_agent("Agent 名称不能为空。")
-        try:
-            validate_agent_base_url(payload.connection.base_url)
-        except AgentUrlSecurityError as exc:
-            raise invalid_agent(str(exc)) from exc
-        if "task" not in payload.platform_input_mapping or not payload.platform_input_mapping["task"]:
-            raise invalid_agent("platformInputMapping.task 必填。")
-        for field in payload.platform_input_mapping.values():
-            if not _top_level_field(field):
-                raise invalid_agent("platformInputMapping 的值必须是顶层字段名。")
-        conflict = set(payload.custom_request_body.keys()).intersection(payload.platform_input_mapping.values())
-        if conflict:
-            raise invalid_agent(f"customRequestBody 中的字段 {sorted(conflict)[0]} 与平台输入映射字段冲突。")
-        if payload.invoke_mode == "submit_poll":
-            if not payload.connection.result_path_template:
-                raise invalid_agent("submit_poll 模式下 resultPathTemplate 为必填字段。")
-            for key in ("externalRunId", "status"):
-                if key not in payload.platform_output_mapping:
-                    raise invalid_agent(f"submit_poll 模式下 platformOutputMapping.{key} 为必填字段。")
-        if not set(payload.success_statuses).issubset(set(payload.terminal_statuses)):
-            raise invalid_agent("successStatuses 必须是 terminalStatuses 的子集。")
-        self._validate_auth(payload)
-
-    def _validate_auth(self, payload: AgentCreateRequest) -> None:
-        config = payload.auth.config
-        if payload.auth.type == "bearer" and not config.get("token"):
-            raise invalid_agent("bearer 鉴权必须填写 token。")
-        if payload.auth.type in {"api_key_header", "custom_header"}:
-            if not config.get("headerName") or not config.get("secret"):
-                raise invalid_agent("header 鉴权必须填写 headerName 和 secret。")
-
-    def _split_auth_config(self, payload: AgentCreateRequest) -> tuple[dict[str, object], dict[str, object] | None]:
-        config = dict(payload.auth.config)
-        if payload.auth.type == "none":
-            return {}, None
-        if payload.auth.type == "bearer":
-            return {"hasToken": True}, {"type": "bearer", "token": config["token"]}
-        return (
-            {"headerName": config["headerName"], "hasSecret": True},
-            {"type": payload.auth.type, "headerName": config["headerName"], "secret": config["secret"]},
-        )
-
-    def _summary(self, agent: Agent, *, include_actions: bool) -> AgentSummary:
-        payload = {
-            "agentId": agent.public_id,
-            "name": agent.name,
-            "description": agent.description,
-            "invokeMode": agent.invoke_mode,
-            "status": agent.status,
-            "verifiedAt": to_zulu(agent.verified_at),
-            "lastVerificationPassed": agent.last_verification_passed,
-            "createdAt": to_zulu(agent.created_at),
-            "updatedAt": to_zulu(agent.updated_at),
-        }
-        if include_actions:
-            payload.update(actions_for_status(agent.status))
-        return AgentSummary.model_validate(payload)
-
-    def _detail(self, agent: Agent) -> AgentDetail:
-        return AgentDetail.model_validate(
-            {
-                "agentId": agent.public_id,
-                "templateId": agent.template_id,
-                "name": agent.name,
-                "description": agent.description,
-                "invokeMode": agent.invoke_mode,
-                "status": agent.status,
-                "connection": agent.connection,
-                "auth": {
-                    "type": agent.auth_type,
-                    "hasCredential": agent.credential_ref is not None,
-                    "publicConfig": agent.auth_public_config,
-                },
-                "platformInputMapping": agent.platform_input_mapping,
-                "taskRenderMode": agent.task_render_mode,
-                "customRequestBody": agent.custom_request_body,
-                "requestOptions": agent.request_options,
-                "platformOutputMapping": agent.platform_output_mapping,
-                "terminalStatuses": agent.terminal_statuses,
-                "successStatuses": agent.success_statuses,
-                "verifiedAt": to_zulu(agent.verified_at),
-                "lastVerification": agent.last_verification,
-                "actions": actions_for_status(agent.status),
-                "createdAt": to_zulu(agent.created_at),
-                "updatedAt": to_zulu(agent.updated_at),
-            }
-        )
-
-    def _runtime_snapshot(self, agent: Agent) -> dict[str, object]:
-        return {
-            "agentId": agent.public_id,
-            "templateId": agent.template_id,
-            "name": agent.name,
-            "description": agent.description,
-            "invokeMode": agent.invoke_mode,
-            "connection": agent.connection,
-            "auth": {"type": agent.auth_type, **agent.auth_public_config, "credentialRef": agent.credential_ref},
-            "platformInputMapping": agent.platform_input_mapping,
-            "taskRenderMode": agent.task_render_mode,
-            "customRequestBody": agent.custom_request_body,
-            "requestOptions": agent.request_options,
-            "platformOutputMapping": agent.platform_output_mapping,
-            "terminalStatuses": agent.terminal_statuses,
-            "successStatuses": agent.success_statuses,
-        }

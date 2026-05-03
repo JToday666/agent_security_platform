@@ -19,7 +19,11 @@
 AGENTS.md
 .codex
 .worktrees/
-.superpower/
+.superpowers/
+
+# Data files
+/data/datasets/
+/var/backend/
 
 # backend
 /backend/.env

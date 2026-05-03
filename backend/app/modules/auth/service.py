@@ -5,8 +5,8 @@ from sqlalchemy.exc import IntegrityError
 
 from app.modules.auth.repository import AuthRepository
 from app.modules.auth.schemas import AuthSessionData, RegisterRequest, UserProfile
-from app.shared.errors import AuthError, ConflictError, ValidationDomainError
-from app.shared.security import create_access_token, hash_password, verify_password
+from app.platform.errors import AuthError, ConflictError, ValidationDomainError
+from app.platform.security import create_access_token, hash_password, verify_password
 
 
 def integrity_error_text(exc: IntegrityError) -> str:

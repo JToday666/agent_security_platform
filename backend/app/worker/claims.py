@@ -8,7 +8,7 @@ from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.benchmark_run import TestRun
-from app.shared.config import settings
+from app.platform.config import settings
 
 
 def claim_is_stale(

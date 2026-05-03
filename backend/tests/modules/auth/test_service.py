@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app.modules.auth.schemas import RegisterRequest
 from app.modules.auth.service import AuthService
-from app.shared.errors import ConflictError
+from app.platform.errors import ConflictError
 
 
 def make_integrity_error(detail: str) -> IntegrityError:

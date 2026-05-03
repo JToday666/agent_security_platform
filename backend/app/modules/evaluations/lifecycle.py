@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from collections import defaultdict
 from datetime import datetime, timezone
 
@@ -11,6 +12,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.benchmark import BenchmarkSample, RiskCategory, RiskSubtype
 from app.models.benchmark_run import ExecutionSummary, RunDataset, RunReport, SampleExecution, TestRun
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES, apply_pause_timeout
+from app.modules.difficulty.service import update_sample_difficulty_stats_for_run
+from app.modules.scoring.service import calculate_and_store_evaluation_score
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def request_pause(run, now: datetime) -> None:
@@ -116,6 +122,12 @@ async def finalize_run(
 
     if create_report:
         await upsert_report(db, run.id)
+        try:
+            await update_sample_difficulty_stats_for_run(db, run.id)
+            if run.completed_samples > 0:
+                await calculate_and_store_evaluation_score(db, run.id)
+        except Exception:
+            LOGGER.exception("Failed to update difficulty stats or scoring", extra={"run_id": run.id})
 
     await db.commit()
 

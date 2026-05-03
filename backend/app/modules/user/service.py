@@ -8,9 +8,9 @@ from sqlalchemy.exc import IntegrityError
 
 from app.modules.user.repository import UserRepository
 from app.modules.user.schemas import AvatarUploadData, ProfileUpdateRequest, UserProfile
-from app.shared.config import settings
-from app.shared.errors import ConflictError, DomainError, ForbiddenError, ValidationDomainError
-from app.shared.security import hash_password
+from app.platform.errors import ConflictError, DomainError, ForbiddenError, ValidationDomainError
+from app.platform.security import hash_password
+from app.platform.storage import default_avatars_root
 
 ALLOWED_IMAGE_TYPES = {"image/jpeg": ".jpg", "image/png": ".png"}
 MAX_AVATAR_SIZE = 2 * 1024 * 1024
@@ -19,9 +19,10 @@ MAX_AVATAR_SIZE = 2 * 1024 * 1024
 class UserService:
     """封装用户资料相关业务能力。"""
 
-    def __init__(self, repository: UserRepository) -> None:
+    def __init__(self, repository: UserRepository, avatars_root: Path | None = None) -> None:
         """绑定用户资料服务使用的仓储实例。"""
         self.repository = repository
+        self.avatars_root = avatars_root
 
     async def get_profile(self, current_user) -> UserProfile:
         """返回当前用户资料。"""
@@ -64,10 +65,11 @@ class UserService:
         if len(content) > MAX_AVATAR_SIZE:
             raise ValidationDomainError("头像大小不能超过 2MB", http_status=status.HTTP_400_BAD_REQUEST, code=1000)
 
-        settings.avatars_root.mkdir(parents=True, exist_ok=True)
+        avatars_root = self.avatars_root or default_avatars_root()
+        avatars_root.mkdir(parents=True, exist_ok=True)
         extension = ALLOWED_IMAGE_TYPES[avatar.content_type]
         file_name = f"{current_user.id}_{uuid.uuid4().hex}{extension}"
-        file_path = settings.avatars_root / file_name
+        file_path = avatars_root / file_name
 
         try:
             with Path(file_path).open("wb") as file_obj:

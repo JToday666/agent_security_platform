@@ -2,7 +2,7 @@
 
 from pydantic import ConfigDict, EmailStr, Field, field_validator
 
-from app.shared.schemas import CamelModel
+from app.platform.schemas import CamelModel
 
 
 class LoginRequest(CamelModel):

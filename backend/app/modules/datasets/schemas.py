@@ -1,6 +1,6 @@
 """数据集模块请求与响应模型。"""
 
-from app.shared.schemas import CamelModel
+from app.platform.schemas import CamelModel
 
 
 class DatasetCatalogItem(CamelModel):

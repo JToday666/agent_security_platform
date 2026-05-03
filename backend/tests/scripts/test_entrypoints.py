@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from app.shared.config import settings
+from app.platform.config import settings
 
 
 pytestmark = pytest.mark.scripts

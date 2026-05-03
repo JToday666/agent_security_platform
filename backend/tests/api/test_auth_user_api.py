@@ -6,7 +6,7 @@ from unittest.mock import PropertyMock, patch
 
 import pytest
 
-from app.shared.config import settings
+from app.platform.config import settings
 from tests.helpers.api_db import png_bytes
 
 
