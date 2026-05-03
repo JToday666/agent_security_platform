@@ -15,6 +15,8 @@
       </template>
     </PageHero>
 
+    <EvaluationTrendPanel @select="openEvaluationDetail" />
+
     <PageStatePanel
       v-if="loading"
       title="正在读取记录"
@@ -79,6 +81,7 @@ import { RouteLocation } from "@/app/router/route-names";
 import { getEvaluationRecords } from "@/modules/evaluation/api/evaluation-api";
 import EvaluationFilterBar from "@/modules/evaluation/components/EvaluationFilterBar.vue";
 import EvaluationRecordItem from "@/modules/evaluation/components/EvaluationRecordItem.vue";
+import EvaluationTrendPanel from "@/modules/evaluation/components/EvaluationTrendPanel.vue";
 import { filterEvaluationRecords } from "@/modules/evaluation/lib/evaluation-record-filters";
 import type {
   EvaluationRecord,
@@ -120,6 +123,10 @@ const loadRecords = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const openEvaluationDetail = (evaluationId: string) => {
+  void $router.push(RouteLocation.evaluationDetail(evaluationId));
 };
 
 onMounted(async () => {

@@ -10,6 +10,11 @@ interface ApiResponse<T = any> {
   code?: number;
 }
 
+export interface ApiBlobResponse {
+  blob: Blob;
+  fileName: string;
+}
+
 interface ApiError extends Error {
   code?: number;
   httpStatus?: number;
@@ -172,6 +177,30 @@ const resolveResponse = async <T = any>(
   requestPromise: Promise<{ data: unknown }>,
 ): Promise<ApiResponse<T>> => toApiResponse<T>((await requestPromise).data);
 
+const parseFileName = (value?: string): string => {
+  if (!value) {
+    return "";
+  }
+
+  const utf8Match = /filename\*=UTF-8''([^;]+)/i.exec(value);
+  if (utf8Match?.[1]) {
+    return decodeURIComponent(utf8Match[1].replace(/"/g, ""));
+  }
+
+  const fallbackMatch = /filename="?([^"]+)"?/i.exec(value);
+  return fallbackMatch?.[1]?.trim() ?? "";
+};
+
+const resolveBlobResponse = async (
+  requestPromise: Promise<{ data: unknown; headers?: Record<string, string> }>,
+): Promise<ApiBlobResponse> => {
+  const response = await requestPromise;
+  return {
+    blob: response.data as Blob,
+    fileName: parseFileName(response.headers?.["content-disposition"]),
+  };
+};
+
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(STORAGE_KEYS.user.token);
@@ -235,6 +264,14 @@ const request = {
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> =>
     resolveResponse<T>(axiosInstance.put(url, data, config)),
+
+  download: (
+    url: string,
+    config?: AxiosRequestConfig,
+  ): Promise<ApiBlobResponse> =>
+    resolveBlobResponse(
+      axiosInstance.get(url, { ...config, responseType: "blob" }),
+    ),
 };
 
 export default request;

@@ -2,7 +2,7 @@
   <SectionBlock
     title="筛选记录"
     description="按关键词、状态、可见性和提交方式筛选记录。"
-    surface="panel"
+    surface="line"
   >
     <div class="filter-grid">
       <FormField

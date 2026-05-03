@@ -5,11 +5,18 @@ import {
   adaptEvaluationRecord,
   adaptSubmitMeta,
 } from "@/modules/evaluation/api/adapters/agent-adapters";
+import {
+  adaptEvaluationReportPayload as adaptReportPayload,
+  adaptEvaluationScoreTrend as adaptScoreTrend,
+} from "@/modules/evaluation/api/adapters/report-adapters";
 import type {
+  EvaluationScoreTrendScope,
   EvaluationAction,
   EvaluationActionRequest,
   EvaluationDetail,
+  EvaluationReportPayload,
   EvaluationRecord,
+  EvaluationScoreTrend,
   PrecheckResponse,
   SubmitAgentPayload,
   SubmitMetaResponse,
@@ -91,7 +98,7 @@ export const submitLiveAgent = async (
 export const getLiveEvaluationRecords = async (): Promise<
   EvaluationRecord[]
 > => {
-  const response = await request.get<EvaluationRecord[]>("/evaluations");
+  const response = await request.get<unknown>("/evaluations");
 
   if (!response.success || !response.data) {
     throw createServiceError(
@@ -100,9 +107,35 @@ export const getLiveEvaluationRecords = async (): Promise<
     );
   }
 
-  return (response.data as unknown[]).map((item) =>
+  const payload =
+    response.data &&
+    typeof response.data === "object" &&
+    Array.isArray((response.data as { items?: unknown }).items)
+      ? (response.data as { items: unknown[] }).items
+      : Array.isArray(response.data)
+        ? response.data
+        : [];
+
+  return payload.map((item) =>
     sanitizeEvaluationRecord(adaptEvaluationRecord(item)),
   );
+};
+
+export const getLiveEvaluationScoreTrend = async (
+  scope: EvaluationScoreTrendScope,
+): Promise<EvaluationScoreTrend> => {
+  const response = await request.get<unknown>("/evaluations/score-trend", {
+    params: { scope },
+  });
+
+  if (!response.success || !response.data) {
+    throw createServiceError(
+      response.message || "评测趋势加载失败。",
+      response.code,
+    );
+  }
+
+  return adaptScoreTrend(response.data);
 };
 
 export const getLiveEvaluationDetail = async (
@@ -121,6 +154,25 @@ export const getLiveEvaluationDetail = async (
 
   return sanitizeEvaluationDetail(adaptEvaluationDetail(response.data));
 };
+
+export const getLiveEvaluationReport = async (
+  evaluationId: string,
+): Promise<EvaluationReportPayload> => {
+  const response = await request.get<unknown>(`/evaluations/${evaluationId}/report`);
+
+  if (!response.success || !response.data) {
+    throw createServiceError(
+      response.message || "评测报告加载失败。",
+      response.code,
+    );
+  }
+
+  return adaptReportPayload(response.data);
+};
+
+export const downloadLiveEvaluationSampleDetails = async (
+  evaluationId: string,
+) => request.download(`/evaluations/${evaluationId}/samples/export`);
 
 export const postLiveEvaluationAction = async (
   evaluationId: string,

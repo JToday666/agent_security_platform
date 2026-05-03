@@ -2,9 +2,12 @@ import type {
   EvaluationControls,
   EvaluationDetail,
   EvaluationFinalizationReason,
+  EvaluationDownloads,
   EvaluationProgress,
   EvaluationRecord,
   EvaluationReport,
+  EvaluationRepresentativeSamples,
+  EvaluationSampleSummary,
   EvaluationStatus,
   SubmitAgentPayload,
   SubmitMetaResponse,
@@ -17,6 +20,8 @@ export interface StoredEvaluationRecord {
   description?: string;
   createdAt: string;
   updatedAt: string;
+  startedAt?: string | null;
+  finishedAt?: string | null;
   status: EvaluationStatus;
   publicToLeaderboard: boolean;
   datasetIds: string[];
@@ -40,6 +45,8 @@ export interface ResolvedEvaluationState {
   description?: string;
   createdAt: string;
   updatedAt: string;
+  startedAt?: string | null;
+  finishedAt?: string | null;
   status: EvaluationStatus;
   publicToLeaderboard: boolean;
   datasetIds: string[];
@@ -54,6 +61,9 @@ export interface ResolvedEvaluationState {
   progress: EvaluationProgress;
   controls: EvaluationControls;
   report: EvaluationReport | null;
+  sampleSummary?: EvaluationSampleSummary | null;
+  representativeSamples?: EvaluationRepresentativeSamples;
+  downloads?: EvaluationDownloads;
 }
 
 export interface ServiceError extends Error {
@@ -154,6 +164,7 @@ export const toEvaluationRecord = (
   description: state.description,
   createdAt: state.createdAt,
   updatedAt: state.updatedAt,
+  finishedAt: state.finishedAt ?? null,
   status: state.status,
   progressPercent: state.progressPercent,
   finalReportAvailable: state.finalReportAvailable,
@@ -165,13 +176,25 @@ export const toEvaluationRecord = (
   score: state.score,
   ownerName: state.ownerName,
   parameters: state.parameters,
+  sampleSummary: state.sampleSummary ?? null,
 });
 
 export const toEvaluationDetail = (
   state: ResolvedEvaluationState,
 ): EvaluationDetail => ({
   ...toEvaluationRecord(state),
+  startedAt: state.startedAt ?? null,
+  finishedAt: state.finishedAt ?? null,
   progress: state.progress,
   controls: state.controls,
   report: state.report,
+  sampleSummary: state.sampleSummary ?? null,
+  representativeSamples: state.representativeSamples ?? {
+    success: null,
+    failed: null,
+    error: null,
+  },
+  downloads: state.downloads ?? {
+    sampleDetailsUrl: null,
+  },
 });
