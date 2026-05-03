@@ -20,6 +20,23 @@ export type EvaluationFinalizationReason =
   | "failed";
 
 export type EvaluationAction = "pause" | "resume" | "terminate" | "cancel";
+export type EvaluationSampleOutcome = "success" | "failed" | "error";
+export type EvaluationScoreTrendScope = "recent10" | "all";
+export type EvaluationScoreTrendView = "capability" | "risk";
+export type EvaluationScoreMetricKey =
+  | "conservativeScore"
+  | "performanceScore"
+  | "confidence"
+  | "completionScore"
+  | "safetyScore"
+  | "hardScore"
+  | "unsafeRate"
+  | "timeScore";
+
+export type EvaluationScoreMap = Partial<
+  Record<EvaluationScoreMetricKey, number>
+>;
+export type EvaluationReportScores = Record<EvaluationScoreMetricKey, number>;
 
 export interface SubmitParameters {
   difficulty: number;
@@ -94,6 +111,7 @@ export interface EvaluationRecord {
   description?: string;
   createdAt: string;
   updatedAt: string;
+  finishedAt?: string | null;
   status: EvaluationStatus;
   progressPercent: number;
   finalReportAvailable: boolean;
@@ -105,6 +123,7 @@ export interface EvaluationRecord {
   score: number | null;
   ownerName: string;
   parameters: SubmitParameters;
+  sampleSummary?: EvaluationSampleSummary | null;
 }
 
 export interface EvaluationMetric {
@@ -132,6 +151,8 @@ export interface EvaluationProgress {
   percent: number;
   totalDatasetCount: number;
   completedDatasetCount: number;
+  totalSampleCount?: number;
+  completedSampleCount?: number;
   runningDatasetId: string | null;
   runningDatasetName: string | null;
   pauseDeadlineAt: string | null;
@@ -164,13 +185,131 @@ export interface EvaluationReport {
   metrics: EvaluationMetric[];
 }
 
+export interface EvaluationSampleSummary {
+  total: number;
+  success: number;
+  failed: number;
+  error: number;
+}
+
+export interface EvaluationRepresentativeSample {
+  sampleId: string;
+  datasetName: string;
+  normalizedResult: EvaluationSampleOutcome;
+  outcomeReasonText: string;
+  replayUrl: string | null;
+}
+
+export interface EvaluationRepresentativeSamples {
+  success: EvaluationRepresentativeSample | null;
+  failed: EvaluationRepresentativeSample | null;
+  error: EvaluationRepresentativeSample | null;
+}
+
+export interface EvaluationDownloads {
+  sampleDetailsUrl: string | null;
+}
+
+export interface EvaluationTrendViewConfig {
+  label: string;
+  metrics: EvaluationScoreMetricKey[];
+}
+
+export interface EvaluationScoreTrendItem {
+  evaluationId: string;
+  agentName: string;
+  createdAt: string;
+  finishedAt: string | null;
+  scores: EvaluationScoreMap;
+}
+
+export interface EvaluationScoreTrend {
+  scope: EvaluationScoreTrendScope;
+  defaultScope: EvaluationScoreTrendScope;
+  defaultView: EvaluationScoreTrendView;
+  views: Record<EvaluationScoreTrendView, EvaluationTrendViewConfig>;
+  items: EvaluationScoreTrendItem[];
+}
+
+export interface EvaluationReportRawStats extends EvaluationSampleSummary {
+  completionRate: number;
+  successRate: number;
+  conditionalSuccessRate: number;
+}
+
+export interface EvaluationReportPosteriorInterval {
+  psQ05: number;
+  psQ50: number;
+  psQ95: number;
+}
+
+export interface EvaluationReportCoverage {
+  difficultyBucketHitCount: number;
+  difficultyCoverageRatio: number;
+}
+
+export interface EvaluationReportDifficultyBucket {
+  bucket: string;
+  total: number;
+  success: number;
+  failed: number;
+  error: number;
+  successRate: number;
+}
+
+export interface EvaluationReportDatasetSummary {
+  datasetId: string;
+  datasetName: string;
+  total: number;
+  success: number;
+  failed: number;
+  error: number;
+}
+
+export interface EvaluationReportScatterPoint {
+  sampleId: string;
+  difficulty: number;
+  durationMs: number;
+  normalizedResult: EvaluationSampleOutcome;
+}
+
+export interface EvaluationReportBreakdowns {
+  outcomeSummary: EvaluationSampleSummary;
+  difficultyBuckets: EvaluationReportDifficultyBucket[];
+  datasetSummaries: EvaluationReportDatasetSummary[];
+  sampleScatterPoints: EvaluationReportScatterPoint[];
+}
+
+export interface EvaluationReportVersions {
+  difficultyVersion: string;
+  scoreModelVersion: string;
+  benchmarkVersion: string;
+}
+
+export interface EvaluationReportPayload {
+  evaluationId: string;
+  status: string;
+  generatedAt: string;
+  scores: EvaluationReportScores;
+  rawStats: EvaluationReportRawStats;
+  posteriorInterval: EvaluationReportPosteriorInterval;
+  coverage: EvaluationReportCoverage;
+  breakdowns: EvaluationReportBreakdowns;
+  versions: EvaluationReportVersions;
+}
+
 export interface EvaluationDetail extends Omit<
   EvaluationRecord,
   "progressPercent"
 > {
+  startedAt: string | null;
+  finishedAt: string | null;
   progress: EvaluationProgress;
   controls: EvaluationControls;
   report: EvaluationReport | null;
+  sampleSummary: EvaluationSampleSummary | null;
+  representativeSamples: EvaluationRepresentativeSamples;
+  downloads: EvaluationDownloads;
 }
 
 export interface EvaluationActionRequest {

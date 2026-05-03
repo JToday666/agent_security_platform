@@ -1,14 +1,17 @@
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import {
+  downloadEvaluationSampleDetails,
   getEvaluationDetail,
+  getEvaluationReport,
   postEvaluationAction,
 } from "@/modules/evaluation/api/evaluation-api";
 import { shouldPollEvaluation } from "@/modules/evaluation/lib/evaluation-status";
 import type {
   EvaluationAction,
   EvaluationDetail,
+  EvaluationReportPayload,
 } from "@/shared/types/agent-types";
 import { useAsyncState } from "@/shared/composables/useAsyncState";
 import { usePolling } from "@/shared/composables/usePolling";
@@ -26,6 +29,11 @@ export const useEvaluationDetailPage = () => {
   const route = useRoute();
   const router = useRouter();
   const evaluationId = computed(() => String(route.params.evaluationId ?? ""));
+  const report = ref<EvaluationReportPayload | null>(null);
+  const reportLoading = ref(false);
+  const reportError = ref("");
+  const downloadLoading = ref(false);
+  const downloadError = ref("");
 
   const {
     data: detail,
@@ -76,7 +84,7 @@ export const useEvaluationDetailPage = () => {
   const actionDialogDanger = computed(() => pendingAction.value === "cancel");
 
   const reportStateText = computed(() => {
-    if (detail.value?.report) {
+    if (report.value) {
       return "报告已生成，可查看摘要和详细指标。";
     }
 
@@ -101,10 +109,46 @@ export const useEvaluationDetailPage = () => {
     return "报告尚未生成，请等待任务继续执行。";
   });
 
+  const loadReport = async () => {
+    if (!detail.value?.finalReportAvailable) {
+      report.value = null;
+      reportError.value = "";
+      return;
+    }
+
+    reportLoading.value = true;
+    reportError.value = "";
+
+    try {
+      report.value = await getEvaluationReport(evaluationId.value);
+    } catch (loadError) {
+      report.value = null;
+      reportError.value =
+        loadError instanceof Error ? loadError.message : "评测报告加载失败。";
+    } finally {
+      reportLoading.value = false;
+    }
+  };
+
+  const syncReport = () => {
+    if (!detail.value?.finalReportAvailable) {
+      report.value = null;
+      reportError.value = "";
+      return;
+    }
+
+    if (report.value?.evaluationId === detail.value.evaluationId) {
+      return;
+    }
+
+    void loadReport();
+  };
+
   const doLoadDetail = async () => {
     try {
       detail.value = await getEvaluationDetail(evaluationId.value);
       error.value = "";
+      syncReport();
       syncPolling();
     } catch (loadError) {
       setError(loadError, "评测详情加载失败。");
@@ -137,11 +181,35 @@ export const useEvaluationDetailPage = () => {
   const applyDetail = (nextDetail: EvaluationDetail) => {
     detail.value = nextDetail;
     error.value = "";
+    syncReport();
     syncPolling();
   };
 
   const goBack = () => {
     void router.push(RouteLocation.userCenter);
+  };
+
+  const downloadSampleDetails = async () => {
+    downloadLoading.value = true;
+    downloadError.value = "";
+
+    try {
+      const { blob, fileName } = await downloadEvaluationSampleDetails(
+        evaluationId.value,
+      );
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName || `${evaluationId.value}-samples.zip`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      downloadError.value = "样本明细下载失败，请稍后重试。";
+    } finally {
+      downloadLoading.value = false;
+    }
   };
 
   const openActionDialog = (action: EvaluationAction) => {
@@ -182,6 +250,9 @@ export const useEvaluationDetailPage = () => {
   watch(evaluationId, async () => {
     poll.stop();
     detail.value = null;
+    report.value = null;
+    reportError.value = "";
+    downloadError.value = "";
     pendingAction.value = null;
     await loadDetail();
   });
@@ -194,7 +265,12 @@ export const useEvaluationDetailPage = () => {
     detail,
     loading,
     error,
+    report,
+    reportLoading,
+    reportError,
     reportStateText,
+    downloadLoading,
+    downloadError,
     actionLoading,
     actionDialogVisible,
     actionDialogTitle,
@@ -202,7 +278,9 @@ export const useEvaluationDetailPage = () => {
     actionDialogConfirmText,
     actionDialogDanger,
     loadDetail,
+    loadReport,
     goBack,
+    downloadSampleDetails,
     openActionDialog,
     runAction,
     confirmAction,

@@ -15,6 +15,11 @@ import {
   resolvePublicDatasetName,
   resolvePublicDatasetNames,
 } from "@/modules/dataset/lib/dataset-display-utils";
+import {
+  normalizeEvaluationDownloads,
+  normalizeEvaluationSampleSummary,
+  normalizeRepresentativeSamples,
+} from "./report-adapters";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -310,6 +315,17 @@ const normalizeProgress = (
       0,
       Math.round(toNumberValue(candidate.completedDatasetCount, 0)),
     ),
+    totalSampleCount:
+      candidate.totalSampleCount == null
+        ? undefined
+        : Math.max(0, Math.round(toNumberValue(candidate.totalSampleCount, 0))),
+    completedSampleCount:
+      candidate.completedSampleCount == null
+        ? undefined
+        : Math.max(
+            0,
+            Math.round(toNumberValue(candidate.completedSampleCount, 0)),
+          ),
     runningDatasetId,
     runningDatasetName,
     pauseDeadlineAt: toOptionalString(candidate.pauseDeadlineAt),
@@ -336,6 +352,7 @@ export const adaptEvaluationRecord = (value: unknown): EvaluationRecord => {
     description: toOptionalString(candidate.description) ?? undefined,
     createdAt: toStringValue(candidate.createdAt),
     updatedAt: toStringValue(candidate.updatedAt),
+    finishedAt: toOptionalString(candidate.finishedAt),
     status: normalizeEvaluationStatus(candidate.status),
     progressPercent: clampPercent(candidate.progressPercent),
     finalReportAvailable: toBooleanValue(candidate.finalReportAvailable),
@@ -353,6 +370,7 @@ export const adaptEvaluationRecord = (value: unknown): EvaluationRecord => {
         : toNumberValue(candidate.score, 0),
     ownerName: toStringValue(candidate.ownerName) || "当前用户",
     parameters: normalizeParameters(candidate.parameters),
+    sampleSummary: normalizeEvaluationSampleSummary(candidate.sampleSummary),
   };
 };
 
@@ -365,6 +383,8 @@ export const adaptEvaluationDetail = (value: unknown): EvaluationDetail => {
   return {
     ...baseRecord,
     status,
+    startedAt: toOptionalString(candidate.startedAt),
+    finishedAt: toOptionalString(candidate.finishedAt),
     progress: normalizeProgress(
       candidate.progress,
       status,
@@ -395,5 +415,10 @@ export const adaptEvaluationDetail = (value: unknown): EvaluationDetail => {
       candidate.finalizationReason,
     ),
     report: normalizeEvaluationReport(candidate.report),
+    sampleSummary: normalizeEvaluationSampleSummary(candidate.sampleSummary),
+    representativeSamples: normalizeRepresentativeSamples(
+      candidate.representativeSamples,
+    ),
+    downloads: normalizeEvaluationDownloads(candidate.downloads),
   };
 };

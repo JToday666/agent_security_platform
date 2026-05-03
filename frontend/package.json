@@ -16,8 +16,10 @@
   "dependencies": {
     "@iconify/vue": "5.0.0",
     "axios": "^1.15.0",
+    "echarts": "^6.0.0",
     "pinia": "3.0.4",
     "vue": "3.5.32",
+    "vue-echarts": "^8.0.1",
     "vue-router": "4.5.1"
   },
   "devDependencies": {
