@@ -10,11 +10,13 @@
         <section class="avatar-panel ui-surface-panel">
           <div class="avatar-preview">
             <img
-              v-if="avatarPreview || avatarDisplayUrl"
+              v-if="(avatarPreview || avatarDisplayUrl) && !hasAvatarError"
               :src="avatarPreview || avatarDisplayUrl"
               alt="头像"
+              class="avatar-image"
+              @error="hasAvatarError = true"
             />
-            <AppIcon v-else icon="lucide:image-plus" class="avatar-placeholder" />
+            <span v-else class="default-avatar">{{ usernameInitial }}</span>
           </div>
 
           <div class="avatar-copy">
@@ -150,13 +152,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import { useUserStore } from "@/modules/account/stores/userStore";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
-import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
 import FormField from "@/shared/ui/forms/FormField.vue";
@@ -185,6 +186,10 @@ const message = ref("");
 const messageType = ref<"success" | "error">("success");
 const showLogoutConfirm = ref(false);
 const logoutLoading = ref(false);
+const hasAvatarError = ref(false);
+const usernameInitial = computed(() =>
+  (form.username || currentUser.value?.username || "A").trim().charAt(0).toUpperCase() || "A"
+);
 let messageTimer: number | null = null;
 
 const clearMessageTimer = () => {
@@ -278,6 +283,7 @@ const onAvatarChange = async (event: Event) => {
   try {
     await userStore.uploadAvatar(file);
     avatarPreview.value = null;
+    hasAvatarError.value = false;
     setMessage("头像更新成功", "success");
   } catch (error: any) {
     setMessage(error.message || "头像上传失败", "error", false);
@@ -400,10 +406,24 @@ const handleLogoutConfirm = () => {
   box-shadow: 0 18px 28px -20px rgba(79, 70, 229, 0.32);
 }
 
-.avatar-preview img {
+.avatar-preview img,
+.avatar-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.default-avatar {
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-size: 2.75rem;
+  color: #fff;
+  background: var(--color-primary);
+  font-weight: 700;
 }
 
 .avatar-placeholder {
@@ -457,6 +477,7 @@ const handleLogoutConfirm = () => {
 
 .form-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.8rem;
   margin-top: 0.5rem;
 }

@@ -1,12 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import PublicLayout from "@/app/layouts/PublicLayout.vue";
 import { ROUTE_NAME } from "@/app/router/route-names";
-import ContactPage from "@/modules/public/pages/ContactPage.vue";
-import DatasetCatalogPage from "@/modules/dataset/pages/DatasetCatalogPage.vue";
-import DatasetDetailPage from "@/modules/dataset/pages/DatasetDetailPage.vue";
-import HomePage from "@/modules/public/pages/HomePage.vue";
-import LeaderboardPage from "@/modules/public/pages/LeaderboardPage.vue";
-import NotFoundPage from "@/modules/public/pages/NotFoundPage.vue";
 
 export const publicRoutes: RouteRecordRaw[] = [
   {
@@ -16,29 +10,31 @@ export const publicRoutes: RouteRecordRaw[] = [
       {
         path: "",
         name: ROUTE_NAME.HOME_PAGE,
-        component: HomePage,
+        component: () => import("@/modules/public/pages/HomePage.vue"),
       },
       {
         path: "dataset",
         name: ROUTE_NAME.DATASET_LIST,
-        component: DatasetCatalogPage,
+        component: () =>
+          import("@/modules/dataset/pages/DatasetCatalogPage.vue"),
         meta: { restoreSessionScroll: true },
       },
       {
         path: "dataset/:datasetId",
         name: ROUTE_NAME.DATASET_DETAIL,
-        component: DatasetDetailPage,
+        component: () =>
+          import("@/modules/dataset/pages/DatasetDetailPage.vue"),
         meta: { restoreSessionScroll: true },
       },
       {
         path: "leaderboard",
         name: ROUTE_NAME.LEADERBOARD_PAGE,
-        component: LeaderboardPage,
+        component: () => import("@/modules/public/pages/LeaderboardPage.vue"),
       },
       {
         path: "contact",
         name: ROUTE_NAME.CONTACT_PAGE,
-        component: ContactPage,
+        component: () => import("@/modules/public/pages/ContactPage.vue"),
       },
     ],
   },
@@ -51,7 +47,7 @@ export const notFoundRoute: RouteRecordRaw = {
     {
       path: "",
       name: ROUTE_NAME.NOT_FOUND,
-      component: NotFoundPage,
+      component: () => import("@/modules/public/pages/NotFoundPage.vue"),
     },
   ],
 };

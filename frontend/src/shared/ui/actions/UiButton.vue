@@ -117,6 +117,9 @@ const handleClick = (event: MouseEvent) => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  max-width: 100%;
   gap: 0.45rem;
   width: fit-content;
   border: 1px solid transparent;
@@ -158,6 +161,8 @@ const handleClick = (event: MouseEvent) => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ui-button:hover:not(.ui-button--disabled) {

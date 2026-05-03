@@ -717,7 +717,9 @@ onMounted(async () => {
 }
 
 .detail-actions {
-  position: relative;
+  position: sticky;
+  top: calc(var(--nav-height, 4rem) + 1.25rem);
+  align-self: start;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
