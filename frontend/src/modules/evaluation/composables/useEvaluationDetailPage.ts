@@ -7,6 +7,10 @@ import {
   getEvaluationReport,
   postEvaluationAction,
 } from "@/modules/evaluation/api/evaluation-api";
+import {
+  getReportUnavailableMessage,
+  isReportEndpointUnavailableError,
+} from "@/modules/evaluation/lib/evaluation-report-state";
 import { shouldPollEvaluation } from "@/modules/evaluation/lib/evaluation-status";
 import type {
   EvaluationAction,
@@ -32,6 +36,7 @@ export const useEvaluationDetailPage = () => {
   const report = ref<EvaluationReportPayload | null>(null);
   const reportLoading = ref(false);
   const reportError = ref("");
+  const reportUnavailableFor = ref("");
   const downloadLoading = ref(false);
   const downloadError = ref("");
 
@@ -84,6 +89,10 @@ export const useEvaluationDetailPage = () => {
   const actionDialogDanger = computed(() => pendingAction.value === "cancel");
 
   const reportStateText = computed(() => {
+    if (reportUnavailableFor.value === evaluationId.value) {
+      return getReportUnavailableMessage();
+    }
+
     if (report.value) {
       return "报告已生成，可查看摘要和详细指标。";
     }
@@ -118,11 +127,18 @@ export const useEvaluationDetailPage = () => {
 
     reportLoading.value = true;
     reportError.value = "";
+    reportUnavailableFor.value = "";
 
     try {
       report.value = await getEvaluationReport(evaluationId.value);
     } catch (loadError) {
       report.value = null;
+      if (isReportEndpointUnavailableError(loadError)) {
+        reportUnavailableFor.value = evaluationId.value;
+        reportError.value = "";
+        return;
+      }
+
       reportError.value =
         loadError instanceof Error ? loadError.message : "评测报告加载失败。";
     } finally {
@@ -138,6 +154,10 @@ export const useEvaluationDetailPage = () => {
     }
 
     if (report.value?.evaluationId === detail.value.evaluationId) {
+      return;
+    }
+
+    if (reportUnavailableFor.value === detail.value.evaluationId) {
       return;
     }
 
@@ -252,6 +272,7 @@ export const useEvaluationDetailPage = () => {
     detail.value = null;
     report.value = null;
     reportError.value = "";
+    reportUnavailableFor.value = "";
     downloadError.value = "";
     pendingAction.value = null;
     await loadDetail();

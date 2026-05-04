@@ -3,6 +3,10 @@ import type { AxiosRequestConfig } from "axios";
 import { ApiConfig } from "@/shared/api/Config";
 import { STORAGE_KEYS } from "@/shared/constants/storage-keys";
 
+export interface ApiRequestConfig extends AxiosRequestConfig {
+  skipUnauthorizedEvent?: boolean;
+}
+
 interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
@@ -221,7 +225,11 @@ axiosInstance.interceptors.response.use(
     const message =
       extractErrorMessage(responseData) || error.message || "网络错误";
 
-    if (error.response?.status === 401) {
+    const requestConfig = error.config as ApiRequestConfig | undefined;
+    const shouldDispatchUnauthorizedEvent =
+      error.response?.status === 401 && !requestConfig?.skipUnauthorizedEvent;
+
+    if (shouldDispatchUnauthorizedEvent) {
       window.dispatchEvent(
         new CustomEvent("unauthorized", {
           detail: {
@@ -247,27 +255,27 @@ axiosInstance.interceptors.response.use(
 const request = {
   get: <T = any>(
     url: string,
-    config?: AxiosRequestConfig,
+    config?: ApiRequestConfig,
   ): Promise<ApiResponse<T>> =>
     resolveResponse<T>(axiosInstance.get(url, config)),
 
   post: <T = any>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig,
+    config?: ApiRequestConfig,
   ): Promise<ApiResponse<T>> =>
     resolveResponse<T>(axiosInstance.post(url, data, config)),
 
   put: <T = any>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig,
+    config?: ApiRequestConfig,
   ): Promise<ApiResponse<T>> =>
     resolveResponse<T>(axiosInstance.put(url, data, config)),
 
   download: (
     url: string,
-    config?: AxiosRequestConfig,
+    config?: ApiRequestConfig,
   ): Promise<ApiBlobResponse> =>
     resolveBlobResponse(
       axiosInstance.get(url, { ...config, responseType: "blob" }),

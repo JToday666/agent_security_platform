@@ -10,8 +10,9 @@
     "build-only": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc -b",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest run --configLoader native",
+    "test:watch": "vitest --configLoader native",
+    "schema:api": "openapi-typescript http://127.0.0.1:8000/openapi.json -o src/shared/api/generated/backend-schema.ts"
   },
   "dependencies": {
     "@iconify/vue": "5.0.0",
@@ -28,6 +29,7 @@
     "@vue/tsconfig": "0.9.1",
     "jsdom": "26.1.0",
     "npm-run-all2": "8.0.4",
+    "openapi-typescript": "^7.13.0",
     "sass": "^1.99.0",
     "typescript": "5.9.2",
     "vite": "8.0.8",

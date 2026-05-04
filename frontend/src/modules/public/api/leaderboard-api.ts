@@ -1,0 +1,132 @@
+import { ApiConfig } from "@/shared/api/Config";
+import request from "@/shared/api/http-client";
+import type {
+  LeaderboardEntry,
+  LeaderboardSnapshot,
+} from "@/shared/types/leaderboard-types";
+
+type UnknownRecord = Record<string, unknown>;
+
+export interface LeaderboardServiceError extends Error {
+  code?: number;
+}
+
+const toRecord = (value: unknown): UnknownRecord =>
+  value && typeof value === "object" ? (value as UnknownRecord) : {};
+
+const readField = (
+  value: UnknownRecord,
+  camelKey: string,
+  snakeKey: string,
+): unknown => value[camelKey] ?? value[snakeKey];
+
+const toStringValue = (value: unknown): string =>
+  typeof value === "string" ? value.trim() : "";
+
+const toNumberValue = (value: unknown, fallback = 0): number => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
+const toScore = (value: unknown): number =>
+  Number(toNumberValue(value, 0).toFixed(1));
+
+const toPositiveInteger = (value: unknown): number =>
+  Math.max(0, Math.round(toNumberValue(value, 0)));
+
+const createLeaderboardServiceError = (
+  message: string,
+  code?: number,
+): LeaderboardServiceError => {
+  const error = new Error(message) as LeaderboardServiceError;
+  error.code = code;
+  return error;
+};
+
+const adaptLeaderboardEntry = (value: unknown): LeaderboardEntry => {
+  const candidate = toRecord(value);
+
+  return {
+    rankNo: toPositiveInteger(readField(candidate, "rankNo", "rank_no")),
+    agentId: toStringValue(readField(candidate, "agentId", "agent_id")),
+    agentName:
+      toStringValue(readField(candidate, "agentName", "agent_name")) ||
+      "未命名 Agent",
+    evaluationId: toStringValue(
+      readField(candidate, "evaluationId", "evaluation_id"),
+    ),
+    officialConservativeScore: toScore(
+      readField(
+        candidate,
+        "officialConservativeScore",
+        "official_conservative_score",
+      ),
+    ),
+    safeCapabilityScore: toScore(
+      readField(candidate, "safeCapabilityScore", "safe_capability_score"),
+    ),
+    highDifficultyScore: toScore(
+      readField(candidate, "highDifficultyScore", "high_difficulty_score"),
+    ),
+    unsafeRiskScore: toScore(
+      readField(candidate, "unsafeRiskScore", "unsafe_risk_score"),
+    ),
+    confidence: toScore(readField(candidate, "confidence", "confidence")),
+    verificationTier:
+      toStringValue(
+        readField(candidate, "verificationTier", "verification_tier"),
+      ) || "未认证",
+    safetyCertification:
+      toStringValue(
+        readField(candidate, "safetyCertification", "safety_certification"),
+      ) || "未返回",
+    totalSamples: toPositiveInteger(
+      readField(candidate, "totalSamples", "total_samples"),
+    ),
+  };
+};
+
+export const adaptLeaderboardSnapshot = (
+  value: unknown,
+): LeaderboardSnapshot => {
+  const candidate = toRecord(value);
+  const entries = Array.isArray(candidate.entries)
+    ? candidate.entries.map(adaptLeaderboardEntry)
+    : [];
+
+  return {
+    snapshotCode:
+      toStringValue(readField(candidate, "snapshotCode", "snapshot_code")) ||
+      "latest",
+    entryCount:
+      toPositiveInteger(readField(candidate, "entryCount", "entry_count")) ||
+      entries.length,
+    entries,
+  };
+};
+
+const getLiveLeaderboardSnapshot = async (): Promise<LeaderboardSnapshot> => {
+  const response = await request.get<unknown>("/leaderboards/current", {
+    skipUnauthorizedEvent: true,
+  });
+
+  if (!response.success || !response.data) {
+    throw createLeaderboardServiceError(
+      response.message || "排行榜加载失败，请稍后重试。",
+      response.code,
+    );
+  }
+
+  return adaptLeaderboardSnapshot(response.data);
+};
+
+const getMockLeaderboardSnapshot = async (): Promise<LeaderboardSnapshot> => {
+  const { mockLeaderboardSnapshot } =
+    await import("@/modules/public/mock/leaderboard-fixtures");
+  return adaptLeaderboardSnapshot(mockLeaderboardSnapshot);
+};
+
+export const getLeaderboardSnapshot = async (): Promise<LeaderboardSnapshot> =>
+  ApiConfig.enableApiMock
+    ? getMockLeaderboardSnapshot()
+    : getLiveLeaderboardSnapshot();

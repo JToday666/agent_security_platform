@@ -66,16 +66,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, defineAsyncComponent, onMounted, ref, watch } from "vue";
 import { getEvaluationScoreTrend } from "@/modules/evaluation/api/evaluation-api";
-import EvaluationTrendChart from "@/modules/evaluation/components/charts/EvaluationTrendChart.vue";
-import { buildTrendSummary } from "@/modules/evaluation/lib/evaluation-report-view";
+import { buildTrendSummary } from "@/modules/evaluation/lib/evaluation-report-insights";
 import type {
   EvaluationScoreTrend,
   EvaluationScoreTrendScope,
   EvaluationScoreTrendView,
 } from "@/shared/types/agent-types";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
+
+const EvaluationTrendChart = defineAsyncComponent(
+  () => import("@/modules/evaluation/components/charts/EvaluationTrendChart.vue"),
+);
 
 defineEmits<{
   (event: "select", evaluationId: string): void;

@@ -13,18 +13,33 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks(id) {
-            if (id.includes("node_modules")) {
+            const normalizedId = id.replace(/\\/g, "/");
+
+            if (normalizedId.includes("/node_modules/")) {
               if (
-                id.includes("vue") ||
-                id.includes("pinia") ||
-                id.includes("vue-router")
+                normalizedId.includes("/node_modules/echarts/") ||
+                normalizedId.includes("/node_modules/vue-echarts/")
+              ) {
+                return "charts-vendor";
+              }
+              if (normalizedId.includes("/node_modules/@iconify/")) {
+                return "iconify-vendor";
+              }
+              if (normalizedId.includes("/node_modules/axios/")) {
+                return "http-vendor";
+              }
+              if (
+                normalizedId.includes("/node_modules/vue/") ||
+                normalizedId.includes("/node_modules/@vue/") ||
+                normalizedId.includes("/node_modules/pinia/") ||
+                normalizedId.includes("/node_modules/vue-router/")
               ) {
                 return "vue-vendor";
               }
-              if (id.includes("element-plus")) {
+              if (normalizedId.includes("/node_modules/element-plus/")) {
                 return "element-plus";
               }
-              if (id.includes("lucide")) {
+              if (normalizedId.includes("/node_modules/lucide")) {
                 return "lucide-icons";
               }
               return "vendor";

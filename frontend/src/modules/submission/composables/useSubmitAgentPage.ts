@@ -23,7 +23,25 @@ import {
   validateSubmitPayload,
 } from "@/modules/submission/model/parameter-validator";
 import { filterAvailableSubmitAgents } from "@/modules/submission/model/submit-agent-options";
-import { resolveDatasetIdsFromQuery } from "@/modules/submission/lib/submit-query-utils";
+import {
+  buildDatasetQuerySignature,
+  resolveDatasetIdsFromQuery,
+} from "@/modules/submission/lib/submit-query-utils";
+import {
+  buildSubmitConfirmMessage,
+  buildSubmitRequestId,
+  isSubmitAbortError,
+} from "@/modules/submission/model/submit-actions";
+import {
+  normalizeSubmitDraftParameters,
+  shouldClearPendingSubmitRequest,
+} from "@/modules/submission/model/submit-draft-sync";
+import {
+  buildSubmitPayloadDigest as stringifySubmitPayloadSnapshot,
+  buildSubmitPayloadFromSnapshot,
+  buildSubmitPayloadSnapshot,
+} from "@/modules/submission/model/submit-payload-snapshot";
+import type { SubmitPayloadSnapshot } from "@/modules/submission/model/submit-payload-snapshot";
 import type {
   PendingSubmitRequest,
   SubmitAgentPayload,
@@ -32,42 +50,6 @@ import type {
 } from "@/shared/types/agent-types";
 import type { AgentListItem } from "@/shared/types/agent-registry-types";
 import { useAsyncState } from "@/shared/composables/useAsyncState";
-
-interface SubmitPayloadSnapshot {
-  submitMethod: SubmitAgentPayload["submitMethod"];
-  agentId: string;
-  parameters: SubmitAgentPayload["parameters"];
-  publicToLeaderboard: boolean;
-  datasetIds: string[];
-}
-
-const buildRequestId = (): string => {
-  if (
-    typeof crypto !== "undefined" &&
-    typeof crypto.randomUUID === "function"
-  ) {
-    return `submit_${crypto.randomUUID()}`;
-  }
-
-  return `submit_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
-};
-
-const isAbortLikeError = (error: unknown): boolean =>
-  error instanceof DOMException
-    ? error.name === "AbortError"
-    : error instanceof Error
-      ? error.name === "AbortError" || error.name === "CanceledError"
-      : false;
-
-const buildDatasetQuerySignature = (
-  value: string | string[] | null | undefined,
-): string => {
-  if (!value) {
-    return "";
-  }
-
-  return Array.isArray(value) ? value.join(",") : value;
-};
 
 export const useSubmitAgentPage = () => {
   const route = useRoute();
@@ -129,10 +111,14 @@ export const useSubmitAgentPage = () => {
       return null;
     }
 
-    return availableAgents.value.find((agent) => agent.agentId === agentId) ?? null;
+    return (
+      availableAgents.value.find((agent) => agent.agentId === agentId) ?? null
+    );
   });
   const selectedAgentSubmitDisabledReason = computed(() =>
-    selectedAgent.value ? getAgentSubmitDisabledReason(selectedAgent.value) : "",
+    selectedAgent.value
+      ? getAgentSubmitDisabledReason(selectedAgent.value)
+      : "",
   );
   const selectedCategoryCount = computed(
     () =>
@@ -262,49 +248,26 @@ export const useSubmitAgentPage = () => {
         (item) => item.agentId === queryValue,
       );
       agentSelectionNotice.value = blockedAgent
-        ? getAgentSubmitDisabledReason(blockedAgent) || "链接中的 Agent 不可用，已忽略。"
+        ? getAgentSubmitDisabledReason(blockedAgent) ||
+          "链接中的 Agent 不可用，已忽略。"
         : "链接中的 Agent 不可用，已忽略。";
     }
 
-    if (!form.value.agentId || !activeAgentIds.value.includes(form.value.agentId)) {
+    if (
+      !form.value.agentId ||
+      !activeAgentIds.value.includes(form.value.agentId)
+    ) {
       form.value.agentId = activeAgentIds.value[0] ?? "";
     }
   };
 
   const buildPayloadSnapshot = (): SubmitPayloadSnapshot | null => {
-    if (!form.value || !submitMeta.value) {
-      return null;
-    }
-
-    const datasetIds = Array.from(
-      new Set(form.value.selectedDatasetIds),
-    ).sort();
-
-    return {
-      submitMethod: form.value.submitMethod,
-      agentId: form.value.submitMethod === "api" ? form.value.agentId.trim() : "",
-      parameters: {
-        difficulty: normalizeDifficulty(
-          form.value.parameters.difficulty,
-          submitMeta.value.difficulty,
-        ),
-        timeoutMinutes: normalizeTimeoutMinutes(
-          form.value.parameters.timeoutMinutes,
-          submitMeta.value.timeoutMinutes,
-        ),
-        maxSteps: normalizeMaxSteps(
-          form.value.parameters.maxSteps,
-          submitMeta.value.maxSteps,
-        ),
-      },
-      publicToLeaderboard: Boolean(form.value.publicToLeaderboard),
-      datasetIds,
-    };
+    return buildSubmitPayloadSnapshot(form.value, submitMeta.value);
   };
 
   const buildPayloadDigest = (): string => {
     const snapshot = buildPayloadSnapshot();
-    return snapshot ? JSON.stringify(snapshot) : "";
+    return stringifySubmitPayloadSnapshot(snapshot);
   };
 
   const resolvePendingRequest = (
@@ -318,7 +281,7 @@ export const useSubmitAgentPage = () => {
     }
 
     const nextPendingRequest: PendingSubmitRequest = {
-      requestId: buildRequestId(),
+      requestId: buildSubmitRequestId(),
       payloadDigest,
       createdAt: new Date().toISOString(),
     };
@@ -340,41 +303,11 @@ export const useSubmitAgentPage = () => {
           ? pendingRequest.value.requestId
           : "preview_request_id";
 
-    return {
-      submitMethod: snapshot.submitMethod,
-      agentId: snapshot.submitMethod === "api" ? snapshot.agentId : null,
-      docker:
-        snapshot.submitMethod === "docker"
-          ? {
-              imageUri: form.value?.docker.imageUri.trim() ?? "",
-              command: form.value?.docker.command.trim() ?? "",
-              env: {},
-            }
-          : null,
-      parameters: snapshot.parameters,
-      publicToLeaderboard: snapshot.publicToLeaderboard,
-      selectedDatasetIds: snapshot.datasetIds,
-      requestId,
-    };
-  };
-
-  const buildConfirmMessage = (
-    warnings: string[],
-    payload: SubmitAgentPayload,
-  ): string => {
-    const header = [
-      `智能体名称：${selectedAgent.value?.name ?? "未选择"}`,
-      `提交方式：${payload.submitMethod.toUpperCase()}`,
-      `数据集数量：${payload.selectedDatasetIds.length}`,
-    ].join("\n");
-
-    if (!warnings.length) {
-      return `${header}\n\n检查已通过，确认后将创建评测任务。`;
+    if (!form.value) {
+      throw new Error("提交表单尚未初始化完成。");
     }
 
-    return `${header}\n\n请先确认以下提示：\n- ${warnings.join(
-      "\n- ",
-    )}\n\n确认后将创建评测任务。`;
+    return buildSubmitPayloadFromSnapshot(snapshot, form.value, requestId);
   };
 
   const syncCatalogSelection = () => {
@@ -398,7 +331,7 @@ export const useSubmitAgentPage = () => {
       });
       syncCatalogSelection();
     } catch (error) {
-      if (isAbortLikeError(error)) {
+      if (isSubmitAbortError(error)) {
         return;
       }
 
@@ -432,18 +365,7 @@ export const useSubmitAgentPage = () => {
         throw new Error("提交表单初始化失败。");
       }
 
-      form.value.parameters.difficulty = normalizeDifficulty(
-        form.value.parameters.difficulty,
-        meta.difficulty,
-      );
-      form.value.parameters.timeoutMinutes = normalizeTimeoutMinutes(
-        form.value.parameters.timeoutMinutes,
-        meta.timeoutMinutes,
-      );
-      form.value.parameters.maxSteps = normalizeMaxSteps(
-        form.value.parameters.maxSteps,
-        meta.maxSteps,
-      );
+      form.value.parameters = normalizeSubmitDraftParameters(form.value, meta);
       setSelectedDatasetIds(form.value.selectedDatasetIds);
 
       await loadCatalog(true);
@@ -573,7 +495,8 @@ export const useSubmitAgentPage = () => {
       confirmDialogTitle.value = precheckResult.warnings.length
         ? "提交前确认"
         : "确认提交";
-      confirmDialogMessage.value = buildConfirmMessage(
+      confirmDialogMessage.value = buildSubmitConfirmMessage(
+        selectedAgent.value?.name ?? "",
         precheckResult.warnings,
         payload,
       );
@@ -685,9 +608,7 @@ export const useSubmitAgentPage = () => {
     () => {
       const payloadDigest = buildPayloadDigest();
       if (
-        pendingRequest.value &&
-        payloadDigest &&
-        pendingRequest.value.payloadDigest !== payloadDigest
+        shouldClearPendingSubmitRequest(pendingRequest.value, payloadDigest)
       ) {
         submitDraftStore.setPendingRequest(null);
       }

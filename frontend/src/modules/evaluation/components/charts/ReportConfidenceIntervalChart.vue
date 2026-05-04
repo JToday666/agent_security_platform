@@ -6,7 +6,7 @@
 import { computed } from "vue";
 import VChart from "vue-echarts";
 import { ensureEvaluationChartsRegistered } from "@/modules/evaluation/charts/echarts-registry";
-import { buildConfidenceIntervalOption } from "@/modules/evaluation/lib/evaluation-report-view";
+import { buildConfidenceIntervalOption } from "@/modules/evaluation/lib/evaluation-report-chart-options";
 import type { EvaluationReportPayload } from "@/shared/types/agent-types";
 
 ensureEvaluationChartsRegistered();

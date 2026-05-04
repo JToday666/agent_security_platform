@@ -1,106 +1,40 @@
 # Agent Security Platform
 
-Agent Security Platform 是一个面向 Agent API 的安全测试平台仓库，包含 Vue 前端控制台、FastAPI 后端服务、基于 PostgreSQL 轮询的 worker，以及前后端共享的接口契约文档。
+Agent Security Platform 是面向 Agent API 的安全测试平台仓库，包含 Vue 前端控制台、FastAPI 后端服务、PostgreSQL 轮询 worker，以及前后端共享接口契约。
 
-## 项目简介
+## 能力范围
 
-平台聚焦一条可联调的主链路：
-
-- 展示数据集目录与详情
-- 提交 Agent 评测任务
-- 查看评测历史、分数趋势和评测详情
-- 阅读评分报告、能力结构、样本结果、风险归因、样本定位和代表样本证据
-- 触发样本明细下载入口并处理下载失败反馈
-- 对任务执行暂停、恢复、终止、取消等动作
-- 在前端真实 API 模式与 Mock 模式之间切换
-
-仓库适合作为以下工作的统一入口：
-
-- 前端页面与交互联调
-- 后端接口与状态流转联调
-- 提交链路与评测记录链路联调
-- 跨端接口契约核对
-- 项目级设计和拆解文档查阅
-
-## 能力概览
-
-| 子系统              | 当前状态                                                                                                                                                                    |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 前端 `frontend/`    | 已实现首页、数据集目录/详情、排行榜、联系页、登录注册、个人资料、提交评测页、评测历史页、趋势分析、评测详情页、评分报告阅读流、代表样本证据，以及真实 API / Mock API 双模式切换。 |
-| 后端 API `backend/` | 已实现 `/api/v1/auth/*`、`/api/v1/user/*`、`/api/v1/datasets/*`、`/api/v1/agents/*`、`/api/v1/evaluations/*`，统一返回 `{ code, data, message }`。                          |
-| Worker              | 已具备 PostgreSQL 轮询领取任务、心跳续约、暂停/恢复/终止/取消状态处理，以及评测完成后的结果汇总链路。                                                                       |
-| 数据与迁移          | 已具备 SQLAlchemy 模型、Alembic 迁移链路、运行时目录和上传目录收口。                                                                                                        |
-| 接口契约 `share/`   | 保留统一 API 协议总表和用户、数据集、提交、Agent、报告接口补充说明文档，主要作为前后端沟通参考材料。                                                                        |
-
-## 已知边界
-
-仓库具备前后端主链路联调能力，但以下能力仍处于持续增强阶段：
-
-- 当前默认执行闭环以 `synthetic_local` runtime 为主，能够完成任务领取、样本执行、核心产物采集和报告摘要写回；更真实的 Agent 适配与调度模式仍在继续完善。
-- 执行过程中的日志、页面访问、网络请求、工具调用等证据采集已具备基础链路，但产物种类与可观测性仍可继续扩充。
-- 结构化 evaluator / oracle 能力仍在逐步补齐，当前不少样本仍依赖 `needs_review` 这类人工复核口径。
-- 样本明细下载依赖后端导出文件；文件缺失时前端展示局部失败反馈。
-- worker 当前是 PostgreSQL 轮询版，启动/停止观测、健康检查与异常恢复策略仍有完善空间。
-
-这些边界不会改变当前前端、后端和接口契约的阅读入口，但会影响真实执行深度与后续运维能力判断。
+- 公共浏览：首页、数据集目录、数据集详情、排行榜、联系页、404。
+- 账号：登录、注册、登录态恢复、个人资料、头像上传、401 未授权回跳。
+- Agent：注册、管理、详情、验证、归档、复制新建。
+- 提交评测：API Agent 选择、数据集选择、参数校验、提交前预检查、确认提交、草稿保持。
+- 评测：历史列表、趋势分析、详情、评分报告、代表样本证据、样本明细下载入口、暂停、恢复、终止、取消。
+- 排行榜：读取当前后端排行榜，展示第一名，支持综合分、安全能力、高难分和风险分排序。
+- 运行模式：真实后端 API 与前端 Mock API。
 
 ## 仓库结构
 
-| 路径        | 职责                                                               |
-| ----------- | ------------------------------------------------------------------ |
-| `frontend/` | 前端工程，负责页面、状态管理、路由、共享 UI，以及前端 Mock API。   |
-| `backend/`  | FastAPI 后端、数据库模型、业务模块、worker、迁移和后端测试。       |
-| `share/`    | 前后端沟通参考材料目录；保留接口协议总表和补充说明，便于协作对齐。 |
-| `docs/`     | 项目级设计说明、任务拆解、附录和参考性资料。                       |
-| `README.md` | 项目级入口文档，不复制前后端内部实现细节。                         |
+| 路径 | 职责 |
+| --- | --- |
+| `frontend/` | Vue + TypeScript 前端工程，包含页面、状态组合、共享 UI、前端 Mock API 和前端文档。 |
+| `backend/` | FastAPI 后端、数据库模型、业务模块、worker、迁移和后端测试。 |
+| `share/` | 前后端接口契约和补充说明。 |
+| `docs/` | 项目级设计说明、任务资料和参考文档。 |
+| `README.md` | 仓库入口、运行方式和文档入口。 |
 
-当前协作边界如下：
+## 前端环境
 
-- 后端已实现接口、状态流转和验证命令：以 `backend/` 下文档、脚本和测试为准。
-- `share/`：作为前后端沟通与评审参考，不作为后端实现真相源。
-- 前端分层、页面职责、运行时链路：以 `frontend/docs/` 为主。
-- 后端分层、领域规则、数据库与接口实现状态：以 `backend/docs/` 为主。
-- 平台级设计背景、数据库附录与阶段任务拆解：以根目录 `docs/` 为主。
+前端在 `frontend/` 目录运行，Node.js 与 pnpm 要求以 `frontend/package.json` 为准。
 
-## 项目协作图
+常用环境变量：
 
-```mermaid
-flowchart LR
-    FE["frontend/<br/>Vue + TypeScript"] -->|"/api/v1 /uploads"| BE["backend/<br/>FastAPI API"]
-    FE -.-> MOCK["Frontend Mock API"]
-    BE --> DB["PostgreSQL"]
-    BE --> RT["var/backend<br/>uploads / credentials / workdir"]
-    WK["backend/worker.py<br/>Polling Worker"] --> DB
-    WK --> RT
-    CONTRACT["share/<br/>接口契约"] -.-> FE
-    CONTRACT -.-> BE
-    DOCS["docs/<br/>项目级设计文档"] -.-> FE
-    DOCS -.-> BE
-```
+| 变量 | 示例 | 说明 |
+| --- | --- | --- |
+| `VITE_API_BASE_URL` | `/api/v1` | 前端运行时 API 基地址。 |
+| `VITE_BACKEND_TARGET` | `http://127.0.0.1:8000` | Vite 开发代理目标。 |
+| `VITE_ENABLE_API_MOCK` | `false` | `true` 时使用前端 Mock 数据链路。 |
 
-## 环境准备
-
-| 工具       | 要求                            | 说明                               |
-| ---------- | ------------------------------- | ---------------------------------- |
-| Node.js    | 以 `frontend/package.json` 为准 | 前端运行、构建和类型检查使用。     |
-| pnpm       | 以 `frontend/package.json` 为准 | 前端依赖安装和脚本执行使用。       |
-| Python     | 以后端配置文件为准              | 后端 API、迁移和 worker 使用。     |
-| uv         | 可执行 `uv sync` 和 `uv run`    | 后端使用 uv 管理依赖、运行和迁移。 |
-| PostgreSQL | 需要本地可用实例                | 本地数据库配置通过环境变量指定。   |
-
-## 环境变量
-
-### 前端
-
-前端当前只使用以下三个环境变量：
-
-| 变量                   | 推荐本地值              | 说明                                |
-| ---------------------- | ----------------------- | ----------------------------------- |
-| `VITE_API_BASE_URL`    | `/api/v1`               | 前端运行时 API 基地址。             |
-| `VITE_BACKEND_TARGET`  | `http://127.0.0.1:8000` | 仅用于 Vite 开发代理目标。          |
-| `VITE_ENABLE_API_MOCK` | `false`                 | `true` 时优先走前端 Mock 数据链路。 |
-
-推荐本地联调配置：
+本地联调真实后端：
 
 ```env
 VITE_API_BASE_URL=/api/v1
@@ -108,162 +42,97 @@ VITE_BACKEND_TARGET=http://127.0.0.1:8000
 VITE_ENABLE_API_MOCK=false
 ```
 
-若需要跳过本地代理，直接访问后端：
-
-```env
-VITE_API_BASE_URL=http://127.0.0.1:8000/api/v1
-VITE_ENABLE_API_MOCK=false
-```
-
-若只演示前端流程，不依赖真实后端：
+脱离后端演示前端流程：
 
 ```env
 VITE_ENABLE_API_MOCK=true
 ```
 
-### 后端
+## 后端环境
 
-根目录不展开所有高级运行参数，只列最小必填项。其余配置定义在 [backend/app/platform/config.py](./backend/app/platform/config.py)，`app/shared/config.py` 仅保留兼容导出。
+后端在 `backend/` 目录运行，Python 与 uv 配置以后端文件为准。
 
-| 变量                | 推荐本地值                | 说明               |
-| ------------------- | ------------------------- | ------------------ |
-| `PROJECT_NAME`      | `Agent Security Platform` | FastAPI 应用标题。 |
-| `FASTAPI_HOST`      | `127.0.0.1`               | 本地开发监听地址。 |
-| `FASTAPI_PORT`      | `8000`                    | 本地开发标准端口。 |
-| `POSTGRES_HOST`     | `localhost`               | PostgreSQL 主机。  |
-| `POSTGRES_PORT`     | `5432`                    | PostgreSQL 端口。  |
-| `POSTGRES_DB`       | `<your_db_name>`          | 本地数据库名。     |
-| `POSTGRES_USER`     | `postgres`                | 本地数据库用户名。 |
-| `POSTGRES_PASSWORD` | `<your_db_password>`      | 本地数据库密码。   |
-| `SQLALCHEMY_ECHO`   | `false`                   | 是否打印 SQL。     |
+常用环境变量：
 
-推荐本地 `.env` 示例：
+| 变量 | 示例 | 说明 |
+| --- | --- | --- |
+| `PROJECT_NAME` | `Agent Security Platform` | FastAPI 应用标题。 |
+| `FASTAPI_HOST` | `127.0.0.1` | 本地监听地址。 |
+| `FASTAPI_PORT` | `8000` | 本地监听端口。 |
+| `POSTGRES_HOST` | `localhost` | PostgreSQL 主机。 |
+| `POSTGRES_PORT` | `5432` | PostgreSQL 端口。 |
+| `POSTGRES_DB` | `<your_db_name>` | 数据库名。 |
+| `POSTGRES_USER` | `postgres` | 数据库用户名。 |
+| `POSTGRES_PASSWORD` | `<your_db_password>` | 数据库密码。 |
+| `SQLALCHEMY_ECHO` | `false` | SQL 日志开关。 |
 
-```env
-PROJECT_NAME="Agent Security Platform"
-FASTAPI_HOST=127.0.0.1
-FASTAPI_PORT=8000
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-POSTGRES_DB=<your_db_name>
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=<your_db_password>
-SQLALCHEMY_ECHO=false
-```
+## 启动
 
-## 启动与联调
-
-推荐按“后端 API -> worker -> 前端”的顺序启动。
-
-### 1. 启动后端 API
-
-在 `backend/` 目录执行：
+启动后端 API：
 
 ```bash
+cd backend
 uv sync
 uv run alembic upgrade head
 uv run python run.py
 ```
 
-等价的显式启动命令：
+启动 worker：
 
 ```bash
-uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-```
-
-### 2. 启动 worker
-
-在新的终端窗口中进入 `backend/` 目录执行：
-
-```bash
+cd backend
 uv run python worker.py
 ```
 
-### 3. 启动前端
-
-在 `frontend/` 目录执行：
+启动前端：
 
 ```bash
+cd frontend
 pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-### 4. 访问入口
+常用入口：
 
 - 前端开发地址：以 Vite 终端输出为准，常见为 `http://127.0.0.1:5173`
 - OpenAPI：`http://127.0.0.1:8000/docs`
-- 服务根路径：`http://127.0.0.1:8000/`
-- API 根路径：`http://127.0.0.1:8000/api/`
-- API v1 根路径：`http://127.0.0.1:8000/api/v1/`
+- API v1：`http://127.0.0.1:8000/api/v1/`
 
-## 调试与验证
+## 验证
 
-### 前端最小验证
-
-在 `frontend/` 目录执行：
+前端：
 
 ```bash
+cd frontend
 pnpm test
 pnpm type-check
 pnpm build-only
 ```
 
-### 后端最小验证
-
-在 `backend/` 目录执行：
+后端：
 
 ```bash
+cd backend
 uv run pytest -q
 ```
 
-若要做真实 HTTP 冒烟，请先保证后端 API 和数据库已启动，再执行：
+真实 HTTP 冒烟需要后端 API 和数据库处于可用状态：
 
 ```bash
+cd backend
 uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
 ```
 
-### 联调排查建议
-
-- 前端报 401 或登录态异常时，先看 `frontend/docs/02-架构/应用启动与运行时说明.md`。
-- 接口字段、错误码或路径不一致时，先看 `backend/` 下实现文档、`tests/api/` 和烟测脚本；`share/` 只作沟通参考。
-- 评测状态流转、动作语义和 worker 行为判断时，先看 `backend/docs/` 下的接口状态和领域文档。
-
-## 文档索引与阅读顺序
-
-### 第一步：先看项目级资料
-
-- [根目录 README](./README.md)
-- [Agent 安全测试平台设计说明书](./docs/Agent%20安全测试平台设计说明书.md)
-- [任务拆解清单](./docs/任务拆解清单.md)
-- [样本数据导入规范](./docs/样本数据导入规范.md)
-- [附录](./docs/附录.md)
-- [算法分享](./docs/算法分享.md)
-
-### 第二步：进入前端文档
+## 文档入口
 
 - [frontend/README.md](./frontend/README.md)
 - [前端文档地图](./frontend/docs/01-总览/文档地图.md)
 - [前端架构说明](./frontend/docs/01-总览/前端架构说明.md)
 - [关键链路说明](./frontend/docs/04-流程/关键链路说明.md)
-
-### 第三步：进入后端文档
-
 - [backend/README.md](./backend/README.md)
 - [后端文档地图](./backend/docs/01-总览/文档地图.md)
 - [后端架构说明](./backend/docs/01-总览/后端架构说明.md)
-- [接口索引与实现状态](./backend/docs/04-接口/接口索引与实现状态.md)
-
-### 第四步：核对跨端接口契约
-
 - [API 接口协议总表](./share/API接口协议.md)
-- [用户接口补充说明](./share/user接口.md)
-- [数据集接口补充说明](./share/database接口.md)
-- [提交接口补充说明](./share/submit接口.md)
 - [Agent 接口补充说明](./share/agent接口.md)
+- [提交接口补充说明](./share/submit接口.md)
 - [报告接口补充说明](./share/report接口.md)
-
-## 维护说明
-
-- 根目录 README 只保留项目级事实、协作入口和联调方式。
-- 前后端内部实现细节、字段语义、模块说明不在这里重复维护。
-- 文本文件统一使用 UTF-8 无 BOM 与 CRLF 行尾。
