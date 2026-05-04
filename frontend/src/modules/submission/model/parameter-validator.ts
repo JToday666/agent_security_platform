@@ -56,10 +56,7 @@ export const normalizeTimeoutMinutes = (
   return Math.round(normalizeToStep(clamped, meta));
 };
 
-export const normalizeMaxSteps = (
-  value: unknown,
-  meta: RangeMeta,
-): number => {
+export const normalizeMaxSteps = (value: unknown, meta: RangeMeta): number => {
   const clamped = clamp(
     toFiniteNumber(value, meta.default),
     meta.min,
@@ -142,8 +139,8 @@ export const validateSubmitPayload = (
   }
 
   if (payload.submitMethod === "docker") {
-    errors.push("Docker 提交功能正在升级中。");
-    fieldErrors.docker = "Docker 提交功能正在升级中";
+    errors.push("Docker 提交方式正在开发。");
+    fieldErrors.docker = "该功能正在开发";
   }
 
   const { difficulty, timeoutMinutes, maxSteps } = payload.parameters;

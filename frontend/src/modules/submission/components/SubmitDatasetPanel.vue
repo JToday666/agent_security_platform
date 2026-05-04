@@ -83,104 +83,14 @@
     </div>
 
     <template v-if="filteredCategories.length">
-      <div class="category-list">
-        <article
-          v-for="category in filteredCategories"
-          :key="category.categoryId"
-          class="category-block"
-          :style="getCategoryBlockStyle(category.categoryId)"
-        >
-          <div class="category-row">
-            <label class="category-main">
-              <input
-                type="checkbox"
-                class="selection-input"
-                :checked="isFullySelected(category)"
-                @change="$emit('toggle-category', category.categoryId)"
-              />
-              <span
-                class="selection-box"
-                :class="{
-                  'selection-box--checked': isFullySelected(category),
-                  'selection-box--partial': isPartiallySelected(category),
-                }"
-                aria-hidden="true"
-              >
-                <AppIcon
-                  v-if="isFullySelected(category)"
-                  icon="lucide:check"
-                  class="selection-box-icon"
-                />
-                <span
-                  v-else-if="isPartiallySelected(category)"
-                  class="selection-box-dash"
-                ></span>
-              </span>
-              <div class="category-copy">
-                <span class="category-name">{{ category.name }}</span>
-                <span v-if="category.meaning" class="category-meaning">
-                  {{ category.meaning }}
-                </span>
-              </div>
-            </label>
-
-            <div class="category-right">
-              <span class="category-count">
-                {{ category.subcategories.length }} 个数据集
-              </span>
-              <button
-                class="expand-btn"
-                type="button"
-                :aria-label="expandedCategoryIds.includes(category.categoryId) ? '收起' : '展开'"
-                :title="expandedCategoryIds.includes(category.categoryId) ? '收起' : '展开'"
-                @click="$emit('toggle-expanded', category.categoryId)"
-              >
-                <AppIcon
-                  :icon="expandedCategoryIds.includes(category.categoryId) ? 'lucide:chevron-up' : 'lucide:chevron-down'"
-                  class="expand-btn-icon"
-                />
-              </button>
-            </div>
-          </div>
-
-          <div
-            v-if="expandedCategoryIds.includes(category.categoryId)"
-            class="dataset-list"
-          >
-            <label
-              v-for="dataset in category.subcategories"
-              :key="dataset.datasetId"
-              class="dataset-item"
-            >
-              <input
-                type="checkbox"
-                class="selection-input"
-                :checked="selectedDatasetIds.includes(dataset.datasetId)"
-                @change="$emit('toggle-dataset', dataset.datasetId)"
-              />
-              <span
-                class="selection-box"
-                :class="{
-                  'selection-box--checked': selectedDatasetIds.includes(dataset.datasetId),
-                }"
-                aria-hidden="true"
-              >
-                <AppIcon
-                  v-if="selectedDatasetIds.includes(dataset.datasetId)"
-                  icon="lucide:check"
-                  class="selection-box-icon"
-                />
-              </span>
-              <div class="dataset-copy">
-                <span class="dataset-name">{{ dataset.name }}</span>
-                <span class="dataset-description">
-                  {{ dataset.shortDescription || "暂无数据集说明。" }}
-                </span>
-              </div>
-            </label>
-          </div>
-        </article>
-      </div>
+      <SubmitDatasetCategoryList
+        :categories="filteredCategories"
+        :selected-dataset-ids="selectedDatasetIds"
+        :expanded-category-ids="expandedCategoryIds"
+        @toggle-category="$emit('toggle-category', $event)"
+        @toggle-dataset="$emit('toggle-dataset', $event)"
+        @toggle-expanded="$emit('toggle-expanded', $event)"
+      />
     </template>
 
     <PageStatePanel
@@ -193,18 +103,14 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import SubmitDatasetCategoryList from "@/modules/submission/components/SubmitDatasetCategoryList.vue";
 import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
 import type { SubmitDatasetCatalogStatus } from "@/modules/submission/composables/useSubmitDatasetCatalog";
-import {
-  getCategoryTheme,
-  isCategoryFullySelected,
-} from "@/modules/dataset/lib/dataset-utils";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
-import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 
 const props = defineProps<{
   categories: DatasetCategoryViewModel[];
@@ -287,29 +193,6 @@ const selectedCategoryCount = computed(
       ),
     ).length,
 );
-
-const isFullySelected = (category: DatasetCategoryViewModel) =>
-  isCategoryFullySelected(category, props.selectedDatasetIds);
-
-const isPartiallySelected = (category: DatasetCategoryViewModel) => {
-  const selectedCount = category.subcategories.filter((item) =>
-    props.selectedDatasetIds.includes(item.datasetId),
-  ).length;
-
-  return selectedCount > 0 && selectedCount < category.subcategories.length;
-};
-
-const getCategoryBlockStyle = (categoryId: string) => {
-  const theme = getCategoryTheme(categoryId);
-
-  return {
-    "--category-soft": theme.soft,
-    "--category-border": theme.border,
-    "--category-text": theme.text,
-    "--category-gradient": theme.gradient,
-    "--category-shadow": theme.shadow,
-  };
-};
 </script>
 
 <style scoped lang="scss">
@@ -335,188 +218,14 @@ const getCategoryBlockStyle = (categoryId: string) => {
   gap: 0.7rem;
 }
 
-.category-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.category-block {
-  border: 1px solid var(--category-border, #e2e8f0);
-  border-radius: 1.3rem;
-  overflow: hidden;
-  box-shadow: 0 12px 24px -28px var(--category-shadow, rgba(15, 23, 42, 0.22));
-}
-
-.category-block::before {
-  content: "";
-  display: block;
-  height: 3px;
-  background: var(
-    --category-gradient,
-    linear-gradient(135deg, #2563eb, #7c3aed)
-  );
-}
-
-.category-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.05rem;
-  background: linear-gradient(180deg, var(--category-soft, #f8fafc), #ffffff 88%);
-}
-
-.category-main {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.8rem;
-  min-width: 0;
-}
-
-.selection-input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.selection-box {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.15rem;
-  height: 1.15rem;
-  margin-top: 0.08rem;
-  border-radius: 0.34rem;
-  border: 1px solid rgba(148, 163, 184, 0.34);
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
-  transition: background var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
-  flex-shrink: 0;
-}
-
-.selection-box--checked,
-.selection-box--partial {
-  border-color: rgba(37, 99, 235, 0.92);
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.98), rgba(59, 130, 246, 0.94));
-  box-shadow: 0 8px 18px -14px rgba(37, 99, 235, 0.74);
-}
-
-.selection-box-icon {
-  width: 0.82rem;
-  height: 0.82rem;
-  color: #ffffff;
-}
-
-.selection-box-dash {
-  width: 0.56rem;
-  height: 0.12rem;
-  border-radius: 999px;
-  background: #ffffff;
-}
-
-.category-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 0.24rem;
-}
-
-.category-name {
-  color: var(--color-text-dark);
-  font-weight: 700;
-}
-
-.category-meaning {
-  color: var(--category-text, #475569);
-  font-size: 0.9rem;
-}
-
-.category-right {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.category-count {
-  color: var(--color-text-subtle);
-  font-size: 0.88rem;
-}
-
-.expand-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.35rem;
-  height: 2.35rem;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--category-text, #334155);
-  cursor: pointer;
-  box-shadow: 0 10px 20px -18px rgba(15, 23, 42, 0.32);
-  transition: transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard), background var(--duration-fast) var(--ease-standard);
-}
-
-.expand-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 22px -18px rgba(15, 23, 42, 0.36);
-}
-
-.expand-btn-icon {
-  width: 1rem;
-  height: 1rem;
-}
-
-.dataset-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  padding: 0 1.05rem 1rem;
-}
-
-.dataset-item {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7rem;
-  padding: 0.85rem 0.9rem;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(148, 163, 184, 0.14);
-}
-
-.dataset-copy {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 0.28rem;
-}
-
-.dataset-name {
-  color: var(--color-text-dark);
-  font-weight: 600;
-}
-
-.dataset-description {
-  color: var(--color-text-subtle);
-  line-height: 1.65;
-}
-
 @media (max-width: 768px) {
   .toolbar {
     grid-template-columns: 1fr;
   }
 
-  .toolbar-metrics,
-  .category-right {
+  .toolbar-metrics {
     width: 100%;
     justify-content: flex-start;
-  }
-
-  .category-row {
-    flex-direction: column;
-    align-items: flex-start;
   }
 }
 </style>

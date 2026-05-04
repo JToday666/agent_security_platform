@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { selectRepresentativeSamples } from "@/modules/evaluation/lib/evaluation-report-view";
+import { selectRepresentativeSamples } from "@/modules/evaluation/lib/evaluation-report-samples";
 import type {
   EvaluationDetail,
   EvaluationSampleOutcome,

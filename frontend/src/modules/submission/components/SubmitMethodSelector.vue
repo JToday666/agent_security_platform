@@ -22,21 +22,27 @@ const model = defineModel<SubmitMethod>({ required: true });
 const methodLabels: Record<SubmitMethod, { title: string; description: string }> = {
   api: {
     title: "API 接入",
-    description: "适用于已经有在线服务的智能体。",
+    description: "适用于已经有在线服务的 Agent。",
   },
   docker: {
     title: "Docker 镜像",
-    description: "适用于通过镜像部署的智能体。",
+    description: "该功能正在开发，当前暂不能创建 Docker 评测。",
   },
 };
 
 const methodOptions = computed(() =>
-  Object.entries(methodLabels)
-    .filter(([value]) => props.methods.includes(value as SubmitMethod))
-    .map(([value, meta]) => ({
-      value: value as SubmitMethod,
+  Object.entries(methodLabels).map(([value, meta]) => {
+    const method = value as SubmitMethod;
+    const isDocker = method === "docker";
+    const supported = props.methods.includes(method);
+
+    return {
+      value: method,
       title: meta.title,
       description: meta.description,
-    }))
+      meta: isDocker ? "开发中" : supported ? "" : "暂不可用",
+      disabled: isDocker || !supported,
+    };
+  })
 );
 </script>

@@ -2,72 +2,184 @@
   <div class="content leaderboard-page layout-page-shell layout-page-shell--wide">
     <PageHero
       title="排行榜"
-      description="当前版本仅展示已接入的真实能力，不提供模拟榜单。"
+      description="按公开评测快照展示 Agent 的综合安全表现。"
       align="center"
     />
 
-    <section class="placeholder-card layout-page-panel layout-page-panel--md ui-surface-panel">
-      <h2>公开结果暂未开放</h2>
-      <p>待真实公开任务接入后，排行榜会展示可复核的评测结果。</p>
+    <PageStatePanel
+      v-if="loading && !snapshot"
+      title="正在读取排行榜"
+      message="请稍候。"
+      :loading="true"
+    />
 
-      <div class="placeholder-actions">
-        <UiButton
-          :to="RouteLocation.datasetList"
-          variant="primary"
-          leading-icon="lucide:database"
-        >
-          浏览数据集
-        </UiButton>
-        <UiButton
-          :to="RouteLocation.contact"
-          variant="secondary"
-          leading-icon="lucide:messages-square"
-        >
-          联系我们
-        </UiButton>
-      </div>
-    </section>
+    <PageStatePanel
+      v-else-if="error && !snapshot"
+      :title="errorTitle"
+      :message="error"
+      action-text="重试"
+      @action="loadLeaderboard"
+    />
+
+    <template v-else-if="snapshot && hasEntries">
+      <section class="leaderboard-hero" aria-label="排行榜概览">
+        <LeaderboardChampionPanel
+          :entry="champion"
+          :sort-state="sortState"
+        />
+        <LeaderboardScoreSummary
+          :entry-count="snapshot.entryCount"
+          :champion="champion"
+          :best-risk-score="bestRiskScore"
+        />
+      </section>
+
+      <section class="leaderboard-table-section" aria-labelledby="leaderboard-title">
+        <div class="section-head">
+          <div>
+            <h2 id="leaderboard-title">公开评测结果</h2>
+            <p>当前按{{ activeSortOption.label }}排序，风险分越低代表不安全行为比例越低。</p>
+          </div>
+          <UiTag tone="brand" size="sm">{{ snapshot.snapshotCode }}</UiTag>
+        </div>
+
+        <LeaderboardTable
+          :entries="sortedEntries"
+          :sort-state="sortState"
+          @sort-change="handleSortChange"
+        />
+      </section>
+    </template>
+
+    <PageStatePanel
+      v-else
+      title="暂无公开排行"
+      message="当前还没有可展示的公开评测结果。"
+    >
+      <UiButton
+        :to="RouteLocation.datasetList"
+        variant="primary"
+        leading-icon="lucide:database"
+      >
+        浏览数据集
+      </UiButton>
+    </PageStatePanel>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from "vue";
 import { RouteLocation } from "@/app/router/route-names";
+import LeaderboardChampionPanel from "@/modules/public/components/LeaderboardChampionPanel.vue";
+import LeaderboardScoreSummary from "@/modules/public/components/LeaderboardScoreSummary.vue";
+import LeaderboardTable from "@/modules/public/components/LeaderboardTable.vue";
+import { useLeaderboardPage } from "@/modules/public/composables/useLeaderboardPage";
+import {
+  DEFAULT_LEADERBOARD_SORT,
+  getLeaderboardSortOption,
+  getNextLeaderboardSortState,
+  sortLeaderboardEntries,
+  type LeaderboardSortKey,
+  type LeaderboardSortState,
+} from "@/modules/public/lib/leaderboard-view";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
+import UiTag from "@/shared/ui/display/UiTag.vue";
+import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
+
+const {
+  snapshot,
+  entries,
+  hasEntries,
+  loading,
+  error,
+  errorTitle,
+  loadLeaderboard,
+} = useLeaderboardPage();
+
+const sortState = ref<LeaderboardSortState>({ ...DEFAULT_LEADERBOARD_SORT });
+
+const sortedEntries = computed(() =>
+  sortLeaderboardEntries(entries.value, sortState.value),
+);
+
+const champion = computed(() => sortedEntries.value[0] ?? null);
+
+const bestRiskScore = computed(() => {
+  if (!entries.value.length) {
+    return null;
+  }
+
+  return Math.min(...entries.value.map((entry) => entry.unsafeRiskScore));
+});
+
+const activeSortOption = computed(() =>
+  getLeaderboardSortOption(sortState.value.key),
+);
+
+const handleSortChange = (key: LeaderboardSortKey) => {
+  sortState.value = getNextLeaderboardSortState(sortState.value, key);
+};
 </script>
 
 <style scoped lang="scss">
 .leaderboard-page {
-  padding-bottom: 2.5rem;
+  padding-bottom: 2.6rem;
 }
 
-.placeholder-card {
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  text-align: center;
+.leaderboard-hero {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.4fr);
+  gap: 1.2rem;
+  align-items: stretch;
+  margin-bottom: 1.35rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  background:
+    linear-gradient(135deg, rgba(219, 234, 254, 0.42), transparent 38%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(248, 250, 252, 0.5));
 }
 
-.placeholder-card h2 {
+.leaderboard-table-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.section-head h2 {
   margin: 0;
   color: var(--color-text-dark);
+  font-size: 1.18rem;
 }
 
-.placeholder-card p {
-  margin: 0.75rem 0 0;
+.section-head p {
+  margin: 0.4rem 0 0;
+  max-width: 68ch;
   color: var(--color-text-subtle);
-  line-height: 1.75;
+  line-height: 1.68;
 }
 
-.placeholder-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
+@media (max-width: 1024px) {
+  .leaderboard-hero {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
-  .placeholder-actions {
+  .leaderboard-page {
+    padding-bottom: 1.8rem;
+  }
+
+  .section-head {
     flex-direction: column;
   }
 }

@@ -317,9 +317,7 @@ export const toAgentListItem = (agent: AgentDetail): AgentListItem => ({
   updatedAt: agent.updatedAt,
 });
 
-export const getStoredMockAgentById = (
-  agentId: string,
-): AgentDetail | null =>
+export const getStoredMockAgentById = (agentId: string): AgentDetail | null =>
   getStoredMockAgents().find((agent) => agent.agentId === agentId) ?? null;
 
 export const createStoredMockAgent = (

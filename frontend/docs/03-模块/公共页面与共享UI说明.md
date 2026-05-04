@@ -8,13 +8,16 @@
 
 ### 1.1 页面文件
 
-| 文件                              | 职责                                             |
-| --------------------------------- | ------------------------------------------------ |
-| `pages/HomePage.vue`              | 首页，展示平台入口、Hero 动效与四步流程引导      |
-| `pages/ContactPage.vue`           | 联系方式页面                                     |
-| `pages/LeaderboardPage.vue`       | 排行榜页面入口                                   |
-| `pages/NotFoundPage.vue`          | 404 页面                                         |
-| `components/HomeWorkflowStep.vue` | 首页流程卡片，展示四步引导                       |
+| 文件                                      | 职责                                         |
+| ----------------------------------------- | -------------------------------------------- |
+| `pages/HomePage.vue`                      | 首页，展示平台入口、Hero 动效与四步流程引导  |
+| `pages/ContactPage.vue`                   | 联系方式页面                                 |
+| `pages/LeaderboardPage.vue`               | 排行榜页面容器，加载当前排行榜并拼装展示组件 |
+| `pages/NotFoundPage.vue`                  | 404 页面                                     |
+| `components/HomeWorkflowStep.vue`         | 首页流程卡片，展示四步引导                   |
+| `components/LeaderboardChampionPanel.vue` | 排行榜第一名重点展示区                       |
+| `components/LeaderboardScoreSummary.vue`  | 当前排序结果的分数摘要                       |
+| `components/LeaderboardTable.vue`         | 排行榜表格、表头排序和认证状态展示           |
 
 ### 1.2 HomePage 的重点逻辑
 
@@ -31,6 +34,44 @@
 - “欢迎回来”工作台快捷区
 - 首页上的退出登录确认逻辑
 
+### 1.3 LeaderboardPage 的数据与视图
+
+排行榜页面只读取 `src/modules/public/api/leaderboard-api.ts` 暴露的 `getLeaderboardSnapshot()`。真实后端模式下，该方法请求：
+
+```text
+GET /leaderboards/current
+```
+
+页面使用的字段来自后端当前排行榜快照：
+
+- `snapshotCode`
+- `entryCount`
+- `entries[].rankNo`
+- `entries[].agentId`
+- `entries[].agentName`
+- `entries[].evaluationId`
+- `entries[].officialConservativeScore`
+- `entries[].safeCapabilityScore`
+- `entries[].highDifficultyScore`
+- `entries[].unsafeRiskScore`
+- `entries[].confidence`
+- `entries[].verificationTier`
+- `entries[].safetyCertification`
+- `entries[].totalSamples`
+
+`LeaderboardPage.vue` 只负责页面壳、加载态、错误态和组件拼装。加载、刷新与错误处理在 `composables/useLeaderboardPage.ts` 中收口；排序、分数格式化、奖牌色调和认证展示在 `lib/leaderboard-view.ts` 中收口。
+
+排行榜表头支持四类分数排序：
+
+- 综合分：`officialConservativeScore`
+- 安全能力：`safeCapabilityScore`
+- 高难分：`highDifficultyScore`
+- 风险分：`unsafeRiskScore`
+
+默认按照综合分降序排序。风险分默认按升序排序。置信度只展示，不作为排序项。
+
+前三名使用独立奖牌色调：金牌、银牌、铜牌分别对应 `gold / silver / bronze`，其余名次使用基础色调。当前第一名会在 `LeaderboardChampionPanel.vue` 中居中展示综合分、安全能力、高难分和风险分。
+
 ## 2. 共享 UI 的定位
 
 `src/shared/ui/` 的目标不是提供通用样式片段，而是提供可在多个模块复用的业务无关组件。
@@ -45,10 +86,10 @@
 
 ### 2.2 branding
 
-| 文件                     | 职责                |
-| ------------------------ | ------------------- |
+| 文件                     | 职责                                        |
+| ------------------------ | ------------------------------------------- |
 | `branding/AppIcon.vue`   | 对 Iconify 的统一薄封装，是前端图标复用入口 |
-| `branding/BrandLogo.vue` | 品牌 Logo 组件      |
+| `branding/BrandLogo.vue` | 品牌 Logo 组件                              |
 
 ### 2.3 display
 
@@ -60,27 +101,27 @@
 
 ### 2.4 feedback
 
-| 文件                          | 职责                                           |
-| ----------------------------- | ---------------------------------------------- |
-| `feedback/ConfirmDialog.vue`  | 通用确认弹窗                                   |
-| `feedback/InlineNotice.vue`   | 行内提示                                       |
+| 文件                          | 职责                                               |
+| ----------------------------- | -------------------------------------------------- |
+| `feedback/ConfirmDialog.vue`  | 通用确认弹窗                                       |
+| `feedback/InlineNotice.vue`   | 行内提示                                           |
 | `feedback/PageStatePanel.vue` | 统一的加载 / 空态 / 错误态页面容器，适合页面级状态 |
 
 ### 2.5 forms
 
-| 文件                          | 职责                                                 |
-| ----------------------------- | ---------------------------------------------------- |
+| 文件                          | 职责                                                   |
+| ----------------------------- | ------------------------------------------------------ |
 | `forms/FormField.vue`         | 统一字段壳，提供 label、help、错误区与统一 select 入口 |
-| `forms/UiChoiceCardGroup.vue` | 卡片式选项组                                         |
-| `forms/UiSelect.vue`          | 下拉选择器                                           |
-| `forms/UiToggleField.vue`     | 布尔开关字段                                         |
+| `forms/UiChoiceCardGroup.vue` | 卡片式选项组                                           |
+| `forms/UiSelect.vue`          | 下拉选择器                                             |
+| `forms/UiToggleField.vue`     | 布尔开关字段                                           |
 
 ### 2.6 page
 
-| 文件                     | 职责                               |
-| ------------------------ | ---------------------------------- |
-| `page/PageHero.vue`      | 平铺页面头部容器                   |
-| `page/SectionBlock.vue`  | 通用内容分区容器                   |
+| 文件                    | 职责             |
+| ----------------------- | ---------------- |
+| `page/PageHero.vue`     | 平铺页面头部容器 |
+| `page/SectionBlock.vue` | 通用内容分区容器 |
 
 ## 3. 共享 UI 使用边界
 

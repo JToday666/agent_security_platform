@@ -20,3 +20,13 @@ export const resolveDatasetIdsFromQuery = (
 
   return uniqueIds.filter((item) => validIdSet.has(item));
 };
+
+export const buildDatasetQuerySignature = (
+  value: string | string[] | null | undefined,
+): string => {
+  if (!value) {
+    return "";
+  }
+
+  return Array.isArray(value) ? value.join(",") : value;
+};
