@@ -143,7 +143,7 @@ def build_submission_payload(request_id: str, *, agent_id: str = "agt_local_e2e"
             "timeoutMinutes": 20,
             "maxSteps": 30,
         },
-        "publicToLeaderboard": False,
+        "leaderboardDisplayMode": "anonymous",
         "datasetIds": [DATASET_ID],
         "requestId": request_id,
     }

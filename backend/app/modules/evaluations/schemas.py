@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from app.platform.schemas import CamelModel
 
@@ -32,7 +32,14 @@ class EvaluationCreateRequest(CamelModel):
     agent_id: str
     dataset_ids: list[str]
     parameters: EvaluationSubmitParameters
-    public_to_leaderboard: bool
+    public_to_leaderboard: bool = True
+    leaderboard_display_mode: Literal["public", "anonymous"] = "public"
+
+    @model_validator(mode="after")
+    def reject_deprecated_private_leaderboard(self) -> "EvaluationCreateRequest":
+        if self.public_to_leaderboard is False:
+            raise ValueError("publicToLeaderboard=false 已废弃，请改用 leaderboardDisplayMode=anonymous。")
+        return self
 
 
 class EvaluationMetaRange(CamelModel):
@@ -50,6 +57,13 @@ class EvaluationMetaToggle(CamelModel):
     default: bool
 
 
+class EvaluationDisplayModeMeta(CamelModel):
+    """排行榜展示模式配置。"""
+
+    default: Literal["public", "anonymous"]
+    options: list[Literal["public", "anonymous"]]
+
+
 class EvaluationSubmitMeta(CamelModel):
     """提交测评页元数据。"""
 
@@ -58,6 +72,7 @@ class EvaluationSubmitMeta(CamelModel):
     timeout_minutes: EvaluationMetaRange
     max_steps: EvaluationMetaRange
     public_to_leaderboard: EvaluationMetaToggle
+    leaderboard_display_mode: EvaluationDisplayModeMeta
 
 
 class EvaluationValidateResponse(CamelModel):
@@ -90,6 +105,7 @@ class EvaluationListItem(CamelModel):
     final_report_available: bool
     finalization_reason: str | None = None
     public_to_leaderboard: bool
+    leaderboard_display_mode: str
     dataset_ids: list[str]
     dataset_names: list[str]
     submit_method: str
@@ -152,6 +168,7 @@ class EvaluationDetail(CamelModel):
     status: str
     score: float | None = None
     public_to_leaderboard: bool
+    leaderboard_display_mode: str
     dataset_ids: list[str]
     dataset_names: list[str]
     submit_method: str

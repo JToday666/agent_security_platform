@@ -33,7 +33,6 @@ async def create_leaderboard_snapshot(
 
 @router.get("/current", response_model=Envelope[LeaderboardSnapshotResponse])
 async def get_current_leaderboard(
-    _current_user=Depends(get_current_user),
     service: LeaderboardService = Depends(get_leaderboard_service),
 ):
     response = await service.get_current_snapshot()

@@ -34,6 +34,10 @@ class TestRun(Base):
     __tablename__ = "test_runs"
     __table_args__ = (
         UniqueConstraint("user_id", "request_id"),
+        CheckConstraint(
+            "leaderboard_display_mode IN ('public', 'anonymous')",
+            name="test_runs_leaderboard_display_mode_check",
+        ),
         Index("ix_test_runs_status_updated_at", "status", "updated_at"),
         Index("ix_test_runs_status_pause_deadline_at", "status", "pause_deadline_at"),
         Index(
@@ -59,6 +63,13 @@ class TestRun(Base):
     submit_method: Mapped[str] = mapped_column(Text, nullable=False, comment="任务提交方式(如：api、web)")
     public_to_leaderboard: Mapped[bool] = mapped_column(
         Boolean, nullable=False, default=True, server_default=text("true"), comment="是否允许该成绩公开到排行榜中"
+    )
+    leaderboard_display_mode: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        default="public",
+        server_default=text("'public'"),
+        comment="排行榜展示模式(public/anonymous)",
     )
     request_id: Mapped[str] = mapped_column(Text, nullable=False, comment="前端或API调用的幂等请求ID，防止重复调度执行")
     agent_base_url: Mapped[str] = mapped_column(Text, nullable=False, comment="被测Agent的接口调用基础地址")

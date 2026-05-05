@@ -13,11 +13,19 @@ from app.models.benchmark_run import ExecutionSummary, RunReport, RunSample, Sam
 pytestmark = [pytest.mark.db, pytest.mark.integration]
 
 
-def _seed_completed_execution(api_db_helper, *, user_id: int, dataset_code: str, public_to_leaderboard: bool = True) -> str:
+def _seed_completed_execution(
+    api_db_helper,
+    *,
+    user_id: int,
+    dataset_code: str,
+    public_to_leaderboard: bool = True,
+    leaderboard_display_mode: str = "public",
+) -> str:
     evaluation_id = api_db_helper.seed_evaluation_run(user_id=user_id, dataset_code=dataset_code, status="completed")
     with api_db_helper.session() as session:
         run = session.execute(select(TestRun).where(TestRun.public_id == evaluation_id)).scalar_one()
         run.public_to_leaderboard = public_to_leaderboard
+        run.leaderboard_display_mode = leaderboard_display_mode
         run.completed_samples = 1
         run.success_count = 1
         run.failed_count = 0
@@ -68,7 +76,12 @@ def test_evaluation_score_and_leaderboard_api(client, api_db_helper) -> None:
         username=f"{api_db_helper.prefix}_score_owner",
         email=f"{api_db_helper.prefix}_score_owner@example.com",
     )
-    evaluation_id = _seed_completed_execution(api_db_helper, user_id=user_id, dataset_code=dataset_code)
+    evaluation_id = _seed_completed_execution(
+        api_db_helper,
+        user_id=user_id,
+        dataset_code=dataset_code,
+        leaderboard_display_mode="anonymous",
+    )
     headers = {"Authorization": f"Bearer {token}"}
 
     recalculate_response = client.post(
@@ -85,12 +98,49 @@ def test_evaluation_score_and_leaderboard_api(client, api_db_helper) -> None:
     assert detail_response.status_code == 200
     assert detail_response.json()["data"]["score"] == score_payload["officialConservativeScore"]
 
+    unauthenticated_snapshot_response = client.post("/api/v1/leaderboards/snapshots", json={})
+    assert unauthenticated_snapshot_response.status_code == 401
+
     snapshot_response = client.post("/api/v1/leaderboards/snapshots", headers=headers, json={})
     assert snapshot_response.status_code == 200
-    current_response = client.get("/api/v1/leaderboards/current", headers=headers)
+    current_response = client.get("/api/v1/leaderboards/current")
     assert current_response.status_code == 200
     entries = current_response.json()["data"]["entries"]
-    assert any(entry["evaluationId"] == evaluation_id for entry in entries)
+    assert entries
+    assert any(entry["displayName"] == "Anonymous Agent" and entry["anonymous"] is True for entry in entries)
+    assert all("agentId" not in entry for entry in entries)
+    assert all("agentName" not in entry for entry in entries)
+    assert all("evaluationId" not in entry for entry in entries)
+
+
+def test_leaderboard_snapshot_keeps_legacy_private_runs_out(client, api_db_helper) -> None:
+    dataset_code = api_db_helper.seed_dataset()
+    user_id, token = api_db_helper.seed_user(
+        username=f"{api_db_helper.prefix}_private_owner",
+        email=f"{api_db_helper.prefix}_private_owner@example.com",
+    )
+    evaluation_id = _seed_completed_execution(
+        api_db_helper,
+        user_id=user_id,
+        dataset_code=dataset_code,
+        public_to_leaderboard=False,
+        leaderboard_display_mode="public",
+    )
+    headers = {"Authorization": f"Bearer {token}"}
+
+    recalculate_response = client.post(
+        f"/api/v1/evaluations/{evaluation_id}/score/recalculate",
+        headers=headers,
+        json={"scoreModelVersion": "score_v1_5", "benchmarkVersion": "bm_v1"},
+    )
+    assert recalculate_response.status_code == 200
+
+    snapshot_response = client.post("/api/v1/leaderboards/snapshots", headers=headers, json={})
+    assert snapshot_response.status_code == 200
+    current_response = client.get("/api/v1/leaderboards/current")
+    assert current_response.status_code == 200
+    entries = current_response.json()["data"]["entries"]
+    assert all(entry["displayName"] != f"{api_db_helper.prefix} agent" for entry in entries)
 
 
 def test_difficulty_version_publish_updates_formal_sample_difficulty(client, api_db_helper) -> None:

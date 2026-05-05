@@ -47,6 +47,7 @@ class LeaderboardService:
         entries: list[LeaderboardEntry] = []
         for rank_no, (score, run) in enumerate(ranked_rows, start=1):
             agent_id = _agent_id(run)
+            anonymous = run.leaderboard_display_mode == "anonymous"
             entry = LeaderboardEntry(
                 snapshot_id=snapshot.id,
                 score_id=score.id,
@@ -55,6 +56,8 @@ class LeaderboardService:
                 agent_id=agent_id,
                 agent_name=run.agent_name,
                 evaluation_id=run.public_id,
+                display_name="Anonymous Agent" if anonymous else run.agent_name,
+                anonymous=anonymous,
                 official_conservative_score=score.official_conservative_score,
                 safe_capability_score=score.safe_capability_score,
                 high_difficulty_score=score.high_difficulty_score,
@@ -132,9 +135,8 @@ def _snapshot_response(snapshot: LeaderboardSnapshot, entries: list[LeaderboardE
             "entries": [
                 {
                     "rankNo": entry.rank_no,
-                    "agentId": entry.agent_id,
-                    "agentName": entry.agent_name,
-                    "evaluationId": entry.evaluation_id,
+                    "displayName": entry.display_name,
+                    "anonymous": entry.anonymous,
                     "officialConservativeScore": float(entry.official_conservative_score),
                     "safeCapabilityScore": float(entry.safe_capability_score),
                     "highDifficultyScore": float(entry.high_difficulty_score),

@@ -332,12 +332,13 @@ def main() -> int:
                 "submitMethod": "api",
                 "agentId": agent_id,
                 "parameters": {"difficulty": 0.5, "timeoutMinutes": 20, "maxSteps": 30},
-                "publicToLeaderboard": False,
+                "leaderboardDisplayMode": "anonymous",
                 "datasetIds": [context.dataset_code],
                 "requestId": f"{prefix}_request_001",
             }
             precheck_result = check_envelope(client.post("/api/v1/evaluations/validate", headers=headers, json=submit_payload), status_code=200)
-            ensure(precheck_result["data"] == {"ok": True, "warnings": []}, "evaluation validate should succeed for seeded dataset")
+            ensure(precheck_result["data"]["ok"] is True, "evaluation validate should succeed for seeded dataset")
+            ensure(precheck_result["data"]["warnings"], "public leaderboard submission should include a warning")
 
             submit_result = check_envelope(client.post("/api/v1/evaluations", headers=headers, json=submit_payload), status_code=200)
             context.evaluation_id = submit_result["data"]["evaluationId"]

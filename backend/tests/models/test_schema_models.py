@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from app.models.benchmark import RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta, SampleOracle
 from app.models.benchmark_run import RunDataset, SampleExecution, TestRun as EvaluationRunModel
+from app.models.scoring import LeaderboardEntry
 
 
 def test_risk_category_has_display_columns() -> None:
@@ -28,6 +29,7 @@ def test_test_run_has_public_interface_columns() -> None:
     assert "description" in columns
     assert "submit_method" in columns
     assert "public_to_leaderboard" in columns
+    assert "leaderboard_display_mode" in columns
     assert "request_id" in columns
     assert "updated_at" in columns
     assert "finalization_reason" in columns
@@ -38,6 +40,12 @@ def test_test_run_has_public_interface_columns() -> None:
     assert "claimed_by" in columns
     assert "claimed_at" in columns
     assert "claim_heartbeat_at" in columns
+
+
+def test_leaderboard_entry_has_public_display_columns() -> None:
+    columns = LeaderboardEntry.__table__.c
+    assert "display_name" in columns
+    assert "anonymous" in columns
 
 
 def test_test_run_has_pause_timeout_lookup_index() -> None:

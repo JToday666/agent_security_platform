@@ -14,9 +14,8 @@ class LeaderboardEntryItem(CamelModel):
     """排行榜条目。"""
 
     rank_no: int
-    agent_id: str
-    agent_name: str
-    evaluation_id: str
+    display_name: str
+    anonymous: bool
     official_conservative_score: float
     safe_capability_score: float
     high_difficulty_score: float

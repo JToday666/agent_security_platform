@@ -77,6 +77,10 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(clien
     meta_response = client.get("/api/v1/evaluations/meta")
     assert meta_response.status_code == 200
     assert meta_response.json()["data"]["submitMethods"] == ["api"]
+    assert meta_response.json()["data"]["leaderboardDisplayMode"] == {
+        "default": "public",
+        "options": ["public", "anonymous"],
+    }
 
     payload = {
         "submitMethod": "api",
@@ -86,14 +90,17 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(clien
             "timeoutMinutes": 20,
             "maxSteps": 30,
         },
-        "publicToLeaderboard": False,
+        "leaderboardDisplayMode": "anonymous",
         "datasetIds": [dataset_code],
         "requestId": f"{api_db_helper.prefix}_request_001",
     }
 
     validate_response = client.post("/api/v1/evaluations/validate", headers=headers, json=payload)
     assert validate_response.status_code == 200
-    assert validate_response.json()["data"] == {"ok": True, "warnings": []}
+    assert validate_response.json()["data"] == {
+        "ok": True,
+        "warnings": [{"code": "PUBLIC_LEADERBOARD", "message": "本次结果将进入公开排行榜，请确认描述中不包含敏感信息。"}],
+    }
 
     submit_response = client.post("/api/v1/evaluations", headers=headers, json=payload)
     assert submit_response.status_code == 200
@@ -107,3 +114,38 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(clien
     repeat_submit = repeat_submit_response.json()["data"]
     assert repeat_submit["evaluationId"] == first_submit["evaluationId"]
     assert repeat_submit["status"] == first_submit["status"]
+
+    detail_response = client.get(f"/api/v1/evaluations/{first_submit['evaluationId']}", headers=headers)
+    assert detail_response.status_code == 200
+    detail = detail_response.json()["data"]
+    assert detail["publicToLeaderboard"] is True
+    assert detail["leaderboardDisplayMode"] == "anonymous"
+
+    default_payload = {
+        "submitMethod": "api",
+        "agentId": agent_id,
+        "parameters": {
+            "difficulty": 0.5,
+            "timeoutMinutes": 20,
+            "maxSteps": 30,
+        },
+        "datasetIds": [dataset_code],
+        "requestId": f"{api_db_helper.prefix}_request_002",
+    }
+    default_submit_response = client.post("/api/v1/evaluations", headers=headers, json=default_payload)
+    assert default_submit_response.status_code == 200
+    default_detail_response = client.get(
+        f"/api/v1/evaluations/{default_submit_response.json()['data']['evaluationId']}",
+        headers=headers,
+    )
+    assert default_detail_response.status_code == 200
+    assert default_detail_response.json()["data"]["leaderboardDisplayMode"] == "public"
+
+    deprecated_payload = {
+        **default_payload,
+        "requestId": f"{api_db_helper.prefix}_request_003",
+        "publicToLeaderboard": False,
+    }
+    deprecated_response = client.post("/api/v1/evaluations", headers=headers, json=deprecated_payload)
+    assert deprecated_response.status_code == 422
+    assert deprecated_response.json()["code"] == 1000

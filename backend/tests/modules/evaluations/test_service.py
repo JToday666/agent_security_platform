@@ -50,6 +50,7 @@ def make_paused_run(now: datetime) -> SimpleNamespace:
         updated_at=now,
         status="paused",
         public_to_leaderboard=True,
+        leaderboard_display_mode="public",
         submit_method="api",
         finalization_reason=None,
         pause_used=True,
