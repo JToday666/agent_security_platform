@@ -199,6 +199,8 @@ class LeaderboardEntry(Base):
     agent_id: Mapped[str] = mapped_column(Text, nullable=False, index=True)
     agent_name: Mapped[str] = mapped_column(Text, nullable=False)
     evaluation_id: Mapped[str] = mapped_column(Text, nullable=False)
+    display_name: Mapped[str] = mapped_column(Text, nullable=False)
+    anonymous: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default=text("false"))
     official_conservative_score: Mapped[Decimal] = mapped_column(Numeric(7, 3), nullable=False)
     safe_capability_score: Mapped[Decimal] = mapped_column(Numeric(7, 3), nullable=False)
     high_difficulty_score: Mapped[Decimal] = mapped_column(Numeric(7, 3), nullable=False)

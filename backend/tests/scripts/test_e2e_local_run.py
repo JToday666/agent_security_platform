@@ -56,6 +56,8 @@ def test_build_submission_payload_uses_b2_defaults(backend_root: Path) -> None:
     assert payload["parameters"]["difficulty"] == 0.5
     assert payload["parameters"]["timeoutMinutes"] == 20
     assert payload["parameters"]["maxSteps"] == 30
+    assert payload["leaderboardDisplayMode"] == "anonymous"
+    assert "publicToLeaderboard" not in payload
     assert payload["requestId"] == "req_demo"
 
 

@@ -49,6 +49,7 @@ class EvaluationService:
                 "timeoutMinutes": TIMEOUT_META,
                 "maxSteps": MAX_STEPS_META,
                 "publicToLeaderboard": {"default": True},
+                "leaderboardDisplayMode": {"default": "public", "options": ["public", "anonymous"]},
             }
         )
 
@@ -88,7 +89,8 @@ class EvaluationService:
             agent_name=agent.name,
             description=agent.description,
             submit_method="api",
-            public_to_leaderboard=payload.public_to_leaderboard,
+            public_to_leaderboard=True,
+            leaderboard_display_mode=payload.leaderboard_display_mode,
             request_id=payload.request_id,
             agent_base_url=str(agent.connection["baseUrl"]),
             credential_ref=agent.credential_ref,
@@ -176,6 +178,7 @@ class EvaluationService:
                         "finalReportAvailable": report is not None and report.report_status == "available",
                         "finalizationReason": run.finalization_reason,
                         "publicToLeaderboard": run.public_to_leaderboard,
+                        "leaderboardDisplayMode": run.leaderboard_display_mode,
                         "datasetIds": [dataset.dataset_code for dataset in datasets],
                         "datasetNames": [dataset.dataset_name for dataset in datasets],
                         "submitMethod": run.submit_method,
@@ -259,6 +262,7 @@ class EvaluationService:
                 "status": run.status,
                 "score": None if score is None else float(score.official_conservative_score),
                 "publicToLeaderboard": run.public_to_leaderboard,
+                "leaderboardDisplayMode": run.leaderboard_display_mode,
                 "datasetIds": [dataset.dataset_code for dataset in datasets],
                 "datasetNames": [dataset.dataset_name for dataset in datasets],
                 "submitMethod": run.submit_method,
