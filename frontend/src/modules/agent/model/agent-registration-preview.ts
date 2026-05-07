@@ -1,4 +1,7 @@
-import type { AgentInputMapping } from "@/shared/types/agent-registry-types";
+import type {
+  AgentInputMapping,
+  AgentOutputMapping,
+} from "@/shared/types/agent-registry-types";
 import {
   buildAgentCustomRequestBody,
   getAgentAuthHeader,
@@ -8,8 +11,16 @@ import {
 export interface AgentInvocationPreview {
   missingMessage: string;
   requestBody: Record<string, unknown>;
+  responseMapping: AgentResponseMappingPreview;
   curl: string;
   python: string;
+}
+
+export interface AgentResponseMappingPreview {
+  invokeMode: AgentRegisterForm["invokeMode"];
+  resultEndpoint: string | null;
+  responsePaths: Partial<Record<keyof AgentOutputMapping, string>>;
+  requiredPaths: Array<keyof AgentOutputMapping>;
 }
 
 const PLATFORM_INPUT_SAMPLES: Record<keyof AgentInputMapping, unknown> = {
@@ -24,6 +35,45 @@ const PLATFORM_INPUT_SAMPLES: Record<keyof AgentInputMapping, unknown> = {
 const joinUrl = (baseUrl: string, path: string): string =>
   `${baseUrl.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
 
+const POLL_ONLY_OUTPUT_FIELDS: Array<keyof AgentOutputMapping> = [
+  "externalRunId",
+  "status",
+];
+
+const buildResponseMappingPreview = (
+  form: AgentRegisterForm,
+  baseUrl: string,
+): AgentResponseMappingPreview => {
+  const responsePaths: Partial<Record<keyof AgentOutputMapping, string>> = {};
+
+  Object.entries(form.platformOutputMapping).forEach(([field, path]) => {
+    const outputField = field as keyof AgentOutputMapping;
+    const responsePath = path?.trim();
+    if (
+      !responsePath ||
+      (form.invokeMode === "sync_response" &&
+        POLL_ONLY_OUTPUT_FIELDS.includes(outputField))
+    ) {
+      return;
+    }
+
+    responsePaths[outputField] = responsePath;
+  });
+
+  const resultPath = form.connection.resultPathTemplate?.trim();
+
+  return {
+    invokeMode: form.invokeMode,
+    resultEndpoint:
+      form.invokeMode === "submit_poll" && baseUrl && resultPath
+        ? joinUrl(baseUrl, resultPath)
+        : null,
+    responsePaths,
+    requiredPaths:
+      form.invokeMode === "submit_poll" ? [...POLL_ONLY_OUTPUT_FIELDS] : [],
+  };
+};
+
 export const buildAgentInvocationPreview = (
   form: AgentRegisterForm,
 ): AgentInvocationPreview => {
@@ -31,6 +81,7 @@ export const buildAgentInvocationPreview = (
   const invokePath = form.connection.invokePath.trim();
   const customBody = buildAgentCustomRequestBody(form.customRequestFields).body;
   const requestBody: Record<string, unknown> = { ...customBody };
+  const responseMapping = buildResponseMappingPreview(form, baseUrl);
 
   Object.entries(form.platformInputMapping).forEach(
     ([platformField, target]) => {
@@ -48,6 +99,7 @@ export const buildAgentInvocationPreview = (
     return {
       missingMessage: "请填写 baseUrl 和 invokePath 后查看调用预览。",
       requestBody,
+      responseMapping,
       curl: "",
       python: "",
     };
@@ -89,6 +141,7 @@ export const buildAgentInvocationPreview = (
   return {
     missingMessage: "",
     requestBody,
+    responseMapping,
     curl,
     python,
   };
