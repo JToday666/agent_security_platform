@@ -1,7 +1,10 @@
 <template>
   <figure
     class="agent-code-preview"
-    :class="`agent-code-preview--${language}`"
+    :class="[
+      `agent-code-preview--${language}`,
+      { 'agent-code-preview--fill': fillHeight },
+    ]"
     :style="{ '--agent-code-preview-max-height': maxHeight }"
   >
     <pre class="agent-code-preview__surface"><code><span
@@ -42,9 +45,11 @@ const props = withDefaults(
     code: string;
     language: CodeLanguage;
     maxHeight?: string;
+    fillHeight?: boolean;
   }>(),
   {
     maxHeight: "620px",
+    fillHeight: false,
   },
 );
 
@@ -165,6 +170,8 @@ const highlightedSegments = computed<CodeSegment[]>(() => {
 
 <style scoped lang="scss">
 .agent-code-preview {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   margin: 0;
   border: 1px solid rgba(148, 163, 184, 0.22);
@@ -182,6 +189,11 @@ const highlightedSegments = computed<CodeSegment[]>(() => {
     transform var(--duration-fast) var(--ease-standard);
 }
 
+.agent-code-preview--fill {
+  height: 100%;
+  min-height: 0;
+}
+
 .agent-code-preview:hover,
 .agent-code-preview:focus-within {
   border-color: rgba(99, 102, 241, 0.34);
@@ -191,6 +203,7 @@ const highlightedSegments = computed<CodeSegment[]>(() => {
 }
 
 .agent-code-preview__surface {
+  flex: 0 1 auto;
   max-height: var(--agent-code-preview-max-height);
   overflow: auto;
   margin: 0;
@@ -208,6 +221,12 @@ const highlightedSegments = computed<CodeSegment[]>(() => {
   line-height: 1.78;
   white-space: pre;
   tab-size: 2;
+}
+
+.agent-code-preview--fill .agent-code-preview__surface {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
 }
 
 .agent-code-preview__surface::selection,
