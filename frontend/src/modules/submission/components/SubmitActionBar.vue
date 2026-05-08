@@ -132,7 +132,13 @@ const remainingCount = computed(
   flex-direction: column;
   gap: 0.95rem;
   min-width: 0;
-  padding-top: 0.25rem;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: var(--radius-control-sm);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.86)),
+    rgba(255, 255, 255, 0.78);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
 }
 
 .section-head h2,
@@ -156,13 +162,25 @@ const remainingCount = computed(
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0;
   margin: 0;
-  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.58);
 }
 
 .summary-list div {
   min-width: 0;
-  padding: 0.72rem 0.65rem 0.72rem 0;
+  padding: 0.76rem 0.85rem;
+  border-right: 1px solid rgba(148, 163, 184, 0.12);
   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.summary-list div:nth-child(2n) {
+  border-right: 0;
+}
+
+.summary-list div:nth-last-child(-n + 2) {
+  border-bottom: 0;
 }
 
 .summary-list dt {
@@ -208,6 +226,17 @@ const remainingCount = computed(
   .submit-actions {
     grid-template-columns: 1fr;
     flex-direction: column;
+  }
+
+  .summary-list div,
+  .summary-list div:nth-child(2n),
+  .summary-list div:nth-last-child(-n + 2) {
+    border-right: 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  }
+
+  .summary-list div:last-child {
+    border-bottom: 0;
   }
 }
 </style>

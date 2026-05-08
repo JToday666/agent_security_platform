@@ -1,20 +1,5 @@
 <template>
   <div class="content agent-register-page layout-page-shell layout-page-shell--wide">
-    <PageHero
-      title="注册智能体"
-      description="填写接入配置并创建智能体。验证通过后可用于提交评测。"
-    >
-      <template #actions>
-        <UiButton
-          :to="RouteLocation.agentManagement"
-          variant="secondary"
-          leading-icon="lucide:list"
-        >
-          返回管理页
-        </UiButton>
-      </template>
-    </PageHero>
-
     <PageStatePanel
       v-if="loading"
       title="正在初始化注册页"
@@ -34,6 +19,16 @@
       v-else
       class="agent-register-workspace"
     >
+      <div class="agent-register-toolbar">
+        <UiButton
+          :to="RouteLocation.agentManagement"
+          variant="secondary"
+          leading-icon="lucide:list"
+        >
+          返回管理页
+        </UiButton>
+      </div>
+
       <AgentRegisterStepIndicator
         :steps="registerSteps"
         :current-step-id="currentStepId"
@@ -46,7 +41,11 @@
         class="agent-register-main"
         :class="{ 'agent-register-main--preview': showPreviewPanel }"
       >
-        <section class="agent-register-main__form" aria-label="注册 Agent 表单">
+        <section
+          ref="formScrollRef"
+          class="agent-register-main__form"
+          aria-label="注册 Agent 表单"
+        >
           <AgentRegisterForm
             :templates="templates"
             :form="form"
@@ -63,6 +62,7 @@
             @set-auth-type="setAuthType"
             @set-custom-field-type="setCustomFieldType"
             @set-custom-fields-choice="setCustomFieldsChoice"
+            @step-edited="handleStepEdited"
             @add-custom-field="addCustomField"
             @remove-custom-field="removeCustomField"
             @verify-created="verifyCreatedAgent"
@@ -135,6 +135,7 @@
 </template>
 
 <script setup lang="ts">
+import { nextTick, ref, watch } from "vue";
 import { RouteLocation } from "@/app/router/route-names";
 import AgentInvocationPreviewPanel from "@/modules/agent/components/AgentInvocationPreviewPanel.vue";
 import AgentRegisterForm from "@/modules/agent/components/AgentRegisterForm.vue";
@@ -143,7 +144,6 @@ import { useAgentRegisterPage } from "@/modules/agent/composables/useAgentRegist
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
-import PageHero from "@/shared/ui/page/PageHero.vue";
 
 const {
   templates,
@@ -169,6 +169,7 @@ const {
   customFieldsChoice,
   usesNoTemplate,
   templateChangeDialogVisible,
+  validationErrorVersion,
   initializePage,
   applyTemplate,
   confirmTemplateChange,
@@ -180,12 +181,54 @@ const {
   setAuthType,
   setCustomFieldType,
   setCustomFieldsChoice,
+  handleStepEdited,
   addCustomField,
   removeCustomField,
   handleCreate,
   verifyCreatedAgent,
   copyPreview,
 } = useAgentRegisterPage();
+
+const formScrollRef = ref<HTMLElement | null>(null);
+
+const scrollToValidationTarget = async () => {
+  await nextTick();
+
+  const container = formScrollRef.value;
+  if (!container) {
+    return;
+  }
+
+  const errorText = container.querySelector<HTMLElement>(".form-field-error");
+  const target =
+    errorText?.closest<HTMLElement>(".form-field") ??
+    container.querySelector<HTMLElement>(
+      ".inline-notice--warning, .inline-notice--danger",
+    );
+
+  if (!target) {
+    container.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  const containerRect = container.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const stickyOffset = 108;
+  const isVisible =
+    targetRect.top >= containerRect.top + stickyOffset &&
+    targetRect.bottom <= containerRect.bottom - 12;
+
+  if (isVisible) {
+    return;
+  }
+
+  container.scrollTo({
+    top: container.scrollTop + targetRect.top - containerRect.top - stickyOffset,
+    behavior: "smooth",
+  });
+};
+
+watch(validationErrorVersion, scrollToValidationTarget);
 </script>
 
 <style scoped lang="scss">
@@ -198,37 +241,36 @@ const {
   padding-bottom: 1rem;
 }
 
-.agent-register-page :deep(.page-hero) {
-  flex: 0 0 auto;
-  margin-bottom: 1rem;
-}
-
 .agent-register-workspace {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   flex: 1 1 auto;
-  gap: 0.9rem;
+  gap: 0.75rem;
   min-height: 0;
   min-width: 0;
   overflow: hidden;
+}
+
+.agent-register-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 .agent-register-main {
   display: grid;
-  grid-template-columns: minmax(0, min(920px, 100%)) minmax(0, 0);
+  grid-template-columns: minmax(0, 1fr);
   gap: 0;
   align-items: stretch;
-  justify-content: center;
+  justify-content: stretch;
+  height: 100%;
   min-height: 0;
   min-width: 0;
   overflow: hidden;
-  transition:
-    grid-template-columns 220ms var(--ease-standard),
-    gap 220ms var(--ease-standard);
 }
 
 .agent-register-main--preview {
-  grid-template-columns: minmax(0, 1fr) clamp(360px, 28vw, 400px);
+  grid-template-columns: minmax(0, 1fr) clamp(420px, 38vw, 640px);
   gap: 1.4rem;
   justify-content: stretch;
 }
@@ -241,19 +283,17 @@ const {
 
 .agent-register-main__form {
   width: 100%;
+  height: 100%;
+  padding: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0.1rem 0.25rem 0.5rem 0;
   scrollbar-gutter: stable;
-  justify-self: center;
-}
-
-.agent-register-main--preview .agent-register-main__form {
   justify-self: stretch;
 }
 
 .agent-register-main__preview {
   display: flex;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -264,7 +304,8 @@ const {
   justify-content: space-between;
   gap: 1rem;
   min-width: 0;
-  padding-block: 0.85rem 0;
+  min-height: 4.1rem;
+  padding-block: 0.75rem 0;
   border-top: 1px solid rgba(148, 163, 184, 0.18);
   background: rgba(247, 249, 252, 0.98);
 }
@@ -274,8 +315,8 @@ const {
 }
 
 .agent-register-footer__spacer {
-  width: 1px;
-  height: 1px;
+  width: 6.8rem;
+  min-height: 2.75rem;
 }
 
 .agent-register-preview-enter-active,
@@ -292,25 +333,26 @@ const {
   transform: translateX(0.8rem);
 }
 
-@media (max-width: 1180px) {
-  .agent-register-main,
+@media (max-width: 1120px) {
+  .agent-register-main--preview {
+    grid-template-columns: minmax(0, 1fr) clamp(360px, 36vw, 520px);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 860px) {
   .agent-register-main--preview {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    align-content: start;
-    align-items: start;
-    overflow-x: hidden;
-    overflow-y: auto;
+    grid-template-rows: minmax(0, 1fr) minmax(17rem, 34dvh);
   }
 
   .agent-register-main__form {
-    overflow: visible;
     padding: 0;
     justify-self: stretch;
   }
 
   .agent-register-main__preview {
-    min-height: clamp(22rem, 48dvh, 34rem);
+    min-height: 0;
   }
 }
 
@@ -320,21 +362,25 @@ const {
   }
 
   .agent-register-workspace {
-    gap: 0.75rem;
+    gap: 0.65rem;
   }
 
   .agent-register-footer {
     gap: 0.75rem;
-    padding-top: 0.75rem;
+    min-height: 3.9rem;
+    padding-top: 0.65rem;
   }
 
   .agent-register-footer :deep(.ui-button) {
     min-width: 6.4rem;
   }
+
+  .agent-register-footer__spacer {
+    width: 6.4rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .agent-register-main,
   .agent-register-preview-enter-active,
   .agent-register-preview-leave-active {
     transition: none;

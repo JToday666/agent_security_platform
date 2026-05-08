@@ -26,6 +26,8 @@ Agent Security Platform 是面向 Agent API 的安全测试平台仓库，包含
 
 前端在 `frontend/` 目录运行，Node.js 与 pnpm 要求以 `frontend/package.json` 为准。
 
+生产构建使用 Vite/Rolldown。`pnpm build` 会执行类型检查、生产构建和前端 `dist` 预算检查，确保图表依赖不会进入首屏引用、不会回退生成 `iconify-vendor`，且 Logo 资源保持在预算内。
+
 常用环境变量：
 
 | 变量                   | 示例                    | 说明                              |
@@ -106,7 +108,7 @@ pnpm dev
 cd frontend
 pnpm test
 pnpm type-check
-pnpm build-only
+pnpm build
 ```
 
 后端：

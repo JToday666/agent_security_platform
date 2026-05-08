@@ -6,8 +6,9 @@
   "packageManager": "pnpm@10.33.2",
   "scripts": {
     "dev": "vite",
-    "build": "run-s type-check build-only",
+    "build": "run-s type-check build-only check:dist",
     "build-only": "vite build",
+    "check:dist": "node scripts/check-dist-budget.mjs",
     "preview": "vite preview",
     "type-check": "vue-tsc -b",
     "test": "vitest run --configLoader native --passWithNoTests",
@@ -15,9 +16,9 @@
     "schema:api": "openapi-typescript http://127.0.0.1:8000/openapi.json -o src/shared/api/generated/backend-schema.ts"
   },
   "dependencies": {
-    "@iconify/vue": "5.0.0",
     "axios": "^1.15.0",
     "echarts": "^6.0.0",
+    "lucide-vue-next": "^1.0.0",
     "pinia": "3.0.4",
     "vue": "3.5.32",
     "vue-echarts": "^8.0.1",

@@ -61,8 +61,6 @@ export interface AgentOutputMapping {
   status?: string;
   finalAnswer?: string;
   errorMessage?: string;
-  stepCount?: string;
-  artifacts?: string;
 }
 
 export interface AgentDefaultConfig {
@@ -122,11 +120,7 @@ export interface AgentVerificationSummary {
   errors: AgentVerificationMessage[];
 }
 
-export interface AgentDetail
-  extends Omit<
-    AgentDefaultConfig,
-    "auth"
-  > {
+export interface AgentDetail extends Omit<AgentDefaultConfig, "auth"> {
   agentId: string;
   templateId: string;
   name: string;

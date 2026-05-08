@@ -75,8 +75,46 @@ const finalizationReason = computed(() =>
 
 <style scoped lang="scss">
 .evaluation-record-item {
-  padding: 1.15rem 0 0.2rem;
+  position: relative;
+  padding: 1.15rem 0.85rem 0.95rem;
   border-top: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: var(--radius-control-sm);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.evaluation-record-item::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  content: "";
+  border-radius: var(--radius-pill);
+  background: var(--grad-primary);
+  opacity: 0;
+  transform: scaleY(0.55);
+  transform-origin: center;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.evaluation-record-item:hover,
+.evaluation-record-item:focus-within {
+  border-color: var(--color-border-strong);
+  background:
+    radial-gradient(circle at 0 0, rgba(99, 102, 241, 0.09), transparent 28%),
+    rgba(255, 255, 255, 0.52);
+  box-shadow: var(--shadow-surface-soft);
+  transform: translateY(-1px);
+}
+
+.evaluation-record-item:hover::before,
+.evaluation-record-item:focus-within::before {
+  opacity: 1;
+  transform: scaleY(1);
 }
 
 .evaluation-record-item__main {
@@ -89,6 +127,7 @@ const finalizationReason = computed(() =>
 .evaluation-record-item__copy {
   flex: 1;
   min-width: 0;
+  padding-left: 0.35rem;
 }
 
 .evaluation-record-item__head {
@@ -161,6 +200,18 @@ const finalizationReason = computed(() =>
 
   .evaluation-record-item__actions {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .evaluation-record-item,
+  .evaluation-record-item::before {
+    transition: none;
+  }
+
+  .evaluation-record-item:hover,
+  .evaluation-record-item:focus-within {
+    transform: none;
   }
 }
 </style>

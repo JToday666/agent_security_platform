@@ -82,6 +82,13 @@ const handleSelect = (option: ChoiceOption<T>) => {
   background: rgba(239, 246, 255, 0.62);
 }
 
+.ui-choice-card-group__item:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(37, 99, 235, 0.5),
+    inset 0 0 0 4px rgba(255, 255, 255, 0.92);
+}
+
 .ui-choice-card-group__item:disabled {
   cursor: not-allowed;
 }

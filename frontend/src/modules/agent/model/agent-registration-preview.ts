@@ -7,6 +7,11 @@ import {
   getAgentAuthHeader,
   type AgentRegisterForm,
 } from "./agent-registration-form";
+import {
+  normalizeAgentInputMapping,
+  normalizeAgentOutputMapping,
+  parseAgentOutputJsonPath,
+} from "./agent-registration-validation";
 
 export interface AgentInvocationPreview {
   missingMessage: string;
@@ -20,6 +25,7 @@ export interface AgentResponseMappingPreview {
   invokeMode: AgentRegisterForm["invokeMode"];
   resultEndpoint: string | null;
   responsePaths: Partial<Record<keyof AgentOutputMapping, string>>;
+  responseBody: Record<string, unknown>;
   requiredPaths: Array<keyof AgentOutputMapping>;
 }
 
@@ -32,6 +38,18 @@ const PLATFORM_INPUT_SAMPLES: Record<keyof AgentInputMapping, unknown> = {
   maxSteps: 30,
 };
 
+const STRUCTURED_OUTPUT_SCHEMA_SAMPLE = {
+  type: "object",
+  properties: {},
+};
+
+const RESPONSE_OUTPUT_SAMPLES: Record<keyof AgentOutputMapping, unknown> = {
+  externalRunId: "run_123",
+  status: "completed",
+  finalAnswer: "最终答案",
+  errorMessage: "错误信息",
+};
+
 const joinUrl = (baseUrl: string, path: string): string =>
   `${baseUrl.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
 
@@ -40,24 +58,56 @@ const POLL_ONLY_OUTPUT_FIELDS: Array<keyof AgentOutputMapping> = [
   "status",
 ];
 
+const setJsonPathValue = (
+  target: Record<string, unknown>,
+  segments: string[],
+  value: unknown,
+) => {
+  if (segments.length === 0) {
+    return;
+  }
+
+  let cursor = target;
+  segments.slice(0, -1).forEach((segment) => {
+    const next = cursor[segment];
+    if (!next || typeof next !== "object" || Array.isArray(next)) {
+      cursor[segment] = {};
+    }
+
+    cursor = cursor[segment] as Record<string, unknown>;
+  });
+
+  cursor[segments[segments.length - 1]] = value;
+};
+
 const buildResponseMappingPreview = (
   form: AgentRegisterForm,
   baseUrl: string,
 ): AgentResponseMappingPreview => {
   const responsePaths: Partial<Record<keyof AgentOutputMapping, string>> = {};
+  const responseBody: Record<string, unknown> = {};
+  const outputMapping = normalizeAgentOutputMapping(form.platformOutputMapping);
 
-  Object.entries(form.platformOutputMapping).forEach(([field, path]) => {
+  Object.entries(outputMapping).forEach(([field, path]) => {
     const outputField = field as keyof AgentOutputMapping;
-    const responsePath = path?.trim();
     if (
-      !responsePath ||
-      (form.invokeMode === "sync_response" &&
-        POLL_ONLY_OUTPUT_FIELDS.includes(outputField))
+      form.invokeMode === "sync_response" &&
+      POLL_ONLY_OUTPUT_FIELDS.includes(outputField)
     ) {
       return;
     }
 
-    responsePaths[outputField] = responsePath;
+    const parsedPath = parseAgentOutputJsonPath(path);
+    if (!parsedPath.valid) {
+      return;
+    }
+
+    responsePaths[outputField] = parsedPath.normalized;
+    setJsonPathValue(
+      responseBody,
+      parsedPath.segments,
+      RESPONSE_OUTPUT_SAMPLES[outputField],
+    );
   });
 
   const resultPath = form.connection.resultPathTemplate?.trim();
@@ -69,6 +119,7 @@ const buildResponseMappingPreview = (
         ? joinUrl(baseUrl, resultPath)
         : null,
     responsePaths,
+    responseBody,
     requiredPaths:
       form.invokeMode === "submit_poll" ? [...POLL_ONLY_OUTPUT_FIELDS] : [],
   };
@@ -82,18 +133,23 @@ export const buildAgentInvocationPreview = (
   const customBody = buildAgentCustomRequestBody(form.customRequestFields).body;
   const requestBody: Record<string, unknown> = { ...customBody };
   const responseMapping = buildResponseMappingPreview(form, baseUrl);
+  const inputMapping = normalizeAgentInputMapping(form.platformInputMapping);
 
-  Object.entries(form.platformInputMapping).forEach(
-    ([platformField, target]) => {
-      const targetField = target?.trim();
-      if (!targetField) {
-        return;
-      }
+  Object.entries(inputMapping).forEach(([platformField, target]) => {
+    if (!target) {
+      return;
+    }
 
-      requestBody[targetField] =
-        PLATFORM_INPUT_SAMPLES[platformField as keyof AgentInputMapping];
-    },
-  );
+    requestBody[target] =
+      PLATFORM_INPUT_SAMPLES[platformField as keyof AgentInputMapping];
+  });
+
+  const structuredOutputAlias = form.requestOptions.structuredOutput.supported
+    ? form.requestOptions.structuredOutput.fieldAlias.trim()
+    : "";
+  if (structuredOutputAlias) {
+    requestBody[structuredOutputAlias] = STRUCTURED_OUTPUT_SCHEMA_SAMPLE;
+  }
 
   if (!baseUrl || !invokePath) {
     return {

@@ -210,15 +210,17 @@ const highlightedSegments = computed<CodeSegment[]>(() => {
   padding: 1.05rem 1.1rem;
   color: #00357a;
   font-family:
-    "SFMono-Regular",
+    ui-monospace,
     "Cascadia Code",
+    "JetBrains Mono",
+    "SFMono-Regular",
     "Fira Code",
     Consolas,
     "Liberation Mono",
     monospace;
-  font-size: 0.86rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  line-height: 1.78;
+  line-height: 1.74;
   white-space: pre;
   tab-size: 2;
 }
@@ -270,21 +272,21 @@ const highlightedSegments = computed<CodeSegment[]>(() => {
 }
 
 .agent-code-preview__token--string {
-  color: #003b8f;
+  color: #0050a8;
 }
 
 .agent-code-preview__token--key {
-  color: #00357a;
+  color: #004085;
   font-weight: 800;
 }
 
 .agent-code-preview__token--number {
-  color: #7c2d12;
+  color: #9a3412;
 }
 
 .agent-code-preview__token--boolean,
 .agent-code-preview__token--null {
-  color: #7e22ce;
+  color: #6d28d9;
   font-weight: 700;
 }
 

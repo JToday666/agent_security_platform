@@ -12,7 +12,6 @@ import {
   buildAgentCreatePayload,
   buildAgentInvocationPreview,
   buildAgentRegisterSteps,
-  canEnterAgentRegisterStep,
   createAgentRegisterFormFromDetail,
   createAgentRegisterFormFromTemplate,
   createCustomRequestField,
@@ -81,8 +80,6 @@ export const outputMappingItems: Array<{
   { key: "status", label: "status <- 响应路径" },
   { key: "finalAnswer", label: "finalAnswer <- 响应路径" },
   { key: "errorMessage", label: "errorMessage <- 响应路径" },
-  { key: "stepCount", label: "stepCount <- 响应路径" },
-  { key: "artifacts", label: "artifacts <- 响应路径" },
 ];
 
 export type AgentPreviewTab = (typeof previewTabs)[number]["value"];
@@ -108,6 +105,7 @@ export const useAgentRegisterPage = () => {
   const templateChangeDialogVisible = ref(false);
   const pendingTemplateId = ref("");
   const copySourceLoaded = ref(false);
+  const validationErrorVersion = ref(0);
 
   const preview = computed(() => buildAgentInvocationPreview(form.value));
   const previewCode = computed(() => {
@@ -120,7 +118,11 @@ export const useAgentRegisterPage = () => {
     }
 
     if (previewTab.value === "response") {
-      return JSON.stringify(preview.value.responseMapping, null, 2);
+      return JSON.stringify(
+        preview.value.responseMapping.responseBody,
+        null,
+        2,
+      );
     }
 
     return preview.value.curl;
@@ -134,12 +136,15 @@ export const useAgentRegisterPage = () => {
     () => form.value.templateId === AGENT_NO_TEMPLATE_ID,
   );
   const selectedTemplate = computed(() =>
-    templates.value.find((template) => template.templateId === form.value.templateId),
+    templates.value.find(
+      (template) => template.templateId === form.value.templateId,
+    ),
   );
   const templateRequiresCustomFields = computed(() =>
     Boolean(
       selectedTemplate.value &&
-        Object.keys(selectedTemplate.value.defaultConfig.customRequestBody).length > 0,
+      Object.keys(selectedTemplate.value.defaultConfig.customRequestBody)
+        .length > 0,
     ),
   );
   const registerSteps = computed(() =>
@@ -164,11 +169,7 @@ export const useAgentRegisterPage = () => {
     shouldShowAgentRegisterPreview(currentStepId.value),
   );
   const enterableStepIds = computed(() =>
-    registerSteps.value
-      .filter((step) =>
-        canEnterAgentRegisterStep(step.id, registerSteps.value, completedStepIds.value),
-      )
-      .map((step) => step.id),
+    registerSteps.value.map((step) => step.id),
   );
 
   const markStepCompleted = (stepId: AgentRegisterStepId) => {
@@ -178,7 +179,9 @@ export const useAgentRegisterPage = () => {
   };
 
   const clearCompletedAfter = (stepId: AgentRegisterStepId) => {
-    const stepIndex = registerSteps.value.findIndex((step) => step.id === stepId);
+    const stepIndex = registerSteps.value.findIndex(
+      (step) => step.id === stepId,
+    );
     if (stepIndex < 0) {
       completedStepIds.value = [];
       return;
@@ -193,7 +196,9 @@ export const useAgentRegisterPage = () => {
   };
 
   const clearCompletedFrom = (stepId: AgentRegisterStepId) => {
-    const stepIndex = registerSteps.value.findIndex((step) => step.id === stepId);
+    const stepIndex = registerSteps.value.findIndex(
+      (step) => step.id === stepId,
+    );
     if (stepIndex < 0) {
       completedStepIds.value = [];
       return;
@@ -211,6 +216,8 @@ export const useAgentRegisterPage = () => {
     currentStepId.value = "template";
     completedStepIds.value = [];
     customFieldsChoice.value = "unset";
+    templateChangeDialogVisible.value = false;
+    pendingTemplateId.value = "";
     copySourceLoaded.value = false;
   };
 
@@ -219,7 +226,8 @@ export const useAgentRegisterPage = () => {
       return;
     }
 
-    currentStepId.value = registerSteps.value[registerSteps.value.length - 1].id;
+    currentStepId.value =
+      registerSteps.value[registerSteps.value.length - 1].id;
   };
 
   const updateCustomFieldsChoiceForTemplate = () => {
@@ -228,7 +236,9 @@ export const useAgentRegisterPage = () => {
       return;
     }
 
-    customFieldsChoice.value = templateRequiresCustomFields.value ? "use" : "skip";
+    customFieldsChoice.value = templateRequiresCustomFields.value
+      ? "use"
+      : "skip";
   };
 
   const initializePage = async () => {
@@ -338,26 +348,55 @@ export const useAgentRegisterPage = () => {
     pendingTemplateId.value = "";
   };
 
-  const goToStep = (stepId: AgentRegisterStepId) => {
+  const validateStepById = (stepId: AgentRegisterStepId): boolean => {
     if (
-      !canEnterAgentRegisterStep(
-        stepId,
-        registerSteps.value,
-        completedStepIds.value,
-      )
+      stepId === "customFields" &&
+      usesNoTemplate.value &&
+      customFieldsChoice.value === "unset"
     ) {
+      fieldErrors.value = {};
+      submitError.value = "请选择是否添加自定义固定字段。";
+      validationErrorVersion.value += 1;
+      return false;
+    }
+
+    const result = validateAgentRegisterStep(stepId, form.value);
+    fieldErrors.value = result.fieldErrors;
+    submitError.value = result.errors[0] || "";
+    if (!result.valid) {
+      validationErrorVersion.value += 1;
+    }
+    return result.valid;
+  };
+
+  const validateStepsUntil = (targetIndex: number): boolean => {
+    const stepsToValidate = registerSteps.value.slice(0, targetIndex);
+    for (const step of stepsToValidate) {
+      if (!validateStepById(step.id)) {
+        currentStepId.value = step.id;
+        return false;
+      }
+      markStepCompleted(step.id);
+    }
+
+    return true;
+  };
+
+  const goToStep = (stepId: AgentRegisterStepId) => {
+    if (!registerSteps.value.some((step) => step.id === stepId)) {
       return;
     }
 
     const currentIndex = registerSteps.value.findIndex(
       (step) => step.id === currentStepId.value,
     );
-    const targetIndex = registerSteps.value.findIndex((step) => step.id === stepId);
+    const targetIndex = registerSteps.value.findIndex(
+      (step) => step.id === stepId,
+    );
     if (targetIndex > currentIndex) {
-      if (!validateCurrentStep()) {
+      if (!validateStepsUntil(targetIndex)) {
         return;
       }
-      markStepCompleted(currentStepId.value);
     }
 
     currentStepId.value = stepId;
@@ -365,11 +404,18 @@ export const useAgentRegisterPage = () => {
     fieldErrors.value = {};
   };
 
+  const handleStepEdited = (stepId: AgentRegisterStepId) => {
+    clearCompletedFrom(stepId);
+    fieldErrors.value = {};
+    submitError.value = "";
+  };
+
   const setInvokeMode = (value: string) => {
     form.value.invokeMode =
       value === "sync_response" ? "sync_response" : "submit_poll";
     clearCompletedFrom("connection");
     fieldErrors.value = {};
+    submitError.value = "";
   };
 
   const setAuthType = (value: string) => {
@@ -378,6 +424,8 @@ export const useAgentRegisterPage = () => {
       : "none";
     clearCompletedFrom("connection");
     form.value.auth.type = nextType;
+    fieldErrors.value = {};
+    submitError.value = "";
   };
 
   const setCustomFieldType = (fieldId: string, value: string) => {
@@ -390,21 +438,32 @@ export const useAgentRegisterPage = () => {
     if (field) {
       field.valueType = nextType;
     }
+    clearCompletedFrom("customFields");
+    fieldErrors.value = {};
+    submitError.value = "";
   };
 
   const addCustomField = () => {
     form.value.customRequestFields.push(createCustomRequestField());
+    clearCompletedFrom("customFields");
+    fieldErrors.value = {};
+    submitError.value = "";
   };
 
   const removeCustomField = (fieldId: string) => {
     form.value.customRequestFields = form.value.customRequestFields.filter(
       (field) => field.id !== fieldId,
     );
+    clearCompletedFrom("customFields");
+    fieldErrors.value = {};
+    submitError.value = "";
   };
 
   const setCustomFieldsChoice = (choice: AgentRegisterCustomFieldsChoice) => {
     customFieldsChoice.value = choice;
     clearCompletedFrom("customFields");
+    fieldErrors.value = {};
+    submitError.value = "";
 
     if (choice === "skip") {
       form.value.customRequestFields = [];
@@ -427,10 +486,7 @@ export const useAgentRegisterPage = () => {
       return false;
     }
 
-    const result = validateAgentRegisterStep(currentStepId.value, form.value);
-    fieldErrors.value = result.fieldErrors;
-    submitError.value = result.errors[0] || "";
-    return result.valid;
+    return validateStepById(currentStepId.value);
   };
 
   const goToNextStep = () => {
@@ -469,6 +525,7 @@ export const useAgentRegisterPage = () => {
     if (!result.valid || !result.payload) {
       fieldErrors.value = result.fieldErrors;
       submitError.value = result.errors[0] || "Agent 创建参数校验失败。";
+      validationErrorVersion.value += 1;
       return;
     }
 
@@ -539,6 +596,7 @@ export const useAgentRegisterPage = () => {
     customFieldsChoice,
     usesNoTemplate,
     templateChangeDialogVisible,
+    validationErrorVersion,
     initializePage,
     applyTemplate,
     confirmTemplateChange,
@@ -550,6 +608,7 @@ export const useAgentRegisterPage = () => {
     setAuthType,
     setCustomFieldType,
     setCustomFieldsChoice,
+    handleStepEdited,
     addCustomField,
     removeCustomField,
     handleCreate,
