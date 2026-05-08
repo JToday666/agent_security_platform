@@ -4,46 +4,54 @@ import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import viteCompression from "vite-plugin-compression";
 
+const normalizeModuleId = (id: string) => id.replace(/\\/g, "/");
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const backendTarget = env.VITE_BACKEND_TARGET || "http://127.0.0.1:8000";
 
   return {
     build: {
-      rollupOptions: {
+      rolldownOptions: {
+        preserveEntrySignatures: "allow-extension",
         output: {
-          manualChunks(id) {
-            const normalizedId = id.replace(/\\/g, "/");
-
-            if (normalizedId.includes("/node_modules/")) {
-              if (
-                normalizedId.includes("/node_modules/echarts/") ||
-                normalizedId.includes("/node_modules/vue-echarts/")
-              ) {
-                return "charts-vendor";
-              }
-              if (normalizedId.includes("/node_modules/@iconify/")) {
-                return "iconify-vendor";
-              }
-              if (normalizedId.includes("/node_modules/axios/")) {
-                return "http-vendor";
-              }
-              if (
-                normalizedId.includes("/node_modules/vue/") ||
-                normalizedId.includes("/node_modules/@vue/") ||
-                normalizedId.includes("/node_modules/pinia/") ||
-                normalizedId.includes("/node_modules/vue-router/")
-              ) {
-                return "vue-vendor";
-              }
-              if (normalizedId.includes("/node_modules/element-plus/")) {
-                return "element-plus";
-              }
-              if (normalizedId.includes("/node_modules/lucide")) {
-                return "lucide-icons";
-              }
-              return "vendor";
-            }
+          strictExecutionOrder: true,
+          codeSplitting: {
+            includeDependenciesRecursively: false,
+            groups: [
+              {
+                name: "charts-vendor",
+                test: (id) => {
+                  const normalizedId = normalizeModuleId(id);
+                  return (
+                    normalizedId.includes("/node_modules/echarts/") ||
+                    normalizedId.includes("/node_modules/vue-echarts/")
+                  );
+                },
+              },
+              {
+                name: "http-vendor",
+                test: (id) =>
+                  normalizeModuleId(id).includes("/node_modules/axios/"),
+              },
+              {
+                name: "vue-vendor",
+                test: (id) => {
+                  const normalizedId = normalizeModuleId(id);
+                  return (
+                    normalizedId.includes("/node_modules/vue/") ||
+                    normalizedId.includes("/node_modules/@vue/") ||
+                    normalizedId.includes("/node_modules/pinia/") ||
+                    normalizedId.includes("/node_modules/vue-router/")
+                  );
+                },
+              },
+              {
+                name: "lucide-icons",
+                test: (id) =>
+                  normalizeModuleId(id).includes("/node_modules/lucide"),
+              },
+            ],
           },
         },
       },

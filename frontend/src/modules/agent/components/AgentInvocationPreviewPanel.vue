@@ -19,14 +19,14 @@
     />
 
     <AgentCodePreview
-      v-else
+      v-if="hasCode"
       :code="code"
       :language="language"
       fill-height
     />
 
     <UiButton
-      v-if="!missingMessage"
+      v-if="hasCode"
       variant="secondary"
       size="sm"
       leading-icon="lucide:copy"
@@ -38,6 +38,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import AgentCodePreview from "@/modules/agent/components/AgentCodePreview.vue";
 import {
   previewTabs,
@@ -46,7 +47,7 @@ import {
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 
-defineProps<{
+const props = defineProps<{
   modelValue: AgentPreviewTab;
   missingMessage: string;
   code: string;
@@ -57,6 +58,8 @@ defineEmits<{
   (event: "update:modelValue", value: AgentPreviewTab): void;
   (event: "copy"): void;
 }>();
+
+const hasCode = computed(() => props.code.trim().length > 0);
 </script>
 
 <style scoped lang="scss">
@@ -69,6 +72,7 @@ defineEmits<{
   min-width: 0;
   min-height: 0;
   max-height: 100%;
+  overflow: hidden;
   padding: 0.9rem;
   border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-control-sm);
@@ -148,4 +152,5 @@ defineEmits<{
     font-size: 0.76rem;
   }
 }
+
 </style>

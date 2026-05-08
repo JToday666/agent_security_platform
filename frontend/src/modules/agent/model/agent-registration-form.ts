@@ -39,28 +39,10 @@ export interface AgentRegisterForm {
   successStatusesText: string;
 }
 
-export const DEFAULT_INPUT_MAPPING: AgentInputMapping = {
-  task: "task",
-  entryUrl: "entryUrl",
-  timeoutSeconds: "timeoutSeconds",
-  sampleId: "sampleId",
-  evaluationId: "evaluationId",
-  maxSteps: "maxSteps",
-};
-
-export const DEFAULT_OUTPUT_MAPPING: AgentOutputMapping = {
-  externalRunId: "data.runId",
-  status: "data.status",
-  finalAnswer: "data.answer",
-  errorMessage: "data.error.message",
-  stepCount: "data.metrics.stepCount",
-  artifacts: "data.artifacts",
-};
-
 const DEFAULT_CONNECTION: AgentConnectionConfig = {
   baseUrl: "",
-  invokePath: "/api/runs",
-  resultPathTemplate: "/api/runs/{externalRunId}",
+  invokePath: "",
+  resultPathTemplate: "",
   requestTimeoutSeconds: 30,
   pollIntervalSeconds: 2,
   pollTimeoutSeconds: 300,
@@ -75,6 +57,26 @@ const nextCustomFieldId = (): string => {
 
 const toText = (value: unknown): string =>
   typeof value === "string" ? value.trim() : "";
+
+const toInputMappingFormValue = (
+  mapping: Partial<AgentInputMapping> = {},
+): AgentInputMapping => ({
+  task: toText(mapping.task),
+  entryUrl: toText(mapping.entryUrl),
+  timeoutSeconds: toText(mapping.timeoutSeconds),
+  sampleId: toText(mapping.sampleId),
+  evaluationId: toText(mapping.evaluationId),
+  maxSteps: toText(mapping.maxSteps),
+});
+
+const toOutputMappingFormValue = (
+  mapping: Partial<AgentOutputMapping> = {},
+): AgentOutputMapping => ({
+  externalRunId: toText(mapping.externalRunId),
+  status: toText(mapping.status),
+  finalAnswer: toText(mapping.finalAnswer),
+  errorMessage: toText(mapping.errorMessage),
+});
 
 export const cloneAgentRegistrationJson = <T>(value: T): T =>
   JSON.parse(JSON.stringify(value)) as T;
@@ -94,7 +96,9 @@ const normalizeRequestOptions = (
 ): AgentRequestOptions => ({
   structuredOutput: {
     supported: Boolean(requestOptions?.structuredOutput?.supported),
-    fieldAlias: toText(requestOptions?.structuredOutput?.fieldAlias),
+    fieldAlias: requestOptions?.structuredOutput?.supported
+      ? toText(requestOptions.structuredOutput.fieldAlias)
+      : "",
   },
 });
 
@@ -251,24 +255,18 @@ export const createAgentRegisterFormFromTemplate = (
     auth: {
       type: defaultConfig.auth.type,
       token: toText(defaultConfig.auth.config.token),
-      headerName:
-        toText(defaultConfig.auth.config.headerName) ||
-        (defaultConfig.auth.type === "api_key_header"
-          ? "x-api-key"
-          : "X-Agent-Token"),
+      headerName: toText(defaultConfig.auth.config.headerName),
       secret: toText(defaultConfig.auth.config.secret),
     },
-    platformInputMapping: {
-      ...DEFAULT_INPUT_MAPPING,
-      ...defaultConfig.platformInputMapping,
-    },
+    platformInputMapping: toInputMappingFormValue(
+      defaultConfig.platformInputMapping,
+    ),
     taskRenderMode: "goal_only",
     customRequestFields: customBodyToFields(defaultConfig.customRequestBody),
     requestOptions: normalizeRequestOptions(defaultConfig.requestOptions),
-    platformOutputMapping: {
-      ...DEFAULT_OUTPUT_MAPPING,
-      ...defaultConfig.platformOutputMapping,
-    },
+    platformOutputMapping: toOutputMappingFormValue(
+      defaultConfig.platformOutputMapping,
+    ),
     terminalStatusesText: defaultConfig.terminalStatuses.join(", "),
     successStatusesText: defaultConfig.successStatuses.join(", "),
   };
@@ -290,59 +288,53 @@ export const createAgentRegisterFormFromDetail = (
     auth: {
       type: detail.auth.type,
       token: "",
-      headerName:
-        headerName ||
-        (detail.auth.type === "api_key_header" ? "x-api-key" : "X-Agent-Token"),
+      headerName,
       secret: "",
     },
-    platformInputMapping: {
-      ...DEFAULT_INPUT_MAPPING,
-      ...detail.platformInputMapping,
-    },
+    platformInputMapping: toInputMappingFormValue(detail.platformInputMapping),
     taskRenderMode: "goal_only",
     customRequestFields: customBodyToFields(detail.customRequestBody),
     requestOptions: normalizeRequestOptions(detail.requestOptions),
-    platformOutputMapping: {
-      ...DEFAULT_OUTPUT_MAPPING,
-      ...detail.platformOutputMapping,
-    },
+    platformOutputMapping: toOutputMappingFormValue(
+      detail.platformOutputMapping,
+    ),
     terminalStatusesText: detail.terminalStatuses.join(", "),
     successStatusesText: detail.successStatuses.join(", "),
   };
 };
 
-export const createEmptyAgentRegisterForm = (): AgentRegisterForm =>
-  createAgentRegisterFormFromTemplate({
-    templateId: "",
-    name: "",
-    description: "",
-    recommended: false,
-    sortOrder: 0,
-    level: "basic",
-    tags: [],
-    defaultConfig: {
-      invokeMode: "submit_poll",
-      connection: DEFAULT_CONNECTION,
-      auth: {
-        type: "bearer",
-        config: {
-          token: "",
-        },
-      },
-      platformInputMapping: DEFAULT_INPUT_MAPPING,
-      taskRenderMode: "goal_only",
-      customRequestBody: {},
-      requestOptions: {
-        structuredOutput: {
-          supported: true,
-          fieldAlias: "outputSchema",
-        },
-      },
-      platformOutputMapping: DEFAULT_OUTPUT_MAPPING,
-      terminalStatuses: ["completed", "failed", "timed_out"],
-      successStatuses: ["completed"],
+export const createEmptyAgentRegisterForm = (): AgentRegisterForm => ({
+  templateId: "",
+  name: "",
+  description: "",
+  invokeMode: "submit_poll",
+  connection: {
+    baseUrl: "",
+    invokePath: "",
+    resultPathTemplate: "",
+    requestTimeoutSeconds: 30,
+    pollIntervalSeconds: 2,
+    pollTimeoutSeconds: 300,
+  },
+  auth: {
+    type: "none",
+    token: "",
+    headerName: "",
+    secret: "",
+  },
+  platformInputMapping: toInputMappingFormValue(),
+  taskRenderMode: "goal_only",
+  customRequestFields: [],
+  requestOptions: {
+    structuredOutput: {
+      supported: false,
+      fieldAlias: "",
     },
-  });
+  },
+  platformOutputMapping: toOutputMappingFormValue(),
+  terminalStatusesText: "",
+  successStatusesText: "",
+});
 
 export const createCustomRequestField = (): AgentCustomRequestField => ({
   id: nextCustomFieldId(),

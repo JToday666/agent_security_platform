@@ -28,6 +28,7 @@
 - `src/modules/`：业务模块代码，页面容器、状态组合、展示组件和视图派生按模块放置
 - `src/shared/`：共享 API、类型、工具、UI
 - `public/`：不经构建处理的静态资源
+- `scripts/`：前端工程检查脚本
 - `vite.config.ts`：Vite 配置、`@` 别名与开发代理
 - `.env.example`：环境变量模板
 
@@ -52,6 +53,8 @@ pnpm dev
 ```bash
 pnpm build
 ```
+
+`pnpm build` 会依次执行类型检查、生产构建和 `dist` 产物预算检查。预算检查会拦截图表包首屏引用、`iconify-vendor` 产物和超预算 Logo 资源。
 
 本地预览构建结果：
 
@@ -98,6 +101,10 @@ Node 与包管理器要求以 `package.json` 为准。
   指标摘要卡
 - `src/shared/ui/forms/UiSelect.vue`
   统一下拉组件，供 `FormField` 的 `type="select"` 模式内部使用
+- `src/shared/ui/branding/AppIcon.vue`
+  基于 `lucide-vue-next` 的统一图标入口，按语义维护项目内可用图标
+- `src/shared/ui/branding/BrandLogo.vue`
+  品牌 Logo 组件，使用构建可控的轻量矢量 Logo
 
 模块专用展示组件保留在各自业务模块内，跨模块复用组件放入 `src/shared/ui/`。
 
@@ -120,12 +127,14 @@ pnpm type-check
 构建检查：
 
 ```bash
-pnpm build-only
+pnpm build
 ```
 
 说明：
 
-- `pnpm build` 会先执行 `type-check`，再执行 `build-only`
+- `pnpm build` 会先执行 `type-check`，再执行 `build-only` 和 `check:dist`
+- `pnpm build-only` 只生成生产包，不执行 `dist` 预算检查
+- `pnpm check:dist` 会检查 `dist/index.html` 与入口 JS，确保首屏不引用 `charts-vendor`、不生成 `iconify-vendor`，且 Logo 资源不超过预算
 - 排行榜、评测图表、报告阅读流、提交表单和页面响应式布局适合结合测试、类型检查、构建和定向页面走查验证
 
 ## 7. 前端命名规范

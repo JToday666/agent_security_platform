@@ -1,19 +1,21 @@
 <template>
   <SectionBlock title="状态摘要">
-    <dl class="summary-grid">
-      <div
-        v-for="item in items"
-        :key="item.label"
-        class="summary-item"
-      >
-        <dt>{{ item.label }}</dt>
-        <dd v-if="item.kind === 'status'">
-          <AgentStatusTag :status="detail.status" />
-        </dd>
-        <dd v-else>{{ item.value }}</dd>
-      </div>
-    </dl>
-    <p class="detail-description">{{ detail.description || "暂无描述" }}</p>
+    <div class="summary-surface">
+      <dl class="summary-grid">
+        <div
+          v-for="item in items"
+          :key="item.label"
+          class="summary-item"
+        >
+          <dt>{{ item.label }}</dt>
+          <dd v-if="item.kind === 'status'">
+            <AgentStatusTag :status="detail.status" />
+          </dd>
+          <dd v-else>{{ item.value }}</dd>
+        </div>
+      </dl>
+      <p class="detail-description">{{ detail.description || "暂无描述" }}</p>
+    </div>
   </SectionBlock>
 </template>
 
@@ -30,10 +32,24 @@ defineProps<{
 </script>
 
 <style scoped lang="scss">
+.summary-surface {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: var(--radius-control-sm);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.86)),
+    rgba(255, 255, 255, 0.76);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.35rem 1.15rem;
+  margin: 0;
 }
 
 .summary-item {

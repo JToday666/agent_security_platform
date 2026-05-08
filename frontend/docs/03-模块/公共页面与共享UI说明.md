@@ -94,10 +94,10 @@ GET /leaderboards/current
 
 ### 3.2 branding
 
-| 文件                     | 职责                                        |
-| ------------------------ | ------------------------------------------- |
-| `branding/AppIcon.vue`   | 对 Iconify 的统一薄封装，是前端图标复用入口 |
-| `branding/BrandLogo.vue` | 品牌 Logo 组件                              |
+| 文件                     | 职责                                                      |
+| ------------------------ | --------------------------------------------------------- |
+| `branding/AppIcon.vue`   | 基于 `lucide-vue-next` 的统一图标入口，按语义维护可用图标 |
+| `branding/BrandLogo.vue` | 品牌 Logo 组件，使用轻量矢量 Logo 资源                    |
 
 ### 3.3 display
 

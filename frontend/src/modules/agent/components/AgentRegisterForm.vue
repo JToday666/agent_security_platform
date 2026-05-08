@@ -7,6 +7,11 @@
         </span>
         <h2>{{ currentStepTitle }}</h2>
         <p>{{ currentStepDescription }}</p>
+        <InlineNotice
+          v-if="submitError"
+          tone="danger"
+          :message="submitError"
+        />
       </header>
 
       <div v-if="currentStepId === 'template'" class="agent-register-step__body">
@@ -68,18 +73,18 @@
             :model-value="form.name"
             :error="fieldErrors.name"
             required
-            full
             placeholder="例如：Skyvern Agent"
-            @update:model-value="form.name = $event"
+            help="用于在平台内识别该智能体，建议使用服务或能力名称。"
+            @update:model-value="updateBasicField('name', $event)"
           />
           <FormField
             label="Agent 描述"
             :model-value="form.description"
             type="textarea"
             :rows="5"
-            full
             placeholder="简要说明用途。"
-            @update:model-value="form.description = $event"
+            help="说明该智能体适合处理的任务，便于后续提交评测时选择。"
+            @update:model-value="updateBasicField('description', $event)"
           />
         </div>
       </div>
@@ -95,6 +100,7 @@
             type="select"
             :options="invokeModeOptions"
             leading-icon="lucide:workflow"
+            help="提交轮询适用于异步任务；同步响应适用于一次请求直接返回结果。"
             @update:model-value="$emit('set-invoke-mode', String($event))"
           />
           <FormField
@@ -105,7 +111,8 @@
             required
             leading-icon="lucide:link"
             placeholder="https://api.agent.example.com"
-            @update:model-value="form.connection.baseUrl = $event"
+            help="填写 Agent 服务的协议、域名和端口，不包含具体接口路径。"
+            @update:model-value="updateConnectionTextField('baseUrl', $event)"
           />
           <FormField
             label="提交任务路径"
@@ -113,7 +120,8 @@
             :error="fieldErrors.invokePath"
             required
             placeholder="/v1/run/tasks"
-            @update:model-value="form.connection.invokePath = $event"
+            help="平台提交任务时调用的路径，会与服务根地址拼接。"
+            @update:model-value="updateConnectionTextField('invokePath', $event)"
           />
           <FormField
             v-if="form.invokeMode === 'submit_poll'"
@@ -122,27 +130,31 @@
             :error="fieldErrors.resultPathTemplate"
             required
             placeholder="/v1/run/tasks/{externalRunId}"
-            @update:model-value="form.connection.resultPathTemplate = $event"
+            help="轮询模式下用于查询任务结果的路径，可使用 {externalRunId} 占位。"
+            @update:model-value="updateConnectionTextField('resultPathTemplate', $event)"
           />
           <FormField
             label="请求超时（秒）"
             :model-value="String(form.connection.requestTimeoutSeconds)"
             type="number"
-            @update:model-value="form.connection.requestTimeoutSeconds = Number($event)"
+            help="单次提交请求等待响应的最长时间。"
+            @update:model-value="updateConnectionNumberField('requestTimeoutSeconds', $event)"
           />
           <FormField
             v-if="form.invokeMode === 'submit_poll'"
             label="轮询间隔（秒）"
             :model-value="String(form.connection.pollIntervalSeconds)"
             type="number"
-            @update:model-value="form.connection.pollIntervalSeconds = Number($event)"
+            help="平台两次查询结果之间的等待时间。"
+            @update:model-value="updateConnectionNumberField('pollIntervalSeconds', $event)"
           />
           <FormField
             v-if="form.invokeMode === 'submit_poll'"
             label="轮询总超时（秒）"
             :model-value="String(form.connection.pollTimeoutSeconds)"
             type="number"
-            @update:model-value="form.connection.pollTimeoutSeconds = Number($event)"
+            help="超过该时间仍未进入终态时，平台会停止等待。"
+            @update:model-value="updateConnectionNumberField('pollTimeoutSeconds', $event)"
           />
           <FormField
             label="鉴权方式"
@@ -150,6 +162,7 @@
             type="select"
             :options="authOptions"
             leading-icon="lucide:key-round"
+            help="选择平台调用 Agent 服务时使用的鉴权方式。"
             @update:model-value="$emit('set-auth-type', String($event))"
           />
           <FormField
@@ -159,7 +172,8 @@
             type="password"
             :error="fieldErrors.authSecret"
             placeholder="创建时写入，详情页不展示明文"
-            @update:model-value="form.auth.token = $event"
+            help="平台会以 Authorization: Bearer Token 形式发送。"
+            @update:model-value="updateAuthField('token', $event)"
           />
           <template
             v-if="form.auth.type === 'api_key_header' || form.auth.type === 'custom_header'"
@@ -167,17 +181,19 @@
             <FormField
               label="Header 名称"
               :model-value="form.auth.headerName"
-              :error="fieldErrors.authSecret"
+              :error="fieldErrors.authHeaderName"
               placeholder="x-api-key"
-              @update:model-value="form.auth.headerName = $event"
+              help="填写服务要求的请求头名称。"
+              @update:model-value="updateAuthField('headerName', $event)"
             />
             <FormField
               label="Header 密钥"
               :model-value="form.auth.secret"
               type="password"
-              :error="fieldErrors.authSecret"
+              :error="fieldErrors.authHeaderSecret"
               placeholder="创建时写入，详情页不展示明文"
-              @update:model-value="form.auth.secret = $event"
+              help="平台会把该密钥写入上方 Header。"
+              @update:model-value="updateAuthField('secret', $event)"
             />
           </template>
         </div>
@@ -195,7 +211,24 @@
             :model-value="form.platformInputMapping[item.key] || ''"
             :error="item.key === 'task' ? fieldErrors.taskMapping : ''"
             :required="item.key === 'task'"
-            @update:model-value="form.platformInputMapping[item.key] = $event"
+            :placeholder="getInputMappingPlaceholder(item.key)"
+            :help="getInputMappingHelp(item.key)"
+            @update:model-value="updateInputMapping(item.key, $event)"
+          />
+          <UiToggleField
+            :model-value="form.requestOptions.structuredOutput.supported"
+            title="支持结构化输出"
+            description="平台会在请求体中附加结构化输出字段。"
+            @update:model-value="updateStructuredOutputSupported"
+          />
+          <FormField
+            v-if="form.requestOptions.structuredOutput.supported"
+            label="结构化输出字段别名"
+            :model-value="form.requestOptions.structuredOutput.fieldAlias"
+            :error="fieldErrors.structuredOutputAlias"
+            placeholder="outputSchema"
+            help="填写 Agent 请求体中接收输出 schema 的顶层字段名。"
+            @update:model-value="updateStructuredOutputAlias"
           />
         </div>
       </div>
@@ -215,7 +248,9 @@
               form.invokeMode === 'submit_poll' &&
               (item.key === 'externalRunId' || item.key === 'status')
             "
-            @update:model-value="form.platformOutputMapping[item.key] = $event"
+            :placeholder="getOutputMappingPlaceholder(item.key)"
+            :help="getOutputMappingHelp(item.key)"
+            @update:model-value="updateOutputMapping(item.key, $event)"
           />
         </div>
       </div>
@@ -255,19 +290,22 @@
               <FormField
                 label="字段名"
                 :model-value="field.key"
-                @update:model-value="field.key = $event"
+                help="填写外部请求体中的固定字段名。"
+                @update:model-value="updateCustomFieldValue(field.id, 'key', $event)"
               />
               <FormField
                 label="类型"
                 :model-value="field.valueType"
                 type="select"
                 :options="customTypeOptions"
+                help="选择固定字段值的类型。"
                 @update:model-value="$emit('set-custom-field-type', field.id, String($event))"
               />
               <FormField
                 label="字段值"
                 :model-value="field.value"
-                @update:model-value="field.value = $event"
+                help="每次请求都会带上的固定值。"
+                @update:model-value="updateCustomFieldValue(field.id, 'value', $event)"
               />
               <UiButton
                 variant="ghost"
@@ -308,26 +346,16 @@
             :model-value="form.terminalStatusesText"
             :error="fieldErrors.terminalStatuses"
             placeholder="completed, failed, timed_out"
-            @update:model-value="form.terminalStatusesText = $event"
+            help="填写 Agent 返回的终态状态值，多个值用逗号或换行分隔。"
+            @update:model-value="updateStatusField('terminalStatusesText', $event)"
           />
           <FormField
             label="成功态"
             :model-value="form.successStatusesText"
             :error="fieldErrors.successStatuses"
             placeholder="completed"
-            @update:model-value="form.successStatusesText = $event"
-          />
-          <UiToggleField
-            v-model="form.requestOptions.structuredOutput.supported"
-            title="支持结构化输出"
-            description="注册后平台会在请求中传入结构化输出字段别名。"
-          />
-          <FormField
-            v-if="form.requestOptions.structuredOutput.supported"
-            label="结构化输出字段别名"
-            :model-value="form.requestOptions.structuredOutput.fieldAlias"
-            placeholder="outputSchema"
-            @update:model-value="form.requestOptions.structuredOutput.fieldAlias = $event"
+            help="填写代表任务成功的状态值，必须包含在终态集合内。"
+            @update:model-value="updateStatusField('successStatusesText', $event)"
           />
         </div>
 
@@ -337,12 +365,6 @@
           @verify="$emit('verify-created')"
         />
       </div>
-
-      <InlineNotice
-        v-if="submitError"
-        tone="danger"
-        :message="submitError"
-      />
     </section>
   </div>
 </template>
@@ -366,6 +388,9 @@ import type {
 } from "@/modules/agent/model/agent-registration";
 import { AGENT_NO_TEMPLATE_ID } from "@/modules/agent/model/agent-registration";
 import type {
+  AgentConnectionConfig,
+  AgentInputMapping,
+  AgentOutputMapping,
   AgentCreateResponse,
   AgentTemplate,
 } from "@/shared/types/agent-registry-types";
@@ -388,7 +413,7 @@ const props = defineProps<{
   usesNoTemplate: boolean;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   (event: "apply-template", templateId: string): void;
   (event: "set-invoke-mode", value: string): void;
   (event: "set-auth-type", value: string): void;
@@ -397,6 +422,7 @@ defineEmits<{
   (event: "add-custom-field"): void;
   (event: "remove-custom-field", fieldId: string): void;
   (event: "verify-created"): void;
+  (event: "step-edited", stepId: AgentRegisterStepId): void;
 }>();
 
 const sortedTemplates = computed(() =>
@@ -429,22 +455,168 @@ const visibleOutputMappingItems = computed(() => {
   );
 });
 
+const markStepEdited = (stepId: AgentRegisterStepId) => {
+  emit("step-edited", stepId);
+};
+
+const updateBasicField = (
+  key: "name" | "description",
+  value: string,
+) => {
+  props.form[key] = value;
+  markStepEdited("basic");
+};
+
+const updateConnectionTextField = (
+  key: Extract<keyof AgentConnectionConfig, "baseUrl" | "invokePath" | "resultPathTemplate">,
+  value: string,
+) => {
+  props.form.connection[key] = value;
+  markStepEdited("connection");
+};
+
+const updateConnectionNumberField = (
+  key: Extract<
+    keyof AgentConnectionConfig,
+    "requestTimeoutSeconds" | "pollIntervalSeconds" | "pollTimeoutSeconds"
+  >,
+  value: string,
+) => {
+  props.form.connection[key] = Number(value);
+  markStepEdited("connection");
+};
+
+const updateAuthField = (
+  key: "token" | "headerName" | "secret",
+  value: string,
+) => {
+  props.form.auth[key] = value;
+  markStepEdited("connection");
+};
+
+const updateInputMapping = (key: keyof AgentInputMapping, value: string) => {
+  props.form.platformInputMapping[key] = value;
+  markStepEdited("inputMapping");
+};
+
+const updateStructuredOutputSupported = (value: boolean) => {
+  props.form.requestOptions.structuredOutput.supported = value;
+  if (!value) {
+    props.form.requestOptions.structuredOutput.fieldAlias = "";
+  }
+  markStepEdited("inputMapping");
+};
+
+const updateStructuredOutputAlias = (value: string) => {
+  props.form.requestOptions.structuredOutput.fieldAlias = value;
+  markStepEdited("inputMapping");
+};
+
+const updateOutputMapping = (key: keyof AgentOutputMapping, value: string) => {
+  props.form.platformOutputMapping[key] = value;
+  markStepEdited("outputMapping");
+};
+
+const updateCustomFieldValue = (
+  fieldId: string,
+  key: "key" | "value",
+  value: string,
+) => {
+  const field = props.form.customRequestFields.find((item) => item.id === fieldId);
+  if (!field) {
+    return;
+  }
+
+  field[key] = value;
+  markStepEdited("customFields");
+};
+
+const updateStatusField = (
+  key: "terminalStatusesText" | "successStatusesText",
+  value: string,
+) => {
+  props.form[key] = value;
+  markStepEdited("statuses");
+};
+
+const inputMappingHelp: Record<keyof AgentInputMapping, string> = {
+  task: "必填。填写 Agent 请求体中接收任务目标的顶层字段名，例如 prompt。",
+  entryUrl: "可选。需要起始网址时，平台会把样本入口写入该字段。",
+  timeoutSeconds: "可选。需要任务级超时时间时填写该字段名。",
+  sampleId: "可选。需要样本 ID 参与追踪时填写该字段名。",
+  evaluationId: "可选。需要评测任务 ID 参与追踪时填写该字段名。",
+  maxSteps: "可选。需要限制 Agent 最大执行步数时填写该字段名。",
+};
+
+const inputMappingPlaceholder: Record<keyof AgentInputMapping, string> = {
+  task: "prompt",
+  entryUrl: "url",
+  timeoutSeconds: "timeoutSeconds",
+  sampleId: "sampleId",
+  evaluationId: "evaluationId",
+  maxSteps: "maxSteps",
+};
+
+const outputMappingHelp: Record<keyof AgentOutputMapping, string> = {
+  externalRunId: "轮询模式必填。填写提交响应中运行 ID 的路径；顶层字段写 runId，嵌套字段写 data.runId。",
+  status: "轮询模式必填。填写结果响应中状态字段的路径；顶层字段写 status，嵌套字段写 data.status。",
+  finalAnswer: "可选。填写最终答案或文本结果所在路径，例如 answer 或 output.answer。",
+  errorMessage: "可选。填写错误信息所在路径，便于失败时展示原因，例如 error.message。",
+};
+
+const outputMappingPlaceholder: Record<keyof AgentOutputMapping, string> = {
+  externalRunId: "runId",
+  status: "status",
+  finalAnswer: "answer",
+  errorMessage: "error.message",
+};
+
+const getInputMappingHelp = (key: keyof AgentInputMapping): string =>
+  inputMappingHelp[key];
+
+const getInputMappingPlaceholder = (key: keyof AgentInputMapping): string =>
+  inputMappingPlaceholder[key];
+
+const getOutputMappingHelp = (key: keyof AgentOutputMapping): string =>
+  outputMappingHelp[key];
+
+const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
+  outputMappingPlaceholder[key];
 </script>
 
 <style scoped lang="scss">
+.agent-register-form {
+  min-height: 100%;
+}
+
 .agent-register-step {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.1rem;
+  min-height: 100%;
   min-width: 0;
-  padding-top: 0.25rem;
+  padding: 1rem 1.15rem 1.15rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: var(--radius-control-sm);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.78)),
+    rgba(255, 255, 255, 0.76);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
 }
 
 .agent-register-step__head {
+  position: sticky;
+  top: 0;
+  z-index: 5;
   display: flex;
-  max-width: 780px;
+  width: 100%;
   flex-direction: column;
   gap: 0.45rem;
+  padding-block: 0.12rem 0.85rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.94)),
+    rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
 }
 
 .agent-register-step__eyebrow {
@@ -456,11 +628,12 @@ const visibleOutputMappingItems = computed(() => {
 .agent-register-step__head h2 {
   margin: 0;
   color: var(--color-text-dark);
-  font-size: 1.65rem;
+  font-size: 1.28rem;
   line-height: 1.2;
 }
 
 .agent-register-step__head p {
+  max-width: 780px;
   margin: 0;
   color: var(--color-text-subtle);
   line-height: 1.65;
@@ -470,7 +643,7 @@ const visibleOutputMappingItems = computed(() => {
 .custom-field-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.95rem;
   min-width: 0;
 }
 
@@ -556,40 +729,112 @@ const visibleOutputMappingItems = computed(() => {
 
 .form-grid,
 .mapping-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: var(--radius-control-sm);
+  background: rgba(255, 255, 255, 0.54);
+  overflow: visible;
 }
 
 .form-grid--three {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+}
+
+.form-grid > :deep(.form-field),
+.mapping-grid > :deep(.form-field),
+.mapping-grid > :deep(.ui-toggle-field) {
+  display: grid;
+  width: 100%;
+  max-width: none;
+  grid-template-columns: minmax(12rem, 0.72fr) minmax(16rem, 34rem);
+  gap: 0.38rem 1.25rem;
+  align-items: start;
+  padding: 1rem 1.1rem;
+  border-top: 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.form-grid > :deep(.form-field:last-child),
+.mapping-grid > :deep(.form-field:last-child),
+.mapping-grid > :deep(.ui-toggle-field:last-child) {
+  border-bottom: 0;
+}
+
+.form-grid > :deep(.form-field .form-field-label),
+.mapping-grid > :deep(.form-field .form-field-label) {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  padding-top: 0.82rem;
+}
+
+.form-grid > :deep(.form-field .form-field-control),
+.mapping-grid > :deep(.form-field .form-field-control) {
+  grid-column: 2;
+  grid-row: 1;
+  width: min(100%, 34rem);
+}
+
+.form-grid > :deep(.form-field .form-field-help),
+.form-grid > :deep(.form-field .form-field-error),
+.mapping-grid > :deep(.form-field .form-field-help),
+.mapping-grid > :deep(.form-field .form-field-error) {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  max-width: 22rem;
+  margin-top: 2.42rem;
+  line-height: 1.6;
+}
+
+.form-grid > :deep(.form-field--select),
+.mapping-grid > :deep(.form-field--select) {
+  position: relative;
+  z-index: 2;
+}
+
+.form-grid > :deep(.form-field--select:focus-within),
+.mapping-grid > :deep(.form-field--select:focus-within) {
+  z-index: 8;
+}
+
+.mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__copy) {
+  grid-column: 1;
+}
+
+.mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__input) {
+  grid-column: 2;
+  justify-self: start;
+  margin-top: 0.22rem;
+}
+
+.custom-field-row :deep(.form-field) {
+  width: 100%;
+  max-width: 34rem;
 }
 
 .custom-field-row {
-  display: grid;
-  grid-template-columns: minmax(140px, 1fr) minmax(120px, 0.6fr) minmax(160px, 1fr) auto;
+  display: flex;
+  width: 100%;
+  max-width: 36rem;
+  flex-direction: column;
   gap: 0.75rem;
-  align-items: end;
-  padding-block: 0.85rem;
-  border-top: 1px solid var(--color-border-soft);
+  align-items: flex-start;
+  padding: 0.95rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.58);
 }
 
 .custom-field-row:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
-@media (max-width: 1180px) {
-  .form-grid--three {
-    grid-template-columns: 1fr;
-  }
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 @media (max-width: 760px) {
-  .form-grid,
-  .mapping-grid,
-  .custom-field-row {
-    grid-template-columns: 1fr;
+  .agent-register-step {
+    padding: 0.9rem;
   }
 
   .template-grid,
@@ -597,5 +842,31 @@ const visibleOutputMappingItems = computed(() => {
     grid-template-columns: 1fr;
   }
 
+  .form-grid > :deep(.form-field),
+  .mapping-grid > :deep(.form-field),
+  .mapping-grid > :deep(.ui-toggle-field) {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 0.95rem;
+  }
+
+  .form-grid > :deep(.form-field .form-field-label),
+  .mapping-grid > :deep(.form-field .form-field-label) {
+    padding-top: 0;
+  }
+
+  .form-grid > :deep(.form-field .form-field-control),
+  .form-grid > :deep(.form-field .form-field-help),
+  .form-grid > :deep(.form-field .form-field-error),
+  .mapping-grid > :deep(.form-field .form-field-control),
+  .mapping-grid > :deep(.form-field .form-field-help),
+  .mapping-grid > :deep(.form-field .form-field-error),
+  .mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__copy),
+  .mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__input) {
+    grid-column: 1;
+    grid-row: auto;
+    max-width: none;
+    margin-top: 0;
+  }
 }
 </style>
