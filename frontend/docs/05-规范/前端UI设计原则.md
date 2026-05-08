@@ -207,7 +207,20 @@ ARIA 只补充语义，不补充行为。能用原生 HTML 时，不使用 ARIA 
 <EvaluationList v-else :items="items" />
 ```
 
-## 7. 内容原子性与文本韧性
+## 7. 微交互与微光效规范 (Micro-interactions & Lighting)
+
+### 原则
+
+动效与光影必须服务于任务反馈、状态明确与层级暗示。优先使用系统级的 Tokens。
+
+### 必须遵循
+
+- 可点击元素（按钮、链接、卡片）应当有明确聚焦（Focus）与悬浮（Hover）的视觉反馈，如位移 `translateY`、光斑、倒角阴影变化。
+- 弹出框、菜单等浮层组件的入场动画采用弹性缓动函数（如 `var(--ease-spring)`）或强调缓动（`var(--ease-emphasized)`）。
+- 深色背景或强调级卡片周边使用系统级的内倒角变量（如 `var(--glass-border-inset)`）以增强边缘立体质感，结合合适的 `backdrop-filter`。
+- 杜绝无关任务、纯装饰目的且耗费性能的大面积背景持续动效。
+
+## 8. 内容原子性与文本韧性
 
 ### 原则
 

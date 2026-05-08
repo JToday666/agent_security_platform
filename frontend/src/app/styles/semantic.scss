@@ -111,8 +111,8 @@
   font-weight: 600;
   cursor: pointer;
   transition:
-    transform var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-spring),
+    box-shadow var(--duration-fast) var(--ease-spring),
     border-color var(--duration-fast) var(--ease-standard),
     background var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
@@ -147,9 +147,9 @@
 
 :where(.ui-hover-card) {
   transition:
-    transform var(--duration-base) var(--ease-emphasized),
-    box-shadow var(--duration-base) var(--ease-emphasized),
-    border-color var(--duration-base) var(--ease-emphasized);
+    transform var(--duration-base) var(--ease-spring),
+    box-shadow var(--duration-base) var(--ease-spring),
+    border-color var(--duration-base) var(--ease-standard);
 }
 
 :where(.ui-hover-card:hover) {

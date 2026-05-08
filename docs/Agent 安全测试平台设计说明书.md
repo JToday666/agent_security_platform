@@ -18,6 +18,7 @@
 明确以下内容：
 
 - 系统解决什么问题
+- 共享界面设计标准
 - 核心对象如何定义
 - 数据库需要哪些核心表
 - API 应如何设计
@@ -37,7 +38,7 @@
 - 具体部署脚本、K8s 清单或 Dockerfile
 - 具体鉴权系统实现方案
 
-------
+---
 
 # 2. 背景与需求概述
 
@@ -61,7 +62,7 @@
 4. 支持 success / harm 的自动判定
 5. 输出结构化结果和报告
 
-------
+---
 
 ## 2.2 核心需求
 
@@ -84,7 +85,7 @@
 - 不允许多个任务污染同一可变网站实例
 - 模块边界清晰，便于并行开发
 
-------
+---
 
 # 3. 名词与对象定义
 
@@ -107,7 +108,7 @@
 **说明：**
 样本不表示一次实际执行，只表示“测什么”。
 
-------
+---
 
 ## 3.2 测试运行（Run）
 
@@ -124,7 +125,7 @@
 **说明：**
 Run 是对一次测试请求的整体封装。
 
-------
+---
 
 ## 3.3 Run 样本快照（Run Sample）
 
@@ -133,7 +134,7 @@ Run 创建时，根据筛选条件从样本库中选出本次实际参与执行�
 **说明：**
 Run Sample 是“本次要跑哪些样本”的固定记录，用于复现和追溯。
 
-------
+---
 
 ## 3.4 样本执行实例（Sample Execution）
 
@@ -153,7 +154,7 @@ Run Sample 是“本次要跑哪些样本”的固定记录，用于复现和追
 **说明：**
 这是系统中真正的执行、隔离、分析单位。
 
-------
+---
 
 ## 3.5 Oracle
 
@@ -165,7 +166,7 @@ Run Sample 是“本次要跑哪些样本”的固定记录，用于复现和追
 **说明：**
 oracle 是样本定义的一部分，不是任务状态的一部分。
 
-------
+---
 
 ## 3.6 Evaluator
 
@@ -182,7 +183,7 @@ oracle 是样本定义的一部分，不是任务状态的一部分。
 **说明：**
 oracle 是配置，evaluator 是算法实现。
 
-------
+---
 
 # 4. 总体架构
 
@@ -198,7 +199,7 @@ oracle 是配置，evaluator 是算法实现。
 - 环境层负责网站副本、URL 暴露和资源隔离
 - Agent API 是被测对象，不参与调度控制
 
-------
+---
 
 ## 4.2 逻辑架构图
 
@@ -219,7 +220,7 @@ flowchart LR
     BE --> FE
 ```
 
-------
+---
 
 ## 4.3 模块职责
 
@@ -279,7 +280,7 @@ flowchart LR
 - 收集运行证据
 - 结束后清理资源
 
-------
+---
 
 # 5. 关键设计原则
 
@@ -292,7 +293,7 @@ flowchart LR
 
 任何结果、证据、判定，都必须落到样本执行实例上，而不是只落到样本定义上。
 
-------
+---
 
 ## 5.2 只读模板与运行副本分离
 
@@ -304,7 +305,7 @@ flowchart LR
 - 多个任务共享同一可变网站目录
 - 在原始数据集目录上直接运行 agent 测试
 
-------
+---
 
 ## 5.3 筛选条件与执行对象分离
 
@@ -316,7 +317,7 @@ flowchart LR
 - run 执行中动态跟随数据库最新筛选结果变化
 - 报告依赖后续更新后的样本集合
 
-------
+---
 
 ## 5.4 Oracle 配置与算法实现分离
 
@@ -329,7 +330,7 @@ flowchart LR
 
 这样可以保持长期可维护性。
 
-------
+---
 
 ## 5.5 URL 必须对 Agent 可访问
 
@@ -340,7 +341,7 @@ flowchart LR
 
 > 交给 Agent 的入口 URL，必须由环境层保证实际可访问。
 
-------
+---
 
 # 6. 数据模型设计
 
@@ -357,7 +358,7 @@ flowchart LR
 
 设计采用“平衡型规范化”方案。
 
-------
+---
 
 ## 6.2 字段设计原则
 
@@ -394,7 +395,7 @@ flowchart LR
 
 - `(dataset_source_id, sample_id)`
 
-------
+---
 
 # 7. 数据库表设计
 
@@ -405,7 +406,7 @@ flowchart LR
 2. 运行与执行
 3. 结果与报告
 
-------
+---
 
 ## 7.1 字典与样本元数据
 
@@ -420,7 +421,7 @@ flowchart LR
 | name      | text     | 名称     |
 | is_active | boolean  | 是否启用 |
 
-------
+---
 
 ### 7.1.2 `attack_delivery_types`
 
@@ -433,7 +434,7 @@ flowchart LR
 | name      | text     | 名称     |
 | is_active | boolean  | 是否启用 |
 
-------
+---
 
 ### 7.1.3 `risk_categories`
 
@@ -447,7 +448,7 @@ flowchart LR
 | sort_order | smallint | 排序     |
 | is_active  | boolean  | 是否启用 |
 
-------
+---
 
 ### 7.1.4 `risk_subtypes`
 
@@ -462,7 +463,7 @@ flowchart LR
 | sort_order  | smallint | 排序     |
 | is_active   | boolean  | 是否启用 |
 
-------
+---
 
 ### 7.1.5 `asset_types`
 
@@ -475,7 +476,7 @@ flowchart LR
 | name      | text    | 名称     |
 | is_active | boolean | 是否启用 |
 
-------
+---
 
 ### 7.1.6 `benchmark_samples`
 
@@ -508,7 +509,7 @@ flowchart LR
 - `risk_level in (1,2,3)`
 - `attack_level in (1,2,3)`
 
-------
+---
 
 ### 7.1.7 `sample_oracles`
 
@@ -531,7 +532,7 @@ flowchart LR
 - `evaluator_config` 用于存放参数配置
 - 这是允许用 `jsonb` 的地方，因为它不是高频筛选字段
 
-------
+---
 
 ## 7.2 运行与执行
 
@@ -556,7 +557,7 @@ flowchart LR
 | started_at            | timestamptz | 开始时间       |
 | finished_at           | timestamptz | 结束时间       |
 
-------
+---
 
 ### 7.2.2 `run_samples`
 
@@ -570,7 +571,7 @@ run 样本快照表。
 | order_no      | integer     | 顺序     |
 | created_at    | timestamptz | 创建时间 |
 
-------
+---
 
 ### 7.2.3 `sample_executions`
 
@@ -591,7 +592,7 @@ run 样本快照表。
 | finished_at     | timestamptz | 结束时间           |
 | error_message   | text        | 错误信息           |
 
-------
+---
 
 ### 7.2.4 `execution_artifacts`
 
@@ -606,7 +607,7 @@ run 样本快照表。
 | metadata            | jsonb       | 元信息   |
 | created_at          | timestamptz | 创建时间 |
 
-------
+---
 
 ## 7.3 结果与报告
 
@@ -626,7 +627,7 @@ oracle 结果表。
 | evaluator_version   | text        | evaluator 版本 |
 | created_at          | timestamptz | 创建时间       |
 
-------
+---
 
 ### 7.3.2 `execution_summaries`
 
@@ -642,7 +643,7 @@ oracle 结果表。
 | final_label         | text        | 最终结论         |
 | created_at          | timestamptz | 创建时间         |
 
-------
+---
 
 ### 7.3.3 `run_reports`
 
@@ -657,7 +658,7 @@ run 报告表。
 | report_uri    | text        | 报告文件地址 |
 | created_at    | timestamptz | 创建时间     |
 
-------
+---
 
 # 8. 数据库关系图
 
@@ -685,7 +686,7 @@ erDiagram
     test_runs ||--|| run_reports : "has"
 ```
 
-------
+---
 
 # 9. API 设计
 
@@ -706,7 +707,7 @@ API 分为：
 
 run 创建后，不只保存筛选条件，还必须保存本次命中的样本快照。
 
-------
+---
 
 ## 9.2 筛选结构建议
 
@@ -733,7 +734,7 @@ run 创建后，不只保存筛选条件，还必须保存本次命中的样本�
 - `subtype_ids`：额外显式包含的小类
 - 最终统一展开为一组小类集合用于查询和执行
 
-------
+---
 
 ## 9.3 查询类 API
 
@@ -752,7 +753,7 @@ GET /api/v1/benchmarks/filter-options
 - 风险等级
 - 攻击等级
 
-------
+---
 
 ### 9.3.2 查询样本列表
 
@@ -772,7 +773,7 @@ POST /api/v1/benchmarks/samples/search
 - 总数
 - 当前页信息
 
-------
+---
 
 ### 9.3.3 查看样本详情
 
@@ -788,7 +789,7 @@ GET /api/v1/benchmarks/samples/{sample_id}
 - 预期安全行为
 - oracle 列表
 
-------
+---
 
 ## 9.4 执行类 API
 
@@ -825,7 +826,7 @@ POST /api/v1/test-runs
 }
 ```
 
-------
+---
 
 ### 9.4.2 查询 run 状态
 
@@ -841,7 +842,7 @@ GET /api/v1/test-runs/{run_id}
 - 状态统计
 - 报告状态
 
-------
+---
 
 ### 9.4.3 查询样本执行列表
 
@@ -857,7 +858,7 @@ GET /api/v1/test-runs/{run_id}/executions
 - 时间信息
 - 摘要信息
 
-------
+---
 
 ### 9.4.4 查询单个执行详情
 
@@ -873,7 +874,7 @@ GET /api/v1/sample-executions/{execution_id}
 - oracle 结果
 - 执行摘要
 
-------
+---
 
 ### 9.4.5 获取报告
 
@@ -888,7 +889,7 @@ GET /api/v1/test-runs/{run_id}/report
 - 典型案例
 - 报告下载地址
 
-------
+---
 
 # 10. 状态机设计
 
@@ -914,7 +915,7 @@ GET /api/v1/test-runs/{run_id}/report
 - `failed`：整体失败，无法继续
 - `cancelled`：被取消
 
-------
+---
 
 ## 10.2 Sample Execution 状态机
 
@@ -942,7 +943,7 @@ GET /api/v1/test-runs/{run_id}/report
 - `failed`：失败
 - `cancelled`：取消
 
-------
+---
 
 # 11. Oracle 与算法分析设计
 
@@ -955,7 +956,7 @@ GET /api/v1/test-runs/{run_id}/report
 - 算法层：evaluator 类型
 - 后端层：调用并聚合结果
 
-------
+---
 
 ## 11.2 evaluator 类型建议
 
@@ -969,7 +970,7 @@ GET /api/v1/test-runs/{run_id}/report
 - `action_sequence_match`
 - `llm_judge`
 
-------
+---
 
 ## 11.3 evaluator 输出格式建议
 
@@ -987,7 +988,7 @@ GET /api/v1/test-runs/{run_id}/report
 }
 ```
 
-------
+---
 
 ## 11.4 汇总规则建议
 
@@ -1003,7 +1004,7 @@ GET /api/v1/test-runs/{run_id}/report
 - 当前阶段建议：任一 harm oracle 命中即视为发生 harm
 - 后续可扩展为组合规则
 
-------
+---
 
 # 12. 运行环境与网站样例隔离
 
@@ -1018,7 +1019,7 @@ GET /api/v1/test-runs/{run_id}/report
 - 共享实例会导致污染
 - 无法复现与追责
 
-------
+---
 
 ## 12.2 当前样本形态下的运行方式
 
@@ -1031,7 +1032,7 @@ GET /api/v1/test-runs/{run_id}/report
 4. 将该 URL 提交给 Agent
 5. 执行后收集产物并清理副本
 
-------
+---
 
 ## 12.3 目录抽象建议
 
@@ -1054,7 +1055,7 @@ environment/
 - 隔离单位是 `execution_id`
 - 不以 `user_id` 或 `sample_id` 作为唯一执行隔离单位
 
-------
+---
 
 ## 12.4 URL 约定
 
@@ -1071,7 +1072,7 @@ environment/
 
 当前阶段可以先按 A 设计，环境层保留升级到 B 的能力。
 
-------
+---
 
 # 13. 执行流程
 
@@ -1101,7 +1102,7 @@ sequenceDiagram
     BE-->>FE: 返回状态和报告
 ```
 
-------
+---
 
 ## 13.2 关键步骤说明
 
@@ -1137,7 +1138,7 @@ sequenceDiagram
 
 写入 `oracle_results`、`execution_summaries` 和 `run_reports`。
 
-------
+---
 
 # 14. 安全与边界约定
 
@@ -1146,7 +1147,7 @@ sequenceDiagram
 Agent API 的 token、密钥不应明文存数据库。
 数据库中只存 `credential_ref`。
 
-------
+---
 
 ## 14.2 文件与环境隔离
 
@@ -1156,7 +1157,7 @@ Agent API 的 token、密钥不应明文存数据库。
 - 不可访问其他 run / execution 的目录
 - 运行结束后可清理
 
-------
+---
 
 ## 14.3 数据可信性
 
@@ -1167,7 +1168,7 @@ Agent API 的 token、密钥不应明文存数据库。
 - oracle 结果
 - 证据索引
 
-------
+---
 
 # 15. 监控与可观测性
 
@@ -1190,7 +1191,7 @@ Agent API 的 token、密钥不应明文存数据库。
 - oracle 命中分布
 - risk/harm 分布
 
-------
+---
 
 # 16. 当前阶段不建议做的事
 
@@ -1202,7 +1203,7 @@ Agent API 的 token、密钥不应明文存数据库。
 - 不依赖“清理恢复”代替“副本隔离”
 - 不让 run 结果依赖动态变化的数据集内容
 
-------
+---
 
 # 17. 版本规划建议
 
@@ -1228,7 +1229,7 @@ Agent API 的 token、密钥不应明文存数据库。
 - 可视化报告增强
 - 人工复核工作流
 
-------
+---
 
 # 18. 开发拆任务建议
 
@@ -1276,7 +1277,7 @@ Agent API 的 token、密钥不应明文存数据库。
 5. DOM / 行为类 evaluator
 6. 汇总逻辑支持
 
-------
+---
 
 # 19. 最终结论
 
