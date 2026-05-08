@@ -79,7 +79,7 @@ button {
 }
 
 :where(.scale-enter-active) {
-  transition: transform var(--duration-slow) var(--ease-modal-pop);
+  transition: transform var(--duration-slow) var(--ease-spring);
 }
 
 :where(.scale-enter-from) {

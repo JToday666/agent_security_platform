@@ -7,7 +7,7 @@
 
     <div class="profile-grid">
       <aside class="profile-side">
-        <section class="avatar-panel">
+        <div class="avatar-panel">
           <div class="avatar-preview">
             <img
               v-if="(avatarPreview || avatarDisplayUrl) && !hasAvatarError"
@@ -45,7 +45,7 @@
             <p class="hint">支持 JPG、PNG，大小不超过 2MB。</p>
             <div v-if="uploading" class="uploading-hint">正在上传头像...</div>
           </div>
-        </section>
+        </div>
 
         <SectionBlock
           title="账号操作"
@@ -113,23 +113,21 @@
 
           <div class="form-actions">
             <UiButton
-              type="submit"
-              variant="primary"
-              leading-icon="lucide:save"
-              :loading="submitting"
-              block
-            >
-              保存修改
-            </UiButton>
-            <UiButton
               type="button"
               variant="secondary"
               leading-icon="lucide:rotate-ccw"
               :disabled="submitting"
-              block
               @click="resetForm"
             >
               取消
+            </UiButton>
+            <UiButton
+              type="submit"
+              variant="primary"
+              leading-icon="lucide:save"
+              :loading="submitting"
+            >
+              保存修改
             </UiButton>
           </div>
         </form>
@@ -375,19 +373,37 @@ const handleLogoutConfirm = () => {
 .profile-grid {
   display: grid;
   grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
-  gap: 1rem;
+  gap: 2rem;
   align-items: start;
 }
 
 .profile-side {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .avatar-panel {
-  padding: 1.3rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  padding: 1.8rem 1.4rem;
+  border-radius: var(--radius-card-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  box-shadow: var(--shadow-surface-soft);
+  transition: box-shadow var(--duration-base) var(--ease-spring);
+  position: relative;
+}
+
+.avatar-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--glass-border-inset);
+  pointer-events: none;
+}
+
+.avatar-panel:hover {
+  box-shadow: var(--shadow-surface-hover);
 }
 
 .avatar-preview {
@@ -395,13 +411,19 @@ const handleLogoutConfirm = () => {
   height: 110px;
   margin: 0 auto;
   border-radius: 50%;
-  background: #f1f5f9;
+  background: var(--color-surface-muted);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   border: 3px solid rgba(255, 255, 255, 0.92);
   box-shadow: 0 18px 28px -20px rgba(79, 70, 229, 0.32);
+  transition: transform var(--duration-base) var(--ease-spring), box-shadow var(--duration-base) var(--ease-spring);
+}
+
+.avatar-preview:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 22px 34px -22px rgba(79, 70, 229, 0.45);
 }
 
 .avatar-preview img,
@@ -450,9 +472,13 @@ const handleLogoutConfirm = () => {
 }
 
 .upload-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  border-top: 1px solid var(--color-border-soft);
 }
 
 .hidden-input {
@@ -462,6 +488,7 @@ const handleLogoutConfirm = () => {
 .hint,
 .uploading-hint {
   margin: 0.55rem 0 0;
+  text-align: center;
   color: var(--color-text-subtle);
   font-size: 0.84rem;
   line-height: 1.6;
@@ -470,14 +497,17 @@ const handleLogoutConfirm = () => {
 .profile-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .form-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border-soft);
+  justify-content: flex-end;
 }
 
 @media (max-width: 900px) {

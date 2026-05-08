@@ -106,6 +106,8 @@ Node 与包管理器要求以 `package.json` 为准。
 - `src/shared/ui/branding/BrandLogo.vue`
   品牌 Logo 组件，使用构建可控的轻量矢量 Logo
 
+> **UI 基线提示**: 平台在共享层引入了现代微交互与玻璃态视觉体系。新组件开发应优先复用 `tokens.scss` 中的高级缓动函数（如 `var(--ease-spring)`）、内发光变量（如 `var(--glass-border-inset)`）及标准的 Hover 反馈，详见 [前端UI设计原则](./docs/05-规范/前端UI设计原则.md)。
+
 模块专用展示组件保留在各自业务模块内，跨模块复用组件放入 `src/shared/ui/`。
 
 ## 6. 检查与验证
