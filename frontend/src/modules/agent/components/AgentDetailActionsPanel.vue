@@ -92,24 +92,8 @@ const invokeModeLabel = computed(() => getInvokeModeLabel(props.detail.invokeMod
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1rem;
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-card-md);
-  background:
-    radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.12), transparent 34%),
-    rgba(255, 255, 255, 0.8);
-  box-shadow: var(--shadow-surface-mid);
-  transition:
-    border-color var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard),
-    transform var(--duration-fast) var(--ease-standard);
-}
-
-.detail-actions:hover,
-.detail-actions:focus-within {
-  border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-panel-elevated);
-  transform: translateY(-1px);
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border-soft);
 }
 
 .detail-actions__head {

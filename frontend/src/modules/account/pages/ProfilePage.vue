@@ -7,7 +7,7 @@
 
     <div class="profile-grid">
       <aside class="profile-side">
-        <section class="avatar-panel ui-surface-panel">
+        <section class="avatar-panel">
           <div class="avatar-preview">
             <img
               v-if="(avatarPreview || avatarDisplayUrl) && !hasAvatarError"
@@ -24,7 +24,7 @@
             <span>{{ form.email || "未绑定邮箱" }}</span>
           </div>
 
-          <div class="upload-card ui-surface-muted">
+          <div class="upload-actions">
             <UiButton
               as="label"
               for="avatar"
@@ -50,7 +50,6 @@
         <SectionBlock
           title="账号操作"
           description="退出后需要重新登录才能继续访问工作台。"
-          surface="panel"
         >
           <UiButton
             variant="danger"
@@ -67,7 +66,6 @@
         class="profile-main"
         title="更新账号信息"
         description="邮箱不可修改，您可以修改用户名与密码。"
-        surface="panel"
       >
         <InlineNotice
           v-if="message"
@@ -389,7 +387,7 @@ const handleLogoutConfirm = () => {
 
 .avatar-panel {
   padding: 1.3rem;
-  border-radius: 1.5rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 .avatar-preview {
@@ -451,10 +449,10 @@ const handleLogoutConfirm = () => {
   font-size: 0.9rem;
 }
 
-.upload-card {
+.upload-actions {
   margin-top: 1rem;
-  padding: 1rem;
-  border-radius: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 .hidden-input {

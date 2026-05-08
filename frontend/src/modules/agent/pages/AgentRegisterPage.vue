@@ -1,8 +1,8 @@
 <template>
   <div class="content agent-register-page layout-page-shell layout-page-shell--wide">
     <PageHero
-      title="注册 Agent"
-      description="填写接入配置并创建 Agent。验证通过后可用于提交评测。"
+      title="注册智能体"
+      description="填写接入配置并创建智能体。验证通过后可用于提交评测。"
     >
       <template #actions>
         <UiButton

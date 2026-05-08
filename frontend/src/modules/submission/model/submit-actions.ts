@@ -27,6 +27,7 @@ export const buildSubmitConfirmMessage = (
     `智能体名称：${agentName || "未选择"}`,
     `提交方式：${payload.submitMethod.toUpperCase()}`,
     `数据集数量：${payload.selectedDatasetIds.length}`,
+    `榜单展示：${payload.leaderboardDisplayMode === "anonymous" ? "匿名" : "公开"}`,
   ].join("\n");
 
   if (!warnings.length) {

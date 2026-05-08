@@ -5,7 +5,6 @@
         <tr>
           <th scope="col">排名</th>
           <th scope="col">Agent</th>
-          <th scope="col">评测</th>
           <th
             v-for="option in LEADERBOARD_SORT_OPTIONS"
             :key="option.key"
@@ -28,23 +27,19 @@
           </th>
           <th scope="col">置信度</th>
           <th scope="col">样本</th>
-          <th scope="col">认证</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="entry in entries" :key="entry.agentId">
+        <tr v-for="entry in entries" :key="`${entry.rankNo}:${entry.displayName}`">
           <td class="rank-cell">
             <span :class="`rank-badge rank-badge--${getLeaderboardRankTone(entry.rankNo)}`">
               {{ entry.rankNo }}
             </span>
           </td>
           <th scope="row" class="agent-cell">
-            <strong :title="entry.agentName">{{ entry.agentName }}</strong>
-            <small :title="entry.agentId">{{ entry.agentId }}</small>
+            <strong :title="entry.displayName">{{ entry.displayName }}</strong>
+            <small v-if="entry.anonymous">匿名</small>
           </th>
-          <td class="mono-cell" :title="entry.evaluationId">
-            {{ entry.evaluationId }}
-          </td>
           <td class="score-cell score-cell--primary">
             {{ formatLeaderboardScore(entry.officialConservativeScore) }}
           </td>
@@ -55,12 +50,6 @@
           </td>
           <td class="score-cell">{{ formatLeaderboardScore(entry.confidence) }}</td>
           <td class="sample-cell">{{ entry.totalSamples }}</td>
-          <td class="cert-cell">
-            <UiTag :tone="getCertification(entry).tone" size="sm">
-              {{ getCertification(entry).tierLabel }}
-            </UiTag>
-            <small>{{ getCertification(entry).certificationLabel }}</small>
-          </td>
         </tr>
       </tbody>
     </table>
@@ -69,16 +58,14 @@
 
 <script setup lang="ts">
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
-import UiTag from "@/shared/ui/display/UiTag.vue";
 import {
   LEADERBOARD_SORT_OPTIONS,
   formatLeaderboardScore,
-  getLeaderboardCertificationView,
   getLeaderboardRankTone,
   type LeaderboardSortKey,
   type LeaderboardSortState,
-} from "@/modules/public/lib/leaderboard-view";
-import type { LeaderboardEntry } from "@/shared/types/leaderboard-types";
+} from "@/modules/leaderboard/lib/leaderboard-view";
+import type { LeaderboardEntry } from "@/modules/leaderboard/types/leaderboard-types";
 
 const props = defineProps<{
   entries: LeaderboardEntry[];
@@ -88,12 +75,6 @@ const props = defineProps<{
 defineEmits<{
   (event: "sort-change", key: LeaderboardSortKey): void;
 }>();
-
-const getCertification = (entry: LeaderboardEntry) =>
-  getLeaderboardCertificationView(
-    entry.verificationTier,
-    entry.safetyCertification,
-  );
 
 const getAriaSort = (
   key: LeaderboardSortKey,
@@ -124,7 +105,7 @@ const getSortIcon = (key: LeaderboardSortKey): string => {
 
 .leaderboard-table {
   width: 100%;
-  min-width: 1120px;
+  min-width: 900px;
   border-collapse: collapse;
 }
 
@@ -216,8 +197,7 @@ const getSortIcon = (key: LeaderboardSortKey): string => {
 }
 
 .agent-cell strong,
-.agent-cell small,
-.mono-cell {
+.agent-cell small {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -231,17 +211,17 @@ const getSortIcon = (key: LeaderboardSortKey): string => {
 }
 
 .agent-cell small {
-  display: block;
+  display: inline-flex;
+  width: fit-content;
   max-width: 220px;
-  margin-top: 0.25rem;
-  color: var(--color-text-subtle);
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
-  font-size: 0.76rem;
-}
-
-.mono-cell {
-  max-width: 210px;
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  margin-top: 0.35rem;
+  padding: 0.16rem 0.48rem;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--color-primary);
+  font-size: 0.74rem;
+  font-weight: 800;
 }
 
 .score-cell,
@@ -260,14 +240,4 @@ const getSortIcon = (key: LeaderboardSortKey): string => {
   color: #b91c1c;
 }
 
-.cert-cell {
-  min-width: 150px;
-}
-
-.cert-cell small {
-  display: block;
-  margin-top: 0.35rem;
-  color: var(--color-text-subtle);
-  line-height: 1.35;
-}
 </style>

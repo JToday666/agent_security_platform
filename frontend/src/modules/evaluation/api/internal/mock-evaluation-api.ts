@@ -271,7 +271,8 @@ const createStoredRecord = (
     createdAt,
     updatedAt: createdAt,
     status: "pending",
-    publicToLeaderboard: payload.publicToLeaderboard,
+    publicToLeaderboard: true,
+    leaderboardDisplayMode: payload.leaderboardDisplayMode,
     datasetIds,
     datasetNames: resolvePublicDatasetNames(datasetIds),
     submitMethod: payload.submitMethod,
@@ -316,9 +317,11 @@ export const precheckMockAgent = async (
   }
 
   const warnings: string[] = [];
-  if (payload.publicToLeaderboard) {
-    warnings.push("本次结果将进入公开排行榜，请确认描述中不包含敏感信息。");
-  }
+  warnings.push(
+    payload.leaderboardDisplayMode === "anonymous"
+      ? "本次结果将进入排行榜，榜单仅展示匿名身份。"
+      : "本次结果将进入排行榜，并展示智能体公开名称。",
+  );
 
   const recommendedMax = meta.timeoutMinutes.recommendedMax ?? 20;
   if (payload.parameters.timeoutMinutes > recommendedMax) {

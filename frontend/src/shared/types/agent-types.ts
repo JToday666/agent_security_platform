@@ -1,4 +1,8 @@
 export type SubmitMethod = "api" | "docker";
+export type LeaderboardDisplayMode = "public" | "anonymous";
+export type LeaderboardVisibilityStatus =
+  | LeaderboardDisplayMode
+  | "unranked";
 export type EvaluationStatus =
   | "queued"
   | "pending"
@@ -56,7 +60,7 @@ export interface SubmitAgentPayload {
   agentId?: string | null;
   docker?: SubmitDockerPayload | null;
   parameters: SubmitParameters;
-  publicToLeaderboard: boolean;
+  leaderboardDisplayMode: LeaderboardDisplayMode;
   selectedDatasetIds: string[];
   requestId: string;
 }
@@ -73,12 +77,18 @@ export interface BooleanMeta {
   default: boolean;
 }
 
+export interface LeaderboardDisplayModeMeta {
+  default: LeaderboardDisplayMode;
+  options: LeaderboardDisplayMode[];
+}
+
 export interface SubmitMetaResponse {
   supportedMethods: SubmitMethod[];
   difficulty: RangeMeta;
   timeoutMinutes: RangeMeta;
   maxSteps: RangeMeta;
-  publicToLeaderboard: BooleanMeta;
+  publicToLeaderboard?: BooleanMeta;
+  leaderboardDisplayMode: LeaderboardDisplayModeMeta;
 }
 
 export interface PrecheckResponse {
@@ -117,6 +127,7 @@ export interface EvaluationRecord {
   finalReportAvailable: boolean;
   finalizationReason: EvaluationFinalizationReason | null;
   publicToLeaderboard: boolean;
+  leaderboardDisplayMode: LeaderboardDisplayMode;
   datasetIds: string[];
   datasetNames: string[];
   submitMethod: SubmitMethod;
@@ -325,6 +336,6 @@ export interface SubmitFormState {
     envText: string;
   };
   parameters: SubmitParameters;
-  publicToLeaderboard: boolean;
+  leaderboardDisplayMode: LeaderboardDisplayMode;
   selectedDatasetIds: string[];
 }

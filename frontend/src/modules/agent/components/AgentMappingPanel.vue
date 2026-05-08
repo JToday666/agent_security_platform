@@ -1,6 +1,6 @@
 <template>
   <div class="detail-section-pair">
-    <SectionBlock title="输入字段逻辑映射" surface="panel">
+    <SectionBlock title="输入字段逻辑映射">
       <div class="mapping-tree">
         <article
           v-for="item in inputItems"
@@ -26,7 +26,7 @@
       </div>
     </SectionBlock>
 
-    <SectionBlock title="输出字段逻辑映射" surface="panel">
+    <SectionBlock title="输出字段逻辑映射">
       <div class="mapping-tree mapping-tree--reverse">
         <article
           v-for="item in outputItems"

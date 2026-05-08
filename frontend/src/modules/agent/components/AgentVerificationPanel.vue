@@ -1,5 +1,5 @@
 <template>
-  <SectionBlock title="最近一次验证结果" class="verification-block" surface="panel">
+  <SectionBlock title="最近一次验证结果" class="verification-block">
     <InlineNotice
       v-if="!detail.lastVerification"
       tone="info"

@@ -1,5 +1,5 @@
 <template>
-  <section class="resources-card layout-section-card">
+  <section class="resources-section">
     <div class="layout-section-head">
       <h2>资源与示例</h2>
       <p>仅展示当前接口已返回的文档、下载、演示或外链资源。</p>
@@ -48,6 +48,14 @@ const typeLabels: Record<DatasetResourceLink["type"], string> = {
 </script>
 
 <style scoped lang="scss">
+.resources-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+}
+
 .resource-list {
   display: flex;
   flex-direction: column;

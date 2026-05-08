@@ -1,4 +1,5 @@
 import type {
+  LeaderboardDisplayMode,
   RangeMeta,
   SubmitAgentPayload,
   SubmitFieldErrors,
@@ -105,7 +106,7 @@ export interface EvaluationCreatePayload {
     timeoutMinutes: number;
     maxSteps: number;
   };
-  publicToLeaderboard: boolean;
+  leaderboardDisplayMode: LeaderboardDisplayMode;
 }
 
 export const isValidHttpUrl = (value: string): boolean => {
@@ -210,6 +211,10 @@ export const validateSubmitPayload = (
     fieldErrors.requestId = "requestId 格式不正确";
   }
 
+  if (!meta.leaderboardDisplayMode.options.includes(payload.leaderboardDisplayMode)) {
+    errors.push("榜单展示方式不可用。");
+  }
+
   return {
     valid: errors.length === 0,
     errors,
@@ -229,7 +234,7 @@ export const buildEvaluationCreatePayload = (
       timeoutMinutes: payload.parameters.timeoutMinutes,
       maxSteps: payload.parameters.maxSteps,
     },
-    publicToLeaderboard: payload.publicToLeaderboard,
+    leaderboardDisplayMode: payload.leaderboardDisplayMode,
   } satisfies Omit<EvaluationCreatePayload, "agentId" | "docker">;
 
   if (payload.submitMethod === "api") {

@@ -143,7 +143,7 @@ defineEmits<{
 .score-display strong {
   margin-top: 0.2rem;
   color: var(--color-text-dark);
-  font-size: clamp(2.55rem, 5.4vw, 4.65rem);
+  font-size: 3.65rem;
   font-variant-numeric: tabular-nums;
   font-weight: 900;
   letter-spacing: 0;
@@ -266,6 +266,10 @@ defineEmits<{
 @media (max-width: 640px) {
   .summary-band {
     padding-inline: 0.85rem;
+  }
+
+  .score-display strong {
+    font-size: 2.65rem;
   }
 }
 </style>

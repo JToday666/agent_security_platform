@@ -18,21 +18,6 @@
   box-shadow: var(--shadow-surface-soft);
 }
 
-:where(.ui-surface-panel) {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.96),
-    rgba(248, 250, 252, 0.94)
-  );
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  box-shadow: var(--shadow-surface-mid);
-}
-
-:where(.ui-surface-muted) {
-  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
-  border: 1px solid rgba(148, 163, 184, 0.14);
-}
-
 :where(.ui-title-gradient) {
   background: var(--grad-title-bright);
   -webkit-background-clip: text;

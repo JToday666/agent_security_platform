@@ -28,7 +28,8 @@ GET /api/v1/evaluations?page=1&pageSize=20
         "createdAt": "2026-04-27T08:00:00Z",
         "updatedAt": "2026-04-27T08:30:00Z",
         "finishedAt": "2026-04-27T08:30:00Z",
-        "publicToLeaderboard": false,
+        "publicToLeaderboard": true,
+        "leaderboardDisplayMode": "anonymous",
         "datasetIds": ["A1_identity_leakage"],
         "datasetNames": ["身份信息泄露"],
         "parameters": {
@@ -61,6 +62,16 @@ GET /api/v1/evaluations?page=1&pageSize=20
   "data": null
 }
 ```
+
+### 榜单状态说明
+
+评测记录和详情会同时返回历史兼容字段 `publicToLeaderboard` 与当前字段 `leaderboardDisplayMode`。前端展示时按以下规则派生榜单状态：
+
+| 条件                                                             | 展示   |
+| ---------------------------------------------------------------- | ------ |
+| `publicToLeaderboard=false`                                      | 未排行 |
+| `publicToLeaderboard=true` 且 `leaderboardDisplayMode=anonymous` | 匿名   |
+| `publicToLeaderboard=true` 且 `leaderboardDisplayMode=public`    | 公开   |
 
 ## 2. 获取评测分数趋势
 
@@ -174,7 +185,8 @@ GET /api/v1/evaluations/{evaluationId}
     "updatedAt": "2026-04-27T08:30:00Z",
     "startedAt": "2026-04-27T08:01:00Z",
     "finishedAt": "2026-04-27T08:30:00Z",
-    "publicToLeaderboard": false,
+    "publicToLeaderboard": true,
+    "leaderboardDisplayMode": "public",
     "datasetIds": ["A1_identity_leakage"],
     "datasetNames": ["身份信息泄露"],
     "parameters": {

@@ -482,6 +482,7 @@ export const buildResolvedStateFromStored = (
     updatedAt: record.updatedAt,
     status: record.status,
     publicToLeaderboard: record.publicToLeaderboard,
+    leaderboardDisplayMode: record.leaderboardDisplayMode,
     datasetIds: record.datasetIds,
     datasetNames: resolvePublicDatasetNames(
       record.datasetIds,
@@ -533,6 +534,7 @@ export const buildResolvedStateFromReference = (
     updatedAt: record.updatedAt,
     status: record.status,
     publicToLeaderboard: record.publicToLeaderboard,
+    leaderboardDisplayMode: record.leaderboardDisplayMode,
     datasetIds: record.datasetIds,
     datasetNames: resolvePublicDatasetNames(
       record.datasetIds,

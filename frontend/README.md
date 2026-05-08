@@ -17,7 +17,7 @@
 源码按三层组织：
 
 - `src/app/`：应用壳层，负责启动、路由、布局、导航、全局样式
-- `src/modules/`：业务模块层，按 `account / agent / dataset / evaluation / public / submission` 分域
+- `src/modules/`：业务模块层，按 `account / agent / dataset / evaluation / leaderboard / public / submission` 分域
 - `src/shared/`：共享基础设施，收口 API 基础封装、类型、工具与共享 UI
 
 更细的内部说明在 `frontend/docs/`，跨端接口契约主维护在 `share/`。
@@ -174,6 +174,7 @@ pnpm build-only
 - [提交接口补充说明](../share/submit接口.md)
 - [Agent 接口补充说明](../share/agent接口.md)
 - [报告接口补充说明](../share/report接口.md)
+- [排行榜接口补充说明](../share/leaderboard接口.md)
 
 推荐阅读顺序：
 

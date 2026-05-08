@@ -4,7 +4,7 @@
     description="根据目标场景设置难度、超时和失败重试策略。"
   >
     <div class="field-grid">
-      <div class="field field--full ui-surface-muted">
+      <div class="field field--full">
         <div class="label-row">
           <div>
             <span class="field-label">攻击难度</span>
@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      <label class="field ui-surface-muted">
+      <label class="field">
         <span class="field-label">超时时间（分钟）</span>
         <input
           type="number"
@@ -59,7 +59,7 @@
         <small v-if="timeoutWarning" class="field-warning">{{ timeoutWarning }}</small>
       </label>
 
-      <label class="field ui-surface-muted">
+      <label class="field">
         <span class="field-label">最大步数</span>
         <input
           type="number"
@@ -174,8 +174,9 @@ const handleMaxStepsBlur = () => {
 
 .field {
   padding: 1rem;
-  border-radius: 1.2rem;
+  border-radius: 0.5rem;
   border: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.54);
 }
 
 .field--full {

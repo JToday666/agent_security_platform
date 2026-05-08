@@ -31,7 +31,7 @@ const createDefaultForm = (meta: SubmitMetaResponse): SubmitFormState => ({
     timeoutMinutes: meta.timeoutMinutes.default,
     maxSteps: meta.maxSteps.default,
   },
-  publicToLeaderboard: meta.publicToLeaderboard.default,
+  leaderboardDisplayMode: meta.leaderboardDisplayMode.default,
   selectedDatasetIds: [],
 });
 
@@ -54,7 +54,11 @@ const applyMetaDefaults = (
     ),
     maxSteps: normalizeMaxSteps(form.parameters.maxSteps, meta.maxSteps),
   },
-  publicToLeaderboard: Boolean(form.publicToLeaderboard),
+  leaderboardDisplayMode: meta.leaderboardDisplayMode.options.includes(
+    form.leaderboardDisplayMode,
+  )
+    ? form.leaderboardDisplayMode
+    : meta.leaderboardDisplayMode.default,
 });
 
 export const useSubmitDraftStore = defineStore("submitDraft", () => {

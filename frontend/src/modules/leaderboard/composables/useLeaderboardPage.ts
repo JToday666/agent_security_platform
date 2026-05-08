@@ -1,7 +1,7 @@
 import { computed, onMounted, ref } from "vue";
-import { getLeaderboardSnapshot } from "@/modules/public/api/leaderboard-api";
-import { resolveLeaderboardErrorState } from "@/modules/public/lib/leaderboard-page-state";
-import type { LeaderboardSnapshot } from "@/shared/types/leaderboard-types";
+import { getLeaderboardSnapshot } from "@/modules/leaderboard/api/leaderboard-api";
+import { resolveLeaderboardErrorState } from "@/modules/leaderboard/lib/leaderboard-page-state";
+import type { LeaderboardSnapshot } from "@/modules/leaderboard/types/leaderboard-types";
 
 export const useLeaderboardPage = () => {
   const snapshot = ref<LeaderboardSnapshot | null>(null);

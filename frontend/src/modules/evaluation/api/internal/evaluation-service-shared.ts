@@ -24,6 +24,7 @@ export interface StoredEvaluationRecord {
   finishedAt?: string | null;
   status: EvaluationStatus;
   publicToLeaderboard: boolean;
+  leaderboardDisplayMode: "public" | "anonymous";
   datasetIds: string[];
   datasetNames: string[];
   submitMethod: "api" | "docker";
@@ -49,6 +50,7 @@ export interface ResolvedEvaluationState {
   finishedAt?: string | null;
   status: EvaluationStatus;
   publicToLeaderboard: boolean;
+  leaderboardDisplayMode: "public" | "anonymous";
   datasetIds: string[];
   datasetNames: string[];
   submitMethod: "api" | "docker";
@@ -104,7 +106,7 @@ export const ensureSubmitMeta = (payload: unknown): SubmitMetaResponse => {
     !candidate.difficulty ||
     !candidate.timeoutMinutes ||
     !candidate.maxSteps ||
-    !candidate.publicToLeaderboard
+    !candidate.leaderboardDisplayMode
   ) {
     throw createSubmitMetaError();
   }
@@ -118,6 +120,7 @@ export const ensureSubmitMeta = (payload: unknown): SubmitMetaResponse => {
     },
     maxSteps: candidate.maxSteps,
     publicToLeaderboard: candidate.publicToLeaderboard,
+    leaderboardDisplayMode: candidate.leaderboardDisplayMode,
   };
 };
 
@@ -170,6 +173,7 @@ export const toEvaluationRecord = (
   finalReportAvailable: state.finalReportAvailable,
   finalizationReason: state.finalizationReason,
   publicToLeaderboard: state.publicToLeaderboard,
+  leaderboardDisplayMode: state.leaderboardDisplayMode,
   datasetIds: state.datasetIds,
   datasetNames: state.datasetNames,
   submitMethod: state.submitMethod,

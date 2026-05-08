@@ -13,7 +13,7 @@ export interface SubmitPayloadSnapshot {
   submitMethod: SubmitAgentPayload["submitMethod"];
   agentId: string;
   parameters: SubmitAgentPayload["parameters"];
-  publicToLeaderboard: boolean;
+  leaderboardDisplayMode: SubmitAgentPayload["leaderboardDisplayMode"];
   datasetIds: string[];
 }
 
@@ -41,7 +41,11 @@ export const buildSubmitPayloadSnapshot = (
       ),
       maxSteps: normalizeMaxSteps(form.parameters.maxSteps, meta.maxSteps),
     },
-    publicToLeaderboard: Boolean(form.publicToLeaderboard),
+    leaderboardDisplayMode: meta.leaderboardDisplayMode.options.includes(
+      form.leaderboardDisplayMode,
+    )
+      ? form.leaderboardDisplayMode
+      : meta.leaderboardDisplayMode.default,
     datasetIds,
   };
 };
@@ -66,7 +70,7 @@ export const buildSubmitPayloadFromSnapshot = (
         }
       : null,
   parameters: snapshot.parameters,
-  publicToLeaderboard: snapshot.publicToLeaderboard,
+  leaderboardDisplayMode: snapshot.leaderboardDisplayMode,
   selectedDatasetIds: snapshot.datasetIds,
   requestId,
 });

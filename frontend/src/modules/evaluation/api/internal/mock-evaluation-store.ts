@@ -173,7 +173,12 @@ export const syncStoredRecords = (): StoredEvaluationRecord[] => {
   const now = Date.now();
 
   const nextRecords = records.map((record) => {
-    const nextRecord = { ...record };
+    const leaderboardDisplayMode: StoredEvaluationRecord["leaderboardDisplayMode"] =
+      record.leaderboardDisplayMode === "anonymous" ? "anonymous" : "public";
+    const nextRecord: StoredEvaluationRecord = {
+      ...record,
+      leaderboardDisplayMode,
+    };
     if (advanceStoredRecord(nextRecord, now)) {
       changed = true;
     }
