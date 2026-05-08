@@ -236,6 +236,10 @@ export const referenceSubmitMeta: SubmitMetaResponse = {
   publicToLeaderboard: {
     default: true,
   },
+  leaderboardDisplayMode: {
+    default: "public",
+    options: ["public", "anonymous"],
+  },
 };
 
 const buildCatalogCategory = (
@@ -334,6 +338,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalReportAvailable: true,
     finalizationReason: "completed",
     publicToLeaderboard: true,
+    leaderboardDisplayMode: "public",
     datasetIds: ["A1", "B3", "E1"],
     datasetNames: resolvePublicDatasetNames(["A1", "B3", "E1"]),
     submitMethod: "api",
@@ -357,6 +362,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalReportAvailable: true,
     finalizationReason: "completed",
     publicToLeaderboard: false,
+    leaderboardDisplayMode: "public",
     datasetIds: ["C4", "D1", "G1"],
     datasetNames: resolvePublicDatasetNames(["C4", "D1", "G1"]),
     submitMethod: "docker",
@@ -380,6 +386,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalReportAvailable: true,
     finalizationReason: "completed",
     publicToLeaderboard: true,
+    leaderboardDisplayMode: "anonymous",
     datasetIds: ["F2", "F6", "G2"],
     datasetNames: resolvePublicDatasetNames(["F2", "F6", "G2"]),
     submitMethod: "api",
@@ -403,6 +410,7 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalReportAvailable: true,
     finalizationReason: "completed",
     publicToLeaderboard: true,
+    leaderboardDisplayMode: "public",
     datasetIds: ["A5", "D3", "C2", "E4"],
     datasetNames: resolvePublicDatasetNames(["A5", "D3", "C2", "E4"]),
     submitMethod: "docker",

@@ -33,7 +33,7 @@
 
     <form
       v-else-if="form && submitMeta"
-      class="submit-interface"
+      class="submit-interface submit-interface--stacked"
       @submit.prevent="handleSubmit"
     >
       <div class="submit-interface__canvas">
@@ -44,7 +44,6 @@
         />
 
         <SubmitBasicInfoForm
-          class="submit-step-card"
           v-model="form"
           :agents="availableAgents"
           :agent-error-message="agentErrorMessage"
@@ -52,13 +51,11 @@
         />
 
         <SubmitParameterControls
-          class="submit-step-card"
           v-model="form"
           :meta="submitMeta"
         />
 
         <SubmitDatasetPanel
-          class="submit-step-card"
           :categories="enabledCategories"
           :selected-dataset-ids="form.selectedDatasetIds"
           :expanded-category-ids="expandedCategoryIds"
@@ -73,20 +70,16 @@
           @retry="retryDatasetCatalog"
         />
 
-        <SectionBlock
-          class="submit-step-card submit-step-card__wrapper"
-          :title="form.publicToLeaderboard ? '公开到排行榜' : '仅本人可见'"
-          description="公开后，此次评测结果可参与排行榜展示；不公开时，仅本人可见。"
-          surface="panel"
-        >
-          <template #actions>
-            <UiToggleField
-              v-model="form.publicToLeaderboard"
-              title=""
-              class="leaderboard-toggle"
-            />
-          </template>
-        </SectionBlock>
+        <section class="leaderboard-display-row" aria-label="榜单展示设置">
+          <div class="section-head">
+            <h2>榜单展示</h2>
+            <p>评测结果进入排行榜时，选择展示公开名称或匿名身份。</p>
+          </div>
+          <UiChoiceCardGroup
+            v-model="form.leaderboardDisplayMode"
+            :options="leaderboardDisplayOptions"
+          />
+        </section>
       </div>
 
       <div class="submit-interface__inspector">
@@ -99,7 +92,7 @@
           :difficulty="form.parameters.difficulty"
           :timeout-minutes="form.parameters.timeoutMinutes"
           :max-steps="form.parameters.maxSteps"
-          :public-to-leaderboard="form.publicToLeaderboard"
+          :leaderboard-display-mode="form.leaderboardDisplayMode"
           :submitting="submitting"
           :can-submit="canSubmit"
           :error-message="submitError"
@@ -128,12 +121,12 @@ import SubmitBasicInfoForm from "@/modules/submission/components/SubmitBasicInfo
 import SubmitDatasetPanel from "@/modules/submission/components/SubmitDatasetPanel.vue";
 import SubmitMethodSelector from "@/modules/submission/components/SubmitMethodSelector.vue";
 import SubmitParameterControls from "@/modules/submission/components/SubmitParameterControls.vue";
+import type { LeaderboardDisplayMode } from "@/shared/types/agent-types";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
-import UiToggleField from "@/shared/ui/forms/UiToggleField.vue";
+import UiChoiceCardGroup from "@/shared/ui/forms/UiChoiceCardGroup.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
-import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 
 const {
   form,
@@ -169,6 +162,23 @@ const {
   retryDatasetCatalog,
   resetDraft,
 } = useSubmitAgentPage();
+
+const leaderboardDisplayOptions: Array<{
+  value: LeaderboardDisplayMode;
+  title: string;
+  description: string;
+}> = [
+  {
+    value: "public",
+    title: "公开",
+    description: "排行榜展示智能体公开名称，适合公开参评与能力展示。",
+  },
+  {
+    value: "anonymous",
+    title: "匿名",
+    description: "排行榜仅展示匿名身份，评测结果仍参与公开排序。",
+  },
+];
 </script>
 
 <style scoped lang="scss">
@@ -200,22 +210,27 @@ const {
   align-self: start;
 }
 
-.submit-step-card__wrapper :deep(.section-block__body) {
-  gap: 0;
+.leaderboard-display-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding-top: 0.25rem;
 }
 
-:deep(.ui-toggle-field.leaderboard-toggle) {
-  padding: 0;
-  border-top: 0;
-  flex-shrink: 0;
+.section-head h2 {
+  margin: 0;
+  color: var(--color-text-dark);
+  font-size: 1.08rem;
 }
 
-:deep(.leaderboard-toggle .ui-toggle-field__copy) {
-  display: none;
+.section-head p {
+  margin: 0.35rem 0 0;
+  color: var(--color-text-subtle);
+  line-height: 1.65;
 }
 
-@media (max-width: 1180px) {
-  .submit-interface {
+@media (max-width: 1180px), (max-height: 760px) {
+  .submit-interface--stacked {
     grid-template-columns: 1fr;
   }
 

@@ -29,7 +29,8 @@ export const publicRoutes: RouteRecordRaw[] = [
       {
         path: "leaderboard",
         name: ROUTE_NAME.LEADERBOARD_PAGE,
-        component: () => import("@/modules/public/pages/LeaderboardPage.vue"),
+        component: () =>
+          import("@/modules/leaderboard/pages/LeaderboardPage.vue"),
       },
       {
         path: "contact",

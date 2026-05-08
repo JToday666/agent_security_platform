@@ -7,8 +7,8 @@
           <div class="evaluation-record-item__tags">
             <StatusTag kind="evaluation" :value="record.status" size="sm" />
             <StatusTag
-              kind="visibility"
-              :value="record.publicToLeaderboard"
+              kind="leaderboard"
+              :value="leaderboardStatus"
               size="sm"
             />
             <StatusTag kind="method" :value="record.submitMethod" size="sm" />
@@ -54,6 +54,7 @@ import Button from "@/shared/ui/actions/UiButton.vue";
 import StatusTag from "@/shared/ui/display/StatusTag.vue";
 import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
 import { getFinalizationReasonLabel } from "@/modules/evaluation/lib/evaluation-status";
+import { getEvaluationLeaderboardStatus } from "@/modules/evaluation/lib/evaluation-record-filters";
 
 const props = defineProps<{
   record: EvaluationRecord;
@@ -64,6 +65,9 @@ const detailTo = computed(() =>
 );
 
 const createdAt = computed(() => formatDateTimeLabel(props.record.createdAt));
+const leaderboardStatus = computed(() =>
+  getEvaluationLeaderboardStatus(props.record),
+);
 const finalizationReason = computed(() =>
   getFinalizationReasonLabel(props.record.finalizationReason),
 );

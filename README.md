@@ -14,13 +14,13 @@ Agent Security Platform 是面向 Agent API 的安全测试平台仓库，包含
 
 ## 仓库结构
 
-| 路径 | 职责 |
-| --- | --- |
+| 路径        | 职责                                                                               |
+| ----------- | ---------------------------------------------------------------------------------- |
 | `frontend/` | Vue + TypeScript 前端工程，包含页面、状态组合、共享 UI、前端 Mock API 和前端文档。 |
-| `backend/` | FastAPI 后端、数据库模型、业务模块、worker、迁移和后端测试。 |
-| `share/` | 前后端接口契约和补充说明。 |
-| `docs/` | 项目级设计说明、任务资料和参考文档。 |
-| `README.md` | 仓库入口、运行方式和文档入口。 |
+| `backend/`  | FastAPI 后端、数据库模型、业务模块、worker、迁移和后端测试。                       |
+| `share/`    | 前后端接口契约和补充说明。                                                         |
+| `docs/`     | 项目级设计说明、任务资料和参考文档。                                               |
+| `README.md` | 仓库入口、运行方式和文档入口。                                                     |
 
 ## 前端环境
 
@@ -28,11 +28,11 @@ Agent Security Platform 是面向 Agent API 的安全测试平台仓库，包含
 
 常用环境变量：
 
-| 变量 | 示例 | 说明 |
-| --- | --- | --- |
-| `VITE_API_BASE_URL` | `/api/v1` | 前端运行时 API 基地址。 |
-| `VITE_BACKEND_TARGET` | `http://127.0.0.1:8000` | Vite 开发代理目标。 |
-| `VITE_ENABLE_API_MOCK` | `false` | `true` 时使用前端 Mock 数据链路。 |
+| 变量                   | 示例                    | 说明                              |
+| ---------------------- | ----------------------- | --------------------------------- |
+| `VITE_API_BASE_URL`    | `/api/v1`               | 前端运行时 API 基地址。           |
+| `VITE_BACKEND_TARGET`  | `http://127.0.0.1:8000` | Vite 开发代理目标。               |
+| `VITE_ENABLE_API_MOCK` | `false`                 | `true` 时使用前端 Mock 数据链路。 |
 
 本地联调真实后端：
 
@@ -54,17 +54,17 @@ VITE_ENABLE_API_MOCK=true
 
 常用环境变量：
 
-| 变量 | 示例 | 说明 |
-| --- | --- | --- |
-| `PROJECT_NAME` | `Agent Security Platform` | FastAPI 应用标题。 |
-| `FASTAPI_HOST` | `127.0.0.1` | 本地监听地址。 |
-| `FASTAPI_PORT` | `8000` | 本地监听端口。 |
-| `POSTGRES_HOST` | `localhost` | PostgreSQL 主机。 |
-| `POSTGRES_PORT` | `5432` | PostgreSQL 端口。 |
-| `POSTGRES_DB` | `<your_db_name>` | 数据库名。 |
-| `POSTGRES_USER` | `postgres` | 数据库用户名。 |
-| `POSTGRES_PASSWORD` | `<your_db_password>` | 数据库密码。 |
-| `SQLALCHEMY_ECHO` | `false` | SQL 日志开关。 |
+| 变量                | 示例                      | 说明               |
+| ------------------- | ------------------------- | ------------------ |
+| `PROJECT_NAME`      | `Agent Security Platform` | FastAPI 应用标题。 |
+| `FASTAPI_HOST`      | `127.0.0.1`               | 本地监听地址。     |
+| `FASTAPI_PORT`      | `8000`                    | 本地监听端口。     |
+| `POSTGRES_HOST`     | `localhost`               | PostgreSQL 主机。  |
+| `POSTGRES_PORT`     | `5432`                    | PostgreSQL 端口。  |
+| `POSTGRES_DB`       | `<your_db_name>`          | 数据库名。         |
+| `POSTGRES_USER`     | `postgres`                | 数据库用户名。     |
+| `POSTGRES_PASSWORD` | `<your_db_password>`      | 数据库密码。       |
+| `SQLALCHEMY_ECHO`   | `false`                   | SQL 日志开关。     |
 
 ## 启动
 
@@ -128,6 +128,7 @@ uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
 - [frontend/README.md](./frontend/README.md)
 - [前端文档地图](./frontend/docs/01-总览/文档地图.md)
 - [前端架构说明](./frontend/docs/01-总览/前端架构说明.md)
+- [排行榜接口说明](./share/leaderboard接口.md)
 - [关键链路说明](./frontend/docs/04-流程/关键链路说明.md)
 - [backend/README.md](./backend/README.md)
 - [后端文档地图](./backend/docs/01-总览/文档地图.md)

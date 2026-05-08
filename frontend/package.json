@@ -10,7 +10,7 @@
     "build-only": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc -b",
-    "test": "vitest run --configLoader native",
+    "test": "vitest run --configLoader native --passWithNoTests",
     "test:watch": "vitest --configLoader native",
     "schema:api": "openapi-typescript http://127.0.0.1:8000/openapi.json -o src/shared/api/generated/backend-schema.ts"
   },

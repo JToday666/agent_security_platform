@@ -1,24 +1,24 @@
 <template>
-  <section class="action-card ui-surface-glass">
+  <section class="submit-summary">
     <div class="section-head">
       <h2>任务摘要</h2>
       <p>确认当前配置后即可创建评测任务。</p>
     </div>
 
-    <dl class="summary-grid">
-      <div class="summary-item">
+    <dl class="summary-list">
+      <div>
         <dt>智能体名称</dt>
         <dd>{{ agentName || "未选择" }}</dd>
       </div>
-      <div class="summary-item">
+      <div>
         <dt>提交方式</dt>
         <dd>{{ submitMethod === "docker" ? "Docker" : "API" }}</dd>
       </div>
-      <div class="summary-item">
+      <div>
         <dt>已选风险域</dt>
         <dd>{{ selectedCategoryCount }}</dd>
       </div>
-      <div class="summary-item">
+      <div>
         <dt>已选数据集</dt>
         <dd>{{ selectedDatasetCount }}</dd>
       </div>
@@ -28,22 +28,22 @@
       <h3>运行参数</h3>
     </div>
 
-    <dl class="summary-grid summary-grid--compact">
-      <div class="summary-item">
+    <dl class="summary-list summary-list--compact">
+      <div>
         <dt>难度</dt>
         <dd>{{ difficulty }}</dd>
       </div>
-      <div class="summary-item">
+      <div>
         <dt>超时</dt>
         <dd>{{ timeoutMinutes }} 分钟</dd>
       </div>
-      <div class="summary-item">
+      <div>
         <dt>最大步数</dt>
         <dd>{{ maxSteps }} 步</dd>
       </div>
-      <div class="summary-item">
-        <dt>公开结果</dt>
-        <dd>{{ publicToLeaderboard ? "公开" : "私有" }}</dd>
+      <div>
+        <dt>榜单展示</dt>
+        <dd>{{ leaderboardDisplayMode === "anonymous" ? "匿名" : "公开" }}</dd>
       </div>
     </dl>
 
@@ -70,7 +70,7 @@
       <InlineNotice tone="danger" :message="errorMessage" />
     </div>
 
-    <div class="action-row">
+    <div class="submit-actions">
       <UiButton variant="secondary" type="button" block @click="$emit('reset')">
         重置
       </UiButton>
@@ -91,6 +91,7 @@ import { computed } from "vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import UiTag from "@/shared/ui/display/UiTag.vue";
+import type { LeaderboardDisplayMode } from "@/shared/types/agent-types";
 
 defineEmits<{
   (event: "reset"): void;
@@ -106,7 +107,7 @@ const props = withDefaults(
     difficulty: number;
     timeoutMinutes: number;
     maxSteps: number;
-    publicToLeaderboard: boolean;
+    leaderboardDisplayMode: LeaderboardDisplayMode;
     submitting: boolean;
     canSubmit: boolean;
     errorMessage?: string;
@@ -126,13 +127,12 @@ const remainingCount = computed(
 </script>
 
 <style scoped lang="scss">
-.action-card {
-  max-height: calc(100vh - var(--nav-height) - 2.8rem);
-  border-radius: 1.2rem;
-  padding: 1rem 0.95rem;
+.submit-summary {
   display: flex;
   flex-direction: column;
-  gap: 0.82rem;
+  gap: 0.95rem;
+  min-width: 0;
+  padding-top: 0.25rem;
 }
 
 .section-head h2,
@@ -151,26 +151,28 @@ const remainingCount = computed(
   margin-top: 0;
 }
 
-.summary-grid {
+.summary-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.62rem;
+  gap: 0;
+  margin: 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
 
-.summary-item {
-  padding: 0.72rem 0.8rem;
-  border-radius: 0.95rem;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(148, 163, 184, 0.14);
+.summary-list div {
+  min-width: 0;
+  padding: 0.72rem 0.65rem 0.72rem 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
 }
 
-.summary-item dt {
+.summary-list dt {
   color: var(--color-text-subtle);
   font-size: 0.82rem;
 }
 
-.summary-item dd {
+.summary-list dd {
   margin: 0.32rem 0 0;
+  overflow-wrap: anywhere;
   color: var(--color-text-dark);
   font-size: 0.92rem;
   font-weight: 700;
@@ -194,19 +196,16 @@ const remainingCount = computed(
   gap: 0.55rem;
 }
 
-.action-row {
+.submit-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
+  padding-top: 0.2rem;
 }
 
 @media (max-width: 768px) {
-  .action-card {
-    max-height: none;
-  }
-
-  .summary-grid,
-  .action-row {
+  .summary-list,
+  .submit-actions {
     grid-template-columns: 1fr;
     flex-direction: column;
   }

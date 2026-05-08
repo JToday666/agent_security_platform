@@ -39,9 +39,9 @@ withDefaults(
 .metric-stat__value {
   display: block;
   color: var(--color-text-dark);
-  font-size: clamp(1.42rem, 2.8vw, 2.1rem);
+  font-size: 1.8rem;
   line-height: 1.02;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .metric-stat__description {

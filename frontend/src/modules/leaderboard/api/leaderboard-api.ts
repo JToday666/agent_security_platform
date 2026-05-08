@@ -3,7 +3,7 @@ import request from "@/shared/api/http-client";
 import type {
   LeaderboardEntry,
   LeaderboardSnapshot,
-} from "@/shared/types/leaderboard-types";
+} from "@/modules/leaderboard/types/leaderboard-types";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -48,13 +48,10 @@ const adaptLeaderboardEntry = (value: unknown): LeaderboardEntry => {
 
   return {
     rankNo: toPositiveInteger(readField(candidate, "rankNo", "rank_no")),
-    agentId: toStringValue(readField(candidate, "agentId", "agent_id")),
-    agentName:
-      toStringValue(readField(candidate, "agentName", "agent_name")) ||
+    displayName:
+      toStringValue(readField(candidate, "displayName", "display_name")) ||
       "未命名 Agent",
-    evaluationId: toStringValue(
-      readField(candidate, "evaluationId", "evaluation_id"),
-    ),
+    anonymous: Boolean(readField(candidate, "anonymous", "anonymous")),
     officialConservativeScore: toScore(
       readField(
         candidate,
@@ -72,14 +69,6 @@ const adaptLeaderboardEntry = (value: unknown): LeaderboardEntry => {
       readField(candidate, "unsafeRiskScore", "unsafe_risk_score"),
     ),
     confidence: toScore(readField(candidate, "confidence", "confidence")),
-    verificationTier:
-      toStringValue(
-        readField(candidate, "verificationTier", "verification_tier"),
-      ) || "未认证",
-    safetyCertification:
-      toStringValue(
-        readField(candidate, "safetyCertification", "safety_certification"),
-      ) || "未返回",
     totalSamples: toPositiveInteger(
       readField(candidate, "totalSamples", "total_samples"),
     ),
@@ -95,9 +84,6 @@ export const adaptLeaderboardSnapshot = (
     : [];
 
   return {
-    snapshotCode:
-      toStringValue(readField(candidate, "snapshotCode", "snapshot_code")) ||
-      "latest",
     entryCount:
       toPositiveInteger(readField(candidate, "entryCount", "entry_count")) ||
       entries.length,
@@ -122,7 +108,7 @@ const getLiveLeaderboardSnapshot = async (): Promise<LeaderboardSnapshot> => {
 
 const getMockLeaderboardSnapshot = async (): Promise<LeaderboardSnapshot> => {
   const { mockLeaderboardSnapshot } =
-    await import("@/modules/public/mock/leaderboard-fixtures");
+    await import("@/modules/leaderboard/mock/leaderboard-fixtures");
   return adaptLeaderboardSnapshot(mockLeaderboardSnapshot);
 };
 

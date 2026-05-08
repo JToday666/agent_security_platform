@@ -3,12 +3,12 @@
     <PageHero
       eyebrow="404"
       title="页面未找到"
-      description="当前地址不在系统支持范围内，请从导航或下方入口重新进入。"
+      description="当前地址暂不可访问，请从导航或下方入口重新进入。"
       align="center"
     />
 
     <SectionBlock
-      class="not-found-card layout-page-panel layout-page-panel--md"
+      class="not-found-section"
       title="可用入口"
       description="您可以返回首页，或从评测目录重新开始浏览。"
     >
@@ -32,17 +32,17 @@ import UiButton from "@/shared/ui/actions/UiButton.vue";
 </script>
 
 <style scoped lang="scss">
-.not-found-card {
+.not-found-section {
   gap: 0.9rem;
 }
 
-.not-found-card :deep(.section-block__head),
-.not-found-card :deep(.section-block__copy) {
+.not-found-section :deep(.section-block__head),
+.not-found-section :deep(.section-block__copy) {
   align-items: center;
   text-align: center;
 }
 
-.not-found-card :deep(.section-block__actions) {
+.not-found-section :deep(.section-block__actions) {
   justify-content: center;
 }
 </style>

@@ -1,4 +1,4 @@
-import type { LeaderboardEntry } from "@/shared/types/leaderboard-types";
+import type { LeaderboardEntry } from "@/modules/leaderboard/types/leaderboard-types";
 
 export type LeaderboardSortKey =
   | "officialConservativeScore"
@@ -20,12 +20,6 @@ export interface LeaderboardSortOption {
   label: string;
   shortLabel: string;
   defaultDirection: LeaderboardSortDirection;
-}
-
-export interface LeaderboardCertificationView {
-  tierLabel: string;
-  certificationLabel: string;
-  tone: "brand" | "success" | "warning" | "danger" | "muted";
 }
 
 export const LEADERBOARD_SORT_OPTIONS: LeaderboardSortOption[] = [
@@ -58,27 +52,6 @@ export const LEADERBOARD_SORT_OPTIONS: LeaderboardSortOption[] = [
 export const DEFAULT_LEADERBOARD_SORT: LeaderboardSortState = {
   key: "officialConservativeScore",
   direction: "desc",
-};
-
-const TIER_LABELS: Record<string, string> = {
-  verified: "已验证",
-  provisional: "临时验证",
-  exploratory: "探索验证",
-};
-
-const CERTIFICATION_LABELS: Record<string, string> = {
-  certified: "安全认证",
-  watchlist: "观察名单",
-  blocked: "阻断",
-};
-
-const CERTIFICATION_TONES: Record<
-  string,
-  LeaderboardCertificationView["tone"]
-> = {
-  certified: "success",
-  watchlist: "warning",
-  blocked: "danger",
 };
 
 const normalizeScore = (value: number): number =>
@@ -136,19 +109,4 @@ export const getLeaderboardRankTone = (rankNo: number): LeaderboardRankTone => {
   if (rankNo === 2) return "silver";
   if (rankNo === 3) return "bronze";
   return "base";
-};
-
-export const getLeaderboardCertificationView = (
-  verificationTier: string,
-  safetyCertification: string,
-): LeaderboardCertificationView => {
-  const tier = verificationTier.trim();
-  const certification = safetyCertification.trim();
-
-  return {
-    tierLabel: TIER_LABELS[tier] ?? (tier || "未认证"),
-    certificationLabel:
-      CERTIFICATION_LABELS[certification] ?? (certification || "未返回"),
-    tone: CERTIFICATION_TONES[certification] ?? "muted",
-  };
 };

@@ -19,7 +19,11 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { EvaluationStatus, SubmitMethod } from "@/shared/types/agent-types";
+import type {
+  EvaluationStatus,
+  LeaderboardVisibilityStatus,
+  SubmitMethod,
+} from "@/shared/types/agent-types";
 import AppIcon from "../branding/AppIcon.vue";
 import Tag from "./UiTag.vue";
 import {
@@ -27,12 +31,23 @@ import {
   getEvaluationStatusTone,
 } from "@/modules/evaluation/lib/evaluation-status";
 
-type StatusTagKind = "evaluation" | "visibility" | "method" | "report";
+type StatusTagKind =
+  | "evaluation"
+  | "leaderboard"
+  | "method"
+  | "report";
 
 const props = withDefaults(
   defineProps<{
     kind: StatusTagKind;
-    value: EvaluationStatus | SubmitMethod | "available" | "pending" | "missing" | boolean;
+    value:
+      | EvaluationStatus
+      | SubmitMethod
+      | LeaderboardVisibilityStatus
+      | "available"
+      | "pending"
+      | "missing"
+      | boolean;
     size?: "sm" | "md";
     iconOnly?: boolean;
   }>(),
@@ -78,10 +93,17 @@ const resolved = computed(() => {
     };
   }
 
-  if (props.kind === "visibility") {
-    return props.value
-      ? { label: "公开", tone: "brand" as const, icon: "lucide:globe" }
-      : { label: "私有", tone: "muted" as const, icon: "lucide:lock" };
+  if (props.kind === "leaderboard") {
+    const value = props.value as LeaderboardVisibilityStatus;
+    if (value === "anonymous") {
+      return { label: "匿名", tone: "info" as const, icon: "lucide:shield-question" };
+    }
+
+    if (value === "unranked") {
+      return { label: "未排行", tone: "muted" as const, icon: "lucide:list-x" };
+    }
+
+    return { label: "公开", tone: "brand" as const, icon: "lucide:globe" };
   }
 
   if (props.kind === "method") {

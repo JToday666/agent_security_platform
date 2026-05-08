@@ -55,24 +55,31 @@ const handleSelect = (option: ChoiceOption<T>) => {
 .ui-choice-card-group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.9rem;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 0.5rem;
 }
 
 .ui-choice-card-group__item {
   padding: 1rem 1.05rem;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 1.25rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.92));
+  border: 0;
+  border-right: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.56);
   text-align: left;
   cursor: pointer;
   transition:
-    transform var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard);
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.ui-choice-card-group__item:last-child {
+  border-right: 0;
 }
 
 .ui-choice-card-group__item:hover {
-  transform: translateY(-2px);
+  background: rgba(239, 246, 255, 0.62);
 }
 
 .ui-choice-card-group__item:disabled {
@@ -80,9 +87,8 @@ const handleSelect = (option: ChoiceOption<T>) => {
 }
 
 .ui-choice-card-group__item--active {
-  border-color: rgba(99, 102, 241, 0.24);
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.08));
-  box-shadow: 0 18px 30px -20px rgba(79, 70, 229, 0.42);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.08));
+  color: var(--color-primary);
 }
 
 .ui-choice-card-group__item--disabled {
@@ -92,7 +98,7 @@ const handleSelect = (option: ChoiceOption<T>) => {
 }
 
 .ui-choice-card-group__item--disabled:hover {
-  transform: none;
+  background: rgba(248, 250, 252, 0.72);
 }
 
 .ui-choice-card-group__head {
@@ -120,5 +126,20 @@ const handleSelect = (option: ChoiceOption<T>) => {
   margin-top: 0.45rem;
   color: var(--color-text-subtle);
   line-height: 1.65;
+}
+
+@media (max-width: 640px) {
+  .ui-choice-card-group {
+    grid-template-columns: 1fr;
+  }
+
+  .ui-choice-card-group__item {
+    border-right: 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  .ui-choice-card-group__item:last-child {
+    border-bottom: 0;
+  }
 }
 </style>

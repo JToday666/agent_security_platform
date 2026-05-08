@@ -2,7 +2,6 @@
   <SectionBlock
     title="筛选与排序"
     description="按风险域、名称和排序方式快速定位目标数据集。"
-    surface="panel"
   >
     <div class="toolbar">
       <FormField

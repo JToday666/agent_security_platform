@@ -1,6 +1,6 @@
 # 公共页面与共享 UI 说明
 
-本文档说明 `src/modules/public/` 与 `src/shared/ui/` 的职责边界，以及共享 UI 的分类与使用原则。
+本文档说明 `src/modules/public/`、`src/modules/leaderboard/` 与 `src/shared/ui/` 的职责边界，以及共享 UI 的分类与使用原则。
 
 ## 1. 公共页面模块
 
@@ -8,16 +8,12 @@
 
 ### 1.1 页面文件
 
-| 文件                                      | 职责                                         |
-| ----------------------------------------- | -------------------------------------------- |
-| `pages/HomePage.vue`                      | 首页，展示平台入口、Hero 动效与四步流程引导  |
-| `pages/ContactPage.vue`                   | 联系方式页面                                 |
-| `pages/LeaderboardPage.vue`               | 排行榜页面容器，加载当前排行榜并拼装展示组件 |
-| `pages/NotFoundPage.vue`                  | 404 页面                                     |
-| `components/HomeWorkflowStep.vue`         | 首页流程卡片，展示四步引导                   |
-| `components/LeaderboardChampionPanel.vue` | 排行榜第一名重点展示区                       |
-| `components/LeaderboardScoreSummary.vue`  | 当前排序结果的分数摘要                       |
-| `components/LeaderboardTable.vue`         | 排行榜表格、表头排序和认证状态展示           |
+| 文件                              | 职责                                        |
+| --------------------------------- | ------------------------------------------- |
+| `pages/HomePage.vue`              | 首页，展示平台入口、Hero 动效与四步流程引导 |
+| `pages/ContactPage.vue`           | 联系方式页面                                |
+| `pages/NotFoundPage.vue`          | 404 页面                                    |
+| `components/HomeWorkflowStep.vue` | 首页流程卡片，展示四步引导                  |
 
 ### 1.2 HomePage 的重点逻辑
 
@@ -34,9 +30,23 @@
 - “欢迎回来”工作台快捷区
 - 首页上的退出登录确认逻辑
 
-### 1.3 LeaderboardPage 的数据与视图
+## 2. 排行榜模块
 
-排行榜页面只读取 `src/modules/public/api/leaderboard-api.ts` 暴露的 `getLeaderboardSnapshot()`。真实后端模式下，该方法请求：
+`src/modules/leaderboard/` 承担排行榜页面、当前快照读取、匿名展示和本地排序。
+
+| 文件                                      | 职责                                    |
+| ----------------------------------------- | --------------------------------------- |
+| `pages/LeaderboardPage.vue`               | 排行榜页面容器，加载当前榜单并拼装组件  |
+| `api/leaderboard-api.ts`                  | 请求 `/leaderboards/current` 并适配字段 |
+| `components/LeaderboardChampionPanel.vue` | 第一名重点展示区                        |
+| `components/LeaderboardScoreSummary.vue`  | 当前榜单分数摘要                        |
+| `components/LeaderboardTable.vue`         | 排行榜表格和表头排序                    |
+| `composables/useLeaderboardPage.ts`       | 加载、刷新与错误状态                    |
+| `lib/leaderboard-view.ts`                 | 排序、分数格式化和奖牌色调              |
+
+### 2.1 LeaderboardPage 的数据与视图
+
+排行榜页面只读取 `src/modules/leaderboard/api/leaderboard-api.ts` 暴露的 `getLeaderboardSnapshot()`。真实后端模式下，该方法请求：
 
 ```text
 GET /leaderboards/current
@@ -44,22 +54,20 @@ GET /leaderboards/current
 
 页面使用的字段来自后端当前排行榜快照：
 
-- `snapshotCode`
 - `entryCount`
 - `entries[].rankNo`
-- `entries[].agentId`
-- `entries[].agentName`
-- `entries[].evaluationId`
+- `entries[].displayName`
+- `entries[].anonymous`
 - `entries[].officialConservativeScore`
 - `entries[].safeCapabilityScore`
 - `entries[].highDifficultyScore`
 - `entries[].unsafeRiskScore`
 - `entries[].confidence`
-- `entries[].verificationTier`
-- `entries[].safetyCertification`
 - `entries[].totalSamples`
 
-`LeaderboardPage.vue` 只负责页面壳、加载态、错误态和组件拼装。加载、刷新与错误处理在 `composables/useLeaderboardPage.ts` 中收口；排序、分数格式化、奖牌色调和认证展示在 `lib/leaderboard-view.ts` 中收口。
+接口响应中的 `snapshotCode`、`verificationTier`、`safetyCertification` 不进入页面展示。匿名条目只使用 `displayName` 和 `anonymous`，不展示真实 `agentId` 或真实名称。
+
+`LeaderboardPage.vue` 只负责页面壳、加载态、错误态和组件拼装。加载、刷新与错误处理在 `composables/useLeaderboardPage.ts` 中收口；排序、分数格式化和奖牌色调在 `lib/leaderboard-view.ts` 中收口。
 
 排行榜表头支持四类分数排序：
 
@@ -72,26 +80,26 @@ GET /leaderboards/current
 
 前三名使用独立奖牌色调：金牌、银牌、铜牌分别对应 `gold / silver / bronze`，其余名次使用基础色调。当前第一名会在 `LeaderboardChampionPanel.vue` 中居中展示综合分、安全能力、高难分和风险分。
 
-## 2. 共享 UI 的定位
+## 3. 共享 UI 的定位
 
 `src/shared/ui/` 的目标不是提供通用样式片段，而是提供可在多个模块复用的业务无关组件。
 
 当前按用途分为六类：
 
-### 2.1 actions
+### 3.1 actions
 
 | 文件                   | 职责                                                         |
 | ---------------------- | ------------------------------------------------------------ |
 | `actions/UiButton.vue` | 统一按钮组件，兼容普通按钮、链接按钮、图标、加载态、块级模式 |
 
-### 2.2 branding
+### 3.2 branding
 
 | 文件                     | 职责                                        |
 | ------------------------ | ------------------------------------------- |
 | `branding/AppIcon.vue`   | 对 Iconify 的统一薄封装，是前端图标复用入口 |
 | `branding/BrandLogo.vue` | 品牌 Logo 组件                              |
 
-### 2.3 display
+### 3.3 display
 
 | 文件                     | 职责                             |
 | ------------------------ | -------------------------------- |
@@ -99,7 +107,7 @@ GET /leaderboards/current
 | `display/StatusTag.vue`  | 评测状态标签，结合状态规则做展示 |
 | `display/UiTag.vue`      | 基础标签组件                     |
 
-### 2.4 feedback
+### 3.4 feedback
 
 | 文件                          | 职责                                               |
 | ----------------------------- | -------------------------------------------------- |
@@ -107,7 +115,7 @@ GET /leaderboards/current
 | `feedback/InlineNotice.vue`   | 行内提示                                           |
 | `feedback/PageStatePanel.vue` | 统一的加载 / 空态 / 错误态页面容器，适合页面级状态 |
 
-### 2.5 forms
+### 3.5 forms
 
 | 文件                          | 职责                                                   |
 | ----------------------------- | ------------------------------------------------------ |
@@ -116,14 +124,14 @@ GET /leaderboards/current
 | `forms/UiSelect.vue`          | 下拉选择器                                             |
 | `forms/UiToggleField.vue`     | 布尔开关字段                                           |
 
-### 2.6 page
+### 3.6 page
 
 | 文件                    | 职责             |
 | ----------------------- | ---------------- |
 | `page/PageHero.vue`     | 平铺页面头部容器 |
 | `page/SectionBlock.vue` | 通用内容分区容器 |
 
-## 3. 共享 UI 使用边界
+## 4. 共享 UI 使用边界
 
 共享 UI 组件应满足以下条件才适合放入 `src/shared/ui/`：
 
@@ -138,13 +146,13 @@ GET /leaderboards/current
 
 这些组件应继续留在各自模块的 `components/` 内。
 
-## 4. 页面文案对齐
+## 5. 页面文案对齐
 
 公共展示页可使用 `PageHero align="center"` 居中页面标题与说明。当前联系页、排行榜页、404 页采用居中头部。
 
 工作台、表单、详情、记录和筛选类页面默认保持左对齐，便于扫描内容和执行操作。
 
-## 5. 与 app 样式体系的关系
+## 6. 与 app 样式体系的关系
 
 共享 UI 的视觉基础并不写死在组件内部，而是建立在 `src/app/styles/` 的全局样式体系之上。
 

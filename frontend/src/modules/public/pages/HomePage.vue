@@ -306,7 +306,7 @@ onBeforeUnmount(() => {
 }
 
 .hero-logo {
-  width: clamp(4.15rem, 7.4vw, 5.4rem);
+  width: 5rem;
   flex-shrink: 0;
   filter: drop-shadow(0 12px 28px rgba(79, 70, 229, 0.14));
 }
@@ -315,9 +315,9 @@ onBeforeUnmount(() => {
   margin: 0;
   min-height: 1.22em;
   padding-block: 0.08em 0.12em;
-  font-size: clamp(3.45rem, 7.3vw, 6.3rem);
+  font-size: 5.25rem;
   line-height: 1.02;
-  letter-spacing: -0.075em;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 
@@ -333,7 +333,7 @@ onBeforeUnmount(() => {
   margin: 0 auto;
   max-width: min(72ch, 760px);
   color: rgba(71, 85, 105, 0.96);
-  font-size: clamp(1.02rem, 1.35vw, 1.12rem);
+  font-size: 1.08rem;
   font-weight: 500;
   line-height: 1.68;
   text-align: center;
@@ -426,9 +426,9 @@ onBeforeUnmount(() => {
 }
 
 .hero-anchor__title {
-  font-size: clamp(1.8rem, 3.5vw, 2.9rem);
+  font-size: 2.35rem;
   font-weight: 800;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
 }
 
 .hero-anchor__description {
@@ -476,7 +476,7 @@ onBeforeUnmount(() => {
 
   .hero-title {
     min-height: 1.18em;
-    font-size: clamp(2.7rem, 14vw, 4.2rem);
+    font-size: 3rem;
   }
 
   .hero-description {

@@ -68,15 +68,14 @@
 
       <DatasetResourcesList :resources="detail.resources" />
 
-      <SectionBlock title="媒体资料" surface="panel">
+      <SectionBlock title="媒体资料">
         <DatasetMediaGallery :media="detail.media" />
       </SectionBlock>
 
       <SectionBlock
-        class="cta-card"
+        class="cta-section"
         title="准备发起评测"
         description="当前数据集选定后，可直接进入提交页继续配置智能体接入方式与运行参数。"
-        surface="panel"
       >
         <template #actions>
           <UiButton
@@ -200,17 +199,17 @@ onMounted(async () => {
   line-height: 1.85;
 }
 
-.cta-card :deep(.section-block__head) {
+.cta-section :deep(.section-block__head) {
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.cta-card :deep(.section-block__copy) {
+.cta-section :deep(.section-block__copy) {
   max-width: 34rem;
 }
 
-.cta-card :deep(.section-block__actions) {
+.cta-section :deep(.section-block__actions) {
   width: 100%;
   justify-content: center;
 }

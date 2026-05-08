@@ -1,4 +1,5 @@
 import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
+import { getEvaluationLeaderboardStatus } from "@/modules/evaluation/lib/evaluation-record-filters";
 import type {
   EvaluationDetail,
   EvaluationReportPayload,
@@ -49,6 +50,18 @@ const formatOptionalDateTime = (value?: string | null): string =>
 
 const formatRate = (value: number): string => `${Math.round(value)}%`;
 
+export const getLeaderboardStatusLabel = (
+  detail: Pick<
+    EvaluationDetail,
+    "publicToLeaderboard" | "leaderboardDisplayMode"
+  >,
+): string => {
+  const status = getEvaluationLeaderboardStatus(detail);
+  if (status === "anonymous") return "匿名";
+  if (status === "unranked") return "未排行";
+  return "公开";
+};
+
 export const resolveEvaluationScoreTone = (
   score: number | null,
 ): EvaluationDetailTone => {
@@ -71,7 +84,7 @@ export const getEvaluationScoreCaption = (detail: EvaluationDetail): string => {
     return "报告未生成";
   }
 
-  return detail.publicToLeaderboard ? "公开结果" : "私有结果";
+  return getLeaderboardStatusLabel(detail);
 };
 
 export const getEvaluationReportTagValue = (
@@ -184,8 +197,8 @@ export const buildEvaluationDetailGroups = (
     items: [
       { label: "提交方式", value: detail.submitMethod.toUpperCase() },
       {
-        label: "排行榜可见性",
-        value: detail.publicToLeaderboard ? "公开" : "私有",
+        label: "榜单状态",
+        value: getLeaderboardStatusLabel(detail),
       },
       { label: "当前状态", value: detail.progress.statusText },
     ],

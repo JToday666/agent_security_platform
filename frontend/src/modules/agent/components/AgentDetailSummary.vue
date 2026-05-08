@@ -1,5 +1,5 @@
 <template>
-  <SectionBlock title="状态摘要" surface="panel">
+  <SectionBlock title="状态摘要">
     <dl class="summary-grid">
       <div
         v-for="item in items"

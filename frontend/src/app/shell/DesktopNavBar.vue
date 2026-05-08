@@ -66,7 +66,9 @@
         @profile="$emit('profile')"
         @avatar-error="$emit('avatar-error')"
       />
+    </div>
 
+    <div class="nav-menu-zone">
       <button
         class="menu-toggle"
         type="button"
@@ -115,6 +117,8 @@ defineEmits<{
 </script>
 
 <style scoped lang="scss">
+$NAV_BREAKPOINT_TABLET: 1120px;
+
 .nav-container {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
@@ -158,7 +162,7 @@ defineEmits<{
   color: var(--color-text-dark);
   font-size: 1.02rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -251,6 +255,13 @@ defineEmits<{
   gap: 0.75rem;
 }
 
+.nav-menu-zone {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  margin-left: auto;
+}
+
 .cta-btn {
   white-space: nowrap;
 }
@@ -299,7 +310,7 @@ defineEmits<{
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: $NAV_BREAKPOINT_TABLET) {
   .nav-container {
     display: flex;
     gap: 0.75rem;
@@ -307,13 +318,12 @@ defineEmits<{
   }
 
   .nav-links,
-  .cta-btn {
+  .nav-actions {
     display: none;
   }
 
   .menu-toggle {
     display: inline-flex;
-    margin-left: auto;
   }
 }
 

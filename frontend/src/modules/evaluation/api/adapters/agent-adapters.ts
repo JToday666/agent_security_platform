@@ -61,6 +61,30 @@ const toNumberValue = (value: unknown, fallback = 0): number => {
 const toBooleanValue = (value: unknown, fallback = false): boolean =>
   typeof value === "boolean" ? value : fallback;
 
+const normalizeLeaderboardDisplayMode = (
+  value: unknown,
+  fallback: "public" | "anonymous" = "public",
+): "public" | "anonymous" => {
+  const candidate = toStringValue(value);
+  return candidate === "anonymous" || candidate === "public"
+    ? candidate
+    : fallback;
+};
+
+const normalizeLeaderboardDisplayOptions = (
+  value: unknown,
+): Array<"public" | "anonymous"> => {
+  if (!Array.isArray(value)) {
+    return ["public", "anonymous"];
+  }
+
+  const options = value
+    .map((item) => normalizeLeaderboardDisplayMode(item, "public"))
+    .filter((item, index, array) => array.indexOf(item) === index);
+
+  return options.length > 0 ? options : ["public", "anonymous"];
+};
+
 const toStringArray = (value: unknown): string[] =>
   Array.isArray(value)
     ? value.map((item) => toStringValue(item)).filter((item) => item.length > 0)
@@ -174,10 +198,23 @@ export const adaptSubmitMeta = (value: unknown): SubmitMetaResponse => {
       step: 1,
       default: 30,
     }),
-    publicToLeaderboard: {
-      default: toBooleanValue(
-        (candidate.publicToLeaderboard as UnknownRecord | undefined)?.default,
-        true,
+    publicToLeaderboard:
+      candidate.publicToLeaderboard && typeof candidate.publicToLeaderboard === "object"
+        ? {
+            default: toBooleanValue(
+              (candidate.publicToLeaderboard as UnknownRecord).default,
+              true,
+            ),
+          }
+        : undefined,
+    leaderboardDisplayMode: {
+      default: normalizeLeaderboardDisplayMode(
+        (candidate.leaderboardDisplayMode as UnknownRecord | undefined)?.default,
+        "public",
+      ),
+      options: normalizeLeaderboardDisplayOptions(
+        (candidate.leaderboardDisplayMode as UnknownRecord | undefined)
+          ?.options,
       ),
     },
   };
@@ -360,6 +397,10 @@ export const adaptEvaluationRecord = (value: unknown): EvaluationRecord => {
       candidate.finalizationReason,
     ),
     publicToLeaderboard: toBooleanValue(candidate.publicToLeaderboard),
+    leaderboardDisplayMode: normalizeLeaderboardDisplayMode(
+      candidate.leaderboardDisplayMode,
+      "public",
+    ),
     datasetIds,
     datasetNames,
     submitMethod:

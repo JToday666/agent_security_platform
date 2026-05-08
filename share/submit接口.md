@@ -31,8 +31,9 @@ GET /api/v1/evaluations/meta
       "max": 100,
       "default": 30
     },
-    "publicToLeaderboard": {
-      "default": true
+    "leaderboardDisplayMode": {
+      "default": "public",
+      "options": ["public", "anonymous"]
     }
   }
 }
@@ -56,9 +57,18 @@ POST /api/v1/evaluations/validate
     "timeoutMinutes": 20,
     "maxSteps": 30
   },
-  "publicToLeaderboard": false
+  "leaderboardDisplayMode": "public"
 }
 ```
+
+### 排行榜展示模式
+
+新提交不再使用 `publicToLeaderboard=false` 表示不进榜。创建评测时必须使用 `leaderboardDisplayMode` 表达榜单展示方式：
+
+| 值        | 含义                               |
+| --------- | ---------------------------------- |
+| public    | 成绩进入排行榜，展示智能体公开名称 |
+| anonymous | 成绩进入排行榜，只展示匿名身份     |
 
 ### Docker 方式请求
 
@@ -78,7 +88,7 @@ POST /api/v1/evaluations/validate
     "timeoutMinutes": 20,
     "maxSteps": 30
   },
-  "publicToLeaderboard": false
+  "leaderboardDisplayMode": "anonymous"
 }
 ```
 
@@ -132,7 +142,7 @@ POST /api/v1/evaluations
     "timeoutMinutes": 20,
     "maxSteps": 30
   },
-  "publicToLeaderboard": false
+  "leaderboardDisplayMode": "public"
 }
 ```
 
@@ -155,7 +165,7 @@ POST /api/v1/evaluations
     "timeoutMinutes": 20,
     "maxSteps": 30
   },
-  "publicToLeaderboard": false
+  "leaderboardDisplayMode": "anonymous"
 }
 ```
 

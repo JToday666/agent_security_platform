@@ -15,7 +15,7 @@
       <article
         v-for="item in contactItems"
         :key="item.title"
-        class="contact-item ui-surface-white ui-hover-card"
+        class="contact-item"
       >
         <div class="contact-item__head">
           <span class="contact-icon-shell">
@@ -131,7 +131,7 @@ const contactItems: ContactItem[] = [
 }
 
 .contact-logo {
-  width: clamp(3.8rem, 8vw, 4.4rem);
+  width: 4.2rem;
 }
 
 .contact-grid {
@@ -152,7 +152,7 @@ const contactItems: ContactItem[] = [
   gap: 0.9rem;
   min-height: 196px;
   padding: 1.35rem 1.1rem;
-  border-radius: 1.3rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
   text-align: center;
 }
 

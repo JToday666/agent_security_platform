@@ -1,8 +1,7 @@
 <template>
   <section
-    class="section-block layout-section-card"
+    class="section-block"
     :class="[
-      `section-block--${surface}`,
       { 'section-block--compact': compact },
     ]"
   >
@@ -34,13 +33,11 @@ withDefaults(
     title?: string;
     description?: string;
     compact?: boolean;
-    surface?: "line" | "panel";
   }>(),
   {
     title: "",
     description: "",
     compact: false,
-    surface: "line",
   },
 );
 </script>
@@ -50,33 +47,12 @@ withDefaults(
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 .section-block--compact {
   gap: 0.82rem;
-}
-
-.section-block--panel {
-  padding: 1.5rem;
-  position: relative;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.88) 0%,
-    rgba(255, 255, 255, 0.72) 100%
-  );
-  backdrop-filter: blur(var(--blur-12));
-  -webkit-backdrop-filter: blur(var(--blur-12));
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  border-radius: var(--radius-card-md);
-  box-shadow: var(--shadow-glass-card);
-  transition: transform var(--duration-base) var(--ease-standard),
-              box-shadow var(--duration-base) var(--ease-standard);
-}
-
-.section-block--panel:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 28px 56px -24px rgba(15, 23, 42, 0.18),
-              0 0 0 1px rgba(255, 255, 255, 0.95) inset;
 }
 
 .section-block__head {
@@ -115,10 +91,6 @@ withDefaults(
   gap: 1rem;
 }
 
-.section-block--panel .section-block__head {
-  gap: 1.25rem;
-}
-
 @media (max-width: 768px) {
   .section-block__head {
     flex-direction: column;
@@ -128,8 +100,5 @@ withDefaults(
     width: 100%;
   }
 
-  .section-block--panel {
-    padding: 1rem;
-  }
 }
 </style>

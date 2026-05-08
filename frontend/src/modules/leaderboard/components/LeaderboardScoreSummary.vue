@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import { formatLeaderboardScore } from "@/modules/public/lib/leaderboard-view";
-import type { LeaderboardEntry } from "@/shared/types/leaderboard-types";
+import { formatLeaderboardScore } from "@/modules/leaderboard/lib/leaderboard-view";
+import type { LeaderboardEntry } from "@/modules/leaderboard/types/leaderboard-types";
 
 defineProps<{
   entryCount: number;

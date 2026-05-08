@@ -1,7 +1,7 @@
 <template>
   <SectionBlock
     title="筛选记录"
-    description="按关键词、状态、可见性和提交方式筛选记录。"
+    description="按关键词、任务状态、榜单状态和提交方式筛选记录。"
     surface="line"
   >
     <div class="filter-grid">
@@ -26,11 +26,11 @@
       />
 
       <FormField
-        label="可见性"
+        label="榜单状态"
         :model-value="visibility"
         type="select"
         :options="visibilityOptions"
-        leading-icon="lucide:eye"
+        leading-icon="lucide:list-filter"
         appearance="soft"
         @update:model-value="handleVisibilityChange"
       />
@@ -83,9 +83,10 @@ const statusOptions: Array<{ label: string; value: EvaluationRecordFilterStatus 
 ];
 
 const visibilityOptions: Array<{ label: string; value: EvaluationRecordFilterVisibility }> = [
-  { label: "全部可见性", value: "all" },
+  { label: "全部榜单状态", value: "all" },
   { label: "公开", value: "public" },
-  { label: "私有", value: "private" },
+  { label: "匿名", value: "anonymous" },
+  { label: "未排行", value: "unranked" },
 ];
 
 const methodOptions: Array<{ label: string; value: EvaluationRecordFilterMethod }> = [

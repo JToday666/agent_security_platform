@@ -241,7 +241,7 @@
             @click="$emit('set-custom-fields-choice', 'skip')"
           >
             <strong>不添加固定字段</strong>
-            <span>请求体仅包含平台字段映射。</span>
+            <span>仅使用上一步配置的任务字段。</span>
           </button>
         </div>
 
@@ -456,7 +456,7 @@ const visibleOutputMappingItems = computed(() => {
 .agent-register-step__head h2 {
   margin: 0;
   color: var(--color-text-dark);
-  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  font-size: 1.65rem;
   line-height: 1.2;
 }
 

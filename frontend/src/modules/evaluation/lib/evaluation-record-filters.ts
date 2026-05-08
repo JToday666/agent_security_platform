@@ -1,11 +1,14 @@
 import type {
   EvaluationRecord,
   EvaluationStatus,
+  LeaderboardVisibilityStatus,
   SubmitMethod,
 } from "@/shared/types/agent-types";
 
 export type EvaluationRecordFilterStatus = "all" | EvaluationStatus;
-export type EvaluationRecordFilterVisibility = "all" | "public" | "private";
+export type EvaluationRecordFilterVisibility =
+  | "all"
+  | LeaderboardVisibilityStatus;
 export type EvaluationRecordFilterMethod = "all" | SubmitMethod;
 
 export interface EvaluationRecordFilters {
@@ -16,6 +19,21 @@ export interface EvaluationRecordFilters {
 }
 
 const normalizeSearch = (value: string): string => value.trim().toLowerCase();
+
+export const getEvaluationLeaderboardStatus = (
+  record: Pick<
+    EvaluationRecord,
+    "publicToLeaderboard" | "leaderboardDisplayMode"
+  >,
+): LeaderboardVisibilityStatus => {
+  if (!record.publicToLeaderboard) {
+    return "unranked";
+  }
+
+  return record.leaderboardDisplayMode === "anonymous"
+    ? "anonymous"
+    : "public";
+};
 
 export const filterEvaluationRecords = (
   records: EvaluationRecord[],
@@ -28,11 +46,10 @@ export const filterEvaluationRecords = (
       return false;
     }
 
-    if (filters.visibility === "public" && !record.publicToLeaderboard) {
-      return false;
-    }
-
-    if (filters.visibility === "private" && record.publicToLeaderboard) {
+    if (
+      filters.visibility !== "all" &&
+      getEvaluationLeaderboardStatus(record) !== filters.visibility
+    ) {
       return false;
     }
 

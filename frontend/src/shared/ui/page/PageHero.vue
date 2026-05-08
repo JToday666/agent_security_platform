@@ -90,10 +90,10 @@ withDefaults(
   margin: 0;
   padding-block: 0.08em 0.12em;
   display: block;
-  font-size: clamp(1.95rem, 4.5vw, 3.45rem);
+  font-size: 2.8rem;
   font-weight: 800;
   line-height: 1.08;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
   text-wrap: balance;
   overflow: visible;
 }
@@ -113,7 +113,6 @@ withDefaults(
 
 .page-hero__description--single-line {
   max-width: none;
-  white-space: nowrap;
 }
 
 .page-hero__actions {
@@ -166,8 +165,9 @@ withDefaults(
     margin-bottom: 1rem;
   }
 
-  .page-hero__description--single-line {
-    white-space: normal;
+  .page-hero__title {
+    font-size: 2.15rem;
   }
+
 }
 </style>

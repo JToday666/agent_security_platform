@@ -82,7 +82,10 @@ import { getEvaluationRecords } from "@/modules/evaluation/api/evaluation-api";
 import EvaluationFilterBar from "@/modules/evaluation/components/EvaluationFilterBar.vue";
 import EvaluationRecordItem from "@/modules/evaluation/components/EvaluationRecordItem.vue";
 import EvaluationTrendPanel from "@/modules/evaluation/components/EvaluationTrendPanel.vue";
-import { filterEvaluationRecords } from "@/modules/evaluation/lib/evaluation-record-filters";
+import {
+  filterEvaluationRecords,
+  type EvaluationRecordFilterVisibility,
+} from "@/modules/evaluation/lib/evaluation-record-filters";
 import type {
   EvaluationRecord,
   EvaluationStatus,
@@ -99,7 +102,7 @@ const error = ref("");
 
 const search = ref("");
 const status = ref<"all" | EvaluationStatus>("all");
-const visibility = ref<"all" | "public" | "private">("all");
+const visibility = ref<EvaluationRecordFilterVisibility>("all");
 const submitMethod = ref<"all" | SubmitMethod>("all");
 
 const filteredRecords = computed(() =>

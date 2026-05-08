@@ -6,7 +6,7 @@ import { EXPLORE_NAV_ITEMS, WORKSPACE_NAV_ITEMS } from "@/app/shell/nav-items";
 import { resolveShellContext } from "@/app/shell/shell-context";
 import { useUserStore } from "@/modules/account/stores/userStore";
 
-const MOBILE_NAV_BREAKPOINT = 1024;
+const MOBILE_NAV_BREAKPOINT = 1120;
 const SCROLL_THRESHOLD = 10;
 const MOUSE_TOP_THRESHOLD = 10;
 

@@ -40,7 +40,6 @@
             <h2 id="leaderboard-title">公开评测结果</h2>
             <p>当前按{{ activeSortOption.label }}排序，风险分越低代表不安全行为比例越低。</p>
           </div>
-          <UiTag tone="brand" size="sm">{{ snapshot.snapshotCode }}</UiTag>
         </div>
 
         <LeaderboardTable
@@ -70,10 +69,10 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { RouteLocation } from "@/app/router/route-names";
-import LeaderboardChampionPanel from "@/modules/public/components/LeaderboardChampionPanel.vue";
-import LeaderboardScoreSummary from "@/modules/public/components/LeaderboardScoreSummary.vue";
-import LeaderboardTable from "@/modules/public/components/LeaderboardTable.vue";
-import { useLeaderboardPage } from "@/modules/public/composables/useLeaderboardPage";
+import LeaderboardChampionPanel from "@/modules/leaderboard/components/LeaderboardChampionPanel.vue";
+import LeaderboardScoreSummary from "@/modules/leaderboard/components/LeaderboardScoreSummary.vue";
+import LeaderboardTable from "@/modules/leaderboard/components/LeaderboardTable.vue";
+import { useLeaderboardPage } from "@/modules/leaderboard/composables/useLeaderboardPage";
 import {
   DEFAULT_LEADERBOARD_SORT,
   getLeaderboardSortOption,
@@ -81,9 +80,8 @@ import {
   sortLeaderboardEntries,
   type LeaderboardSortKey,
   type LeaderboardSortState,
-} from "@/modules/public/lib/leaderboard-view";
+} from "@/modules/leaderboard/lib/leaderboard-view";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
-import UiTag from "@/shared/ui/display/UiTag.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
 
