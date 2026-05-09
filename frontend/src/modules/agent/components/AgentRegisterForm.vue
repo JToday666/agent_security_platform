@@ -93,7 +93,7 @@
         v-else-if="currentStepId === 'connection'"
         class="agent-register-step__body"
       >
-        <div class="form-grid form-grid--three">
+        <div class="form-grid">
           <FormField
             label="调用模式"
             :model-value="form.invokeMode"
@@ -586,6 +586,7 @@ const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
 
 <style scoped lang="scss">
 .agent-register-form {
+  container-type: inline-size;
   min-height: 100%;
 }
 
@@ -738,18 +739,16 @@ const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
   overflow: visible;
 }
 
-.form-grid--three {
-  display: flex;
-}
-
 .form-grid > :deep(.form-field),
 .mapping-grid > :deep(.form-field),
 .mapping-grid > :deep(.ui-toggle-field) {
   display: grid;
   width: 100%;
   max-width: none;
-  grid-template-columns: minmax(12rem, 0.72fr) minmax(16rem, 34rem);
-  gap: 0.38rem 1.25rem;
+  min-width: 0;
+  grid-template-columns: minmax(11rem, 0.62fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 0.35rem 1rem;
   align-items: start;
   padding: 1rem 1.1rem;
   border-top: 0;
@@ -767,25 +766,36 @@ const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
   grid-column: 1;
   grid-row: 1;
   align-self: start;
-  padding-top: 0.82rem;
+  min-width: 0;
 }
 
 .form-grid > :deep(.form-field .form-field-control),
 .mapping-grid > :deep(.form-field .form-field-control) {
   grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 100%;
+  min-width: 0;
+}
+
+.form-grid > :deep(.form-field:has(.form-field-error) .form-field-control),
+.mapping-grid > :deep(.form-field:has(.form-field-error) .form-field-control) {
   grid-row: 1;
-  width: min(100%, 34rem);
 }
 
 .form-grid > :deep(.form-field .form-field-help),
-.form-grid > :deep(.form-field .form-field-error),
-.mapping-grid > :deep(.form-field .form-field-help),
-.mapping-grid > :deep(.form-field .form-field-error) {
+.mapping-grid > :deep(.form-field .form-field-help) {
   grid-column: 1;
-  grid-row: 1;
+  grid-row: 2;
   align-self: start;
-  max-width: 22rem;
-  margin-top: 2.42rem;
+  max-width: 20rem;
+  line-height: 1.6;
+}
+
+.form-grid > :deep(.form-field .form-field-error),
+.mapping-grid > :deep(.form-field .form-field-error) {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
   line-height: 1.6;
 }
 
@@ -802,23 +812,21 @@ const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
 
 .mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__copy) {
   grid-column: 1;
+  grid-row: 1 / span 2;
+  min-width: 0;
 }
 
 .mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__input) {
   grid-column: 2;
+  grid-row: 1 / span 2;
   justify-self: start;
   margin-top: 0.22rem;
-}
-
-.custom-field-row :deep(.form-field) {
-  width: 100%;
-  max-width: 34rem;
+  min-width: 0;
 }
 
 .custom-field-row {
   display: flex;
   width: 100%;
-  max-width: 36rem;
   flex-direction: column;
   gap: 0.75rem;
   align-items: flex-start;
@@ -832,7 +840,7 @@ const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
   border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
 
-@media (max-width: 760px) {
+@container (max-width: 560px) {
   .agent-register-step {
     padding: 0.9rem;
   }
@@ -852,21 +860,51 @@ const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
 
   .form-grid > :deep(.form-field .form-field-label),
   .mapping-grid > :deep(.form-field .form-field-label) {
+    grid-row: 1;
     padding-top: 0;
   }
 
-  .form-grid > :deep(.form-field .form-field-control),
   .form-grid > :deep(.form-field .form-field-help),
+  .mapping-grid > :deep(.form-field .form-field-help) {
+    grid-column: 1;
+    grid-row: 2;
+    max-width: none;
+  }
+
+  .form-grid > :deep(.form-field .form-field-control),
+  .mapping-grid > :deep(.form-field .form-field-control) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .form-grid > :deep(.form-field:has(.form-field-help) .form-field-control),
+  .mapping-grid > :deep(.form-field:has(.form-field-help) .form-field-control) {
+    grid-row: 3;
+  }
+
   .form-grid > :deep(.form-field .form-field-error),
-  .mapping-grid > :deep(.form-field .form-field-control),
-  .mapping-grid > :deep(.form-field .form-field-help),
-  .mapping-grid > :deep(.form-field .form-field-error),
+  .mapping-grid > :deep(.form-field .form-field-error) {
+    grid-column: 1;
+    grid-row: 3;
+    max-width: none;
+  }
+
   .mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__copy),
   .mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__input) {
     grid-column: 1;
     grid-row: auto;
     max-width: none;
-    margin-top: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .agent-register-step {
+    padding: 0.9rem;
+  }
+
+  .template-grid,
+  .custom-choice-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

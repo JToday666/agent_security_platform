@@ -130,6 +130,7 @@ const handleSortChange = (key: LeaderboardSortKey) => {
   grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.4fr);
   gap: 1.2rem;
   align-items: stretch;
+  min-width: 0;
   margin-bottom: 1.35rem;
   border-top: 1px solid rgba(148, 163, 184, 0.18);
   border-bottom: 1px solid rgba(148, 163, 184, 0.16);
@@ -142,6 +143,7 @@ const handleSortChange = (key: LeaderboardSortKey) => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  min-width: 0;
   padding-top: 1.25rem;
   border-top: 1px solid rgba(148, 163, 184, 0.18);
 }
@@ -151,6 +153,7 @@ const handleSortChange = (key: LeaderboardSortKey) => {
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+  min-width: 0;
 }
 
 .section-head h2 {
@@ -164,6 +167,7 @@ const handleSortChange = (key: LeaderboardSortKey) => {
   max-width: 68ch;
   color: var(--color-text-subtle);
   line-height: 1.68;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 1024px) {

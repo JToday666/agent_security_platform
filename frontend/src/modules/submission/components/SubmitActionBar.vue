@@ -151,6 +151,7 @@ const remainingCount = computed(
   margin: 0.32rem 0 0;
   color: var(--color-text-subtle);
   line-height: 1.58;
+  overflow-wrap: anywhere;
 }
 
 .section-head--compact {
@@ -218,13 +219,16 @@ const remainingCount = computed(
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
+  min-width: 0;
   padding-top: 0.2rem;
 }
 
 @media (max-width: 768px) {
-  .summary-list,
-  .submit-actions {
+  .summary-list {
     grid-template-columns: 1fr;
+  }
+
+  .submit-actions {
     flex-direction: column;
   }
 

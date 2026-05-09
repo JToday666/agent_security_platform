@@ -64,17 +64,17 @@ onUnmounted(() => {
 <style scoped lang="scss">
 .user-sidebar {
   position: sticky;
-  top: calc(var(--nav-height) + 1rem);
+  top: calc(var(--nav-height) + 0.85rem);
   z-index: var(--z-sidebar);
   width: 100%;
-  max-height: calc(100vh - var(--nav-height) - 2rem);
+  max-height: calc(100vh - var(--nav-height) - 1.7rem);
   align-self: start;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
   min-width: 0;
   overflow-y: auto;
-  padding: 1rem 0.85rem 1rem 0.95rem;
+  padding: 0.9rem 0.78rem 0.9rem 0.88rem;
   border: 1px solid rgba(148, 163, 184, 0.14);
   border-radius: 1.35rem;
   background:
@@ -94,7 +94,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .user-sidebar.collapsed .sidebar-top {
@@ -148,7 +148,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 0.88rem;
-  padding: 0.85rem 0.95rem;
+  padding: 0.78rem 0.86rem;
   border-radius: 1rem;
   border: 1px solid transparent;
   color: #334155;

@@ -39,6 +39,7 @@ defineProps<{
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  min-width: 0;
   padding-top: 1.65rem;
   border-top: 1px solid rgba(148, 163, 184, 0.18);
 }
@@ -58,24 +59,28 @@ defineProps<{
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+  min-width: 0;
 }
 
 .section-head h2 {
   margin: 0;
   color: var(--color-text-dark);
   font-size: 1.18rem;
+  overflow-wrap: anywhere;
 }
 
 .section-head p {
   margin: 0.35rem 0 0;
   color: var(--color-text-subtle);
   line-height: 1.68;
+  overflow-wrap: anywhere;
 }
 
 .detail-groups {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.2rem;
+  min-width: 0;
 }
 
 .detail-group {
@@ -88,13 +93,16 @@ defineProps<{
   display: flex;
   align-items: center;
   gap: 0.55rem;
+  min-width: 0;
   color: var(--color-primary);
 }
 
 .detail-group__title h3 {
   margin: 0;
+  min-width: 0;
   color: var(--color-text-dark);
   font-size: 1rem;
+  overflow-wrap: anywhere;
 }
 
 .detail-group dl {

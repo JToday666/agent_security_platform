@@ -51,7 +51,8 @@ withDefaults(
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-bottom: 2rem; /* 增加整体的呼吸感 */
+  min-width: 0;
+  margin-bottom: 2rem;
 }
 
 .page-hero__eyebrow {
@@ -60,15 +61,17 @@ withDefaults(
   width: fit-content;
   margin: 0 0 0.25rem 0;
   padding: 0.35rem 0.85rem;
-  background: var(--glass-bg-90); /* 加入半透明质感 */
+  max-width: 100%;
+  background: var(--glass-bg-90);
   border: 1px solid rgba(99, 102, 241, 0.22);
   border-radius: var(--radius-pill);
-  box-shadow: 0 4px 12px -4px rgba(99, 102, 241, 0.12); /* 悬浮科技感 */
+  box-shadow: 0 4px 12px -4px rgba(99, 102, 241, 0.12);
   color: #4338ca;
   font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .page-hero__top {
@@ -76,6 +79,7 @@ withDefaults(
   align-items: flex-start;
   justify-content: space-between;
   gap: 1.1rem;
+  min-width: 0;
 }
 
 .page-hero__prefix {
@@ -95,12 +99,13 @@ withDefaults(
   margin: 0;
   padding-block: 0.08em 0.12em;
   display: block;
-  font-size: clamp(2rem, 4vw, 3rem); /* 随屏幕弹性的现代大厂字体流 */
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   text-wrap: balance;
   overflow: visible;
+  overflow-wrap: anywhere;
 }
 
 .page-hero__title.ui-title-gradient {
@@ -111,9 +116,10 @@ withDefaults(
   margin: 0.85rem 0 0;
   max-width: 58ch;
   color: var(--color-text-muted);
-  font-size: 1.08rem; /* 增大说明文案字号增加对比和易读性 */
+  font-size: 1.08rem;
   line-height: 1.75;
   text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
 .page-hero__description--single-line {
@@ -125,6 +131,7 @@ withDefaults(
   flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
+  min-width: 0;
   flex-shrink: 0;
 }
 
@@ -173,6 +180,5 @@ withDefaults(
   .page-hero__title {
     font-size: 2.15rem;
   }
-
 }
 </style>

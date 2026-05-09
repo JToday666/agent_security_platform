@@ -170,9 +170,11 @@ const handleMaxStepsBlur = () => {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+  min-width: 0;
 }
 
 .field {
+  min-width: 0;
   padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid #e2e8f0;
@@ -187,12 +189,15 @@ const handleMaxStepsBlur = () => {
   display: block;
   color: #334155;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .label-row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
+  min-width: 0;
 }
 
 .label-row strong {
@@ -205,6 +210,7 @@ const handleMaxStepsBlur = () => {
   display: block;
   margin-top: 0.42rem;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .field-help {
@@ -221,6 +227,7 @@ const handleMaxStepsBlur = () => {
   grid-template-columns: minmax(0, 1fr) 120px;
   gap: 1rem;
   align-items: center;
+  min-width: 0;
   margin-top: 0.9rem;
 }
 
@@ -272,6 +279,7 @@ const handleMaxStepsBlur = () => {
 
 .number-input {
   width: 100%;
+  min-width: 0;
   padding: 0.82rem 1rem;
 }
 
