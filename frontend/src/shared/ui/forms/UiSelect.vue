@@ -144,6 +144,7 @@ onUnmounted(() => {
 
 .ui-select__trigger {
   width: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 0.7rem;
@@ -234,6 +235,7 @@ onUnmounted(() => {
   top: calc(100% + 0.45rem);
   left: 0;
   width: 100%;
+  min-width: min(100%, 14rem);
   z-index: var(--z-modal, 2000);
   border-radius: 1.1rem;
   padding: 0.45rem;
@@ -288,6 +290,7 @@ onUnmounted(() => {
 
 .ui-select__item-label {
   font-size: 0.9rem;
+  overflow-wrap: anywhere;
 }
 
 .ui-select__item-icon {

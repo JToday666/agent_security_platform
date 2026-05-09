@@ -375,12 +375,14 @@ const handleLogoutConfirm = () => {
   grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
   gap: 2rem;
   align-items: start;
+  min-width: 0;
 }
 
 .profile-side {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  min-width: 0;
 }
 
 .avatar-panel {
@@ -426,7 +428,6 @@ const handleLogoutConfirm = () => {
   box-shadow: 0 22px 34px -22px rgba(79, 70, 229, 0.45);
 }
 
-.avatar-preview img,
 .avatar-image {
   width: 100%;
   height: 100%;
@@ -464,11 +465,13 @@ const handleLogoutConfirm = () => {
 .avatar-copy strong {
   color: var(--color-text-dark);
   font-size: 1.04rem;
+  overflow-wrap: anywhere;
 }
 
 .avatar-copy span {
   color: var(--color-text-subtle);
   font-size: 0.9rem;
+  overflow-wrap: anywhere;
 }
 
 .upload-actions {
@@ -498,6 +501,7 @@ const handleLogoutConfirm = () => {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  min-width: 0;
 }
 
 .form-actions {
@@ -519,6 +523,10 @@ const handleLogoutConfirm = () => {
 @media (max-width: 768px) {
   .form-actions {
     flex-direction: column;
+  }
+
+  .form-actions :deep(.ui-button) {
+    width: 100%;
   }
 }
 </style>

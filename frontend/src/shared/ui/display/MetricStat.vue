@@ -32,7 +32,7 @@ withDefaults(
   color: var(--color-text-subtle);
   font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 

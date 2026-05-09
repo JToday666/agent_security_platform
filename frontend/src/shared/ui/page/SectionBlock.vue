@@ -47,6 +47,7 @@ withDefaults(
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  min-width: 0;
   padding-top: 1rem;
   border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
@@ -60,6 +61,7 @@ withDefaults(
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+  min-width: 0;
 }
 
 .section-block__copy {
@@ -70,18 +72,21 @@ withDefaults(
   margin: 0;
   color: var(--color-text-dark);
   font-size: 1.08rem;
+  overflow-wrap: anywhere;
 }
 
 .section-block__description {
   margin: 0.35rem 0 0;
   color: var(--color-text-subtle);
   line-height: 1.68;
+  overflow-wrap: anywhere;
 }
 
 .section-block__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
+  min-width: 0;
   flex-shrink: 0;
 }
 
@@ -89,6 +94,7 @@ withDefaults(
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  min-width: 0;
 }
 
 @media (max-width: 768px) {
@@ -99,6 +105,5 @@ withDefaults(
   .section-block__actions {
     width: 100%;
   }
-
 }
 </style>

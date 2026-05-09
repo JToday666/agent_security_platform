@@ -191,6 +191,7 @@ const leaderboardDisplayOptions: Array<{
   grid-template-columns: minmax(0, 1fr) minmax(300px, 320px);
   gap: 1.4rem;
   align-items: start;
+  min-width: 0;
 }
 
 .submit-interface__canvas,
@@ -221,12 +222,14 @@ const leaderboardDisplayOptions: Array<{
   margin: 0;
   color: var(--color-text-dark);
   font-size: 1.08rem;
+  overflow-wrap: anywhere;
 }
 
 .section-head p {
   margin: 0.35rem 0 0;
   color: var(--color-text-subtle);
   line-height: 1.65;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 1180px), (max-height: 760px) {
@@ -236,6 +239,16 @@ const leaderboardDisplayOptions: Array<{
 
   .submit-interface__inspector {
     position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .submit-page {
+    padding-bottom: 1.75rem;
+  }
+
+  .submit-interface {
+    gap: 1rem;
   }
 }
 </style>

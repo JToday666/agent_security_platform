@@ -134,6 +134,7 @@ const isSelect = computed(() => props.type === "select");
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  min-width: 0;
 }
 
 .form-field.full {
@@ -144,10 +145,12 @@ const isSelect = computed(() => props.type === "select");
   color: var(--color-text-main);
   font-weight: 600;
   font-size: 0.94rem;
+  overflow-wrap: anywhere;
 }
 
 .form-field-control {
   position: relative;
+  min-width: 0;
 }
 
 .form-field-control--with-icon .form-field-input {
@@ -175,6 +178,7 @@ const isSelect = computed(() => props.type === "select");
 
 .form-field-input {
   width: 100%;
+  min-width: 0;
   min-height: 3rem;
   padding: 0.88rem 1rem;
   border: 1px solid rgba(148, 163, 184, 0.18);
@@ -232,11 +236,13 @@ const isSelect = computed(() => props.type === "select");
 .form-field-error {
   color: #dc2626;
   font-size: 0.875rem;
+  overflow-wrap: anywhere;
 }
 
 .form-field-help {
   color: #64748b;
   font-size: 0.875rem;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 768px) {

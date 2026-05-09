@@ -84,6 +84,12 @@ const scoreValue = computed(() => props.entry?.[props.sortState.key] ?? null);
   white-space: nowrap;
 }
 
+.leaderboard-champion__label,
+.leaderboard-champion__anonymous {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .leaderboard-champion__anonymous {
   display: inline-flex;
   align-items: center;

@@ -321,6 +321,7 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 1.25rem;
+  min-width: 0;
   padding: 1.05rem 0.85rem 0.95rem;
   border-top: 1px solid var(--color-border-soft);
   border-radius: var(--radius-card-sm);
@@ -372,13 +373,16 @@ onMounted(async () => {
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+  min-width: 0;
 }
 
 .agent-row__title h2 {
   margin: 0;
+  min-width: 0;
   color: var(--color-text-dark);
   font-size: 1.08rem;
   line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .agent-row__tags,
@@ -409,6 +413,7 @@ onMounted(async () => {
   justify-content: flex-end;
   align-self: start;
   max-width: 28rem;
+  min-width: 0;
 }
 
 .agent-page__notice {

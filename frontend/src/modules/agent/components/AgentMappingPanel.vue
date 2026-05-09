@@ -71,17 +71,20 @@ defineProps<{
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.15rem;
   align-items: start;
+  min-width: 0;
 }
 
 .mapping-tree {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  min-width: 0;
 }
 
 .mapping-node {
   display: flex;
   align-items: center;
+  min-width: 0;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-card-sm);
@@ -112,6 +115,7 @@ defineProps<{
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .mapping-node__target {
@@ -123,8 +127,9 @@ defineProps<{
   font-size: 0.78rem;
   color: var(--color-text-subtle);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .mapping-n-value {

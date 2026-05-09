@@ -288,6 +288,7 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 0;
   min-height: calc(100vh - var(--nav-height) - 1rem);
   padding: clamp(2.4rem, 6vw, 4.2rem) 0 1.6rem;
   isolation: isolate;
@@ -302,6 +303,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   gap: 1.15rem;
+  min-width: 0;
   text-align: center;
 }
 
@@ -315,10 +317,11 @@ onBeforeUnmount(() => {
   margin: 0;
   min-height: 1.22em;
   padding-block: 0.08em 0.12em;
-  font-size: 5.25rem;
+  font-size: clamp(3rem, 8vw, 5.25rem);
   line-height: 1.02;
   letter-spacing: 0;
   text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
 .hero-title.ui-title-gradient {
@@ -337,6 +340,7 @@ onBeforeUnmount(() => {
   font-weight: 500;
   line-height: 1.68;
   text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .hero-description span {
@@ -349,6 +353,7 @@ onBeforeUnmount(() => {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.95rem;
+  min-width: 0;
   margin-top: 0.35rem;
 }
 
@@ -384,6 +389,7 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 0.62rem;
   width: min(50rem, 100%);
+  min-width: 0;
   margin: clamp(2.1rem, 4vw, 3rem) auto 0;
   padding: 1.6rem 1rem 0.95rem;
   border: 0;
@@ -456,6 +462,7 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.05rem;
+  min-width: 0;
 }
 
 @media (max-width: 1080px) {
@@ -502,6 +509,16 @@ onBeforeUnmount(() => {
 
   .workflow-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-title {
+    font-size: 2.55rem;
+  }
+
+  .hero-description {
+    max-width: 100%;
   }
 }
 </style>

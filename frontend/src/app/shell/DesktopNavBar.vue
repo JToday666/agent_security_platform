@@ -123,17 +123,17 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 1.1rem;
+  gap: 0.9rem;
   max-width: min(1440px, 100vw);
   min-height: var(--nav-height);
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0 1.1rem;
 }
 
 .brand-cluster {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.72rem;
   min-width: 0;
 }
 
@@ -141,9 +141,9 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.9rem;
-  height: 2.9rem;
-  padding: 0.4rem;
+  width: 2.45rem;
+  height: 2.45rem;
+  padding: 0.32rem;
   border-radius: 999px;
   background: linear-gradient(
     135deg,
@@ -160,7 +160,7 @@ $NAV_BREAKPOINT_TABLET: 1120px;
 
 .brand-title {
   color: var(--color-text-dark);
-  font-size: 1.02rem;
+  font-size: 0.98rem;
   font-weight: 800;
   letter-spacing: 0;
   text-decoration: none;
@@ -171,7 +171,7 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   display: flex;
   align-items: center;
   min-width: 0;
-  padding: 0.32rem 0.5rem;
+  padding: 0.22rem 0.36rem;
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: var(--radius-pill-40);
   background: linear-gradient(
@@ -184,25 +184,25 @@ $NAV_BREAKPOINT_TABLET: 1120px;
 
 .nav-links--primary {
   justify-content: center;
-  gap: 0.4rem;
-  min-height: 3.5rem;
+  gap: 0.28rem;
+  min-height: 2.85rem;
 }
 
 .nav-links--secondary {
   justify-content: flex-end;
-  gap: 0.35rem;
-  min-height: 3.3rem;
+  gap: 0.24rem;
+  min-height: 2.75rem;
 }
 
 .nav-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 0.96rem;
+  gap: 0.42rem;
+  padding: 0.52rem 0.78rem;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   color: #334155;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
   transition:
@@ -233,9 +233,9 @@ $NAV_BREAKPOINT_TABLET: 1120px;
 }
 
 .nav-link--secondary {
-  padding-inline: 0.82rem;
+  padding-inline: 0.68rem;
   background: rgba(255, 255, 255, 0.5);
-  font-size: 0.86rem;
+  font-size: 0.84rem;
 }
 
 .nav-link--with-icon {
@@ -252,7 +252,7 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   display: flex;
   align-items: center;
   justify-self: end;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .nav-menu-zone {
@@ -270,8 +270,8 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   display: none;
   align-items: center;
   justify-content: center;
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2.55rem;
+  height: 2.55rem;
   border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.84);
@@ -297,7 +297,7 @@ $NAV_BREAKPOINT_TABLET: 1120px;
 
 @media (max-width: 1180px) {
   .brand-title {
-    font-size: 1rem;
+    font-size: 0.94rem;
   }
 
   .nav-links {
@@ -305,15 +305,15 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   }
 
   .nav-link {
-    padding: 0.5rem 0.6rem;
-    font-size: 0.88rem;
+    padding: 0.45rem 0.56rem;
+    font-size: 0.86rem;
   }
 }
 
 @media (max-width: $NAV_BREAKPOINT_TABLET) {
   .nav-container {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.65rem;
     padding: 0 0.95rem;
   }
 
@@ -333,8 +333,8 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   }
 
   .brand-mark {
-    width: 2.72rem;
-    height: 2.72rem;
+    width: 2.38rem;
+    height: 2.38rem;
   }
 
   .brand-title {

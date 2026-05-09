@@ -100,6 +100,7 @@ defineProps<{
   display: flex;
   flex-direction: column;
   gap: 1.8rem;
+  min-width: 0;
   padding-top: 0.5rem;
 }
 
@@ -107,6 +108,7 @@ defineProps<{
   display: flex;
   align-items: center;
   gap: 2rem;
+  min-width: 0;
   padding: 1.5rem;
   border-radius: var(--radius-card-sm);
   background: linear-gradient(135deg, rgba(239, 246, 255, 0.4) 0%, rgba(255, 255, 255, 0.8) 100%);
@@ -129,7 +131,7 @@ defineProps<{
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  min-width: 14rem;
+  min-width: min(14rem, 100%);
 }
 
 .verification-summary__icon-ring {
@@ -155,6 +157,7 @@ defineProps<{
 .verification-summary__text {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .verification-summary__sub {
@@ -173,6 +176,7 @@ defineProps<{
   flex-wrap: wrap;
   gap: 2.5rem;
   flex: 1;
+  min-width: 0;
 }
 
 .verification-stat-item {
@@ -250,7 +254,7 @@ defineProps<{
   color: var(--color-text-muted);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 
 .verification-table tbody tr:last-child td {
@@ -270,6 +274,7 @@ defineProps<{
   font-size: 0.95rem;
   color: var(--color-text-main);
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .verification-message-group--danger {

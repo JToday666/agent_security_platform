@@ -200,6 +200,7 @@ const selectedCategoryCount = computed(
   display: grid;
   grid-template-columns: minmax(240px, 1.4fr) minmax(0, 1fr);
   gap: 0.85rem;
+  min-width: 0;
 }
 
 .toolbar-metrics {
@@ -208,8 +209,13 @@ const selectedCategoryCount = computed(
   align-items: end;
   justify-content: flex-end;
   gap: 0.75rem;
+  min-width: 0;
   color: var(--color-text-muted);
   font-size: 0.9rem;
+}
+
+.toolbar-metrics > * {
+  min-width: 0;
 }
 
 .status-list {

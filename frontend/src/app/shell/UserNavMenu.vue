@@ -53,10 +53,10 @@ defineEmits<{
 .user-info {
   display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.58rem;
   min-width: 0;
   max-width: 15rem;
-  padding: 0.4rem 0.5rem;
+  padding: 0.3rem 0.42rem;
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: 999px;
   background: linear-gradient(
@@ -102,8 +102,8 @@ defineEmits<{
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  width: 2.45rem;
-  height: 2.45rem;
+  width: 2.18rem;
+  height: 2.18rem;
   border-radius: 999px;
   background: var(--grad-primary);
   box-shadow: 0 16px 24px -18px rgba(79, 70, 229, 0.58);
@@ -117,7 +117,7 @@ defineEmits<{
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-size: 0.98rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
 }
 
@@ -151,7 +151,7 @@ defineEmits<{
 
 .user-copy strong {
   color: var(--color-text-dark);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
 }
 
 .user-copy span {

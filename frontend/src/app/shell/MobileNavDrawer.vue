@@ -181,7 +181,7 @@ defineEmits<{
   color: #6366f1;
   font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 

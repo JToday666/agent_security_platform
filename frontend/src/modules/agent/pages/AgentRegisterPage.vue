@@ -236,6 +236,7 @@ watch(validationErrorVersion, scrollToValidationTarget);
   display: flex;
   height: calc(100dvh - var(--nav-height));
   min-height: 0;
+  min-width: 0;
   flex-direction: column;
   overflow: hidden;
   padding-bottom: 1rem;
@@ -270,8 +271,8 @@ watch(validationErrorVersion, scrollToValidationTarget);
 }
 
 .agent-register-main--preview {
-  grid-template-columns: minmax(0, 1fr) clamp(420px, 38vw, 640px);
-  gap: 1.4rem;
+  grid-template-columns: minmax(0, 1fr) clamp(380px, 35vw, 600px);
+  gap: 1.15rem;
   justify-content: stretch;
 }
 
@@ -335,20 +336,15 @@ watch(validationErrorVersion, scrollToValidationTarget);
 
 @media (max-width: 1120px) {
   .agent-register-main--preview {
-    grid-template-columns: minmax(0, 1fr) clamp(360px, 36vw, 520px);
-    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) clamp(330px, 34vw, 460px);
+    gap: 0.9rem;
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 980px) {
   .agent-register-main--preview {
     grid-template-columns: 1fr;
     grid-template-rows: minmax(0, 1fr) minmax(17rem, 34dvh);
-  }
-
-  .agent-register-main__form {
-    padding: 0;
-    justify-self: stretch;
   }
 
   .agent-register-main__preview {
