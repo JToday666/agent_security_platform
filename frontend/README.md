@@ -2,7 +2,7 @@
 
 ## 1. 项目定位
 
-`frontend/` 是 Agent Security Platform 的前端工程，基于 Vite + Vue + TypeScript + Pinia + Vue Router。
+`frontend/` 是 Agent Security Platform 的前端工程，基于 Vite + Vue + TypeScript + Pinia + Vue Router，并预留 `vue-i18n` 国际化资源骨架。
 
 当前前端覆盖以下能力：
 
@@ -16,7 +16,7 @@
 
 源码按三层组织：
 
-- `src/app/`：应用壳层，负责启动、路由、布局、导航、全局样式
+- `src/app/`：应用壳层，负责启动、路由、布局、导航、国际化入口、全局样式
 - `src/modules/`：业务模块层，按 `account / agent / dataset / evaluation / leaderboard / public / submission` 分域
 - `src/shared/`：共享基础设施，收口 API 基础封装、类型、工具与共享 UI
 
@@ -24,11 +24,10 @@
 
 ## 2. 当前核心目录
 
-- `src/app/`：布局、路由、导航外壳、移动导航抽屉、SCSS 设计体系
+- `src/app/`：布局、路由、导航外壳、移动导航抽屉、国际化资源骨架、SCSS 设计体系
 - `src/modules/`：业务模块代码，页面容器、状态组合、展示组件和视图派生按模块放置
 - `src/shared/`：共享 API、类型、工具、UI
 - `public/`：不经构建处理的静态资源
-- `scripts/`：前端工程检查脚本
 - `vite.config.ts`：Vite 配置、`@` 别名与开发代理
 - `.env.example`：环境变量模板
 
@@ -39,7 +38,7 @@
 安装依赖：
 
 ```bash
-pnpm install
+pnpm install --frozen-lockfile
 ```
 
 启动开发环境：
@@ -54,7 +53,7 @@ pnpm dev
 pnpm build
 ```
 
-`pnpm build` 会依次执行类型检查、生产构建和 `dist` 产物预算检查。预算检查会拦截图表包首屏引用、`iconify-vendor` 产物和超预算 Logo 资源。
+`pnpm build` 会依次执行类型检查和生产构建。常规安装使用 `pnpm install --frozen-lockfile`，需要更新依赖声明或锁文件时再由维护者执行非冻结安装。
 
 本地预览构建结果：
 
@@ -106,7 +105,7 @@ Node 与包管理器要求以 `package.json` 为准。
 - `src/shared/ui/branding/BrandLogo.vue`
   品牌 Logo 组件，使用构建可控的轻量矢量 Logo
 
-> **UI 基线提示**: 平台在共享层引入了现代微交互与玻璃态视觉体系。新组件开发应优先复用 `tokens.scss` 中的高级缓动函数（如 `var(--ease-spring)`）、内发光变量（如 `var(--glass-border-inset)`）及标准的 Hover 反馈，详见 [前端UI设计原则](./docs/05-规范/前端UI设计原则.md)。
+> **UI 基线提示**: 平台在共享层引入了现代微交互与玻璃态视觉体系。新组件开发应优先复用 `tokens.scss` 中的高级缓动函数（如 `var(--ease-spring)`）、内发光变量（如 `var(--glass-border-inset)`）及标准的 Hover 反馈，详见 [前端UI设计规范](./docs/05-规范/前端UI设计规范.md)。
 
 模块专用展示组件保留在各自业务模块内，跨模块复用组件放入 `src/shared/ui/`。
 
@@ -134,9 +133,8 @@ pnpm build
 
 说明：
 
-- `pnpm build` 会先执行 `type-check`，再执行 `build-only` 和 `check:dist`
-- `pnpm build-only` 只生成生产包，不执行 `dist` 预算检查
-- `pnpm check:dist` 会检查 `dist/index.html` 与入口 JS，确保首屏不引用 `charts-vendor`、不生成 `iconify-vendor`，且 Logo 资源不超过预算
+- `pnpm build` 会先执行 `type-check`，再执行 `build-only`
+- `pnpm build-only` 只生成生产包，不执行类型检查
 - 排行榜、评测图表、报告阅读流、提交表单和页面响应式布局适合结合测试、类型检查、构建和定向页面走查验证
 
 ## 7. 前端命名规范
@@ -168,6 +166,7 @@ pnpm build
 - [前端架构说明](./docs/01-总览/前端架构说明.md)
 - [应用启动与运行时说明](./docs/02-架构/应用启动与运行时说明.md)
 - [路由布局与导航说明](./docs/02-架构/路由布局与导航说明.md)
+- [国际化架构说明](./docs/02-架构/国际化架构说明.md)
 - [账号与鉴权模块说明](./docs/03-模块/账号与鉴权模块说明.md)
 - [数据集模块说明](./docs/03-模块/数据集模块说明.md)
 - [智能体模块说明](./docs/03-模块/智能体模块说明.md)
@@ -175,11 +174,13 @@ pnpm build
 - [评测模块说明](./docs/03-模块/评测模块说明.md)
 - [公共页面与共享 UI 说明](./docs/03-模块/公共页面与共享UI说明.md)
 - [关键链路说明](./docs/04-流程/关键链路说明.md)
+- [前端 UI 设计规范](./docs/05-规范/前端UI设计规范.md)
 - [文档维护约定](./docs/05-规范/文档维护约定.md)
 
 跨端接口契约：
 
 - [API 接口协议总表](../share/API接口协议.md)
+- [国际化工程指导方案](../share/i18n方案.md)
 - [用户接口补充说明](../share/user接口.md)
 - [数据集接口补充说明](../share/database接口.md)
 - [提交接口补充说明](../share/submit接口.md)
@@ -193,15 +194,16 @@ pnpm build
 2. 再看 [文档地图](./docs/01-总览/文档地图.md) 和 [前端架构说明](./docs/01-总览/前端架构说明.md)
 3. 需要改具体业务时，进入对应模块文档
 4. 需要追调用链时，看 [关键链路说明](./docs/04-流程/关键链路说明.md)
-5. 需要核对字段语义或请求契约时，看 `share/` 下接口文档
+5. 需要理解国际化边界时，看 [国际化工程指导方案](../share/i18n方案.md) 和 [国际化架构说明](./docs/02-架构/国际化架构说明.md)
+6. 需要核对字段语义或请求契约时，看 `share/` 下接口文档
 
 ## 9. 文档边界
 
 - `frontend/README.md`：前端入口，只写当前状态、运行命令、命名规范、文档索引
 - `frontend/docs/`：前端内部结构、模块与流程说明
-- `share/`：跨端接口契约主文档
+- `share/`：跨端接口契约与国际化总策略主文档
 
 同一个事实只保留一个主维护位置：
 
-- 接口字段、接口路径、请求响应契约，以 `share/` 为准
+- 接口字段、接口路径、请求响应契约和国际化总策略，以 `share/` 为准
 - 前端分层、页面职责、状态流转、共享 UI 使用边界，以 `frontend/docs/` 为准
