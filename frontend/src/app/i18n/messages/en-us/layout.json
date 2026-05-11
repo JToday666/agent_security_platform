@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "home": "Home",
+    "dataset": "Datasets",
+    "explore": "Explore",
+    "leaderboard": "Leaderboard",
+    "contact": "Contact",
+    "records": "Evaluation Records",
+    "agents": "Agent Management",
+    "registerAgent": "Register Agent",
+    "submit": "Submit Evaluation",
+    "profile": "Profile",
+    "workspace": "Workspace"
+  },
+  "aria": {
+    "returnHome": "Back home",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu"
+  },
+  "mobile": {
+    "title": "Navigation",
+    "primaryGroup": "Pages",
+    "secondaryGroup": "More"
+  }
+}

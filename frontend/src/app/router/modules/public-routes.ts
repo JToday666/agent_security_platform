@@ -1,10 +1,19 @@
 import type { RouteRecordRaw } from "vue-router";
 import PublicLayout from "@/app/layouts/PublicLayout.vue";
+import {
+  resolveLocalePath,
+  resolveRuntimePreferredLocale,
+} from "@/app/i18n";
 import { ROUTE_NAME } from "@/app/router/route-names";
+
+export const localeRootRedirectRoute: RouteRecordRaw = {
+  path: "/",
+  redirect: () => resolveLocalePath("/", resolveRuntimePreferredLocale()).path,
+};
 
 export const publicRoutes: RouteRecordRaw[] = [
   {
-    path: "/",
+    path: "/:locale",
     component: PublicLayout,
     children: [
       {
@@ -42,7 +51,7 @@ export const publicRoutes: RouteRecordRaw[] = [
 ];
 
 export const notFoundRoute: RouteRecordRaw = {
-  path: "/:pathMatch(.*)*",
+  path: "/:locale/:pathMatch(.*)*",
   component: PublicLayout,
   children: [
     {

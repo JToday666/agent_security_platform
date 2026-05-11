@@ -1,0 +1,55 @@
+{
+  "home": {
+    "hero": {
+      "descriptionPrimary": "Agents Evaluation and Guardrail Inspection System",
+      "descriptionSecondary": "安全で信頼性の高い専門的な Agent 評価システムが、追跡可能な評価結果を提供します。"
+    },
+    "quickstart": {
+      "title": "クイックスタート",
+      "description": "標準化された流れで、データセット閲覧、評価提出、実行追跡、結果確認を完了します。"
+    },
+    "workflow": {
+      "browse": {
+        "title": "データセットを見る",
+        "description": "リスク領域ごとに説明、サンプル、リソースを確認します。",
+        "action": "カタログを見る"
+      },
+      "submit": {
+        "title": "評価タスクを作成",
+        "description": "Agent 情報を入力し、今回の評価範囲を選択します。",
+        "actionAuthed": "提出を開始",
+        "actionGuest": "先にデータセットを見る"
+      },
+      "track": {
+        "title": "進捗を追跡",
+        "description": "ワークスペースで実行状態、一時停止、終了結果を確認します。",
+        "actionAuthed": "記録を見る",
+        "actionGuest": "お問い合わせ"
+      },
+      "review": {
+        "title": "結果を確認",
+        "description": "詳細ページで概要、アラート、指標を確認します。",
+        "actionAuthed": "ワークスペースへ",
+        "actionGuest": "連絡先を見る"
+      }
+    }
+  },
+  "contact": {
+    "title": "お問い合わせ",
+    "description": "ご質問、ご提案、協業については、以下の方法でお問い合わせください。",
+    "logoAlt": "Agent セキュリティ評価プラットフォームのマーク",
+    "email": "メール",
+    "phone": "電話",
+    "address": "住所",
+    "addressValue": "武漢市東西湖区 国家サイバーセキュリティ基地",
+    "social": "ソーシャルメディア"
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "ページが見つかりません",
+    "description": "このアドレスは利用できません。ナビゲーションまたは下の入口から移動してください。",
+    "sectionTitle": "利用可能な入口",
+    "sectionDescription": "ホームに戻るか、評価カタログから再開できます。",
+    "datasetAction": "評価カタログを見る"
+  }
+}

@@ -47,6 +47,12 @@ const axiosInstance = axios.create({
   timeout: 10000,
 });
 
+let apiLocale = "zh-CN";
+
+export const setApiLocale = (locale: string) => {
+  apiLocale = locale;
+};
+
 const buildLegacyValidationMessage = (
   errors: LegacyValidationErrorItem[],
 ): string => {
@@ -207,9 +213,12 @@ const resolveBlobResponse = async (
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    config.headers = config.headers ?? {};
+    config.headers["X-App-Locale"] = apiLocale;
+    config.headers["Accept-Language"] = apiLocale;
+
     const token = localStorage.getItem(STORAGE_KEYS.user.token);
     if (token) {
-      config.headers = config.headers ?? {};
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

@@ -1,0 +1,24 @@
+{
+  "brand": {
+    "name": "AEGIS Agent セキュリティ評価プラットフォーム",
+    "logoAlt": "Agent セキュリティ評価プラットフォームのロゴ"
+  },
+  "actions": {
+    "browseDataset": "データセットを見る",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "confirm": "確認",
+    "contactUs": "お問い合わせ",
+    "loginRegister": "ログイン / 登録",
+    "returnHome": "ホームへ戻る",
+    "saveChanges": "変更を保存",
+    "submitEvaluation": "評価を提出",
+    "viewRecords": "記録を見る"
+  },
+  "dialog": {
+    "title": "通知"
+  },
+  "units": {
+    "step": "ステップ {step}"
+  }
+}

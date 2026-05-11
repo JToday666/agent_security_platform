@@ -1,10 +1,27 @@
 import type { Router } from "vue-router";
+import {
+  activateLocale,
+  resolveLocalePath,
+  resolveRuntimePreferredLocale,
+} from "@/app/i18n";
 import { RouteLocation } from "@/app/router/route-names";
 import { useUserStore } from "@/modules/account/stores/userStore";
 
 // 集中注册全局守卫，避免在 router 入口文件里堆积业务逻辑。
 export const registerRouteGuards = (router: Router) => {
   router.beforeEach(async (to) => {
+    const localePath = resolveLocalePath(
+      to.fullPath,
+      resolveRuntimePreferredLocale(),
+    );
+
+    if (localePath.redirect) {
+      return localePath.path;
+    }
+
+    const activeLocale = await activateLocale(localePath.locale);
+    RouteLocation.setCurrentLocale(activeLocale);
+
     const userStore = useUserStore();
     const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 

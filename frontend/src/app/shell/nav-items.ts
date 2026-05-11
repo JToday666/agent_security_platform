@@ -10,38 +10,40 @@ export interface AppNavItem {
   exact?: boolean;
 }
 
-export const EXPLORE_NAV_ITEMS: AppNavItem[] = [
+type Translate = (key: string) => string;
+
+export const buildExploreNavItems = (t: Translate): AppNavItem[] => [
   {
     key: "home",
-    label: "首页",
+    label: t("layout.nav.home"),
     icon: "lucide:house",
     to: RouteLocation.home,
     exact: true,
   },
   {
     key: "dataset",
-    label: "数据集目录",
+    label: t("layout.nav.dataset"),
     icon: "lucide:database",
     to: RouteLocation.datasetList,
   },
   {
     key: "leaderboard",
-    label: "排行榜",
+    label: t("layout.nav.leaderboard"),
     icon: "lucide:trophy",
     to: RouteLocation.leaderboard,
   },
   {
     key: "contact",
-    label: "联系我们",
+    label: t("layout.nav.contact"),
     icon: "lucide:mail",
     to: RouteLocation.contact,
   },
 ];
 
-export const WORKSPACE_NAV_ITEMS: AppNavItem[] = [
+export const buildWorkspaceNavItems = (t: Translate): AppNavItem[] => [
   {
     key: "records",
-    label: "评测记录",
+    label: t("layout.nav.records"),
     icon: "lucide:clipboard-list",
     to: RouteLocation.userCenter,
     requiresAuth: true,
@@ -49,32 +51,32 @@ export const WORKSPACE_NAV_ITEMS: AppNavItem[] = [
   },
   {
     key: "agents",
-    label: "智能体管理",
+    label: t("layout.nav.agents"),
     icon: "lucide:bot",
     to: RouteLocation.agentManagement,
     requiresAuth: true,
   },
   {
     key: "register-agent",
-    label: "注册智能体",
+    label: t("layout.nav.registerAgent"),
     icon: "lucide:bot-message-square",
     to: RouteLocation.agentRegister(),
     requiresAuth: true,
   },
   {
     key: "submit",
-    label: "提交评测",
+    label: t("layout.nav.submit"),
     icon: "lucide:file-plus-2",
     to: RouteLocation.agentSubmit,
     requiresAuth: true,
   },
 ];
 
-export const WORKSPACE_SIDEBAR_ITEMS: AppNavItem[] = [
-  ...WORKSPACE_NAV_ITEMS,
+export const buildWorkspaceSidebarItems = (t: Translate): AppNavItem[] => [
+  ...buildWorkspaceNavItems(t),
   {
     key: "profile",
-    label: "个人资料",
+    label: t("layout.nav.profile"),
     icon: "lucide:square-pen",
     to: RouteLocation.userProfile,
     requiresAuth: true,

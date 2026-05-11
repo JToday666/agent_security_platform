@@ -1,0 +1,55 @@
+{
+  "home": {
+    "hero": {
+      "descriptionPrimary": "Agents Evaluation and Guardrail Inspection System",
+      "descriptionSecondary": "安全、可靠、专业的智能体评估系统，让每一次评测都有据可依"
+    },
+    "quickstart": {
+      "title": "快速上手",
+      "description": "以标准化流程完成数据集浏览、评测提交、执行跟踪与结果复核。"
+    },
+    "workflow": {
+      "browse": {
+        "title": "浏览数据集",
+        "description": "按风险域查看数据集说明、样例和资源。",
+        "action": "查看目录"
+      },
+      "submit": {
+        "title": "创建评测任务",
+        "description": "填写智能体信息并选择本次评测范围。",
+        "actionAuthed": "开始提交",
+        "actionGuest": "先浏览数据集"
+      },
+      "track": {
+        "title": "跟踪任务进度",
+        "description": "在工作台查看运行状态、暂停和终止结果。",
+        "actionAuthed": "查看记录",
+        "actionGuest": "联系我们"
+      },
+      "review": {
+        "title": "查看结果",
+        "description": "进入详情页查看摘要、告警和详细指标。",
+        "actionAuthed": "进入工作台",
+        "actionGuest": "查看联系信息"
+      }
+    }
+  },
+  "contact": {
+    "title": "联系我们",
+    "description": "如果您有任何问题、建议或合作想法，欢迎通过以下方式与我们取得联系。",
+    "logoAlt": "智能体安全评测平台标识",
+    "email": "邮箱",
+    "phone": "电话",
+    "address": "地址",
+    "addressValue": "武汉市东西湖区国家网络安全基地",
+    "social": "社交媒体"
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "页面未找到",
+    "description": "当前地址暂不可访问，请从导航或下方入口重新进入。",
+    "sectionTitle": "可用入口",
+    "sectionDescription": "您可以返回首页，或从评测目录重新开始浏览。",
+    "datasetAction": "查看评测目录"
+  }
+}

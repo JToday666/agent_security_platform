@@ -1,8 +1,12 @@
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
-import { EXPLORE_NAV_ITEMS, WORKSPACE_NAV_ITEMS } from "@/app/shell/nav-items";
+import {
+  buildExploreNavItems,
+  buildWorkspaceNavItems,
+} from "@/app/shell/nav-items";
 import { resolveShellContext } from "@/app/shell/shell-context";
 import { useUserStore } from "@/modules/account/stores/userStore";
 
@@ -13,6 +17,7 @@ const MOUSE_TOP_THRESHOLD = 10;
 export const useNavBarShell = () => {
   const route = useRoute();
   const router = useRouter();
+  const { t } = useI18n();
   const userStore = useUserStore();
   const { avatarDisplayUrl, isLogin, username } = storeToRefs(userStore);
 
@@ -26,28 +31,36 @@ export const useNavBarShell = () => {
   const shellContext = computed(() =>
     resolveShellContext(route.name ? String(route.name) : undefined),
   );
+  const exploreNavItems = computed(() => buildExploreNavItems(t));
+  const workspaceNavItems = computed(() => buildWorkspaceNavItems(t));
 
   const mainNavItems = computed(() =>
     shellContext.value === "workspace"
-      ? WORKSPACE_NAV_ITEMS.filter(
+      ? workspaceNavItems.value.filter(
           (item) => !item.requiresAuth || isLogin.value,
         )
-      : EXPLORE_NAV_ITEMS,
+      : exploreNavItems.value,
   );
 
   const secondaryNavItems = computed(() => {
     if (shellContext.value === "workspace") {
-      return EXPLORE_NAV_ITEMS;
+      return exploreNavItems.value;
     }
 
     if (!isLogin.value) {
       return [];
     }
 
-    return WORKSPACE_NAV_ITEMS.filter(
+    return workspaceNavItems.value.filter(
       (item) => !item.requiresAuth || isLogin.value,
     );
   });
+  const overflowNavItems = computed(() => secondaryNavItems.value);
+  const overflowNavLabel = computed(() =>
+    shellContext.value === "workspace"
+      ? t("layout.nav.explore")
+      : t("layout.nav.workspace"),
+  );
 
   const usernameInitial = computed(
     () => (username.value || "A").trim().charAt(0).toUpperCase() || "A",
@@ -187,6 +200,8 @@ export const useNavBarShell = () => {
     mobileMenuOpen,
     openLoginDialog,
     openLoginDialogFromMenu,
+    overflowNavItems,
+    overflowNavLabel,
     secondaryNavItems,
     shellContext,
     toggleMobileMenu,

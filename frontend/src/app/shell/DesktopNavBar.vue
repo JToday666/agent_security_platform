@@ -4,18 +4,21 @@
       <router-link
         :to="RouteLocation.home"
         class="brand-mark ui-glow-frame"
-        aria-label="返回首页"
+        :aria-label="t('layout.aria.returnHome')"
       >
         <BrandLogo
           class="brand-logo"
-          alt="智能体安全评测平台标志"
+          :alt="t('common.brand.logoAlt')"
           :priority="true"
         />
       </router-link>
 
-      <router-link :to="RouteLocation.home" class="brand-title ui-title-gradient">
-        <span class="brand-title-prefix">AEGIS </span>
-        <span>智能体安全评测平台</span>
+      <router-link
+        :to="RouteLocation.home"
+        class="brand-title ui-title-gradient"
+        :title="t('common.brand.name')"
+      >
+        <span>{{ t("common.brand.name") }}</span>
       </router-link>
     </div>
 
@@ -26,24 +29,20 @@
         v-bind="getNavLinkStateProps(item)"
         :to="item.to"
         class="nav-link"
+        :aria-label="item.label"
+        :title="item.label"
       >
         <AppIcon :icon="item.icon" class="nav-link-icon" />
-        <span>{{ item.label }}</span>
+        <span class="nav-link-label">{{ item.label }}</span>
       </router-link>
     </div>
 
-    <div v-if="secondaryNavItems.length" class="nav-links nav-links--secondary">
-      <router-link
-        v-for="item in secondaryNavItems"
-        :key="`desktop-secondary-${item.key}`"
-        v-bind="getNavLinkStateProps(item)"
-        :to="item.to"
-        class="nav-link nav-link--secondary nav-link--with-icon"
-      >
-        <AppIcon :icon="item.icon" class="nav-link-icon" />
-        <span>{{ item.label }}</span>
-      </router-link>
-    </div>
+    <DesktopNavOverflowMenu
+      v-if="overflowNavItems.length"
+      class="nav-overflow"
+      :items="overflowNavItems"
+      :label="overflowNavLabel"
+    />
 
     <div class="nav-actions">
       <UiButton
@@ -54,7 +53,7 @@
         leading-icon="lucide:log-in"
         @click="$emit('open-login')"
       >
-        <span>登录 / 注册</span>
+        <span>{{ t("common.actions.loginRegister") }}</span>
       </UiButton>
 
       <UserNavMenu
@@ -74,7 +73,11 @@
         type="button"
         :aria-expanded="mobileMenuOpen ? 'true' : 'false'"
         aria-controls="mobile-nav-drawer"
-        :aria-label="mobileMenuOpen ? '关闭导航菜单' : '打开导航菜单'"
+        :aria-label="
+          mobileMenuOpen
+            ? t('layout.aria.closeMenu')
+            : t('layout.aria.openMenu')
+        "
         @click="$emit('toggle-mobile-menu')"
       >
         <AppIcon
@@ -87,14 +90,18 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { RouteLocation } from "@/app/router/route-names";
 import { getNavLinkStateProps } from "@/app/shell/nav-link-state";
 import type { AppNavItem } from "@/app/shell/nav-items";
 import type { ShellContext } from "@/app/shell/shell-context";
+import DesktopNavOverflowMenu from "@/app/shell/DesktopNavOverflowMenu.vue";
 import UserNavMenu from "@/app/shell/UserNavMenu.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
+
+const { t } = useI18n();
 
 defineProps<{
   avatarDisplayUrl: string;
@@ -102,7 +109,8 @@ defineProps<{
   isLogin: boolean;
   mainNavItems: AppNavItem[];
   mobileMenuOpen: boolean;
-  secondaryNavItems: AppNavItem[];
+  overflowNavItems: AppNavItem[];
+  overflowNavLabel: string;
   shellContext: ShellContext;
   username: string;
   usernameInitial: string;
@@ -121,10 +129,10 @@ $NAV_BREAKPOINT_TABLET: 1120px;
 
 .nav-container {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 0.9rem;
-  max-width: min(1440px, 100vw);
+  gap: 0.78rem;
+  max-width: min(1880px, 100vw);
   min-height: var(--nav-height);
   margin: 0 auto;
   padding: 0 1.1rem;
@@ -134,6 +142,7 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   display: flex;
   align-items: center;
   gap: 0.72rem;
+  max-width: clamp(13rem, 24vw, 30rem);
   min-width: 0;
 }
 
@@ -159,11 +168,15 @@ $NAV_BREAKPOINT_TABLET: 1120px;
 }
 
 .brand-title {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
   color: var(--color-text-dark);
   font-size: 0.98rem;
   font-weight: 800;
   letter-spacing: 0;
   text-decoration: none;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -186,12 +199,7 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   justify-content: center;
   gap: 0.28rem;
   min-height: 2.85rem;
-}
-
-.nav-links--secondary {
-  justify-content: flex-end;
-  gap: 0.24rem;
-  min-height: 2.75rem;
+  overflow: hidden;
 }
 
 .nav-link {
@@ -201,6 +209,9 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   padding: 0.52rem 0.78rem;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
+  max-width: clamp(6.8rem, 10vw, 11.5rem);
+  min-width: 0;
+  min-height: 2.25rem;
   color: #334155;
   font-size: 0.9rem;
   font-weight: 600;
@@ -232,20 +243,20 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   color: var(--color-primary);
 }
 
-.nav-link--secondary {
-  padding-inline: 0.68rem;
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 0.84rem;
-}
-
-.nav-link--with-icon {
-  gap: 0.45rem;
-}
-
 .nav-link-icon {
   flex-shrink: 0;
   width: 1rem;
   height: 1rem;
+}
+
+.nav-link-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-overflow {
+  justify-self: end;
 }
 
 .nav-actions {
@@ -253,6 +264,7 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   align-items: center;
   justify-self: end;
   gap: 0.6rem;
+  min-width: 0;
 }
 
 .nav-menu-zone {
@@ -287,11 +299,8 @@ $NAV_BREAKPOINT_TABLET: 1120px;
 
 @media (max-width: 1340px) {
   .nav-container {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-  }
-
-  .nav-links--secondary {
-    display: none;
+    gap: 0.55rem;
+    padding-inline: 0.9rem;
   }
 }
 
@@ -318,6 +327,7 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   }
 
   .nav-links,
+  .nav-overflow,
   .nav-actions {
     display: none;
   }

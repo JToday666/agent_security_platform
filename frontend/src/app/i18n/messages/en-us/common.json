@@ -1,0 +1,24 @@
+{
+  "brand": {
+    "name": "AEGIS Agent Security Evaluation Platform",
+    "logoAlt": "Agent Security Evaluation Platform logo"
+  },
+  "actions": {
+    "browseDataset": "Browse Datasets",
+    "cancel": "Cancel",
+    "close": "Close",
+    "confirm": "Confirm",
+    "contactUs": "Contact Us",
+    "loginRegister": "Log In / Sign Up",
+    "returnHome": "Back Home",
+    "saveChanges": "Save Changes",
+    "submitEvaluation": "Submit Evaluation",
+    "viewRecords": "View Records"
+  },
+  "dialog": {
+    "title": "Notice"
+  },
+  "units": {
+    "step": "Step {step}"
+  }
+}

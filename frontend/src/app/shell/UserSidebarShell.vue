@@ -1,12 +1,18 @@
 <template>
   <aside class="user-sidebar" :class="{ collapsed }">
     <div class="sidebar-top">
-      <strong v-if="!collapsed" class="sidebar-title">工作台</strong>
+      <strong v-if="!collapsed" class="sidebar-title">
+        {{ t("layout.nav.workspace") }}
+      </strong>
 
       <button
         class="toggle-btn"
         type="button"
-        :aria-label="collapsed ? '展开侧边栏' : '收起侧边栏'"
+        :aria-label="
+          collapsed
+            ? t('layout.aria.openMenu')
+            : t('layout.aria.closeMenu')
+        "
         @click="collapsed = !collapsed"
       >
         <AppIcon
@@ -18,7 +24,7 @@
 
     <nav class="sidebar-nav">
       <router-link
-        v-for="item in WORKSPACE_SIDEBAR_ITEMS"
+        v-for="item in workspaceSidebarItems"
         :key="item.key"
         v-bind="getNavLinkStateProps(item)"
         :to="item.to"
@@ -33,13 +39,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
-import { WORKSPACE_SIDEBAR_ITEMS } from "@/app/shell/nav-items";
+import { buildWorkspaceSidebarItems } from "@/app/shell/nav-items";
 import { getNavLinkStateProps } from "@/app/shell/nav-link-state";
 
+const { t } = useI18n();
 const collapsed = ref(false);
-
+const workspaceSidebarItems = computed(() => buildWorkspaceSidebarItems(t));
 
 const syncSidebarWidth = () => {
   document.documentElement.style.setProperty(

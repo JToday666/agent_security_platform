@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "dataset": "Jeux de donnees",
+    "explore": "Explorer",
+    "leaderboard": "Classement",
+    "contact": "Contact",
+    "records": "Dossiers d'evaluation",
+    "agents": "Gestion des Agents",
+    "registerAgent": "Enregistrer un Agent",
+    "submit": "Soumettre",
+    "profile": "Profil",
+    "workspace": "Espace de travail"
+  },
+  "aria": {
+    "returnHome": "Retour a l'accueil",
+    "openMenu": "Ouvrir le menu de navigation",
+    "closeMenu": "Fermer le menu de navigation"
+  },
+  "mobile": {
+    "title": "Navigation",
+    "primaryGroup": "Pages",
+    "secondaryGroup": "Plus"
+  }
+}

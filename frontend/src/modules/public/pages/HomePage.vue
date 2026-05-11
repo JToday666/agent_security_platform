@@ -2,7 +2,11 @@
   <div class="content home-page layout-page-shell layout-page-shell--wide">
     <section class="hero-stage" aria-labelledby="home-hero-title">
       <div class="hero-shell">
-        <BrandLogo class="hero-logo" alt="智能体安全评测平台标志" :priority="true" />
+        <BrandLogo
+          class="hero-logo"
+          :alt="t('common.brand.logoAlt')"
+          :priority="true"
+        />
 
         <h1 id="home-hero-title" class="hero-title ui-title-gradient">
           {{ displayedTitle }}
@@ -20,7 +24,7 @@
             size="lg"
             leading-icon="lucide:database"
           >
-            浏览数据集
+            {{ t("common.actions.browseDataset") }}
           </UiButton>
           <UiButton
             v-if="isLogin"
@@ -29,7 +33,7 @@
             size="lg"
             leading-icon="lucide:file-plus-2"
           >
-            提交评测
+            {{ t("common.actions.submitEvaluation") }}
           </UiButton>
           <UiButton
             v-else
@@ -38,7 +42,7 @@
             leading-icon="lucide:log-in"
             @click="openLoginDialog"
           >
-            登录 / 注册
+            {{ t("common.actions.loginRegister") }}
           </UiButton>
           <UiButton
             :to="isLogin ? RouteLocation.userCenter : RouteLocation.contact"
@@ -46,7 +50,11 @@
             size="lg"
             :leading-icon="isLogin ? 'lucide:clipboard-list' : 'lucide:messages-square'"
           >
-            {{ isLogin ? "查看记录" : "联系我们" }}
+            {{
+              isLogin
+                ? t("common.actions.viewRecords")
+                : t("common.actions.contactUs")
+            }}
           </UiButton>
         </div>
       </div>
@@ -59,9 +67,11 @@
         @mousemove="handleQuickstartGlow"
         @focus="handleQuickstartGlow"
       >
-        <span class="hero-anchor__title ui-title-gradient">快速上手</span>
+        <span class="hero-anchor__title ui-title-gradient">
+          {{ t("public.home.quickstart.title") }}
+        </span>
         <span class="hero-anchor__description">
-          以标准化流程完成数据集浏览、评测提交、执行跟踪与结果复核。
+          {{ t("public.home.quickstart.description") }}
         </span>
       </button>
     </section>
@@ -89,20 +99,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import { useUserStore } from "@/modules/account/stores/userStore";
 import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import HomeWorkflowStep from "@/modules/public/components/HomeWorkflowStep.vue";
 import { RouteLocation } from "@/app/router/route-names";
 
-const HERO_TITLE = "AEGIS 智能体安全评测平台";
-const HERO_DESCRIPTION_PRIMARY =
-  "Agents Evaluation and Guardrail Inspection System";
-const HERO_DESCRIPTION_SECONDARY =
-  "安全、可靠、专业的智能体评估系统，让每一次评测都有据可依";
-
+const { locale, t } = useI18n();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
 
@@ -115,6 +121,14 @@ const workflowVisible = ref(false);
 const typingHandles: number[] = [];
 let prefersReducedMotion = false;
 let sectionObserver: IntersectionObserver | null = null;
+
+const heroTitle = computed(() => t("common.brand.name"));
+const heroDescriptionPrimary = computed(() =>
+  t("public.home.hero.descriptionPrimary"),
+);
+const heroDescriptionSecondary = computed(() =>
+  t("public.home.hero.descriptionSecondary"),
+);
 
 const scheduleTyping = (callback: () => void, delay: number) => {
   const handle = window.setTimeout(callback, delay);
@@ -129,9 +143,9 @@ const clearTypingHandles = () => {
 };
 
 const setHeroImmediately = () => {
-  displayedTitle.value = HERO_TITLE;
-  displayedDescriptionPrimary.value = HERO_DESCRIPTION_PRIMARY;
-  displayedDescriptionSecondary.value = HERO_DESCRIPTION_SECONDARY;
+  displayedTitle.value = heroTitle.value;
+  displayedDescriptionPrimary.value = heroDescriptionPrimary.value;
+  displayedDescriptionSecondary.value = heroDescriptionSecondary.value;
 };
 
 const typeText = (
@@ -153,33 +167,39 @@ const workflowItems = computed(() => [
   {
     step: 1,
     icon: "lucide:database",
-    title: "浏览数据集",
-    description: "按风险域查看数据集说明、样例和资源。",
-    actionLabel: "查看目录",
+    title: t("public.home.workflow.browse.title"),
+    description: t("public.home.workflow.browse.description"),
+    actionLabel: t("public.home.workflow.browse.action"),
     to: RouteLocation.datasetList,
   },
   {
     step: 2,
     icon: "lucide:file-plus-2",
-    title: "创建评测任务",
-    description: "填写智能体信息并选择本次评测范围。",
-    actionLabel: isLogin.value ? "开始提交" : "先浏览数据集",
+    title: t("public.home.workflow.submit.title"),
+    description: t("public.home.workflow.submit.description"),
+    actionLabel: isLogin.value
+      ? t("public.home.workflow.submit.actionAuthed")
+      : t("public.home.workflow.submit.actionGuest"),
     to: isLogin.value ? RouteLocation.agentSubmit : RouteLocation.datasetList,
   },
   {
     step: 3,
     icon: "lucide:clipboard-list",
-    title: "跟踪任务进度",
-    description: "在工作台查看运行状态、暂停和终止结果。",
-    actionLabel: isLogin.value ? "查看记录" : "联系我们",
+    title: t("public.home.workflow.track.title"),
+    description: t("public.home.workflow.track.description"),
+    actionLabel: isLogin.value
+      ? t("public.home.workflow.track.actionAuthed")
+      : t("public.home.workflow.track.actionGuest"),
     to: isLogin.value ? RouteLocation.userCenter : RouteLocation.contact,
   },
   {
     step: 4,
     icon: "lucide:file-search",
-    title: "查看结果",
-    description: "进入详情页查看摘要、告警和详细指标。",
-    actionLabel: isLogin.value ? "进入工作台" : "查看联系信息",
+    title: t("public.home.workflow.review.title"),
+    description: t("public.home.workflow.review.description"),
+    actionLabel: isLogin.value
+      ? t("public.home.workflow.review.actionAuthed")
+      : t("public.home.workflow.review.actionGuest"),
     to: isLogin.value ? RouteLocation.userCenter : RouteLocation.contact,
   },
 ]);
@@ -241,11 +261,8 @@ const observeSections = async () => {
   }
 };
 
-onMounted(() => {
-  prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-
+const startHeroAnimation = () => {
+  clearTypingHandles();
   displayedTitle.value = "";
   displayedDescriptionPrimary.value = "";
   displayedDescriptionSecondary.value = "";
@@ -254,22 +271,33 @@ onMounted(() => {
   if (prefersReducedMotion) {
     setHeroImmediately();
   } else {
-    const titleEndDelay = typeText(HERO_TITLE, displayedTitle, 220, 118);
+    const titleEndDelay = typeText(heroTitle.value, displayedTitle, 220, 118);
     const primaryEndDelay = typeText(
-      HERO_DESCRIPTION_PRIMARY,
+      heroDescriptionPrimary.value,
       displayedDescriptionPrimary,
       titleEndDelay + 320,
       46,
     );
     typeText(
-      HERO_DESCRIPTION_SECONDARY,
+      heroDescriptionSecondary.value,
       displayedDescriptionSecondary,
       primaryEndDelay + 160,
       42,
     );
   }
+};
 
+onMounted(() => {
+  prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  startHeroAnimation();
   void observeSections();
+});
+
+watch(locale, () => {
+  startHeroAnimation();
 });
 
 onBeforeUnmount(() => {

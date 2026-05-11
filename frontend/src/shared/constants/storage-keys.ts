@@ -11,6 +11,9 @@ export const STORAGE_KEYS = {
   session: {
     scroll: "agent-platform:session-scroll:v1",
   },
+  i18n: {
+    displayLocale: "agent-platform:i18n:display-locale",
+  },
   user: {
     token: "token",
     postLoginRedirect: "agent-platform:post-login-redirect",

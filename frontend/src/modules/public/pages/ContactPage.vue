@@ -1,13 +1,13 @@
 <template>
   <div class="content contact-page layout-page-shell layout-page-shell--compact">
     <PageHero
-      title="联系我们"
-      description="如果您有任何问题、建议或合作想法，欢迎通过以下方式与我们取得联系。"
+      :title="t('public.contact.title')"
+      :description="t('public.contact.description')"
       align="center"
       description-wrap="single-line"
     >
       <template #prefix>
-        <BrandLogo class="contact-logo" alt="智能体安全评测平台标识" />
+        <BrandLogo class="contact-logo" :alt="t('public.contact.logoAlt')" />
       </template>
     </PageHero>
 
@@ -59,6 +59,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
@@ -84,30 +86,32 @@ type ContactItem =
       links: { name: string; icon: string; url: string }[];
     };
 
-const contactItems: ContactItem[] = [
+const { t } = useI18n();
+
+const contactItems = computed<ContactItem[]>(() => [
   {
     icon: "lucide:mail",
-    title: "邮箱",
+    title: t("public.contact.email"),
     type: "link",
     text: "u202312421@hust.edu.com",
     link: "mailto:u202312421@hust.edu.com",
   },
   {
     icon: "lucide:phone",
-    title: "电话",
+    title: t("public.contact.phone"),
     type: "link",
     text: "+86 13886038599",
     link: "tel:+8613886038599",
   },
   {
     icon: "lucide:map-pin",
-    title: "地址",
+    title: t("public.contact.address"),
     type: "text",
-    text: "武汉市东西湖区国家网络安全基地",
+    text: t("public.contact.addressValue"),
   },
   {
     icon: "lucide:globe",
-    title: "社交媒体",
+    title: t("public.contact.social"),
     type: "social",
     links: [
       {
@@ -122,7 +126,7 @@ const contactItems: ContactItem[] = [
       },
     ],
   },
-];
+]);
 </script>
 
 <style scoped lang="scss">

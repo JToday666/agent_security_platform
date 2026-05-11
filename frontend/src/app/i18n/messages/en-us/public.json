@@ -1,0 +1,55 @@
+{
+  "home": {
+    "hero": {
+      "descriptionPrimary": "Agents Evaluation and Guardrail Inspection System",
+      "descriptionSecondary": "A secure, reliable, and professional Agent evaluation system with traceable results."
+    },
+    "quickstart": {
+      "title": "Quick Start",
+      "description": "Complete dataset browsing, evaluation submission, execution tracking, and result review through a standardized flow."
+    },
+    "workflow": {
+      "browse": {
+        "title": "Browse Datasets",
+        "description": "View dataset descriptions, samples, and resources by risk domain.",
+        "action": "View Catalog"
+      },
+      "submit": {
+        "title": "Create Evaluation",
+        "description": "Enter Agent information and select the evaluation scope.",
+        "actionAuthed": "Start Submission",
+        "actionGuest": "Browse Datasets First"
+      },
+      "track": {
+        "title": "Track Progress",
+        "description": "View run status, pauses, and termination results in the workspace.",
+        "actionAuthed": "View Records",
+        "actionGuest": "Contact Us"
+      },
+      "review": {
+        "title": "Review Results",
+        "description": "Open the detail page to inspect summaries, alerts, and metrics.",
+        "actionAuthed": "Open Workspace",
+        "actionGuest": "View Contact Info"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "For questions, suggestions, or collaboration, contact us through the channels below.",
+    "logoAlt": "Agent Security Evaluation Platform mark",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "addressValue": "National Cybersecurity Base, Dongxihu District, Wuhan",
+    "social": "Social Media"
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "Page Not Found",
+    "description": "This address is not available. Use navigation or the entries below.",
+    "sectionTitle": "Available Entries",
+    "sectionDescription": "Return home or start again from the evaluation catalog.",
+    "datasetAction": "View Evaluation Catalog"
+  }
+}

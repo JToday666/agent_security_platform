@@ -1,5 +1,6 @@
 import request from "@/shared/api/http-client";
 import { withMemoryCache } from "@/shared/api/memory-cache";
+import { getCurrentDisplayLocale } from "@/app/i18n";
 import {
   adaptEvaluationDetail,
   adaptEvaluationRecord,
@@ -34,7 +35,7 @@ import {
 
 export const getLiveSubmitMeta = async (): Promise<SubmitMetaResponse> =>
   withMemoryCache(
-    SUBMIT_META_CACHE_KEY,
+    `${SUBMIT_META_CACHE_KEY}:${getCurrentDisplayLocale()}`,
     async () => {
       const response = await request.get<unknown>("/evaluations/meta");
 

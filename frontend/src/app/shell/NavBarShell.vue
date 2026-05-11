@@ -12,7 +12,8 @@
       :is-login="isLogin"
       :main-nav-items="mainNavItems"
       :mobile-menu-open="mobileMenuOpen"
-      :secondary-nav-items="secondaryNavItems"
+      :overflow-nav-items="overflowNavItems"
+      :overflow-nav-label="overflowNavLabel"
       :shell-context="shellContext"
       :username="username"
       :username-initial="usernameInitial"
@@ -64,6 +65,8 @@ const {
   mobileMenuOpen,
   openLoginDialog,
   openLoginDialogFromMenu,
+  overflowNavItems,
+  overflowNavLabel,
   secondaryNavItems,
   shellContext,
   toggleMobileMenu,

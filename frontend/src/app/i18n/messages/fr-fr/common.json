@@ -1,0 +1,24 @@
+{
+  "brand": {
+    "name": "AEGIS plateforme d'evaluation de securite des Agents",
+    "logoAlt": "Logo de la plateforme d'evaluation de securite des Agents"
+  },
+  "actions": {
+    "browseDataset": "Parcourir les jeux",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "contactUs": "Nous contacter",
+    "loginRegister": "Connexion / Inscription",
+    "returnHome": "Retour accueil",
+    "saveChanges": "Enregistrer",
+    "submitEvaluation": "Soumettre une evaluation",
+    "viewRecords": "Voir les dossiers"
+  },
+  "dialog": {
+    "title": "Avis"
+  },
+  "units": {
+    "step": "Etape {step}"
+  }
+}
