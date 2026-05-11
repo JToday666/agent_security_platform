@@ -1,5 +1,6 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
+import { getCurrentDisplayLocale } from "@/app/i18n";
 import {
   getDatasetCatalog,
   getDatasetDetail,
@@ -27,6 +28,7 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
   const activeCategoryId = ref("");
   const loading = ref(false);
   const loaded = ref(false);
+  const loadedLocale = ref("");
   const error = ref("");
   const detailCache = ref<Record<string, DatasetDetail>>({});
 
@@ -43,7 +45,8 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
   );
 
   const fetchCatalog = async (force = false): Promise<boolean> => {
-    if (loaded.value && !force) return true;
+    const locale = getCurrentDisplayLocale();
+    if (loaded.value && loadedLocale.value === locale && !force) return true;
 
     loading.value = true;
     error.value = "";
@@ -57,6 +60,7 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
         activeCategoryId.value,
       );
       loaded.value = true;
+      loadedLocale.value = locale;
       return true;
     } catch (fetchError) {
       error.value =
@@ -80,9 +84,11 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
     datasetId: string,
     force = false,
   ): Promise<DatasetDetailFetchResult> => {
-    if (detailCache.value[datasetId] && !force) {
+    const cacheKey = `${getCurrentDisplayLocale()}:${datasetId}`;
+
+    if (detailCache.value[cacheKey] && !force) {
       return {
-        detail: detailCache.value[datasetId],
+        detail: detailCache.value[cacheKey],
         notFound: false,
         errorMessage: "",
       };
@@ -92,7 +98,7 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
       const detail = await getDatasetDetail(datasetId, { force });
       detailCache.value = {
         ...detailCache.value,
-        [datasetId]: detail,
+        [cacheKey]: detail,
       };
       return {
         detail,

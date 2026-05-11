@@ -1,5 +1,6 @@
 import request from "@/shared/api/http-client";
 import { ApiConfig } from "@/shared/api/Config";
+import { getCurrentDisplayLocale } from "@/app/i18n";
 import {
   readMemoryCache,
   setMemoryCache,
@@ -51,8 +52,13 @@ const createDatasetServiceError = (
 const DATASET_CATALOG_CACHE_KEY = "datasets:catalog";
 const DATASET_DETAIL_CACHE_PREFIX = "datasets:detail";
 
+const localizedCacheKey = (key: string): string =>
+  `${key}:${getCurrentDisplayLocale()}`;
+
 const datasetDetailCacheKey = (datasetId: string): string =>
-  `${DATASET_DETAIL_CACHE_PREFIX}:${normalizeDatasetId(datasetId)}`;
+  localizedCacheKey(
+    `${DATASET_DETAIL_CACHE_PREFIX}:${normalizeDatasetId(datasetId)}`,
+  );
 
 const loadCatalogFromApi = async (
   signal?: AbortSignal,
@@ -93,6 +99,7 @@ export const getDatasetCatalog = async (
   options: DatasetCatalogRequestOptions = {},
 ): Promise<DatasetCatalogResponse> => {
   const { force = false, signal } = options;
+  const catalogCacheKey = localizedCacheKey(DATASET_CATALOG_CACHE_KEY);
 
   if (ApiConfig.enableApiMock) {
     if (shouldMockFail("mockCatalogError")) {
@@ -115,7 +122,7 @@ export const getDatasetCatalog = async (
 
   if (signal) {
     const cached = !force
-      ? readMemoryCache<DatasetCatalogResponse>(DATASET_CATALOG_CACHE_KEY)
+      ? readMemoryCache<DatasetCatalogResponse>(catalogCacheKey)
       : undefined;
 
     if (cached) {
@@ -123,11 +130,11 @@ export const getDatasetCatalog = async (
     }
 
     const catalog = await loadCatalogFromApi(signal);
-    return setMemoryCache(DATASET_CATALOG_CACHE_KEY, catalog);
+    return setMemoryCache(catalogCacheKey, catalog);
   }
 
   return withMemoryCache(
-    DATASET_CATALOG_CACHE_KEY,
+    catalogCacheKey,
     () => loadCatalogFromApi(signal),
     { force },
   );

@@ -1,7 +1,9 @@
 <template>
   <article class="workflow-step">
     <div class="workflow-step__top">
-      <span class="workflow-step__index">步骤 {{ step }}</span>
+      <span class="workflow-step__index">
+        {{ t("common.units.step", { step }) }}
+      </span>
       <AppIcon :icon="icon" class="workflow-step__icon" />
     </div>
     <h3 class="workflow-step__title">{{ title }}</h3>
@@ -14,8 +16,11 @@
 
 <script setup lang="ts">
 import type { RouteLocationRaw } from "vue-router";
+import { useI18n } from "vue-i18n";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import Button from "@/shared/ui/actions/UiButton.vue";
+
+const { t } = useI18n();
 
 defineProps<{
   step: number;

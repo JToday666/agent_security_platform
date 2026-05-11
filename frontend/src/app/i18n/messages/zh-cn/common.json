@@ -1,0 +1,24 @@
+{
+  "brand": {
+    "name": "AEGIS 智能体安全评测平台",
+    "logoAlt": "智能体安全评测平台标志"
+  },
+  "actions": {
+    "browseDataset": "浏览数据集",
+    "cancel": "取消",
+    "close": "关闭",
+    "confirm": "确认",
+    "contactUs": "联系我们",
+    "loginRegister": "登录 / 注册",
+    "returnHome": "返回首页",
+    "saveChanges": "保存修改",
+    "submitEvaluation": "提交评测",
+    "viewRecords": "查看记录"
+  },
+  "dialog": {
+    "title": "提示"
+  },
+  "units": {
+    "step": "步骤 {step}"
+  }
+}

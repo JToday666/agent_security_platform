@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "home": "首页",
+    "dataset": "数据集目录",
+    "explore": "探索",
+    "leaderboard": "排行榜",
+    "contact": "联系我们",
+    "records": "评测记录",
+    "agents": "智能体管理",
+    "registerAgent": "注册智能体",
+    "submit": "提交评测",
+    "profile": "个人资料",
+    "workspace": "工作台"
+  },
+  "aria": {
+    "returnHome": "返回首页",
+    "openMenu": "打开导航菜单",
+    "closeMenu": "关闭导航菜单"
+  },
+  "mobile": {
+    "title": "导航",
+    "primaryGroup": "页面",
+    "secondaryGroup": "更多"
+  }
+}

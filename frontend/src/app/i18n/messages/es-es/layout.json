@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "dataset": "Conjuntos de datos",
+    "explore": "Explorar",
+    "leaderboard": "Clasificacion",
+    "contact": "Contacto",
+    "records": "Registros de evaluacion",
+    "agents": "Gestion de Agents",
+    "registerAgent": "Registrar Agent",
+    "submit": "Enviar evaluacion",
+    "profile": "Perfil",
+    "workspace": "Area de trabajo"
+  },
+  "aria": {
+    "returnHome": "Volver al inicio",
+    "openMenu": "Abrir menu de navegacion",
+    "closeMenu": "Cerrar menu de navegacion"
+  },
+  "mobile": {
+    "title": "Navegacion",
+    "primaryGroup": "Paginas",
+    "secondaryGroup": "Mas"
+  }
+}

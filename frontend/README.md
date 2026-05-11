@@ -2,7 +2,7 @@
 
 ## 1. 项目定位
 
-`frontend/` 是 Agent Security Platform 的前端工程，基于 Vite + Vue + TypeScript + Pinia + Vue Router，并预留 `vue-i18n` 国际化资源骨架。
+`frontend/` 是 Agent Security Platform 的前端工程，基于 Vite + Vue + TypeScript + Pinia + Vue Router，并已接入 `vue-i18n` 国际化基础设施。
 
 当前前端覆盖以下能力：
 
@@ -24,7 +24,7 @@
 
 ## 2. 当前核心目录
 
-- `src/app/`：布局、路由、导航外壳、移动导航抽屉、国际化资源骨架、SCSS 设计体系
+- `src/app/`：布局、路由、导航外壳、移动导航抽屉、国际化入口、SCSS 设计体系
 - `src/modules/`：业务模块代码，页面容器、状态组合、展示组件和视图派生按模块放置
 - `src/shared/`：共享 API、类型、工具、UI
 - `public/`：不经构建处理的静态资源
@@ -85,6 +85,15 @@ Node 与包管理器要求以 `package.json` 为准。
 - 本地联调真实后端时，通常保持 `VITE_ENABLE_API_MOCK=false`
 - 想脱离后端独立演示数据集、Agent 注册提交、评测历史、趋势分析和报告阅读流时，可切到 `VITE_ENABLE_API_MOCK=true`
 - 若修改 API 基础路径或代理目标，优先同时检查 `src/shared/api/Config.ts` 和 `vite.config.ts`
+
+现阶段还没有页面内语言切换器。需要切换语言时，直接修改 URL 第一段 locale，例如：
+
+```text
+/zh-CN/dataset -> /en-US/dataset
+/zh-CN/user/agents -> /ja-JP/user/agents
+```
+
+支持的 URL locale 为 `zh-CN`、`en-US`、`fr-FR`、`es-ES`、`ja-JP`。无 locale 的入口会自动补全为首选语言，例如 `/dataset` 会跳转到 `/{preferredLocale}/dataset`。
 
 ## 5. 当前共享 UI 基线
 

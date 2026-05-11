@@ -1,0 +1,24 @@
+{
+  "brand": {
+    "name": "AEGIS plataforma de evaluacion de seguridad de Agents",
+    "logoAlt": "Logotipo de la plataforma de evaluacion de seguridad de Agents"
+  },
+  "actions": {
+    "browseDataset": "Ver conjuntos",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "contactUs": "Contactar",
+    "loginRegister": "Iniciar sesion / Registrarse",
+    "returnHome": "Volver al inicio",
+    "saveChanges": "Guardar cambios",
+    "submitEvaluation": "Enviar evaluacion",
+    "viewRecords": "Ver registros"
+  },
+  "dialog": {
+    "title": "Aviso"
+  },
+  "units": {
+    "step": "Paso {step}"
+  }
+}

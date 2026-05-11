@@ -16,7 +16,7 @@
     </span>
     <span :class="variant === 'mobile' ? 'mobile-profile-copy' : 'user-copy'">
       <strong>{{ username }}</strong>
-      <span>个人资料</span>
+      <span>{{ t("layout.nav.profile") }}</span>
     </span>
     <AppIcon
       v-if="variant === 'mobile'"
@@ -27,7 +27,10 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
+
+const { t } = useI18n();
 
 withDefaults(
   defineProps<{
@@ -55,7 +58,7 @@ defineEmits<{
   align-items: center;
   gap: 0.58rem;
   min-width: 0;
-  max-width: 15rem;
+  max-width: 12rem;
   padding: 0.3rem 0.42rem;
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: 999px;
@@ -173,7 +176,7 @@ defineEmits<{
 
 @media (max-width: 1180px) {
   .user-info {
-    max-width: 13.2rem;
+    max-width: 10.5rem;
   }
 }
 

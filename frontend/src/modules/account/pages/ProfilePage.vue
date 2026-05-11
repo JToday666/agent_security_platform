@@ -1,8 +1,8 @@
 <template>
   <div class="content profile-page layout-page-shell layout-page-shell--narrow">
     <PageHero
-      title="个人资料"
-      description="管理头像、用户名和密码。"
+      :title="t('auth.profile.title')"
+      :description="t('auth.profile.description')"
     />
 
     <div class="profile-grid">
@@ -12,7 +12,7 @@
             <img
               v-if="(avatarPreview || avatarDisplayUrl) && !hasAvatarError"
               :src="avatarPreview || avatarDisplayUrl"
-              alt="头像"
+              :alt="t('auth.profile.avatarAlt')"
               class="avatar-image"
               @error="hasAvatarError = true"
             />
@@ -20,8 +20,8 @@
           </div>
 
           <div class="avatar-copy">
-            <strong>{{ form.username || "未设置用户名" }}</strong>
-            <span>{{ form.email || "未绑定邮箱" }}</span>
+            <strong>{{ form.username || t("auth.profile.usernameEmpty") }}</strong>
+            <span>{{ form.email || t("auth.profile.emailEmpty") }}</span>
           </div>
 
           <div class="upload-actions">
@@ -32,7 +32,7 @@
               leading-icon="lucide:upload"
               :loading="uploading"
             >
-              选择新头像
+              {{ t("auth.profile.selectAvatar") }}
             </UiButton>
             <input
               id="avatar"
@@ -42,14 +42,16 @@
               :disabled="uploading"
               @change="onAvatarChange"
             />
-            <p class="hint">支持 JPG、PNG，大小不超过 2MB。</p>
-            <div v-if="uploading" class="uploading-hint">正在上传头像...</div>
+            <p class="hint">{{ t("auth.profile.avatarHint") }}</p>
+            <div v-if="uploading" class="uploading-hint">
+              {{ t("auth.profile.uploadingAvatar") }}
+            </div>
           </div>
         </div>
 
         <SectionBlock
-          title="账号操作"
-          description="退出后需要重新登录才能继续访问工作台。"
+          :title="t('auth.profile.accountActionsTitle')"
+          :description="t('auth.profile.accountActionsDescription')"
         >
           <UiButton
             variant="danger"
@@ -57,15 +59,15 @@
             block
             @click="handleLogoutClick"
           >
-            退出登录
+            {{ t("auth.profile.logout") }}
           </UiButton>
         </SectionBlock>
       </aside>
 
       <SectionBlock
         class="profile-main"
-        title="更新账号信息"
-        description="邮箱不可修改，您可以修改用户名与密码。"
+        :title="t('auth.profile.updateTitle')"
+        :description="t('auth.profile.updateDescription')"
       >
         <InlineNotice
           v-if="message"
@@ -75,38 +77,38 @@
 
         <form class="profile-form" @submit.prevent="handleSubmit">
           <FormField
-            label="用户名"
+            :label="t('auth.fields.username')"
             :model-value="form.username"
             type="text"
-            placeholder="请输入用户名"
+            :placeholder="t('auth.placeholders.username')"
             leading-icon="lucide:user"
             @update:model-value="form.username = $event"
           />
 
           <FormField
-            label="邮箱"
+            :label="t('auth.fields.email')"
             :model-value="form.email"
             type="email"
             readonly
-            help="邮箱不可修改。"
+            :help="t('auth.profile.emailReadonlyHelp')"
             leading-icon="lucide:mail"
             @update:model-value="form.email = $event"
           />
 
           <FormField
-            label="新密码"
+            :label="t('auth.fields.newPassword')"
             :model-value="form.password"
             type="password"
-            placeholder="留空表示不修改"
+            :placeholder="t('auth.placeholders.newPassword')"
             leading-icon="lucide:lock"
             @update:model-value="form.password = $event"
           />
 
           <FormField
-            label="确认新密码"
+            :label="t('auth.fields.confirmNewPassword')"
             :model-value="form.confirmPassword"
             type="password"
-            placeholder="再次输入新密码"
+            :placeholder="t('auth.placeholders.confirmNewPassword')"
             leading-icon="lucide:shield-check"
             @update:model-value="form.confirmPassword = $event"
           />
@@ -119,7 +121,7 @@
               :disabled="submitting"
               @click="resetForm"
             >
-              取消
+              {{ t("auth.profile.reset") }}
             </UiButton>
             <UiButton
               type="submit"
@@ -127,7 +129,7 @@
               leading-icon="lucide:save"
               :loading="submitting"
             >
-              保存修改
+              {{ t("common.actions.saveChanges") }}
             </UiButton>
           </div>
         </form>
@@ -136,10 +138,10 @@
 
     <ConfirmDialog
       v-model="showLogoutConfirm"
-      title="确认退出登录"
-      message="确定退出当前账号吗？"
-      confirm-text="退出登录"
-      cancel-text="取消"
+      :title="t('auth.profile.logoutConfirmTitle')"
+      :message="t('auth.profile.logoutConfirmMessage')"
+      :confirm-text="t('auth.profile.logout')"
+      :cancel-text="t('common.actions.cancel')"
       :danger="true"
       :loading="logoutLoading"
       @confirm="handleLogoutConfirm"
@@ -150,6 +152,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import { useUserStore } from "@/modules/account/stores/userStore";
@@ -162,6 +165,7 @@ import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 
 const userStore = useUserStore();
 const router = useRouter();
+const { t } = useI18n();
 const { avatarDisplayUrl, currentUser } = storeToRefs(userStore);
 
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
@@ -256,13 +260,13 @@ const onAvatarChange = async (event: Event) => {
   }
 
   if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
-    setMessage("仅支持 JPG、PNG 格式", "error", false);
+    setMessage(t("auth.profile.avatarTypeError"), "error", false);
     target.value = "";
     return;
   }
 
   if (file.size > MAX_AVATAR_SIZE) {
-    setMessage("头像大小不能超过 2MB", "error", false);
+    setMessage(t("auth.profile.avatarSizeError"), "error", false);
     target.value = "";
     return;
   }
@@ -280,9 +284,9 @@ const onAvatarChange = async (event: Event) => {
     await userStore.uploadAvatar(file);
     avatarPreview.value = null;
     hasAvatarError.value = false;
-    setMessage("头像更新成功", "success");
+    setMessage(t("auth.profile.avatarUpdated"), "success");
   } catch (error: any) {
-    setMessage(error.message || "头像上传失败", "error", false);
+    setMessage(error.message || t("auth.profile.avatarUploadFailed"), "error", false);
     avatarPreview.value = null;
   } finally {
     uploading.value = false;
@@ -294,17 +298,17 @@ const handleSubmit = async () => {
   const normalizedUsername = form.username.trim();
 
   if (normalizedUsername.length < 3) {
-    setMessage("用户名长度至少 3 位", "error", false);
+    setMessage(t("auth.profile.usernameMin"), "error", false);
     return;
   }
 
   if (form.password && form.password.length < 6) {
-    setMessage("密码长度至少 6 位", "error", false);
+    setMessage(t("auth.profile.passwordMin"), "error", false);
     return;
   }
 
   if (form.password && form.password !== form.confirmPassword) {
-    setMessage("两次输入的密码不一致", "error", false);
+    setMessage(t("auth.profile.passwordMismatch"), "error", false);
     return;
   }
 
@@ -322,7 +326,7 @@ const handleSubmit = async () => {
   }
 
   if (Object.keys(updateData).length === 0) {
-    setMessage("没有要保存的修改", "error", false);
+    setMessage(t("auth.profile.nothingChanged"), "error", false);
     return;
   }
 
@@ -331,11 +335,11 @@ const handleSubmit = async () => {
 
   try {
     await userStore.updateProfile(updateData);
-    setMessage("信息更新成功", "success");
+    setMessage(t("auth.profile.updateSuccess"), "success");
     form.password = "";
     form.confirmPassword = "";
   } catch (error: any) {
-    setMessage(error.message || "更新失败", "error", false);
+    setMessage(error.message || t("auth.profile.updateFailed"), "error", false);
   } finally {
     submitting.value = false;
   }

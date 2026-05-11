@@ -5,11 +5,11 @@
     :class="{ 'mobile-nav-drawer--open': open }"
   >
     <div class="mobile-drawer-head">
-      <strong class="mobile-drawer-title">导航</strong>
+      <strong class="mobile-drawer-title">{{ t("layout.mobile.title") }}</strong>
       <button
         class="mobile-close"
         type="button"
-        aria-label="关闭导航菜单"
+        :aria-label="t('layout.aria.closeMenu')"
         @click="$emit('close')"
       >
         <AppIcon icon="lucide:x" class="mobile-close-icon" />
@@ -35,11 +35,11 @@
       leading-icon="lucide:log-in"
       @click="$emit('open-login')"
     >
-      <span>登录 / 注册</span>
+      <span>{{ t("common.actions.loginRegister") }}</span>
     </UiButton>
 
     <div class="mobile-nav-group">
-      <p class="mobile-group-label">页面</p>
+      <p class="mobile-group-label">{{ t("layout.mobile.primaryGroup") }}</p>
       <router-link
         v-for="item in mainNavItems"
         :key="`mobile-main-${item.key}`"
@@ -57,7 +57,7 @@
     </div>
 
     <div v-if="secondaryNavItems.length" class="mobile-nav-group">
-      <p class="mobile-group-label">更多</p>
+      <p class="mobile-group-label">{{ t("layout.mobile.secondaryGroup") }}</p>
       <router-link
         v-for="item in secondaryNavItems"
         :key="`mobile-secondary-${item.key}`"
@@ -77,11 +77,14 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { getNavLinkStateProps } from "@/app/shell/nav-link-state";
 import type { AppNavItem } from "@/app/shell/nav-items";
 import UserNavMenu from "@/app/shell/UserNavMenu.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
+
+const { t } = useI18n();
 
 defineProps<{
   avatarDisplayUrl: string;

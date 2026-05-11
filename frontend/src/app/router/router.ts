@@ -5,6 +5,7 @@ import {
 } from "vue-router";
 import { registerRouteGuards } from "@/app/router/route-guards";
 import {
+  localeRootRedirectRoute,
   notFoundRoute,
   publicRoutes,
 } from "@/app/router/modules/public-routes";
@@ -32,7 +33,7 @@ const resolveSessionScrollKey = (
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [...publicRoutes, ...userRoutes, notFoundRoute],
+  routes: [localeRootRedirectRoute, ...publicRoutes, ...userRoutes, notFoundRoute],
   scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition;

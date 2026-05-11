@@ -9,7 +9,11 @@
       >
         <Transition name="scale" appear>
           <div class="dialog-card ui-modal-card">
-            <button class="close-btn" @click="closeDialog" aria-label="关闭">
+            <button
+              class="close-btn"
+              @click="closeDialog"
+              :aria-label="t('common.actions.close')"
+            >
               <AppIcon icon="lucide:x" class="close-icon" />
             </button>
 
@@ -17,30 +21,36 @@
               <div class="logo-wrapper">
                 <AppIcon icon="lucide:shield-check" class="logo-icon" />
               </div>
-              <h3>{{ mode === "login" ? "欢迎回来" : "创建账号" }}</h3>
+              <h3>
+                {{
+                  mode === "login"
+                    ? t("auth.dialog.loginTitle")
+                    : t("auth.dialog.registerTitle")
+                }}
+              </h3>
               <p class="subtitle">
                 {{
                   mode === "login"
-                    ? "登录后继续使用智能体安全评测平台。"
-                    : "注册后即可开始评测您的智能体。"
+                    ? t("auth.dialog.loginSubtitle")
+                    : t("auth.dialog.registerSubtitle")
                 }}
               </p>
             </div>
 
             <form v-if="mode === 'login'" class="form" @submit.prevent="handleLogin">
               <FormField
-                label="用户名或邮箱"
+                :label="t('auth.fields.usernameOrEmail')"
                 :model-value="loginForm.username"
                 type="text"
-                placeholder="请输入用户名或邮箱"
+                :placeholder="t('auth.placeholders.usernameOrEmail')"
                 leading-icon="lucide:user"
                 @update:model-value="loginForm.username = $event"
               />
               <FormField
-                label="密码"
+                :label="t('auth.fields.password')"
                 :model-value="loginForm.password"
                 type="password"
-                placeholder="请输入密码"
+                :placeholder="t('auth.placeholders.password')"
                 leading-icon="lucide:lock"
                 @update:model-value="loginForm.password = $event"
               />
@@ -48,50 +58,50 @@
               <InlineNotice
                 v-if="loginForm.password && loginForm.password.length < 6"
                 tone="warning"
-                message="密码长度至少 6 位。"
+                :message="t('auth.validation.passwordMin')"
               />
               <InlineNotice v-if="loginError" tone="danger" :message="loginError" />
 
               <UiButton type="submit" variant="primary" :loading="loading" :disabled="!isLoginValid" block>
-                登录
+                {{ t("auth.dialog.switchToLogin") }}
               </UiButton>
             </form>
 
             <form v-else class="form" @submit.prevent="handleRegister">
               <FormField
-                label="用户名"
+                :label="t('auth.fields.username')"
                 :model-value="registerForm.username"
                 type="text"
-                placeholder="请输入用户名"
+                :placeholder="t('auth.placeholders.username')"
                 leading-icon="lucide:user"
                 @update:model-value="registerForm.username = $event"
               />
               <InlineNotice
                 v-if="registerForm.username && registerForm.username.trim().length < 3"
                 tone="warning"
-                message="用户名长度至少 3 位。"
+                :message="t('auth.validation.usernameMin')"
               />
               <FormField
-                label="邮箱"
+                :label="t('auth.fields.email')"
                 :model-value="registerForm.email"
                 type="email"
-                placeholder="请输入邮箱"
+                :placeholder="t('auth.placeholders.email')"
                 leading-icon="lucide:mail"
                 @update:model-value="registerForm.email = $event"
               />
               <FormField
-                label="密码"
+                :label="t('auth.fields.password')"
                 :model-value="registerForm.password"
                 type="password"
-                placeholder="请输入密码"
+                :placeholder="t('auth.placeholders.password')"
                 leading-icon="lucide:lock"
                 @update:model-value="registerForm.password = $event"
               />
               <FormField
-                label="确认密码"
+                :label="t('auth.fields.confirmPassword')"
                 :model-value="registerForm.confirmPassword"
                 type="password"
-                placeholder="再次输入密码"
+                :placeholder="t('auth.placeholders.confirmPassword')"
                 leading-icon="lucide:shield-check"
                 @update:model-value="registerForm.confirmPassword = $event"
               />
@@ -99,7 +109,7 @@
               <InlineNotice
                 v-if="registerForm.password && registerForm.password.length < 6"
                 tone="warning"
-                message="密码长度至少 6 位。"
+                :message="t('auth.validation.passwordMin')"
               />
               <InlineNotice v-if="registerError" tone="danger" :message="registerError" />
               <InlineNotice
@@ -109,15 +119,23 @@
               />
 
               <UiButton type="submit" variant="primary" :loading="loading" :disabled="!isRegisterValid" block>
-                注册
+                {{ t("auth.dialog.switchToRegister") }}
               </UiButton>
             </form>
 
             <div class="switch-mode">
               <a href="#" @click.prevent="toggleMode">
-                <span v-if="mode === 'register'">已有账号？</span>
-                <span v-else>没有账号？</span>
-                <span class="highlight">{{ mode === "register" ? "登录" : "立即注册" }}</span>
+                <span v-if="mode === 'register'">
+                  {{ t("auth.dialog.alreadyHaveAccount") }}
+                </span>
+                <span v-else>{{ t("auth.dialog.noAccount") }}</span>
+                <span class="highlight">
+                  {{
+                    mode === "register"
+                      ? t("auth.dialog.switchToLogin")
+                      : t("auth.dialog.switchToRegister")
+                  }}
+                </span>
               </a>
             </div>
           </div>
@@ -129,6 +147,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { RouteLocation } from "@/app/router/route-names";
@@ -139,6 +158,7 @@ import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 
 const router = useRouter();
+const { t } = useI18n();
 const userStore = useUserStore();
 const { showLogin } = storeToRefs(userStore);
 
@@ -189,7 +209,7 @@ const isLoginValid = computed(() => {
 const passwordMatchError = computed(() => {
   if (registerForm.password && registerForm.confirmPassword) {
     return registerForm.password !== registerForm.confirmPassword
-      ? "两次密码不一致。"
+      ? t("auth.validation.passwordMismatch")
       : "";
   }
   return "";
@@ -209,7 +229,7 @@ const isRegisterValid = computed(() => {
 
 const handleLogin = async () => {
   if (loginForm.password.length < 6) {
-    loginError.value = "密码长度至少 6 位。";
+    loginError.value = t("auth.validation.passwordMin");
     return;
   }
 
@@ -225,10 +245,10 @@ const handleLogin = async () => {
       const redirect = userStore.consumePostLoginRedirect() || RouteLocation.userCenter;
       await router.push(redirect);
     } else {
-      loginError.value = "登录失败，请稍后重试。";
+      loginError.value = t("auth.messages.loginFailed");
     }
   } catch (error: any) {
-    loginError.value = error.message || "用户名、邮箱或密码错误。";
+    loginError.value = error.message || t("auth.messages.loginInvalid");
   } finally {
     loading.value = false;
   }
@@ -236,15 +256,15 @@ const handleLogin = async () => {
 
 const handleRegister = async () => {
   if (registerForm.username.trim().length < 3) {
-    registerError.value = "用户名长度至少 3 位。";
+    registerError.value = t("auth.validation.usernameMin");
     return;
   }
   if (registerForm.password.length < 6) {
-    registerError.value = "密码长度至少 6 位。";
+    registerError.value = t("auth.validation.passwordMin");
     return;
   }
   if (registerForm.password !== registerForm.confirmPassword) {
-    registerError.value = "密码不一致。";
+    registerError.value = t("auth.validation.passwordMismatchShort");
     return;
   }
   loading.value = true;
@@ -260,10 +280,10 @@ const handleRegister = async () => {
       const redirect = userStore.consumePostLoginRedirect() || RouteLocation.userCenter;
       await router.push(redirect);
     } else {
-      registerError.value = "注册失败，请稍后重试。";
+      registerError.value = t("auth.messages.registerFailed");
     }
   } catch (error: any) {
-    registerError.value = error.message || "用户名或邮箱已被注册。";
+    registerError.value = error.message || t("auth.messages.registerConflict");
   } finally {
     loading.value = false;
   }

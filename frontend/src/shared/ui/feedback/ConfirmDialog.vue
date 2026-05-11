@@ -13,7 +13,7 @@
               <AppIcon icon="lucide:alert-triangle" class="icon" />
             </div>
 
-            <h3 v-if="title" class="confirm-title">{{ title }}</h3>
+            <h3 v-if="titleText" class="confirm-title">{{ titleText }}</h3>
             <p class="confirm-message">{{ message }}</p>
 
             <div class="button-group" :class="{ single: !showCancel }">
@@ -23,14 +23,14 @@
                 :disabled="loading"
                 @click="handleCancel"
               >
-                {{ cancelText }}
+                {{ cancelText || t("common.actions.cancel") }}
               </UiButton>
               <UiButton
                 :variant="danger ? 'danger' : 'primary'"
                 :loading="loading"
                 @click="handleConfirm"
               >
-                {{ confirmText }}
+                {{ confirmText || t("common.actions.confirm") }}
               </UiButton>
             </div>
           </div>
@@ -41,6 +41,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import AppIcon from "../branding/AppIcon.vue";
 import UiButton from "../actions/UiButton.vue";
 
@@ -57,14 +59,14 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  title: "提示",
-  confirmText: "确认",
-  cancelText: "取消",
   showCancel: true,
   danger: false,
   showIcon: true,
   loading: false,
 });
+
+const { t } = useI18n();
+const titleText = computed(() => props.title ?? t("common.dialog.title"));
 
 const emit = defineEmits<{
   (e: "update:modelValue", value: boolean): void;

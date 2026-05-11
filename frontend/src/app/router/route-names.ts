@@ -1,3 +1,5 @@
+import { DEFAULT_LOCALE, normalizeLocale } from "@/app/i18n";
+
 // 统一维护路由名称与命名路由跳转对象，避免页面内散落硬编码路径。
 export const ROUTE_NAME = {
   HOME_PAGE: "HomePage",
@@ -17,52 +19,88 @@ export const ROUTE_NAME = {
 
 export type AppRouteName = (typeof ROUTE_NAME)[keyof typeof ROUTE_NAME];
 
+export interface AppRouteLocation {
+  name: AppRouteName;
+  params: Record<string, string>;
+  query?: Record<string, string | undefined>;
+}
+
+let currentLocale = DEFAULT_LOCALE;
+
+const withLocaleParams = (
+  params: Record<string, string> = {},
+): Record<string, string> => ({
+  locale: currentLocale,
+  ...params,
+});
+
+const namedRoute = (
+  name: AppRouteName,
+  params: Record<string, string> = {},
+  query?: Record<string, string | undefined>,
+): AppRouteLocation => ({
+  name,
+  params: withLocaleParams(params),
+  ...(query ? { query } : {}),
+});
+
 export const RouteLocation = {
-  home: {
-    name: ROUTE_NAME.HOME_PAGE,
+  setCurrentLocale(locale: string) {
+    currentLocale = normalizeLocale(locale);
   },
-  datasetList: {
-    name: ROUTE_NAME.DATASET_LIST,
+
+  get currentLocale() {
+    return currentLocale;
   },
-  datasetDetail: (datasetId: string) => ({
-    name: ROUTE_NAME.DATASET_DETAIL,
-    params: { datasetId },
-  }),
-  leaderboard: {
-    name: ROUTE_NAME.LEADERBOARD_PAGE,
+
+  get home() {
+    return namedRoute(ROUTE_NAME.HOME_PAGE);
   },
-  contact: {
-    name: ROUTE_NAME.CONTACT_PAGE,
+
+  get datasetList() {
+    return namedRoute(ROUTE_NAME.DATASET_LIST);
   },
-  notFound: {
-    name: ROUTE_NAME.NOT_FOUND,
+
+  datasetDetail: (datasetId: string) =>
+    namedRoute(ROUTE_NAME.DATASET_DETAIL, { datasetId }),
+
+  get leaderboard() {
+    return namedRoute(ROUTE_NAME.LEADERBOARD_PAGE);
   },
-  userCenter: {
-    name: ROUTE_NAME.USER_CENTER,
+
+  get contact() {
+    return namedRoute(ROUTE_NAME.CONTACT_PAGE);
   },
-  evaluationDetail: (evaluationId: string) => ({
-    name: ROUTE_NAME.EVALUATION_DETAIL,
-    params: { evaluationId },
-  }),
-  agentManagement: {
-    name: ROUTE_NAME.AGENT_MANAGEMENT,
+
+  get notFound() {
+    return namedRoute(ROUTE_NAME.NOT_FOUND);
   },
-  agentRegister: (query?: { copyFrom?: string }) => ({
-    name: ROUTE_NAME.AGENT_REGISTER,
-    query,
-  }),
-  agentDetail: (agentId: string) => ({
-    name: ROUTE_NAME.AGENT_DETAIL,
-    params: { agentId },
-  }),
-  agentSubmitWithAgent: (agentId: string) => ({
-    name: ROUTE_NAME.AGENT_SUBMIT,
-    query: { agentId },
-  }),
-  agentSubmit: {
-    name: ROUTE_NAME.AGENT_SUBMIT,
+
+  get userCenter() {
+    return namedRoute(ROUTE_NAME.USER_CENTER);
   },
-  userProfile: {
-    name: ROUTE_NAME.USER_PROFILE,
+
+  evaluationDetail: (evaluationId: string) =>
+    namedRoute(ROUTE_NAME.EVALUATION_DETAIL, { evaluationId }),
+
+  get agentManagement() {
+    return namedRoute(ROUTE_NAME.AGENT_MANAGEMENT);
+  },
+
+  agentRegister: (query?: { copyFrom?: string }) =>
+    namedRoute(ROUTE_NAME.AGENT_REGISTER, {}, query),
+
+  agentDetail: (agentId: string) =>
+    namedRoute(ROUTE_NAME.AGENT_DETAIL, { agentId }),
+
+  agentSubmitWithAgent: (agentId: string) =>
+    namedRoute(ROUTE_NAME.AGENT_SUBMIT, {}, { agentId }),
+
+  get agentSubmit() {
+    return namedRoute(ROUTE_NAME.AGENT_SUBMIT);
+  },
+
+  get userProfile() {
+    return namedRoute(ROUTE_NAME.USER_PROFILE);
   },
 } as const;
