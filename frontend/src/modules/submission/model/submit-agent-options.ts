@@ -1,3 +1,7 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import { getInvokeModeLabel } from "@/modules/agent/model/agent-display";
 import type { AgentListItem } from "@/shared/types/agent-registry-types";
 
@@ -15,8 +19,9 @@ export const filterAvailableSubmitAgents = (
 
 export const buildSubmitAgentOptions = (
   agents: AgentListItem[],
+  t: AppTranslator = translateRuntimeMessage,
 ): SubmitAgentOption[] =>
   filterAvailableSubmitAgents(agents).map((agent) => ({
-    label: `${agent.name} · ${getInvokeModeLabel(agent.invokeMode)}`,
+    label: `${agent.name} · ${getInvokeModeLabel(agent.invokeMode, t)}`,
     value: agent.agentId,
   }));

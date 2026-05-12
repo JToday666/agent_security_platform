@@ -11,6 +11,7 @@ import {
   resolvePublicDatasetName,
   resolvePublicDatasetNames,
 } from "@/modules/dataset/lib/dataset-display-utils";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import type {
   ResolvedEvaluationState,
   StoredEvaluationRecord,
@@ -174,7 +175,9 @@ const buildRepresentativeSamples = (
   datasetNames: string[],
   sampleSummary: NonNullable<ReturnType<typeof buildSampleSummary>> | null,
 ) => {
-  const datasetName = datasetNames[0] ?? "未命名数据集";
+  const datasetName =
+    datasetNames[0] ??
+    translateRuntimeMessage("evaluation.common.unnamedDataset");
   const replayBase =
     "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
 
@@ -185,7 +188,9 @@ const buildRepresentativeSamples = (
             sampleId: `${evaluationId}_success_001`,
             datasetName,
             normalizedResult: "success" as const,
-            outcomeReasonText: "样本安全完成。",
+            outcomeReasonText: translateRuntimeMessage(
+              "evaluation.evidence.sampleSafe",
+            ),
             replayUrl: replayBase,
           }
         : null,
@@ -195,7 +200,9 @@ const buildRepresentativeSamples = (
             sampleId: `${evaluationId}_failed_001`,
             datasetName,
             normalizedResult: "failed" as const,
-            outcomeReasonText: "Oracle 判定存在不安全行为。",
+            outcomeReasonText: translateRuntimeMessage(
+              "evaluation.evidence.sampleUnsafe",
+            ),
             replayUrl: replayBase,
           }
         : null,
@@ -205,7 +212,9 @@ const buildRepresentativeSamples = (
             sampleId: `${evaluationId}_error_001`,
             datasetName,
             normalizedResult: "error" as const,
-            outcomeReasonText: "样本执行异常。",
+            outcomeReasonText: translateRuntimeMessage(
+              "evaluation.evidence.sampleError",
+            ),
             replayUrl: replayBase,
           }
         : null,
@@ -370,35 +379,46 @@ const buildStatusText = (
   switch (status) {
     case "queued":
     case "pending":
-      return "任务已创建，正在等待调度。";
+      return translateRuntimeMessage("evaluation.statusText.pending");
     case "running":
       return progress.runningDatasetName
-        ? `当前正在评测数据集 ${progress.runningDatasetName}。`
-        : "任务正在执行中。";
+        ? translateRuntimeMessage("evaluation.statusText.running", {
+            datasetName: progress.runningDatasetName,
+          })
+        : translateRuntimeMessage("evaluation.statusText.runningNoDataset");
     case "pausing":
       return progress.runningDatasetName
-        ? `已收到暂停请求，当前数据集 ${progress.runningDatasetName} 完成后将暂停。`
-        : "已收到暂停请求，当前任务即将暂停。";
+        ? translateRuntimeMessage("evaluation.statusText.pausing", {
+            datasetName: progress.runningDatasetName,
+          })
+        : translateRuntimeMessage("evaluation.statusText.pausingNoDataset");
     case "paused":
       return progress.pauseDeadlineAt
-        ? `任务已暂停，请在 ${progress.pauseDeadlineAt} 前选择继续、终止或取消。`
-        : "任务已暂停。";
+        ? translateRuntimeMessage("evaluation.statusText.pausedWithDeadline", {
+            deadline: progress.pauseDeadlineAt,
+          })
+        : translateRuntimeMessage("evaluation.statusText.paused");
     case "terminating":
       return progress.runningDatasetName
-        ? `已收到终止请求，当前数据集 ${progress.runningDatasetName} 完成后将结束任务。`
-        : "已收到终止请求，当前任务即将结束。";
+        ? translateRuntimeMessage("evaluation.statusText.terminating", {
+            datasetName: progress.runningDatasetName,
+          })
+        : translateRuntimeMessage("evaluation.statusText.terminatingNoDataset");
     case "canceling":
-      return "正在取消任务并中断执行。";
+      return translateRuntimeMessage("evaluation.statusText.canceling");
     case "completed":
-      return "所有数据集已评测完成，已生成最终报告。";
+      return translateRuntimeMessage("evaluation.statusText.completed");
     case "terminated":
       return reason === "auto_terminated_after_pause_timeout"
-        ? "任务在暂停超时后自动终止，已生成最终报告。"
-        : `任务已结束，已完成 ${progress.completedDatasetCount}/${progress.totalDatasetCount} 个数据集并生成最终报告。`;
+        ? translateRuntimeMessage("evaluation.statusText.terminatedAuto")
+        : translateRuntimeMessage("evaluation.statusText.terminated", {
+            completed: progress.completedDatasetCount,
+            total: progress.totalDatasetCount,
+          });
     case "canceled":
-      return "任务已取消，未生成最终报告。";
+      return translateRuntimeMessage("evaluation.statusText.canceled");
     case "failed":
-      return "任务执行失败，请稍后重试。";
+      return translateRuntimeMessage("evaluation.statusText.failed");
   }
 };
 
@@ -520,7 +540,7 @@ export const buildResolvedStateFromReference = (
     runningDatasetId: null,
     runningDatasetName: null,
     pauseDeadlineAt: null,
-    statusText: "所有数据集已评测完成，已生成最终报告。",
+    statusText: translateRuntimeMessage("evaluation.statusText.completed"),
   };
 
   const safeScore = record.score ?? 0;

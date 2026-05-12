@@ -1,25 +1,25 @@
 {
   "nav": {
     "home": "Inicio",
-    "dataset": "Conjuntos de datos",
+    "dataset": "Catálogo de conjuntos de datos",
     "explore": "Explorar",
-    "leaderboard": "Clasificacion",
-    "contact": "Contacto",
-    "records": "Registros de evaluacion",
-    "agents": "Gestion de Agents",
+    "leaderboard": "Clasificación",
+    "contact": "Contactar",
+    "records": "Registros de evaluación",
+    "agents": "Gestión de Agents",
     "registerAgent": "Registrar Agent",
-    "submit": "Enviar evaluacion",
+    "submit": "Enviar evaluación",
     "profile": "Perfil",
-    "workspace": "Area de trabajo"
+    "workspace": "Área de trabajo"
   },
   "aria": {
     "returnHome": "Volver al inicio",
-    "openMenu": "Abrir menu de navegacion",
-    "closeMenu": "Cerrar menu de navegacion"
+    "openMenu": "Abrir menú de navegación",
+    "closeMenu": "Cerrar menú de navegación"
   },
   "mobile": {
-    "title": "Navegacion",
-    "primaryGroup": "Paginas",
-    "secondaryGroup": "Mas"
+    "title": "Navegación",
+    "primaryGroup": "Páginas",
+    "secondaryGroup": "Más"
   }
 }

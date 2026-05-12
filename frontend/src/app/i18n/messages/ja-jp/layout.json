@@ -1,14 +1,14 @@
 {
   "nav": {
     "home": "ホーム",
-    "dataset": "データセット",
+    "dataset": "データセットカタログ",
     "explore": "探索",
     "leaderboard": "ランキング",
     "contact": "お問い合わせ",
     "records": "評価記録",
     "agents": "Agent 管理",
     "registerAgent": "Agent 登録",
-    "submit": "評価提出",
+    "submit": "評価を提出",
     "profile": "プロフィール",
     "workspace": "ワークスペース"
   },

@@ -10,7 +10,7 @@
         <Transition name="scale" appear>
           <div class="confirm-card ui-modal-card">
             <div v-if="showIcon" class="icon-wrapper">
-              <AppIcon icon="lucide:alert-triangle" class="icon" />
+              <AppIcon icon="app:status.warning" class="icon" />
             </div>
 
             <h3 v-if="titleText" class="confirm-title">{{ titleText }}</h3>

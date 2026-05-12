@@ -1,3 +1,7 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import type {
   LeaderboardDisplayMode,
   RangeMeta,
@@ -75,6 +79,7 @@ export const getRangeSoftWarning = (
   value: number,
   meta: RangeMeta,
   fallbackThreshold = meta.max,
+  t: AppTranslator = translateRuntimeMessage,
 ): string => {
   const threshold = meta.recommendedMax ?? fallbackThreshold;
 
@@ -82,7 +87,7 @@ export const getRangeSoftWarning = (
     return "";
   }
 
-  return `当前设置高于建议值 ${threshold}，可能增加等待和执行耗时。`;
+  return t("submission.parameters.softWarning", { threshold });
 };
 
 export interface ValidationResult {
@@ -123,25 +128,26 @@ export const validateSubmitPayload = (
   meta: SubmitMetaResponse,
   validDatasetIds: string[],
   activeAgentIds: string[] = [],
+  t: AppTranslator = translateRuntimeMessage,
 ): ValidationResult => {
   const errors: string[] = [];
   const fieldErrors: SubmitFieldErrors = {};
 
   if (!meta.supportedMethods.includes(payload.submitMethod)) {
-    errors.push("当前提交方式不可用。");
+    errors.push(t("submission.validation.methodUnavailable"));
   }
 
   if (payload.submitMethod === "api") {
     const agentId = payload.agentId?.trim() ?? "";
     if (!agentId || !activeAgentIds.includes(agentId)) {
-      errors.push("请选择可评测智能体。");
-      fieldErrors.agentId = "请选择可评测智能体";
+      errors.push(t("submission.validation.agentRequired"));
+      fieldErrors.agentId = t("submission.validation.agentRequiredField");
     }
   }
 
   if (payload.submitMethod === "docker") {
-    errors.push("Docker 提交方式正在开发。");
-    fieldErrors.docker = "该功能正在开发";
+    errors.push(t("submission.validation.dockerDeveloping"));
+    fieldErrors.docker = t("submission.validation.dockerDevelopingField");
   }
 
   const { difficulty, timeoutMinutes, maxSteps } = payload.parameters;
@@ -158,7 +164,7 @@ export const validateSubmitPayload = (
     difficulty !== normalizeDifficulty(difficulty, meta.difficulty) ||
     !isStepAligned(difficulty, meta.difficulty)
   ) {
-    errors.push("攻击难度超出允许范围。");
+    errors.push(t("submission.validation.difficultyRange"));
   }
 
   if (
@@ -168,7 +174,7 @@ export const validateSubmitPayload = (
     !Number.isInteger(timeoutMinutes) ||
     !isStepAligned(timeoutMinutes, meta.timeoutMinutes)
   ) {
-    errors.push("超时时间超出允许范围。");
+    errors.push(t("submission.validation.timeoutRange"));
   }
 
   if (
@@ -177,23 +183,34 @@ export const validateSubmitPayload = (
     !Number.isInteger(maxSteps) ||
     !isStepAligned(maxSteps, meta.maxSteps)
   ) {
-    errors.push("最大步数超出允许范围。");
+    errors.push(t("submission.validation.maxStepsRange"));
   }
 
   if (payload.selectedDatasetIds.length === 0) {
-    errors.push("请至少选择一个评测项。");
-    fieldErrors.selectedDatasetIds = "请至少选择一个评测项";
+    errors.push(t("submission.validation.selectedDatasetRequired"));
+    fieldErrors.selectedDatasetIds = t(
+      "submission.validation.selectedDatasetRequiredField",
+    );
   }
 
   const uniqueDatasetIds = Array.from(new Set(payload.selectedDatasetIds));
   if (uniqueDatasetIds.length !== payload.selectedDatasetIds.length) {
-    errors.push("评测项选择中存在重复数据集，请刷新后重试。");
-    fieldErrors.selectedDatasetIds = "评测项选择中存在重复数据集";
+    errors.push(t("submission.validation.datasetDuplicate"));
+    fieldErrors.selectedDatasetIds = t(
+      "submission.validation.datasetDuplicateField",
+    );
   }
 
   if (uniqueDatasetIds.length > MAX_SUBMIT_DATASET_COUNT) {
-    errors.push(`评测项数量不能超过 ${MAX_SUBMIT_DATASET_COUNT} 个。`);
-    fieldErrors.selectedDatasetIds = `最多只能选择 ${MAX_SUBMIT_DATASET_COUNT} 个评测项`;
+    errors.push(
+      t("submission.validation.datasetLimit", {
+        count: MAX_SUBMIT_DATASET_COUNT,
+      }),
+    );
+    fieldErrors.selectedDatasetIds = t(
+      "submission.validation.datasetLimitField",
+      { count: MAX_SUBMIT_DATASET_COUNT },
+    );
   }
 
   const validDatasetIdSet = new Set(validDatasetIds);
@@ -202,17 +219,19 @@ export const validateSubmitPayload = (
   );
 
   if (hasInvalidDataset) {
-    errors.push("已选择的评测项里包含失效项，请刷新后重试。");
-    fieldErrors.selectedDatasetIds = "已选择的评测项里包含失效项";
+    errors.push(t("submission.validation.datasetInvalid"));
+    fieldErrors.selectedDatasetIds = t(
+      "submission.validation.datasetInvalidField",
+    );
   }
 
   if (!REQUEST_ID_PATTERN.test(payload.requestId.trim())) {
-    errors.push("requestId 格式不正确，请重试。");
-    fieldErrors.requestId = "requestId 格式不正确";
+    errors.push(t("submission.validation.requestIdInvalid"));
+    fieldErrors.requestId = t("submission.validation.requestIdInvalidField");
   }
 
   if (!meta.leaderboardDisplayMode.options.includes(payload.leaderboardDisplayMode)) {
-    errors.push("榜单展示方式不可用。");
+    errors.push(t("submission.validation.leaderboardModeUnavailable"));
   }
 
   return {

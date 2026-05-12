@@ -1,9 +1,9 @@
 <template>
-  <section class="sample-outcome" aria-label="样本统计">
+  <section class="sample-outcome" :aria-label="t('evaluation.summary.sampleTitle')">
     <div class="section-head">
       <div>
-        <h2>样本统计</h2>
-        <p>按成功、失败和异常拆分当前评测样本。</p>
+        <h2>{{ t("evaluation.summary.sampleTitle") }}</h2>
+        <p>{{ t("evaluation.summary.sampleDescription") }}</p>
       </div>
       <strong>{{ completionRate }}</strong>
     </div>
@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import type {
   EvaluationSampleSegment,
   EvaluationSampleStat,
@@ -42,6 +43,8 @@ defineProps<{
   segments: EvaluationSampleSegment[];
   stats: EvaluationSampleStat[];
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

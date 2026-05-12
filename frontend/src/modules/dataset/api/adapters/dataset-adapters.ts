@@ -7,6 +7,7 @@ import type {
   DatasetResourceLink,
 } from "@/shared/types/dataset-types";
 import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -43,7 +44,9 @@ const normalizeResource = (
   const label =
     toStringValue(candidate.label) ||
     toStringValue(candidate.title) ||
-    `相关资源 ${index + 1}`;
+    translateRuntimeMessage("dataset.fallback.relatedResource", {
+      index: index + 1,
+    });
   const url = normalizeApiAssetUrl(toOptionalString(candidate.url));
   if (!url) {
     return null;
@@ -79,7 +82,9 @@ const normalizeMedia = (
       toStringValue(candidate.id) ||
       `media-${index + 1}`,
     type,
-    title: toStringValue(candidate.title) || `媒体 ${index + 1}`,
+    title:
+      toStringValue(candidate.title) ||
+      translateRuntimeMessage("dataset.fallback.media", { index: index + 1 }),
     description: toOptionalString(candidate.description),
     url,
     coverUrl: normalizeApiAssetUrl(
@@ -108,7 +113,9 @@ export const adaptDatasetCatalog = (
   const normalizedCategories = categories
     .map((category) => ({
       categoryId: toStringValue(category.categoryId),
-      name: toStringValue(category.name) || "未命名分类",
+      name:
+        toStringValue(category.name) ||
+        translateRuntimeMessage("dataset.fallback.unnamedCategory"),
       meaning: toOptionalString(category.meaning),
       description: toOptionalString(category.description),
       sort: category.sort == null ? null : toNumberValue(category.sort),
@@ -121,7 +128,9 @@ export const adaptDatasetCatalog = (
         : []
       ).map((dataset) => ({
         datasetId: toStringValue(dataset.datasetId),
-        name: toStringValue(dataset.name) || "未命名评测项",
+        name:
+          toStringValue(dataset.name) ||
+          translateRuntimeMessage("dataset.fallback.unnamedBenchmarkItem"),
         shortDescription: toOptionalString(dataset.shortDescription),
         sampleCount:
           dataset.sampleCount == null
@@ -156,10 +165,14 @@ export const adaptDatasetDetail = (
 
   return {
     datasetId: toStringValue(payload?.datasetId),
-    name: toStringValue(payload?.name) || "未命名评测项",
+    name:
+      toStringValue(payload?.name) ||
+      translateRuntimeMessage("dataset.fallback.unnamedBenchmarkItem"),
     category: {
       categoryId: toStringValue(category.categoryId),
-      name: toStringValue(category.name) || "未分类",
+      name:
+        toStringValue(category.name) ||
+        translateRuntimeMessage("dataset.fallback.uncategorized"),
       meaning: toOptionalString(category.meaning),
     },
     shortDescription: toOptionalString(payload?.shortDescription),

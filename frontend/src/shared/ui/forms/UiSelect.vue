@@ -27,7 +27,7 @@
       </span>
       <span class="ui-select__suffix" aria-hidden="true">
         <AppIcon
-          icon="lucide:chevrons-up-down"
+          icon="app:control.selectToggle"
           class="ui-select__icon"
           :class="{ 'is-open': isOpen }"
         />
@@ -49,7 +49,7 @@
             <span class="ui-select__item-label">{{ option.label }}</span>
             <AppIcon
               v-if="isSelected(option.value)"
-              icon="lucide:check"
+              icon="app:action.select"
               class="ui-select__item-icon"
             />
           </li>
@@ -61,7 +61,9 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import AppIcon from "../branding/AppIcon.vue";
+import type { AppIconName } from "../branding/app-icon-registry";
 
 interface Option {
   label: string;
@@ -74,17 +76,18 @@ const props = withDefaults(
     options: Option[];
     placeholder?: string;
     disabled?: boolean;
-    leadingIcon?: string;
+    leadingIcon?: AppIconName | "";
     size?: "sm" | "md";
   }>(),
   {
-    placeholder: "请选择",
+    placeholder: "",
     disabled: false,
     leadingIcon: "",
     size: "md",
   },
 );
 
+const { t } = useI18n();
 const emit = defineEmits<{
   (e: "update:modelValue", value: string | number): void;
 }>();
@@ -94,7 +97,9 @@ const containerRef = ref<HTMLElement | null>(null);
 
 const selectedLabel = computed(() => {
   const selected = props.options.find((opt) => opt.value === props.modelValue);
-  return selected ? selected.label : props.placeholder;
+  return selected
+    ? selected.label
+    : props.placeholder || t("common.forms.selectPlaceholder");
 });
 
 const hasSelectedLabel = computed(() =>

@@ -1,7 +1,7 @@
 <template>
   <section class="summary-band" :class="`summary-band--${scoreTone}`">
     <div class="score-display">
-      <span>综合分</span>
+      <span>{{ t("evaluation.summary.scoreLabel") }}</span>
       <strong>{{ primaryScore }}</strong>
       <small>{{ scoreCaption }}</small>
     </div>
@@ -15,7 +15,10 @@
 
       <p class="status-copy">{{ detail.progress.statusText }}</p>
 
-      <div class="progress-line" aria-label="完成进度">
+      <div
+        class="progress-line"
+        :aria-label="t('evaluation.summary.completion')"
+      >
         <span :style="{ width: `${detail.progress.percent}%` }"></span>
       </div>
 
@@ -30,53 +33,54 @@
     <div
       v-if="hasAvailableActions(detail.controls)"
       class="summary-actions"
-      aria-label="任务操作"
+      :aria-label="t('evaluation.summary.taskActionsAria')"
     >
       <UiButton
         v-if="detail.controls.canPause"
         variant="secondary"
         size="sm"
-        leading-icon="lucide:pause"
+        leading-icon="app:action.pause"
         :disabled="actionLoading"
         @click="$emit('open-action', 'pause')"
       >
-        暂停
+        {{ t("evaluation.actions.pause") }}
       </UiButton>
       <UiButton
         v-if="detail.controls.canResume"
         variant="primary"
         size="sm"
-        leading-icon="lucide:play"
+        leading-icon="app:action.continue"
         :disabled="actionLoading"
         @click="$emit('run-action', 'resume')"
       >
-        继续
+        {{ t("evaluation.actions.continue") }}
       </UiButton>
       <UiButton
         v-if="detail.controls.canTerminate"
         variant="secondary"
         size="sm"
-        leading-icon="lucide:square"
+        leading-icon="app:action.terminate"
         :disabled="actionLoading"
         @click="$emit('open-action', 'terminate')"
       >
-        终止
+        {{ t("evaluation.actions.terminate") }}
       </UiButton>
       <UiButton
         v-if="detail.controls.canCancel"
         variant="danger"
         size="sm"
-        leading-icon="lucide:x-circle"
+        leading-icon="app:action.cancel"
         :disabled="actionLoading"
         @click="$emit('open-action', 'cancel')"
       >
-        取消
+        {{ t("evaluation.actions.cancel") }}
       </UiButton>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { hasAvailableActions } from "@/modules/evaluation/lib/evaluation-status";
 import type {
   EvaluationDetailTextItem,
@@ -104,6 +108,8 @@ defineEmits<{
   (event: "open-action", action: EvaluationAction): void;
   (event: "run-action", action: EvaluationAction): void;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

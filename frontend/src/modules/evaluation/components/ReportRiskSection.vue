@@ -2,7 +2,7 @@
   <div class="chart-grid chart-grid--risk">
     <section class="chart-unit">
       <div class="chart-unit__head">
-        <span>难度表现</span>
+        <span>{{ t("evaluation.report.difficultySection") }}</span>
         <h3>{{ difficultyInsight?.title }}</h3>
         <p>{{ difficultyInsight?.caption }}</p>
       </div>
@@ -15,7 +15,7 @@
 
     <section class="chart-unit">
       <div class="chart-unit__head">
-        <span>风险类型</span>
+        <span>{{ t("evaluation.report.difficultyRisk") }}</span>
         <h3>{{ datasetInsight?.title }}</h3>
         <p>{{ datasetInsight?.caption }}</p>
       </div>
@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
+import { useI18n } from "vue-i18n";
 import type {
   EvaluationSelectableInsight,
 } from "@/modules/evaluation/lib/evaluation-report-insights";
@@ -58,6 +59,8 @@ defineEmits<{
   (event: "dataset-preview", datasetId: string | null): void;
   (event: "dataset-select", datasetId: string): void;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

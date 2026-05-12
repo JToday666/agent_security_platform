@@ -16,7 +16,7 @@
         @click="collapsed = !collapsed"
       >
         <AppIcon
-          :icon="collapsed ? 'lucide:panel-left-open' : 'lucide:panel-left-close'"
+          :icon="collapsed ? 'app:control.sidebarOpen' : 'app:control.sidebarClose'"
           class="toggle-icon"
         />
       </button>

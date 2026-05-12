@@ -1,1 +1,320 @@
-{}
+{
+  "actions": {
+    "archive": "Archivar",
+    "backToManagement": "Volver a gestión",
+    "confirmRegister": "Confirmar registro",
+    "copyCode": "Copiar código",
+    "copyNew": "Copiar como nuevo",
+    "details": "Detalles",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "registerAgent": "Registrar Agent",
+    "switchTemplate": "Cambiar plantilla",
+    "verify": "Verificar",
+    "verifyNow": "Verificar ahora",
+    "viewDetails": "Ver detalles"
+  },
+  "api": {
+    "archiveFailed": "Error al archivar el Agent.",
+    "createFailed": "Error al crear el Agent.",
+    "detailLoadFailed": "Error al cargar los detalles del Agent.",
+    "listLoadFailed": "Error al cargar la lista de Agents.",
+    "loadFailed": "Error al cargar el Agent.",
+    "templateLoadFailed": "Error al cargar las plantillas de Agent.",
+    "verifyFailed": "Error al verificar el Agent."
+  },
+  "auth": {
+    "apiKeyHeader": "API Key Header",
+    "bearer": "Bearer Token",
+    "customHeader": "Header personalizado",
+    "none": "Sin autenticación"
+  },
+  "common": {
+    "configured": "Configurado",
+    "customField": "Campo personalizado",
+    "noDescription": "Sin descripción",
+    "notConfigured": "No configurado",
+    "recommended": "Recomendado",
+    "listSeparator": ", ",
+    "seconds": "{value} s",
+    "templateTagCustom": "Personalizado",
+    "unknown": "Desconocido"
+  },
+  "detail": {
+    "archiveDialogMessage": "Después de archivarlo, este Agent ya no podrá enviar evaluaciones, pero todavía podrá copiarse como nuevo.",
+    "archiveDialogTitle": "Archivar Agent",
+    "confirmArchive": "Confirmar archivado",
+    "description": "Consulta la configuración no sensible, los resultados de verificación y las acciones disponibles.",
+    "errorTitle": "Error al cargar el Agent",
+    "loadingTitle": "Leyendo Agent",
+    "items": {
+      "authHeaderName": "Nombre del Header",
+      "authMethod": "Método de autenticación",
+      "connectionBaseUrl": "URL raíz del servicio",
+      "credentialStatus": "Estado de credenciales",
+      "invokeMode": "Modo de invocación",
+      "pollInterval": "Intervalo de consulta",
+      "pollTimeout": "Tiempo máximo total de consulta",
+      "recentVerification": "Última verificación",
+      "requestTimeout": "Tiempo máximo de solicitud",
+      "resultPathTemplate": "Plantilla de ruta de resultado",
+      "status": "Estado",
+      "successStatuses": "Estados de éxito",
+      "taskPath": "Ruta de envío de tarea",
+      "terminalStatuses": "Estados terminales",
+      "updatedAt": "Hora de actualización"
+    },
+    "sections": {
+      "authSummary": "Resumen de autenticación",
+      "connection": "Configuración de conexión",
+      "customFields": "Campos fijos personalizados",
+      "inputMapping": "Mapeo lógico de campos de entrada",
+      "outputMapping": "Mapeo lógico de campos de salida",
+      "statusCollection": "Conjunto de estados",
+      "summary": "Resumen de estado",
+      "verification": "Último resultado de verificación"
+    },
+    "titleFallback": "Detalles del Agent"
+  },
+  "display": {
+    "disabledReasons": {
+      "active": "",
+      "archived": "Los Agents archivados no pueden enviar evaluaciones.",
+      "draft": "Este Agent aún no ha superado la verificación y no puede enviar evaluaciones.",
+      "invalid": "Este Agent falló la verificación y no puede enviar evaluaciones.",
+      "verifying": "Este Agent se está verificando y aún no puede enviar evaluaciones."
+    },
+    "invokeModes": {
+      "submitPoll": "Enviar y consultar",
+      "syncResponse": "Respuesta síncrona"
+    },
+    "status": {
+      "active": "Listo para evaluación",
+      "archived": "Archivado",
+      "draft": "Pendiente de verificación",
+      "invalid": "Verificación fallida",
+      "verifying": "Verificando"
+    }
+  },
+  "fields": {
+    "authHeaderName": "Nombre del Header",
+    "authHeaderSecret": "Secreto del Header",
+    "authMethod": "Método de autenticación",
+    "authSecret": "Bearer Token",
+    "connectionBaseUrl": "URL raíz del servicio",
+    "customFieldKey": "Nombre del campo",
+    "customFieldType": "Tipo",
+    "customFieldValue": "Valor del campo",
+    "description": "Descripción del Agent",
+    "invokeMode": "Modo de invocación",
+    "name": "Nombre del Agent",
+    "pollInterval": "Intervalo de consulta (s)",
+    "pollTimeout": "Tiempo máximo total de consulta (s)",
+    "requestTimeout": "Tiempo máximo de solicitud (s)",
+    "resultPathTemplate": "Plantilla de ruta de resultado",
+    "structuredOutputAlias": "Alias del campo de salida estructurada",
+    "successStatuses": "Estados de éxito",
+    "taskPath": "Ruta de envío de tarea",
+    "terminalStatuses": "Estados terminales"
+  },
+  "management": {
+    "archiveDialogMessage": "Después de archivarlo, {name} ya no podrá enviar evaluaciones, pero todavía podrá copiarse como nuevo.",
+    "currentStatus": "Estado actual",
+    "description": "Consulta el estado de los Agents registrados y ejecuta verificación, archivado, copia como nuevo y envío de evaluación.",
+    "emptyMessageArchived": "Registra y verifica un Agent para crear tareas de evaluación.",
+    "emptyMessageVisible": "Puedes mostrar Agents archivados o registrar un nuevo Agent.",
+    "emptyTitleArchived": "Aún no hay Agents",
+    "emptyTitleVisible": "No hay Agents visibles",
+    "includeArchived": "Mostrar archivados",
+    "listSummaryEmpty": "Sin Agents",
+    "listSummaryNoVisible": "Sin Agents visibles",
+    "listSummaryWithCount": "Mostrando {count} Agents",
+    "recentVerification": "Última verificación: {value}",
+    "title": "Gestión de Agents"
+  },
+  "mapping": {
+    "agentField": "Campo del Agent",
+    "empty": "No configurado",
+    "platformField": "Campo de plataforma",
+    "responsePath": "Ruta de respuesta"
+  },
+  "placeholders": {
+    "descriptionBrief": "Describe brevemente el uso.",
+    "nameExample": "Ejemplo: Skyvern Agent"
+  },
+  "preview": {
+    "bodyTab": "Cuerpo de solicitud",
+    "missingMessage": "Introduce baseUrl e invokePath para ver la vista previa de invocación.",
+    "responseTab": "Análisis de respuesta",
+    "samples": {
+      "errorMessage": "Mensaje de error",
+      "finalAnswer": "Respuesta final",
+      "task": "Completa el objetivo de tarea emitido por la plataforma"
+    }
+  },
+  "register": {
+    "aria": {
+      "actions": "Acciones de registro de Agent",
+      "form": "Formulario de registro de Agent",
+      "preview": "Vista previa de código de invocación",
+      "steps": "Pasos de registro"
+    },
+    "confirmTemplateChange": {
+      "cancel": "Seguir editando",
+      "message": "Cambiar la plantilla reemplazará la configuración de conexión, mapeo, estados y campos fijos personalizados. Se conservarán el nombre y la descripción del Agent que ya has introducido.",
+      "title": "Cambiar plantilla de registro"
+    },
+    "createSuccessMessage": "Después de superar la verificación, podrá usarse para enviar evaluaciones.",
+    "createSuccessTitle": "Agent creado",
+    "copyName": "Copia de {name}",
+    "customFieldsChoiceRequired": "Elige si quieres añadir campos fijos personalizados.",
+    "initFailed": "Error al inicializar la página de registro.",
+    "initFailedTitle": "Error al inicializar el registro",
+    "loadingTitle": "Inicializando página de registro",
+    "submitValidationFailed": "Error en la validación de parámetros de creación del Agent.",
+    "template": {
+      "description": "Empieza con una configuración vacía y completa manualmente los campos de conexión, mapeo y estados.",
+      "title": "No usar plantilla"
+    },
+    "wizard": {
+      "basic": {
+        "description": "Introduce el nombre y la descripción de uso.",
+        "title": "Información básica"
+      },
+      "connection": {
+        "description": "Configura el modo de invocación, la dirección del servicio y las credenciales.",
+        "title": "Conexión y autenticación"
+      },
+      "customFields": {
+        "description": "Configura los campos fijos incluidos en cada solicitud.",
+        "title": "Campos fijos personalizados"
+      },
+      "inputMapping": {
+        "description": "Especifica dónde se escriben los campos de plataforma y la configuración de salida estructurada en el cuerpo de solicitud.",
+        "title": "Mapeo de campos de entrada"
+      },
+      "outputMapping": {
+        "description": "Especifica dónde lee la plataforma los resultados en la respuesta.",
+        "title": "Mapeo de campos de salida"
+      },
+      "statuses": {
+        "description": "Confirma los estados terminales y de éxito.",
+        "title": "Conjunto de estados"
+      },
+      "template": {
+        "description": "Elige una plantilla predefinida o empieza con una configuración vacía.",
+        "title": "Elegir plantilla"
+      }
+    }
+  },
+  "registerForm": {
+    "customFields": {
+      "addField": "Añadir campo",
+      "addFixed": "Añadir campos fijos",
+      "addFixedDescription": "Añade parámetros fijos a cada solicitud.",
+      "fieldKeyHelp": "Introduce el nombre del campo fijo en el cuerpo de solicitud externo.",
+      "fieldTypeHelp": "Selecciona el tipo del valor del campo fijo.",
+      "fieldValueHelp": "Valor fijo enviado con cada solicitud.",
+      "skipFixed": "No añadir campos fijos",
+      "skipFixedDescription": "Usar solo los campos de tarea configurados en el paso anterior.",
+      "skipNotice": "No se añadirán campos fijos personalizados en este registro."
+    },
+    "fieldTypes": {
+      "boolean": "Booleano",
+      "json": "JSON",
+      "number": "Número",
+      "string": "Cadena"
+    },
+    "helps": {
+      "authHeaderName": "Introduce el nombre del Header requerido por el servicio.",
+      "authHeaderSecret": "La plataforma escribirá este secreto en el Header anterior.",
+      "authMethod": "Selecciona el método de autenticación que usará la plataforma al llamar al servicio del Agent.",
+      "authSecret": "La plataforma lo envía como Authorization: Bearer Token.",
+      "baseUrl": "Introduce el protocolo, dominio y puerto del servicio del Agent, sin una ruta de interfaz específica.",
+      "description": "Describe las tareas adecuadas para este Agent, para poder seleccionarlo al enviar evaluaciones.",
+      "invokeMode": "Enviar y consultar sirve para tareas asíncronas; Respuesta síncrona sirve para solicitudes que devuelven el resultado directamente.",
+      "name": "Se usa para identificar este Agent en la plataforma; se recomienda usar el nombre del servicio o de la capacidad.",
+      "pollInterval": "Tiempo de espera entre dos consultas de resultado de la plataforma.",
+      "pollTimeout": "La plataforma deja de esperar si la tarea no llega a un estado terminal dentro de este tiempo.",
+      "requestTimeout": "Tiempo máximo de espera para la respuesta de una solicitud de envío.",
+      "resultPathTemplate": "Ruta usada para consultar resultados en modo de consulta. Se admite el marcador {externalRunId}.",
+      "statusSuccess": "Introduce los valores de estado que representan tareas exitosas. Deben estar incluidos en el conjunto de estados terminales.",
+      "statusTerminal": "Introduce los estados terminales devueltos por el Agent. Separa varios valores con comas o saltos de línea.",
+      "structuredOutput": "La plataforma añade un campo de salida estructurada al cuerpo de solicitud.",
+      "structuredOutputAlias": "Introduce el campo de primer nivel del cuerpo de solicitud del Agent que recibe el schema de salida.",
+      "taskPath": "Ruta que llama la plataforma al enviar una tarea. Se combina con la URL raíz del servicio."
+    },
+    "inputMappingHelp": {
+      "entryUrl": "Opcional. Si se necesita una URL inicial, la plataforma escribe la entrada de muestra en este campo.",
+      "evaluationId": "Opcional. Rellena este nombre de campo cuando el ID de la tarea de evaluación sea necesario para el seguimiento.",
+      "maxSteps": "Opcional. Rellena este nombre de campo cuando sea necesario limitar el número máximo de pasos de ejecución del Agent.",
+      "sampleId": "Opcional. Rellena este nombre de campo cuando el ID de muestra sea necesario para el seguimiento.",
+      "task": "Obligatorio. Introduce el campo de primer nivel del cuerpo de solicitud del Agent que recibe el objetivo de tarea, por ejemplo prompt.",
+      "timeoutSeconds": "Opcional. Rellena este nombre de campo cuando se necesite un tiempo máximo a nivel de tarea."
+    },
+    "inputMappingLabels": {
+      "entryUrl": "entryUrl -> Campo del Agent",
+      "evaluationId": "evaluationId -> Campo del Agent",
+      "maxSteps": "maxSteps -> Campo del Agent",
+      "sampleId": "sampleId -> Campo del Agent",
+      "task": "task -> Campo del Agent",
+      "timeoutSeconds": "timeoutSeconds -> Campo del Agent"
+    },
+    "notVisibleSecretPlaceholder": "Se escribe al crear; el texto plano no se muestra en la página de detalles",
+    "outputMappingHelp": {
+      "errorMessage": "Opcional. Introduce la ruta del mensaje de error para mostrar la causa del fallo, por ejemplo error.message.",
+      "externalRunId": "Obligatorio en modo de consulta. Introduce la ruta del ID de ejecución en la respuesta de envío; usa runId para un campo de primer nivel o data.runId para un campo anidado.",
+      "finalAnswer": "Opcional. Introduce la ruta de la respuesta final o del resultado textual, por ejemplo answer u output.answer.",
+      "status": "Obligatorio en modo de consulta. Introduce la ruta del campo de estado en la respuesta de resultado; usa status para un campo de primer nivel o data.status para un campo anidado."
+    },
+    "outputMappingLabels": {
+      "errorMessage": "errorMessage <- Ruta de respuesta",
+      "externalRunId": "externalRunId <- Ruta de respuesta",
+      "finalAnswer": "finalAnswer <- Ruta de respuesta",
+      "status": "status <- Ruta de respuesta"
+    },
+    "stepCounter": "Paso {current} / {total}",
+    "structuredOutputTitle": "Admitir salida estructurada"
+  },
+  "validation": {
+    "authHeaderNameRequired": "Introduce el nombre del Header",
+    "authHeaderSecretRequired": "Introduce el secreto del Header",
+    "authSecretRequired": "Introduce el Bearer Token",
+    "baseUrlInvalid": "El formato de la URL raíz del servicio no es válido",
+    "baseUrlRequired": "Introduce la URL raíz del servicio",
+    "customFieldDuplicate": "El campo fijo personalizado {key} está duplicado.",
+    "customFieldJson": "{field} no es JSON válido.",
+    "customFieldKeyRequired": "Los campos fijos personalizados deben incluir un nombre de campo.",
+    "customFieldNumber": "{field} debe ser un número.",
+    "customFieldBoolean": "{field} debe ser true o false.",
+    "customFieldMappingConflict": "El campo {field} ya lo usa el mapeo de entrada de plataforma y no puede usarse como campo fijo personalizado.",
+    "inputMappingTopLevel": "El mapeo de entrada de plataforma solo acepta nombres de campo de primer nivel del cuerpo de solicitud externo",
+    "invokePathRequired": "Introduce la ruta de envío de tarea",
+    "nameRequired": "Introduce el nombre del Agent",
+    "outputMappingPath": "El mapeo de salida debe ser una ruta de campo de respuesta, como runId o data.runId. No se admiten $, índices de array ni segmentos de ruta vacíos.",
+    "pollOutputRequired": "El modo de consulta requiere las rutas de salida del ID de ejecución y del estado.",
+    "resultPathTemplateRequired": "Introduce la plantilla de ruta de resultado",
+    "statusSuccessInTerminal": "Los estados de éxito deben pertenecer al conjunto de estados terminales",
+    "structuredOutputAliasInvalid": "El alias del campo de salida estructurada solo acepta un campo de primer nivel del cuerpo de solicitud",
+    "structuredOutputAliasRequired": "Introduce el alias del campo de salida estructurada",
+    "taskMappingRequired": "Introduce el nombre del campo correspondiente a task",
+    "templateRequired": "Elige una plantilla de registro",
+    "terminalStatusRequired": "Introduce al menos un estado terminal"
+  },
+  "verification": {
+    "count": "{count} ítems",
+    "detailHeader": "Detalles de diagnóstico",
+    "failed": "Fallido",
+    "failedResult": "Verificación fallida",
+    "notVerified": "No verificado",
+    "passed": "Superado",
+    "passedResult": "Verificación superada",
+    "result": "Resultado de verificación",
+    "tableCode": "Identificador de tipo",
+    "tableDescription": "Descripción detallada",
+    "time": "Hora de verificación",
+    "unverifiedNotice": "Aún no se ha verificado.",
+    "warnings": "Advertencias",
+    "errors": "Errores"
+  }
+}

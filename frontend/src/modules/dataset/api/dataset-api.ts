@@ -1,6 +1,7 @@
 import request from "@/shared/api/http-client";
 import { ApiConfig } from "@/shared/api/Config";
 import { getCurrentDisplayLocale } from "@/app/i18n";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import {
   readMemoryCache,
   setMemoryCache,
@@ -69,7 +70,7 @@ const loadCatalogFromApi = async (
 
   if (!response.success || !response.data) {
     throw createDatasetServiceError(
-      response.message || "目录加载失败，请稍后重试。",
+      response.message || translateRuntimeMessage("dataset.api.catalogLoadFailed"),
       response.code,
     );
   }
@@ -87,7 +88,7 @@ const loadDetailFromApi = async (
 
   if (!response.success || !response.data) {
     throw createDatasetServiceError(
-      response.message || "详情加载失败，请稍后重试。",
+      response.message || translateRuntimeMessage("dataset.api.detailLoadFailed"),
       response.code,
     );
   }

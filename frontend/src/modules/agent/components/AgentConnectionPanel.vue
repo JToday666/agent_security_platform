@@ -1,6 +1,6 @@
 <template>
   <div class="agent-connection-panel">
-    <SectionBlock title="连接配置">
+    <SectionBlock :title="t('agent.detail.sections.connection')">
       <dl class="detail-grid">
         <div
           v-for="item in connectionItems"
@@ -13,7 +13,7 @@
       </dl>
     </SectionBlock>
 
-    <SectionBlock title="鉴权摘要">
+    <SectionBlock :title="t('agent.detail.sections.authSummary')">
       <dl class="detail-grid">
         <div
           v-for="item in authItems"
@@ -26,7 +26,7 @@
       </dl>
     </SectionBlock>
 
-    <SectionBlock title="自定义固定字段">
+    <SectionBlock :title="t('agent.detail.sections.customFields')">
       <AgentCodePreview
         :code="customRequestBodyJson"
         language="json"
@@ -34,7 +34,7 @@
       />
     </SectionBlock>
 
-    <SectionBlock title="状态集合">
+    <SectionBlock :title="t('agent.detail.sections.statusCollection')">
       <dl class="detail-grid">
         <div
           v-for="item in statusItems"
@@ -50,6 +50,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import AgentCodePreview from "@/modules/agent/components/AgentCodePreview.vue";
 import type { AgentDetailTextItem } from "@/modules/agent/lib/agent-detail-view";
 import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
@@ -60,6 +61,8 @@ defineProps<{
   statusItems: AgentDetailTextItem[];
   customRequestBodyJson: string;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

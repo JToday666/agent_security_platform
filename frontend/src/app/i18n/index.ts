@@ -3,6 +3,7 @@ import type { Router, RouteLocationNormalizedLoaded } from "vue-router";
 import { setApiLocale } from "@/shared/api/http-client";
 import { STORAGE_KEYS } from "@/shared/constants/storage-keys";
 import { useLocaleStore } from "@/app/i18n/localeStore";
+import { setRuntimeTranslator } from "@/app/i18n/runtime-translator";
 
 export const SUPPORTED_LOCALES = [
   "zh-CN",
@@ -75,6 +76,10 @@ export const i18n = createI18n({
   fallbackLocale: DEFAULT_LOCALE,
   messages: {},
 });
+
+setRuntimeTranslator((key, params) =>
+  String(i18n.global.t(key, params ?? {})),
+);
 
 export const toLocaleDirectoryName = (locale: SupportedLocale): string =>
   locale.toLowerCase();

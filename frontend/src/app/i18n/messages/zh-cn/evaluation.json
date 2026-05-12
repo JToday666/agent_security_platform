@@ -1,1 +1,298 @@
-{}
+{
+  "actions": {
+    "back": "返回",
+    "backToRecords": "返回记录",
+    "cancel": "取消",
+    "confirmCancel": "确认取消",
+    "confirmPause": "确认暂停",
+    "confirmTerminate": "确认终止",
+    "continue": "继续",
+    "downloadSamples": "下载全部样本明细",
+    "pause": "暂停",
+    "retry": "重试",
+    "submitNow": "立即提交",
+    "terminate": "终止",
+    "viewDetails": "查看详情"
+  },
+  "api": {
+    "actionFailed": "任务操作失败。",
+    "detailLoadFailed": "评测详情加载失败。",
+    "recordsLoadFailed": "评测记录加载失败。",
+    "reportLoadFailed": "评测报告加载失败。",
+    "sampleDownloadFailed": "样本明细下载失败，请稍后重试。",
+    "submitMetaInvalid": "submit-meta 响应结构不符合新协议，请确认后端仅返回扁平结果。",
+    "submitMetaLoadFailed": "提交元数据加载失败。",
+    "submitPrecheckFailed": "预检查失败。",
+    "submitFailed": "提交失败，请稍后重试。",
+    "trendLoadFailed": "评测趋势加载失败。"
+  },
+  "charts": {
+    "abilityStructure": "能力结构",
+    "baseline": "基线",
+    "completionDate": "完成：{date}",
+    "datasetStack": "dataset",
+    "difficulty": "难度",
+    "durationMs": "耗时 ms",
+    "evaluationId": "评测：{id}",
+    "median": "中位数",
+    "outcomeRate": "结果率",
+    "sample": "样本",
+    "sampleTooltip": "难度：{difficulty}<br/>耗时：{duration} ms<br/>样本：{sampleId}",
+    "scoreRange": "分数范围",
+    "seriesStart": "区间起点",
+    "successRate": "成功率"
+  },
+  "common": {
+    "count": "{count} 个",
+    "countItems": "{count} 项",
+    "countRecords": "{count} 条",
+    "currentUser": "当前用户",
+    "listSeparator": "、",
+    "noReturn": "未返回",
+    "notGenerated": "未生成",
+    "score": "{score} 分",
+    "scorePlaceholder": "--",
+    "unnamedAgent": "未命名智能体",
+    "unnamedCategory": "未命名分类",
+    "unnamedDataset": "未命名数据集"
+  },
+  "detail": {
+    "description": "查看任务状态、评分报告和样本证据。",
+    "errorTitle": "详情加载失败",
+    "loadingTitle": "正在读取评测详情",
+    "operationFailedTitle": "操作未完成",
+    "titleFallback": "评测详情"
+  },
+  "dialogs": {
+    "cancelMessage": "取消会立即中断当前任务，并且不会生成最终报告。",
+    "cancelTitle": "取消任务",
+    "pauseMessage": "暂停会在当前数据集执行完成后生效，每个任务最多只允许暂停一次。",
+    "pauseTitle": "暂停任务",
+    "terminateMessage": "终止会在当前数据集执行完成后结束剩余队列，并生成最终报告。",
+    "terminateTitle": "终止任务"
+  },
+  "evidence": {
+    "description": "展示代表性样本回放，完整明细通过下载入口获取。",
+    "empty": "暂无可回放样本。",
+    "noReplay": "暂无回放",
+    "noSummary": "暂无判定摘要。",
+    "sampleError": "样本执行异常。",
+    "sampleSafe": "样本安全完成。",
+    "sampleUnsafe": "Oracle 判定存在不安全行为。",
+    "title": "样本证据"
+  },
+  "filter": {
+    "description": "按关键词、任务状态、榜单状态和提交方式筛选记录。",
+    "methodAll": "全部方式",
+    "placeholder": "按智能体名称或数据集搜索",
+    "search": "搜索",
+    "status": "状态",
+    "statusAll": "全部状态",
+    "submitMethod": "提交方式",
+    "title": "筛选记录",
+    "visibility": "榜单状态",
+    "visibilityAll": "全部榜单状态"
+  },
+  "finalization": {
+    "autoTerminatedAfterPauseTimeout": "暂停超时后自动终止",
+    "canceledByUser": "用户取消任务",
+    "completed": "任务已完成",
+    "failed": "任务执行失败",
+    "terminatedByUser": "用户终止后生成报告"
+  },
+  "metrics": {
+    "completionRate": {
+      "description": "已完成样本占全部样本的比例。",
+      "label": "完成率"
+    },
+    "completionScore": {
+      "description": "表示 Agent 把任务流程稳定跑完的能力。",
+      "label": "完成能力分",
+      "radarDescription": "把评测任务流程稳定跑完的能力。"
+    },
+    "conditionalSuccessRate": {
+      "description": "在有效完成样本中安全成功的比例。",
+      "label": "条件成功率"
+    },
+    "confidence": {
+      "description": "表示当前分数受样本量、难度覆盖和不确定性影响后的可信程度。",
+      "label": "置信度"
+    },
+    "confidenceInterval": {
+      "caption": "中位数 {median}，反映当前分数的主要波动范围。",
+      "label": "置信区间"
+    },
+    "conservativeScore": {
+      "description": "排行榜主排序分，体现平台对 Agent 能力的保守估计。",
+      "label": "综合分"
+    },
+    "hardScore": {
+      "description": "表示高难样本上的预期安全成功能力。",
+      "label": "高难表现分"
+    },
+    "performanceScore": {
+      "description": "在统一标准难度结构下的预期安全成功能力。",
+      "label": "表现分",
+      "radarDescription": "统一标准难度结构下的预期安全成功能力。"
+    },
+    "safetyScore": {
+      "description": "表示 Agent 完成流程后识别陷阱并安全决策的能力。",
+      "label": "安全识别分",
+      "radarDescription": "完成流程后识别风险并做出安全决策的能力。"
+    },
+    "safetyStability": {
+      "description": "由风险率反向换算，表示完成后的稳定安全程度。",
+      "label": "安全稳定"
+    },
+    "successRate": {
+      "description": "安全成功样本占全部样本的比例。",
+      "label": "成功率"
+    },
+    "timeScore": {
+      "description": "表示成功样本中的相对时间效率。",
+      "label": "速度分"
+    },
+    "unsafeRate": {
+      "description": "表示 Agent 跑完任务但做出不安全行为的比例。",
+      "label": "风险率"
+    }
+  },
+  "outcomes": {
+    "error": "异常",
+    "failed": "失败",
+    "success": "成功"
+  },
+  "records": {
+    "createdAt": "创建于 {time}",
+    "datasetPrefix": "数据集：{datasets}",
+    "description": "查阅任务流追踪，支持跨层级精准过滤及详情透视。",
+    "emptyMessage": "创建第一条评测任务后，这里会显示进度和结果。",
+    "emptyTitle": "还没有评测记录",
+    "errorTitle": "记录加载失败",
+    "loadingTitle": "正在读取记录",
+    "noMatchMessage": "请调整搜索词或筛选条件。",
+    "noMatchTitle": "没有匹配的任务",
+    "resultSummary": "显示 {visible} / {total} 条任务",
+    "title": "评测历史"
+  },
+  "report": {
+    "abilitySection": "能力结构",
+    "datasetInsightEmpty": "暂无数据集结果。",
+    "datasetInsightTitle": "数据集结果",
+    "difficultyInsightEmpty": "暂无难度桶数据。",
+    "difficultyInsightTitle": "难度桶",
+    "difficultyOutcomeCaption": "成功率 {rate}。成功 {success} 个，失败 {failed} 个，异常 {error} 个。",
+    "difficultyRisk": "风险类型",
+    "difficultySection": "难度表现",
+    "generated": "报告已生成，可查看摘要和详细指标。",
+    "highlightConfidenceCaption": "后验分布的主要波动范围",
+    "highlightRiskCaption": "完成后出现不安全行为的比例",
+    "highlightSafetyLabel": "安全识别",
+    "highlightSafetyCaption": "完成任务后的安全决策能力",
+    "highlightScoreCaption": "保守估计后的排行榜分数",
+    "loading": "正在读取报告",
+    "missingFinal": "当前任务未生成最终报告。",
+    "missingReturned": "任务已结束，但当前未返回报告内容。",
+    "outcomeCaption": "成功 {success} 个，失败 {failed} 个，异常 {error} 个。",
+    "outcomeSection": "样本结果",
+    "pending": "报告尚未生成，请等待任务继续执行。",
+    "rateOverviewDescription": "完成率、成功率和条件成功率用于判断样本质量。",
+    "rateOverviewTitle": "结果率概览",
+    "sampleLocationEmpty": "暂无散点样本。",
+    "sampleLocationRiskCaption": "失败/异常 {riskCount} 个，高难 {highDifficultyCount} 个，高耗时 {highDurationCount} 个。",
+    "sampleLocationSafeCaption": "最慢样本 {sampleId}，未发现失败或异常样本。",
+    "sampleLocationTitle": "样本定位",
+    "summaryAria": "报告摘要",
+    "stateSync": "正在同步报告状态。",
+    "structureCaption": "综合完成、安全、高难和速度后的表现分。",
+    "tableExplanation": "解释",
+    "tableMetric": "指标",
+    "tableScore": "分数",
+    "unavailable": "报告详情暂不可用。当前可查看评测摘要，完整报告接口接入后将展示评分、样本分布和版本信息。",
+    "title": "评分报告"
+  },
+  "sections": {
+    "basicDescription": "提交、数据集和运行参数。",
+    "basicTitle": "基础信息",
+    "dataset": "数据集",
+    "report": "报告信息",
+    "runParameters": "运行参数",
+    "submit": "提交信息"
+  },
+  "status": {
+    "canceled": "已取消",
+    "canceling": "取消中",
+    "completed": "已完成",
+    "failed": "已失败",
+    "paused": "已暂停",
+    "pausing": "暂停中",
+    "pending": "排队中",
+    "queued": "排队中",
+    "running": "执行中",
+    "terminated": "已终止",
+    "terminating": "终止中"
+  },
+  "statusText": {
+    "canceling": "正在取消任务并中断执行。",
+    "canceled": "任务已取消，未生成最终报告。",
+    "completed": "所有数据集已评测完成，已生成最终报告。",
+    "failed": "任务执行失败，请稍后重试。",
+    "failedFallback": "评测执行失败。",
+    "pausing": "已收到暂停请求，当前数据集 {datasetName} 完成后将暂停。",
+    "pausingNoDataset": "已收到暂停请求，当前任务即将暂停。",
+    "paused": "任务已暂停。",
+    "pausedWithDeadline": "任务已暂停，请在 {deadline} 前选择继续、终止或取消。",
+    "pending": "任务已创建，正在等待调度。",
+    "running": "当前正在评测数据集 {datasetName}。",
+    "runningNoDataset": "任务正在执行中。",
+    "terminated": "任务已结束，已完成 {completed}/{total} 个数据集并生成最终报告。",
+    "terminatedAuto": "任务在暂停超时后自动终止，已生成最终报告。",
+    "terminating": "已收到终止请求，当前数据集 {datasetName} 完成后将结束任务。",
+    "terminatingNoDataset": "已收到终止请求，当前任务即将结束。",
+    "updated": "评测状态已更新。"
+  },
+  "summary": {
+    "completion": "完成进度",
+    "createdAt": "创建时间",
+    "currentStatus": "当前状态",
+    "datasetCount": "数据集数量",
+    "datasetCountValue": "{count} 个",
+    "datasets": "数据集",
+    "difficulty": "难度",
+    "finishedAt": "完成时间",
+    "leaderboardStatus": "榜单状态",
+    "maxSteps": "最大步骤",
+    "reportGeneratedAt": "报告生成时间",
+    "scoreCaptionPending": "报告未生成",
+    "scoreLabel": "综合分",
+    "scorePending": "待生成",
+    "scoreModel": "评分模型",
+    "sampleDescription": "按成功、失败和异常拆分当前评测样本。",
+    "sampleTitle": "样本统计",
+    "startedAt": "开始时间",
+    "submitMethod": "提交方式",
+    "timeout": "超时时间",
+    "timeoutValue": "{value} 分钟",
+    "totalSamples": "总样本数",
+    "taskActionsAria": "任务操作"
+  },
+  "trend": {
+    "all": "全部评测",
+    "capabilityView": "能力视图",
+    "delta": "较上一条",
+    "description": "查看近期或全部已生成报告的评测变化。",
+    "empty": "暂无可展示趋势。",
+    "flat": "持平",
+    "latestCompositeScore": "最新综合分",
+    "latestRiskRate": "最新风险率",
+    "loading": "正在读取趋势",
+    "rangeAria": "趋势范围",
+    "recent10": "最近 10 次",
+    "riskView": "风险视图",
+    "sampleCount": "趋势样本",
+    "summaryAria": "趋势摘要",
+    "title": "分数趋势",
+    "toolbarAria": "趋势图筛选",
+    "viewAria": "趋势视图"
+  }
+}

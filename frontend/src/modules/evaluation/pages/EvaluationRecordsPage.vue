@@ -1,16 +1,16 @@
 <template>
   <div class="content records-page layout-page-shell layout-page-shell--wide">
     <PageHero
-      title="评测历史"
-      description="查阅任务流追踪，支持跨层级精准过滤及详情透视。"
+      :title="t('evaluation.records.title')"
+      :description="t('evaluation.records.description')"
     >
       <template #actions>
         <UiButton
           :to="RouteLocation.agentSubmit"
           variant="secondary"
-          leading-icon="lucide:file-plus-2"
+          leading-icon="app:action.submitEvaluation"
         >
-          提交评测
+          {{ t("common.actions.submitEvaluation") }}
         </UiButton>
       </template>
     </PageHero>
@@ -19,16 +19,16 @@
 
     <PageStatePanel
       v-if="loading"
-      title="正在读取记录"
-      message="请稍候。"
+      :title="t('evaluation.records.loadingTitle')"
+      :message="t('common.feedback.pleaseWait')"
       :loading="true"
     />
 
     <PageStatePanel
       v-else-if="error"
-      title="记录加载失败"
+      :title="t('evaluation.records.errorTitle')"
       :message="error"
-      action-text="重试"
+      :action-text="t('evaluation.actions.retry')"
       @action="loadRecords"
     />
 
@@ -45,7 +45,14 @@
       />
 
       <div class="result-bar">
-        <span>显示 {{ filteredRecords.length }} / {{ records.length }} 条任务</span>
+        <span>
+          {{
+            t("evaluation.records.resultSummary", {
+              visible: filteredRecords.length,
+              total: records.length,
+            })
+          }}
+        </span>
       </div>
 
       <div v-if="filteredRecords.length" class="records-list">
@@ -58,17 +65,17 @@
 
       <PageStatePanel
         v-else
-        title="没有匹配的任务"
-        message="请调整搜索词或筛选条件。"
+        :title="t('evaluation.records.noMatchTitle')"
+        :message="t('evaluation.records.noMatchMessage')"
         tone="default"
       />
     </div>
 
     <PageStatePanel
       v-else
-      title="还没有评测记录"
-      message="创建第一条评测任务后，这里会显示进度和结果。"
-      action-text="立即提交"
+      :title="t('evaluation.records.emptyTitle')"
+      :message="t('evaluation.records.emptyMessage')"
+      :action-text="t('evaluation.actions.submitNow')"
       @action="$router.push(RouteLocation.agentSubmit)"
     />
   </div>
@@ -76,6 +83,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import { getEvaluationRecords } from "@/modules/evaluation/api/evaluation-api";
@@ -96,6 +104,7 @@ import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
 
 const $router = useRouter();
+const { t } = useI18n();
 const records = ref<EvaluationRecord[]>([]);
 const loading = ref(true);
 const error = ref("");
@@ -122,7 +131,9 @@ const loadRecords = async () => {
     records.value = await getEvaluationRecords();
   } catch (loadError) {
     error.value =
-      loadError instanceof Error ? loadError.message : "评测记录加载失败。";
+      loadError instanceof Error
+        ? loadError.message
+        : t("evaluation.api.recordsLoadFailed");
   } finally {
     loading.value = false;
   }

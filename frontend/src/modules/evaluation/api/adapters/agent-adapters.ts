@@ -9,6 +9,7 @@ import type {
   EvaluationStatus,
   SubmitMetaResponse,
 } from "@/shared/types/agent-types";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
 import { normalizeDatasetIds } from "@/modules/dataset/model/dataset-id-aliases";
 import {
@@ -233,7 +234,9 @@ const normalizeRiskCategoryItems = (
           const candidate = item as UnknownRecord;
           return {
             categoryId: toStringValue(candidate.categoryId),
-            name: toStringValue(candidate.name) || "未命名分类",
+            name:
+              toStringValue(candidate.name) ||
+              translateRuntimeMessage("evaluation.common.unnamedCategory"),
             totalSamples: Math.max(
               0,
               Math.round(toNumberValue(candidate.totalSamples, 0)),
@@ -368,7 +371,9 @@ const normalizeProgress = (
     pauseDeadlineAt: toOptionalString(candidate.pauseDeadlineAt),
     statusText:
       toStringValue(candidate.statusText) ||
-      (status === "failed" ? "评测执行失败。" : "评测状态已更新。"),
+      (status === "failed"
+        ? translateRuntimeMessage("evaluation.statusText.failedFallback")
+        : translateRuntimeMessage("evaluation.statusText.updated")),
   };
 };
 
@@ -385,7 +390,9 @@ export const adaptEvaluationRecord = (value: unknown): EvaluationRecord => {
 
   return {
     evaluationId: toStringValue(candidate.evaluationId),
-    agentName: toStringValue(candidate.agentName) || "未命名智能体",
+    agentName:
+      toStringValue(candidate.agentName) ||
+      translateRuntimeMessage("evaluation.common.unnamedAgent"),
     description: toOptionalString(candidate.description) ?? undefined,
     createdAt: toStringValue(candidate.createdAt),
     updatedAt: toStringValue(candidate.updatedAt),
@@ -409,7 +416,9 @@ export const adaptEvaluationRecord = (value: unknown): EvaluationRecord => {
       candidate.score == null || toStringValue(candidate.score).length === 0
         ? null
         : toNumberValue(candidate.score, 0),
-    ownerName: toStringValue(candidate.ownerName) || "当前用户",
+    ownerName:
+      toStringValue(candidate.ownerName) ||
+      translateRuntimeMessage("evaluation.common.currentUser"),
     parameters: normalizeParameters(candidate.parameters),
     sampleSummary: normalizeEvaluationSampleSummary(candidate.sampleSummary),
   };

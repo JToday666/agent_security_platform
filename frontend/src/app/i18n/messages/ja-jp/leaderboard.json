@@ -1,1 +1,51 @@
-{}
+{
+  "api": {
+    "loadFailed": "ランキング読み込みに失敗しました。しばらくしてから再試行してください。",
+    "unnamedAgent": "未命名 Agent"
+  },
+  "champion": {
+    "anonymous": "匿名",
+    "aria": "現在の 1 位",
+    "label": "現在の 1 位"
+  },
+  "empty": {
+    "message": "現在表示できる公開評価結果はありません。",
+    "title": "公開ランキングはまだありません"
+  },
+  "errors": {
+    "loadFailedTitle": "ランキング読み込み失敗",
+    "unavailableMessage": "公開ランキングを一時的に読み込めません。しばらくしてから再試行してください。",
+    "unavailableTitle": "ランキングは現在利用できません"
+  },
+  "overview": {
+    "aria": "ランキング概要",
+    "currentSecurityCapability": "現在の安全能力",
+    "listedAgents": "ランクイン Agent",
+    "lowestRiskScore": "最低リスクスコア"
+  },
+  "page": {
+    "description": "公開評価スナップショットに基づいて Agent の総合的な安全性パフォーマンスを表示します。",
+    "loadingTitle": "ランキング読み込み中",
+    "title": "ランキング"
+  },
+  "scores": {
+    "composite": "総合",
+    "compositeFull": "総合スコア",
+    "highDifficulty": "高難度",
+    "highDifficultyFull": "高難度スコア",
+    "notReturned": "未返却",
+    "risk": "リスク",
+    "riskFull": "リスクスコア",
+    "safeCapability": "安全",
+    "safeCapabilityFull": "安全能力"
+  },
+  "table": {
+    "agent": "Agent",
+    "anonymous": "匿名",
+    "confidence": "信頼度",
+    "description": "現在は{sort}順です。リスクスコアが低いほど、不安全行動の割合が低いことを示します。",
+    "rank": "順位",
+    "samples": "サンプル",
+    "title": "公開評価結果"
+  }
+}

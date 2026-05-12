@@ -1,3 +1,7 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import { isValidHttpUrl } from "@/modules/submission/model/parameter-validator";
 import type {
   AgentAuthType,
@@ -75,10 +79,10 @@ export const agentOutputMappingKeys: Array<keyof AgentOutputMapping> = [
   "errorMessage",
 ];
 
-const inputMappingTopLevelMessage =
-  "平台输入映射只能填写外部请求体的顶层字段名";
-const outputMappingPathMessage =
-  "输出映射需填写响应字段路径，例如 runId 或 data.runId，暂不支持 $、数组下标或空路径段。";
+const inputMappingTopLevelMessage = (t: AppTranslator) =>
+  t("agent.validation.inputMappingTopLevel");
+const outputMappingPathMessage = (t: AppTranslator) =>
+  t("agent.validation.outputMappingPath");
 
 const addFieldError = (
   errors: string[],
@@ -107,6 +111,7 @@ export interface AgentOutputJsonPathParseResult {
 
 export const parseAgentOutputJsonPath = (
   value: string,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentOutputJsonPathParseResult => {
   const normalized = value.trim();
   const segments = normalized.split(".");
@@ -125,7 +130,7 @@ export const parseAgentOutputJsonPath = (
       valid: false,
       normalized,
       segments: [],
-      message: outputMappingPathMessage,
+      message: outputMappingPathMessage(t),
     };
   }
 
@@ -240,28 +245,54 @@ const buildNormalizedRegistration = (
 export const validateAgentRegistration = (
   form: AgentRegisterForm,
   scope: AgentRegistrationValidationScope = "all",
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentRegistrationValidationResult => {
   const errors: string[] = [];
   const fieldErrors: AgentRegisterFieldErrors = {};
   const normalized = buildNormalizedRegistration(form);
 
   if (shouldValidateSection(scope, "template") && !normalized.templateId) {
-    addFieldError(errors, fieldErrors, "templateId", "请选择注册模板");
+    addFieldError(
+      errors,
+      fieldErrors,
+      "templateId",
+      t("agent.validation.templateRequired"),
+    );
   }
 
   if (shouldValidateSection(scope, "basic") && !normalized.name) {
-    addFieldError(errors, fieldErrors, "name", "请填写 Agent 名称");
+    addFieldError(
+      errors,
+      fieldErrors,
+      "name",
+      t("agent.validation.nameRequired"),
+    );
   }
 
   if (shouldValidateSection(scope, "connection")) {
     if (!normalized.connection.baseUrl) {
-      addFieldError(errors, fieldErrors, "baseUrl", "请填写服务根地址");
+      addFieldError(
+        errors,
+        fieldErrors,
+        "baseUrl",
+        t("agent.validation.baseUrlRequired"),
+      );
     } else if (!isValidHttpUrl(normalized.connection.baseUrl)) {
-      addFieldError(errors, fieldErrors, "baseUrl", "服务根地址格式不正确");
+      addFieldError(
+        errors,
+        fieldErrors,
+        "baseUrl",
+        t("agent.validation.baseUrlInvalid"),
+      );
     }
 
     if (!normalized.connection.invokePath) {
-      addFieldError(errors, fieldErrors, "invokePath", "请填写提交任务路径");
+      addFieldError(
+        errors,
+        fieldErrors,
+        "invokePath",
+        t("agent.validation.invokePathRequired"),
+      );
     }
 
     if (
@@ -272,12 +303,17 @@ export const validateAgentRegistration = (
         errors,
         fieldErrors,
         "resultPathTemplate",
-        "请填写结果路径模板",
+        t("agent.validation.resultPathTemplateRequired"),
       );
     }
 
     if (form.auth.type === "bearer" && !form.auth.token.trim()) {
-      addFieldError(errors, fieldErrors, "authSecret", "请填写 Bearer Token");
+      addFieldError(
+        errors,
+        fieldErrors,
+        "authSecret",
+        t("agent.validation.authSecretRequired"),
+      );
     }
 
     if (
@@ -289,7 +325,7 @@ export const validateAgentRegistration = (
           errors,
           fieldErrors,
           "authHeaderName",
-          "请填写 Header 名称",
+          t("agent.validation.authHeaderNameRequired"),
         );
       }
 
@@ -298,7 +334,7 @@ export const validateAgentRegistration = (
           errors,
           fieldErrors,
           "authHeaderSecret",
-          "请填写 Header 密钥",
+          t("agent.validation.authHeaderSecretRequired"),
         );
       }
     }
@@ -310,7 +346,7 @@ export const validateAgentRegistration = (
         errors,
         fieldErrors,
         "taskMapping",
-        "请填写 task 对应字段名",
+        t("agent.validation.taskMappingRequired"),
       );
     } else {
       const invalidInputMapping = Object.values(
@@ -321,7 +357,7 @@ export const validateAgentRegistration = (
           errors,
           fieldErrors,
           "taskMapping",
-          inputMappingTopLevelMessage,
+          inputMappingTopLevelMessage(t),
         );
       }
     }
@@ -332,7 +368,7 @@ export const validateAgentRegistration = (
           errors,
           fieldErrors,
           "structuredOutputAlias",
-          "请填写结构化输出字段别名",
+          t("agent.validation.structuredOutputAliasRequired"),
         );
       } else if (
         !isTopLevelAgentInputFieldName(
@@ -343,7 +379,7 @@ export const validateAgentRegistration = (
           errors,
           fieldErrors,
           "structuredOutputAlias",
-          "结构化输出字段别名只能填写请求体顶层字段名",
+          t("agent.validation.structuredOutputAliasInvalid"),
         );
       }
     }
@@ -359,19 +395,19 @@ export const validateAgentRegistration = (
         errors,
         fieldErrors,
         "outputMapping",
-        "轮询模式下必须配置运行 ID 和状态输出路径。",
+        t("agent.validation.pollOutputRequired"),
       );
     }
 
     const invalidOutputMapping = Object.values(
       normalized.platformOutputMapping,
-    ).find((path) => !parseAgentOutputJsonPath(path).valid);
+    ).find((path) => !parseAgentOutputJsonPath(path, t).valid);
     if (invalidOutputMapping) {
       addFieldError(
         errors,
         fieldErrors,
         "outputMapping",
-        outputMappingPathMessage,
+        outputMappingPathMessage(t),
       );
     }
   }
@@ -399,7 +435,9 @@ export const validateAgentRegistration = (
           errors,
           fieldErrors,
           "customRequestBody",
-          `字段 ${conflictField} 已被平台输入映射使用，不能作为自定义固定字段。`,
+          t("agent.validation.customFieldMappingConflict", {
+            field: conflictField,
+          }),
         );
       }
     }
@@ -411,7 +449,7 @@ export const validateAgentRegistration = (
         errors,
         fieldErrors,
         "terminalStatuses",
-        "请至少填写一个终态",
+        t("agent.validation.terminalStatusRequired"),
       );
     }
 
@@ -424,7 +462,7 @@ export const validateAgentRegistration = (
         errors,
         fieldErrors,
         "successStatuses",
-        "成功态必须属于终态集合",
+        t("agent.validation.statusSuccessInTerminal"),
       );
     }
   }

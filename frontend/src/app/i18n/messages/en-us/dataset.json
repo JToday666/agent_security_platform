@@ -1,1 +1,100 @@
-{}
+{
+  "api": {
+    "catalogLoadFailed": "Catalog loading failed. Please try again later.",
+    "detailLoadFailed": "Detail loading failed. Please try again later.",
+    "notFound": "No matching benchmark item was found."
+  },
+  "fallback": {
+    "currentRiskDomain": "Current risk domain",
+    "dataset": "Dataset",
+    "media": "Media {index}",
+    "pending": "To be completed",
+    "relatedResource": "Related Resource {index}",
+    "uncategorized": "Uncategorized",
+    "unnamedBenchmarkItem": "Unnamed benchmark item",
+    "unnamedCategory": "Unnamed category"
+  },
+  "filter": {
+    "clearSearch": "Clear Search",
+    "description": "Quickly locate target datasets by risk domain, name, and sort order.",
+    "searchLabel": "Search",
+    "searchPlaceholder": "Search by name or summary",
+    "sortLabel": "Sort",
+    "sortOptions": {
+      "default": "Default Sort",
+      "samplesDesc": "Sample Count, High to Low",
+      "updatedDesc": "Recently Updated"
+    },
+    "title": "Filter and Sort"
+  },
+  "labels": {
+    "benchmarkItemCount": "Benchmark item count",
+    "riskDomain": "Risk domain",
+    "sampleCount": "Sample Count",
+    "updatedAt": "Recently Updated",
+    "updateTime": "Updated At"
+  },
+  "media": {
+    "descriptionFallback": "This media helps explain the benchmark item's structure and runtime behavior.",
+    "empty": "No media resources are available for this benchmark item.",
+    "unavailable": "Resource unavailable"
+  },
+  "meta": {
+    "sampleCountDescription": "Total number of samples in this dataset.",
+    "updatedAtDescription": "Based on the timestamp returned by the current API."
+  },
+  "pages": {
+    "catalog": {
+      "description": "Browse available datasets by risk domain and view their descriptions.",
+      "emptyMessage": "Please try again later.",
+      "emptyTitle": "No available datasets",
+      "loadFailedTitle": "Catalog Loading Failed",
+      "loadingMessage": "Please wait.",
+      "loadingTitle": "Loading Catalog",
+      "noMatchesMessage": "Try another keyword or switch risk domains.",
+      "noMatchesTitle": "No matching datasets found",
+      "reloadAction": "Reload",
+      "title": "Dataset Catalog"
+    },
+    "detail": {
+      "backToCatalog": "Back to Dataset Catalog",
+      "ctaDescription": "After selecting this dataset, you can continue to the submission page to configure Agent integration and runtime parameters.",
+      "ctaTitle": "Ready to Start Evaluation",
+      "descriptionFallback": "View this dataset's description, focus areas, resources, and examples.",
+      "detailLoadFailedTitle": "Detail Loading Failed",
+      "fullDescriptionFallback": "No detailed description available.",
+      "loadingMessage": "Please wait.",
+      "loadingTitle": "Loading Details",
+      "loginToEvaluateDataset": "Log in to evaluate this dataset",
+      "notFoundTitle": "Benchmark item not found",
+      "retryAction": "Retry",
+      "sections": {
+        "details": "Details",
+        "highlights": "Evaluation Focus",
+        "media": "Media",
+        "scenarios": "Typical Scenarios"
+      },
+      "submitWithDataset": "Use this dataset to start an evaluation",
+      "titleFallback": "Dataset Details"
+    }
+  },
+  "resources": {
+    "description": "Only documents, downloads, demos, or external links returned by the current API are shown.",
+    "emptyMessage": "This dataset did not return external resources that can be displayed.",
+    "emptyTitle": "No resources",
+    "title": "Resources and Examples",
+    "types": {
+      "demo": "Demo",
+      "docs": "Documentation",
+      "download": "Download",
+      "link": "Link"
+    },
+    "view": "View Resource"
+  },
+  "subcategory": {
+    "loginToEvaluate": "Log in to evaluate",
+    "noDescription": "No description available",
+    "useDataset": "Use this dataset",
+    "viewDetails": "View Details"
+  }
+}

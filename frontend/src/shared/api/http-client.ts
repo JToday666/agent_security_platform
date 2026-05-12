@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import { ApiConfig } from "@/shared/api/Config";
 import { STORAGE_KEYS } from "@/shared/constants/storage-keys";
 
@@ -56,15 +57,19 @@ export const setApiLocale = (locale: string) => {
 const buildLegacyValidationMessage = (
   errors: LegacyValidationErrorItem[],
 ): string => {
-  if (!errors.length) return "请求参数错误";
+  if (!errors.length) {
+    return translateRuntimeMessage("network.validation.requestParameters");
+  }
 
   return errors
     .map((item) => {
       const field =
         item.loc?.filter((value) => value !== "body").join(".") || "";
       return field
-        ? `${field}: ${item.msg || "参数错误"}`
-        : item.msg || "参数错误";
+        ? `${field}: ${
+            item.msg || translateRuntimeMessage("network.validation.parameter")
+          }`
+        : item.msg || translateRuntimeMessage("network.validation.parameter");
     })
     .join("；");
 };
@@ -85,7 +90,7 @@ const normalizeValidationErrors = (payload: any): ApiValidationErrorItem[] => {
         const reason =
           typeof item.reason === "string" && item.reason.trim()
             ? item.reason.trim()
-            : "参数错误";
+            : translateRuntimeMessage("network.validation.parameter");
 
         return { field, reason };
       })
@@ -96,7 +101,7 @@ const normalizeValidationErrors = (payload: any): ApiValidationErrorItem[] => {
     return (payload.detail as LegacyValidationErrorItem[]).map((item) => ({
       field:
         item.loc?.filter((value) => value !== "body").join(".") || "request",
-      reason: item.msg || "参数错误",
+      reason: item.msg || translateRuntimeMessage("network.validation.parameter"),
     }));
   }
 
@@ -105,7 +110,7 @@ const normalizeValidationErrors = (payload: any): ApiValidationErrorItem[] => {
 
 const buildValidationMessage = (errors: ApiValidationErrorItem[]): string => {
   if (!errors.length) {
-    return "请求参数错误";
+    return translateRuntimeMessage("network.validation.requestParameters");
   }
 
   return errors
@@ -118,7 +123,7 @@ const buildValidationMessage = (errors: ApiValidationErrorItem[]): string => {
 };
 
 const extractErrorMessage = (payload: any): string => {
-  if (!payload) return "网络错误";
+  if (!payload) return translateRuntimeMessage("network.errors.network");
 
   if (typeof payload === "string") return payload;
 
@@ -150,7 +155,7 @@ const extractErrorMessage = (payload: any): string => {
     }
   }
 
-  return "请求失败";
+  return translateRuntimeMessage("network.errors.requestFailed");
 };
 
 const createApiError = (
@@ -232,7 +237,9 @@ axiosInstance.interceptors.response.use(
     const responseData = error.response?.data;
     const validationErrors = normalizeValidationErrors(responseData);
     const message =
-      extractErrorMessage(responseData) || error.message || "网络错误";
+      extractErrorMessage(responseData) ||
+      error.message ||
+      translateRuntimeMessage("network.errors.network");
 
     const requestConfig = error.config as ApiRequestConfig | undefined;
     const shouldDispatchUnauthorizedEvent =

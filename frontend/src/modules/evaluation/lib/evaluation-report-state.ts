@@ -1,5 +1,7 @@
-const REPORT_UNAVAILABLE_MESSAGE =
-  "报告详情暂不可用。当前可查看评测摘要，完整报告接口接入后将展示评分、样本分布和版本信息。";
+import {
+  type AppTranslator,
+  translateRuntimeMessage,
+} from "@/app/i18n/runtime-translator";
 
 export const isReportEndpointUnavailableError = (value: unknown): boolean => {
   if (!value || typeof value !== "object") {
@@ -12,5 +14,6 @@ export const isReportEndpointUnavailableError = (value: unknown): boolean => {
   );
 };
 
-export const getReportUnavailableMessage = (): string =>
-  REPORT_UNAVAILABLE_MESSAGE;
+export const getReportUnavailableMessage = (
+  t: AppTranslator = translateRuntimeMessage,
+): string => t("evaluation.report.unavailable");

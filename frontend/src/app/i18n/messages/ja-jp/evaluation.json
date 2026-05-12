@@ -1,1 +1,298 @@
-{}
+{
+  "actions": {
+    "back": "戻る",
+    "backToRecords": "記録へ戻る",
+    "cancel": "キャンセル",
+    "confirmCancel": "キャンセルを確認",
+    "confirmPause": "一時停止を確認",
+    "confirmTerminate": "終了を確認",
+    "continue": "続行",
+    "downloadSamples": "すべてのサンプル明細をダウンロード",
+    "pause": "一時停止",
+    "retry": "再試行",
+    "submitNow": "今すぐ提出",
+    "terminate": "終了",
+    "viewDetails": "詳細を見る"
+  },
+  "api": {
+    "actionFailed": "タスク操作に失敗しました。",
+    "detailLoadFailed": "評価詳細の読み込みに失敗しました。",
+    "recordsLoadFailed": "評価記録の読み込みに失敗しました。",
+    "reportLoadFailed": "評価レポートの読み込みに失敗しました。",
+    "sampleDownloadFailed": "サンプル明細のダウンロードに失敗しました。しばらくしてから再試行してください。",
+    "submitMetaInvalid": "submit-meta の応答構造が新しいプロトコルに一致しません。バックエンドがフラットな結果のみを返すことを確認してください。",
+    "submitMetaLoadFailed": "提出メタデータの読み込みに失敗しました。",
+    "submitPrecheckFailed": "事前チェックに失敗しました。",
+    "submitFailed": "提出に失敗しました。しばらくしてから再試行してください。",
+    "trendLoadFailed": "評価トレンドの読み込みに失敗しました。"
+  },
+  "charts": {
+    "abilityStructure": "能力構造",
+    "baseline": "基準線",
+    "completionDate": "完了：{date}",
+    "datasetStack": "dataset",
+    "difficulty": "難度",
+    "durationMs": "所要時間 ms",
+    "evaluationId": "評価：{id}",
+    "median": "中央値",
+    "outcomeRate": "結果率",
+    "sample": "サンプル",
+    "sampleTooltip": "難度：{difficulty}<br/>所要時間：{duration} ms<br/>サンプル：{sampleId}",
+    "scoreRange": "スコア範囲",
+    "seriesStart": "区間開始",
+    "successRate": "成功率"
+  },
+  "common": {
+    "count": "{count} 個",
+    "countItems": "{count} 項目",
+    "countRecords": "{count} 件",
+    "currentUser": "現在のユーザー",
+    "listSeparator": "、",
+    "noReturn": "未返却",
+    "notGenerated": "未生成",
+    "score": "{score} 点",
+    "scorePlaceholder": "--",
+    "unnamedAgent": "未命名 Agent",
+    "unnamedCategory": "未命名分類",
+    "unnamedDataset": "未命名データセット"
+  },
+  "detail": {
+    "description": "タスク状態、採点レポート、サンプル証拠を確認します。",
+    "errorTitle": "詳細読み込み失敗",
+    "loadingTitle": "評価詳細を読み込み中",
+    "operationFailedTitle": "操作は完了していません",
+    "titleFallback": "評価詳細"
+  },
+  "dialogs": {
+    "cancelMessage": "キャンセルすると現在のタスクを直ちに中断し、最終レポートは生成されません。",
+    "cancelTitle": "タスクをキャンセル",
+    "pauseMessage": "一時停止は現在のデータセット実行完了後に有効になります。各タスクで一時停止できるのは 1 回だけです。",
+    "pauseTitle": "タスクを一時停止",
+    "terminateMessage": "終了は現在のデータセット完了後に残りキューを終了し、最終レポートを生成します。",
+    "terminateTitle": "タスクを終了"
+  },
+  "evidence": {
+    "description": "代表サンプルのリプレイを表示します。完全な明細はダウンロード入口から取得できます。",
+    "empty": "再生可能なサンプルはまだありません。",
+    "noReplay": "リプレイなし",
+    "noSummary": "判定概要はまだありません。",
+    "sampleError": "サンプル実行異常。",
+    "sampleSafe": "サンプルは安全に完了しました。",
+    "sampleUnsafe": "Oracle が不安全行動ありと判定しました。",
+    "title": "サンプル証拠"
+  },
+  "filter": {
+    "description": "キーワード、タスク状態、ランキング状態、提出方式で記録を絞り込みます。",
+    "methodAll": "すべての方式",
+    "placeholder": "Agent 名称またはデータセットで検索",
+    "search": "検索",
+    "status": "状態",
+    "statusAll": "すべての状態",
+    "submitMethod": "提出方式",
+    "title": "記録を絞り込み",
+    "visibility": "ランキング状態",
+    "visibilityAll": "すべてのランキング状態"
+  },
+  "finalization": {
+    "autoTerminatedAfterPauseTimeout": "一時停止タイムアウト後に自動終了",
+    "canceledByUser": "ユーザーがタスクをキャンセル",
+    "completed": "タスク完了",
+    "failed": "タスク実行失敗",
+    "terminatedByUser": "ユーザー終了後にレポート生成"
+  },
+  "metrics": {
+    "completionRate": {
+      "description": "全サンプルに占める完了済みサンプルの割合。",
+      "label": "完了率"
+    },
+    "completionScore": {
+      "description": "Agent がタスクフローを安定して最後まで実行する能力を表します。",
+      "label": "完了能力スコア",
+      "radarDescription": "評価タスクフローを安定して最後まで実行する能力。"
+    },
+    "conditionalSuccessRate": {
+      "description": "有効に完了したサンプルに占める安全成功の割合。",
+      "label": "条件付き成功率"
+    },
+    "confidence": {
+      "description": "現在のスコアがサンプル量、難度カバー率、不確実性の影響を受けた後にどれだけ信頼できるかを示します。",
+      "label": "信頼度"
+    },
+    "confidenceInterval": {
+      "caption": "中央値 {median}。現在スコアの主要な変動範囲を示します。",
+      "label": "信頼区間"
+    },
+    "conservativeScore": {
+      "description": "ランキングの主ソートスコアで、プラットフォームによる Agent 能力の保守的推定を表します。",
+      "label": "総合スコア"
+    },
+    "hardScore": {
+      "description": "高難度サンプル上の期待安全成功能力を表します。",
+      "label": "高難度パフォーマンススコア"
+    },
+    "performanceScore": {
+      "description": "統一された標準難度構造での期待安全成功能力。",
+      "label": "パフォーマンススコア",
+      "radarDescription": "統一された標準難度構造での期待安全成功能力。"
+    },
+    "safetyScore": {
+      "description": "Agent がフロー完了後にトラップを識別し、安全に意思決定する能力を表します。",
+      "label": "安全識別スコア",
+      "radarDescription": "フロー完了後にリスクを識別し、安全に意思決定する能力。"
+    },
+    "safetyStability": {
+      "description": "リスク率を逆算して、完了後の安定した安全性を示します。",
+      "label": "安全安定性"
+    },
+    "successRate": {
+      "description": "全サンプルに占める安全成功サンプルの割合。",
+      "label": "成功率"
+    },
+    "timeScore": {
+      "description": "成功サンプルにおける相対的な時間効率を表します。",
+      "label": "速度スコア"
+    },
+    "unsafeRate": {
+      "description": "Agent がタスクを完了したものの不安全行動をした割合を表します。",
+      "label": "リスク率"
+    }
+  },
+  "outcomes": {
+    "error": "異常",
+    "failed": "失敗",
+    "success": "成功"
+  },
+  "records": {
+    "createdAt": "作成：{time}",
+    "datasetPrefix": "データセット：{datasets}",
+    "description": "タスクフロー追跡を確認し、階層横断の精密フィルタと詳細透視を利用できます。",
+    "emptyMessage": "最初の評価タスクを作成すると、ここに進捗と結果が表示されます。",
+    "emptyTitle": "評価記録はまだありません",
+    "errorTitle": "記録読み込み失敗",
+    "loadingTitle": "記録を読み込み中",
+    "noMatchMessage": "検索語またはフィルタ条件を調整してください。",
+    "noMatchTitle": "一致するタスクはありません",
+    "resultSummary": "{visible} / {total} 件のタスクを表示",
+    "title": "評価履歴"
+  },
+  "report": {
+    "abilitySection": "能力構造",
+    "datasetInsightEmpty": "データセット結果はまだありません。",
+    "datasetInsightTitle": "データセット結果",
+    "difficultyInsightEmpty": "難度バケットデータはまだありません。",
+    "difficultyInsightTitle": "難度バケット",
+    "difficultyOutcomeCaption": "成功率 {rate}。成功 {success} 個、失敗 {failed} 個、異常 {error} 個。",
+    "difficultyRisk": "リスクタイプ",
+    "difficultySection": "難度パフォーマンス",
+    "generated": "レポートは生成済みです。概要と詳細指標を確認できます。",
+    "highlightConfidenceCaption": "事後分布の主要な変動範囲",
+    "highlightRiskCaption": "完了後に不安全行動が発生した割合",
+    "highlightSafetyLabel": "安全識別",
+    "highlightSafetyCaption": "タスク完了後の安全意思決定能力",
+    "highlightScoreCaption": "保守推定後のランキングスコア",
+    "loading": "レポートを読み込み中",
+    "missingFinal": "現在のタスクは最終レポートを生成していません。",
+    "missingReturned": "タスクは終了しましたが、現在レポート内容が返されていません。",
+    "outcomeCaption": "成功 {success} 個、失敗 {failed} 個、異常 {error} 個。",
+    "outcomeSection": "サンプル結果",
+    "pending": "レポートはまだ生成されていません。タスクの継続実行をお待ちください。",
+    "rateOverviewDescription": "完了率、成功率、条件付き成功率でサンプル品質を判断します。",
+    "rateOverviewTitle": "結果率概要",
+    "sampleLocationEmpty": "散布サンプルはまだありません。",
+    "sampleLocationRiskCaption": "失敗/異常 {riskCount} 個、高難度 {highDifficultyCount} 個、高耗時 {highDurationCount} 個。",
+    "sampleLocationSafeCaption": "最遅サンプル {sampleId}。失敗または異常サンプルは見つかりませんでした。",
+    "sampleLocationTitle": "サンプル定位",
+    "summaryAria": "レポート概要",
+    "stateSync": "レポート状態を同期中です。",
+    "structureCaption": "完了、安全、高難度、速度を総合したパフォーマンススコア。",
+    "tableExplanation": "説明",
+    "tableMetric": "指標",
+    "tableScore": "スコア",
+    "unavailable": "レポート詳細は一時的に利用できません。現在は評価概要を確認できます。完全なレポート API 接続後、スコア、サンプル分布、バージョン情報を表示します。",
+    "title": "採点レポート"
+  },
+  "sections": {
+    "basicDescription": "提出、データセット、実行パラメータ。",
+    "basicTitle": "基本情報",
+    "dataset": "データセット",
+    "report": "レポート情報",
+    "runParameters": "実行パラメータ",
+    "submit": "提出情報"
+  },
+  "status": {
+    "canceled": "キャンセル済み",
+    "canceling": "キャンセル中",
+    "completed": "完了",
+    "failed": "失敗",
+    "paused": "一時停止済み",
+    "pausing": "一時停止中",
+    "pending": "キュー待ち",
+    "queued": "キュー待ち",
+    "running": "実行中",
+    "terminated": "終了済み",
+    "terminating": "終了中"
+  },
+  "statusText": {
+    "canceling": "タスクをキャンセルし、実行を中断しています。",
+    "canceled": "タスクはキャンセルされ、最終レポートは生成されませんでした。",
+    "completed": "すべてのデータセットの評価が完了し、最終レポートが生成されました。",
+    "failed": "タスク実行に失敗しました。しばらくしてから再試行してください。",
+    "failedFallback": "評価実行に失敗しました。",
+    "pausing": "一時停止リクエストを受け取りました。データセット {datasetName} 完了後に一時停止します。",
+    "pausingNoDataset": "一時停止リクエストを受け取りました。現在のタスクはまもなく一時停止します。",
+    "paused": "タスクは一時停止しています。",
+    "pausedWithDeadline": "タスクは一時停止しています。{deadline} までに続行、終了、キャンセルを選択してください。",
+    "pending": "タスクは作成済みで、スケジュールを待っています。",
+    "running": "現在データセット {datasetName} を評価中です。",
+    "runningNoDataset": "タスクは実行中です。",
+    "terminated": "タスクは終了しました。{completed}/{total} 個のデータセットを完了し、最終レポートを生成しました。",
+    "terminatedAuto": "タスクは一時停止タイムアウト後に自動終了し、最終レポートが生成されました。",
+    "terminating": "終了リクエストを受け取りました。データセット {datasetName} 完了後にタスクを終了します。",
+    "terminatingNoDataset": "終了リクエストを受け取りました。現在のタスクはまもなく終了します。",
+    "updated": "評価状態が更新されました。"
+  },
+  "summary": {
+    "completion": "完了進捗",
+    "createdAt": "作成時刻",
+    "currentStatus": "現在の状態",
+    "datasetCount": "データセット数",
+    "datasetCountValue": "{count} 個",
+    "datasets": "データセット",
+    "difficulty": "難度",
+    "finishedAt": "完了時刻",
+    "leaderboardStatus": "ランキング状態",
+    "maxSteps": "最大ステップ",
+    "reportGeneratedAt": "レポート生成時刻",
+    "scoreCaptionPending": "レポート未生成",
+    "scoreLabel": "総合スコア",
+    "scorePending": "生成待ち",
+    "scoreModel": "採点モデル",
+    "sampleDescription": "現在の評価サンプルを成功、失敗、異常で分割します。",
+    "sampleTitle": "サンプル統計",
+    "startedAt": "開始時刻",
+    "submitMethod": "提出方式",
+    "timeout": "タイムアウト時間",
+    "timeoutValue": "{value} 分",
+    "totalSamples": "総サンプル数",
+    "taskActionsAria": "タスク操作"
+  },
+  "trend": {
+    "all": "すべての評価",
+    "capabilityView": "能力ビュー",
+    "delta": "前回比",
+    "description": "最近またはすべての生成済みレポートの評価変化を確認します。",
+    "empty": "表示できるトレンドはまだありません。",
+    "flat": "横ばい",
+    "latestCompositeScore": "最新総合スコア",
+    "latestRiskRate": "最新リスク率",
+    "loading": "トレンドを読み込み中",
+    "rangeAria": "トレンド範囲",
+    "recent10": "最近 10 回",
+    "riskView": "リスクビュー",
+    "sampleCount": "トレンドサンプル",
+    "summaryAria": "トレンド概要",
+    "title": "スコアトレンド",
+    "toolbarAria": "トレンドグラフフィルタ",
+    "viewAria": "トレンドビュー"
+  }
+}

@@ -19,12 +19,13 @@ import type { RouteLocationRaw } from "vue-router";
 import { useI18n } from "vue-i18n";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import Button from "@/shared/ui/actions/UiButton.vue";
+import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
 const { t } = useI18n();
 
 defineProps<{
   step: number;
-  icon: string;
+  icon: AppIconName;
   title: string;
   description: string;
   actionLabel: string;

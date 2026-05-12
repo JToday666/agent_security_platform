@@ -1,8 +1,8 @@
 <template>
   <section class="resources-section">
     <div class="layout-section-head">
-      <h2>资源与示例</h2>
-      <p>仅展示当前接口已返回的文档、下载、演示或外链资源。</p>
+      <h2>{{ t("dataset.resources.title") }}</h2>
+      <p>{{ t("dataset.resources.description") }}</p>
     </div>
 
     <div v-if="resources.length" class="resource-list">
@@ -16,7 +16,7 @@
           <span>{{ typeLabels[resource.type] }}</span>
         </div>
         <Button :href="resource.url" target="_blank" variant="secondary" size="sm">
-          查看资源
+          {{ t("dataset.resources.view") }}
         </Button>
       </article>
     </div>
@@ -24,13 +24,15 @@
     <InlineNotice
       v-else
       tone="info"
-      title="暂无资源"
-      message="当前数据集没有返回可展示的外部资源。"
+      :title="t('dataset.resources.emptyTitle')"
+      :message="t('dataset.resources.emptyMessage')"
     />
   </section>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import type { DatasetResourceLink } from "@/shared/types/dataset-types";
 import Button from "@/shared/ui/actions/UiButton.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
@@ -39,12 +41,16 @@ defineProps<{
   resources: DatasetResourceLink[];
 }>();
 
-const typeLabels: Record<DatasetResourceLink["type"], string> = {
-  docs: "文档",
-  download: "下载",
-  demo: "演示",
-  link: "链接",
-};
+const { t } = useI18n();
+
+const typeLabels = computed<Record<DatasetResourceLink["type"], string>>(
+  () => ({
+    docs: t("dataset.resources.types.docs"),
+    download: t("dataset.resources.types.download"),
+    demo: t("dataset.resources.types.demo"),
+    link: t("dataset.resources.types.link"),
+  }),
+);
 </script>
 
 <style scoped lang="scss">

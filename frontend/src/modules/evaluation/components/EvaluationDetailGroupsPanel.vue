@@ -2,8 +2,8 @@
   <section class="detail-section">
     <div class="section-head">
       <div>
-        <h2>基础信息</h2>
-        <p>提交、数据集和运行参数。</p>
+        <h2>{{ t("evaluation.sections.basicTitle") }}</h2>
+        <p>{{ t("evaluation.sections.basicDescription") }}</p>
       </div>
     </div>
 
@@ -25,12 +25,15 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import type { EvaluationDetailGroup } from "@/modules/evaluation/lib/evaluation-detail-view";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 
 defineProps<{
   groups: EvaluationDetailGroup[];
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

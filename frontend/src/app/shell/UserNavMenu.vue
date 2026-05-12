@@ -20,7 +20,7 @@
     </span>
     <AppIcon
       v-if="variant === 'mobile'"
-      icon="lucide:chevron-right"
+      icon="app:control.forward"
       class="mobile-chevron"
     />
   </button>

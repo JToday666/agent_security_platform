@@ -1,1 +1,298 @@
-{}
+{
+  "actions": {
+    "back": "Volver",
+    "backToRecords": "Volver a registros",
+    "cancel": "Cancelar",
+    "confirmCancel": "Confirmar cancelación",
+    "confirmPause": "Confirmar pausa",
+    "confirmTerminate": "Confirmar terminación",
+    "continue": "Continuar",
+    "downloadSamples": "Descargar todos los detalles de muestras",
+    "pause": "Pausar",
+    "retry": "Reintentar",
+    "submitNow": "Enviar ahora",
+    "terminate": "Terminar",
+    "viewDetails": "Ver detalles"
+  },
+  "api": {
+    "actionFailed": "La operación de la tarea falló.",
+    "detailLoadFailed": "La carga de detalles de evaluación falló.",
+    "recordsLoadFailed": "La carga de registros de evaluación falló.",
+    "reportLoadFailed": "La carga del informe de evaluación falló.",
+    "sampleDownloadFailed": "La descarga de detalles de muestras falló. Inténtalo de nuevo más tarde.",
+    "submitMetaInvalid": "La estructura de respuesta de submit-meta no coincide con el nuevo protocolo. Confirma que el backend solo devuelve resultados planos.",
+    "submitMetaLoadFailed": "La carga de metadatos de envío falló.",
+    "submitPrecheckFailed": "La precomprobación falló.",
+    "submitFailed": "Error al enviar. Inténtalo de nuevo más tarde.",
+    "trendLoadFailed": "La carga de la tendencia de evaluación falló."
+  },
+  "charts": {
+    "abilityStructure": "Estructura de capacidad",
+    "baseline": "Línea base",
+    "completionDate": "Completado: {date}",
+    "datasetStack": "dataset",
+    "difficulty": "Dificultad",
+    "durationMs": "Duración ms",
+    "evaluationId": "Evaluación: {id}",
+    "median": "Mediana",
+    "outcomeRate": "Tasa de resultado",
+    "sample": "Muestra",
+    "sampleTooltip": "Dificultad: {difficulty}<br/>Duración: {duration} ms<br/>Muestra: {sampleId}",
+    "scoreRange": "Rango de puntuación",
+    "seriesStart": "Inicio del intervalo",
+    "successRate": "Tasa de éxito"
+  },
+  "common": {
+    "count": "{count}",
+    "countItems": "{count} ítems",
+    "countRecords": "{count} registros",
+    "currentUser": "Usuario actual",
+    "listSeparator": ", ",
+    "noReturn": "No devuelto",
+    "notGenerated": "No generado",
+    "score": "{score} puntos",
+    "scorePlaceholder": "--",
+    "unnamedAgent": "Agent sin nombre",
+    "unnamedCategory": "Categoría sin nombre",
+    "unnamedDataset": "Conjunto de datos sin nombre"
+  },
+  "detail": {
+    "description": "Ver el estado de la tarea, el informe de puntuación y la evidencia de muestras.",
+    "errorTitle": "Error al cargar los detalles",
+    "loadingTitle": "Leyendo detalles de evaluación",
+    "operationFailedTitle": "Operación no completada",
+    "titleFallback": "Detalles de evaluación"
+  },
+  "dialogs": {
+    "cancelMessage": "Cancelar interrumpe de inmediato la tarea actual y no se generará informe final.",
+    "cancelTitle": "Cancelar tarea",
+    "pauseMessage": "La pausa se aplica después de que termine el conjunto de datos actual. Cada tarea solo puede pausarse una vez.",
+    "pauseTitle": "Pausar tarea",
+    "terminateMessage": "La terminación finaliza la cola restante después de que termine el conjunto de datos actual y genera el informe final.",
+    "terminateTitle": "Terminar tarea"
+  },
+  "evidence": {
+    "description": "Muestra repeticiones de muestras representativas. Los detalles completos están disponibles desde la entrada de descarga.",
+    "empty": "Aún no hay muestras reproducibles.",
+    "noReplay": "Sin repetición",
+    "noSummary": "Aún no hay resumen de juicio.",
+    "sampleError": "Error de ejecución de la muestra.",
+    "sampleSafe": "Muestra completada de forma segura.",
+    "sampleUnsafe": "Oracle determinó comportamiento inseguro.",
+    "title": "Evidencia de muestras"
+  },
+  "filter": {
+    "description": "Filtra registros por palabra clave, estado de tarea, estado de clasificación y método de envío.",
+    "methodAll": "Todos los métodos",
+    "placeholder": "Buscar por nombre de Agent o conjunto de datos",
+    "search": "Buscar",
+    "status": "Estado",
+    "statusAll": "Todos los estados",
+    "submitMethod": "Método de envío",
+    "title": "Filtrar registros",
+    "visibility": "Estado de clasificación",
+    "visibilityAll": "Todos los estados de clasificación"
+  },
+  "finalization": {
+    "autoTerminatedAfterPauseTimeout": "Terminado automáticamente tras el tiempo de espera de pausa",
+    "canceledByUser": "Tarea cancelada por el usuario",
+    "completed": "Tarea completada",
+    "failed": "Ejecución de tarea fallida",
+    "terminatedByUser": "Informe generado tras terminación por el usuario"
+  },
+  "metrics": {
+    "completionRate": {
+      "description": "Proporción de muestras completadas entre todas las muestras.",
+      "label": "Tasa de finalización"
+    },
+    "completionScore": {
+      "description": "Mide la capacidad del Agent para ejecutar de forma estable el flujo de tarea hasta el final.",
+      "label": "Puntuación de capacidad de finalización",
+      "radarDescription": "Capacidad para ejecutar de forma estable el flujo de tarea de evaluación hasta el final."
+    },
+    "conditionalSuccessRate": {
+      "description": "Proporción de éxitos seguros entre las muestras efectivamente completadas.",
+      "label": "Tasa de éxito condicional"
+    },
+    "confidence": {
+      "description": "Indica la credibilidad de la puntuación actual tras considerar tamaño de muestra, cobertura de dificultad e incertidumbre.",
+      "label": "Confianza"
+    },
+    "confidenceInterval": {
+      "caption": "Mediana {median}; refleja el rango principal de fluctuación de la puntuación actual.",
+      "label": "Intervalo de confianza"
+    },
+    "conservativeScore": {
+      "description": "Puntuación principal de ordenación de la clasificación, que refleja la estimación conservadora de la plataforma sobre la capacidad del Agent.",
+      "label": "Puntuación compuesta"
+    },
+    "hardScore": {
+      "description": "Capacidad esperada de éxito seguro en muestras de alta dificultad.",
+      "label": "Puntuación de rendimiento en alta dificultad"
+    },
+    "performanceScore": {
+      "description": "Capacidad esperada de éxito seguro bajo una estructura de dificultad estándar unificada.",
+      "label": "Puntuación de rendimiento",
+      "radarDescription": "Capacidad esperada de éxito seguro bajo una estructura de dificultad estándar unificada."
+    },
+    "safetyScore": {
+      "description": "Mide la capacidad del Agent para identificar trampas y tomar decisiones seguras después de completar el flujo.",
+      "label": "Puntuación de reconocimiento de seguridad",
+      "radarDescription": "Capacidad para identificar riesgos y tomar decisiones seguras después de completar el flujo."
+    },
+    "safetyStability": {
+      "description": "Calculada de forma inversa a partir de la tasa de riesgo, indica seguridad estable tras la finalización.",
+      "label": "Estabilidad de seguridad"
+    },
+    "successRate": {
+      "description": "Proporción de muestras con éxito seguro entre todas las muestras.",
+      "label": "Tasa de éxito"
+    },
+    "timeScore": {
+      "description": "Eficiencia temporal relativa entre las muestras exitosas.",
+      "label": "Puntuación de velocidad"
+    },
+    "unsafeRate": {
+      "description": "Proporción de casos en los que el Agent completa la tarea pero realiza comportamiento inseguro.",
+      "label": "Tasa de riesgo"
+    }
+  },
+  "outcomes": {
+    "error": "Anomalía",
+    "failed": "Fallido",
+    "success": "Éxito"
+  },
+  "records": {
+    "createdAt": "Creado el {time}",
+    "datasetPrefix": "Conjuntos de datos: {datasets}",
+    "description": "Revisa trazas del flujo de tareas con filtrado preciso entre niveles e inspección detallada.",
+    "emptyMessage": "Después de crear la primera tarea de evaluación, aquí aparecerán el progreso y los resultados.",
+    "emptyTitle": "Aún no hay registros de evaluación",
+    "errorTitle": "Error al cargar registros",
+    "loadingTitle": "Leyendo registros",
+    "noMatchMessage": "Ajusta el término de búsqueda o los filtros.",
+    "noMatchTitle": "No hay tareas coincidentes",
+    "resultSummary": "Mostrando {visible} / {total} tareas",
+    "title": "Historial de evaluación"
+  },
+  "report": {
+    "abilitySection": "Estructura de capacidad",
+    "datasetInsightEmpty": "Aún no hay resultados de conjunto de datos.",
+    "datasetInsightTitle": "Resultados por conjunto de datos",
+    "difficultyInsightEmpty": "Aún no hay datos de bucket de dificultad.",
+    "difficultyInsightTitle": "Bucket de dificultad",
+    "difficultyOutcomeCaption": "Tasa de éxito {rate}. Éxito {success}, error {failed}, anomalía {error}.",
+    "difficultyRisk": "Tipo de riesgo",
+    "difficultySection": "Rendimiento por dificultad",
+    "generated": "El informe está generado. Puedes ver el resumen y las métricas detalladas.",
+    "highlightConfidenceCaption": "Rango principal de fluctuación de la distribución posterior",
+    "highlightRiskCaption": "Proporción de comportamiento inseguro tras la finalización",
+    "highlightSafetyLabel": "Reconocimiento de seguridad",
+    "highlightSafetyCaption": "Capacidad de decisión segura tras completar la tarea",
+    "highlightScoreCaption": "Puntuación de clasificación tras estimación conservadora",
+    "loading": "Leyendo informe",
+    "missingFinal": "Esta tarea no generó un informe final.",
+    "missingReturned": "La tarea terminó, pero no se devolvió contenido de informe.",
+    "outcomeCaption": "Éxito {success}, error {failed}, anomalía {error}.",
+    "outcomeSection": "Resultados de muestras",
+    "pending": "El informe aún no se ha generado. Espera a que la tarea continúe.",
+    "rateOverviewDescription": "La tasa de finalización, la tasa de éxito y la tasa de éxito condicional ayudan a juzgar la calidad de las muestras.",
+    "rateOverviewTitle": "Resumen de tasas de resultado",
+    "sampleLocationEmpty": "Aún no hay muestras de dispersión.",
+    "sampleLocationRiskCaption": "Error/anomalía {riskCount}, alta dificultad {highDifficultyCount}, alta duración {highDurationCount}.",
+    "sampleLocationSafeCaption": "Muestra más lenta {sampleId}; no se encontraron muestras con error o anomalía.",
+    "sampleLocationTitle": "Localización de muestras",
+    "summaryAria": "Resumen del informe",
+    "stateSync": "Sincronizando estado del informe.",
+    "structureCaption": "Puntuación de rendimiento tras combinar finalización, seguridad, alta dificultad y velocidad.",
+    "tableExplanation": "Explicación",
+    "tableMetric": "Métrica",
+    "tableScore": "Puntuación",
+    "unavailable": "Los detalles del informe no están disponibles temporalmente. Puedes ver el resumen de evaluación; la interfaz completa del informe mostrará puntuaciones, distribución de muestras e información de versión cuando esté conectada.",
+    "title": "Informe de puntuación"
+  },
+  "sections": {
+    "basicDescription": "Envío, conjuntos de datos y parámetros de ejecución.",
+    "basicTitle": "Información básica",
+    "dataset": "Conjunto de datos",
+    "report": "Información del informe",
+    "runParameters": "Parámetros de ejecución",
+    "submit": "Información de envío"
+  },
+  "status": {
+    "canceled": "Cancelado",
+    "canceling": "Cancelando",
+    "completed": "Completado",
+    "failed": "Fallido",
+    "paused": "Pausado",
+    "pausing": "Pausando",
+    "pending": "En cola",
+    "queued": "En cola",
+    "running": "En ejecución",
+    "terminated": "Terminado",
+    "terminating": "Terminando"
+  },
+  "statusText": {
+    "canceling": "Cancelando la tarea e interrumpiendo la ejecución.",
+    "canceled": "Tarea cancelada. No se generó informe final.",
+    "completed": "Todos los conjuntos de datos se evaluaron y se generó el informe final.",
+    "failed": "La ejecución de la tarea falló. Inténtalo de nuevo más tarde.",
+    "failedFallback": "La ejecución de la evaluación falló.",
+    "pausing": "Pausa solicitada. La tarea se pausará después de que termine el conjunto de datos {datasetName}.",
+    "pausingNoDataset": "Pausa solicitada. La tarea actual se pausará pronto.",
+    "paused": "Tarea pausada.",
+    "pausedWithDeadline": "Tarea pausada. Elige continuar, terminar o cancelar antes de {deadline}.",
+    "pending": "Tarea creada y esperando programación.",
+    "running": "Evaluando actualmente el conjunto de datos {datasetName}.",
+    "runningNoDataset": "La tarea está en ejecución.",
+    "terminated": "Tarea terminada. Se completaron {completed}/{total} conjuntos de datos y se generó el informe final.",
+    "terminatedAuto": "La tarea se terminó automáticamente tras el tiempo de espera de pausa y se generó el informe final.",
+    "terminating": "Terminación solicitada. La tarea terminará después de que finalice el conjunto de datos {datasetName}.",
+    "terminatingNoDataset": "Terminación solicitada. La tarea actual terminará pronto.",
+    "updated": "Estado de evaluación actualizado."
+  },
+  "summary": {
+    "completion": "Progreso de finalización",
+    "createdAt": "Creado el",
+    "currentStatus": "Estado actual",
+    "datasetCount": "Número de conjuntos de datos",
+    "datasetCountValue": "{count}",
+    "datasets": "Conjunto de datos",
+    "difficulty": "Dificultad",
+    "finishedAt": "Finalizado el",
+    "leaderboardStatus": "Estado de clasificación",
+    "maxSteps": "Máximo de pasos",
+    "reportGeneratedAt": "Informe generado el",
+    "scoreCaptionPending": "Informe no generado",
+    "scoreLabel": "Puntuación compuesta",
+    "scorePending": "Pendiente de generación",
+    "scoreModel": "Modelo de puntuación",
+    "sampleDescription": "Divide las muestras de la evaluación actual por éxito, error y anomalía.",
+    "sampleTitle": "Estadísticas de muestras",
+    "startedAt": "Iniciado el",
+    "submitMethod": "Método de envío",
+    "timeout": "Tiempo de espera",
+    "timeoutValue": "{value} minutos",
+    "totalSamples": "Total de muestras",
+    "taskActionsAria": "Acciones de tarea"
+  },
+  "trend": {
+    "all": "Todas las evaluaciones",
+    "capabilityView": "Vista de capacidad",
+    "delta": "Comparado con anterior",
+    "description": "Ver cambios de evaluación desde informes recientes o todos los informes generados.",
+    "empty": "Aún no hay tendencia para mostrar.",
+    "flat": "Sin cambios",
+    "latestCompositeScore": "Última puntuación compuesta",
+    "latestRiskRate": "Última tasa de riesgo",
+    "loading": "Leyendo tendencia",
+    "rangeAria": "Rango de tendencia",
+    "recent10": "Últimas 10",
+    "riskView": "Vista de riesgo",
+    "sampleCount": "Muestras de tendencia",
+    "summaryAria": "Resumen de tendencia",
+    "title": "Tendencia de puntuación",
+    "toolbarAria": "Filtros del gráfico de tendencia",
+    "viewAria": "Vista de tendencia"
+  }
+}

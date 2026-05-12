@@ -1,5 +1,5 @@
 <template>
-  <nav class="agent-register-steps" aria-label="注册步骤">
+  <nav class="agent-register-steps" :aria-label="t('agent.register.aria.steps')">
     <button
       v-for="(step, index) in steps"
       :key="step.id"
@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import type {
   AgentRegisterStep,
   AgentRegisterStepId,
@@ -36,6 +37,8 @@ const props = defineProps<{
   completedStepIds: AgentRegisterStepId[];
   enterableStepIds: AgentRegisterStepId[];
 }>();
+
+const { t } = useI18n();
 
 const emit = defineEmits<{
   (event: "select-step", stepId: AgentRegisterStepId): void;

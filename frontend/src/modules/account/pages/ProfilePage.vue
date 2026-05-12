@@ -29,7 +29,7 @@
               as="label"
               for="avatar"
               variant="primary"
-              leading-icon="lucide:upload"
+              leading-icon="app:action.upload"
               :loading="uploading"
             >
               {{ t("auth.profile.selectAvatar") }}
@@ -55,7 +55,7 @@
         >
           <UiButton
             variant="danger"
-            leading-icon="lucide:log-out"
+            leading-icon="app:action.logout"
             block
             @click="handleLogoutClick"
           >
@@ -81,7 +81,7 @@
             :model-value="form.username"
             type="text"
             :placeholder="t('auth.placeholders.username')"
-            leading-icon="lucide:user"
+            leading-icon="app:field.username"
             @update:model-value="form.username = $event"
           />
 
@@ -91,7 +91,7 @@
             type="email"
             readonly
             :help="t('auth.profile.emailReadonlyHelp')"
-            leading-icon="lucide:mail"
+            leading-icon="app:field.email"
             @update:model-value="form.email = $event"
           />
 
@@ -100,7 +100,7 @@
             :model-value="form.password"
             type="password"
             :placeholder="t('auth.placeholders.newPassword')"
-            leading-icon="lucide:lock"
+            leading-icon="app:field.password"
             @update:model-value="form.password = $event"
           />
 
@@ -109,7 +109,7 @@
             :model-value="form.confirmPassword"
             type="password"
             :placeholder="t('auth.placeholders.confirmNewPassword')"
-            leading-icon="lucide:shield-check"
+            leading-icon="app:field.passwordConfirm"
             @update:model-value="form.confirmPassword = $event"
           />
 
@@ -117,7 +117,7 @@
             <UiButton
               type="button"
               variant="secondary"
-              leading-icon="lucide:rotate-ccw"
+              leading-icon="app:action.reset"
               :disabled="submitting"
               @click="resetForm"
             >
@@ -126,7 +126,7 @@
             <UiButton
               type="submit"
               variant="primary"
-              leading-icon="lucide:save"
+              leading-icon="app:action.save"
               :loading="submitting"
             >
               {{ t("common.actions.saveChanges") }}

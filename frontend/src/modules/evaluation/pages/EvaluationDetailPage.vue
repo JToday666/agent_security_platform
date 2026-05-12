@@ -1,32 +1,32 @@
 <template>
   <div class="content detail-page layout-page-shell layout-page-shell--wide">
     <PageHero
-      :title="detail?.agentName || '评测详情'"
-      description="查看任务状态、评分报告和样本证据。"
+      :title="detail?.agentName || t('evaluation.detail.titleFallback')"
+      :description="t('evaluation.detail.description')"
     >
       <template #actions>
         <UiButton
           variant="secondary"
-          leading-icon="lucide:arrow-left"
+          leading-icon="app:action.back"
           @click="goBack"
         >
-          返回记录
+          {{ t("evaluation.actions.backToRecords") }}
         </UiButton>
       </template>
     </PageHero>
 
     <PageStatePanel
       v-if="loading && !detail"
-      title="正在读取评测详情"
-      message="请稍候。"
+      :title="t('evaluation.detail.loadingTitle')"
+      :message="t('common.feedback.pleaseWait')"
       :loading="true"
     />
 
     <PageStatePanel
       v-else-if="error && !detail"
-      title="详情加载失败"
+      :title="t('evaluation.detail.errorTitle')"
       :message="error"
-      action-text="重试"
+      :action-text="t('evaluation.actions.retry')"
       @action="loadDetail()"
     />
 
@@ -46,7 +46,7 @@
       <InlineNotice
         v-if="error"
         tone="danger"
-        title="操作未完成"
+        :title="t('evaluation.detail.operationFailedTitle')"
         :message="error"
       />
 
@@ -79,7 +79,7 @@
       :title="actionDialogTitle"
       :message="actionDialogMessage"
       :confirm-text="actionDialogConfirmText"
-      cancel-text="返回"
+      :cancel-text="t('evaluation.actions.back')"
       :danger="actionDialogDanger"
       :loading="actionLoading"
       @confirm="confirmAction"
@@ -89,6 +89,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import EvaluationDetailGroupsPanel from "@/modules/evaluation/components/EvaluationDetailGroupsPanel.vue";
 import EvaluationEvidenceSection from "@/modules/evaluation/components/EvaluationEvidenceSection.vue";
 import EvaluationReportSection from "@/modules/evaluation/components/EvaluationReportSection.vue";
@@ -112,6 +113,8 @@ import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
+
+const { t } = useI18n();
 
 const {
   detail,
@@ -147,7 +150,7 @@ const primaryScore = computed(() =>
 );
 
 const scoreCaption = computed(() =>
-  detail.value ? getEvaluationScoreCaption(detail.value) : "",
+  detail.value ? getEvaluationScoreCaption(detail.value, t) : "",
 );
 
 const reportTagValue = computed(() =>
@@ -155,7 +158,7 @@ const reportTagValue = computed(() =>
 );
 
 const summaryItems = computed(() =>
-  detail.value ? buildEvaluationSummaryItems(detail.value) : [],
+  detail.value ? buildEvaluationSummaryItems(detail.value, t) : [],
 );
 
 const sampleBase = computed(() =>
@@ -167,15 +170,15 @@ const sampleBase = computed(() =>
 const completionRate = computed(() => getEvaluationCompletionRate(sampleBase.value));
 
 const sampleSegments = computed(() =>
-  buildEvaluationSampleSegments(sampleBase.value),
+  buildEvaluationSampleSegments(sampleBase.value, t),
 );
 
 const sampleStats = computed(() =>
-  buildEvaluationSampleStats(sampleBase.value, completionRate.value),
+  buildEvaluationSampleStats(sampleBase.value, completionRate.value, t),
 );
 
 const detailGroups = computed(() =>
-  detail.value ? buildEvaluationDetailGroups(detail.value, report.value) : [],
+  detail.value ? buildEvaluationDetailGroups(detail.value, report.value, t) : [],
 );
 </script>
 

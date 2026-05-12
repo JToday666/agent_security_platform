@@ -1,4 +1,5 @@
 import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import {
@@ -21,10 +22,12 @@ import {
   getAgentVerificationResultLabel,
 } from "@/modules/agent/lib/agent-detail-view";
 import type { AgentDetail } from "@/shared/types/agent-registry-types";
+import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
 export const useAgentDetailPage = () => {
   const route = useRoute();
   const router = useRouter();
+  const { t } = useI18n();
 
   const detail = ref<AgentDetail | null>(null);
   const loading = ref(true);
@@ -38,44 +41,46 @@ export const useAgentDetailPage = () => {
   );
   const busy = computed(() => Boolean(busyAction.value));
   const verificationLabel = computed(() =>
-    detail.value ? formatAgentVerificationLabel(detail.value) : "未验证",
+    detail.value
+      ? formatAgentVerificationLabel(detail.value, t)
+      : t("agent.verification.notVerified"),
   );
   const verificationResultLabel = computed(() =>
-    detail.value ? getAgentVerificationResultLabel(detail.value) : "",
+    detail.value ? getAgentVerificationResultLabel(detail.value, t) : "",
   );
-  const verificationResultIcon = computed(() =>
-    detail.value ? getAgentVerificationResultIcon(detail.value) : "",
+  const verificationResultIcon = computed<AppIconName>(() =>
+    detail.value ? getAgentVerificationResultIcon(detail.value) : "app:status.warning",
   );
   const summaryItems = computed(() =>
-    detail.value ? buildAgentSummaryItems(detail.value) : [],
+    detail.value ? buildAgentSummaryItems(detail.value, t) : [],
   );
   const connectionItems = computed(() =>
-    detail.value ? buildAgentConnectionItems(detail.value) : [],
+    detail.value ? buildAgentConnectionItems(detail.value, t) : [],
   );
   const authItems = computed(() =>
-    detail.value ? buildAgentAuthItems(detail.value) : [],
+    detail.value ? buildAgentAuthItems(detail.value, t) : [],
   );
   const inputMappingItems = computed(() =>
     detail.value
-      ? buildAgentInputMappingItems(detail.value.platformInputMapping)
+      ? buildAgentInputMappingItems(detail.value.platformInputMapping, t)
       : [],
   );
   const outputMappingItems = computed(() =>
     detail.value
-      ? buildAgentOutputMappingItems(detail.value.platformOutputMapping)
+      ? buildAgentOutputMappingItems(detail.value.platformOutputMapping, t)
       : [],
   );
   const statusItems = computed(() =>
-    detail.value ? buildAgentStatusItems(detail.value) : [],
+    detail.value ? buildAgentStatusItems(detail.value, t) : [],
   );
   const customRequestBodyJson = computed(() =>
     detail.value ? buildAgentCustomRequestBodyJson(detail.value) : "{}",
   );
   const verificationStatItems = computed(() =>
-    detail.value ? buildAgentVerificationStatItems(detail.value) : [],
+    detail.value ? buildAgentVerificationStatItems(detail.value, t) : [],
   );
   const verificationMessageGroups = computed(() =>
-    detail.value ? buildAgentVerificationMessageGroups(detail.value) : [],
+    detail.value ? buildAgentVerificationMessageGroups(detail.value, t) : [],
   );
 
   const loadDetail = async () => {
@@ -87,7 +92,9 @@ export const useAgentDetailPage = () => {
       detail.value = await getAgentDetail(agentId.value);
     } catch (loadError) {
       error.value =
-        loadError instanceof Error ? loadError.message : "Agent 详情加载失败。";
+        loadError instanceof Error
+          ? loadError.message
+          : t("agent.api.detailLoadFailed");
     } finally {
       loading.value = false;
     }
@@ -105,7 +112,9 @@ export const useAgentDetailPage = () => {
       await loadDetail();
     } catch (verifyError) {
       actionError.value =
-        verifyError instanceof Error ? verifyError.message : "Agent 验证失败。";
+        verifyError instanceof Error
+          ? verifyError.message
+          : t("agent.api.verifyFailed");
     } finally {
       busyAction.value = "";
     }
@@ -126,7 +135,7 @@ export const useAgentDetailPage = () => {
       actionError.value =
         archiveError instanceof Error
           ? archiveError.message
-          : "Agent 归档失败。";
+          : t("agent.api.archiveFailed");
     } finally {
       busyAction.value = "";
     }

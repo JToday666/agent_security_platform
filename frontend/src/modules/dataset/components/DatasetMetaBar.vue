@@ -1,26 +1,31 @@
 <template>
   <section class="meta-bar">
     <article class="meta-item ui-surface-white">
-      <MetricStat label="风险域" :value="categoryName" :description="categoryMeaning" />
-    </article>
-    <article class="meta-item ui-surface-white">
       <MetricStat
-        label="样本数"
-        :value="sampleCount"
-        description="用于构成本数据集的样本总量。"
+        :label="t('dataset.labels.riskDomain')"
+        :value="categoryName"
+        :description="categoryMeaning"
       />
     </article>
     <article class="meta-item ui-surface-white">
       <MetricStat
-        label="最近更新"
+        :label="t('dataset.labels.sampleCount')"
+        :value="sampleCount"
+        :description="t('dataset.meta.sampleCountDescription')"
+      />
+    </article>
+    <article class="meta-item ui-surface-white">
+      <MetricStat
+        :label="t('dataset.labels.updatedAt')"
         :value="updatedAt"
-        description="以当前接口返回时间为准。"
+        :description="t('dataset.meta.updatedAtDescription')"
       />
     </article>
   </section>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import MetricStat from "@/shared/ui/display/MetricStat.vue";
 
 defineProps<{
@@ -29,6 +34,8 @@ defineProps<{
   sampleCount: string;
   updatedAt: string;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

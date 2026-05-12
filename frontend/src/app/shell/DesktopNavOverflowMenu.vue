@@ -9,7 +9,7 @@
       @click="toggleMenu"
     >
       <span class="overflow-trigger__label">{{ label }}</span>
-      <AppIcon icon="lucide:chevron-down" class="overflow-trigger__icon" />
+      <AppIcon icon="app:control.more" class="overflow-trigger__icon" />
     </button>
 
     <div v-if="open" class="overflow-menu" role="menu">

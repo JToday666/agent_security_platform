@@ -10,7 +10,7 @@
     },
     "workflow": {
       "browse": {
-        "title": "Parcourir les jeux",
+        "title": "Parcourir les jeux de données",
         "description": "Consultez les descriptions, exemples et ressources par domaine de risque.",
         "action": "Voir le catalogue"
       },
@@ -23,7 +23,7 @@
       "track": {
         "title": "Suivre la progression",
         "description": "Consultez l'etat d'execution, les pauses et les resultats dans l'espace de travail.",
-        "actionAuthed": "Voir les dossiers",
+        "actionAuthed": "Voir les enregistrements",
         "actionGuest": "Nous contacter"
       },
       "review": {

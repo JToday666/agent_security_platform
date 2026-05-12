@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import VChart from "vue-echarts";
 import { ensureEvaluationChartsRegistered } from "@/modules/evaluation/charts/echarts-registry";
 import { buildDatasetStackedBarOption } from "@/modules/evaluation/lib/evaluation-report-chart-options";
@@ -21,13 +22,14 @@ ensureEvaluationChartsRegistered();
 const props = defineProps<{
   report: EvaluationReportPayload;
 }>();
+const { t } = useI18n();
 
 const emit = defineEmits<{
   (event: "preview", datasetId: string | null): void;
   (event: "select", datasetId: string): void;
 }>();
 
-const option = computed(() => buildDatasetStackedBarOption(props.report));
+const option = computed(() => buildDatasetStackedBarOption(props.report, t));
 
 const getDatasetIdFromEvent = (event: { dataIndex?: number }): string | null => {
   const dataIndex = event.dataIndex;

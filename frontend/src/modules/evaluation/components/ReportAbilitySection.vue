@@ -1,7 +1,7 @@
 <template>
   <section class="report-unit report-unit--ability">
     <div class="report-unit__copy">
-      <span>能力结构</span>
+      <span>{{ t("evaluation.report.abilitySection") }}</span>
       <h3>{{ insight?.title }}</h3>
       <strong>{{ insight?.value }}</strong>
       <p>{{ insight?.caption }}</p>
@@ -11,9 +11,9 @@
         <table class="metric-table metric-table--compact">
           <thead>
             <tr>
-              <th>指标</th>
-              <th>分数</th>
-              <th>解释</th>
+              <th>{{ t("evaluation.report.tableMetric") }}</th>
+              <th>{{ t("evaluation.report.tableScore") }}</th>
+              <th>{{ t("evaluation.report.tableExplanation") }}</th>
             </tr>
           </thead>
           <tbody>
@@ -45,6 +45,7 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
+import { useI18n } from "vue-i18n";
 import type {
   EvaluationConfidenceSummary,
   EvaluationRadarMetricRow,
@@ -70,6 +71,8 @@ defineProps<{
   radarMetricRows: EvaluationRadarMetricRow[];
   confidenceSummary: EvaluationConfidenceSummary | null;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

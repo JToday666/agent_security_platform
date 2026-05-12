@@ -1,22 +1,40 @@
 {
   "brand": {
-    "name": "AEGIS plataforma de evaluacion de seguridad de Agents",
-    "logoAlt": "Logotipo de la plataforma de evaluacion de seguridad de Agents"
+    "name": "Plataforma AEGIS de evaluación de seguridad de Agents",
+    "logoAlt": "Logotipo de la plataforma de evaluación de seguridad de Agents"
   },
   "actions": {
-    "browseDataset": "Ver conjuntos",
+    "add": "Añadir",
+    "browseDataset": "Explorar conjuntos de datos",
     "cancel": "Cancelar",
     "close": "Cerrar",
     "confirm": "Confirmar",
     "contactUs": "Contactar",
-    "loginRegister": "Iniciar sesion / Registrarse",
+    "delete": "Eliminar",
+    "loginRegister": "Iniciar sesión / Registrarse",
+    "reload": "Recargar",
     "returnHome": "Volver al inicio",
+    "retry": "Reintentar",
     "saveChanges": "Guardar cambios",
-    "submitEvaluation": "Enviar evaluacion",
+    "submitEvaluation": "Enviar evaluación",
     "viewRecords": "Ver registros"
   },
   "dialog": {
     "title": "Aviso"
+  },
+  "forms": {
+    "selectPlaceholder": "Seleccionar"
+  },
+  "feedback": {
+    "pleaseWait": "Espera un momento."
+  },
+  "status": {
+    "anonymous": "Anónimo",
+    "notGenerated": "No generado",
+    "public": "Público",
+    "rankedOut": "Sin clasificación",
+    "ready": "Generado",
+    "running": "Generando"
   },
   "units": {
     "step": "Paso {step}"

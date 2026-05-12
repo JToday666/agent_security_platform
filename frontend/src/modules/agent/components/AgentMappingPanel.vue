@@ -1,6 +1,6 @@
 <template>
   <div class="detail-section-pair">
-    <SectionBlock title="输入字段逻辑映射">
+    <SectionBlock :title="t('agent.detail.sections.inputMapping')">
       <div class="mapping-tree">
         <article
           v-for="item in inputItems"
@@ -14,7 +14,7 @@
           <div class="mapping-node__connector">
             <span class="mapping-line"></span>
             <span class="mapping-arrow-ring">
-              <AppIcon icon="lucide:arrow-right" class="mapping-arrow" />
+              <AppIcon icon="app:action.next" class="mapping-arrow" />
             </span>
             <span class="mapping-line"></span>
           </div>
@@ -26,7 +26,7 @@
       </div>
     </SectionBlock>
 
-    <SectionBlock title="输出字段逻辑映射">
+    <SectionBlock :title="t('agent.detail.sections.outputMapping')">
       <div class="mapping-tree mapping-tree--reverse">
         <article
           v-for="item in outputItems"
@@ -40,7 +40,7 @@
           <div class="mapping-node__connector">
             <span class="mapping-line"></span>
             <span class="mapping-arrow-ring">
-              <AppIcon icon="lucide:arrow-right" class="mapping-arrow" />
+              <AppIcon icon="app:action.next" class="mapping-arrow" />
             </span>
             <span class="mapping-line"></span>
           </div>
@@ -55,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import type { AgentMappingDisplayItem } from "@/modules/agent/lib/agent-detail-view";
 import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
@@ -63,6 +64,8 @@ defineProps<{
   inputItems: AgentMappingDisplayItem[];
   outputItems: AgentMappingDisplayItem[];
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

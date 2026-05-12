@@ -1,1 +1,155 @@
-{}
+{
+  "actions": {
+    "clear": "Limpiar",
+    "reload": "Recargar",
+    "reset": "Restablecer",
+    "selectAll": "Seleccionar todo",
+    "submitTask": "Enviar tarea",
+    "submitting": "Enviando..."
+  },
+  "agent": {
+    "description": "Selecciona un Agent verificado para crear una tarea de evaluación.",
+    "dockerUnavailableMessage": "Usa el envío de API Agent para la evaluación.",
+    "dockerUnavailableTitle": "El envío Docker no está disponible",
+    "emptyMessage": "Registra y verifica un Agent para enviar evaluaciones.",
+    "emptyTitle": "No hay Agents disponibles",
+    "help": "Solo se muestran Agents verificados.",
+    "label": "Agent disponible",
+    "placeholder": "Selecciona un Agent disponible",
+    "title": "Enviar Agent"
+  },
+  "confirm": {
+    "agentName": "Nombre del Agent: {agentName}",
+    "back": "Volver a editar",
+    "datasetCount": "Cantidad de conjuntos de datos: {count}",
+    "leaderboardDisplay": "Visualización en clasificación: {mode}",
+    "precheckTitle": "Confirmar antes del envío",
+    "submitMethod": "Método de envío: {method}",
+    "submitTitle": "Confirmar envío",
+    "successMessage": "{summary}\n\nLas comprobaciones se aprobaron. Tras confirmar, se creará una tarea de evaluación.",
+    "warningMessage": "{summary}\n\nConfirma primero los siguientes avisos:\n- {warnings}\n\nTras confirmar, se creará una tarea de evaluación."
+  },
+  "dataset": {
+    "categoryCount": "{count} conjuntos de datos",
+    "clearSearchMessage": "Prueba otro término de búsqueda o limpia la búsqueda.",
+    "collapse": "Contraer",
+    "currentResults": "Resultados actuales {count}",
+    "description": "Selecciona los conjuntos de datos que debe cubrir esta evaluación y filtra rápidamente por nombre.",
+    "emptyMessage": "Inténtalo de nuevo más tarde.",
+    "emptyTitle": "No hay conjuntos de datos disponibles",
+    "expand": "Expandir",
+    "loadFailedTitle": "Error al cargar el catálogo de conjuntos de datos",
+    "loadingMessage": "Espera un momento.",
+    "loadingTitle": "Cargando conjuntos de datos",
+    "noDescription": "Sin descripción del conjunto de datos.",
+    "noMatchesTitle": "No hay conjuntos de datos coincidentes",
+    "refreshFailed": "Error al actualizar el catálogo. Reintenta.",
+    "refreshing": "Actualizando conjuntos de datos disponibles.",
+    "retrySubmit": "Reintenta antes de continuar el envío.",
+    "searchLabel": "Buscar",
+    "searchPlaceholder": "Buscar por dominio de riesgo, nombre de conjunto de datos o resumen",
+    "selectedDatasets": "Conjuntos seleccionados {count}",
+    "selectedRiskDomains": "Dominios de riesgo seleccionados {count}",
+    "title": "Selección de conjuntos de datos"
+  },
+  "errors": {
+    "catalogLoadFailed": "Error al cargar el catálogo. Reintenta.",
+    "datasetCatalogPending": "Espera a que termine de cargarse el catálogo de conjuntos de datos antes de enviar.",
+    "datasetUnavailable": "Los conjuntos de datos del enlace no están disponibles y se ignoraron.",
+    "dockerUpgrade": "El envío Docker se está actualizando.",
+    "invalidAgentLink": "El Agent del enlace no está disponible y se ignoró.",
+    "noDataset": "No hay conjuntos de datos disponibles, por lo que no se puede enviar.",
+    "submitFailed": "Error al enviar. Inténtalo de nuevo más tarde.",
+    "submitFormInitFailed": "Error al inicializar el formulario de envío.",
+    "submitFormNotReady": "El formulario de envío aún no se ha inicializado.",
+    "submitInitFailed": "Error al inicializar la página de envío.",
+    "validationFailed": "Error al validar los parámetros de envío."
+  },
+  "leaderboardDisplay": {
+    "anonymous": {
+      "description": "La clasificación solo muestra una identidad anónima, mientras el resultado de evaluación sigue participando en el orden público.",
+      "title": "Anónimo"
+    },
+    "aria": "Configuración de visualización en clasificación",
+    "description": "Cuando los resultados de evaluación entren en la clasificación, elige mostrar el nombre público o una identidad anónima.",
+    "public": {
+      "description": "La clasificación muestra el nombre público del Agent, adecuado para participación pública y visualización de capacidades.",
+      "title": "Público"
+    },
+    "title": "Visualización en clasificación"
+  },
+  "method": {
+    "description": "Selecciona el método de integración usado para este envío.",
+    "meta": {
+      "developing": "En desarrollo",
+      "unavailable": "No disponible"
+    },
+    "options": {
+      "api": {
+        "description": "Para Agents que ya tienen un servicio en línea.",
+        "title": "Integración API"
+      },
+      "docker": {
+        "description": "Esta función está en desarrollo y actualmente no puede crear evaluaciones Docker.",
+        "title": "Imagen Docker"
+      }
+    },
+    "title": "Método de envío"
+  },
+  "page": {
+    "description": "Configura el identificador del Agent, los conjuntos de prueba asociados y los parámetros de ejecución para inicializar una tarea de evaluación de seguridad de aplicaciones.",
+    "errorTitle": "Error al inicializar la página",
+    "loadingTitle": "Inicializando página de envío",
+    "title": "Enviar evaluación"
+  },
+  "parameters": {
+    "description": "Define dificultad, tiempo máximo y estrategia de reintento ante fallos según el escenario objetivo.",
+    "difficultyHelp": "Rango {min} - {max}, paso {step}.",
+    "difficultyLabel": "Dificultad de ataque",
+    "maxStepsHelp": "Rango permitido {min} - {max} pasos.",
+    "maxStepsLabel": "Pasos máximos",
+    "softWarning": "La configuración actual está por encima del valor recomendado {threshold}, lo que puede aumentar la espera y el tiempo de ejecución.",
+    "timeoutHelp": "Recomendado dentro de {recommended} minutos; rango permitido {min} - {max} minutos.",
+    "timeoutLabel": "Tiempo máximo (minutos)",
+    "title": "Parámetros de evaluación"
+  },
+  "summary": {
+    "agentName": "Nombre del Agent",
+    "datasetEmpty": "Aún no se han seleccionado conjuntos de datos.",
+    "difficulty": "Dificultad",
+    "leaderboardDisplay": "Visualización en clasificación",
+    "maxSteps": "Pasos máximos",
+    "maxStepsValue": "{value} pasos",
+    "minutesValue": "{value} minutos",
+    "notSelected": "No seleccionado",
+    "runParameters": "Parámetros de ejecución",
+    "selectedDatasets": "Conjuntos seleccionados",
+    "selectedRiskDomains": "Dominios de riesgo seleccionados",
+    "submitMethod": "Método de envío",
+    "subtitle": "Confirma la configuración actual para crear una tarea de evaluación.",
+    "timeout": "Tiempo máximo",
+    "title": "Resumen de tarea"
+  },
+  "validation": {
+    "agentRequired": "Selecciona un Agent que pueda evaluarse.",
+    "agentRequiredField": "Selecciona un Agent que pueda evaluarse",
+    "datasetDuplicate": "La selección de elementos de referencia contiene conjuntos de datos duplicados. Actualiza y reintenta.",
+    "datasetDuplicateField": "La selección de elementos de referencia contiene conjuntos de datos duplicados",
+    "datasetInvalid": "Los elementos de referencia seleccionados incluyen elementos no válidos. Actualiza y reintenta.",
+    "datasetInvalidField": "Los elementos de referencia seleccionados incluyen elementos no válidos",
+    "datasetLimit": "La cantidad de elementos de referencia no puede superar {count}.",
+    "datasetLimitField": "Selecciona como máximo {count} elementos de referencia",
+    "difficultyRange": "La dificultad de ataque está fuera del rango permitido.",
+    "dockerDeveloping": "El envío Docker está en desarrollo.",
+    "dockerDevelopingField": "Esta función está en desarrollo",
+    "leaderboardModeUnavailable": "El modo de visualización en clasificación no está disponible.",
+    "maxStepsRange": "Los pasos máximos están fuera del rango permitido.",
+    "methodUnavailable": "El método de envío actual no está disponible.",
+    "requestIdInvalid": "El formato de requestId es incorrecto. Reintenta.",
+    "requestIdInvalidField": "El formato de requestId es incorrecto",
+    "selectedDatasetLimitNotice": "Se pueden seleccionar como máximo {count} conjuntos de datos; los elementos excedentes se ignoraron.",
+    "selectedDatasetRequired": "Selecciona al menos un elemento de referencia.",
+    "selectedDatasetRequiredField": "Selecciona al menos un elemento de referencia",
+    "timeoutRange": "El tiempo máximo está fuera del rango permitido."
+  }
+}

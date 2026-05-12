@@ -3,6 +3,8 @@ import type {
   DatasetCategoryViewModel,
   DatasetSubcategory,
 } from "@/shared/types/dataset-types";
+import { formatDateTime, formatNumber } from "@/app/i18n/intl-format";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import { ORDERED_REFERENCE_CATEGORY_IDS } from "@/modules/dataset/model/dataset-taxonomy";
 import { MAX_SUBMIT_DATASET_COUNT } from "@/modules/submission/model/parameter-validator";
 
@@ -336,28 +338,30 @@ export const toggleDatasetId = (
 };
 
 export const formatDateLabel = (value?: string): string => {
-  if (!value) return "待补充";
+  if (!value) return translateRuntimeMessage("dataset.fallback.pending");
 
-  return new Intl.DateTimeFormat("zh-CN", {
+  return formatDateTime(value, {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(new Date(value));
+  });
 };
 
 export const formatDateTimeLabel = (value?: string): string => {
-  if (!value) return "待补充";
+  if (!value) return translateRuntimeMessage("dataset.fallback.pending");
 
-  return new Intl.DateTimeFormat("zh-CN", {
+  return formatDateTime(value, {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date(value));
+  });
 };
 
 export const formatSampleCount = (value?: number): string => {
-  if (typeof value !== "number") return "待补充";
-  return new Intl.NumberFormat("zh-CN").format(value);
+  if (typeof value !== "number") {
+    return translateRuntimeMessage("dataset.fallback.pending");
+  }
+  return formatNumber(value);
 };

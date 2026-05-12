@@ -1,25 +1,31 @@
 <template>
   <div class="content detail-page layout-page-shell">
     <PageHero
-      :title="detail?.name || '数据集详情'"
-      :description="detail?.shortDescription || '查看该数据集的说明、重点、资源与样例。'"
+      :title="detail?.name || t('dataset.pages.detail.titleFallback')"
+      :description="
+        detail?.shortDescription || t('dataset.pages.detail.descriptionFallback')
+      "
     >
       <template #actions>
         <div class="hero-actions">
           <UiButton
             :to="RouteLocation.datasetList"
             variant="secondary"
-            leading-icon="lucide:arrow-left"
+            leading-icon="app:action.back"
           >
-            返回数据集目录
+            {{ t("dataset.pages.detail.backToCatalog") }}
           </UiButton>
           <UiButton
             v-if="detail"
             variant="primary"
-            leading-icon="lucide:file-plus-2"
+            leading-icon="app:action.submitEvaluation"
             @click="handleSubmitClick"
           >
-            {{ isLogin ? "使用此数据集发起评测" : "登录后评测此数据集" }}
+            {{
+              isLogin
+                ? t("dataset.pages.detail.submitWithDataset")
+                : t("dataset.pages.detail.loginToEvaluateDataset")
+            }}
           </UiButton>
         </div>
       </template>
@@ -27,39 +33,47 @@
 
     <PageStatePanel
       v-if="loading"
-      title="正在加载详情"
-      message="请稍候。"
+      :title="t('dataset.pages.detail.loadingTitle')"
+      :message="t('dataset.pages.detail.loadingMessage')"
       :loading="true"
     />
 
     <PageStatePanel
       v-else-if="error"
-      :title="notFound ? '评测项不存在' : '详情加载失败'"
+      :title="
+        notFound
+          ? t('dataset.pages.detail.notFoundTitle')
+          : t('dataset.pages.detail.detailLoadFailedTitle')
+      "
       :message="error"
-      action-text="重试"
+      :action-text="t('dataset.pages.detail.retryAction')"
       @action="loadDetail"
     />
 
     <div v-else-if="detail" class="detail-stack layout-page-stack">
       <DatasetMetaBar
         :category-name="detail.category.name"
-        :category-meaning="detail.category.meaning || '当前风险域'"
+        :category-meaning="
+          detail.category.meaning || t('dataset.fallback.currentRiskDomain')
+        "
         :sample-count="formatSampleCount(detail.sampleCount ?? undefined)"
         :updated-at="formatDateLabel(detail.updatedAt ?? undefined)"
       />
 
-      <SectionBlock title="详细说明">
-        <p class="long-copy">{{ detail.fullDescription || "暂无详细说明。" }}</p>
+      <SectionBlock :title="t('dataset.pages.detail.sections.details')">
+        <p class="long-copy">
+          {{ detail.fullDescription || t("dataset.pages.detail.fullDescriptionFallback") }}
+        </p>
       </SectionBlock>
 
       <div class="grid-layout layout-two-column">
-        <SectionBlock title="评测重点">
+        <SectionBlock :title="t('dataset.pages.detail.sections.highlights')">
           <ul class="bullet-list">
             <li v-for="item in detail.highlights" :key="item">{{ item }}</li>
           </ul>
         </SectionBlock>
 
-        <SectionBlock title="典型场景">
+        <SectionBlock :title="t('dataset.pages.detail.sections.scenarios')">
           <ul class="bullet-list">
             <li v-for="item in detail.scenarios" :key="item">{{ item }}</li>
           </ul>
@@ -68,22 +82,26 @@
 
       <DatasetResourcesList :resources="detail.resources" />
 
-      <SectionBlock title="媒体资料">
+      <SectionBlock :title="t('dataset.pages.detail.sections.media')">
         <DatasetMediaGallery :media="detail.media" />
       </SectionBlock>
 
       <SectionBlock
         class="cta-section"
-        title="准备发起评测"
-        description="当前数据集选定后，可直接进入提交页继续配置智能体接入方式与运行参数。"
+        :title="t('dataset.pages.detail.ctaTitle')"
+        :description="t('dataset.pages.detail.ctaDescription')"
       >
         <template #actions>
           <UiButton
             variant="primary"
-            leading-icon="lucide:file-plus-2"
+            leading-icon="app:action.submitEvaluation"
             @click="handleSubmitClick"
           >
-            {{ isLogin ? "使用此数据集发起评测" : "登录后评测此数据集" }}
+            {{
+              isLogin
+                ? t("dataset.pages.detail.submitWithDataset")
+                : t("dataset.pages.detail.loginToEvaluateDataset")
+            }}
           </UiButton>
         </template>
       </SectionBlock>
@@ -93,6 +111,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
@@ -111,6 +130,7 @@ import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
 import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const datasetCatalogStore = useDatasetCatalogStore();

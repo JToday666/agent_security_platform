@@ -1,26 +1,26 @@
 <template>
   <SectionBlock
-    title="提交智能体"
-    description="选择已验证通过的 Agent 创建评测任务。"
+    :title="t('submission.agent.title')"
+    :description="t('submission.agent.description')"
   >
     <InlineNotice
       v-if="form.submitMethod === 'docker'"
       tone="warning"
-      title="Docker 提交暂不可用"
-      message="请使用 API Agent 提交评测。"
+      :title="t('submission.agent.dockerUnavailableTitle')"
+      :message="t('submission.agent.dockerUnavailableMessage')"
     />
 
     <div v-else class="agent-picker">
       <FormField
-        label="可用 Agent"
+        :label="t('submission.agent.label')"
         type="select"
         :model-value="form.agentId"
         :options="agentOptions"
         :disabled="agentOptions.length === 0"
         :error="agentOptions.length > 0 ? agentErrorMessage : ''"
-        help="仅显示已验证通过的 Agent。"
-        placeholder="请选择可用 Agent"
-        leading-icon="lucide:bot"
+        :help="t('submission.agent.help')"
+        :placeholder="t('submission.agent.placeholder')"
+        leading-icon="app:field.agent"
         full
         @update:model-value="selectAgent"
       />
@@ -32,18 +32,18 @@
       >
         <span class="agent-picker__main">
           <strong>{{ selectedAgent.name }}</strong>
-          <span>{{ selectedAgent.description || "暂无描述" }}</span>
+          <span>{{ selectedAgent.description || t("agent.common.noDescription") }}</span>
         </span>
         <span class="agent-picker__meta">
           <AgentStatusTag :status="selectedAgent.status" size="sm" />
-          <span>{{ getInvokeModeLabel(selectedAgent.invokeMode) }}</span>
+          <span>{{ getInvokeModeLabel(selectedAgent.invokeMode, t) }}</span>
         </span>
       </div>
 
       <PageStatePanel
         v-if="agentOptions.length === 0"
-        title="还没有可用 Agent"
-        message="注册并验证 Agent 后即可提交评测。"
+        :title="t('submission.agent.emptyTitle')"
+        :message="t('submission.agent.emptyMessage')"
         tone="default"
       />
 
@@ -58,6 +58,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import type { AgentListItem } from "@/shared/types/agent-registry-types";
 import type { SubmitFormState } from "@/shared/types/agent-types";
 import AgentStatusTag from "@/modules/agent/components/AgentStatusTag.vue";
@@ -83,7 +84,8 @@ const emit = defineEmits<{
 }>();
 
 const form = defineModel<SubmitFormState>({ required: true });
-const agentOptions = computed(() => buildSubmitAgentOptions(props.agents));
+const { t } = useI18n();
+const agentOptions = computed(() => buildSubmitAgentOptions(props.agents, t));
 const selectedAgent = computed(
   () =>
     props.agents.find((agent) => agent.agentId === form.value.agentId) ?? null,

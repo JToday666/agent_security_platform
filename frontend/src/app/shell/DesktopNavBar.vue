@@ -50,7 +50,7 @@
         class="cta-btn"
         as="button"
         variant="primary"
-        leading-icon="lucide:log-in"
+        leading-icon="app:action.login"
         @click="$emit('open-login')"
       >
         <span>{{ t("common.actions.loginRegister") }}</span>
@@ -81,7 +81,7 @@
         @click="$emit('toggle-mobile-menu')"
       >
         <AppIcon
-          :icon="mobileMenuOpen ? 'lucide:x' : 'lucide:menu'"
+          :icon="mobileMenuOpen ? 'app:action.close' : 'app:action.menu'"
           class="menu-toggle-icon"
         />
       </button>

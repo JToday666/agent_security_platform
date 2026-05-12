@@ -12,6 +12,7 @@ import type {
   SubmitAgentPayload,
   SubmitMetaResponse,
 } from "@/shared/types/agent-types";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 
 export interface StoredEvaluationRecord {
   evaluationId: string;
@@ -92,7 +93,7 @@ export const createServiceError = (
 };
 
 const createSubmitMetaError = (): Error =>
-  new Error("submit-meta 响应结构不符合新协议，请确认后端仅返回扁平结果。");
+  new Error(translateRuntimeMessage("evaluation.api.submitMetaInvalid"));
 
 export const ensureSubmitMeta = (payload: unknown): SubmitMetaResponse => {
   if (!payload || typeof payload !== "object") {

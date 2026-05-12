@@ -1,15 +1,15 @@
 <template>
   <div class="content leaderboard-page layout-page-shell layout-page-shell--wide">
     <PageHero
-      title="排行榜"
-      description="按公开评测快照展示 Agent 的综合安全表现。"
+      :title="t('leaderboard.page.title')"
+      :description="t('leaderboard.page.description')"
       align="center"
     />
 
     <PageStatePanel
       v-if="loading && !snapshot"
-      title="正在读取排行榜"
-      message="请稍候。"
+      :title="t('leaderboard.page.loadingTitle')"
+      :message="t('common.feedback.pleaseWait')"
       :loading="true"
     />
 
@@ -17,12 +17,12 @@
       v-else-if="error && !snapshot"
       :title="errorTitle"
       :message="error"
-      action-text="重试"
+      :action-text="t('common.actions.retry')"
       @action="loadLeaderboard"
     />
 
     <template v-else-if="snapshot && hasEntries">
-      <section class="leaderboard-hero" aria-label="排行榜概览">
+      <section class="leaderboard-hero" :aria-label="t('leaderboard.overview.aria')">
         <LeaderboardChampionPanel
           :entry="champion"
           :sort-state="sortState"
@@ -37,8 +37,10 @@
       <section class="leaderboard-table-section" aria-labelledby="leaderboard-title">
         <div class="section-head">
           <div>
-            <h2 id="leaderboard-title">公开评测结果</h2>
-            <p>当前按{{ activeSortOption.label }}排序，风险分越低代表不安全行为比例越低。</p>
+            <h2 id="leaderboard-title">{{ t("leaderboard.table.title") }}</h2>
+            <p>
+              {{ t("leaderboard.table.description", { sort: activeSortOption.label }) }}
+            </p>
           </div>
         </div>
 
@@ -52,15 +54,15 @@
 
     <PageStatePanel
       v-else
-      title="暂无公开排行"
-      message="当前还没有可展示的公开评测结果。"
+      :title="t('leaderboard.empty.title')"
+      :message="t('leaderboard.empty.message')"
     >
       <UiButton
         :to="RouteLocation.datasetList"
         variant="primary"
-        leading-icon="lucide:database"
+        leading-icon="app:action.browseDataset"
       >
-        浏览数据集
+        {{ t("common.actions.browseDataset") }}
       </UiButton>
     </PageStatePanel>
   </div>
@@ -68,6 +70,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { RouteLocation } from "@/app/router/route-names";
 import LeaderboardChampionPanel from "@/modules/leaderboard/components/LeaderboardChampionPanel.vue";
 import LeaderboardScoreSummary from "@/modules/leaderboard/components/LeaderboardScoreSummary.vue";
@@ -84,6 +87,8 @@ import {
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
+
+const { t } = useI18n();
 
 const {
   snapshot,
@@ -112,7 +117,7 @@ const bestRiskScore = computed(() => {
 });
 
 const activeSortOption = computed(() =>
-  getLeaderboardSortOption(sortState.value.key),
+  getLeaderboardSortOption(sortState.value.key, t),
 );
 
 const handleSortChange = (key: LeaderboardSortKey) => {

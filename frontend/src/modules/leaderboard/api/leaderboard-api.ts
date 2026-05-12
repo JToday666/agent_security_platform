@@ -1,3 +1,4 @@
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import { ApiConfig } from "@/shared/api/Config";
 import request from "@/shared/api/http-client";
 import type {
@@ -50,7 +51,7 @@ const adaptLeaderboardEntry = (value: unknown): LeaderboardEntry => {
     rankNo: toPositiveInteger(readField(candidate, "rankNo", "rank_no")),
     displayName:
       toStringValue(readField(candidate, "displayName", "display_name")) ||
-      "未命名 Agent",
+      translateRuntimeMessage("leaderboard.api.unnamedAgent"),
     anonymous: Boolean(readField(candidate, "anonymous", "anonymous")),
     officialConservativeScore: toScore(
       readField(
@@ -98,7 +99,7 @@ const getLiveLeaderboardSnapshot = async (): Promise<LeaderboardSnapshot> => {
 
   if (!response.success || !response.data) {
     throw createLeaderboardServiceError(
-      response.message || "排行榜加载失败，请稍后重试。",
+      response.message || translateRuntimeMessage("leaderboard.api.loadFailed"),
       response.code,
     );
   }

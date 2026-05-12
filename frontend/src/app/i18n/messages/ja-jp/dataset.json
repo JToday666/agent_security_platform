@@ -1,1 +1,100 @@
-{}
+{
+  "api": {
+    "catalogLoadFailed": "カタログ読み込みに失敗しました。後でもう一度お試しください。",
+    "detailLoadFailed": "詳細読み込みに失敗しました。後でもう一度お試しください。",
+    "notFound": "対応するベンチマーク項目が見つかりません。"
+  },
+  "fallback": {
+    "currentRiskDomain": "現在のリスク領域",
+    "dataset": "データセット",
+    "media": "メディア {index}",
+    "pending": "未補足",
+    "relatedResource": "関連リソース {index}",
+    "uncategorized": "未分類",
+    "unnamedBenchmarkItem": "未命名ベンチマーク項目",
+    "unnamedCategory": "未命名分類"
+  },
+  "filter": {
+    "clearSearch": "検索をクリア",
+    "description": "リスク領域、名称、並び順で対象データセットを素早く特定します。",
+    "searchLabel": "検索",
+    "searchPlaceholder": "名称または概要で検索",
+    "sortLabel": "並び順",
+    "sortOptions": {
+      "default": "既定順",
+      "samplesDesc": "サンプル数の多い順",
+      "updatedDesc": "最近更新"
+    },
+    "title": "絞り込みと並び替え"
+  },
+  "labels": {
+    "benchmarkItemCount": "ベンチマーク項目数",
+    "riskDomain": "リスク領域",
+    "sampleCount": "サンプル数",
+    "updatedAt": "最近更新",
+    "updateTime": "更新時刻"
+  },
+  "media": {
+    "descriptionFallback": "このメディアはベンチマーク項目の構造と実行効果を理解する補助として使用します。",
+    "empty": "現在のベンチマーク項目にはメディアリソースが提供されていません。",
+    "unavailable": "リソースは現在利用できません"
+  },
+  "meta": {
+    "sampleCountDescription": "このデータセットを構成するサンプル総数です。",
+    "updatedAtDescription": "現在の API が返した時刻に基づきます。"
+  },
+  "pages": {
+    "catalog": {
+      "description": "リスク領域別に利用可能なデータセットを閲覧し、説明を確認します。",
+      "emptyMessage": "後でもう一度お試しください。",
+      "emptyTitle": "現在利用可能なデータセットはありません",
+      "loadFailedTitle": "カタログ読み込み失敗",
+      "loadingMessage": "しばらくお待ちください。",
+      "loadingTitle": "カタログ読み込み中",
+      "noMatchesMessage": "キーワードを変更するか、リスク領域を切り替えてください。",
+      "noMatchesTitle": "一致するデータセットが見つかりません",
+      "reloadAction": "再読み込み",
+      "title": "データセットカタログ"
+    },
+    "detail": {
+      "backToCatalog": "データセットカタログへ戻る",
+      "ctaDescription": "現在のデータセットを選択後、提出ページへ進み、Agent 接続方式と実行パラメーターを続けて設定できます。",
+      "ctaTitle": "評価開始の準備",
+      "descriptionFallback": "このデータセットの説明、重点、リソース、サンプルを確認します。",
+      "detailLoadFailedTitle": "詳細読み込み失敗",
+      "fullDescriptionFallback": "詳細説明はまだありません。",
+      "loadingMessage": "しばらくお待ちください。",
+      "loadingTitle": "詳細読み込み中",
+      "loginToEvaluateDataset": "ログインしてこのデータセットを評価",
+      "notFoundTitle": "ベンチマーク項目が存在しません",
+      "retryAction": "再試行",
+      "sections": {
+        "details": "詳細説明",
+        "highlights": "評価重点",
+        "media": "メディア資料",
+        "scenarios": "典型シナリオ"
+      },
+      "submitWithDataset": "このデータセットで評価を開始",
+      "titleFallback": "データセット詳細"
+    }
+  },
+  "resources": {
+    "description": "現在の API が返した文書、ダウンロード、デモ、外部リンクリソースのみ表示します。",
+    "emptyMessage": "現在のデータセットには表示可能な外部リソースが返されていません。",
+    "emptyTitle": "リソースなし",
+    "title": "リソースと例",
+    "types": {
+      "demo": "デモ",
+      "docs": "文書",
+      "download": "ダウンロード",
+      "link": "リンク"
+    },
+    "view": "リソースを表示"
+  },
+  "subcategory": {
+    "loginToEvaluate": "ログイン後に評価",
+    "noDescription": "説明はまだありません",
+    "useDataset": "このデータセットを使用",
+    "viewDetails": "詳細を見る"
+  }
+}

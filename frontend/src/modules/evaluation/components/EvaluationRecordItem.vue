@@ -16,11 +16,17 @@
         </div>
 
         <p class="evaluation-record-item__datasets">
-          数据集：{{ record.datasetNames.join("、") }}
+          {{
+            t("evaluation.records.datasetPrefix", {
+              datasets: record.datasetNames.join(
+                t("evaluation.common.listSeparator"),
+              ),
+            })
+          }}
         </p>
 
         <p class="evaluation-record-item__meta">
-          创建于 {{ createdAt }}
+          {{ t("evaluation.records.createdAt", { time: createdAt }) }}
           <span v-if="finalizationReason"> · {{ finalizationReason }}</span>
         </p>
 
@@ -39,7 +45,7 @@
 
       <div class="evaluation-record-item__actions">
         <Button :to="detailTo" variant="primary">
-          查看详情
+          {{ t("evaluation.actions.viewDetails") }}
         </Button>
       </div>
     </div>
@@ -48,6 +54,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import type { EvaluationRecord } from "@/shared/types/agent-types";
 import { RouteLocation } from "@/app/router/route-names";
 import Button from "@/shared/ui/actions/UiButton.vue";
@@ -59,6 +66,7 @@ import { getEvaluationLeaderboardStatus } from "@/modules/evaluation/lib/evaluat
 const props = defineProps<{
   record: EvaluationRecord;
 }>();
+const { t } = useI18n();
 
 const detailTo = computed(() =>
   RouteLocation.evaluationDetail(props.record.evaluationId),
@@ -69,7 +77,7 @@ const leaderboardStatus = computed(() =>
   getEvaluationLeaderboardStatus(props.record),
 );
 const finalizationReason = computed(() =>
-  getFinalizationReasonLabel(props.record.finalizationReason),
+  getFinalizationReasonLabel(props.record.finalizationReason, t),
 );
 </script>
 

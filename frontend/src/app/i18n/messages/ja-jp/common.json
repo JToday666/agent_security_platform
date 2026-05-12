@@ -4,19 +4,37 @@
     "logoAlt": "Agent セキュリティ評価プラットフォームのロゴ"
   },
   "actions": {
+    "add": "追加",
     "browseDataset": "データセットを見る",
     "cancel": "キャンセル",
     "close": "閉じる",
     "confirm": "確認",
     "contactUs": "お問い合わせ",
+    "delete": "削除",
     "loginRegister": "ログイン / 登録",
+    "reload": "再読み込み",
     "returnHome": "ホームへ戻る",
+    "retry": "再試行",
     "saveChanges": "変更を保存",
     "submitEvaluation": "評価を提出",
     "viewRecords": "記録を見る"
   },
   "dialog": {
     "title": "通知"
+  },
+  "forms": {
+    "selectPlaceholder": "選択してください"
+  },
+  "feedback": {
+    "pleaseWait": "しばらくお待ちください。"
+  },
+  "status": {
+    "anonymous": "匿名",
+    "notGenerated": "未生成",
+    "public": "公開",
+    "rankedOut": "未順位",
+    "ready": "生成済み",
+    "running": "生成中"
   },
   "units": {
     "step": "ステップ {step}"

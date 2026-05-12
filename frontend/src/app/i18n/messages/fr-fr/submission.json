@@ -1,1 +1,155 @@
-{}
+{
+  "actions": {
+    "clear": "Effacer",
+    "reload": "Recharger",
+    "reset": "Réinitialiser",
+    "selectAll": "Tout sélectionner",
+    "submitTask": "Soumettre la tâche",
+    "submitting": "Soumission..."
+  },
+  "agent": {
+    "description": "Sélectionnez un Agent vérifié pour créer une tâche d’évaluation.",
+    "dockerUnavailableMessage": "Utilisez la soumission API Agent pour l’évaluation.",
+    "dockerUnavailableTitle": "Soumission Docker indisponible",
+    "emptyMessage": "Enregistrez et vérifiez un Agent pour soumettre une évaluation.",
+    "emptyTitle": "Aucun Agent disponible",
+    "help": "Seuls les Agents vérifiés sont affichés.",
+    "label": "Agent disponible",
+    "placeholder": "Sélectionnez un Agent disponible",
+    "title": "Soumettre un Agent"
+  },
+  "confirm": {
+    "agentName": "Nom de l’Agent : {agentName}",
+    "back": "Retour aux modifications",
+    "datasetCount": "Nombre de jeux de données : {count}",
+    "leaderboardDisplay": "Affichage au classement : {mode}",
+    "precheckTitle": "Confirmation avant soumission",
+    "submitMethod": "Mode de soumission : {method}",
+    "submitTitle": "Confirmer la soumission",
+    "successMessage": "{summary}\n\nLes contrôles sont validés. Après confirmation, une tâche d’évaluation sera créée.",
+    "warningMessage": "{summary}\n\nConfirmez d’abord les avertissements suivants :\n- {warnings}\n\nAprès confirmation, une tâche d’évaluation sera créée."
+  },
+  "dataset": {
+    "categoryCount": "{count} jeux de données",
+    "clearSearchMessage": "Essayez un autre terme de recherche ou effacez la recherche.",
+    "collapse": "Réduire",
+    "currentResults": "Résultats actuels {count}",
+    "description": "Sélectionnez les jeux de données à couvrir pour cette évaluation et filtrez rapidement par nom.",
+    "emptyMessage": "Veuillez réessayer plus tard.",
+    "emptyTitle": "Aucun jeu de données disponible",
+    "expand": "Développer",
+    "loadFailedTitle": "Échec du chargement du catalogue de jeux de données",
+    "loadingMessage": "Veuillez patienter.",
+    "loadingTitle": "Chargement des jeux de données",
+    "noDescription": "Aucune description de jeu de données.",
+    "noMatchesTitle": "Aucun jeu de données correspondant",
+    "refreshFailed": "Échec de l’actualisation du catalogue. Réessayez.",
+    "refreshing": "Actualisation des jeux de données disponibles.",
+    "retrySubmit": "Réessayez avant de poursuivre la soumission.",
+    "searchLabel": "Recherche",
+    "searchPlaceholder": "Rechercher par domaine de risque, nom de jeu de données ou résumé",
+    "selectedDatasets": "Jeux de données sélectionnés {count}",
+    "selectedRiskDomains": "Domaines de risque sélectionnés {count}",
+    "title": "Sélection des jeux de données"
+  },
+  "errors": {
+    "catalogLoadFailed": "Échec du chargement du catalogue. Réessayez.",
+    "datasetCatalogPending": "Attendez la fin du chargement du catalogue de jeux de données avant de soumettre.",
+    "datasetUnavailable": "Les jeux de données du lien sont indisponibles et ont été ignorés.",
+    "dockerUpgrade": "La soumission Docker est en cours de mise à niveau.",
+    "invalidAgentLink": "L’Agent du lien est indisponible et a été ignoré.",
+    "noDataset": "Aucun jeu de données n’est disponible, la soumission est impossible.",
+    "submitFailed": "Échec de la soumission. Veuillez réessayer plus tard.",
+    "submitFormInitFailed": "Échec de l’initialisation du formulaire de soumission.",
+    "submitFormNotReady": "Le formulaire de soumission n’est pas encore initialisé.",
+    "submitInitFailed": "Échec de l’initialisation de la page de soumission.",
+    "validationFailed": "Échec de la validation des paramètres de soumission."
+  },
+  "leaderboardDisplay": {
+    "anonymous": {
+      "description": "Le classement affiche uniquement une identité anonyme, tandis que le résultat d’évaluation participe toujours au classement public.",
+      "title": "Anonyme"
+    },
+    "aria": "Paramètres d’affichage au classement",
+    "description": "Lorsque les résultats d’évaluation entrent au classement, choisissez d’afficher le nom public ou une identité anonyme.",
+    "public": {
+      "description": "Le classement affiche le nom public de l’Agent, adapté à la participation publique et à la présentation des capacités.",
+      "title": "Public"
+    },
+    "title": "Affichage au classement"
+  },
+  "method": {
+    "description": "Sélectionnez le mode d’intégration utilisé pour cette soumission.",
+    "meta": {
+      "developing": "En développement",
+      "unavailable": "Indisponible"
+    },
+    "options": {
+      "api": {
+        "description": "Pour les Agents disposant déjà d’un service en ligne.",
+        "title": "Intégration API"
+      },
+      "docker": {
+        "description": "Cette fonctionnalité est en développement et ne peut pas encore créer d’évaluations Docker.",
+        "title": "Image Docker"
+      }
+    },
+    "title": "Mode de soumission"
+  },
+  "page": {
+    "description": "Configurez l’identifiant de l’Agent, les jeux de tests associés et les paramètres d’exécution pour initialiser une tâche d’évaluation de sécurité applicative.",
+    "errorTitle": "Échec de l’initialisation de la page",
+    "loadingTitle": "Initialisation de la page de soumission",
+    "title": "Soumettre une évaluation"
+  },
+  "parameters": {
+    "description": "Définissez la difficulté, le délai et la stratégie de nouvelle tentative en cas d’échec selon le scénario cible.",
+    "difficultyHelp": "Plage {min} - {max}, pas {step}.",
+    "difficultyLabel": "Difficulté d’attaque",
+    "maxStepsHelp": "Plage autorisée {min} - {max} étapes.",
+    "maxStepsLabel": "Nombre maximal d’étapes",
+    "softWarning": "Le réglage actuel est supérieur à la valeur recommandée {threshold}, ce qui peut augmenter l’attente et la durée d’exécution.",
+    "timeoutHelp": "Recommandé dans {recommended} minutes ; plage autorisée {min} - {max} minutes.",
+    "timeoutLabel": "Délai d’expiration (minutes)",
+    "title": "Paramètres d’évaluation"
+  },
+  "summary": {
+    "agentName": "Nom de l’Agent",
+    "datasetEmpty": "Aucun jeu de données sélectionné.",
+    "difficulty": "Difficulté",
+    "leaderboardDisplay": "Affichage au classement",
+    "maxSteps": "Nombre maximal d’étapes",
+    "maxStepsValue": "{value} étapes",
+    "minutesValue": "{value} minutes",
+    "notSelected": "Non sélectionné",
+    "runParameters": "Paramètres d’exécution",
+    "selectedDatasets": "Jeux de données sélectionnés",
+    "selectedRiskDomains": "Domaines de risque sélectionnés",
+    "submitMethod": "Mode de soumission",
+    "subtitle": "Confirmez la configuration actuelle pour créer une tâche d’évaluation.",
+    "timeout": "Délai",
+    "title": "Résumé de la tâche"
+  },
+  "validation": {
+    "agentRequired": "Sélectionnez un Agent pouvant être évalué.",
+    "agentRequiredField": "Sélectionnez un Agent pouvant être évalué",
+    "datasetDuplicate": "La sélection d’éléments de référence contient des jeux de données en double. Actualisez puis réessayez.",
+    "datasetDuplicateField": "La sélection d’éléments de référence contient des jeux de données en double",
+    "datasetInvalid": "Les éléments de référence sélectionnés contiennent des éléments invalides. Actualisez puis réessayez.",
+    "datasetInvalidField": "Les éléments de référence sélectionnés contiennent des éléments invalides",
+    "datasetLimit": "Le nombre d’éléments de référence ne peut pas dépasser {count}.",
+    "datasetLimitField": "Sélectionnez au maximum {count} éléments de référence",
+    "difficultyRange": "La difficulté d’attaque est hors de la plage autorisée.",
+    "dockerDeveloping": "La soumission Docker est en développement.",
+    "dockerDevelopingField": "Cette fonctionnalité est en développement",
+    "leaderboardModeUnavailable": "Le mode d’affichage au classement est indisponible.",
+    "maxStepsRange": "Le nombre maximal d’étapes est hors de la plage autorisée.",
+    "methodUnavailable": "Le mode de soumission actuel est indisponible.",
+    "requestIdInvalid": "Le format de requestId est incorrect. Réessayez.",
+    "requestIdInvalidField": "Le format de requestId est incorrect",
+    "selectedDatasetLimitNotice": "Vous pouvez sélectionner au maximum {count} jeux de données ; les éléments en trop ont été ignorés.",
+    "selectedDatasetRequired": "Sélectionnez au moins un élément de référence.",
+    "selectedDatasetRequiredField": "Sélectionnez au moins un élément de référence",
+    "timeoutRange": "Le délai d’expiration est hors de la plage autorisée."
+  }
+}

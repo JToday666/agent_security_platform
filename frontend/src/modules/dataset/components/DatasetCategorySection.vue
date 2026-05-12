@@ -10,7 +10,7 @@
       </div>
 
       <div class="stat-card" :style="statCardStyle">
-        <span>评测项数量</span>
+        <span>{{ t("dataset.labels.benchmarkItemCount") }}</span>
         <strong>{{ category.subcategories.length }}</strong>
       </div>
     </header>
@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import DatasetSubcategoryCard from "@/modules/dataset/components/DatasetSubcategoryCard.vue";
 import { getCategoryTheme } from "@/modules/dataset/lib/dataset-utils";
 import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
@@ -35,6 +36,8 @@ import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
 const props = defineProps<{
   category: DatasetCategoryViewModel;
 }>();
+
+const { t } = useI18n();
 
 const headerStyle = computed(() => {
   const theme = getCategoryTheme(props.category.categoryId);

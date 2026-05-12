@@ -22,7 +22,7 @@
             :to="RouteLocation.datasetList"
             variant="primary"
             size="lg"
-            leading-icon="lucide:database"
+            leading-icon="app:action.browseDataset"
           >
             {{ t("common.actions.browseDataset") }}
           </UiButton>
@@ -31,7 +31,7 @@
             :to="RouteLocation.agentSubmit"
             variant="primary"
             size="lg"
-            leading-icon="lucide:file-plus-2"
+            leading-icon="app:action.submitEvaluation"
           >
             {{ t("common.actions.submitEvaluation") }}
           </UiButton>
@@ -39,7 +39,7 @@
             v-else
             variant="primary"
             size="lg"
-            leading-icon="lucide:log-in"
+            leading-icon="app:action.login"
             @click="openLoginDialog"
           >
             {{ t("common.actions.loginRegister") }}
@@ -48,7 +48,7 @@
             :to="isLogin ? RouteLocation.userCenter : RouteLocation.contact"
             variant="primary"
             size="lg"
-            :leading-icon="isLogin ? 'lucide:clipboard-list' : 'lucide:messages-square'"
+            :leading-icon="isLogin ? 'app:action.viewRecords' : 'app:action.contactUs'"
           >
             {{
               isLogin
@@ -100,6 +100,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import type { RouteLocationRaw } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "@/modules/account/stores/userStore";
@@ -107,6 +108,7 @@ import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import HomeWorkflowStep from "@/modules/public/components/HomeWorkflowStep.vue";
 import { RouteLocation } from "@/app/router/route-names";
+import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
 const { locale, t } = useI18n();
 const userStore = useUserStore();
@@ -163,10 +165,19 @@ const typeText = (
   return startDelay + source.length * stepDelay;
 };
 
-const workflowItems = computed(() => [
+interface WorkflowItem {
+  step: number;
+  icon: AppIconName;
+  title: string;
+  description: string;
+  actionLabel: string;
+  to: RouteLocationRaw;
+}
+
+const workflowItems = computed<WorkflowItem[]>(() => [
   {
     step: 1,
-    icon: "lucide:database",
+    icon: "app:home.workflow.browse",
     title: t("public.home.workflow.browse.title"),
     description: t("public.home.workflow.browse.description"),
     actionLabel: t("public.home.workflow.browse.action"),
@@ -174,7 +185,7 @@ const workflowItems = computed(() => [
   },
   {
     step: 2,
-    icon: "lucide:file-plus-2",
+    icon: "app:home.workflow.submit",
     title: t("public.home.workflow.submit.title"),
     description: t("public.home.workflow.submit.description"),
     actionLabel: isLogin.value
@@ -184,7 +195,7 @@ const workflowItems = computed(() => [
   },
   {
     step: 3,
-    icon: "lucide:clipboard-list",
+    icon: "app:home.workflow.track",
     title: t("public.home.workflow.track.title"),
     description: t("public.home.workflow.track.description"),
     actionLabel: isLogin.value
@@ -194,7 +205,7 @@ const workflowItems = computed(() => [
   },
   {
     step: 4,
-    icon: "lucide:file-search",
+    icon: "app:home.workflow.review",
     title: t("public.home.workflow.review.title"),
     description: t("public.home.workflow.review.description"),
     actionLabel: isLogin.value

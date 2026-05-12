@@ -1,3 +1,4 @@
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import { computed, ref } from "vue";
 import { getDatasetCatalog } from "@/modules/dataset/api/dataset-api";
 import type { DatasetCatalogResponse } from "@/shared/types/dataset-types";
@@ -60,7 +61,9 @@ export const useSubmitDatasetCatalog = () => {
     } catch (error) {
       status.value = "error";
       errorMessage.value =
-        error instanceof Error ? error.message : "目录加载失败，请重试。";
+        error instanceof Error
+          ? error.message
+          : translateRuntimeMessage("submission.errors.catalogLoadFailed");
       throw error;
     }
   };

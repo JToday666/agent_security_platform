@@ -1,1 +1,100 @@
-{}
+{
+  "api": {
+    "catalogLoadFailed": "目录加载失败，请稍后重试。",
+    "detailLoadFailed": "详情加载失败，请稍后重试。",
+    "notFound": "未找到对应评测项。"
+  },
+  "fallback": {
+    "currentRiskDomain": "当前风险域",
+    "dataset": "数据集",
+    "media": "媒体 {index}",
+    "pending": "待补充",
+    "relatedResource": "相关资源 {index}",
+    "uncategorized": "未分类",
+    "unnamedBenchmarkItem": "未命名评测项",
+    "unnamedCategory": "未命名分类"
+  },
+  "filter": {
+    "clearSearch": "清空搜索",
+    "description": "按风险域、名称和排序方式快速定位目标数据集。",
+    "searchLabel": "搜索",
+    "searchPlaceholder": "按名称或摘要搜索",
+    "sortLabel": "排序",
+    "sortOptions": {
+      "default": "默认排序",
+      "samplesDesc": "样本数从高到低",
+      "updatedDesc": "最近更新"
+    },
+    "title": "筛选与排序"
+  },
+  "labels": {
+    "benchmarkItemCount": "评测项数量",
+    "riskDomain": "风险域",
+    "sampleCount": "样本数",
+    "updatedAt": "最近更新",
+    "updateTime": "更新时间"
+  },
+  "media": {
+    "descriptionFallback": "该媒体用于辅助理解评测项结构与运行效果。",
+    "empty": "当前评测项暂未提供媒体资源。",
+    "unavailable": "资源暂不可用"
+  },
+  "meta": {
+    "sampleCountDescription": "用于构成本数据集的样本总量。",
+    "updatedAtDescription": "以当前接口返回时间为准。"
+  },
+  "pages": {
+    "catalog": {
+      "description": "按风险域浏览可用数据集，并查看说明。",
+      "emptyMessage": "请稍后重试。",
+      "emptyTitle": "当前暂无可用数据集",
+      "loadFailedTitle": "目录加载失败",
+      "loadingMessage": "请稍候。",
+      "loadingTitle": "正在加载目录",
+      "noMatchesMessage": "请尝试更换关键词或切换风险域。",
+      "noMatchesTitle": "没有找到匹配的数据集",
+      "reloadAction": "重新加载",
+      "title": "数据集目录"
+    },
+    "detail": {
+      "backToCatalog": "返回数据集目录",
+      "ctaDescription": "当前数据集选定后，可直接进入提交页继续配置智能体接入方式与运行参数。",
+      "ctaTitle": "准备发起评测",
+      "descriptionFallback": "查看该数据集的说明、重点、资源与样例。",
+      "detailLoadFailedTitle": "详情加载失败",
+      "fullDescriptionFallback": "暂无详细说明。",
+      "loadingMessage": "请稍候。",
+      "loadingTitle": "正在加载详情",
+      "loginToEvaluateDataset": "登录后评测此数据集",
+      "notFoundTitle": "评测项不存在",
+      "retryAction": "重试",
+      "sections": {
+        "details": "详细说明",
+        "highlights": "评测重点",
+        "media": "媒体资料",
+        "scenarios": "典型场景"
+      },
+      "submitWithDataset": "使用此数据集发起评测",
+      "titleFallback": "数据集详情"
+    }
+  },
+  "resources": {
+    "description": "仅展示当前接口已返回的文档、下载、演示或外链资源。",
+    "emptyMessage": "当前数据集没有返回可展示的外部资源。",
+    "emptyTitle": "暂无资源",
+    "title": "资源与示例",
+    "types": {
+      "demo": "演示",
+      "docs": "文档",
+      "download": "下载",
+      "link": "链接"
+    },
+    "view": "查看资源"
+  },
+  "subcategory": {
+    "loginToEvaluate": "登录后评测",
+    "noDescription": "暂无说明",
+    "useDataset": "使用此数据集",
+    "viewDetails": "查看详情"
+  }
+}

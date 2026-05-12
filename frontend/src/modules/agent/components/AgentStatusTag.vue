@@ -7,6 +7,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import type { AgentStatus } from "@/shared/types/agent-registry-types";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import UiTag from "@/shared/ui/display/UiTag.vue";
@@ -26,7 +27,9 @@ const props = withDefaults(
   },
 );
 
-const label = computed(() => getAgentStatusLabel(props.status));
+const { t } = useI18n();
+
+const label = computed(() => getAgentStatusLabel(props.status, t));
 const tone = computed(() => getAgentStatusTone(props.status));
 const icon = computed(() => getAgentStatusIcon(props.status));
 </script>

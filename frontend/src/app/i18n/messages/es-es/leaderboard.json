@@ -1,1 +1,51 @@
-{}
+{
+  "api": {
+    "loadFailed": "Error al cargar la clasificación. Inténtalo de nuevo más tarde.",
+    "unnamedAgent": "Agent sin nombre"
+  },
+  "champion": {
+    "anonymous": "Anónimo",
+    "aria": "Primero actual",
+    "label": "Primero actual"
+  },
+  "empty": {
+    "message": "Aún no hay resultados de evaluación públicos que mostrar.",
+    "title": "Sin clasificación pública"
+  },
+  "errors": {
+    "loadFailedTitle": "Error al cargar la clasificación",
+    "unavailableMessage": "La clasificación pública no se puede leer temporalmente. Inténtalo de nuevo más tarde.",
+    "unavailableTitle": "Clasificación no disponible"
+  },
+  "overview": {
+    "aria": "Vista general de clasificación",
+    "currentSecurityCapability": "Capacidad de seguridad actual",
+    "listedAgents": "Agents en clasificación",
+    "lowestRiskScore": "Puntuación de riesgo mínima"
+  },
+  "page": {
+    "description": "Muestra el rendimiento general de seguridad de los Agents a partir de instantáneas de evaluación públicas.",
+    "loadingTitle": "Leyendo clasificación",
+    "title": "Clasificación"
+  },
+  "scores": {
+    "composite": "Global",
+    "compositeFull": "Puntuación compuesta",
+    "highDifficulty": "Alta dificultad",
+    "highDifficultyFull": "Puntuación de alta dificultad",
+    "notReturned": "No devuelto",
+    "risk": "Riesgo",
+    "riskFull": "Puntuación de riesgo",
+    "safeCapability": "Seguridad",
+    "safeCapabilityFull": "Capacidad de seguridad"
+  },
+  "table": {
+    "agent": "Agent",
+    "anonymous": "Anónimo",
+    "confidence": "Confianza",
+    "description": "Orden actual por {sort}. Una puntuación de riesgo más baja indica una menor proporción de comportamiento no seguro.",
+    "rank": "Clasificación",
+    "samples": "Muestra",
+    "title": "Resultados de evaluación públicos"
+  }
+}

@@ -1,22 +1,23 @@
 <template>
-  <article class="leaderboard-champion" aria-label="当前第一">
+  <article class="leaderboard-champion" :aria-label="t('leaderboard.champion.aria')">
     <span class="leaderboard-champion__rank">No. 1</span>
-    <span class="leaderboard-champion__label">当前第一</span>
+    <span class="leaderboard-champion__label">{{ t("leaderboard.champion.label") }}</span>
     <strong class="leaderboard-champion__name" :title="entry?.displayName">
-      {{ entry?.displayName ?? "未返回" }}
+      {{ entry?.displayName ?? t("leaderboard.scores.notReturned") }}
     </strong>
     <span v-if="entry?.anonymous" class="leaderboard-champion__anonymous">
-      匿名
+      {{ t("leaderboard.champion.anonymous") }}
     </span>
     <div class="leaderboard-champion__score">
       <span>{{ sortLabel }}</span>
-      <strong>{{ formatLeaderboardScore(scoreValue) }}</strong>
+      <strong>{{ formatLeaderboardScore(scoreValue, t) }}</strong>
     </div>
   </article>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import {
   formatLeaderboardScore,
   getLeaderboardSortOption,
@@ -29,7 +30,10 @@ const props = defineProps<{
   sortState: LeaderboardSortState;
 }>();
 
-const sortLabel = computed(() => getLeaderboardSortOption(props.sortState.key).label);
+const { t } = useI18n();
+const sortLabel = computed(() =>
+  getLeaderboardSortOption(props.sortState.key, t).label,
+);
 const scoreValue = computed(() => props.entry?.[props.sortState.key] ?? null);
 </script>
 
