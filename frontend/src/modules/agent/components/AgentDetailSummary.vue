@@ -1,5 +1,5 @@
 <template>
-  <SectionBlock title="状态摘要">
+  <SectionBlock :title="t('agent.detail.sections.summary')">
     <div class="summary-surface">
       <dl class="summary-grid">
         <div
@@ -14,12 +14,15 @@
           <dd v-else>{{ item.value }}</dd>
         </div>
       </dl>
-      <p class="detail-description">{{ detail.description || "暂无描述" }}</p>
+      <p class="detail-description">
+        {{ detail.description || t("agent.common.noDescription") }}
+      </p>
     </div>
   </SectionBlock>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import AgentStatusTag from "@/modules/agent/components/AgentStatusTag.vue";
 import type { AgentDetailTextItem } from "@/modules/agent/lib/agent-detail-view";
 import type { AgentDetail } from "@/shared/types/agent-registry-types";
@@ -29,6 +32,8 @@ defineProps<{
   detail: AgentDetail;
   items: AgentDetailTextItem[];
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

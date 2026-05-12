@@ -1,54 +1,54 @@
 <template>
   <section class="submit-summary">
     <div class="section-head">
-      <h2>任务摘要</h2>
-      <p>确认当前配置后即可创建评测任务。</p>
+      <h2>{{ t("submission.summary.title") }}</h2>
+      <p>{{ t("submission.summary.subtitle") }}</p>
     </div>
 
     <dl class="summary-list">
       <div>
-        <dt>智能体名称</dt>
-        <dd>{{ agentName || "未选择" }}</dd>
+        <dt>{{ t("submission.summary.agentName") }}</dt>
+        <dd>{{ agentName || t("submission.summary.notSelected") }}</dd>
       </div>
       <div>
-        <dt>提交方式</dt>
+        <dt>{{ t("submission.summary.submitMethod") }}</dt>
         <dd>{{ submitMethod === "docker" ? "Docker" : "API" }}</dd>
       </div>
       <div>
-        <dt>已选风险域</dt>
+        <dt>{{ t("submission.summary.selectedRiskDomains") }}</dt>
         <dd>{{ selectedCategoryCount }}</dd>
       </div>
       <div>
-        <dt>已选数据集</dt>
+        <dt>{{ t("submission.summary.selectedDatasets") }}</dt>
         <dd>{{ selectedDatasetCount }}</dd>
       </div>
     </dl>
 
     <div class="section-head section-head--compact">
-      <h3>运行参数</h3>
+      <h3>{{ t("submission.summary.runParameters") }}</h3>
     </div>
 
     <dl class="summary-list summary-list--compact">
       <div>
-        <dt>难度</dt>
+        <dt>{{ t("submission.summary.difficulty") }}</dt>
         <dd>{{ difficulty }}</dd>
       </div>
       <div>
-        <dt>超时</dt>
-        <dd>{{ timeoutMinutes }} 分钟</dd>
+        <dt>{{ t("submission.summary.timeout") }}</dt>
+        <dd>{{ t("submission.summary.minutesValue", { value: timeoutMinutes }) }}</dd>
       </div>
       <div>
-        <dt>最大步数</dt>
-        <dd>{{ maxSteps }} 步</dd>
+        <dt>{{ t("submission.summary.maxSteps") }}</dt>
+        <dd>{{ t("submission.summary.maxStepsValue", { value: maxSteps }) }}</dd>
       </div>
       <div>
-        <dt>榜单展示</dt>
-        <dd>{{ leaderboardDisplayMode === "anonymous" ? "匿名" : "公开" }}</dd>
+        <dt>{{ t("submission.summary.leaderboardDisplay") }}</dt>
+        <dd>{{ leaderboardDisplayLabel }}</dd>
       </div>
     </dl>
 
     <div class="section-head section-head--compact">
-      <h3>已选数据集</h3>
+      <h3>{{ t("submission.summary.selectedDatasets") }}</h3>
     </div>
 
     <div v-if="selectedDatasetNames.length" class="dataset-tags">
@@ -64,7 +64,7 @@
         +{{ remainingCount }}
       </UiTag>
     </div>
-    <p v-else class="empty-text">尚未选择数据集。</p>
+    <p v-else class="empty-text">{{ t("submission.summary.datasetEmpty") }}</p>
 
     <div v-if="errorMessage" class="notice-list">
       <InlineNotice tone="danger" :message="errorMessage" />
@@ -72,7 +72,7 @@
 
     <div class="submit-actions">
       <UiButton variant="secondary" type="button" block @click="$emit('reset')">
-        重置
+        {{ t("submission.actions.reset") }}
       </UiButton>
       <UiButton
         variant="primary"
@@ -80,7 +80,7 @@
         block
         :disabled="submitting || !canSubmit"
       >
-        {{ submitting ? "提交中..." : "提交任务" }}
+        {{ submitting ? t("submission.actions.submitting") : t("submission.actions.submitTask") }}
       </UiButton>
     </div>
   </section>
@@ -88,6 +88,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import UiTag from "@/shared/ui/display/UiTag.vue";
@@ -117,12 +118,19 @@ const props = withDefaults(
   },
 );
 
+const { t } = useI18n();
+
 const compactPreviewLimit = 3;
 const previewNames = computed(() =>
   props.selectedDatasetNames.slice(0, compactPreviewLimit),
 );
 const remainingCount = computed(
   () => props.selectedDatasetNames.length - previewNames.value.length,
+);
+const leaderboardDisplayLabel = computed(() =>
+  props.leaderboardDisplayMode === "anonymous"
+    ? t("submission.leaderboardDisplay.anonymous.title")
+    : t("submission.leaderboardDisplay.public.title"),
 );
 </script>
 

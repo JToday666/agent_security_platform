@@ -12,7 +12,7 @@
         :aria-label="t('layout.aria.closeMenu')"
         @click="$emit('close')"
       >
-        <AppIcon icon="lucide:x" class="mobile-close-icon" />
+        <AppIcon icon="app:action.close" class="mobile-close-icon" />
       </button>
     </div>
 
@@ -32,7 +32,7 @@
       class="mobile-cta"
       as="button"
       variant="primary"
-      leading-icon="lucide:log-in"
+      leading-icon="app:action.login"
       @click="$emit('open-login')"
     >
       <span>{{ t("common.actions.loginRegister") }}</span>
@@ -52,7 +52,7 @@
           <AppIcon :icon="item.icon" class="nav-link-icon" />
           <span>{{ item.label }}</span>
         </span>
-        <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
+        <AppIcon icon="app:control.forward" class="mobile-chevron" />
       </router-link>
     </div>
 
@@ -70,7 +70,7 @@
           <AppIcon :icon="item.icon" class="nav-link-icon" />
           <span>{{ item.label }}</span>
         </span>
-        <AppIcon icon="lucide:chevron-right" class="mobile-chevron" />
+        <AppIcon icon="app:control.forward" class="mobile-chevron" />
       </router-link>
     </div>
   </aside>

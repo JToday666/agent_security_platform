@@ -1,55 +1,55 @@
 <template>
   <aside class="detail-actions">
     <div class="detail-actions__head">
-      <span>当前状态</span>
+      <span>{{ t("agent.management.currentStatus") }}</span>
       <AgentStatusTag :status="detail.status" size="sm" />
     </div>
     <dl class="detail-actions__meta">
       <div>
-        <dt>最近验证</dt>
+        <dt>{{ t("agent.detail.items.recentVerification") }}</dt>
         <dd>{{ verificationLabel }}</dd>
       </div>
       <div>
-        <dt>调用模式</dt>
+        <dt>{{ t("agent.detail.items.invokeMode") }}</dt>
         <dd>{{ invokeModeLabel }}</dd>
       </div>
     </dl>
     <UiButton
       variant="secondary"
       block
-      leading-icon="lucide:rotate-cw"
+      leading-icon="app:action.verify"
       :disabled="!detail.actions.canVerify || busy"
       :loading="busyAction === 'verify'"
       @click="$emit('verify')"
     >
-      验证
+      {{ t("agent.actions.verify") }}
     </UiButton>
     <UiButton
       :to="RouteLocation.agentRegister({ copyFrom: detail.agentId })"
       variant="secondary"
       block
-      leading-icon="lucide:copy-plus"
+      leading-icon="app:action.copyNew"
     >
-      复制新建
+      {{ t("agent.actions.copyNew") }}
     </UiButton>
     <UiButton
       :to="RouteLocation.agentSubmitWithAgent(detail.agentId)"
       variant="primary"
       block
-      leading-icon="lucide:file-plus-2"
+      leading-icon="app:action.submitEvaluation"
       :disabled="!detail.actions.canSubmitEvaluation"
     >
-      提交评测
+      {{ t("common.actions.submitEvaluation") }}
     </UiButton>
     <UiButton
       variant="danger"
       block
-      leading-icon="lucide:archive"
+      leading-icon="app:action.archive"
       :disabled="!detail.actions.canArchive || busy"
       :loading="busyAction === 'archive'"
       @click="$emit('archive')"
     >
-      归档
+      {{ t("agent.actions.archive") }}
     </UiButton>
     <InlineNotice
       v-if="actionError"
@@ -61,6 +61,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { RouteLocation } from "@/app/router/route-names";
 import AgentStatusTag from "@/modules/agent/components/AgentStatusTag.vue";
 import { getInvokeModeLabel } from "@/modules/agent/model/agent-display";
@@ -76,12 +77,14 @@ const props = defineProps<{
   actionError: string;
 }>();
 
+const { t } = useI18n();
+
 defineEmits<{
   (event: "verify"): void;
   (event: "archive"): void;
 }>();
 
-const invokeModeLabel = computed(() => getInvokeModeLabel(props.detail.invokeMode));
+const invokeModeLabel = computed(() => getInvokeModeLabel(props.detail.invokeMode, t));
 </script>
 
 <style scoped lang="scss">

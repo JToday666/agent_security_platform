@@ -3,8 +3,8 @@ import {
   formatMetricValue,
   formatNumber,
   formatRatioValue,
+  getMetricDefinitions,
   getMetricLabel,
-  METRIC_DEFINITIONS,
   METRIC_TONES,
   normalizeRatio,
   resolveRiskTone,
@@ -12,6 +12,10 @@ import {
   type EvaluationTone,
   type MetricDefinition,
 } from "@/modules/evaluation/lib/evaluation-report-core";
+import {
+  type AppTranslator,
+  translateRuntimeMessage,
+} from "@/app/i18n/runtime-translator";
 import type { EvaluationReportPayload } from "@/shared/types/agent-types";
 
 export { getMetricLabel };
@@ -51,8 +55,9 @@ export interface EvaluationConfidenceSummary {
 
 export const buildMetricRows = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationMetricRow[] =>
-  METRIC_DEFINITIONS.map((definition) => ({
+  getMetricDefinitions(t).map((definition) => ({
     ...definition,
     value: formatMetricValue(definition.key, report.scores[definition.key]),
     tone: METRIC_TONES[definition.key],
@@ -60,94 +65,96 @@ export const buildMetricRows = (
 
 export const buildRadarMetricRows = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationRadarMetricRow[] => [
   {
     key: "performanceScore",
-    label: "表现分",
+    label: t("evaluation.metrics.performanceScore.label"),
     score: clampScore(report.scores.performanceScore),
     value: formatMetricValue(
       "performanceScore",
       report.scores.performanceScore,
     ),
-    description: "统一标准难度结构下的预期安全成功能力。",
+    description: t("evaluation.metrics.performanceScore.radarDescription"),
     tone: resolveToneByScore(report.scores.performanceScore),
   },
   {
     key: "completionScore",
-    label: "完成能力分",
+    label: t("evaluation.metrics.completionScore.label"),
     score: clampScore(report.scores.completionScore),
     value: formatMetricValue("completionScore", report.scores.completionScore),
-    description: "把评测任务流程稳定跑完的能力。",
+    description: t("evaluation.metrics.completionScore.radarDescription"),
     tone: resolveToneByScore(report.scores.completionScore),
   },
   {
     key: "safetyScore",
-    label: "安全识别分",
+    label: t("evaluation.metrics.safetyScore.label"),
     score: clampScore(report.scores.safetyScore),
     value: formatMetricValue("safetyScore", report.scores.safetyScore),
-    description: "完成流程后识别风险并做出安全决策的能力。",
+    description: t("evaluation.metrics.safetyScore.radarDescription"),
     tone: resolveToneByScore(report.scores.safetyScore),
   },
   {
     key: "hardScore",
-    label: "高难表现分",
+    label: t("evaluation.metrics.hardScore.label"),
     score: clampScore(report.scores.hardScore),
     value: formatMetricValue("hardScore", report.scores.hardScore),
-    description: "高难样本上的预期安全成功能力。",
+    description: t("evaluation.metrics.hardScore.description"),
     tone: resolveToneByScore(report.scores.hardScore),
   },
   {
     key: "timeScore",
-    label: "速度分",
+    label: t("evaluation.metrics.timeScore.label"),
     score: clampScore(report.scores.timeScore),
     value: formatMetricValue("timeScore", report.scores.timeScore),
-    description: "成功样本中的相对时间效率。",
+    description: t("evaluation.metrics.timeScore.description"),
     tone: resolveToneByScore(report.scores.timeScore),
   },
   {
     key: "safetyStability",
-    label: "安全稳定",
+    label: t("evaluation.metrics.safetyStability.label"),
     score: clampScore(100 - report.scores.unsafeRate),
     value: formatNumber(clampScore(100 - report.scores.unsafeRate)),
-    description: "由风险率反向换算，表示完成后的稳定安全程度。",
+    description: t("evaluation.metrics.safetyStability.description"),
     tone: resolveRiskTone(report.scores.unsafeRate),
   },
 ];
 
 export const buildRateOverviewRows = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationRateOverviewRow[] => {
   const rows: EvaluationRateOverviewRow[] = [
     {
       key: "completionRate",
-      label: "完成率",
+      label: t("evaluation.metrics.completionRate.label"),
       score: Number(
         (normalizeRatio(report.rawStats.completionRate) * 100).toFixed(1),
       ),
       value: formatRatioValue(report.rawStats.completionRate),
-      description: "已完成样本占全部样本的比例。",
+      description: t("evaluation.metrics.completionRate.description"),
       tone: resolveToneByScore(report.rawStats.completionRate * 100),
     },
     {
       key: "successRate",
-      label: "成功率",
+      label: t("evaluation.metrics.successRate.label"),
       score: Number(
         (normalizeRatio(report.rawStats.successRate) * 100).toFixed(1),
       ),
       value: formatRatioValue(report.rawStats.successRate),
-      description: "安全成功样本占全部样本的比例。",
+      description: t("evaluation.metrics.successRate.description"),
       tone: resolveToneByScore(report.rawStats.successRate * 100),
     },
     {
       key: "conditionalSuccessRate",
-      label: "条件成功率",
+      label: t("evaluation.metrics.conditionalSuccessRate.label"),
       score: Number(
         (normalizeRatio(report.rawStats.conditionalSuccessRate) * 100).toFixed(
           1,
         ),
       ),
       value: formatRatioValue(report.rawStats.conditionalSuccessRate),
-      description: "在有效完成样本中安全成功的比例。",
+      description: t("evaluation.metrics.conditionalSuccessRate.description"),
       tone: resolveToneByScore(report.rawStats.conditionalSuccessRate * 100),
     },
   ];
@@ -161,6 +168,7 @@ export const buildRateOverviewRows = (
 
 export const buildConfidenceSummary = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationConfidenceSummary => {
   const low = clampScore(report.posteriorInterval.psQ05);
   const high = clampScore(report.posteriorInterval.psQ95);
@@ -175,8 +183,10 @@ export const buildConfidenceSummary = (
     low: orderedLow,
     median,
     high: orderedHigh,
-    label: "置信区间",
+    label: t("evaluation.metrics.confidenceInterval.label"),
     value: `${formatNumber(orderedLow)}-${formatNumber(orderedHigh)}`,
-    caption: `中位数 ${formatNumber(median)}，反映当前分数的主要波动范围。`,
+    caption: t("evaluation.metrics.confidenceInterval.caption", {
+      median: formatNumber(median),
+    }),
   };
 };

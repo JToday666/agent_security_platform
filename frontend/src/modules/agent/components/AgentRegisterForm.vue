@@ -3,7 +3,12 @@
     <section class="agent-register-step" aria-live="polite">
       <header class="agent-register-step__head">
         <span class="agent-register-step__eyebrow">
-          步骤 {{ currentStepIndex + 1 }} / {{ steps.length }}
+          {{
+            t("agent.registerForm.stepCounter", {
+              current: currentStepIndex + 1,
+              total: steps.length,
+            })
+          }}
         </span>
         <h2>{{ currentStepTitle }}</h2>
         <p>{{ currentStepDescription }}</p>
@@ -23,11 +28,13 @@
             @click="$emit('apply-template', AGENT_NO_TEMPLATE_ID)"
           >
             <span class="template-tile__copy">
-              <strong>不使用模板</strong>
-              <span>从空配置开始，手动填写连接、映射和状态字段。</span>
+              <strong>{{ t("agent.register.template.title") }}</strong>
+              <span>{{ t("agent.register.template.description") }}</span>
             </span>
             <span class="template-tile__tags">
-              <UiTag tone="neutral" size="sm">custom</UiTag>
+              <UiTag tone="neutral" size="sm">
+                {{ t("agent.common.templateTagCustom") }}
+              </UiTag>
             </span>
           </button>
 
@@ -45,11 +52,11 @@
             </span>
             <span class="template-tile__tags">
               <UiTag v-if="template.recommended" tone="success" size="sm">
-                推荐
+                {{ t("agent.common.recommended") }}
               </UiTag>
               <UiTag tone="neutral" size="sm">{{ template.level }}</UiTag>
               <UiTag
-                v-for="tag in template.tags.filter((item) => item !== '推荐')"
+                v-for="tag in template.tags.filter((item) => item !== t('agent.common.recommended'))"
                 :key="tag"
                 tone="neutral"
                 size="sm"
@@ -69,21 +76,21 @@
       <div v-else-if="currentStepId === 'basic'" class="agent-register-step__body">
         <div class="form-grid">
           <FormField
-            label="Agent 名称"
+            :label="t('agent.fields.name')"
             :model-value="form.name"
             :error="fieldErrors.name"
             required
-            placeholder="例如：Skyvern Agent"
-            help="用于在平台内识别该智能体，建议使用服务或能力名称。"
+            :placeholder="t('agent.placeholders.nameExample')"
+            :help="t('agent.registerForm.helps.name')"
             @update:model-value="updateBasicField('name', $event)"
           />
           <FormField
-            label="Agent 描述"
+            :label="t('agent.fields.description')"
             :model-value="form.description"
             type="textarea"
             :rows="5"
-            placeholder="简要说明用途。"
-            help="说明该智能体适合处理的任务，便于后续提交评测时选择。"
+            :placeholder="t('agent.placeholders.descriptionBrief')"
+            :help="t('agent.registerForm.helps.description')"
             @update:model-value="updateBasicField('description', $event)"
           />
         </div>
@@ -95,74 +102,74 @@
       >
         <div class="form-grid">
           <FormField
-            label="调用模式"
+            :label="t('agent.fields.invokeMode')"
             :model-value="form.invokeMode"
             type="select"
             :options="invokeModeOptions"
-            leading-icon="lucide:workflow"
-            help="提交轮询适用于异步任务；同步响应适用于一次请求直接返回结果。"
+            leading-icon="app:field.invokeMode"
+            :help="t('agent.registerForm.helps.invokeMode')"
             @update:model-value="$emit('set-invoke-mode', String($event))"
           />
           <FormField
-            label="服务根地址"
+            :label="t('agent.fields.connectionBaseUrl')"
             :model-value="form.connection.baseUrl"
             type="url"
             :error="fieldErrors.baseUrl"
             required
-            leading-icon="lucide:link"
+            leading-icon="app:field.connection"
             placeholder="https://api.agent.example.com"
-            help="填写 Agent 服务的协议、域名和端口，不包含具体接口路径。"
+            :help="t('agent.registerForm.helps.baseUrl')"
             @update:model-value="updateConnectionTextField('baseUrl', $event)"
           />
           <FormField
-            label="提交任务路径"
+            :label="t('agent.fields.taskPath')"
             :model-value="form.connection.invokePath"
             :error="fieldErrors.invokePath"
             required
             placeholder="/v1/run/tasks"
-            help="平台提交任务时调用的路径，会与服务根地址拼接。"
+            :help="t('agent.registerForm.helps.taskPath')"
             @update:model-value="updateConnectionTextField('invokePath', $event)"
           />
           <FormField
             v-if="form.invokeMode === 'submit_poll'"
-            label="结果路径模板"
+            :label="t('agent.fields.resultPathTemplate')"
             :model-value="form.connection.resultPathTemplate || ''"
             :error="fieldErrors.resultPathTemplate"
             required
             placeholder="/v1/run/tasks/{externalRunId}"
-            help="轮询模式下用于查询任务结果的路径，可使用 {externalRunId} 占位。"
+            :help="t('agent.registerForm.helps.resultPathTemplate')"
             @update:model-value="updateConnectionTextField('resultPathTemplate', $event)"
           />
           <FormField
-            label="请求超时（秒）"
+            :label="t('agent.fields.requestTimeout')"
             :model-value="String(form.connection.requestTimeoutSeconds)"
             type="number"
-            help="单次提交请求等待响应的最长时间。"
+            :help="t('agent.registerForm.helps.requestTimeout')"
             @update:model-value="updateConnectionNumberField('requestTimeoutSeconds', $event)"
           />
           <FormField
             v-if="form.invokeMode === 'submit_poll'"
-            label="轮询间隔（秒）"
+            :label="t('agent.fields.pollInterval')"
             :model-value="String(form.connection.pollIntervalSeconds)"
             type="number"
-            help="平台两次查询结果之间的等待时间。"
+            :help="t('agent.registerForm.helps.pollInterval')"
             @update:model-value="updateConnectionNumberField('pollIntervalSeconds', $event)"
           />
           <FormField
             v-if="form.invokeMode === 'submit_poll'"
-            label="轮询总超时（秒）"
+            :label="t('agent.fields.pollTimeout')"
             :model-value="String(form.connection.pollTimeoutSeconds)"
             type="number"
-            help="超过该时间仍未进入终态时，平台会停止等待。"
+            :help="t('agent.registerForm.helps.pollTimeout')"
             @update:model-value="updateConnectionNumberField('pollTimeoutSeconds', $event)"
           />
           <FormField
-            label="鉴权方式"
+            :label="t('agent.fields.authMethod')"
             :model-value="form.auth.type"
             type="select"
             :options="authOptions"
-            leading-icon="lucide:key-round"
-            help="选择平台调用 Agent 服务时使用的鉴权方式。"
+            leading-icon="app:field.apiKey"
+            :help="t('agent.registerForm.helps.authMethod')"
             @update:model-value="$emit('set-auth-type', String($event))"
           />
           <FormField
@@ -171,28 +178,28 @@
             :model-value="form.auth.token"
             type="password"
             :error="fieldErrors.authSecret"
-            placeholder="创建时写入，详情页不展示明文"
-            help="平台会以 Authorization: Bearer Token 形式发送。"
+            :placeholder="t('agent.registerForm.notVisibleSecretPlaceholder')"
+            :help="t('agent.registerForm.helps.authSecret')"
             @update:model-value="updateAuthField('token', $event)"
           />
           <template
             v-if="form.auth.type === 'api_key_header' || form.auth.type === 'custom_header'"
           >
             <FormField
-              label="Header 名称"
+              :label="t('agent.fields.authHeaderName')"
               :model-value="form.auth.headerName"
               :error="fieldErrors.authHeaderName"
               placeholder="x-api-key"
-              help="填写服务要求的请求头名称。"
+              :help="t('agent.registerForm.helps.authHeaderName')"
               @update:model-value="updateAuthField('headerName', $event)"
             />
             <FormField
-              label="Header 密钥"
+              :label="t('agent.fields.authHeaderSecret')"
               :model-value="form.auth.secret"
               type="password"
               :error="fieldErrors.authHeaderSecret"
-              placeholder="创建时写入，详情页不展示明文"
-              help="平台会把该密钥写入上方 Header。"
+              :placeholder="t('agent.registerForm.notVisibleSecretPlaceholder')"
+              :help="t('agent.registerForm.helps.authHeaderSecret')"
               @update:model-value="updateAuthField('secret', $event)"
             />
           </template>
@@ -217,17 +224,17 @@
           />
           <UiToggleField
             :model-value="form.requestOptions.structuredOutput.supported"
-            title="支持结构化输出"
-            description="平台会在请求体中附加结构化输出字段。"
+            :title="t('agent.registerForm.structuredOutputTitle')"
+            :description="t('agent.registerForm.helps.structuredOutput')"
             @update:model-value="updateStructuredOutputSupported"
           />
           <FormField
             v-if="form.requestOptions.structuredOutput.supported"
-            label="结构化输出字段别名"
+            :label="t('agent.fields.structuredOutputAlias')"
             :model-value="form.requestOptions.structuredOutput.fieldAlias"
             :error="fieldErrors.structuredOutputAlias"
             placeholder="outputSchema"
-            help="填写 Agent 请求体中接收输出 schema 的顶层字段名。"
+            :help="t('agent.registerForm.helps.structuredOutputAlias')"
             @update:model-value="updateStructuredOutputAlias"
           />
         </div>
@@ -266,8 +273,8 @@
             :class="{ 'custom-choice--active': customFieldsChoice === 'use' }"
             @click="$emit('set-custom-fields-choice', 'use')"
           >
-            <strong>添加固定字段</strong>
-            <span>为每次请求附加固定参数。</span>
+            <strong>{{ t("agent.registerForm.customFields.addFixed") }}</strong>
+            <span>{{ t("agent.registerForm.customFields.addFixedDescription") }}</span>
           </button>
           <button
             type="button"
@@ -275,8 +282,8 @@
             :class="{ 'custom-choice--active': customFieldsChoice === 'skip' }"
             @click="$emit('set-custom-fields-choice', 'skip')"
           >
-            <strong>不添加固定字段</strong>
-            <span>仅使用上一步配置的任务字段。</span>
+            <strong>{{ t("agent.registerForm.customFields.skipFixed") }}</strong>
+            <span>{{ t("agent.registerForm.customFields.skipFixedDescription") }}</span>
           </button>
         </div>
 
@@ -288,49 +295,49 @@
               class="custom-field-row"
             >
               <FormField
-                label="字段名"
+                :label="t('agent.fields.customFieldKey')"
                 :model-value="field.key"
-                help="填写外部请求体中的固定字段名。"
+                :help="t('agent.registerForm.customFields.fieldKeyHelp')"
                 @update:model-value="updateCustomFieldValue(field.id, 'key', $event)"
               />
               <FormField
-                label="类型"
+                :label="t('agent.fields.customFieldType')"
                 :model-value="field.valueType"
                 type="select"
                 :options="customTypeOptions"
-                help="选择固定字段值的类型。"
+                :help="t('agent.registerForm.customFields.fieldTypeHelp')"
                 @update:model-value="$emit('set-custom-field-type', field.id, String($event))"
               />
               <FormField
-                label="字段值"
+                :label="t('agent.fields.customFieldValue')"
                 :model-value="field.value"
-                help="每次请求都会带上的固定值。"
+                :help="t('agent.registerForm.customFields.fieldValueHelp')"
                 @update:model-value="updateCustomFieldValue(field.id, 'value', $event)"
               />
               <UiButton
                 variant="ghost"
                 size="sm"
-                leading-icon="lucide:trash-2"
+                leading-icon="app:action.delete"
                 @click="$emit('remove-custom-field', field.id)"
               >
-                删除
+                {{ t("common.actions.delete") }}
               </UiButton>
             </div>
           </div>
           <UiButton
             variant="secondary"
             size="sm"
-            leading-icon="lucide:plus"
+            leading-icon="app:action.add"
             @click="$emit('add-custom-field')"
           >
-            添加字段
+            {{ t("agent.registerForm.customFields.addField") }}
           </UiButton>
         </template>
 
         <InlineNotice
           v-if="usesNoTemplate && customFieldsChoice === 'skip'"
           tone="info"
-          message="本次注册不会添加自定义固定字段。"
+          :message="t('agent.registerForm.customFields.skipNotice')"
         />
         <InlineNotice
           v-if="fieldErrors.customRequestBody"
@@ -342,19 +349,19 @@
       <div v-else class="agent-register-step__body">
         <div class="form-grid">
           <FormField
-            label="终态"
+            :label="t('agent.fields.terminalStatuses')"
             :model-value="form.terminalStatusesText"
             :error="fieldErrors.terminalStatuses"
             placeholder="completed, failed, timed_out"
-            help="填写 Agent 返回的终态状态值，多个值用逗号或换行分隔。"
+            :help="t('agent.registerForm.helps.statusTerminal')"
             @update:model-value="updateStatusField('terminalStatusesText', $event)"
           />
           <FormField
-            label="成功态"
+            :label="t('agent.fields.successStatuses')"
             :model-value="form.successStatusesText"
             :error="fieldErrors.successStatuses"
             placeholder="completed"
-            help="填写代表任务成功的状态值，必须包含在终态集合内。"
+            :help="t('agent.registerForm.helps.statusSuccess')"
             @update:model-value="updateStatusField('successStatusesText', $event)"
           />
         </div>
@@ -371,13 +378,14 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import AgentCreateResultPanel from "@/modules/agent/components/AgentCreateResultPanel.vue";
 import {
-  authOptions,
-  customTypeOptions,
-  inputMappingItems,
-  invokeModeOptions,
-  outputMappingItems,
+  buildAuthOptions,
+  buildCustomTypeOptions,
+  buildInputMappingItems,
+  buildInvokeModeOptions,
+  buildOutputMappingItems,
   type AgentRegisterCustomFieldsChoice,
 } from "@/modules/agent/composables/useAgentRegisterPage";
 import type {
@@ -425,6 +433,13 @@ const emit = defineEmits<{
   (event: "step-edited", stepId: AgentRegisterStepId): void;
 }>();
 
+const { t } = useI18n();
+const invokeModeOptions = computed(() => buildInvokeModeOptions(t));
+const authOptions = computed(() => buildAuthOptions(t));
+const customTypeOptions = computed(() => buildCustomTypeOptions(t));
+const inputMappingItems = computed(() => buildInputMappingItems(t));
+const outputMappingItems = computed(() => buildOutputMappingItems(t));
+
 const sortedTemplates = computed(() =>
   [...props.templates].sort(
     (left, right) =>
@@ -447,10 +462,10 @@ const currentStepDescription = computed(
 );
 const visibleOutputMappingItems = computed(() => {
   if (props.form.invokeMode === "submit_poll") {
-    return outputMappingItems;
+    return outputMappingItems.value;
   }
 
-  return outputMappingItems.filter(
+  return outputMappingItems.value.filter(
     (item) => item.key !== "externalRunId" && item.key !== "status",
   );
 });
@@ -539,15 +554,6 @@ const updateStatusField = (
   markStepEdited("statuses");
 };
 
-const inputMappingHelp: Record<keyof AgentInputMapping, string> = {
-  task: "必填。填写 Agent 请求体中接收任务目标的顶层字段名，例如 prompt。",
-  entryUrl: "可选。需要起始网址时，平台会把样本入口写入该字段。",
-  timeoutSeconds: "可选。需要任务级超时时间时填写该字段名。",
-  sampleId: "可选。需要样本 ID 参与追踪时填写该字段名。",
-  evaluationId: "可选。需要评测任务 ID 参与追踪时填写该字段名。",
-  maxSteps: "可选。需要限制 Agent 最大执行步数时填写该字段名。",
-};
-
 const inputMappingPlaceholder: Record<keyof AgentInputMapping, string> = {
   task: "prompt",
   entryUrl: "url",
@@ -555,13 +561,6 @@ const inputMappingPlaceholder: Record<keyof AgentInputMapping, string> = {
   sampleId: "sampleId",
   evaluationId: "evaluationId",
   maxSteps: "maxSteps",
-};
-
-const outputMappingHelp: Record<keyof AgentOutputMapping, string> = {
-  externalRunId: "轮询模式必填。填写提交响应中运行 ID 的路径；顶层字段写 runId，嵌套字段写 data.runId。",
-  status: "轮询模式必填。填写结果响应中状态字段的路径；顶层字段写 status，嵌套字段写 data.status。",
-  finalAnswer: "可选。填写最终答案或文本结果所在路径，例如 answer 或 output.answer。",
-  errorMessage: "可选。填写错误信息所在路径，便于失败时展示原因，例如 error.message。",
 };
 
 const outputMappingPlaceholder: Record<keyof AgentOutputMapping, string> = {
@@ -572,13 +571,13 @@ const outputMappingPlaceholder: Record<keyof AgentOutputMapping, string> = {
 };
 
 const getInputMappingHelp = (key: keyof AgentInputMapping): string =>
-  inputMappingHelp[key];
+  t(`agent.registerForm.inputMappingHelp.${key}`);
 
 const getInputMappingPlaceholder = (key: keyof AgentInputMapping): string =>
   inputMappingPlaceholder[key];
 
 const getOutputMappingHelp = (key: keyof AgentOutputMapping): string =>
-  outputMappingHelp[key];
+  t(`agent.registerForm.outputMappingHelp.${key}`);
 
 const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
   outputMappingPlaceholder[key];

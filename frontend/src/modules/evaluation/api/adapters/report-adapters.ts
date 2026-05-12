@@ -1,4 +1,5 @@
 import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import type {
   EvaluationDownloads,
   EvaluationRepresentativeSample,
@@ -84,7 +85,9 @@ const normalizeRepresentativeSample = (
 
   return {
     sampleId,
-    datasetName: toStringValue(candidate.datasetName) || "未命名数据集",
+    datasetName:
+      toStringValue(candidate.datasetName) ||
+      translateRuntimeMessage("evaluation.common.unnamedDataset"),
     normalizedResult: toOutcome(candidate.normalizedResult),
     outcomeReasonText: toStringValue(candidate.outcomeReasonText),
     replayUrl: normalizeApiAssetUrl(toOptionalString(candidate.replayUrl)),
@@ -148,7 +151,9 @@ export const adaptEvaluationScoreTrend = (
     defaultView: normalizeView(candidate.defaultView),
     views: {
       capability: {
-        label: toStringValue(capability.label) || "能力视图",
+        label:
+          toStringValue(capability.label) ||
+          translateRuntimeMessage("evaluation.trend.capabilityView"),
         metrics: normalizeMetricKeys(capability.metrics, [
           "conservativeScore",
           "performanceScore",
@@ -156,7 +161,9 @@ export const adaptEvaluationScoreTrend = (
         ]),
       },
       risk: {
-        label: toStringValue(risk.label) || "风险视图",
+        label:
+          toStringValue(risk.label) ||
+          translateRuntimeMessage("evaluation.trend.riskView"),
         metrics: normalizeMetricKeys(risk.metrics, [
           "conservativeScore",
           "confidence",
@@ -176,7 +183,9 @@ export const adaptEvaluationScoreTrend = (
 
             return {
               evaluationId,
-              agentName: toStringValue(row.agentName) || "未命名智能体",
+              agentName:
+                toStringValue(row.agentName) ||
+                translateRuntimeMessage("evaluation.common.unnamedAgent"),
               createdAt: toStringValue(row.createdAt),
               finishedAt: toOptionalString(row.finishedAt),
               scores: SCORE_KEYS.reduce(
@@ -273,7 +282,9 @@ export const adaptEvaluationReportPayload = (
             const row = toRecord(item);
             return {
               datasetId: toStringValue(row.datasetId),
-              datasetName: toStringValue(row.datasetName) || "未命名数据集",
+              datasetName:
+                toStringValue(row.datasetName) ||
+                translateRuntimeMessage("evaluation.common.unnamedDataset"),
               total: Math.max(0, Math.round(toNumberValue(row.total, 0))),
               success: Math.max(0, Math.round(toNumberValue(row.success, 0))),
               failed: Math.max(0, Math.round(toNumberValue(row.failed, 0))),

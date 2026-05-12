@@ -1,3 +1,7 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import { getInvokeModeLabel } from "@/modules/agent/model/agent-display";
 import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
 import type {
@@ -5,6 +9,7 @@ import type {
   AgentDetail,
   AgentVerificationMessage,
 } from "@/shared/types/agent-registry-types";
+import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
 export interface AgentDetailTextItem {
   label: string;
@@ -27,11 +32,17 @@ export interface AgentVerificationMessageGroup {
   messages: AgentVerificationMessage[];
 }
 
-const AUTH_LABEL_MAP: Record<AgentAuthType, string> = {
-  none: "不使用鉴权",
-  bearer: "Bearer Token",
-  api_key_header: "API Key Header",
-  custom_header: "自定义 Header",
+const getAuthLabelKey = (authType: AgentAuthType): string => {
+  switch (authType) {
+    case "none":
+      return "agent.auth.none";
+    case "bearer":
+      return "agent.auth.bearer";
+    case "api_key_header":
+      return "agent.auth.apiKeyHeader";
+    case "custom_header":
+      return "agent.auth.customHeader";
+  }
 };
 
 const displayValue = (value: unknown): string => {
@@ -46,7 +57,10 @@ const displayValue = (value: unknown): string => {
   return "-";
 };
 
-const toMappingValue = (value: unknown): { text: string; empty: boolean } => {
+const toMappingValue = (
+  value: unknown,
+  t: AppTranslator,
+): { text: string; empty: boolean } => {
   if (typeof value === "string" && value.trim()) {
     return { text: value.trim(), empty: false };
   }
@@ -55,88 +69,104 @@ const toMappingValue = (value: unknown): { text: string; empty: boolean } => {
     return { text: String(value), empty: false };
   }
 
-  return { text: "未配置", empty: true };
+  return { text: t("agent.mapping.empty"), empty: true };
 };
 
-export const formatAgentVerificationLabel = (detail: AgentDetail): string => {
+export const formatAgentVerificationLabel = (
+  detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
+): string => {
   if (!detail.verifiedAt) {
-    return "未验证";
+    return t("agent.verification.notVerified");
   }
 
   const result =
     detail.lastVerification?.passed === true
-      ? "通过"
+      ? t("agent.verification.passed")
       : detail.lastVerification?.passed === false
-        ? "失败"
-        : "未知";
+        ? t("agent.verification.failed")
+        : t("agent.common.unknown");
   return `${formatDateTimeLabel(detail.verifiedAt)} · ${result}`;
 };
 
-export const getAgentAuthLabel = (detail: AgentDetail): string =>
-  AUTH_LABEL_MAP[detail.auth.type];
+export const getAgentAuthLabel = (
+  detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
+): string => t(getAuthLabelKey(detail.auth.type));
 
 export const getAgentAuthHeaderName = (detail: AgentDetail): string => {
   const headerName = detail.auth.publicConfig?.headerName;
   return typeof headerName === "string" ? headerName : "";
 };
 
-export const getAgentVerificationResultLabel = (detail: AgentDetail): string =>
-  detail.lastVerification?.passed ? "验证通过" : "验证失败";
-
-export const getAgentVerificationResultIcon = (detail: AgentDetail): string =>
+export const getAgentVerificationResultLabel = (
+  detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
+): string =>
   detail.lastVerification?.passed
-    ? "lucide:circle-check-big"
-    : "lucide:triangle-alert";
+    ? t("agent.verification.passedResult")
+    : t("agent.verification.failedResult");
+
+export const getAgentVerificationResultIcon = (detail: AgentDetail): AppIconName =>
+  detail.lastVerification?.passed
+    ? "app:status.completed"
+    : "app:status.warning";
 
 export const buildAgentSummaryItems = (
   detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentDetailTextItem[] => [
-  { label: "状态", value: detail.status, kind: "status" },
-  { label: "调用模式", value: getInvokeModeLabel(detail.invokeMode) },
-  { label: "最近验证", value: formatAgentVerificationLabel(detail) },
-  { label: "更新时间", value: formatDateTimeLabel(detail.updatedAt) },
+  { label: t("agent.detail.items.status"), value: detail.status, kind: "status" },
+  { label: t("agent.detail.items.invokeMode"), value: getInvokeModeLabel(detail.invokeMode, t) },
+  { label: t("agent.detail.items.recentVerification"), value: formatAgentVerificationLabel(detail, t) },
+  { label: t("agent.detail.items.updatedAt"), value: formatDateTimeLabel(detail.updatedAt) },
 ];
 
 export const buildAgentConnectionItems = (
   detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentDetailTextItem[] => {
   const { connection } = detail;
   return [
-    { label: "服务根地址", value: displayValue(connection.baseUrl) },
-    { label: "提交任务路径", value: displayValue(connection.invokePath) },
+    { label: t("agent.detail.items.connectionBaseUrl"), value: displayValue(connection.baseUrl) },
+    { label: t("agent.detail.items.taskPath"), value: displayValue(connection.invokePath) },
     {
-      label: "结果路径模板",
+      label: t("agent.detail.items.resultPathTemplate"),
       value: displayValue(connection.resultPathTemplate),
     },
-    { label: "请求超时", value: `${connection.requestTimeoutSeconds} 秒` },
-    { label: "轮询间隔", value: `${connection.pollIntervalSeconds} 秒` },
-    { label: "轮询总超时", value: `${connection.pollTimeoutSeconds} 秒` },
+    { label: t("agent.detail.items.requestTimeout"), value: t("agent.common.seconds", { value: connection.requestTimeoutSeconds }) },
+    { label: t("agent.detail.items.pollInterval"), value: t("agent.common.seconds", { value: connection.pollIntervalSeconds }) },
+    { label: t("agent.detail.items.pollTimeout"), value: t("agent.common.seconds", { value: connection.pollTimeoutSeconds }) },
   ];
 };
 
 export const buildAgentAuthItems = (
   detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentDetailTextItem[] => [
-  { label: "鉴权方式", value: getAgentAuthLabel(detail) },
+  { label: t("agent.detail.items.authMethod"), value: getAgentAuthLabel(detail, t) },
   ...(getAgentAuthHeaderName(detail)
-    ? [{ label: "Header 名称", value: getAgentAuthHeaderName(detail) }]
+    ? [{ label: t("agent.detail.items.authHeaderName"), value: getAgentAuthHeaderName(detail) }]
     : []),
   {
-    label: "凭据状态",
-    value: detail.auth.hasCredential ? "已配置" : "未配置",
+    label: t("agent.detail.items.credentialStatus"),
+    value: detail.auth.hasCredential
+      ? t("agent.common.configured")
+      : t("agent.common.notConfigured"),
   },
 ];
 
 export const buildAgentInputMappingItems = (
   value: Record<string, unknown>,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentMappingDisplayItem[] =>
   Object.entries(value).map(([key, item]) => {
-    const target = toMappingValue(item);
+    const target = toMappingValue(item, t);
     return {
       label: key,
-      sourceLabel: "平台字段",
+      sourceLabel: t("agent.mapping.platformField"),
       source: key,
-      targetLabel: "Agent 字段",
+      targetLabel: t("agent.mapping.agentField"),
       target: target.text,
       empty: target.empty,
     };
@@ -144,14 +174,15 @@ export const buildAgentInputMappingItems = (
 
 export const buildAgentOutputMappingItems = (
   value: Record<string, unknown>,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentMappingDisplayItem[] =>
   Object.entries(value).map(([key, item]) => {
-    const source = toMappingValue(item);
+    const source = toMappingValue(item, t);
     return {
       label: key,
-      sourceLabel: "响应路径",
+      sourceLabel: t("agent.mapping.responsePath"),
       source: source.text,
-      targetLabel: "平台字段",
+      targetLabel: t("agent.mapping.platformField"),
       target: key,
       empty: source.empty,
     };
@@ -159,14 +190,15 @@ export const buildAgentOutputMappingItems = (
 
 export const buildAgentStatusItems = (
   detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentDetailTextItem[] => [
   {
-    label: "终态",
-    value: detail.terminalStatuses.join("、") || "-",
+    label: t("agent.detail.items.terminalStatuses"),
+    value: detail.terminalStatuses.join(t("agent.common.listSeparator")) || "-",
   },
   {
-    label: "成功态",
-    value: detail.successStatuses.join("、") || "-",
+    label: t("agent.detail.items.successStatuses"),
+    value: detail.successStatuses.join(t("agent.common.listSeparator")) || "-",
   },
 ];
 
@@ -175,6 +207,7 @@ export const buildAgentCustomRequestBodyJson = (detail: AgentDetail): string =>
 
 export const buildAgentVerificationStatItems = (
   detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentDetailTextItem[] => {
   const verification = detail.lastVerification;
   if (!verification) {
@@ -183,18 +216,19 @@ export const buildAgentVerificationStatItems = (
 
   return [
     {
-      label: "验证时间",
+      label: t("agent.verification.time"),
       value: detail.verifiedAt
         ? formatDateTimeLabel(detail.verifiedAt)
-        : "未知",
+        : t("agent.common.unknown"),
     },
-    { label: "错误", value: String(verification.errors.length) },
-    { label: "警告", value: String(verification.warnings.length) },
+    { label: t("agent.verification.errors"), value: String(verification.errors.length) },
+    { label: t("agent.verification.warnings"), value: String(verification.warnings.length) },
   ];
 };
 
 export const buildAgentVerificationMessageGroups = (
   detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentVerificationMessageGroup[] => {
   const verification = detail.lastVerification;
   if (!verification) {
@@ -203,12 +237,12 @@ export const buildAgentVerificationMessageGroups = (
 
   return [
     {
-      label: "错误",
+      label: t("agent.verification.errors"),
       tone: "danger" as const,
       messages: verification.errors,
     },
     {
-      label: "警告",
+      label: t("agent.verification.warnings"),
       tone: "warning" as const,
       messages: verification.warnings,
     },

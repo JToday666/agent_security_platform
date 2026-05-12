@@ -41,16 +41,43 @@ const flattenKeys = (
   return output;
 };
 
-const extractPlaceholders = (value: unknown, output = new Set<string>()) => {
+const flattenStringEntries = (
+  value: unknown,
+  prefix = "",
+  output: Array<{ key: string; value: string }> = [],
+) => {
   if (typeof value === "string") {
-    const matches = value.matchAll(/\{([A-Za-z0-9_]+)\}/g);
-    Array.from(matches).forEach((match) => output.add(match[1] ?? ""));
+    output.push({ key: prefix, value });
     return output;
   }
 
   if (value && typeof value === "object" && !Array.isArray(value)) {
-    Object.values(value as JsonRecord).forEach((child) =>
-      extractPlaceholders(child, output),
+    Object.entries(value as JsonRecord).forEach(([key, child]) => {
+      flattenStringEntries(child, prefix ? `${prefix}.${key}` : key, output);
+    });
+  }
+
+  return output;
+};
+
+const extractStringPlaceholders = (value: string): string[] =>
+  Array.from(value.matchAll(/\{([A-Za-z0-9_]+)\}/g))
+    .map((match) => match[1] ?? "")
+    .sort();
+
+const extractPlaceholdersByKey = (
+  value: unknown,
+  prefix = "",
+  output = new Map<string, string[]>(),
+) => {
+  if (typeof value === "string") {
+    output.set(prefix, extractStringPlaceholders(value));
+    return output;
+  }
+
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    Object.entries(value as JsonRecord).forEach(([key, child]) =>
+      extractPlaceholdersByKey(child, prefix ? `${prefix}.${key}` : key, output),
     );
   }
 
@@ -85,7 +112,7 @@ describe("i18n message catalogs", () => {
         readFileSync(join(schemaDirectory, `${domain}.json`), "utf8"),
       ) as JsonRecord;
       const schemaKeys = flattenKeys(schema).sort();
-      const schemaPlaceholders = Array.from(extractPlaceholders(schema)).sort();
+      const schemaPlaceholdersByKey = extractPlaceholdersByKey(schema);
 
       SUPPORTED_LOCALES.filter((locale) => locale !== schemaLocale).forEach(
         (locale) => {
@@ -99,10 +126,14 @@ describe("i18n message catalogs", () => {
           expect(flattenKeys(candidate).sort(), `${locale}/${domain}`).toEqual(
             schemaKeys,
           );
-          expect(
-            Array.from(extractPlaceholders(candidate)).sort(),
-            `${locale}/${domain} placeholders`,
-          ).toEqual(schemaPlaceholders);
+
+          const candidatePlaceholdersByKey = extractPlaceholdersByKey(candidate);
+          schemaKeys.forEach((key) => {
+            expect(
+              candidatePlaceholdersByKey.get(key) ?? [],
+              `${locale}/${domain}.${key} placeholders`,
+            ).toEqual(schemaPlaceholdersByKey.get(key) ?? []);
+          });
         },
       );
     });
@@ -119,6 +150,86 @@ describe("i18n message catalogs", () => {
 
       expect(typeof brandName, `${locale} common.brand.name`).toBe("string");
       expect(hero, `${locale} public.home.hero`).not.toHaveProperty("title");
+    });
+  });
+
+  it("keeps identical zh-CN source strings translated consistently", () => {
+    const schemaLocale = "zh-CN";
+    const sourceByKey = new Map<string, string>();
+
+    MESSAGE_DOMAINS.forEach((domain) => {
+      flattenStringEntries(readDomainMessages(schemaLocale, domain)).forEach(
+        (entry) => sourceByKey.set(`${domain}.${entry.key}`, entry.value),
+      );
+    });
+
+    SUPPORTED_LOCALES.filter((locale) => locale !== schemaLocale).forEach(
+      (locale) => {
+        const translatedBySource = new Map<string, string>();
+
+        MESSAGE_DOMAINS.forEach((domain) => {
+          flattenStringEntries(readDomainMessages(locale, domain)).forEach(
+            (entry) => {
+              const source = sourceByKey.get(`${domain}.${entry.key}`);
+              if (!source) {
+                return;
+              }
+
+              const previous = translatedBySource.get(source);
+              expect(
+                previous === undefined || previous === entry.value,
+                `${locale}: "${source}" translated as both "${previous}" and "${entry.value}"`,
+              ).toBe(true);
+              translatedBySource.set(source, entry.value);
+            },
+          );
+        });
+      },
+    );
+  });
+
+  it("keeps locked professional terminology consistent", () => {
+    const forbiddenEnglishTerms = [
+      /evaluation item/i,
+      /test item/i,
+      /risk area/i,
+      /risk category/i,
+    ];
+    const forbiddenJapaneseTerms = [/リスクエリア/, /リスクカテゴリ/];
+
+    MESSAGE_DOMAINS.forEach((domain) => {
+      const zhEntries = flattenStringEntries(readDomainMessages("zh-CN", domain));
+      const enEntries = flattenStringEntries(readDomainMessages("en-US", domain));
+      const jaEntries = flattenStringEntries(readDomainMessages("ja-JP", domain));
+
+      enEntries.forEach((entry) => {
+        forbiddenEnglishTerms.forEach((term) => {
+          expect(entry.value, `en-US/${domain}.${entry.key}`).not.toMatch(term);
+        });
+      });
+
+      jaEntries.forEach((entry) => {
+        forbiddenJapaneseTerms.forEach((term) => {
+          expect(entry.value, `ja-JP/${domain}.${entry.key}`).not.toMatch(term);
+        });
+      });
+
+      zhEntries.forEach((entry, index) => {
+        if (entry.value.includes("评测项")) {
+          expect(enEntries[index]?.value, `en-US/${domain}.${entry.key}`).toMatch(
+            /benchmark item/i,
+          );
+        }
+
+        if (entry.value.includes("风险域")) {
+          expect(enEntries[index]?.value, `en-US/${domain}.${entry.key}`).toMatch(
+            /risk domain/i,
+          );
+          expect(jaEntries[index]?.value, `ja-JP/${domain}.${entry.key}`).toContain(
+            "リスク領域",
+          );
+        }
+      });
     });
   });
 });

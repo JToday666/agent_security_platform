@@ -29,19 +29,20 @@
       v-if="hasCode"
       variant="secondary"
       size="sm"
-      leading-icon="lucide:copy"
+      leading-icon="app:action.copy"
       @click="$emit('copy')"
     >
-      复制代码
+      {{ t("agent.actions.copyCode") }}
     </UiButton>
   </aside>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import AgentCodePreview from "@/modules/agent/components/AgentCodePreview.vue";
 import {
-  previewTabs,
+  buildPreviewTabs,
   type AgentPreviewTab,
 } from "@/modules/agent/composables/useAgentRegisterPage";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
@@ -53,6 +54,9 @@ const props = defineProps<{
   code: string;
   language: "curl" | "python" | "json";
 }>();
+
+const { t } = useI18n();
+const previewTabs = computed(() => buildPreviewTabs(t));
 
 defineEmits<{
   (event: "update:modelValue", value: AgentPreviewTab): void;

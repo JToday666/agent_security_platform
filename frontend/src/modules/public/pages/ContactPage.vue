@@ -18,7 +18,10 @@
         class="contact-item"
       >
         <div class="contact-item__head">
-          <span class="contact-icon-shell">
+          <span
+            class="contact-icon-shell"
+            :class="`contact-icon-shell--${item.tone}`"
+          >
             <AppIcon :icon="item.icon" class="icon" />
           </span>
           <h2>{{ item.title }}</h2>
@@ -46,6 +49,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="info-value info-value--single-line social-link"
+                :class="`social-link--${social.tone}`"
               >
                 <AppIcon :icon="social.icon" class="social-icon" />
                 <span>{{ social.name }}</span>
@@ -64,64 +68,79 @@ import { useI18n } from "vue-i18n";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import BrandLogo from "@/shared/ui/branding/BrandLogo.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
+import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
 type ContactItem =
   | {
-      icon: string;
+      icon: AppIconName;
+      tone: "email" | "phone" | "address" | "social";
       title: string;
       type: "link";
       text: string;
       link: string;
     }
   | {
-      icon: string;
+      icon: AppIconName;
+      tone: "email" | "phone" | "address" | "social";
       title: string;
       type: "text";
       text: string;
     }
   | {
-      icon: string;
+      icon: AppIconName;
+      tone: "email" | "phone" | "address" | "social";
       title: string;
       type: "social";
-      links: { name: string; icon: string; url: string }[];
+      links: {
+        name: string;
+        icon: AppIconName;
+        tone: "x" | "github";
+        url: string;
+      }[];
     };
 
 const { t } = useI18n();
 
 const contactItems = computed<ContactItem[]>(() => [
   {
-    icon: "lucide:mail",
+    icon: "app:contact.email",
+    tone: "email",
     title: t("public.contact.email"),
     type: "link",
     text: "u202312421@hust.edu.com",
     link: "mailto:u202312421@hust.edu.com",
   },
   {
-    icon: "lucide:phone",
+    icon: "app:contact.phone",
+    tone: "phone",
     title: t("public.contact.phone"),
     type: "link",
     text: "+86 13886038599",
     link: "tel:+8613886038599",
   },
   {
-    icon: "lucide:map-pin",
+    icon: "app:contact.address",
+    tone: "address",
     title: t("public.contact.address"),
     type: "text",
     text: t("public.contact.addressValue"),
   },
   {
-    icon: "lucide:globe",
+    icon: "app:contact.social",
+    tone: "social",
     title: t("public.contact.social"),
     type: "social",
     links: [
       {
         name: "X",
-        icon: "ri:twitter-x-line",
+        icon: "brand:x",
+        tone: "x",
         url: "https://x.com/agent_security_demo",
       },
       {
         name: "GitHub",
-        icon: "ri:github-line",
+        icon: "brand:github",
+        tone: "github",
         url: "https://github.com/JToday666/agent_security_platform",
       },
     ],
@@ -182,15 +201,46 @@ const contactItems = computed<ContactItem[]>(() => [
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
-  background: linear-gradient(135deg, rgba(219, 234, 254, 0.88), rgba(237, 233, 254, 0.82));
-  border: 1px solid rgba(99, 102, 241, 0.12);
-  box-shadow: 0 16px 28px -24px rgba(79, 70, 229, 0.28);
+  background: var(
+    --contact-icon-bg,
+    linear-gradient(135deg, rgba(219, 234, 254, 0.88), rgba(237, 233, 254, 0.82))
+  );
+  border: 1px solid var(--contact-icon-border, rgba(99, 102, 241, 0.12));
+  box-shadow: 0 16px 28px -24px var(--contact-icon-shadow, rgba(79, 70, 229, 0.28));
+}
+
+.contact-icon-shell--email {
+  --contact-icon-bg: linear-gradient(135deg, rgba(219, 234, 254, 0.92), rgba(224, 242, 254, 0.86));
+  --contact-icon-border: rgba(37, 99, 235, 0.16);
+  --contact-icon-color: #2563eb;
+  --contact-icon-shadow: rgba(37, 99, 235, 0.3);
+}
+
+.contact-icon-shell--phone {
+  --contact-icon-bg: linear-gradient(135deg, rgba(220, 252, 231, 0.9), rgba(204, 251, 241, 0.84));
+  --contact-icon-border: rgba(13, 148, 136, 0.16);
+  --contact-icon-color: #0f766e;
+  --contact-icon-shadow: rgba(13, 148, 136, 0.28);
+}
+
+.contact-icon-shell--address {
+  --contact-icon-bg: linear-gradient(135deg, rgba(254, 243, 199, 0.9), rgba(255, 237, 213, 0.84));
+  --contact-icon-border: rgba(217, 119, 6, 0.16);
+  --contact-icon-color: #b45309;
+  --contact-icon-shadow: rgba(217, 119, 6, 0.26);
+}
+
+.contact-icon-shell--social {
+  --contact-icon-bg: linear-gradient(135deg, rgba(237, 233, 254, 0.9), rgba(219, 234, 254, 0.84));
+  --contact-icon-border: rgba(99, 102, 241, 0.16);
+  --contact-icon-color: #4f46e5;
+  --contact-icon-shadow: rgba(79, 70, 229, 0.28);
 }
 
 .icon {
   width: 1.35rem;
   height: 1.35rem;
-  color: #4f46e5;
+  color: var(--contact-icon-color, #4f46e5);
 }
 
 .info {
@@ -236,7 +286,31 @@ const contactItems = computed<ContactItem[]>(() => [
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
+  gap: 0.42rem;
+  min-height: 2rem;
+  padding: 0.36rem 0.68rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--social-link-color, var(--color-text-muted));
+  font-weight: 700;
+  box-shadow: 0 10px 22px -22px rgba(15, 23, 42, 0.32);
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.social-link--x {
+  --social-link-color: #0f172a;
+  --social-link-hover-border: rgba(15, 23, 42, 0.18);
+}
+
+.social-link--github {
+  --social-link-color: #24292f;
+  --social-link-hover-border: rgba(36, 41, 47, 0.18);
 }
 
 .social-icon {
@@ -247,7 +321,14 @@ const contactItems = computed<ContactItem[]>(() => [
 
 .info a:hover,
 .social-link:hover {
-  color: var(--color-primary);
+  color: var(--social-link-color, var(--color-primary));
+}
+
+.social-link:hover {
+  transform: translateY(-1px);
+  border-color: var(--social-link-hover-border, rgba(99, 102, 241, 0.2));
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 26px -24px rgba(15, 23, 42, 0.36);
 }
 
 @media (max-width: 768px) {

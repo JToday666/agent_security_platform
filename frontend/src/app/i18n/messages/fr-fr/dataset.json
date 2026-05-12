@@ -1,1 +1,100 @@
-{}
+{
+  "api": {
+    "catalogLoadFailed": "Échec du chargement du catalogue. Veuillez réessayer plus tard.",
+    "detailLoadFailed": "Échec du chargement des détails. Veuillez réessayer plus tard.",
+    "notFound": "Aucun élément de benchmark correspondant n’a été trouvé."
+  },
+  "fallback": {
+    "currentRiskDomain": "Domaine de risque actuel",
+    "dataset": "Jeu de données",
+    "media": "Média {index}",
+    "pending": "À compléter",
+    "relatedResource": "Ressource associée {index}",
+    "uncategorized": "Non classé",
+    "unnamedBenchmarkItem": "Élément de benchmark sans nom",
+    "unnamedCategory": "Catégorie sans nom"
+  },
+  "filter": {
+    "clearSearch": "Effacer la recherche",
+    "description": "Localisez rapidement les jeux de données cibles par domaine de risque, nom et ordre de tri.",
+    "searchLabel": "Recherche",
+    "searchPlaceholder": "Rechercher par nom ou résumé",
+    "sortLabel": "Tri",
+    "sortOptions": {
+      "default": "Tri par défaut",
+      "samplesDesc": "Nombre d’échantillons décroissant",
+      "updatedDesc": "Mise à jour récente"
+    },
+    "title": "Filtrer et trier"
+  },
+  "labels": {
+    "benchmarkItemCount": "Nombre d’éléments de benchmark",
+    "riskDomain": "Domaine de risque",
+    "sampleCount": "Nombre d’échantillons",
+    "updatedAt": "Mise à jour récente",
+    "updateTime": "Heure de mise à jour"
+  },
+  "media": {
+    "descriptionFallback": "Ce média aide à comprendre la structure de l’élément de benchmark et son comportement à l’exécution.",
+    "empty": "Aucune ressource média n’est fournie pour cet élément de benchmark.",
+    "unavailable": "Ressource indisponible"
+  },
+  "meta": {
+    "sampleCountDescription": "Nombre total d’échantillons constituant ce jeu de données.",
+    "updatedAtDescription": "Basé sur l’horodatage renvoyé par l’API actuelle."
+  },
+  "pages": {
+    "catalog": {
+      "description": "Parcourez les jeux de données disponibles par domaine de risque et consultez leurs descriptions.",
+      "emptyMessage": "Veuillez réessayer plus tard.",
+      "emptyTitle": "Aucun jeu de données disponible",
+      "loadFailedTitle": "Échec du chargement du catalogue",
+      "loadingMessage": "Veuillez patienter.",
+      "loadingTitle": "Chargement du catalogue",
+      "noMatchesMessage": "Essayez un autre mot-clé ou changez de domaine de risque.",
+      "noMatchesTitle": "Aucun jeu de données correspondant",
+      "reloadAction": "Recharger",
+      "title": "Catalogue des jeux de données"
+    },
+    "detail": {
+      "backToCatalog": "Retour au catalogue des jeux de données",
+      "ctaDescription": "Une fois ce jeu de données sélectionné, vous pouvez accéder directement à la page de soumission pour configurer l’intégration Agent et les paramètres d’exécution.",
+      "ctaTitle": "Prêt à lancer l’évaluation",
+      "descriptionFallback": "Consultez la description, les points clés, les ressources et les exemples de ce jeu de données.",
+      "detailLoadFailedTitle": "Échec du chargement des détails",
+      "fullDescriptionFallback": "Aucune description détaillée disponible.",
+      "loadingMessage": "Veuillez patienter.",
+      "loadingTitle": "Chargement des détails",
+      "loginToEvaluateDataset": "Connectez-vous pour évaluer ce jeu de données",
+      "notFoundTitle": "Élément de benchmark introuvable",
+      "retryAction": "Réessayer",
+      "sections": {
+        "details": "Description détaillée",
+        "highlights": "Points clés de l’évaluation",
+        "media": "Médias",
+        "scenarios": "Scénarios types"
+      },
+      "submitWithDataset": "Utiliser ce jeu de données pour lancer une évaluation",
+      "titleFallback": "Détails du jeu de données"
+    }
+  },
+  "resources": {
+    "description": "Seuls les documents, téléchargements, démonstrations ou liens externes renvoyés par l’API actuelle sont affichés.",
+    "emptyMessage": "Ce jeu de données n’a renvoyé aucune ressource externe affichable.",
+    "emptyTitle": "Aucune ressource",
+    "title": "Ressources et exemples",
+    "types": {
+      "demo": "Démonstration",
+      "docs": "Documentation",
+      "download": "Téléchargement",
+      "link": "Lien"
+    },
+    "view": "Voir la ressource"
+  },
+  "subcategory": {
+    "loginToEvaluate": "Connectez-vous pour évaluer",
+    "noDescription": "Aucune description disponible",
+    "useDataset": "Utiliser ce jeu de données",
+    "viewDetails": "Voir les détails"
+  }
+}

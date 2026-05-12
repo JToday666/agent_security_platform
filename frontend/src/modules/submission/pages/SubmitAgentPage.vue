@@ -1,33 +1,33 @@
 <template>
   <div class="content submit-page layout-page-shell layout-page-shell--wide">
     <PageHero
-      title="提交评测"
-      description="配置智能体标识、关联测试集与执行参数，初始化应用安全评测任务。"
+      :title="t('submission.page.title')"
+      :description="t('submission.page.description')"
       description-wrap="single-line"
     >
       <template #actions>
         <UiButton
           :to="RouteLocation.datasetList"
           variant="secondary"
-          leading-icon="lucide:database"
+          leading-icon="app:action.browseDataset"
         >
-          浏览数据集
+          {{ t("common.actions.browseDataset") }}
         </UiButton>
       </template>
     </PageHero>
 
     <PageStatePanel
       v-if="pageLoading"
-      title="正在初始化提交页"
-      message="请稍候。"
+      :title="t('submission.page.loadingTitle')"
+      :message="t('common.feedback.pleaseWait')"
       :loading="true"
     />
 
     <PageStatePanel
       v-else-if="pageError"
-      title="页面初始化失败"
+      :title="t('submission.page.errorTitle')"
       :message="pageError"
-      action-text="重新加载"
+      :action-text="t('submission.actions.reload')"
       @action="initializePage"
     />
 
@@ -70,10 +70,13 @@
           @retry="retryDatasetCatalog"
         />
 
-        <section class="leaderboard-display-row" aria-label="榜单展示设置">
+        <section
+          class="leaderboard-display-row"
+          :aria-label="t('submission.leaderboardDisplay.aria')"
+        >
           <div class="section-head">
-            <h2>榜单展示</h2>
-            <p>评测结果进入排行榜时，选择展示公开名称或匿名身份。</p>
+            <h2>{{ t("submission.leaderboardDisplay.title") }}</h2>
+            <p>{{ t("submission.leaderboardDisplay.description") }}</p>
           </div>
           <UiChoiceCardGroup
             v-model="form.leaderboardDisplayMode"
@@ -105,8 +108,8 @@
       v-model="confirmDialogVisible"
       :title="confirmDialogTitle"
       :message="confirmDialogMessage"
-      confirm-text="确认提交"
-      cancel-text="返回修改"
+      :confirm-text="t('submission.confirm.submitTitle')"
+      :cancel-text="t('submission.confirm.back')"
       :loading="submitting"
       @confirm="confirmSubmit"
     />
@@ -114,6 +117,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { RouteLocation } from "@/app/router/route-names";
 import { useSubmitAgentPage } from "@/modules/submission/composables/useSubmitAgentPage";
 import SubmitActionBar from "@/modules/submission/components/SubmitActionBar.vue";
@@ -127,6 +132,8 @@ import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import UiChoiceCardGroup from "@/shared/ui/forms/UiChoiceCardGroup.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
+
+const { t } = useI18n();
 
 const {
   form,
@@ -163,22 +170,24 @@ const {
   resetDraft,
 } = useSubmitAgentPage();
 
-const leaderboardDisplayOptions: Array<{
-  value: LeaderboardDisplayMode;
-  title: string;
-  description: string;
-}> = [
+const leaderboardDisplayOptions = computed<
+  Array<{
+    value: LeaderboardDisplayMode;
+    title: string;
+    description: string;
+  }>
+>(() => [
   {
     value: "public",
-    title: "公开",
-    description: "排行榜展示智能体公开名称，适合公开参评与能力展示。",
+    title: t("submission.leaderboardDisplay.public.title"),
+    description: t("submission.leaderboardDisplay.public.description"),
   },
   {
     value: "anonymous",
-    title: "匿名",
-    description: "排行榜仅展示匿名身份，评测结果仍参与公开排序。",
+    title: t("submission.leaderboardDisplay.anonymous.title"),
+    description: t("submission.leaderboardDisplay.anonymous.description"),
   },
-];
+]);
 </script>
 
 <style scoped lang="scss">

@@ -1,1 +1,51 @@
-{}
+{
+  "api": {
+    "loadFailed": "Échec du chargement du classement. Veuillez réessayer plus tard.",
+    "unnamedAgent": "Agent sans nom"
+  },
+  "champion": {
+    "anonymous": "Anonyme",
+    "aria": "Actuel premier",
+    "label": "Actuel premier"
+  },
+  "empty": {
+    "message": "Aucun résultat d’évaluation public n’est encore affichable.",
+    "title": "Aucun classement public"
+  },
+  "errors": {
+    "loadFailedTitle": "Échec du chargement du classement",
+    "unavailableMessage": "Le classement public est temporairement illisible. Veuillez réessayer plus tard.",
+    "unavailableTitle": "Classement temporairement indisponible"
+  },
+  "overview": {
+    "aria": "Vue d’ensemble du classement",
+    "currentSecurityCapability": "Capacité de sécurité actuelle",
+    "listedAgents": "Agents classés",
+    "lowestRiskScore": "Score de risque minimal"
+  },
+  "page": {
+    "description": "Affiche la performance de sécurité globale des Agents selon les instantanés d’évaluation publics.",
+    "loadingTitle": "Lecture du classement",
+    "title": "Classement"
+  },
+  "scores": {
+    "composite": "Global",
+    "compositeFull": "Score composite",
+    "highDifficulty": "Haute difficulté",
+    "highDifficultyFull": "Score haute difficulté",
+    "notReturned": "Non retourné",
+    "risk": "Risque",
+    "riskFull": "Score de risque",
+    "safeCapability": "Sécurité",
+    "safeCapabilityFull": "Capacité de sécurité"
+  },
+  "table": {
+    "agent": "Agent",
+    "anonymous": "Anonyme",
+    "confidence": "Confiance",
+    "description": "Tri actuel par {sort}. Plus le score de risque est bas, plus la proportion de comportements non sûrs est faible.",
+    "rank": "Rang",
+    "samples": "Échantillon",
+    "title": "Résultats d’évaluation publics"
+  }
+}

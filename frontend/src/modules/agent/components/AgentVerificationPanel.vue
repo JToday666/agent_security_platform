@@ -1,9 +1,9 @@
 <template>
-  <SectionBlock title="最近一次验证结果" class="verification-block">
+  <SectionBlock :title="t('agent.detail.sections.verification')" class="verification-block">
     <InlineNotice
       v-if="!detail.lastVerification"
       tone="info"
-      message="尚未验证。"
+      :message="t('agent.verification.unverifiedNotice')"
     />
     <div v-else class="verification-result">
       <div
@@ -18,7 +18,9 @@
             <AppIcon :icon="resultIcon" />
           </span>
           <div class="verification-summary__text">
-            <span class="verification-summary__sub">验证结果</span>
+            <span class="verification-summary__sub">
+              {{ t("agent.verification.result") }}
+            </span>
             <strong class="verification-summary__strong">{{ resultLabel }}</strong>
           </div>
         </div>
@@ -35,7 +37,9 @@
       </div>
 
       <div v-if="messageGroups.length" class="verification-message-groups">
-        <div class="verification-detail-header">诊断明细</div>
+        <div class="verification-detail-header">
+          {{ t("agent.verification.detailHeader") }}
+        </div>
         <section
           v-for="group in messageGroups"
           :key="group.label"
@@ -46,14 +50,16 @@
             <UiTag :tone="group.tone" class="verification-tag" size="sm">
               {{ group.label }}
             </UiTag>
-            <span class="verification-count">{{ group.messages.length }} 项</span>
+            <span class="verification-count">
+              {{ t("agent.verification.count", { count: group.messages.length }) }}
+            </span>
           </div>
           <div class="verification-table-wrapper">
             <table class="verification-table">
               <thead>
                 <tr>
-                  <th>类型标识</th>
-                  <th>详情描述</th>
+                  <th>{{ t("agent.verification.tableCode") }}</th>
+                  <th>{{ t("agent.verification.tableDescription") }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,6 +82,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import UiTag from "@/shared/ui/display/UiTag.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
@@ -85,14 +92,17 @@ import type {
   AgentVerificationMessageGroup,
 } from "@/modules/agent/lib/agent-detail-view";
 import type { AgentDetail } from "@/shared/types/agent-registry-types";
+import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
 defineProps<{
   detail: AgentDetail;
-  resultIcon: string;
+  resultIcon: AppIconName;
   resultLabel: string;
   statItems: AgentDetailTextItem[];
   messageGroups: AgentVerificationMessageGroup[];
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

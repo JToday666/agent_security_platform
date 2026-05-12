@@ -1,1 +1,298 @@
-{}
+{
+  "actions": {
+    "back": "Back",
+    "backToRecords": "Back to Records",
+    "cancel": "Cancel",
+    "confirmCancel": "Confirm Cancel",
+    "confirmPause": "Confirm Pause",
+    "confirmTerminate": "Confirm Terminate",
+    "continue": "Continue",
+    "downloadSamples": "Download All Sample Details",
+    "pause": "Pause",
+    "retry": "Retry",
+    "submitNow": "Submit Now",
+    "terminate": "Terminate",
+    "viewDetails": "View Details"
+  },
+  "api": {
+    "actionFailed": "Task operation failed.",
+    "detailLoadFailed": "Evaluation detail loading failed.",
+    "recordsLoadFailed": "Evaluation records loading failed.",
+    "reportLoadFailed": "Evaluation report loading failed.",
+    "sampleDownloadFailed": "Sample detail download failed. Please try again later.",
+    "submitMetaInvalid": "The submit-meta response structure does not match the new protocol. Confirm that the backend only returns flat results.",
+    "submitMetaLoadFailed": "Submission metadata loading failed.",
+    "submitPrecheckFailed": "Precheck failed.",
+    "submitFailed": "Submission failed. Please try again later.",
+    "trendLoadFailed": "Evaluation trend loading failed."
+  },
+  "charts": {
+    "abilityStructure": "Capability Structure",
+    "baseline": "Baseline",
+    "completionDate": "Completed: {date}",
+    "datasetStack": "dataset",
+    "difficulty": "Difficulty",
+    "durationMs": "Duration ms",
+    "evaluationId": "Evaluation: {id}",
+    "median": "Median",
+    "outcomeRate": "Outcome Rate",
+    "sample": "Sample",
+    "sampleTooltip": "Difficulty: {difficulty}<br/>Duration: {duration} ms<br/>Sample: {sampleId}",
+    "scoreRange": "Score Range",
+    "seriesStart": "Interval Start",
+    "successRate": "Success Rate"
+  },
+  "common": {
+    "count": "{count}",
+    "countItems": "{count} items",
+    "countRecords": "{count} records",
+    "currentUser": "Current User",
+    "listSeparator": ", ",
+    "noReturn": "Not returned",
+    "notGenerated": "Not Generated",
+    "score": "{score} points",
+    "scorePlaceholder": "--",
+    "unnamedAgent": "Unnamed Agent",
+    "unnamedCategory": "Unnamed category",
+    "unnamedDataset": "Unnamed dataset"
+  },
+  "detail": {
+    "description": "View task status, scoring report, and sample evidence.",
+    "errorTitle": "Detail Loading Failed",
+    "loadingTitle": "Reading Evaluation Details",
+    "operationFailedTitle": "Operation Not Completed",
+    "titleFallback": "Evaluation Details"
+  },
+  "dialogs": {
+    "cancelMessage": "Canceling immediately interrupts the current task and no final report will be generated.",
+    "cancelTitle": "Cancel Task",
+    "pauseMessage": "Pause takes effect after the current dataset finishes. Each task can be paused only once.",
+    "pauseTitle": "Pause Task",
+    "terminateMessage": "Termination ends the remaining queue after the current dataset finishes and generates the final report.",
+    "terminateTitle": "Terminate Task"
+  },
+  "evidence": {
+    "description": "Show representative sample replays. Full details are available from the download entry.",
+    "empty": "No replayable samples yet.",
+    "noReplay": "No replay",
+    "noSummary": "No judgment summary yet.",
+    "sampleError": "Sample execution error.",
+    "sampleSafe": "Sample completed safely.",
+    "sampleUnsafe": "Oracle determined unsafe behavior.",
+    "title": "Sample Evidence"
+  },
+  "filter": {
+    "description": "Filter records by keyword, task status, leaderboard status, and submission method.",
+    "methodAll": "All Methods",
+    "placeholder": "Search by Agent name or dataset",
+    "search": "Search",
+    "status": "Status",
+    "statusAll": "All Statuses",
+    "submitMethod": "Submission Method",
+    "title": "Filter Records",
+    "visibility": "Leaderboard Status",
+    "visibilityAll": "All Leaderboard Statuses"
+  },
+  "finalization": {
+    "autoTerminatedAfterPauseTimeout": "Automatically terminated after pause timeout",
+    "canceledByUser": "Task canceled by user",
+    "completed": "Task completed",
+    "failed": "Task execution failed",
+    "terminatedByUser": "Report generated after user termination"
+  },
+  "metrics": {
+    "completionRate": {
+      "description": "The proportion of completed samples among all samples.",
+      "label": "Completion Rate"
+    },
+    "completionScore": {
+      "description": "Measures the Agent's ability to run the task flow to completion stably.",
+      "label": "Completion Capability Score",
+      "radarDescription": "Ability to run the evaluation task flow to completion stably."
+    },
+    "conditionalSuccessRate": {
+      "description": "The proportion of safe successes among effectively completed samples.",
+      "label": "Conditional Success Rate"
+    },
+    "confidence": {
+      "description": "Indicates how credible the current score is after sample size, difficulty coverage, and uncertainty are considered.",
+      "label": "Confidence"
+    },
+    "confidenceInterval": {
+      "caption": "Median {median}; reflects the main fluctuation range of the current score.",
+      "label": "Confidence Interval"
+    },
+    "conservativeScore": {
+      "description": "The leaderboard primary sort score, reflecting the platform's conservative estimate of Agent capability.",
+      "label": "Composite Score"
+    },
+    "hardScore": {
+      "description": "Expected safe success capability on high-difficulty samples.",
+      "label": "High-Difficulty Performance Score"
+    },
+    "performanceScore": {
+      "description": "Expected safe success capability under a unified standard difficulty structure.",
+      "label": "Performance Score",
+      "radarDescription": "Expected safe success capability under a unified standard difficulty structure."
+    },
+    "safetyScore": {
+      "description": "Measures the Agent's ability to identify traps and make safe decisions after completing the flow.",
+      "label": "Safety Recognition Score",
+      "radarDescription": "Ability to identify risk and make safe decisions after completing the flow."
+    },
+    "safetyStability": {
+      "description": "Calculated inversely from risk rate, indicating stable safety after completion.",
+      "label": "Safety Stability"
+    },
+    "successRate": {
+      "description": "The proportion of safely successful samples among all samples.",
+      "label": "Success Rate"
+    },
+    "timeScore": {
+      "description": "Relative time efficiency among successful samples.",
+      "label": "Speed Score"
+    },
+    "unsafeRate": {
+      "description": "The proportion of cases where the Agent completes the task but performs unsafe behavior.",
+      "label": "Risk Rate"
+    }
+  },
+  "outcomes": {
+    "error": "Error",
+    "failed": "Failed",
+    "success": "Success"
+  },
+  "records": {
+    "createdAt": "Created at {time}",
+    "datasetPrefix": "Datasets: {datasets}",
+    "description": "Review task flow traces with precise cross-level filtering and detail inspection.",
+    "emptyMessage": "After the first evaluation task is created, progress and results will appear here.",
+    "emptyTitle": "No Evaluation Records Yet",
+    "errorTitle": "Records Loading Failed",
+    "loadingTitle": "Reading Records",
+    "noMatchMessage": "Adjust the search term or filters.",
+    "noMatchTitle": "No Matching Tasks",
+    "resultSummary": "Showing {visible} / {total} tasks",
+    "title": "Evaluation History"
+  },
+  "report": {
+    "abilitySection": "Capability Structure",
+    "datasetInsightEmpty": "No dataset results yet.",
+    "datasetInsightTitle": "Dataset Results",
+    "difficultyInsightEmpty": "No difficulty bucket data yet.",
+    "difficultyInsightTitle": "Difficulty Bucket",
+    "difficultyOutcomeCaption": "Success Rate {rate}. Success {success}, failed {failed}, error {error}.",
+    "difficultyRisk": "Risk Type",
+    "difficultySection": "Difficulty Performance",
+    "generated": "The report is generated. You can view the summary and detailed metrics.",
+    "highlightConfidenceCaption": "Main fluctuation range of the posterior distribution",
+    "highlightRiskCaption": "Proportion of unsafe behavior after completion",
+    "highlightSafetyLabel": "Safety Recognition",
+    "highlightSafetyCaption": "Safety decision capability after completing the task",
+    "highlightScoreCaption": "Leaderboard score after conservative estimation",
+    "loading": "Reading report",
+    "missingFinal": "This task did not generate a final report.",
+    "missingReturned": "The task has ended, but no report content was returned.",
+    "outcomeCaption": "Success {success}, failed {failed}, error {error}.",
+    "outcomeSection": "Sample Outcomes",
+    "pending": "The report has not been generated yet. Wait for the task to continue.",
+    "rateOverviewDescription": "Completion rate, success rate, and conditional success rate help judge sample quality.",
+    "rateOverviewTitle": "Outcome Rate Overview",
+    "sampleLocationEmpty": "No scatter samples yet.",
+    "sampleLocationRiskCaption": "Failed/error {riskCount}, high-difficulty {highDifficultyCount}, high-duration {highDurationCount}.",
+    "sampleLocationSafeCaption": "Slowest sample {sampleId}; no failed or error samples found.",
+    "sampleLocationTitle": "Sample Location",
+    "summaryAria": "Report Summary",
+    "stateSync": "Synchronizing report status.",
+    "structureCaption": "Performance score after combining completion, safety, high difficulty, and speed.",
+    "tableExplanation": "Explanation",
+    "tableMetric": "Metric",
+    "tableScore": "Score",
+    "unavailable": "Report details are temporarily unavailable. You can view the evaluation summary now; the full report interface will show scores, sample distribution, and version information after it is connected.",
+    "title": "Scoring Report"
+  },
+  "sections": {
+    "basicDescription": "Submission, datasets, and run parameters.",
+    "basicTitle": "Basic Information",
+    "dataset": "Dataset",
+    "report": "Report Information",
+    "runParameters": "Run Parameters",
+    "submit": "Submission Information"
+  },
+  "status": {
+    "canceled": "Canceled",
+    "canceling": "Canceling",
+    "completed": "Completed",
+    "failed": "Failed",
+    "paused": "Paused",
+    "pausing": "Pausing",
+    "pending": "Queued",
+    "queued": "Queued",
+    "running": "Running",
+    "terminated": "Terminated",
+    "terminating": "Terminating"
+  },
+  "statusText": {
+    "canceling": "Canceling the task and interrupting execution.",
+    "canceled": "Task canceled. No final report was generated.",
+    "completed": "All datasets have been evaluated and the final report has been generated.",
+    "failed": "Task execution failed. Please try again later.",
+    "failedFallback": "Evaluation execution failed.",
+    "pausing": "Pause requested. The task will pause after dataset {datasetName} finishes.",
+    "pausingNoDataset": "Pause requested. The current task will pause shortly.",
+    "paused": "Task paused.",
+    "pausedWithDeadline": "Task paused. Choose continue, terminate, or cancel before {deadline}.",
+    "pending": "Task created and waiting for scheduling.",
+    "running": "Currently evaluating dataset {datasetName}.",
+    "runningNoDataset": "Task is running.",
+    "terminated": "Task ended. {completed}/{total} datasets were completed and the final report was generated.",
+    "terminatedAuto": "Task automatically terminated after pause timeout and the final report has been generated.",
+    "terminating": "Termination requested. The task will end after dataset {datasetName} finishes.",
+    "terminatingNoDataset": "Termination requested. The current task will end shortly.",
+    "updated": "Evaluation status updated."
+  },
+  "summary": {
+    "completion": "Completion Progress",
+    "createdAt": "Created At",
+    "currentStatus": "Current Status",
+    "datasetCount": "Dataset Count",
+    "datasetCountValue": "{count}",
+    "datasets": "Dataset",
+    "difficulty": "Difficulty",
+    "finishedAt": "Finished At",
+    "leaderboardStatus": "Leaderboard Status",
+    "maxSteps": "Maximum Steps",
+    "reportGeneratedAt": "Report Generated At",
+    "scoreCaptionPending": "Report not generated",
+    "scoreLabel": "Composite Score",
+    "scorePending": "Pending generation",
+    "scoreModel": "Scoring Model",
+    "sampleDescription": "Split the current evaluation samples by success, failed, and error.",
+    "sampleTitle": "Sample Statistics",
+    "startedAt": "Started At",
+    "submitMethod": "Submission Method",
+    "timeout": "Timeout",
+    "timeoutValue": "{value} minutes",
+    "totalSamples": "Total Samples",
+    "taskActionsAria": "Task Actions"
+  },
+  "trend": {
+    "all": "All Evaluations",
+    "capabilityView": "Capability View",
+    "delta": "Compared with Previous",
+    "description": "View evaluation changes from recent or all generated reports.",
+    "empty": "No trend to display yet.",
+    "flat": "Flat",
+    "latestCompositeScore": "Latest Composite Score",
+    "latestRiskRate": "Latest Risk Rate",
+    "loading": "Reading trend",
+    "rangeAria": "Trend range",
+    "recent10": "Recent 10",
+    "riskView": "Risk View",
+    "sampleCount": "Trend Samples",
+    "summaryAria": "Trend summary",
+    "title": "Score Trend",
+    "toolbarAria": "Trend chart filters",
+    "viewAria": "Trend view"
+  }
+}

@@ -1,32 +1,32 @@
 <template>
   <div class="content agent-detail-page layout-page-shell layout-page-shell--wide">
     <PageHero
-      :title="detail?.name || 'Agent 详情'"
-      description="查看非敏感配置、验证结果与可用操作。"
+      :title="detail?.name || t('agent.detail.titleFallback')"
+      :description="t('agent.detail.description')"
     >
       <template #actions>
         <UiButton
           :to="RouteLocation.agentManagement"
           variant="secondary"
-          leading-icon="lucide:list"
+          leading-icon="app:action.back"
         >
-          返回管理页
+          {{ t("agent.actions.backToManagement") }}
         </UiButton>
       </template>
     </PageHero>
 
     <PageStatePanel
       v-if="loading"
-      title="正在读取 Agent"
-      message="请稍候。"
+      :title="t('agent.detail.loadingTitle')"
+      :message="t('common.feedback.pleaseWait')"
       :loading="true"
     />
 
     <PageStatePanel
       v-else-if="error"
-      title="Agent 加载失败"
+      :title="t('agent.detail.errorTitle')"
       :message="error"
-      action-text="重试"
+      :action-text="t('common.actions.retry')"
       @action="loadDetail"
     />
 
@@ -65,10 +65,10 @@
 
     <ConfirmDialog
       v-model="archiveDialogVisible"
-      title="归档 Agent"
-      message="归档后，该 Agent 不能再提交评测，但仍可复制新建。"
-      confirm-text="确认归档"
-      cancel-text="取消"
+      :title="t('agent.detail.archiveDialogTitle')"
+      :message="t('agent.detail.archiveDialogMessage')"
+      :confirm-text="t('agent.detail.confirmArchive')"
+      :cancel-text="t('common.actions.cancel')"
       :loading="busyAction === 'archive'"
       @confirm="handleArchive"
     />
@@ -76,6 +76,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { RouteLocation } from "@/app/router/route-names";
 import AgentConnectionPanel from "@/modules/agent/components/AgentConnectionPanel.vue";
 import AgentDetailActionsPanel from "@/modules/agent/components/AgentDetailActionsPanel.vue";
@@ -87,6 +88,8 @@ import UiButton from "@/shared/ui/actions/UiButton.vue";
 import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
+
+const { t } = useI18n();
 
 const {
   detail,

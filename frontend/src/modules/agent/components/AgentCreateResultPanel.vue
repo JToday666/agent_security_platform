@@ -2,32 +2,33 @@
   <InlineNotice
     v-if="createdAgent"
     tone="success"
-    title="Agent 已创建"
-    message="验证通过后可用于提交评测。"
+    :title="t('agent.register.createSuccessTitle')"
+    :message="t('agent.register.createSuccessMessage')"
   >
     <template #actions>
       <UiButton
         variant="secondary"
         size="sm"
         :loading="verifying"
-        leading-icon="lucide:rotate-cw"
+        leading-icon="app:action.verify"
         @click="$emit('verify')"
       >
-        立即验证
+        {{ t("agent.actions.verifyNow") }}
       </UiButton>
       <UiButton
         :to="RouteLocation.agentDetail(createdAgent.agentId)"
         variant="primary"
         size="sm"
-        leading-icon="lucide:eye"
+        leading-icon="app:action.details"
       >
-        查看详情
+        {{ t("agent.actions.viewDetails") }}
       </UiButton>
     </template>
   </InlineNotice>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { RouteLocation } from "@/app/router/route-names";
 import type { AgentCreateResponse } from "@/shared/types/agent-registry-types";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
@@ -41,4 +42,6 @@ defineProps<{
 defineEmits<{
   (event: "verify"): void;
 }>();
+
+const { t } = useI18n();
 </script>

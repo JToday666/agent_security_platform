@@ -1,33 +1,33 @@
 <template>
   <div class="content agent-page layout-page-shell layout-page-shell--wide">
     <PageHero
-      title="智能体管理"
-      description="查看已注册 Agent 的状态，并执行验证、归档、复制新建和提交评测。"
+      :title="t('agent.management.title')"
+      :description="t('agent.management.description')"
       description-wrap="single-line"
     >
       <template #actions>
         <UiButton
           :to="RouteLocation.agentRegister()"
           variant="primary"
-          leading-icon="lucide:bot-message-square"
+          leading-icon="app:action.registerAgent"
         >
-          注册智能体
+          {{ t("agent.actions.registerAgent") }}
         </UiButton>
       </template>
     </PageHero>
 
     <PageStatePanel
       v-if="loading"
-      title="正在读取 Agent"
-      message="请稍候。"
+      :title="t('agent.detail.loadingTitle')"
+      :message="t('common.feedback.pleaseWait')"
       :loading="true"
     />
 
     <PageStatePanel
       v-else-if="error"
-      title="Agent 加载失败"
+      :title="t('agent.detail.errorTitle')"
       :message="error"
-      action-text="重试"
+      :action-text="t('common.actions.retry')"
       @action="loadAgents"
     />
 
@@ -36,7 +36,7 @@
         <span>{{ listSummaryText }}</span>
         <label class="archive-toggle">
           <input v-model="includeArchived" type="checkbox" />
-          <span>显示已归档</span>
+          <span>{{ t("agent.management.includeArchived") }}</span>
         </label>
       </div>
 
@@ -51,13 +51,13 @@
             <div class="agent-row__tags">
               <AgentStatusTag :status="agent.status" size="sm" />
               <UiTag tone="info" size="sm">
-                {{ getInvokeModeLabel(agent.invokeMode) }}
+                {{ getInvokeModeLabel(agent.invokeMode, t) }}
               </UiTag>
             </div>
           </div>
-          <p>{{ agent.description || "暂无描述" }}</p>
+          <p>{{ agent.description || t("agent.common.noDescription") }}</p>
           <span class="agent-row__meta">
-            最近验证：{{ formatVerification(agent) }}
+            {{ t("agent.management.recentVerification", { value: formatVerification(agent) }) }}
           </span>
         </div>
 
@@ -66,46 +66,46 @@
             :to="RouteLocation.agentDetail(agent.agentId)"
             variant="secondary"
             size="sm"
-            leading-icon="lucide:eye"
+            leading-icon="app:action.details"
           >
-            详情
+            {{ t("agent.actions.details") }}
           </UiButton>
           <UiButton
             variant="secondary"
             size="sm"
-            leading-icon="lucide:rotate-cw"
+            leading-icon="app:action.verify"
             :disabled="!agent.canVerify || busyAgentId === agent.agentId"
             :loading="busyAgentId === agent.agentId && busyAction === 'verify'"
             @click="handleVerify(agent.agentId)"
           >
-            验证
+            {{ t("agent.actions.verify") }}
           </UiButton>
           <UiButton
             :to="RouteLocation.agentRegister({ copyFrom: agent.agentId })"
             variant="secondary"
             size="sm"
-            leading-icon="lucide:copy-plus"
+            leading-icon="app:action.copyNew"
           >
-            复制新建
+            {{ t("agent.actions.copyNew") }}
           </UiButton>
           <UiButton
             :to="RouteLocation.agentSubmitWithAgent(agent.agentId)"
             variant="primary"
             size="sm"
-            leading-icon="lucide:file-plus-2"
+            leading-icon="app:action.submitEvaluation"
             :disabled="!agent.canSubmitEvaluation"
           >
-            提交评测
+            {{ t("common.actions.submitEvaluation") }}
           </UiButton>
           <UiButton
             variant="danger"
             size="sm"
-            leading-icon="lucide:archive"
+            leading-icon="app:action.archive"
             :disabled="!agent.canArchive || busyAgentId === agent.agentId"
             :loading="busyAgentId === agent.agentId && busyAction === 'archive'"
             @click="openArchiveDialog(agent)"
           >
-            归档
+            {{ t("agent.actions.archive") }}
           </UiButton>
         </div>
       </article>
@@ -114,7 +114,7 @@
         v-if="agents.length === 0"
         :title="emptyStateTitle"
         :message="emptyStateMessage"
-        action-text="注册智能体"
+        :action-text="t('agent.actions.registerAgent')"
         @action="$router.push(RouteLocation.agentRegister())"
       />
     </section>
@@ -128,10 +128,10 @@
 
     <ConfirmDialog
       v-model="archiveDialogVisible"
-      title="归档 Agent"
+      :title="t('agent.detail.archiveDialogTitle')"
       :message="archiveDialogMessage"
-      confirm-text="确认归档"
-      cancel-text="取消"
+      :confirm-text="t('agent.detail.confirmArchive')"
+      :cancel-text="t('common.actions.cancel')"
       :loading="busyAction === 'archive'"
       @confirm="confirmArchive"
     />
@@ -140,6 +140,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import {
@@ -159,6 +160,7 @@ import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
 
 const $router = useRouter();
+const { t } = useI18n();
 const agents = ref<AgentListItem[]>([]);
 const loading = ref(true);
 const error = ref("");
@@ -171,36 +173,40 @@ const archiveAgentTarget = ref<AgentListItem | null>(null);
 
 const archiveDialogMessage = computed(() =>
   archiveAgentTarget.value
-    ? `归档后，${archiveAgentTarget.value.name} 不能再提交评测，但仍可复制新建。`
+    ? t("agent.management.archiveDialogMessage", {
+        name: archiveAgentTarget.value.name,
+      })
     : "",
 );
 const listSummaryText = computed(() =>
   agents.value.length > 0
-    ? `显示 ${agents.value.length} 个 Agent`
+    ? t("agent.management.listSummaryWithCount", { count: agents.value.length })
     : includeArchived.value
-      ? "暂无 Agent"
-      : "暂无可显示 Agent",
+      ? t("agent.management.listSummaryEmpty")
+      : t("agent.management.listSummaryNoVisible"),
 );
 const emptyStateTitle = computed(() =>
-  includeArchived.value ? "还没有 Agent" : "当前没有可显示 Agent",
+  includeArchived.value
+    ? t("agent.management.emptyTitleArchived")
+    : t("agent.management.emptyTitleVisible"),
 );
 const emptyStateMessage = computed(() =>
   includeArchived.value
-    ? "注册并验证 Agent 后即可创建评测任务。"
-    : "可切换显示已归档，或注册新的智能体。",
+    ? t("agent.management.emptyMessageArchived")
+    : t("agent.management.emptyMessageVisible"),
 );
 
 const formatVerification = (agent: AgentListItem): string => {
   if (!agent.verifiedAt) {
-    return "未验证";
+    return t("agent.verification.notVerified");
   }
 
   const result =
     agent.lastVerificationPassed === true
-      ? "通过"
+      ? t("agent.verification.passed")
       : agent.lastVerificationPassed === false
-        ? "失败"
-        : "未知";
+        ? t("agent.verification.failed")
+        : t("agent.common.unknown");
   return `${formatDateTimeLabel(agent.verifiedAt)} · ${result}`;
 };
 
@@ -214,7 +220,7 @@ const loadAgents = async () => {
     });
   } catch (loadError) {
     error.value =
-      loadError instanceof Error ? loadError.message : "Agent 加载失败。";
+      loadError instanceof Error ? loadError.message : t("agent.api.loadFailed");
   } finally {
     loading.value = false;
   }
@@ -230,7 +236,9 @@ const handleVerify = async (agentId: string) => {
     await loadAgents();
   } catch (verifyError) {
     actionError.value =
-      verifyError instanceof Error ? verifyError.message : "Agent 验证失败。";
+      verifyError instanceof Error
+        ? verifyError.message
+        : t("agent.api.verifyFailed");
   } finally {
     busyAgentId.value = "";
     busyAction.value = "";
@@ -258,7 +266,9 @@ const confirmArchive = async () => {
     await loadAgents();
   } catch (archiveError) {
     actionError.value =
-      archiveError instanceof Error ? archiveError.message : "Agent 归档失败。";
+      archiveError instanceof Error
+        ? archiveError.message
+        : t("agent.api.archiveFailed");
   } finally {
     busyAgentId.value = "";
     busyAction.value = "";

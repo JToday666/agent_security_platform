@@ -8,15 +8,17 @@
     </div>
 
     <h3 class="dataset-name">{{ dataset.name }}</h3>
-    <p class="dataset-description">{{ dataset.shortDescription || "暂无说明" }}</p>
+    <p class="dataset-description">
+      {{ dataset.shortDescription || t("dataset.subcategory.noDescription") }}
+    </p>
 
     <div class="grid-cols-2 meta-grid">
       <div class="meta-item">
-        <span class="meta-label">样本数</span>
+        <span class="meta-label">{{ t("dataset.labels.sampleCount") }}</span>
         <strong>{{ formatSampleCount(dataset.sampleCount ?? undefined) }}</strong>
       </div>
       <div class="meta-item">
-        <span class="meta-label">更新时间</span>
+        <span class="meta-label">{{ t("dataset.labels.updateTime") }}</span>
         <strong>{{ formatDateLabel(dataset.updatedAt ?? undefined) }}</strong>
       </div>
     </div>
@@ -27,14 +29,18 @@
         variant="text"
         size="sm"
       >
-        查看详情
+        {{ t("dataset.subcategory.viewDetails") }}
       </Button>
       <Button
         variant="secondary"
         size="sm"
         @click="handleSubmitClick"
       >
-        {{ isLogin ? "使用此数据集" : "登录后评测" }}
+        {{
+          isLogin
+            ? t("dataset.subcategory.useDataset")
+            : t("dataset.subcategory.loginToEvaluate")
+        }}
       </Button>
     </div>
   </article>
@@ -42,6 +48,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
@@ -62,6 +69,7 @@ const props = defineProps<{
   category: DatasetCategoryViewModel;
 }>();
 
+const { t } = useI18n();
 const router = useRouter();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);

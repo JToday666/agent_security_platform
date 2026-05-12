@@ -1,29 +1,29 @@
 <template>
   <div class="content dataset-page layout-page-shell">
     <PageHero
-      title="数据集目录"
-      description="按风险域浏览可用数据集，并查看说明。"
+      :title="t('dataset.pages.catalog.title')"
+      :description="t('dataset.pages.catalog.description')"
     />
 
     <PageStatePanel
       v-if="loading && !loaded"
-      title="正在加载目录"
-      message="请稍候。"
+      :title="t('dataset.pages.catalog.loadingTitle')"
+      :message="t('dataset.pages.catalog.loadingMessage')"
       :loading="true"
     />
 
     <PageStatePanel
       v-else-if="error && !enabledCategories.length"
-      title="目录加载失败"
+      :title="t('dataset.pages.catalog.loadFailedTitle')"
       :message="error"
-      action-text="重新加载"
+      :action-text="t('dataset.pages.catalog.reloadAction')"
       @action="reloadCatalog"
     />
 
     <PageStatePanel
       v-else-if="!activeCategory"
-      title="当前暂无可用数据集"
-      message="请稍后重试。"
+      :title="t('dataset.pages.catalog.emptyTitle')"
+      :message="t('dataset.pages.catalog.emptyMessage')"
     />
 
     <template v-else>
@@ -47,8 +47,8 @@
 
       <PageStatePanel
         v-else
-        title="没有找到匹配的数据集"
-        message="请尝试更换关键词或切换风险域。"
+        :title="t('dataset.pages.catalog.noMatchesTitle')"
+        :message="t('dataset.pages.catalog.noMatchesMessage')"
       />
     </template>
   </div>
@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import DatasetCategorySection from "@/modules/dataset/components/DatasetCategorySection.vue";
 import DatasetFilterBar from "@/modules/dataset/components/DatasetFilterBar.vue";
@@ -67,6 +68,7 @@ import { useDatasetCatalogStore } from "@/modules/dataset/stores/datasetCatalogS
 import PageHero from "@/shared/ui/page/PageHero.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 
+const { t } = useI18n();
 const datasetCatalogStore = useDatasetCatalogStore();
 const {
   enabledCategories,

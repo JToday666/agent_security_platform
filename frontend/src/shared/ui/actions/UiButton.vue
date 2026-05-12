@@ -29,6 +29,7 @@
 import { computed, type Component } from "vue";
 import { RouterLink, type RouteLocationRaw } from "vue-router";
 import AppIcon from "../branding/AppIcon.vue";
+import type { AppIconName } from "../branding/app-icon-registry";
 
 const props = withDefaults(
   defineProps<{
@@ -41,7 +42,7 @@ const props = withDefaults(
     rel?: string;
     disabled?: boolean;
     block?: boolean;
-    leadingIcon?: string;
+    leadingIcon?: AppIconName | "";
     loading?: boolean;
     as?: string | Component;
   }>(),

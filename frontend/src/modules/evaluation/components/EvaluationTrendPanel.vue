@@ -2,12 +2,15 @@
   <section class="trend-panel">
     <div class="trend-panel__head">
       <div>
-        <h2>分数趋势</h2>
-        <p>查看近期或全部已生成报告的评测变化。</p>
+        <h2>{{ t("evaluation.trend.title") }}</h2>
+        <p>{{ t("evaluation.trend.description") }}</p>
       </div>
 
-      <div class="trend-panel__controls" aria-label="趋势图筛选">
-        <div class="segmented" aria-label="趋势范围">
+      <div
+        class="trend-panel__controls"
+        :aria-label="t('evaluation.trend.toolbarAria')"
+      >
+        <div class="segmented" :aria-label="t('evaluation.trend.rangeAria')">
           <button
             v-for="item in scopeOptions"
             :key="item.value"
@@ -18,7 +21,7 @@
             {{ item.label }}
           </button>
         </div>
-        <div class="segmented" aria-label="趋势视图">
+        <div class="segmented" :aria-label="t('evaluation.trend.viewAria')">
           <button
             v-for="item in viewOptions"
             :key="item.value"
@@ -32,16 +35,23 @@
       </div>
     </div>
 
-    <div v-if="loading" class="trend-panel__state">正在读取趋势</div>
+    <div v-if="loading" class="trend-panel__state">
+      {{ t("evaluation.trend.loading") }}
+    </div>
     <div v-else-if="error" class="trend-panel__state trend-panel__state--error">
       <span>{{ error }}</span>
-      <UiButton variant="text" size="sm" @click="loadTrend">重试</UiButton>
+      <UiButton variant="text" size="sm" @click="loadTrend">
+        {{ t("evaluation.actions.retry") }}
+      </UiButton>
     </div>
     <div v-else-if="!trend?.items.length" class="trend-panel__state">
-      暂无可展示趋势。
+      {{ t("evaluation.trend.empty") }}
     </div>
     <div v-else class="trend-canvas">
-      <div class="trend-canvas__summary" aria-label="趋势摘要">
+      <div
+        class="trend-canvas__summary"
+        :aria-label="t('evaluation.trend.summaryAria')"
+      >
         <div class="trend-summary trend-summary--primary">
           <span>{{ trendSummary.latestLabel }}</span>
           <strong>{{ trendSummary.latestValue }}</strong>
@@ -67,6 +77,7 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { getEvaluationScoreTrend } from "@/modules/evaluation/api/evaluation-api";
 import { buildTrendSummary } from "@/modules/evaluation/lib/evaluation-report-insights";
 import type {
@@ -79,27 +90,34 @@ import UiButton from "@/shared/ui/actions/UiButton.vue";
 const EvaluationTrendChart = defineAsyncComponent(
   () => import("@/modules/evaluation/components/charts/EvaluationTrendChart.vue"),
 );
+const { t } = useI18n();
 
 defineEmits<{
   (event: "select", evaluationId: string): void;
 }>();
 
-const scopeOptions: Array<{ label: string; value: EvaluationScoreTrendScope }> = [
-  { label: "最近 10 次", value: "recent10" },
-  { label: "全部评测", value: "all" },
-];
+const scopeOptions = computed<Array<{
+  label: string;
+  value: EvaluationScoreTrendScope;
+}>>(() => [
+  { label: t("evaluation.trend.recent10"), value: "recent10" },
+  { label: t("evaluation.trend.all"), value: "all" },
+]);
 
-const viewOptions: Array<{ label: string; value: EvaluationScoreTrendView }> = [
-  { label: "能力视图", value: "capability" },
-  { label: "风险视图", value: "risk" },
-];
+const viewOptions = computed<Array<{
+  label: string;
+  value: EvaluationScoreTrendView;
+}>>(() => [
+  { label: t("evaluation.trend.capabilityView"), value: "capability" },
+  { label: t("evaluation.trend.riskView"), value: "risk" },
+]);
 
 const scope = ref<EvaluationScoreTrendScope>("recent10");
 const view = ref<EvaluationScoreTrendView>("capability");
 const trend = ref<EvaluationScoreTrend | null>(null);
 const loading = ref(false);
 const error = ref("");
-const trendSummary = computed(() => buildTrendSummary(trend.value, view.value));
+const trendSummary = computed(() => buildTrendSummary(trend.value, view.value, t));
 
 const loadTrend = async () => {
   loading.value = true;
@@ -111,7 +129,9 @@ const loadTrend = async () => {
   } catch (loadError) {
     trend.value = null;
     error.value =
-      loadError instanceof Error ? loadError.message : "评测趋势加载失败。";
+      loadError instanceof Error
+        ? loadError.message
+        : t("evaluation.api.trendLoadFailed");
   } finally {
     loading.value = false;
   }

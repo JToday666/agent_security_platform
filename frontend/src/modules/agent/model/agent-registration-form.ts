@@ -1,3 +1,7 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import type {
   AgentAuthType,
   AgentConnectionConfig,
@@ -148,8 +152,10 @@ export const parseAgentStatusText = (value: string): string[] =>
 
 const parseCustomFieldValue = (
   field: AgentCustomRequestField,
+  t: AppTranslator = translateRuntimeMessage,
 ): { ok: true; value: unknown } | { ok: false; message: string } => {
   const value = field.value.trim();
+  const fieldName = field.key || t("agent.common.customField");
 
   if (field.valueType === "string") {
     return { ok: true, value: field.value };
@@ -159,7 +165,12 @@ const parseCustomFieldValue = (
     const parsed = Number(value);
     return Number.isFinite(parsed)
       ? { ok: true, value: parsed }
-      : { ok: false, message: `${field.key || "自定义字段"} 必须是数字。` };
+      : {
+          ok: false,
+          message: t("agent.validation.customFieldNumber", {
+            field: fieldName,
+          }),
+        };
   }
 
   if (field.valueType === "boolean") {
@@ -169,7 +180,9 @@ const parseCustomFieldValue = (
 
     return {
       ok: false,
-      message: `${field.key || "自定义字段"} 必须填写 true 或 false。`,
+      message: t("agent.validation.customFieldBoolean", {
+        field: fieldName,
+      }),
     };
   }
 
@@ -178,13 +191,16 @@ const parseCustomFieldValue = (
   } catch {
     return {
       ok: false,
-      message: `${field.key || "自定义字段"} 不是有效 JSON。`,
+      message: t("agent.validation.customFieldJson", {
+        field: fieldName,
+      }),
     };
   }
 };
 
 export const buildAgentCustomRequestBody = (
   fields: AgentCustomRequestField[],
+  t: AppTranslator = translateRuntimeMessage,
 ): { body: Record<string, unknown>; errors: string[] } => {
   const body: Record<string, unknown> = {};
   const errors: string[] = [];
@@ -196,16 +212,16 @@ export const buildAgentCustomRequestBody = (
     }
 
     if (!key) {
-      errors.push("自定义固定字段必须填写字段名。");
+      errors.push(t("agent.validation.customFieldKeyRequired"));
       return;
     }
 
     if (Object.prototype.hasOwnProperty.call(body, key)) {
-      errors.push(`自定义固定字段 ${key} 重复。`);
+      errors.push(t("agent.validation.customFieldDuplicate", { key }));
       return;
     }
 
-    const parsed = parseCustomFieldValue(field);
+    const parsed = parseCustomFieldValue(field, t);
     if (!parsed.ok) {
       errors.push(parsed.message);
       return;
@@ -274,6 +290,7 @@ export const createAgentRegisterFormFromTemplate = (
 
 export const createAgentRegisterFormFromDetail = (
   detail: AgentDetail,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentRegisterForm => {
   const headerName = toText(
     detail.auth.publicConfig?.headerName ?? detail.auth.config?.headerName,
@@ -281,7 +298,7 @@ export const createAgentRegisterFormFromDetail = (
 
   return {
     templateId: detail.templateId,
-    name: `${detail.name} 副本`,
+    name: t("agent.register.copyName", { name: detail.name }),
     description: detail.description,
     invokeMode: detail.invokeMode,
     connection: normalizeConnection(detail.connection),

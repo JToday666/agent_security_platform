@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import type {
   EvaluationStatus,
   LeaderboardVisibilityStatus,
@@ -57,6 +58,8 @@ const props = withDefaults(
   },
 );
 
+const { t } = useI18n();
+
 const resolved = computed(() => {
   if (props.kind === "evaluation") {
     const toneMap = {
@@ -72,55 +75,79 @@ const resolved = computed(() => {
     const toneKey = getEvaluationStatusTone(status);
 
     return {
-      label: getEvaluationStatusLabel(status),
+      label: getEvaluationStatusLabel(status, t),
       tone:
         toneMap[toneKey as keyof typeof toneMap] ??
         ("neutral" as const),
       icon:
         status === "completed"
-          ? "lucide:circle-check-big"
+          ? "app:status.completed"
             : status === "running"
-              ? "lucide:loader-circle"
+              ? "app:status.running"
               : status === "paused"
-                ? "lucide:pause-circle"
+                ? "app:status.paused"
                 : status === "pending" || status === "queued"
-                  ? "lucide:clock-3"
+                  ? "app:status.pending"
                 : status === "terminated"
-                  ? "lucide:octagon-x"
+                  ? "app:status.terminated"
                   : status === "canceled"
-                    ? "lucide:ban"
-                    : "lucide:triangle-alert",
+                    ? "app:status.canceled"
+                    : "app:status.failed",
     };
   }
 
   if (props.kind === "leaderboard") {
     const value = props.value as LeaderboardVisibilityStatus;
     if (value === "anonymous") {
-      return { label: "匿名", tone: "info" as const, icon: "lucide:shield-question" };
+      return {
+        label: t("common.status.anonymous"),
+        tone: "info" as const,
+        icon: "app:status.anonymous",
+      };
     }
 
     if (value === "unranked") {
-      return { label: "未排行", tone: "muted" as const, icon: "lucide:list-x" };
+      return {
+        label: t("common.status.rankedOut"),
+        tone: "muted" as const,
+        icon: "app:status.rankedOut",
+      };
     }
 
-    return { label: "公开", tone: "brand" as const, icon: "lucide:globe" };
+    return {
+      label: t("common.status.public"),
+      tone: "brand" as const,
+      icon: "app:status.public",
+    };
   }
 
   if (props.kind === "method") {
     return props.value === "docker"
-      ? { label: "Docker", tone: "brand" as const, icon: "lucide:package" }
-      : { label: "API", tone: "info" as const, icon: "lucide:plug-zap" };
+      ? { label: "Docker", tone: "brand" as const, icon: "app:method.docker" }
+      : { label: "API", tone: "info" as const, icon: "app:method.api" };
   }
 
   if (props.value === "available") {
-    return { label: "已生成", tone: "success" as const, icon: "lucide:file-check-2" };
+    return {
+      label: t("common.status.ready"),
+      tone: "success" as const,
+      icon: "app:status.available",
+    };
   }
 
   if (props.value === "pending") {
-    return { label: "生成中", tone: "warning" as const, icon: "lucide:file-clock" };
+    return {
+      label: t("common.status.running"),
+      tone: "warning" as const,
+      icon: "app:status.reportPending",
+    };
   }
 
-  return { label: "未生成", tone: "muted" as const, icon: "lucide:file-minus" };
+  return {
+    label: t("common.status.notGenerated"),
+    tone: "muted" as const,
+    icon: "app:status.notGenerated",
+  };
 });
 </script>
 

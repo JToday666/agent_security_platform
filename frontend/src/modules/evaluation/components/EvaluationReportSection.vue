@@ -2,26 +2,31 @@
   <section class="report-section">
     <div class="section-head">
       <div>
-        <h2>评分报告</h2>
+        <h2>{{ t("evaluation.report.title") }}</h2>
         <p>{{ stateText }}</p>
       </div>
       <UiButton
         v-if="error"
         variant="secondary"
         size="sm"
-        leading-icon="lucide:refresh-cw"
+        leading-icon="app:action.retry"
         @click="$emit('retry')"
       >
-        重试
+        {{ t("evaluation.actions.retry") }}
       </UiButton>
     </div>
 
-    <div v-if="loading" class="section-state">正在读取报告</div>
+    <div v-if="loading" class="section-state">
+      {{ t("evaluation.report.loading") }}
+    </div>
     <InlineNotice v-else-if="error" tone="danger" :message="error" />
     <div v-else-if="!report" class="section-state">{{ stateText }}</div>
 
     <template v-else>
-      <div class="report-highlights" aria-label="报告摘要">
+      <div
+        class="report-highlights"
+        :aria-label="t('evaluation.report.summaryAria')"
+      >
         <div
           v-for="item in reportHighlights"
           :key="item.label"
@@ -66,6 +71,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import ReportAbilitySection from "@/modules/evaluation/components/ReportAbilitySection.vue";
 import ReportOutcomeSection from "@/modules/evaluation/components/ReportOutcomeSection.vue";
 import ReportRiskSection from "@/modules/evaluation/components/ReportRiskSection.vue";
@@ -91,25 +97,26 @@ const props = defineProps<{
   error: string;
   stateText: string;
 }>();
+const { t } = useI18n();
 
 defineEmits<{
   (event: "retry"): void;
 }>();
 
 const reportHighlights = computed(() =>
-  props.report ? buildReportHighlights(props.report) : [],
+  props.report ? buildReportHighlights(props.report, t) : [],
 );
 const radarMetricRows = computed(() =>
-  props.report ? buildRadarMetricRows(props.report) : [],
+  props.report ? buildRadarMetricRows(props.report, t) : [],
 );
 const rateOverviewRows = computed(() =>
-  props.report ? buildRateOverviewRows(props.report) : [],
+  props.report ? buildRateOverviewRows(props.report, t) : [],
 );
 const confidenceSummary = computed(() =>
-  props.report ? buildConfidenceSummary(props.report) : null,
+  props.report ? buildConfidenceSummary(props.report, t) : null,
 );
 const insightItems = computed(() =>
-  props.report ? buildReportInsights(props.report) : [],
+  props.report ? buildReportInsights(props.report, t) : [],
 );
 
 const previewDifficultyBucket = ref<string | null>(null);
@@ -126,12 +133,12 @@ const activeDatasetId = computed(
 
 const difficultyInsight = computed(() =>
   props.report
-    ? resolveDifficultyBucketInsight(props.report, activeDifficultyBucket.value)
+    ? resolveDifficultyBucketInsight(props.report, activeDifficultyBucket.value, t)
     : null,
 );
 const datasetInsight = computed(() =>
   props.report
-    ? resolveDatasetSummaryInsight(props.report, activeDatasetId.value)
+    ? resolveDatasetSummaryInsight(props.report, activeDatasetId.value, t)
     : null,
 );
 

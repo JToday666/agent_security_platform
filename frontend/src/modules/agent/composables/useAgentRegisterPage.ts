@@ -1,6 +1,8 @@
 import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
+import type { AppTranslator } from "@/app/i18n/runtime-translator";
 import {
   createAgent,
   getAgentDetail,
@@ -34,60 +36,89 @@ import type {
   AgentTemplate,
 } from "@/shared/types/agent-registry-types";
 
-export const invokeModeOptions = [
-  { label: "提交轮询", value: "submit_poll" },
-  { label: "同步响应", value: "sync_response" },
+const authTypeValues: AgentAuthType[] = [
+  "none",
+  "bearer",
+  "api_key_header",
+  "custom_header",
+];
+const customFieldTypeValues: AgentCustomFieldType[] = [
+  "string",
+  "number",
+  "boolean",
+  "json",
 ];
 
-export const authOptions = [
-  { label: "不使用鉴权", value: "none" },
-  { label: "Bearer Token", value: "bearer" },
-  { label: "API Key Header", value: "api_key_header" },
-  { label: "自定义 Header", value: "custom_header" },
+export const buildInvokeModeOptions = (t: AppTranslator) => [
+  { label: t("agent.display.invokeModes.submitPoll"), value: "submit_poll" },
+  { label: t("agent.display.invokeModes.syncResponse"), value: "sync_response" },
 ];
 
-export const customTypeOptions = [
-  { label: "字符串", value: "string" },
-  { label: "数字", value: "number" },
-  { label: "布尔值", value: "boolean" },
-  { label: "JSON", value: "json" },
+export const buildAuthOptions = (t: AppTranslator) => [
+  { label: t("agent.auth.none"), value: "none" },
+  { label: t("agent.auth.bearer"), value: "bearer" },
+  { label: t("agent.auth.apiKeyHeader"), value: "api_key_header" },
+  { label: t("agent.auth.customHeader"), value: "custom_header" },
 ];
 
-export const previewTabs = [
+export const buildCustomTypeOptions = (t: AppTranslator) => [
+  { label: t("agent.registerForm.fieldTypes.string"), value: "string" },
+  { label: t("agent.registerForm.fieldTypes.number"), value: "number" },
+  { label: t("agent.registerForm.fieldTypes.boolean"), value: "boolean" },
+  { label: t("agent.registerForm.fieldTypes.json"), value: "json" },
+];
+
+export const buildPreviewTabs = (t: AppTranslator) => [
   { label: "curl", value: "curl" as const },
   { label: "Python", value: "python" as const },
-  { label: "请求体", value: "body" as const },
-  { label: "响应解析", value: "response" as const },
+  { label: t("agent.preview.bodyTab"), value: "body" as const },
+  { label: t("agent.preview.responseTab"), value: "response" as const },
 ];
 
-export const inputMappingItems: Array<{
+export const buildInputMappingItems = (t: AppTranslator): Array<{
   key: keyof AgentInputMapping;
   label: string;
-}> = [
-  { key: "task", label: "task -> Agent 字段" },
-  { key: "entryUrl", label: "entryUrl -> Agent 字段" },
-  { key: "timeoutSeconds", label: "timeoutSeconds -> Agent 字段" },
-  { key: "sampleId", label: "sampleId -> Agent 字段" },
-  { key: "evaluationId", label: "evaluationId -> Agent 字段" },
-  { key: "maxSteps", label: "maxSteps -> Agent 字段" },
+}> => [
+  { key: "task", label: t("agent.registerForm.inputMappingLabels.task") },
+  { key: "entryUrl", label: t("agent.registerForm.inputMappingLabels.entryUrl") },
+  {
+    key: "timeoutSeconds",
+    label: t("agent.registerForm.inputMappingLabels.timeoutSeconds"),
+  },
+  { key: "sampleId", label: t("agent.registerForm.inputMappingLabels.sampleId") },
+  {
+    key: "evaluationId",
+    label: t("agent.registerForm.inputMappingLabels.evaluationId"),
+  },
+  { key: "maxSteps", label: t("agent.registerForm.inputMappingLabels.maxSteps") },
 ];
 
-export const outputMappingItems: Array<{
+export const buildOutputMappingItems = (t: AppTranslator): Array<{
   key: keyof AgentOutputMapping;
   label: string;
-}> = [
-  { key: "externalRunId", label: "externalRunId <- 响应路径" },
-  { key: "status", label: "status <- 响应路径" },
-  { key: "finalAnswer", label: "finalAnswer <- 响应路径" },
-  { key: "errorMessage", label: "errorMessage <- 响应路径" },
+}> => [
+  {
+    key: "externalRunId",
+    label: t("agent.registerForm.outputMappingLabels.externalRunId"),
+  },
+  { key: "status", label: t("agent.registerForm.outputMappingLabels.status") },
+  {
+    key: "finalAnswer",
+    label: t("agent.registerForm.outputMappingLabels.finalAnswer"),
+  },
+  {
+    key: "errorMessage",
+    label: t("agent.registerForm.outputMappingLabels.errorMessage"),
+  },
 ];
 
-export type AgentPreviewTab = (typeof previewTabs)[number]["value"];
+export type AgentPreviewTab = ReturnType<typeof buildPreviewTabs>[number]["value"];
 export type AgentRegisterCustomFieldsChoice = "unset" | "use" | "skip";
 
 export const useAgentRegisterPage = () => {
   const route = useRoute();
   const router = useRouter();
+  const { t } = useI18n();
 
   const templates = ref<AgentTemplate[]>([]);
   const form = ref<AgentRegisterForm>(createEmptyAgentRegisterForm());
@@ -107,7 +138,7 @@ export const useAgentRegisterPage = () => {
   const copySourceLoaded = ref(false);
   const validationErrorVersion = ref(0);
 
-  const preview = computed(() => buildAgentInvocationPreview(form.value));
+  const preview = computed(() => buildAgentInvocationPreview(form.value, t));
   const previewCode = computed(() => {
     if (previewTab.value === "python") {
       return preview.value.python;
@@ -151,7 +182,7 @@ export const useAgentRegisterPage = () => {
     buildAgentRegisterSteps({
       templateRequiresCustomFields: templateRequiresCustomFields.value,
       usesNoTemplate: usesNoTemplate.value,
-    }),
+    }, t),
   );
   const currentStep = computed(
     () =>
@@ -257,7 +288,7 @@ export const useAgentRegisterPage = () => {
         typeof route.query.copyFrom === "string" ? route.query.copyFrom : "";
       if (copyFrom) {
         const detail = await getAgentDetail(copyFrom);
-        form.value = createAgentRegisterFormFromDetail(detail);
+        form.value = createAgentRegisterFormFromDetail(detail, t);
         copySourceLoaded.value = true;
         updateCustomFieldsChoiceForTemplate();
         return;
@@ -266,7 +297,7 @@ export const useAgentRegisterPage = () => {
       form.value = createEmptyAgentRegisterForm();
     } catch (error) {
       pageError.value =
-        error instanceof Error ? error.message : "注册页初始化失败。";
+        error instanceof Error ? error.message : t("agent.register.initFailed");
     } finally {
       loading.value = false;
     }
@@ -355,12 +386,12 @@ export const useAgentRegisterPage = () => {
       customFieldsChoice.value === "unset"
     ) {
       fieldErrors.value = {};
-      submitError.value = "请选择是否添加自定义固定字段。";
+      submitError.value = t("agent.register.customFieldsChoiceRequired");
       validationErrorVersion.value += 1;
       return false;
     }
 
-    const result = validateAgentRegisterStep(stepId, form.value);
+    const result = validateAgentRegisterStep(stepId, form.value, t);
     fieldErrors.value = result.fieldErrors;
     submitError.value = result.errors[0] || "";
     if (!result.valid) {
@@ -419,7 +450,7 @@ export const useAgentRegisterPage = () => {
   };
 
   const setAuthType = (value: string) => {
-    const nextType = authOptions.some((option) => option.value === value)
+    const nextType = authTypeValues.includes(value as AgentAuthType)
       ? (value as AgentAuthType)
       : "none";
     clearCompletedFrom("connection");
@@ -429,7 +460,7 @@ export const useAgentRegisterPage = () => {
   };
 
   const setCustomFieldType = (fieldId: string, value: string) => {
-    const nextType = customTypeOptions.some((option) => option.value === value)
+    const nextType = customFieldTypeValues.includes(value as AgentCustomFieldType)
       ? (value as AgentCustomFieldType)
       : "string";
     const field = form.value.customRequestFields.find(
@@ -482,7 +513,7 @@ export const useAgentRegisterPage = () => {
       customFieldsChoice.value === "unset"
     ) {
       fieldErrors.value = {};
-      submitError.value = "请选择是否添加自定义固定字段。";
+      submitError.value = t("agent.register.customFieldsChoiceRequired");
       return false;
     }
 
@@ -521,10 +552,11 @@ export const useAgentRegisterPage = () => {
   const handleCreate = async () => {
     submitError.value = "";
     fieldErrors.value = {};
-    const result = buildAgentCreatePayload(form.value);
+    const result = buildAgentCreatePayload(form.value, t);
     if (!result.valid || !result.payload) {
       fieldErrors.value = result.fieldErrors;
-      submitError.value = result.errors[0] || "Agent 创建参数校验失败。";
+      submitError.value =
+        result.errors[0] || t("agent.register.submitValidationFailed");
       validationErrorVersion.value += 1;
       return;
     }
@@ -534,7 +566,7 @@ export const useAgentRegisterPage = () => {
       createdAgent.value = await createAgent(result.payload);
     } catch (error) {
       submitError.value =
-        error instanceof Error ? error.message : "Agent 创建失败。";
+        error instanceof Error ? error.message : t("agent.api.createFailed");
     } finally {
       submitting.value = false;
     }
@@ -553,7 +585,7 @@ export const useAgentRegisterPage = () => {
       await router.push(RouteLocation.agentDetail(createdAgent.value.agentId));
     } catch (error) {
       submitError.value =
-        error instanceof Error ? error.message : "Agent 验证失败。";
+        error instanceof Error ? error.message : t("agent.api.verifyFailed");
     } finally {
       verifyingCreatedAgent.value = false;
     }

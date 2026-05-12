@@ -1,19 +1,19 @@
 {
   "nav": {
     "home": "Accueil",
-    "dataset": "Jeux de donnees",
+    "dataset": "Catalogue des jeux de données",
     "explore": "Explorer",
     "leaderboard": "Classement",
-    "contact": "Contact",
-    "records": "Dossiers d'evaluation",
+    "contact": "Nous contacter",
+    "records": "Enregistrements d’évaluation",
     "agents": "Gestion des Agents",
     "registerAgent": "Enregistrer un Agent",
-    "submit": "Soumettre",
+    "submit": "Soumettre une évaluation",
     "profile": "Profil",
     "workspace": "Espace de travail"
   },
   "aria": {
-    "returnHome": "Retour a l'accueil",
+    "returnHome": "Retour à l’accueil",
     "openMenu": "Ouvrir le menu de navigation",
     "closeMenu": "Fermer le menu de navigation"
   },

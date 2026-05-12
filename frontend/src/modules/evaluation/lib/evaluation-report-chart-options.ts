@@ -1,5 +1,9 @@
 import type { EChartsOption } from "echarts";
 import {
+  type AppTranslator,
+  translateRuntimeMessage,
+} from "@/app/i18n/runtime-translator";
+import {
   baseChartOption,
   formatNumber,
   formatShortDate,
@@ -33,6 +37,7 @@ export const getTrendMetricKeys = (
 export const buildTrendLineOption = (
   trend: EvaluationScoreTrend | null,
   view: EvaluationScoreTrendView,
+  t: AppTranslator = translateRuntimeMessage,
 ): EChartsOption => {
   const metricKeys = getTrendMetricKeys(trend, view);
   const items = trend?.items ?? [];
@@ -61,7 +66,7 @@ export const buildTrendLineOption = (
             const value =
               typeof typedPoint.value === "number"
                 ? formatNumber(typedPoint.value)
-                : "未返回";
+                : t("evaluation.common.noReturn");
             return `${typedPoint.marker ?? ""}${typedPoint.seriesName ?? ""}：${value}`;
           })
           .join("<br/>");
@@ -72,8 +77,10 @@ export const buildTrendLineOption = (
 
         return [
           `<strong>${item.agentName}</strong>`,
-          `评测：${item.evaluationId}`,
-          `完成：${formatShortDate(item.finishedAt ?? item.createdAt)}`,
+          t("evaluation.charts.evaluationId", { id: item.evaluationId }),
+          t("evaluation.charts.completionDate", {
+            date: formatShortDate(item.finishedAt ?? item.createdAt),
+          }),
           lines,
         ].join("<br/>");
       },
@@ -81,7 +88,7 @@ export const buildTrendLineOption = (
     legend: {
       top: 0,
       right: 0,
-      data: metricKeys.map((key) => getMetricLabel(key)),
+      data: metricKeys.map((key) => getMetricLabel(key, t)),
       itemWidth: 10,
       itemHeight: 10,
       textStyle: { color: "#475569" },
@@ -103,7 +110,7 @@ export const buildTrendLineOption = (
       splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.18)" } },
     },
     series: metricKeys.map((key) => ({
-      name: getMetricLabel(key),
+      name: getMetricLabel(key, t),
       type: "line",
       smooth: true,
       symbol: "circle",
@@ -125,8 +132,9 @@ export const buildTrendLineOption = (
 
 export const buildRadarOption = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EChartsOption => {
-  const rows = buildRadarMetricRows(report);
+  const rows = buildRadarMetricRows(report, t);
 
   return {
     ...baseChartOption(),
@@ -145,7 +153,12 @@ export const buildRadarOption = (
     series: [
       {
         type: "radar",
-        data: [{ value: rows.map((row) => row.score), name: "能力结构" }],
+        data: [
+          {
+            value: rows.map((row) => row.score),
+            name: t("evaluation.charts.abilityStructure"),
+          },
+        ],
         areaStyle: { opacity: 0.2 },
         lineStyle: { width: 3 },
         symbolSize: 7,
@@ -156,8 +169,10 @@ export const buildRadarOption = (
 
 export const buildRateOverviewOption = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EChartsOption => {
-  const rows = buildRateOverviewRows(report);
+  const rows = buildRateOverviewRows(report, t);
+  const outcomeRateName = t("evaluation.charts.outcomeRate");
 
   return {
     ...baseChartOption(),
@@ -170,7 +185,7 @@ export const buildRateOverviewOption = (
         const points = Array.isArray(params) ? params : [params];
         const point = points.find((item) => {
           const typedPoint = item as { seriesName?: string };
-          return typedPoint.seriesName === "结果率";
+          return typedPoint.seriesName === outcomeRateName;
         }) as { dataIndex?: number } | undefined;
         const row =
           typeof point?.dataIndex === "number" ? rows[point.dataIndex] : null;
@@ -195,7 +210,7 @@ export const buildRateOverviewOption = (
     },
     series: [
       {
-        name: "基线",
+        name: t("evaluation.charts.baseline"),
         type: "bar",
         silent: true,
         barWidth: 12,
@@ -207,7 +222,7 @@ export const buildRateOverviewOption = (
         },
       },
       {
-        name: "结果率",
+        name: outcomeRateName,
         type: "bar",
         barWidth: 12,
         data: rows.map((row) => row.score),
@@ -230,8 +245,9 @@ export const buildRateOverviewOption = (
 
 export const buildConfidenceIntervalOption = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EChartsOption => {
-  const interval = buildConfidenceSummary(report);
+  const interval = buildConfidenceSummary(report, t);
   const width = Math.max(0, interval.high - interval.low);
 
   return {
@@ -252,14 +268,14 @@ export const buildConfidenceIntervalOption = (
     },
     yAxis: {
       type: "category",
-      data: ["分数范围"],
+      data: [t("evaluation.charts.scoreRange")],
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: { show: false },
     },
     series: [
       {
-        name: "区间起点",
+        name: t("evaluation.charts.seriesStart"),
         type: "bar",
         stack: "confidence",
         silent: true,
@@ -269,7 +285,7 @@ export const buildConfidenceIntervalOption = (
         emphasis: { disabled: true },
       },
       {
-        name: "置信区间",
+        name: interval.label,
         type: "bar",
         stack: "confidence",
         barWidth: 14,
@@ -280,11 +296,11 @@ export const buildConfidenceIntervalOption = (
         },
       },
       {
-        name: "中位数",
+        name: t("evaluation.charts.median"),
         type: "scatter",
         symbol: "diamond",
         symbolSize: 14,
-        data: [[interval.median, "分数范围"]],
+        data: [[interval.median, t("evaluation.charts.scoreRange")]],
         itemStyle: {
           color: "#7c3aed",
           borderColor: "#ffffff",
@@ -297,6 +313,7 @@ export const buildConfidenceIntervalOption = (
 
 export const buildOutcomeDonutOption = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EChartsOption => ({
   ...baseChartOption(),
   color: [OUTCOME_COLORS.success, OUTCOME_COLORS.failed, OUTCOME_COLORS.error],
@@ -307,7 +324,7 @@ export const buildOutcomeDonutOption = (
   },
   series: [
     {
-      name: "样本结果",
+      name: t("evaluation.report.outcomeSection"),
       type: "pie",
       radius: ["48%", "72%"],
       center: ["50%", "45%"],
@@ -322,9 +339,18 @@ export const buildOutcomeDonutOption = (
       },
       label: { formatter: "{b}\n{c}" },
       data: [
-        { name: "成功", value: report.breakdowns.outcomeSummary.success },
-        { name: "失败", value: report.breakdowns.outcomeSummary.failed },
-        { name: "异常", value: report.breakdowns.outcomeSummary.error },
+        {
+          name: t("evaluation.outcomes.success"),
+          value: report.breakdowns.outcomeSummary.success,
+        },
+        {
+          name: t("evaluation.outcomes.failed"),
+          value: report.breakdowns.outcomeSummary.failed,
+        },
+        {
+          name: t("evaluation.outcomes.error"),
+          value: report.breakdowns.outcomeSummary.error,
+        },
       ],
     },
   ],
@@ -332,6 +358,7 @@ export const buildOutcomeDonutOption = (
 
 export const buildDifficultyBarOption = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EChartsOption => ({
   ...baseChartOption(),
   color: [
@@ -352,12 +379,12 @@ export const buildDifficultyBarOption = (
   yAxis: [
     {
       type: "value",
-      name: "样本",
+      name: t("evaluation.charts.sample"),
       splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.18)" } },
     },
     {
       type: "value",
-      name: "成功率",
+      name: t("evaluation.charts.successRate"),
       min: 0,
       max: 100,
       axisLabel: { formatter: "{value}%" },
@@ -367,7 +394,7 @@ export const buildDifficultyBarOption = (
   series: [
     ...(["success", "failed", "error"] as EvaluationSampleOutcome[]).map(
       (key) => ({
-        name: key === "success" ? "成功" : key === "failed" ? "失败" : "异常",
+        name: t(`evaluation.outcomes.${key}`),
         type: "bar" as const,
         stack: "difficulty",
         barMaxWidth: 34,
@@ -376,7 +403,7 @@ export const buildDifficultyBarOption = (
       }),
     ),
     {
-      name: "成功率",
+      name: t("evaluation.charts.successRate"),
       type: "line",
       yAxisIndex: 1,
       smooth: true,
@@ -393,6 +420,7 @@ export const buildDifficultyBarOption = (
 
 export const buildDatasetStackedBarOption = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EChartsOption => ({
   ...baseChartOption(),
   color: [OUTCOME_COLORS.success, OUTCOME_COLORS.failed, OUTCOME_COLORS.error],
@@ -417,7 +445,7 @@ export const buildDatasetStackedBarOption = (
     axisLine: { lineStyle: { color: "#cbd5e1" } },
   },
   series: ["success", "failed", "error"].map((key) => ({
-    name: key === "success" ? "成功" : key === "failed" ? "失败" : "异常",
+    name: t(`evaluation.outcomes.${key}`),
     type: "bar",
     stack: "dataset",
     barMaxWidth: 26,
@@ -430,6 +458,7 @@ export const buildDatasetStackedBarOption = (
 
 export const buildSampleScatterOption = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EChartsOption => ({
   ...baseChartOption(),
   color: [OUTCOME_COLORS.success, OUTCOME_COLORS.failed, OUTCOME_COLORS.error],
@@ -437,7 +466,11 @@ export const buildSampleScatterOption = (
     trigger: "item",
     formatter: (params: any) => {
       const value = params.value ?? [];
-      return `难度：${value[0]}<br/>耗时：${value[1]} ms<br/>样本：${value[2]}`;
+      return t("evaluation.charts.sampleTooltip", {
+        difficulty: value[0],
+        duration: value[1],
+        sampleId: value[2],
+      });
     },
   },
   legend: { top: 0, right: 0, textStyle: { color: "#475569" } },
@@ -446,18 +479,18 @@ export const buildSampleScatterOption = (
     type: "value",
     min: 0,
     max: 1,
-    name: "难度",
+    name: t("evaluation.charts.difficulty"),
     splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.16)" } },
   },
   yAxis: {
     type: "value",
-    name: "耗时 ms",
+    name: t("evaluation.charts.durationMs"),
     splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.16)" } },
   },
   series: (["success", "failed", "error"] as EvaluationSampleOutcome[]).map(
     (outcome) => ({
       name:
-        outcome === "success" ? "成功" : outcome === "failed" ? "失败" : "异常",
+        t(`evaluation.outcomes.${outcome}`),
       type: "scatter",
       symbolSize: outcome === "success" ? 8 : 10,
       emphasis: {

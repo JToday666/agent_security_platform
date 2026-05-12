@@ -1,4 +1,5 @@
 import { computed, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import {
@@ -32,6 +33,7 @@ const getErrorCode = (value: unknown): number | null => {
 export const useEvaluationDetailPage = () => {
   const route = useRoute();
   const router = useRouter();
+  const { t } = useI18n();
   const evaluationId = computed(() => String(route.params.evaluationId ?? ""));
   const report = ref<EvaluationReportPayload | null>(null);
   const reportLoading = ref(false);
@@ -64,58 +66,61 @@ export const useEvaluationDetailPage = () => {
   });
 
   const actionDialogTitle = computed(() => {
-    if (pendingAction.value === "pause") return "暂停任务";
-    if (pendingAction.value === "terminate") return "终止任务";
-    if (pendingAction.value === "cancel") return "取消任务";
+    if (pendingAction.value === "pause") return t("evaluation.dialogs.pauseTitle");
+    if (pendingAction.value === "terminate")
+      return t("evaluation.dialogs.terminateTitle");
+    if (pendingAction.value === "cancel")
+      return t("evaluation.dialogs.cancelTitle");
     return "";
   });
 
   const actionDialogMessage = computed(() => {
     if (pendingAction.value === "pause")
-      return "暂停会在当前数据集执行完成后生效，每个任务最多只允许暂停一次。";
+      return t("evaluation.dialogs.pauseMessage");
     if (pendingAction.value === "terminate")
-      return "终止会在当前数据集执行完成后结束剩余队列，并生成最终报告。";
+      return t("evaluation.dialogs.terminateMessage");
     if (pendingAction.value === "cancel")
-      return "取消会立即中断当前任务，并且不会生成最终报告。";
+      return t("evaluation.dialogs.cancelMessage");
     return "";
   });
 
   const actionDialogConfirmText = computed(() => {
-    if (pendingAction.value === "pause") return "确认暂停";
-    if (pendingAction.value === "terminate") return "确认终止";
-    return "确认取消";
+    if (pendingAction.value === "pause") return t("evaluation.actions.confirmPause");
+    if (pendingAction.value === "terminate")
+      return t("evaluation.actions.confirmTerminate");
+    return t("evaluation.actions.confirmCancel");
   });
 
   const actionDialogDanger = computed(() => pendingAction.value === "cancel");
 
   const reportStateText = computed(() => {
     if (reportUnavailableFor.value === evaluationId.value) {
-      return getReportUnavailableMessage();
+      return getReportUnavailableMessage(t);
     }
 
     if (report.value) {
-      return "报告已生成，可查看摘要和详细指标。";
+      return t("evaluation.report.generated");
     }
 
     if (!detail.value) {
-      return "正在同步报告状态。";
+      return t("evaluation.report.stateSync");
     }
 
     if (
       detail.value.status === "canceled" ||
       detail.value.status === "failed"
     ) {
-      return "当前任务未生成最终报告。";
+      return t("evaluation.report.missingFinal");
     }
 
     if (
       detail.value.status === "completed" ||
       detail.value.status === "terminated"
     ) {
-      return "任务已结束，但当前未返回报告内容。";
+      return t("evaluation.report.missingReturned");
     }
 
-    return "报告尚未生成，请等待任务继续执行。";
+    return t("evaluation.report.pending");
   });
 
   const loadReport = async () => {
@@ -140,7 +145,9 @@ export const useEvaluationDetailPage = () => {
       }
 
       reportError.value =
-        loadError instanceof Error ? loadError.message : "评测报告加载失败。";
+        loadError instanceof Error
+          ? loadError.message
+          : t("evaluation.api.reportLoadFailed");
     } finally {
       reportLoading.value = false;
     }
@@ -171,7 +178,7 @@ export const useEvaluationDetailPage = () => {
       syncReport();
       syncPolling();
     } catch (loadError) {
-      setError(loadError, "评测详情加载失败。");
+      setError(loadError, t("evaluation.api.detailLoadFailed"));
       poll.stop();
     }
   };
@@ -226,7 +233,7 @@ export const useEvaluationDetailPage = () => {
       link.remove();
       URL.revokeObjectURL(url);
     } catch {
-      downloadError.value = "样本明细下载失败，请稍后重试。";
+      downloadError.value = t("evaluation.api.sampleDownloadFailed");
     } finally {
       downloadLoading.value = false;
     }
@@ -245,7 +252,9 @@ export const useEvaluationDetailPage = () => {
     } catch (actionErr) {
       const code = getErrorCode(actionErr);
       const message =
-        actionErr instanceof Error ? actionErr.message : "任务操作失败。";
+        actionErr instanceof Error
+          ? actionErr.message
+          : t("evaluation.api.actionFailed");
       error.value = message;
 
       if (code === 40901 || code === 40902) {

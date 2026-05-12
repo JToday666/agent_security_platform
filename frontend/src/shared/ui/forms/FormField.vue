@@ -73,6 +73,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import AppIcon from "../branding/AppIcon.vue";
+import type { AppIconName } from "../branding/app-icon-registry";
 import UiSelect from "./UiSelect.vue";
 
 interface Props {
@@ -97,7 +98,7 @@ interface Props {
   required?: boolean;
   readonly?: boolean;
   autocomplete?: string;
-  leadingIcon?: string;
+  leadingIcon?: AppIconName | "";
   appearance?: "line" | "soft";
   size?: "sm" | "md";
   options?: Array<{

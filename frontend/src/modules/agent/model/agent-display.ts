@@ -1,21 +1,29 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import type {
   AgentInvokeMode,
   AgentListItem,
   AgentStatus,
 } from "@/shared/types/agent-registry-types";
+import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
-export const getAgentStatusLabel = (status: AgentStatus): string => {
+export const getAgentStatusLabel = (
+  status: AgentStatus,
+  t: AppTranslator = translateRuntimeMessage,
+): string => {
   switch (status) {
     case "draft":
-      return "待验证";
+      return t("agent.display.status.draft");
     case "verifying":
-      return "验证中";
+      return t("agent.display.status.verifying");
     case "active":
-      return "可评测";
+      return t("agent.display.status.active");
     case "invalid":
-      return "验证失败";
+      return t("agent.display.status.invalid");
     case "archived":
-      return "已归档";
+      return t("agent.display.status.archived");
   }
 };
 
@@ -36,42 +44,50 @@ export const getAgentStatusTone = (
   }
 };
 
-export const getAgentStatusIcon = (status: AgentStatus): string => {
+export const getAgentStatusIcon = (status: AgentStatus): AppIconName => {
   switch (status) {
     case "draft":
-      return "lucide:clock-3";
+      return "app:status.draft";
     case "verifying":
-      return "lucide:loader-circle";
+      return "app:status.verifying";
     case "active":
-      return "lucide:circle-check-big";
+      return "app:status.active";
     case "invalid":
-      return "lucide:triangle-alert";
+      return "app:status.invalid";
     case "archived":
-      return "lucide:archive";
+      return "app:status.archived";
   }
 };
 
-export const getInvokeModeLabel = (mode: AgentInvokeMode): string =>
-  mode === "submit_poll" ? "提交轮询" : "同步响应";
+export const getInvokeModeLabel = (
+  mode: AgentInvokeMode,
+  t: AppTranslator = translateRuntimeMessage,
+): string =>
+  mode === "submit_poll"
+    ? t("agent.display.invokeModes.submitPoll")
+    : t("agent.display.invokeModes.syncResponse");
 
-export const getAgentSubmitDisabledReason = (agent: AgentListItem): string => {
+export const getAgentSubmitDisabledReason = (
+  agent: AgentListItem,
+  t: AppTranslator = translateRuntimeMessage,
+): string => {
   if (agent.status === "active") {
-    return "";
+    return t("agent.display.disabledReasons.active");
   }
 
   if (agent.status === "draft") {
-    return "该 Agent 尚未验证通过，不能提交评测。";
+    return t("agent.display.disabledReasons.draft");
   }
 
   if (agent.status === "verifying") {
-    return "该 Agent 正在验证中，暂不能提交评测。";
+    return t("agent.display.disabledReasons.verifying");
   }
 
   if (agent.status === "invalid") {
-    return "该 Agent 验证失败，不能提交评测。";
+    return t("agent.display.disabledReasons.invalid");
   }
 
-  return "已归档 Agent 不能提交评测。";
+  return t("agent.display.disabledReasons.archived");
 };
 
 export const canVerifyAgent = (status: AgentStatus): boolean =>

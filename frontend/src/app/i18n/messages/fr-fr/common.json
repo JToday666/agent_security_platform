@@ -1,24 +1,42 @@
 {
   "brand": {
-    "name": "AEGIS plateforme d'evaluation de securite des Agents",
-    "logoAlt": "Logo de la plateforme d'evaluation de securite des Agents"
+    "name": "Plateforme AEGIS d’évaluation de la sécurité des Agents",
+    "logoAlt": "Logo de la plateforme d’évaluation de la sécurité des Agents"
   },
   "actions": {
-    "browseDataset": "Parcourir les jeux",
+    "add": "Ajouter",
+    "browseDataset": "Parcourir les jeux de données",
     "cancel": "Annuler",
     "close": "Fermer",
     "confirm": "Confirmer",
     "contactUs": "Nous contacter",
+    "delete": "Supprimer",
     "loginRegister": "Connexion / Inscription",
-    "returnHome": "Retour accueil",
-    "saveChanges": "Enregistrer",
-    "submitEvaluation": "Soumettre une evaluation",
-    "viewRecords": "Voir les dossiers"
+    "reload": "Recharger",
+    "returnHome": "Retour à l’accueil",
+    "retry": "Réessayer",
+    "saveChanges": "Enregistrer les modifications",
+    "submitEvaluation": "Soumettre une évaluation",
+    "viewRecords": "Voir les enregistrements"
   },
   "dialog": {
     "title": "Avis"
   },
+  "forms": {
+    "selectPlaceholder": "Sélectionner"
+  },
+  "feedback": {
+    "pleaseWait": "Veuillez patienter."
+  },
+  "status": {
+    "anonymous": "Anonyme",
+    "notGenerated": "Non généré",
+    "public": "Public",
+    "rankedOut": "Non classé",
+    "ready": "Généré",
+    "running": "Génération en cours"
+  },
   "units": {
-    "step": "Etape {step}"
+    "step": "Étape {step}"
   }
 }

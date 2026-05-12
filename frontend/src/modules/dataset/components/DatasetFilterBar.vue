@@ -1,25 +1,25 @@
 <template>
   <SectionBlock
-    title="筛选与排序"
-    description="按风险域、名称和排序方式快速定位目标数据集。"
+    :title="t('dataset.filter.title')"
+    :description="t('dataset.filter.description')"
   >
     <div class="toolbar">
       <FormField
-        label="搜索"
+        :label="t('dataset.filter.searchLabel')"
         :model-value="search"
         type="search"
-        placeholder="按名称或摘要搜索"
-        leading-icon="lucide:search"
+        :placeholder="t('dataset.filter.searchPlaceholder')"
+        leading-icon="app:action.search"
         appearance="soft"
         @update:model-value="$emit('update:search', $event)"
       />
 
       <FormField
-        label="排序"
+        :label="t('dataset.filter.sortLabel')"
         :model-value="sortKey"
         type="select"
         :options="sortOptions"
-        leading-icon="lucide:arrow-up-down"
+        leading-icon="app:action.sort"
         appearance="soft"
         @update:model-value="handleSortKeyChange"
       />
@@ -27,11 +27,11 @@
       <UiButton
         class="clear-btn"
         variant="secondary"
-        leading-icon="lucide:rotate-ccw"
+        leading-icon="app:action.reset"
         :disabled="!search.trim()"
         @click="$emit('clear-search')"
       >
-        清空搜索
+        {{ t("dataset.filter.clearSearch") }}
       </UiButton>
     </div>
 
@@ -52,6 +52,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { getCategoryTheme } from "@/modules/dataset/lib/dataset-utils";
 import type { DatasetCatalogSortKey } from "@/modules/dataset/model/dataset-catalog-view";
 import FormField from "@/shared/ui/forms/FormField.vue";
@@ -73,11 +75,21 @@ defineProps<{
   sortKey: DatasetCatalogSortKey;
 }>();
 
-const sortOptions: Array<{ label: string; value: DatasetCatalogSortKey }> = [
-  { label: "默认排序", value: "default" },
-  { label: "最近更新", value: "updated-desc" },
-  { label: "样本数从高到低", value: "samples-desc" },
-];
+const { t } = useI18n();
+
+const sortOptions = computed<Array<{ label: string; value: DatasetCatalogSortKey }>>(
+  () => [
+    { label: t("dataset.filter.sortOptions.default"), value: "default" },
+    {
+      label: t("dataset.filter.sortOptions.updatedDesc"),
+      value: "updated-desc",
+    },
+    {
+      label: t("dataset.filter.sortOptions.samplesDesc"),
+      value: "samples-desc",
+    },
+  ],
+);
 
 const handleSortKeyChange = (value: string) => {
   emit("update:sortKey", value as DatasetCatalogSortKey);

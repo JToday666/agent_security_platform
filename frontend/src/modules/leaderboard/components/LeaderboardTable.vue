@@ -3,10 +3,10 @@
     <table class="leaderboard-table">
       <thead>
         <tr>
-          <th scope="col">排名</th>
-          <th scope="col">Agent</th>
+          <th scope="col">{{ t("leaderboard.table.rank") }}</th>
+          <th scope="col">{{ t("leaderboard.table.agent") }}</th>
           <th
-            v-for="option in LEADERBOARD_SORT_OPTIONS"
+            v-for="option in sortOptions"
             :key="option.key"
             scope="col"
             :aria-sort="getAriaSort(option.key)"
@@ -25,8 +25,8 @@
               />
             </button>
           </th>
-          <th scope="col">置信度</th>
-          <th scope="col">样本</th>
+          <th scope="col">{{ t("leaderboard.table.confidence") }}</th>
+          <th scope="col">{{ t("leaderboard.table.samples") }}</th>
         </tr>
       </thead>
       <tbody>
@@ -38,17 +38,17 @@
           </td>
           <th scope="row" class="agent-cell">
             <strong :title="entry.displayName">{{ entry.displayName }}</strong>
-            <small v-if="entry.anonymous">匿名</small>
+            <small v-if="entry.anonymous">{{ t("leaderboard.table.anonymous") }}</small>
           </th>
           <td class="score-cell score-cell--primary">
-            {{ formatLeaderboardScore(entry.officialConservativeScore) }}
+            {{ formatLeaderboardScore(entry.officialConservativeScore, t) }}
           </td>
-          <td class="score-cell">{{ formatLeaderboardScore(entry.safeCapabilityScore) }}</td>
-          <td class="score-cell">{{ formatLeaderboardScore(entry.highDifficultyScore) }}</td>
+          <td class="score-cell">{{ formatLeaderboardScore(entry.safeCapabilityScore, t) }}</td>
+          <td class="score-cell">{{ formatLeaderboardScore(entry.highDifficultyScore, t) }}</td>
           <td class="score-cell score-cell--risk">
-            {{ formatLeaderboardScore(entry.unsafeRiskScore) }}
+            {{ formatLeaderboardScore(entry.unsafeRiskScore, t) }}
           </td>
-          <td class="score-cell">{{ formatLeaderboardScore(entry.confidence) }}</td>
+          <td class="score-cell">{{ formatLeaderboardScore(entry.confidence, t) }}</td>
           <td class="sample-cell">{{ entry.totalSamples }}</td>
         </tr>
       </tbody>
@@ -57,11 +57,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import {
-  LEADERBOARD_SORT_OPTIONS,
   formatLeaderboardScore,
   getLeaderboardRankTone,
+  getLeaderboardSortOptions,
   type LeaderboardSortKey,
   type LeaderboardSortState,
 } from "@/modules/leaderboard/lib/leaderboard-view";
@@ -71,6 +73,9 @@ const props = defineProps<{
   entries: LeaderboardEntry[];
   sortState: LeaderboardSortState;
 }>();
+
+const { t } = useI18n();
+const sortOptions = computed(() => getLeaderboardSortOptions(t));
 
 defineEmits<{
   (event: "sort-change", key: LeaderboardSortKey): void;
@@ -88,12 +93,12 @@ const getAriaSort = (
 
 const getSortIcon = (key: LeaderboardSortKey): string => {
   if (props.sortState.key !== key) {
-    return "lucide:chevrons-up-down";
+    return "app:sort.none";
   }
 
   return props.sortState.direction === "asc"
-    ? "lucide:arrow-up"
-    : "lucide:arrow-down";
+    ? "app:sort.ascending"
+    : "app:sort.descending";
 };
 </script>
 

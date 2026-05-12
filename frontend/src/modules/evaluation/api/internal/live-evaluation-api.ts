@@ -1,6 +1,7 @@
 import request from "@/shared/api/http-client";
 import { withMemoryCache } from "@/shared/api/memory-cache";
 import { getCurrentDisplayLocale } from "@/app/i18n";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import {
   adaptEvaluationDetail,
   adaptEvaluationRecord,
@@ -41,7 +42,8 @@ export const getLiveSubmitMeta = async (): Promise<SubmitMetaResponse> =>
 
       if (!response.success || !response.data) {
         throw createServiceError(
-          response.message || "提交元数据加载失败。",
+          response.message ||
+            translateRuntimeMessage("evaluation.api.submitMetaLoadFailed"),
           response.code,
         );
       }
@@ -63,7 +65,11 @@ export const precheckLiveAgent = async (
   );
 
   if (!response.success || !response.data) {
-    throw createServiceError(response.message || "预检查失败。", response.code);
+    throw createServiceError(
+      response.message ||
+        translateRuntimeMessage("evaluation.api.submitPrecheckFailed"),
+      response.code,
+    );
   }
 
   return {
@@ -88,7 +94,7 @@ export const submitLiveAgent = async (
 
   if (!response.success || !response.data) {
     throw createServiceError(
-      response.message || "提交失败，请稍后重试。",
+      response.message || translateRuntimeMessage("evaluation.api.submitFailed"),
       response.code,
     );
   }
@@ -103,7 +109,8 @@ export const getLiveEvaluationRecords = async (): Promise<
 
   if (!response.success || !response.data) {
     throw createServiceError(
-      response.message || "评测记录加载失败。",
+      response.message ||
+        translateRuntimeMessage("evaluation.api.recordsLoadFailed"),
       response.code,
     );
   }
@@ -131,7 +138,8 @@ export const getLiveEvaluationScoreTrend = async (
 
   if (!response.success || !response.data) {
     throw createServiceError(
-      response.message || "评测趋势加载失败。",
+      response.message ||
+        translateRuntimeMessage("evaluation.api.trendLoadFailed"),
       response.code,
     );
   }
@@ -148,7 +156,8 @@ export const getLiveEvaluationDetail = async (
 
   if (!response.success || !response.data) {
     throw createServiceError(
-      response.message || "评测详情加载失败。",
+      response.message ||
+        translateRuntimeMessage("evaluation.api.detailLoadFailed"),
       response.code,
     );
   }
@@ -163,7 +172,8 @@ export const getLiveEvaluationReport = async (
 
   if (!response.success || !response.data) {
     throw createServiceError(
-      response.message || "评测报告加载失败。",
+      response.message ||
+        translateRuntimeMessage("evaluation.api.reportLoadFailed"),
       response.code,
     );
   }
@@ -186,7 +196,7 @@ export const postLiveEvaluationAction = async (
 
   if (!response.success || !response.data) {
     throw createServiceError(
-      response.message || "任务操作失败。",
+      response.message || translateRuntimeMessage("evaluation.api.actionFailed"),
       response.code,
     );
   }

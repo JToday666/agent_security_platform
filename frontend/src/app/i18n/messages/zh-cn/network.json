@@ -1,1 +1,10 @@
-{}
+{
+  "errors": {
+    "network": "网络错误",
+    "requestFailed": "请求失败"
+  },
+  "validation": {
+    "parameter": "参数错误",
+    "requestParameters": "请求参数错误"
+  }
+}

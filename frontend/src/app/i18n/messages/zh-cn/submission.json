@@ -1,1 +1,155 @@
-{}
+{
+  "actions": {
+    "clear": "清空",
+    "reload": "重新加载",
+    "reset": "重置",
+    "selectAll": "全选",
+    "submitTask": "提交任务",
+    "submitting": "提交中..."
+  },
+  "agent": {
+    "description": "选择已验证通过的 Agent 创建评测任务。",
+    "dockerUnavailableMessage": "请使用 API Agent 提交评测。",
+    "dockerUnavailableTitle": "Docker 提交暂不可用",
+    "emptyMessage": "注册并验证 Agent 后即可提交评测。",
+    "emptyTitle": "还没有可用 Agent",
+    "help": "仅显示已验证通过的 Agent。",
+    "label": "可用 Agent",
+    "placeholder": "请选择可用 Agent",
+    "title": "提交智能体"
+  },
+  "confirm": {
+    "agentName": "智能体名称：{agentName}",
+    "back": "返回修改",
+    "datasetCount": "数据集数量：{count}",
+    "leaderboardDisplay": "榜单展示：{mode}",
+    "precheckTitle": "提交前确认",
+    "submitMethod": "提交方式：{method}",
+    "submitTitle": "确认提交",
+    "successMessage": "{summary}\n\n检查已通过，确认后将创建评测任务。",
+    "warningMessage": "{summary}\n\n请先确认以下提示：\n- {warnings}\n\n确认后将创建评测任务。"
+  },
+  "dataset": {
+    "categoryCount": "{count} 个数据集",
+    "clearSearchMessage": "请尝试更换搜索词，或直接清空搜索。",
+    "collapse": "收起",
+    "currentResults": "当前结果 {count}",
+    "description": "选择本次评测需要覆盖的数据集，可按名称快速筛选。",
+    "emptyMessage": "请稍后重试。",
+    "emptyTitle": "当前没有可用数据集",
+    "expand": "展开",
+    "loadFailedTitle": "数据集目录加载失败",
+    "loadingMessage": "请稍候。",
+    "loadingTitle": "正在加载数据集",
+    "noDescription": "暂无数据集说明。",
+    "noMatchesTitle": "没有匹配的数据集",
+    "refreshFailed": "目录刷新失败，请重试。",
+    "refreshing": "正在刷新可用数据集。",
+    "retrySubmit": "请重试后继续提交。",
+    "searchLabel": "搜索",
+    "searchPlaceholder": "按风险域、数据集名称或摘要搜索",
+    "selectedDatasets": "已选数据集 {count}",
+    "selectedRiskDomains": "已选风险域 {count}",
+    "title": "数据集选择"
+  },
+  "errors": {
+    "catalogLoadFailed": "目录加载失败，请重试。",
+    "datasetCatalogPending": "请等待数据集目录加载完成后再提交。",
+    "datasetUnavailable": "链接中的数据集不可用，已忽略。",
+    "dockerUpgrade": "Docker 提交功能正在升级中。",
+    "invalidAgentLink": "链接中的 Agent 不可用，已忽略。",
+    "noDataset": "当前没有可用数据集，无法提交。",
+    "submitFailed": "提交失败，请稍后重试。",
+    "submitFormInitFailed": "提交表单初始化失败。",
+    "submitFormNotReady": "提交表单尚未初始化完成。",
+    "submitInitFailed": "提交页初始化失败。",
+    "validationFailed": "提交参数校验失败。"
+  },
+  "leaderboardDisplay": {
+    "anonymous": {
+      "description": "排行榜仅展示匿名身份，评测结果仍参与公开排序。",
+      "title": "匿名"
+    },
+    "aria": "榜单展示设置",
+    "description": "评测结果进入排行榜时，选择展示公开名称或匿名身份。",
+    "public": {
+      "description": "排行榜展示智能体公开名称，适合公开参评与能力展示。",
+      "title": "公开"
+    },
+    "title": "榜单展示"
+  },
+  "method": {
+    "description": "选择本次提交使用的接入方式。",
+    "meta": {
+      "developing": "开发中",
+      "unavailable": "暂不可用"
+    },
+    "options": {
+      "api": {
+        "description": "适用于已经有在线服务的 Agent。",
+        "title": "API 接入"
+      },
+      "docker": {
+        "description": "该功能正在开发，当前暂不能创建 Docker 评测。",
+        "title": "Docker 镜像"
+      }
+    },
+    "title": "提交方式"
+  },
+  "page": {
+    "description": "配置智能体标识、关联测试集与执行参数，初始化应用安全评测任务。",
+    "errorTitle": "页面初始化失败",
+    "loadingTitle": "正在初始化提交页",
+    "title": "提交评测"
+  },
+  "parameters": {
+    "description": "根据目标场景设置难度、超时和失败重试策略。",
+    "difficultyHelp": "范围 {min} - {max}，步长 {step}。",
+    "difficultyLabel": "攻击难度",
+    "maxStepsHelp": "允许范围 {min} - {max} 步。",
+    "maxStepsLabel": "最大步数",
+    "softWarning": "当前设置高于建议值 {threshold}，可能增加等待和执行耗时。",
+    "timeoutHelp": "建议设置在 {recommended} 分钟内；允许范围 {min} - {max} 分钟。",
+    "timeoutLabel": "超时时间（分钟）",
+    "title": "评测参数"
+  },
+  "summary": {
+    "agentName": "智能体名称",
+    "datasetEmpty": "尚未选择数据集。",
+    "difficulty": "难度",
+    "leaderboardDisplay": "榜单展示",
+    "maxSteps": "最大步数",
+    "maxStepsValue": "{value} 步",
+    "minutesValue": "{value} 分钟",
+    "notSelected": "未选择",
+    "runParameters": "运行参数",
+    "selectedDatasets": "已选数据集",
+    "selectedRiskDomains": "已选风险域",
+    "submitMethod": "提交方式",
+    "subtitle": "确认当前配置后即可创建评测任务。",
+    "timeout": "超时",
+    "title": "任务摘要"
+  },
+  "validation": {
+    "agentRequired": "请选择可评测智能体。",
+    "agentRequiredField": "请选择可评测智能体",
+    "datasetDuplicate": "评测项选择中存在重复数据集，请刷新后重试。",
+    "datasetDuplicateField": "评测项选择中存在重复数据集",
+    "datasetInvalid": "已选择的评测项里包含失效项，请刷新后重试。",
+    "datasetInvalidField": "已选择的评测项里包含失效项",
+    "datasetLimit": "评测项数量不能超过 {count} 个。",
+    "datasetLimitField": "最多只能选择 {count} 个评测项",
+    "difficultyRange": "攻击难度超出允许范围。",
+    "dockerDeveloping": "Docker 提交方式正在开发。",
+    "dockerDevelopingField": "该功能正在开发",
+    "leaderboardModeUnavailable": "榜单展示方式不可用。",
+    "maxStepsRange": "最大步数超出允许范围。",
+    "methodUnavailable": "当前提交方式不可用。",
+    "requestIdInvalid": "requestId 格式不正确，请重试。",
+    "requestIdInvalidField": "requestId 格式不正确",
+    "selectedDatasetLimitNotice": "最多只能选择 {count} 个数据集，超出的部分已忽略。",
+    "selectedDatasetRequired": "请至少选择一个评测项。",
+    "selectedDatasetRequiredField": "请至少选择一个评测项",
+    "timeoutRange": "超时时间超出允许范围。"
+  }
+}

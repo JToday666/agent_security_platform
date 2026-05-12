@@ -1,4 +1,8 @@
 import type { EChartsOption } from "echarts";
+import {
+  type AppTranslator,
+  translateRuntimeMessage,
+} from "@/app/i18n/runtime-translator";
 import type {
   EvaluationSampleOutcome,
   EvaluationScoreMetricKey,
@@ -18,49 +22,42 @@ export type EvaluationTone =
   | "danger"
   | "neutral";
 
-export const METRIC_DEFINITIONS: MetricDefinition[] = [
+const METRIC_DEFINITION_BASE: Array<Pick<MetricDefinition, "key" | "unit">> = [
   {
     key: "conservativeScore",
-    label: "综合分",
-    description: "排行榜主排序分，体现平台对 Agent 能力的保守估计。",
   },
   {
     key: "performanceScore",
-    label: "表现分",
-    description: "在统一标准难度结构下的预期安全成功能力。",
   },
   {
     key: "confidence",
-    label: "置信度",
-    description: "表示当前分数受样本量、难度覆盖和不确定性影响后的可信程度。",
   },
   {
     key: "completionScore",
-    label: "完成能力分",
-    description: "表示 Agent 把任务流程稳定跑完的能力。",
   },
   {
     key: "safetyScore",
-    label: "安全识别分",
-    description: "表示 Agent 完成流程后识别陷阱并安全决策的能力。",
   },
   {
     key: "hardScore",
-    label: "高难表现分",
-    description: "表示高难样本上的预期安全成功能力。",
   },
   {
     key: "unsafeRate",
-    label: "风险率",
-    description: "表示 Agent 跑完任务但做出不安全行为的比例。",
     unit: "%",
   },
   {
     key: "timeScore",
-    label: "速度分",
-    description: "表示成功样本中的相对时间效率。",
   },
 ];
+
+export const getMetricDefinitions = (
+  t: AppTranslator = translateRuntimeMessage,
+): MetricDefinition[] =>
+  METRIC_DEFINITION_BASE.map((definition) => ({
+    ...definition,
+    label: t(`evaluation.metrics.${definition.key}.label`),
+    description: t(`evaluation.metrics.${definition.key}.description`),
+  }));
 
 export const METRIC_COLORS: Record<EvaluationScoreMetricKey, string> = {
   conservativeScore: "#2563eb",
@@ -90,8 +87,10 @@ export const METRIC_TONES: Record<EvaluationScoreMetricKey, EvaluationTone> = {
   timeScore: "primary",
 };
 
-export const getMetricLabel = (key: EvaluationScoreMetricKey): string =>
-  METRIC_DEFINITIONS.find((item) => item.key === key)?.label ?? key;
+export const getMetricLabel = (
+  key: EvaluationScoreMetricKey,
+  t: AppTranslator = translateRuntimeMessage,
+): string => t(`evaluation.metrics.${key}.label`);
 
 export const formatNumber = (value: number): string =>
   Number.isFinite(value) ? value.toFixed(1) : "0.0";
@@ -110,7 +109,7 @@ export const formatMetricValue = (
   key: EvaluationScoreMetricKey,
   value: number,
 ): string => {
-  const definition = METRIC_DEFINITIONS.find((item) => item.key === key);
+  const definition = METRIC_DEFINITION_BASE.find((item) => item.key === key);
   return definition?.unit === "%"
     ? `${formatNumber(value)}%`
     : formatNumber(value);

@@ -1,1 +1,51 @@
-{}
+{
+  "api": {
+    "loadFailed": "排行榜加载失败，请稍后重试。",
+    "unnamedAgent": "未命名 Agent"
+  },
+  "champion": {
+    "anonymous": "匿名",
+    "aria": "当前第一",
+    "label": "当前第一"
+  },
+  "empty": {
+    "message": "当前还没有可展示的公开评测结果。",
+    "title": "暂无公开排行"
+  },
+  "errors": {
+    "loadFailedTitle": "排行榜加载失败",
+    "unavailableMessage": "公开排行榜暂时无法读取，请稍后重试。",
+    "unavailableTitle": "排行榜暂不可用"
+  },
+  "overview": {
+    "aria": "排行榜概览",
+    "currentSecurityCapability": "当前安全能力",
+    "listedAgents": "上榜 Agent",
+    "lowestRiskScore": "最低风险分"
+  },
+  "page": {
+    "description": "按公开评测快照展示 Agent 的综合安全表现。",
+    "loadingTitle": "正在读取排行榜",
+    "title": "排行榜"
+  },
+  "scores": {
+    "composite": "综合",
+    "compositeFull": "综合分",
+    "highDifficulty": "高难",
+    "highDifficultyFull": "高难分",
+    "notReturned": "未返回",
+    "risk": "风险",
+    "riskFull": "风险分",
+    "safeCapability": "安全",
+    "safeCapabilityFull": "安全能力"
+  },
+  "table": {
+    "agent": "Agent",
+    "anonymous": "匿名",
+    "confidence": "置信度",
+    "description": "当前按{sort}排序，风险分越低代表不安全行为比例越低。",
+    "rank": "排名",
+    "samples": "样本",
+    "title": "公开评测结果"
+  }
+}

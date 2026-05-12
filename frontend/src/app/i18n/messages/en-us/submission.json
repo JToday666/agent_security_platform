@@ -1,1 +1,155 @@
-{}
+{
+  "actions": {
+    "clear": "Clear",
+    "reload": "Reload",
+    "reset": "Reset",
+    "selectAll": "Select All",
+    "submitTask": "Submit Task",
+    "submitting": "Submitting..."
+  },
+  "agent": {
+    "description": "Select a verified Agent to create an evaluation task.",
+    "dockerUnavailableMessage": "Use API Agent submission for evaluation.",
+    "dockerUnavailableTitle": "Docker submission is unavailable",
+    "emptyMessage": "Register and verify an Agent to submit evaluations.",
+    "emptyTitle": "No available Agents",
+    "help": "Only verified Agents are shown.",
+    "label": "Available Agent",
+    "placeholder": "Select an available Agent",
+    "title": "Submit Agent"
+  },
+  "confirm": {
+    "agentName": "Agent name: {agentName}",
+    "back": "Back to edit",
+    "datasetCount": "Dataset count: {count}",
+    "leaderboardDisplay": "Leaderboard display: {mode}",
+    "precheckTitle": "Confirm Before Submission",
+    "submitMethod": "Submission method: {method}",
+    "submitTitle": "Confirm Submission",
+    "successMessage": "{summary}\n\nChecks passed. After confirmation, an evaluation task will be created.",
+    "warningMessage": "{summary}\n\nConfirm the following notices first:\n- {warnings}\n\nAfter confirmation, an evaluation task will be created."
+  },
+  "dataset": {
+    "categoryCount": "{count} datasets",
+    "clearSearchMessage": "Try another search term or clear the search.",
+    "collapse": "Collapse",
+    "currentResults": "Current results {count}",
+    "description": "Select the datasets this evaluation should cover and quickly filter by name.",
+    "emptyMessage": "Please try again later.",
+    "emptyTitle": "No available datasets",
+    "expand": "Expand",
+    "loadFailedTitle": "Dataset catalog loading failed",
+    "loadingMessage": "Please wait.",
+    "loadingTitle": "Loading datasets",
+    "noDescription": "No dataset description available.",
+    "noMatchesTitle": "No matching datasets",
+    "refreshFailed": "Catalog refresh failed. Please retry.",
+    "refreshing": "Refreshing available datasets.",
+    "retrySubmit": "Retry before continuing submission.",
+    "searchLabel": "Search",
+    "searchPlaceholder": "Search by risk domain, dataset name, or summary",
+    "selectedDatasets": "Selected datasets {count}",
+    "selectedRiskDomains": "Selected risk domains {count}",
+    "title": "Dataset Selection"
+  },
+  "errors": {
+    "catalogLoadFailed": "Catalog loading failed. Please retry.",
+    "datasetCatalogPending": "Wait until the dataset catalog finishes loading before submitting.",
+    "datasetUnavailable": "Datasets in the link are unavailable and were ignored.",
+    "dockerUpgrade": "Docker submission is being upgraded.",
+    "invalidAgentLink": "The Agent in the link is unavailable and was ignored.",
+    "noDataset": "There are no available datasets, so submission is unavailable.",
+    "submitFailed": "Submission failed. Please try again later.",
+    "submitFormInitFailed": "Submission form initialization failed.",
+    "submitFormNotReady": "The submission form is not initialized yet.",
+    "submitInitFailed": "Submission page initialization failed.",
+    "validationFailed": "Submission parameter validation failed."
+  },
+  "leaderboardDisplay": {
+    "anonymous": {
+      "description": "The leaderboard only shows an anonymous identity, while the evaluation result still participates in public ranking.",
+      "title": "Anonymous"
+    },
+    "aria": "Leaderboard display settings",
+    "description": "When evaluation results enter the leaderboard, choose whether to show the public name or an anonymous identity.",
+    "public": {
+      "description": "The leaderboard shows the Agent public name, suitable for public participation and capability display.",
+      "title": "Public"
+    },
+    "title": "Leaderboard Display"
+  },
+  "method": {
+    "description": "Select the integration method for this submission.",
+    "meta": {
+      "developing": "In Development",
+      "unavailable": "Unavailable"
+    },
+    "options": {
+      "api": {
+        "description": "For Agents that already have an online service.",
+        "title": "API Integration"
+      },
+      "docker": {
+        "description": "This feature is under development and cannot currently create Docker evaluations.",
+        "title": "Docker Image"
+      }
+    },
+    "title": "Submission Method"
+  },
+  "page": {
+    "description": "Configure the Agent identifier, associated test sets, and execution parameters to initialize an application security evaluation task.",
+    "errorTitle": "Page Initialization Failed",
+    "loadingTitle": "Initializing Submission Page",
+    "title": "Submit Evaluation"
+  },
+  "parameters": {
+    "description": "Set difficulty, timeout, and failure retry strategy for the target scenario.",
+    "difficultyHelp": "Range {min} - {max}, step {step}.",
+    "difficultyLabel": "Attack Difficulty",
+    "maxStepsHelp": "Allowed range {min} - {max} steps.",
+    "maxStepsLabel": "Maximum Steps",
+    "softWarning": "The current setting is above the recommended value {threshold}, which may increase wait and execution time.",
+    "timeoutHelp": "Recommended within {recommended} minutes; allowed range {min} - {max} minutes.",
+    "timeoutLabel": "Timeout (minutes)",
+    "title": "Evaluation Parameters"
+  },
+  "summary": {
+    "agentName": "Agent Name",
+    "datasetEmpty": "No datasets selected yet.",
+    "difficulty": "Difficulty",
+    "leaderboardDisplay": "Leaderboard Display",
+    "maxSteps": "Maximum Steps",
+    "maxStepsValue": "{value} steps",
+    "minutesValue": "{value} minutes",
+    "notSelected": "Not selected",
+    "runParameters": "Run Parameters",
+    "selectedDatasets": "Selected Datasets",
+    "selectedRiskDomains": "Selected Risk Domains",
+    "submitMethod": "Submission Method",
+    "subtitle": "Confirm the current configuration to create an evaluation task.",
+    "timeout": "Timeout",
+    "title": "Task Summary"
+  },
+  "validation": {
+    "agentRequired": "Select an Agent that can be evaluated.",
+    "agentRequiredField": "Select an Agent that can be evaluated",
+    "datasetDuplicate": "Duplicate datasets exist in the benchmark item selection. Refresh and retry.",
+    "datasetDuplicateField": "Duplicate datasets exist in the benchmark item selection",
+    "datasetInvalid": "The selected benchmark items include invalid items. Refresh and retry.",
+    "datasetInvalidField": "The selected benchmark items include invalid items",
+    "datasetLimit": "The number of benchmark items cannot exceed {count}.",
+    "datasetLimitField": "Select at most {count} benchmark items",
+    "difficultyRange": "Attack difficulty is outside the allowed range.",
+    "dockerDeveloping": "Docker submission is under development.",
+    "dockerDevelopingField": "This feature is under development",
+    "leaderboardModeUnavailable": "Leaderboard display mode is unavailable.",
+    "maxStepsRange": "Maximum steps are outside the allowed range.",
+    "methodUnavailable": "The current submission method is unavailable.",
+    "requestIdInvalid": "requestId format is incorrect. Please retry.",
+    "requestIdInvalidField": "requestId format is incorrect",
+    "selectedDatasetLimitNotice": "At most {count} datasets can be selected; excess items were ignored.",
+    "selectedDatasetRequired": "Select at least one benchmark item.",
+    "selectedDatasetRequiredField": "Select at least one benchmark item",
+    "timeoutRange": "Timeout is outside the allowed range."
+  }
+}

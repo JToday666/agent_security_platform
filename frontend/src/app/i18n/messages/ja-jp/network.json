@@ -1,1 +1,10 @@
-{}
+{
+  "errors": {
+    "network": "ネットワークエラー",
+    "requestFailed": "リクエスト失敗"
+  },
+  "validation": {
+    "parameter": "パラメーターエラー",
+    "requestParameters": "リクエストパラメーターエラー"
+  }
+}

@@ -10,7 +10,7 @@
     },
     "workflow": {
       "browse": {
-        "title": "Ver conjuntos",
+        "title": "Explorar conjuntos de datos",
         "description": "Consulta descripciones, muestras y recursos por dominio de riesgo.",
         "action": "Ver catalogo"
       },

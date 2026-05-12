@@ -4,19 +4,37 @@
     "logoAlt": "Agent Security Evaluation Platform logo"
   },
   "actions": {
+    "add": "Add",
     "browseDataset": "Browse Datasets",
     "cancel": "Cancel",
     "close": "Close",
     "confirm": "Confirm",
     "contactUs": "Contact Us",
+    "delete": "Delete",
     "loginRegister": "Log In / Sign Up",
-    "returnHome": "Back Home",
+    "reload": "Reload",
+    "returnHome": "Return Home",
+    "retry": "Retry",
     "saveChanges": "Save Changes",
     "submitEvaluation": "Submit Evaluation",
     "viewRecords": "View Records"
   },
   "dialog": {
     "title": "Notice"
+  },
+  "forms": {
+    "selectPlaceholder": "Select"
+  },
+  "feedback": {
+    "pleaseWait": "Please wait."
+  },
+  "status": {
+    "anonymous": "Anonymous",
+    "notGenerated": "Not Generated",
+    "public": "Public",
+    "rankedOut": "Unranked",
+    "ready": "Generated",
+    "running": "Generating"
   },
   "units": {
     "step": "Step {step}"

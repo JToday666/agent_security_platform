@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import VChart from "vue-echarts";
 import { ensureEvaluationChartsRegistered } from "@/modules/evaluation/charts/echarts-registry";
 import { buildTrendLineOption } from "@/modules/evaluation/lib/evaluation-report-chart-options";
@@ -23,12 +24,13 @@ const props = defineProps<{
   trend: EvaluationScoreTrend | null;
   view: EvaluationScoreTrendView;
 }>();
+const { t } = useI18n();
 
 const emit = defineEmits<{
   (event: "select", evaluationId: string): void;
 }>();
 
-const option = computed(() => buildTrendLineOption(props.trend, props.view));
+const option = computed(() => buildTrendLineOption(props.trend, props.view, t));
 
 const handleChartClick = (event: { dataIndex?: number }) => {
   const dataIndex = event.dataIndex;

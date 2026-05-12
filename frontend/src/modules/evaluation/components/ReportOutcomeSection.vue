@@ -1,7 +1,7 @@
 <template>
   <section class="report-unit report-unit--results">
     <div class="report-unit__copy">
-      <span>样本结果</span>
+      <span>{{ t("evaluation.report.outcomeSection") }}</span>
       <h3>{{ insight?.title }}</h3>
       <strong>{{ insight?.value }}</strong>
       <p>{{ insight?.caption }}</p>
@@ -13,8 +13,8 @@
       </div>
       <div v-if="rateOverviewRows.length" class="chart-pane chart-pane--rates">
         <div class="chart-pane__head">
-          <span>结果率概览</span>
-          <p>完成率、成功率和条件成功率用于判断样本质量。</p>
+          <span>{{ t("evaluation.report.rateOverviewTitle") }}</span>
+          <p>{{ t("evaluation.report.rateOverviewDescription") }}</p>
         </div>
         <ReportRateOverviewChart :report="report" />
       </div>
@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
+import { useI18n } from "vue-i18n";
 import type {
   EvaluationReportInsight,
 } from "@/modules/evaluation/lib/evaluation-report-insights";
@@ -46,6 +47,8 @@ defineProps<{
   insight: EvaluationReportInsight | undefined;
   rateOverviewRows: EvaluationRateOverviewRow[];
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

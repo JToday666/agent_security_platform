@@ -1,3 +1,4 @@
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import request from "@/shared/api/http-client";
 import type {
   AgentArchiveResponse,
@@ -21,7 +22,7 @@ export const getLiveAgentTemplates = async (): Promise<AgentTemplate[]> => {
 
   if (!response.success || !response.data) {
     throw createAgentServiceError(
-      response.message || "Agent 模板加载失败。",
+      response.message || translateRuntimeMessage("agent.api.templateLoadFailed"),
       response.code,
     );
   }
@@ -36,7 +37,7 @@ export const createLiveAgent = async (
 
   if (!response.success || !response.data) {
     throw createAgentServiceError(
-      response.message || "Agent 创建失败。",
+      response.message || translateRuntimeMessage("agent.api.createFailed"),
       response.code,
     );
   }
@@ -53,7 +54,7 @@ export const getLiveAgents = async (
 
   if (!response.success || !response.data) {
     throw createAgentServiceError(
-      response.message || "Agent 列表加载失败。",
+      response.message || translateRuntimeMessage("agent.api.listLoadFailed"),
       response.code,
     );
   }
@@ -68,7 +69,7 @@ export const getLiveAgentDetail = async (
 
   if (!response.success || !response.data) {
     throw createAgentServiceError(
-      response.message || "Agent 详情加载失败。",
+      response.message || translateRuntimeMessage("agent.api.detailLoadFailed"),
       response.code,
     );
   }
@@ -86,7 +87,7 @@ export const verifyLiveAgent = async (
 
   if (!response.success || !response.data) {
     throw createAgentServiceError(
-      response.message || "Agent 验证失败。",
+      response.message || translateRuntimeMessage("agent.api.verifyFailed"),
       response.code,
     );
   }
@@ -103,7 +104,7 @@ export const archiveLiveAgent = async (
 
   if (!response.success || !response.data) {
     throw createAgentServiceError(
-      response.message || "Agent 归档失败。",
+      response.message || translateRuntimeMessage("agent.api.archiveFailed"),
       response.code,
     );
   }

@@ -1,1 +1,320 @@
-{}
+{
+  "actions": {
+    "archive": "归档",
+    "backToManagement": "返回管理页",
+    "confirmRegister": "确认注册",
+    "copyCode": "复制代码",
+    "copyNew": "复制新建",
+    "details": "详情",
+    "next": "下一步",
+    "previous": "上一步",
+    "registerAgent": "注册智能体",
+    "switchTemplate": "切换模板",
+    "verify": "验证",
+    "verifyNow": "立即验证",
+    "viewDetails": "查看详情"
+  },
+  "api": {
+    "archiveFailed": "Agent 归档失败。",
+    "createFailed": "Agent 创建失败。",
+    "detailLoadFailed": "Agent 详情加载失败。",
+    "listLoadFailed": "Agent 列表加载失败。",
+    "loadFailed": "Agent 加载失败。",
+    "templateLoadFailed": "Agent 模板加载失败。",
+    "verifyFailed": "Agent 验证失败。"
+  },
+  "auth": {
+    "apiKeyHeader": "API Key Header",
+    "bearer": "Bearer Token",
+    "customHeader": "自定义 Header",
+    "none": "不使用鉴权"
+  },
+  "common": {
+    "configured": "已配置",
+    "customField": "自定义字段",
+    "noDescription": "暂无描述",
+    "notConfigured": "未配置",
+    "recommended": "推荐",
+    "listSeparator": "、",
+    "seconds": "{value} 秒",
+    "templateTagCustom": "custom",
+    "unknown": "未知"
+  },
+  "detail": {
+    "archiveDialogMessage": "归档后，该 Agent 不能再提交评测，但仍可复制新建。",
+    "archiveDialogTitle": "归档 Agent",
+    "confirmArchive": "确认归档",
+    "description": "查看非敏感配置、验证结果与可用操作。",
+    "errorTitle": "Agent 加载失败",
+    "loadingTitle": "正在读取 Agent",
+    "items": {
+      "authHeaderName": "Header 名称",
+      "authMethod": "鉴权方式",
+      "connectionBaseUrl": "服务根地址",
+      "credentialStatus": "凭据状态",
+      "invokeMode": "调用模式",
+      "pollInterval": "轮询间隔",
+      "pollTimeout": "轮询总超时",
+      "recentVerification": "最近验证",
+      "requestTimeout": "请求超时",
+      "resultPathTemplate": "结果路径模板",
+      "status": "状态",
+      "successStatuses": "成功态",
+      "taskPath": "提交任务路径",
+      "terminalStatuses": "终态",
+      "updatedAt": "更新时间"
+    },
+    "sections": {
+      "authSummary": "鉴权摘要",
+      "connection": "连接配置",
+      "customFields": "自定义固定字段",
+      "inputMapping": "输入字段逻辑映射",
+      "outputMapping": "输出字段逻辑映射",
+      "statusCollection": "状态集合",
+      "summary": "状态摘要",
+      "verification": "最近一次验证结果"
+    },
+    "titleFallback": "Agent 详情"
+  },
+  "display": {
+    "disabledReasons": {
+      "active": "",
+      "archived": "已归档 Agent 不能提交评测。",
+      "draft": "该 Agent 尚未验证通过，不能提交评测。",
+      "invalid": "该 Agent 验证失败，不能提交评测。",
+      "verifying": "该 Agent 正在验证中，暂不能提交评测。"
+    },
+    "invokeModes": {
+      "submitPoll": "提交轮询",
+      "syncResponse": "同步响应"
+    },
+    "status": {
+      "active": "可评测",
+      "archived": "已归档",
+      "draft": "待验证",
+      "invalid": "验证失败",
+      "verifying": "验证中"
+    }
+  },
+  "fields": {
+    "authHeaderName": "Header 名称",
+    "authHeaderSecret": "Header 密钥",
+    "authMethod": "鉴权方式",
+    "authSecret": "Bearer Token",
+    "connectionBaseUrl": "服务根地址",
+    "customFieldKey": "字段名",
+    "customFieldType": "类型",
+    "customFieldValue": "字段值",
+    "description": "Agent 描述",
+    "invokeMode": "调用模式",
+    "name": "Agent 名称",
+    "pollInterval": "轮询间隔（秒）",
+    "pollTimeout": "轮询总超时（秒）",
+    "requestTimeout": "请求超时（秒）",
+    "resultPathTemplate": "结果路径模板",
+    "structuredOutputAlias": "结构化输出字段别名",
+    "successStatuses": "成功态",
+    "taskPath": "提交任务路径",
+    "terminalStatuses": "终态"
+  },
+  "management": {
+    "archiveDialogMessage": "归档后，{name} 不能再提交评测，但仍可复制新建。",
+    "currentStatus": "当前状态",
+    "description": "查看已注册 Agent 的状态，并执行验证、归档、复制新建和提交评测。",
+    "emptyMessageArchived": "注册并验证 Agent 后即可创建评测任务。",
+    "emptyMessageVisible": "可切换显示已归档，或注册新的智能体。",
+    "emptyTitleArchived": "还没有 Agent",
+    "emptyTitleVisible": "当前没有可显示 Agent",
+    "includeArchived": "显示已归档",
+    "listSummaryEmpty": "暂无 Agent",
+    "listSummaryNoVisible": "暂无可显示 Agent",
+    "listSummaryWithCount": "显示 {count} 个 Agent",
+    "recentVerification": "最近验证：{value}",
+    "title": "智能体管理"
+  },
+  "mapping": {
+    "agentField": "Agent 字段",
+    "empty": "未配置",
+    "platformField": "平台字段",
+    "responsePath": "响应路径"
+  },
+  "placeholders": {
+    "descriptionBrief": "简要说明用途。",
+    "nameExample": "例如：Skyvern Agent"
+  },
+  "preview": {
+    "bodyTab": "请求体",
+    "missingMessage": "请填写 baseUrl 和 invokePath 后查看调用预览。",
+    "responseTab": "响应解析",
+    "samples": {
+      "errorMessage": "错误信息",
+      "finalAnswer": "最终答案",
+      "task": "请完成平台下发的任务目标"
+    }
+  },
+  "register": {
+    "aria": {
+      "actions": "注册 Agent 操作",
+      "form": "注册 Agent 表单",
+      "preview": "调用代码预览",
+      "steps": "注册步骤"
+    },
+    "confirmTemplateChange": {
+      "cancel": "继续编辑",
+      "message": "切换模板会替换连接、映射、状态和自定义固定字段配置，已填写的 Agent 名称和描述会保留。",
+      "title": "切换注册模板"
+    },
+    "createSuccessMessage": "验证通过后可用于提交评测。",
+    "createSuccessTitle": "Agent 已创建",
+    "copyName": "{name} 副本",
+    "customFieldsChoiceRequired": "请选择是否添加自定义固定字段。",
+    "initFailed": "注册页初始化失败。",
+    "initFailedTitle": "注册页初始化失败",
+    "loadingTitle": "正在初始化注册页",
+    "submitValidationFailed": "Agent 创建参数校验失败。",
+    "template": {
+      "description": "从空配置开始，手动填写连接、映射和状态字段。",
+      "title": "不使用模板"
+    },
+    "wizard": {
+      "basic": {
+        "description": "填写名称和用途描述。",
+        "title": "基本信息"
+      },
+      "connection": {
+        "description": "配置调用模式、服务地址和凭据。",
+        "title": "连接与鉴权"
+      },
+      "customFields": {
+        "description": "配置每次请求都会附带的固定字段。",
+        "title": "自定义固定字段"
+      },
+      "inputMapping": {
+        "description": "指定平台字段和结构化输出配置写入请求体的位置。",
+        "title": "输入字段映射"
+      },
+      "outputMapping": {
+        "description": "指定平台从响应中读取结果的位置。",
+        "title": "输出字段映射"
+      },
+      "statuses": {
+        "description": "确认终态和成功态。",
+        "title": "状态集合"
+      },
+      "template": {
+        "description": "选择预设模板或从空配置开始。",
+        "title": "选择模板"
+      }
+    }
+  },
+  "registerForm": {
+    "customFields": {
+      "addField": "添加字段",
+      "addFixed": "添加固定字段",
+      "addFixedDescription": "为每次请求附加固定参数。",
+      "fieldKeyHelp": "填写外部请求体中的固定字段名。",
+      "fieldTypeHelp": "选择固定字段值的类型。",
+      "fieldValueHelp": "每次请求都会带上的固定值。",
+      "skipFixed": "不添加固定字段",
+      "skipFixedDescription": "仅使用上一步配置的任务字段。",
+      "skipNotice": "本次注册不会添加自定义固定字段。"
+    },
+    "fieldTypes": {
+      "boolean": "布尔值",
+      "json": "JSON",
+      "number": "数字",
+      "string": "字符串"
+    },
+    "helps": {
+      "authHeaderName": "填写服务要求的请求头名称。",
+      "authHeaderSecret": "平台会把该密钥写入上方 Header。",
+      "authMethod": "选择平台调用 Agent 服务时使用的鉴权方式。",
+      "authSecret": "平台会以 Authorization: Bearer Token 形式发送。",
+      "baseUrl": "填写 Agent 服务的协议、域名和端口，不包含具体接口路径。",
+      "description": "说明该智能体适合处理的任务，便于后续提交评测时选择。",
+      "invokeMode": "提交轮询适用于异步任务；同步响应适用于一次请求直接返回结果。",
+      "name": "用于在平台内识别该智能体，建议使用服务或能力名称。",
+      "pollInterval": "平台两次查询结果之间的等待时间。",
+      "pollTimeout": "超过该时间仍未进入终态时，平台会停止等待。",
+      "requestTimeout": "单次提交请求等待响应的最长时间。",
+      "resultPathTemplate": "轮询模式下用于查询任务结果的路径，可使用 {externalRunId} 占位。",
+      "statusSuccess": "填写代表任务成功的状态值，必须包含在终态集合内。",
+      "statusTerminal": "填写 Agent 返回的终态状态值，多个值用逗号或换行分隔。",
+      "structuredOutput": "平台会在请求体中附加结构化输出字段。",
+      "structuredOutputAlias": "填写 Agent 请求体中接收输出 schema 的顶层字段名。",
+      "taskPath": "平台提交任务时调用的路径，会与服务根地址拼接。"
+    },
+    "inputMappingHelp": {
+      "entryUrl": "可选。需要起始网址时，平台会把样本入口写入该字段。",
+      "evaluationId": "可选。需要评测任务 ID 参与追踪时填写该字段名。",
+      "maxSteps": "可选。需要限制 Agent 最大执行步数时填写该字段名。",
+      "sampleId": "可选。需要样本 ID 参与追踪时填写该字段名。",
+      "task": "必填。填写 Agent 请求体中接收任务目标的顶层字段名，例如 prompt。",
+      "timeoutSeconds": "可选。需要任务级超时时间时填写该字段名。"
+    },
+    "inputMappingLabels": {
+      "entryUrl": "entryUrl -> Agent 字段",
+      "evaluationId": "evaluationId -> Agent 字段",
+      "maxSteps": "maxSteps -> Agent 字段",
+      "sampleId": "sampleId -> Agent 字段",
+      "task": "task -> Agent 字段",
+      "timeoutSeconds": "timeoutSeconds -> Agent 字段"
+    },
+    "notVisibleSecretPlaceholder": "创建时写入，详情页不展示明文",
+    "outputMappingHelp": {
+      "errorMessage": "可选。填写错误信息所在路径，便于失败时展示原因，例如 error.message。",
+      "externalRunId": "轮询模式必填。填写提交响应中运行 ID 的路径；顶层字段写 runId，嵌套字段写 data.runId。",
+      "finalAnswer": "可选。填写最终答案或文本结果所在路径，例如 answer 或 output.answer。",
+      "status": "轮询模式必填。填写结果响应中状态字段的路径；顶层字段写 status，嵌套字段写 data.status。"
+    },
+    "outputMappingLabels": {
+      "errorMessage": "errorMessage <- 响应路径",
+      "externalRunId": "externalRunId <- 响应路径",
+      "finalAnswer": "finalAnswer <- 响应路径",
+      "status": "status <- 响应路径"
+    },
+    "stepCounter": "步骤 {current} / {total}",
+    "structuredOutputTitle": "支持结构化输出"
+  },
+  "validation": {
+    "authHeaderNameRequired": "请填写 Header 名称",
+    "authHeaderSecretRequired": "请填写 Header 密钥",
+    "authSecretRequired": "请填写 Bearer Token",
+    "baseUrlInvalid": "服务根地址格式不正确",
+    "baseUrlRequired": "请填写服务根地址",
+    "customFieldDuplicate": "自定义固定字段 {key} 重复。",
+    "customFieldJson": "{field} 不是有效 JSON。",
+    "customFieldKeyRequired": "自定义固定字段必须填写字段名。",
+    "customFieldNumber": "{field} 必须是数字。",
+    "customFieldBoolean": "{field} 必须填写 true 或 false。",
+    "customFieldMappingConflict": "字段 {field} 已被平台输入映射使用，不能作为自定义固定字段。",
+    "inputMappingTopLevel": "平台输入映射只能填写外部请求体的顶层字段名",
+    "invokePathRequired": "请填写提交任务路径",
+    "nameRequired": "请填写 Agent 名称",
+    "outputMappingPath": "输出映射需填写响应字段路径，例如 runId 或 data.runId，暂不支持 $、数组下标或空路径段。",
+    "pollOutputRequired": "轮询模式下必须配置运行 ID 和状态输出路径。",
+    "resultPathTemplateRequired": "请填写结果路径模板",
+    "statusSuccessInTerminal": "成功态必须属于终态集合",
+    "structuredOutputAliasInvalid": "结构化输出字段别名只能填写请求体顶层字段名",
+    "structuredOutputAliasRequired": "请填写结构化输出字段别名",
+    "taskMappingRequired": "请填写 task 对应字段名",
+    "templateRequired": "请选择注册模板",
+    "terminalStatusRequired": "请至少填写一个终态"
+  },
+  "verification": {
+    "count": "{count} 项",
+    "detailHeader": "诊断明细",
+    "failed": "失败",
+    "failedResult": "验证失败",
+    "notVerified": "未验证",
+    "passed": "通过",
+    "passedResult": "验证通过",
+    "result": "验证结果",
+    "tableCode": "类型标识",
+    "tableDescription": "详情描述",
+    "time": "验证时间",
+    "unverifiedNotice": "尚未验证。",
+    "warnings": "警告",
+    "errors": "错误"
+  }
+}

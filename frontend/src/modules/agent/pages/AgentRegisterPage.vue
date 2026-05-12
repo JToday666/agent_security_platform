@@ -2,16 +2,16 @@
   <div class="content agent-register-page layout-page-shell layout-page-shell--wide">
     <PageStatePanel
       v-if="loading"
-      title="正在初始化注册页"
-      message="请稍候。"
+      :title="t('agent.register.loadingTitle')"
+      :message="t('common.feedback.pleaseWait')"
       :loading="true"
     />
 
     <PageStatePanel
       v-else-if="pageError"
-      title="注册页初始化失败"
+      :title="t('agent.register.initFailedTitle')"
       :message="pageError"
-      action-text="重新加载"
+      :action-text="t('common.actions.reload')"
       @action="initializePage"
     />
 
@@ -23,9 +23,9 @@
         <UiButton
           :to="RouteLocation.agentManagement"
           variant="secondary"
-          leading-icon="lucide:list"
+          leading-icon="app:action.back"
         >
-          返回管理页
+          {{ t("agent.actions.backToManagement") }}
         </UiButton>
       </div>
 
@@ -44,7 +44,7 @@
         <section
           ref="formScrollRef"
           class="agent-register-main__form"
-          aria-label="注册 Agent 表单"
+          :aria-label="t('agent.register.aria.form')"
         >
           <AgentRegisterForm
             :templates="templates"
@@ -73,7 +73,7 @@
           <section
             v-if="showPreviewPanel"
             class="agent-register-main__preview"
-            aria-label="调用代码预览"
+            :aria-label="t('agent.register.aria.preview')"
           >
             <AgentInvocationPreviewPanel
               v-model="previewTab"
@@ -86,14 +86,17 @@
         </Transition>
       </div>
 
-      <footer class="agent-register-footer" aria-label="注册 Agent 操作">
+      <footer
+        class="agent-register-footer"
+        :aria-label="t('agent.register.aria.actions')"
+      >
         <UiButton
           v-if="!isFirstStep"
           variant="secondary"
-          leading-icon="lucide:arrow-left"
+          leading-icon="app:action.back"
           @click="goToPreviousStep"
         >
-          上一步
+          {{ t("agent.actions.previous") }}
         </UiButton>
         <span
           v-else
@@ -104,30 +107,30 @@
         <UiButton
           v-if="isLastStep"
           variant="primary"
-          leading-icon="lucide:check"
+          leading-icon="app:action.confirm"
           :loading="submitting"
           :disabled="Boolean(createdAgent)"
           @click="handleCreate"
         >
-          确认注册
+          {{ t("agent.actions.confirmRegister") }}
         </UiButton>
         <UiButton
           v-else
           variant="primary"
-          leading-icon="lucide:arrow-right"
+          leading-icon="app:action.next"
           @click="goToNextStep"
         >
-          下一步
+          {{ t("agent.actions.next") }}
         </UiButton>
       </footer>
     </div>
 
     <ConfirmDialog
       v-model="templateChangeDialogVisible"
-      title="切换注册模板"
-      message="切换模板会替换连接、映射、状态和自定义固定字段配置，已填写的 Agent 名称和描述会保留。"
-      confirm-text="切换模板"
-      cancel-text="继续编辑"
+      :title="t('agent.register.confirmTemplateChange.title')"
+      :message="t('agent.register.confirmTemplateChange.message')"
+      :confirm-text="t('agent.actions.switchTemplate')"
+      :cancel-text="t('agent.register.confirmTemplateChange.cancel')"
       @confirm="confirmTemplateChange"
       @cancel="cancelTemplateChange"
     />
@@ -136,6 +139,7 @@
 
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { RouteLocation } from "@/app/router/route-names";
 import AgentInvocationPreviewPanel from "@/modules/agent/components/AgentInvocationPreviewPanel.vue";
 import AgentRegisterForm from "@/modules/agent/components/AgentRegisterForm.vue";
@@ -145,6 +149,7 @@ import UiButton from "@/shared/ui/actions/UiButton.vue";
 import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 
+const { t } = useI18n();
 const {
   templates,
   form,

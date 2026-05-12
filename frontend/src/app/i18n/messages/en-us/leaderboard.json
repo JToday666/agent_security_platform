@@ -1,1 +1,51 @@
-{}
+{
+  "api": {
+    "loadFailed": "Leaderboard loading failed. Please try again later.",
+    "unnamedAgent": "Unnamed Agent"
+  },
+  "champion": {
+    "anonymous": "Anonymous",
+    "aria": "Current No. 1",
+    "label": "Current No. 1"
+  },
+  "empty": {
+    "message": "There are no public evaluation results to display yet.",
+    "title": "No Public Rankings"
+  },
+  "errors": {
+    "loadFailedTitle": "Leaderboard Loading Failed",
+    "unavailableMessage": "The public leaderboard cannot be read right now. Please try again later.",
+    "unavailableTitle": "Leaderboard Unavailable"
+  },
+  "overview": {
+    "aria": "Leaderboard overview",
+    "currentSecurityCapability": "Current Security Capability",
+    "listedAgents": "Listed Agents",
+    "lowestRiskScore": "Lowest Risk Score"
+  },
+  "page": {
+    "description": "Show each Agent's overall security performance from public evaluation snapshots.",
+    "loadingTitle": "Reading Leaderboard",
+    "title": "Leaderboard"
+  },
+  "scores": {
+    "composite": "Composite",
+    "compositeFull": "Composite Score",
+    "highDifficulty": "High Difficulty",
+    "highDifficultyFull": "High-Difficulty Score",
+    "notReturned": "Not returned",
+    "risk": "Risk",
+    "riskFull": "Risk Score",
+    "safeCapability": "Security",
+    "safeCapabilityFull": "Security Capability"
+  },
+  "table": {
+    "agent": "Agent",
+    "anonymous": "Anonymous",
+    "confidence": "Confidence",
+    "description": "Currently sorted by {sort}. A lower risk score means a lower proportion of unsafe behavior.",
+    "rank": "Rank",
+    "samples": "Sample",
+    "title": "Public Evaluation Results"
+  }
+}

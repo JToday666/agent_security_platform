@@ -1,7 +1,7 @@
 <template>
   <SectionBlock
-    title="数据集选择"
-    description="选择本次评测需要覆盖的数据集，可按名称快速筛选。"
+    :title="t('submission.dataset.title')"
+    :description="t('submission.dataset.description')"
   >
     <template #actions>
       <UiButton
@@ -10,7 +10,7 @@
         :disabled="!categories.length"
         @click="$emit('select-all')"
       >
-        全选
+        {{ t("submission.actions.selectAll") }}
       </UiButton>
       <UiButton
         variant="secondary"
@@ -18,24 +18,24 @@
         :disabled="!selectedDatasetIds.length"
         @click="$emit('clear-all')"
       >
-        清空
+        {{ t("submission.actions.clear") }}
       </UiButton>
     </template>
 
     <div class="toolbar">
       <FormField
-        label="搜索"
+        :label="t('submission.dataset.searchLabel')"
         :model-value="search"
         type="search"
-        placeholder="按风险域、数据集名称或摘要搜索"
-        leading-icon="lucide:search"
+        :placeholder="t('submission.dataset.searchPlaceholder')"
+        leading-icon="app:action.search"
         @update:model-value="search = $event.trim()"
       />
 
       <div class="toolbar-metrics">
-        <span>已选风险域 {{ selectedCategoryCount }}</span>
-        <span>已选数据集 {{ selectedDatasetIds.length }}</span>
-        <span>当前结果 {{ visibleDatasetCount }}</span>
+        <span>{{ t("submission.dataset.selectedRiskDomains", { count: selectedCategoryCount }) }}</span>
+        <span>{{ t("submission.dataset.selectedDatasets", { count: selectedDatasetIds.length }) }}</span>
+        <span>{{ t("submission.dataset.currentResults", { count: visibleDatasetCount }) }}</span>
       </div>
     </div>
 
@@ -48,35 +48,35 @@
       <InlineNotice
         v-if="status === 'refreshing'"
         tone="info"
-        message="正在刷新可用数据集。"
+        :message="t('submission.dataset.refreshing')"
       />
       <PageStatePanel
         v-if="status === 'loading' && !categories.length"
-        title="正在加载数据集"
-        message="请稍候。"
+        :title="t('submission.dataset.loadingTitle')"
+        :message="t('submission.dataset.loadingMessage')"
         :loading="true"
       />
       <PageStatePanel
         v-else-if="status === 'error' && !categories.length"
-        title="数据集目录加载失败"
-        :message="errorMessage || '请重试后继续提交。'"
-        action-text="重试"
+        :title="t('submission.dataset.loadFailedTitle')"
+        :message="errorMessage || t('submission.dataset.retrySubmit')"
+        :action-text="t('common.actions.retry')"
         action-variant="secondary"
         @action="$emit('retry')"
       />
       <PageStatePanel
         v-else-if="status === 'empty'"
-        title="当前没有可用数据集"
-        message="请稍后重试。"
+        :title="t('submission.dataset.emptyTitle')"
+        :message="t('submission.dataset.emptyMessage')"
       />
       <InlineNotice
         v-else-if="status === 'error'"
         tone="danger"
-        :message="errorMessage || '目录刷新失败，请重试。'"
+        :message="errorMessage || t('submission.dataset.refreshFailed')"
       >
         <template #actions>
           <UiButton variant="text" size="sm" @click="$emit('retry')">
-            重新加载
+            {{ t("submission.actions.reload") }}
           </UiButton>
         </template>
       </InlineNotice>
@@ -95,14 +95,15 @@
 
     <PageStatePanel
       v-else-if="categories.length && status !== 'loading'"
-      title="没有匹配的数据集"
-      message="请尝试更换搜索词，或直接清空搜索。"
+      :title="t('submission.dataset.noMatchesTitle')"
+      :message="t('submission.dataset.clearSearchMessage')"
     />
   </SectionBlock>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import SubmitDatasetCategoryList from "@/modules/submission/components/SubmitDatasetCategoryList.vue";
 import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
 import type { SubmitDatasetCatalogStatus } from "@/modules/submission/composables/useSubmitDatasetCatalog";
@@ -131,6 +132,7 @@ defineEmits<{
 }>();
 
 const search = ref("");
+const { t } = useI18n();
 
 const matchesSearch = (category: DatasetCategoryViewModel, keyword: string) => {
   if (!keyword) {

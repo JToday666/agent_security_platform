@@ -1,4 +1,5 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
@@ -54,6 +55,7 @@ import { useAsyncState } from "@/shared/composables/useAsyncState";
 export const useSubmitAgentPage = () => {
   const route = useRoute();
   const router = useRouter();
+  const { t } = useI18n();
   const submitDraftStore = useSubmitDraftStore();
   const datasetCatalog = useSubmitDatasetCatalog();
   const datasetCatalogStatus = datasetCatalog.status;
@@ -84,7 +86,7 @@ export const useSubmitAgentPage = () => {
   const datasetSelectionNotice = ref("");
   const agentSelectionNotice = ref("");
   const confirmDialogVisible = ref(false);
-  const confirmDialogTitle = ref("确认提交");
+  const confirmDialogTitle = ref(t("submission.confirm.submitTitle"));
   const confirmDialogMessage = ref("");
   const confirmedPayload = ref<SubmitAgentPayload | null>(null);
 
@@ -117,7 +119,7 @@ export const useSubmitAgentPage = () => {
   });
   const selectedAgentSubmitDisabledReason = computed(() =>
     selectedAgent.value
-      ? getAgentSubmitDisabledReason(selectedAgent.value)
+      ? getAgentSubmitDisabledReason(selectedAgent.value, t)
       : "",
   );
   const selectedCategoryCount = computed(
@@ -179,7 +181,9 @@ export const useSubmitAgentPage = () => {
 
     datasetSelectionNotice.value =
       uniqueIds.length > MAX_SUBMIT_DATASET_COUNT
-        ? `最多只能选择 ${MAX_SUBMIT_DATASET_COUNT} 个数据集，超出的部分已忽略。`
+        ? t("submission.validation.selectedDatasetLimitNotice", {
+            count: MAX_SUBMIT_DATASET_COUNT,
+          })
         : "";
 
     if (nextIds.length > 0 && fieldErrors.value.selectedDatasetIds) {
@@ -218,7 +222,7 @@ export const useSubmitAgentPage = () => {
     );
 
     if (!resolvedDatasetIds.length) {
-      datasetSelectionNotice.value = "链接中的数据集不可用，已忽略。";
+      datasetSelectionNotice.value = t("submission.errors.datasetUnavailable");
       return;
     }
 
@@ -248,9 +252,9 @@ export const useSubmitAgentPage = () => {
         (item) => item.agentId === queryValue,
       );
       agentSelectionNotice.value = blockedAgent
-        ? getAgentSubmitDisabledReason(blockedAgent) ||
-          "链接中的 Agent 不可用，已忽略。"
-        : "链接中的 Agent 不可用，已忽略。";
+        ? getAgentSubmitDisabledReason(blockedAgent, t) ||
+          t("submission.errors.invalidAgentLink")
+        : t("submission.errors.invalidAgentLink");
     }
 
     if (
@@ -292,7 +296,7 @@ export const useSubmitAgentPage = () => {
   const buildPayload = (mode: "preview" | "submit"): SubmitAgentPayload => {
     const snapshot = buildPayloadSnapshot();
     if (!snapshot) {
-      throw new Error("提交表单尚未初始化完成。");
+      throw new Error(t("submission.errors.submitFormNotReady"));
     }
 
     const payloadDigest = JSON.stringify(snapshot);
@@ -304,7 +308,7 @@ export const useSubmitAgentPage = () => {
           : "preview_request_id";
 
     if (!form.value) {
-      throw new Error("提交表单尚未初始化完成。");
+      throw new Error(t("submission.errors.submitFormNotReady"));
     }
 
     return buildSubmitPayloadFromSnapshot(snapshot, form.value, requestId);
@@ -362,7 +366,7 @@ export const useSubmitAgentPage = () => {
       submitDraftStore.applyMeta(meta);
 
       if (!form.value) {
-        throw new Error("提交表单初始化失败。");
+        throw new Error(t("submission.errors.submitFormInitFailed"));
       }
 
       form.value.parameters = normalizeSubmitDraftParameters(form.value, meta);
@@ -371,7 +375,7 @@ export const useSubmitAgentPage = () => {
       await loadCatalog(true);
       applyAgentQuerySelection();
     } catch (error) {
-      setError(error, "提交页初始化失败。");
+      setError(error, t("submission.errors.submitInitFailed"));
     } finally {
       stopLoading();
     }
@@ -459,17 +463,17 @@ export const useSubmitAgentPage = () => {
     clearFormErrors();
 
     if (form.value.submitMethod === "docker") {
-      submitError.value = "Docker 提交功能正在升级中。";
+      submitError.value = t("submission.errors.dockerUpgrade");
       return;
     }
 
     if (datasetCatalogStatus.value === "empty") {
-      submitError.value = "当前没有可用数据集，无法提交。";
+      submitError.value = t("submission.errors.noDataset");
       return;
     }
 
     if (!datasetCatalogReady.value) {
-      submitError.value = "请等待数据集目录加载完成后再提交。";
+      submitError.value = t("submission.errors.datasetCatalogPending");
       return;
     }
 
@@ -482,27 +486,30 @@ export const useSubmitAgentPage = () => {
         submitMeta.value,
         validDatasetIds.value,
         activeAgentIds.value,
+        t,
       );
 
       if (!validation.valid) {
         fieldErrors.value = validation.fieldErrors;
-        submitError.value = validation.errors[0] || "提交参数校验失败。";
+        submitError.value =
+          validation.errors[0] || t("submission.errors.validationFailed");
         return;
       }
 
       const precheckResult = await precheckAgent(payload);
       confirmedPayload.value = payload;
       confirmDialogTitle.value = precheckResult.warnings.length
-        ? "提交前确认"
-        : "确认提交";
+        ? t("submission.confirm.precheckTitle")
+        : t("submission.confirm.submitTitle");
       confirmDialogMessage.value = buildSubmitConfirmMessage(
         selectedAgent.value?.name ?? "",
         precheckResult.warnings,
         payload,
+        t,
       );
       confirmDialogVisible.value = true;
     } catch (error) {
-      setSubmitError(error, "提交失败，请稍后重试。");
+      setSubmitError(error, t("submission.errors.submitFailed"));
     } finally {
       stopSubmitting();
     }
@@ -524,7 +531,7 @@ export const useSubmitAgentPage = () => {
         RouteLocation.evaluationDetail(submitResult.evaluationId),
       );
     } catch (error) {
-      setSubmitError(error, "提交失败，请稍后重试。");
+      setSubmitError(error, t("submission.errors.submitFailed"));
     } finally {
       stopSubmitting();
     }
@@ -545,6 +552,7 @@ export const useSubmitAgentPage = () => {
       submitMeta.value,
       validDatasetIds.value,
       activeAgentIds.value,
+      t,
     ).valid;
   });
 

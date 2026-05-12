@@ -1,3 +1,7 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import type { SubmitAgentPayload } from "@/shared/types/agent-types";
 
 export const buildSubmitRequestId = (): string => {
@@ -22,19 +26,33 @@ export const buildSubmitConfirmMessage = (
   agentName: string,
   warnings: string[],
   payload: SubmitAgentPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): string => {
+  const leaderboardDisplayLabel =
+    payload.leaderboardDisplayMode === "anonymous"
+      ? t("submission.leaderboardDisplay.anonymous.title")
+      : t("submission.leaderboardDisplay.public.title");
   const header = [
-    `智能体名称：${agentName || "未选择"}`,
-    `提交方式：${payload.submitMethod.toUpperCase()}`,
-    `数据集数量：${payload.selectedDatasetIds.length}`,
-    `榜单展示：${payload.leaderboardDisplayMode === "anonymous" ? "匿名" : "公开"}`,
+    t("submission.confirm.agentName", {
+      agentName: agentName || t("submission.summary.notSelected"),
+    }),
+    t("submission.confirm.submitMethod", {
+      method: payload.submitMethod.toUpperCase(),
+    }),
+    t("submission.confirm.datasetCount", {
+      count: payload.selectedDatasetIds.length,
+    }),
+    t("submission.confirm.leaderboardDisplay", {
+      mode: leaderboardDisplayLabel,
+    }),
   ].join("\n");
 
   if (!warnings.length) {
-    return `${header}\n\n检查已通过，确认后将创建评测任务。`;
+    return t("submission.confirm.successMessage", { summary: header });
   }
 
-  return `${header}\n\n请先确认以下提示：\n- ${warnings.join(
-    "\n- ",
-  )}\n\n确认后将创建评测任务。`;
+  return t("submission.confirm.warningMessage", {
+    summary: header,
+    warnings: warnings.join("\n- "),
+  });
 };

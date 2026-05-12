@@ -1,45 +1,45 @@
 <template>
   <SectionBlock
-    title="筛选记录"
-    description="按关键词、任务状态、榜单状态和提交方式筛选记录。"
+    :title="t('evaluation.filter.title')"
+    :description="t('evaluation.filter.description')"
   >
     <div class="filter-grid">
       <FormField
-        label="搜索"
+        :label="t('evaluation.filter.search')"
         :model-value="search"
         type="search"
-        placeholder="按智能体名称或数据集搜索"
-        leading-icon="lucide:search"
+        :placeholder="t('evaluation.filter.placeholder')"
+        leading-icon="app:action.search"
         appearance="soft"
         @update:model-value="$emit('update:search', $event)"
       />
 
       <FormField
-        label="状态"
+        :label="t('evaluation.filter.status')"
         :model-value="status"
         type="select"
         :options="statusOptions"
-        leading-icon="lucide:workflow"
+        leading-icon="app:filter.status"
         appearance="soft"
         @update:model-value="handleStatusChange"
       />
 
       <FormField
-        label="榜单状态"
+        :label="t('evaluation.filter.visibility')"
         :model-value="visibility"
         type="select"
         :options="visibilityOptions"
-        leading-icon="lucide:list-filter"
+        leading-icon="app:filter.visibility"
         appearance="soft"
         @update:model-value="handleVisibilityChange"
       />
 
       <FormField
-        label="提交方式"
+        :label="t('evaluation.filter.submitMethod')"
         :model-value="submitMethod"
         type="select"
         :options="methodOptions"
-        leading-icon="lucide:waypoints"
+        leading-icon="app:field.submitMethod"
         appearance="soft"
         @update:model-value="handleSubmitMethodChange"
       />
@@ -48,6 +48,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import type {
   EvaluationRecordFilterMethod,
   EvaluationRecordFilterStatus,
@@ -69,30 +71,40 @@ const emit = defineEmits<{
   (event: "update:visibility", value: EvaluationRecordFilterVisibility): void;
   (event: "update:submitMethod", value: EvaluationRecordFilterMethod): void;
 }>();
+const { t } = useI18n();
 
-const statusOptions: Array<{ label: string; value: EvaluationRecordFilterStatus }> = [
-  { label: "全部状态", value: "all" },
-  { label: "排队中", value: "pending" },
-  { label: "执行中", value: "running" },
-  { label: "已暂停", value: "paused" },
-  { label: "已完成", value: "completed" },
-  { label: "已失败", value: "failed" },
-  { label: "已取消", value: "canceled" },
-  { label: "已终止", value: "terminated" },
-];
+const statusOptions = computed<Array<{
+  label: string;
+  value: EvaluationRecordFilterStatus;
+}>>(() => [
+  { label: t("evaluation.filter.statusAll"), value: "all" },
+  { label: t("evaluation.status.pending"), value: "pending" },
+  { label: t("evaluation.status.running"), value: "running" },
+  { label: t("evaluation.status.paused"), value: "paused" },
+  { label: t("evaluation.status.completed"), value: "completed" },
+  { label: t("evaluation.status.failed"), value: "failed" },
+  { label: t("evaluation.status.canceled"), value: "canceled" },
+  { label: t("evaluation.status.terminated"), value: "terminated" },
+]);
 
-const visibilityOptions: Array<{ label: string; value: EvaluationRecordFilterVisibility }> = [
-  { label: "全部榜单状态", value: "all" },
-  { label: "公开", value: "public" },
-  { label: "匿名", value: "anonymous" },
-  { label: "未排行", value: "unranked" },
-];
+const visibilityOptions = computed<Array<{
+  label: string;
+  value: EvaluationRecordFilterVisibility;
+}>>(() => [
+  { label: t("evaluation.filter.visibilityAll"), value: "all" },
+  { label: t("common.status.public"), value: "public" },
+  { label: t("common.status.anonymous"), value: "anonymous" },
+  { label: t("common.status.rankedOut"), value: "unranked" },
+]);
 
-const methodOptions: Array<{ label: string; value: EvaluationRecordFilterMethod }> = [
-  { label: "全部方式", value: "all" },
+const methodOptions = computed<Array<{
+  label: string;
+  value: EvaluationRecordFilterMethod;
+}>>(() => [
+  { label: t("evaluation.filter.methodAll"), value: "all" },
   { label: "API", value: "api" },
   { label: "Docker", value: "docker" },
-];
+]);
 
 const handleStatusChange = (value: string) => {
   emit("update:status", value as EvaluationRecordFilterStatus);

@@ -1,1 +1,320 @@
-{}
+{
+  "actions": {
+    "archive": "Archiver",
+    "backToManagement": "Retour à la gestion",
+    "confirmRegister": "Confirmer l’enregistrement",
+    "copyCode": "Copier le code",
+    "copyNew": "Copier comme nouveau",
+    "details": "Détails",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "registerAgent": "Enregistrer un Agent",
+    "switchTemplate": "Changer de modèle",
+    "verify": "Vérifier",
+    "verifyNow": "Vérifier maintenant",
+    "viewDetails": "Voir les détails"
+  },
+  "api": {
+    "archiveFailed": "Échec de l’archivage de l’Agent.",
+    "createFailed": "Échec de la création de l’Agent.",
+    "detailLoadFailed": "Échec du chargement des détails de l’Agent.",
+    "listLoadFailed": "Échec du chargement de la liste des Agents.",
+    "loadFailed": "Échec du chargement de l’Agent.",
+    "templateLoadFailed": "Échec du chargement des modèles d’Agent.",
+    "verifyFailed": "Échec de la vérification de l’Agent."
+  },
+  "auth": {
+    "apiKeyHeader": "API Key Header",
+    "bearer": "Bearer Token",
+    "customHeader": "Header personnalisé",
+    "none": "Aucune authentification"
+  },
+  "common": {
+    "configured": "Configuré",
+    "customField": "Champ personnalisé",
+    "noDescription": "Aucune description",
+    "notConfigured": "Non configuré",
+    "recommended": "Recommandé",
+    "listSeparator": ", ",
+    "seconds": "{value} s",
+    "templateTagCustom": "Personnalisé",
+    "unknown": "Inconnu"
+  },
+  "detail": {
+    "archiveDialogMessage": "Après archivage, cet Agent ne pourra plus soumettre d’évaluations, mais il pourra encore être copié comme nouveau.",
+    "archiveDialogTitle": "Archiver l’Agent",
+    "confirmArchive": "Confirmer l’archivage",
+    "description": "Consultez la configuration non sensible, les résultats de vérification et les actions disponibles.",
+    "errorTitle": "Échec du chargement de l’Agent",
+    "loadingTitle": "Lecture de l’Agent",
+    "items": {
+      "authHeaderName": "Nom du Header",
+      "authMethod": "Méthode d’authentification",
+      "connectionBaseUrl": "URL racine du service",
+      "credentialStatus": "Statut des identifiants",
+      "invokeMode": "Mode d’appel",
+      "pollInterval": "Intervalle d’interrogation",
+      "pollTimeout": "Délai total d’interrogation",
+      "recentVerification": "Dernière vérification",
+      "requestTimeout": "Délai de requête",
+      "resultPathTemplate": "Modèle de chemin de résultat",
+      "status": "Statut",
+      "successStatuses": "Statuts de réussite",
+      "taskPath": "Chemin de soumission de tâche",
+      "terminalStatuses": "Statuts terminaux",
+      "updatedAt": "Heure de mise à jour"
+    },
+    "sections": {
+      "authSummary": "Résumé d’authentification",
+      "connection": "Configuration de connexion",
+      "customFields": "Champs fixes personnalisés",
+      "inputMapping": "Mappage logique des champs d’entrée",
+      "outputMapping": "Mappage logique des champs de sortie",
+      "statusCollection": "Ensemble de statuts",
+      "summary": "Résumé du statut",
+      "verification": "Dernier résultat de vérification"
+    },
+    "titleFallback": "Détails de l’Agent"
+  },
+  "display": {
+    "disabledReasons": {
+      "active": "",
+      "archived": "Les Agents archivés ne peuvent pas soumettre d’évaluations.",
+      "draft": "Cet Agent n’a pas encore réussi la vérification et ne peut pas soumettre d’évaluations.",
+      "invalid": "Cet Agent a échoué à la vérification et ne peut pas soumettre d’évaluations.",
+      "verifying": "Cet Agent est en cours de vérification et ne peut pas encore soumettre d’évaluations."
+    },
+    "invokeModes": {
+      "submitPoll": "Soumission avec interrogation",
+      "syncResponse": "Réponse synchrone"
+    },
+    "status": {
+      "active": "Prêt pour l’évaluation",
+      "archived": "Archivé",
+      "draft": "En attente de vérification",
+      "invalid": "Échec de la vérification",
+      "verifying": "Vérification en cours"
+    }
+  },
+  "fields": {
+    "authHeaderName": "Nom du Header",
+    "authHeaderSecret": "Secret du Header",
+    "authMethod": "Méthode d’authentification",
+    "authSecret": "Bearer Token",
+    "connectionBaseUrl": "URL racine du service",
+    "customFieldKey": "Nom du champ",
+    "customFieldType": "Type",
+    "customFieldValue": "Valeur du champ",
+    "description": "Description de l’Agent",
+    "invokeMode": "Mode d’appel",
+    "name": "Nom de l’Agent",
+    "pollInterval": "Intervalle d’interrogation (s)",
+    "pollTimeout": "Délai total d’interrogation (s)",
+    "requestTimeout": "Délai de requête (s)",
+    "resultPathTemplate": "Modèle de chemin de résultat",
+    "structuredOutputAlias": "Alias du champ de sortie structurée",
+    "successStatuses": "Statuts de réussite",
+    "taskPath": "Chemin de soumission de tâche",
+    "terminalStatuses": "Statuts terminaux"
+  },
+  "management": {
+    "archiveDialogMessage": "Après archivage, {name} ne pourra plus soumettre d’évaluations, mais il pourra encore être copié comme nouveau.",
+    "currentStatus": "Statut actuel",
+    "description": "Consultez le statut des Agents enregistrés et lancez vérification, archivage, copie comme nouveau et soumission d’évaluation.",
+    "emptyMessageArchived": "Enregistrez et vérifiez un Agent pour créer des tâches d’évaluation.",
+    "emptyMessageVisible": "Vous pouvez afficher les Agents archivés ou enregistrer un nouvel Agent.",
+    "emptyTitleArchived": "Aucun Agent pour le moment",
+    "emptyTitleVisible": "Aucun Agent affichable",
+    "includeArchived": "Afficher les archivés",
+    "listSummaryEmpty": "Aucun Agent",
+    "listSummaryNoVisible": "Aucun Agent affichable",
+    "listSummaryWithCount": "{count} Agents affichés",
+    "recentVerification": "Dernière vérification : {value}",
+    "title": "Gestion des Agents"
+  },
+  "mapping": {
+    "agentField": "Champ Agent",
+    "empty": "Non configuré",
+    "platformField": "Champ plateforme",
+    "responsePath": "Chemin de réponse"
+  },
+  "placeholders": {
+    "descriptionBrief": "Décrivez brièvement l’usage.",
+    "nameExample": "Exemple : Skyvern Agent"
+  },
+  "preview": {
+    "bodyTab": "Corps de requête",
+    "missingMessage": "Renseignez baseUrl et invokePath pour voir l’aperçu d’appel.",
+    "responseTab": "Analyse de réponse",
+    "samples": {
+      "errorMessage": "Message d’erreur",
+      "finalAnswer": "Réponse finale",
+      "task": "Terminer l’objectif de tâche fourni par la plateforme"
+    }
+  },
+  "register": {
+    "aria": {
+      "actions": "Actions d’enregistrement Agent",
+      "form": "Formulaire d’enregistrement Agent",
+      "preview": "Aperçu du code d’appel",
+      "steps": "Étapes d’enregistrement"
+    },
+    "confirmTemplateChange": {
+      "cancel": "Continuer l’édition",
+      "message": "Changer de modèle remplacera la configuration de connexion, de mappage, de statut et de champs fixes personnalisés. Le nom et la description de l’Agent déjà saisis seront conservés.",
+      "title": "Changer de modèle d’enregistrement"
+    },
+    "createSuccessMessage": "Après une vérification réussie, il pourra être utilisé pour soumettre des évaluations.",
+    "createSuccessTitle": "Agent créé",
+    "copyName": "Copie de {name}",
+    "customFieldsChoiceRequired": "Choisissez s’il faut ajouter des champs fixes personnalisés.",
+    "initFailed": "Échec de l’initialisation de la page d’enregistrement.",
+    "initFailedTitle": "Échec de l’initialisation de l’enregistrement",
+    "loadingTitle": "Initialisation de la page d’enregistrement",
+    "submitValidationFailed": "Échec de la validation des paramètres de création d’Agent.",
+    "template": {
+      "description": "Commencez avec une configuration vide et renseignez manuellement les champs de connexion, de mappage et de statut.",
+      "title": "Ne pas utiliser de modèle"
+    },
+    "wizard": {
+      "basic": {
+        "description": "Renseignez le nom et la description d’usage.",
+        "title": "Informations de base"
+      },
+      "connection": {
+        "description": "Configurez le mode d’appel, l’adresse du service et les identifiants.",
+        "title": "Connexion et authentification"
+      },
+      "customFields": {
+        "description": "Configurez les champs fixes inclus dans chaque requête.",
+        "title": "Champs fixes personnalisés"
+      },
+      "inputMapping": {
+        "description": "Indiquez où les champs de plateforme et la configuration de sortie structurée sont écrits dans le corps de requête.",
+        "title": "Mappage des champs d’entrée"
+      },
+      "outputMapping": {
+        "description": "Indiquez où la plateforme lit les résultats dans la réponse.",
+        "title": "Mappage des champs de sortie"
+      },
+      "statuses": {
+        "description": "Confirmez les statuts terminaux et de réussite.",
+        "title": "Ensemble de statuts"
+      },
+      "template": {
+        "description": "Choisissez un modèle prédéfini ou commencez avec une configuration vide.",
+        "title": "Choisir un modèle"
+      }
+    }
+  },
+  "registerForm": {
+    "customFields": {
+      "addField": "Ajouter un champ",
+      "addFixed": "Ajouter des champs fixes",
+      "addFixedDescription": "Ajoutez des paramètres fixes à chaque requête.",
+      "fieldKeyHelp": "Renseignez le nom du champ fixe dans le corps de requête externe.",
+      "fieldTypeHelp": "Sélectionnez le type de la valeur du champ fixe.",
+      "fieldValueHelp": "Valeur fixe envoyée avec chaque requête.",
+      "skipFixed": "Ne pas ajouter de champs fixes",
+      "skipFixedDescription": "Utiliser uniquement les champs de tâche configurés à l’étape précédente.",
+      "skipNotice": "Aucun champ fixe personnalisé ne sera ajouté pour cet enregistrement."
+    },
+    "fieldTypes": {
+      "boolean": "Booléen",
+      "json": "JSON",
+      "number": "Nombre",
+      "string": "Chaîne"
+    },
+    "helps": {
+      "authHeaderName": "Renseignez le nom du Header requis par le service.",
+      "authHeaderSecret": "La plateforme écrira ce secret dans le Header ci-dessus.",
+      "authMethod": "Sélectionnez la méthode d’authentification utilisée par la plateforme pour appeler le service Agent.",
+      "authSecret": "La plateforme l’envoie sous la forme Authorization: Bearer Token.",
+      "baseUrl": "Renseignez le protocole, le domaine et le port du service Agent, sans chemin d’interface spécifique.",
+      "description": "Décrivez les tâches adaptées à cet Agent afin de le sélectionner lors des soumissions d’évaluation.",
+      "invokeMode": "La soumission avec interrogation convient aux tâches asynchrones ; la réponse synchrone convient aux requêtes qui retournent directement un résultat.",
+      "name": "Utilisé pour identifier cet Agent dans la plateforme ; un nom de service ou de capacité est recommandé.",
+      "pollInterval": "Temps d’attente entre deux requêtes de résultat de la plateforme.",
+      "pollTimeout": "La plateforme cesse d’attendre si la tâche n’atteint pas un statut terminal dans ce délai.",
+      "requestTimeout": "Temps maximal d’attente de la réponse à une requête de soumission.",
+      "resultPathTemplate": "Chemin utilisé pour interroger le résultat en mode d’interrogation. L’espace réservé {externalRunId} est pris en charge.",
+      "statusSuccess": "Renseignez les valeurs de statut représentant une réussite. Elles doivent appartenir à l’ensemble des statuts terminaux.",
+      "statusTerminal": "Renseignez les statuts terminaux renvoyés par l’Agent. Séparez plusieurs valeurs par des virgules ou des retours ligne.",
+      "structuredOutput": "La plateforme ajoute un champ de sortie structurée au corps de requête.",
+      "structuredOutputAlias": "Renseignez le champ de premier niveau du corps de requête Agent qui reçoit le schema de sortie.",
+      "taskPath": "Chemin appelé par la plateforme lors de la soumission de tâche. Il est concaténé avec l’URL racine du service."
+    },
+    "inputMappingHelp": {
+      "entryUrl": "Facultatif. Si une URL de départ est nécessaire, la plateforme écrit l’entrée d’échantillon dans ce champ.",
+      "evaluationId": "Facultatif. Renseignez ce champ si l’ID de tâche d’évaluation est nécessaire au suivi.",
+      "maxSteps": "Facultatif. Renseignez ce champ si le nombre maximal d’étapes d’exécution de l’Agent doit être limité.",
+      "sampleId": "Facultatif. Renseignez ce champ si l’ID d’échantillon est nécessaire au suivi.",
+      "task": "Obligatoire. Renseignez le champ de premier niveau du corps de requête Agent qui reçoit l’objectif de tâche, par exemple prompt.",
+      "timeoutSeconds": "Facultatif. Renseignez ce champ si un délai au niveau de la tâche est nécessaire."
+    },
+    "inputMappingLabels": {
+      "entryUrl": "entryUrl -> Champ Agent",
+      "evaluationId": "evaluationId -> Champ Agent",
+      "maxSteps": "maxSteps -> Champ Agent",
+      "sampleId": "sampleId -> Champ Agent",
+      "task": "task -> Champ Agent",
+      "timeoutSeconds": "timeoutSeconds -> Champ Agent"
+    },
+    "notVisibleSecretPlaceholder": "Écrit à la création ; le texte en clair n’est pas affiché sur la page de détails",
+    "outputMappingHelp": {
+      "errorMessage": "Facultatif. Renseignez le chemin du message d’erreur afin d’afficher la cause d’échec, par exemple error.message.",
+      "externalRunId": "Obligatoire en mode d’interrogation. Renseignez le chemin de l’ID d’exécution dans la réponse de soumission ; utilisez runId pour un champ de premier niveau ou data.runId pour un champ imbriqué.",
+      "finalAnswer": "Facultatif. Renseignez le chemin de la réponse finale ou du résultat textuel, par exemple answer ou output.answer.",
+      "status": "Obligatoire en mode d’interrogation. Renseignez le chemin du champ de statut dans la réponse de résultat ; utilisez status pour un champ de premier niveau ou data.status pour un champ imbriqué."
+    },
+    "outputMappingLabels": {
+      "errorMessage": "errorMessage <- Chemin de réponse",
+      "externalRunId": "externalRunId <- Chemin de réponse",
+      "finalAnswer": "finalAnswer <- Chemin de réponse",
+      "status": "status <- Chemin de réponse"
+    },
+    "stepCounter": "Étape {current} / {total}",
+    "structuredOutputTitle": "Prendre en charge la sortie structurée"
+  },
+  "validation": {
+    "authHeaderNameRequired": "Renseignez le nom du Header",
+    "authHeaderSecretRequired": "Renseignez le secret du Header",
+    "authSecretRequired": "Renseignez le Bearer Token",
+    "baseUrlInvalid": "Le format de l’URL racine du service est invalide",
+    "baseUrlRequired": "Renseignez l’URL racine du service",
+    "customFieldDuplicate": "Le champ fixe personnalisé {key} est en double.",
+    "customFieldJson": "{field} n’est pas un JSON valide.",
+    "customFieldKeyRequired": "Les champs fixes personnalisés doivent inclure un nom de champ.",
+    "customFieldNumber": "{field} doit être un nombre.",
+    "customFieldBoolean": "{field} doit être true ou false.",
+    "customFieldMappingConflict": "Le champ {field} est déjà utilisé par le mappage d’entrée de la plateforme et ne peut pas servir de champ fixe personnalisé.",
+    "inputMappingTopLevel": "Le mappage d’entrée de plateforme accepte uniquement les champs de premier niveau du corps de requête externe",
+    "invokePathRequired": "Renseignez le chemin de soumission de tâche",
+    "nameRequired": "Renseignez le nom de l’Agent",
+    "outputMappingPath": "Le mappage de sortie doit être un chemin de champ de réponse, par exemple runId ou data.runId. $, les index de tableau et les segments de chemin vides ne sont pas pris en charge.",
+    "pollOutputRequired": "Le mode d’interrogation exige les chemins de sortie de l’ID d’exécution et du statut.",
+    "resultPathTemplateRequired": "Renseignez le modèle de chemin de résultat",
+    "statusSuccessInTerminal": "Les statuts de réussite doivent appartenir à l’ensemble des statuts terminaux",
+    "structuredOutputAliasInvalid": "L’alias du champ de sortie structurée accepte uniquement un champ de premier niveau du corps de requête",
+    "structuredOutputAliasRequired": "Renseignez l’alias du champ de sortie structurée",
+    "taskMappingRequired": "Renseignez le nom du champ correspondant à task",
+    "templateRequired": "Choisissez un modèle d’enregistrement",
+    "terminalStatusRequired": "Renseignez au moins un statut terminal"
+  },
+  "verification": {
+    "count": "{count} éléments",
+    "detailHeader": "Détails de diagnostic",
+    "failed": "Échec",
+    "failedResult": "Échec de la vérification",
+    "notVerified": "Non vérifié",
+    "passed": "Réussite",
+    "passedResult": "Vérification réussie",
+    "result": "Résultat de vérification",
+    "tableCode": "Identifiant de type",
+    "tableDescription": "Description détaillée",
+    "time": "Heure de vérification",
+    "unverifiedNotice": "Pas encore vérifié.",
+    "warnings": "Avertissements",
+    "errors": "Erreurs"
+  }
+}

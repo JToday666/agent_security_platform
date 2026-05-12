@@ -1,3 +1,7 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import type { AgentRegisterForm } from "./agent-registration-form";
 import {
   validateAgentRegistration,
@@ -32,49 +36,36 @@ export interface AgentRegisterStepValidationResult {
   fieldErrors: AgentRegisterFieldErrors;
 }
 
-export const AGENT_REGISTER_STEP_DEFINITIONS: AgentRegisterStep[] = [
-  {
-    id: "template",
-    title: "选择模板",
-    description: "选择预设模板或从空配置开始。",
-  },
-  {
-    id: "basic",
-    title: "基本信息",
-    description: "填写名称和用途描述。",
-  },
-  {
-    id: "connection",
-    title: "连接与鉴权",
-    description: "配置调用模式、服务地址和凭据。",
-  },
-  {
-    id: "inputMapping",
-    title: "输入字段映射",
-    description: "指定平台字段和结构化输出配置写入请求体的位置。",
-  },
-  {
-    id: "outputMapping",
-    title: "输出字段映射",
-    description: "指定平台从响应中读取结果的位置。",
-  },
-  {
-    id: "customFields",
-    title: "自定义固定字段",
-    description: "配置每次请求都会附带的固定字段。",
-  },
-  {
-    id: "statuses",
-    title: "状态集合",
-    description: "确认终态和成功态。",
-  },
+const AGENT_REGISTER_STEP_IDS: AgentRegisterStepId[] = [
+  "template",
+  "basic",
+  "connection",
+  "inputMapping",
+  "outputMapping",
+  "customFields",
+  "statuses",
 ];
 
-export const buildAgentRegisterSteps = ({
-  templateRequiresCustomFields,
-  usesNoTemplate,
-}: AgentRegisterStepBuildOptions): AgentRegisterStep[] =>
-  AGENT_REGISTER_STEP_DEFINITIONS.filter(
+export const buildAgentRegisterStepDefinitions = (
+  t: AppTranslator = translateRuntimeMessage,
+): AgentRegisterStep[] =>
+  AGENT_REGISTER_STEP_IDS.map((id) => ({
+    id,
+    title: t(`agent.register.wizard.${id}.title`),
+    description: t(`agent.register.wizard.${id}.description`),
+  }));
+
+export const AGENT_REGISTER_STEP_DEFINITIONS: AgentRegisterStep[] =
+  buildAgentRegisterStepDefinitions();
+
+export const buildAgentRegisterSteps = (
+  {
+    templateRequiresCustomFields,
+    usesNoTemplate,
+  }: AgentRegisterStepBuildOptions,
+  t: AppTranslator = translateRuntimeMessage,
+): AgentRegisterStep[] =>
+  buildAgentRegisterStepDefinitions(t).filter(
     (step) =>
       step.id !== "customFields" ||
       templateRequiresCustomFields ||
@@ -136,8 +127,9 @@ export const canEnterAgentRegisterStep = (
 export const validateAgentRegisterStep = (
   stepId: AgentRegisterStepId,
   form: AgentRegisterForm,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentRegisterStepValidationResult => {
-  const result = validateAgentRegistration(form, stepId);
+  const result = validateAgentRegistration(form, stepId, t);
 
   return {
     valid: result.valid,

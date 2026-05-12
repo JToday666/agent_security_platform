@@ -1,9 +1,14 @@
 import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
 import { getEvaluationLeaderboardStatus } from "@/modules/evaluation/lib/evaluation-record-filters";
+import {
+  type AppTranslator,
+  translateRuntimeMessage,
+} from "@/app/i18n/runtime-translator";
 import type {
   EvaluationDetail,
   EvaluationReportPayload,
 } from "@/shared/types/agent-types";
+import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
 export type EvaluationDetailTone =
   | "primary"
@@ -31,7 +36,7 @@ export interface EvaluationSampleStat {
 
 export interface EvaluationDetailGroup {
   title: string;
-  icon: string;
+  icon: AppIconName;
   items: EvaluationDetailTextItem[];
 }
 
@@ -45,8 +50,10 @@ export interface EvaluationSampleBase {
   completed: number;
 }
 
-const formatOptionalDateTime = (value?: string | null): string =>
-  value ? formatDateTimeLabel(value) : "未返回";
+const formatOptionalDateTime = (
+  value?: string | null,
+  t: AppTranslator = translateRuntimeMessage,
+): string => (value ? formatDateTimeLabel(value) : t("evaluation.common.noReturn"));
 
 const formatRate = (value: number): string => `${Math.round(value)}%`;
 
@@ -55,11 +62,12 @@ export const getLeaderboardStatusLabel = (
     EvaluationDetail,
     "publicToLeaderboard" | "leaderboardDisplayMode"
   >,
+  t: AppTranslator = translateRuntimeMessage,
 ): string => {
   const status = getEvaluationLeaderboardStatus(detail);
-  if (status === "anonymous") return "匿名";
-  if (status === "unranked") return "未排行";
-  return "公开";
+  if (status === "anonymous") return t("common.status.anonymous");
+  if (status === "unranked") return t("common.status.rankedOut");
+  return t("common.status.public");
 };
 
 export const resolveEvaluationScoreTone = (
@@ -79,12 +87,15 @@ export const formatEvaluationPrimaryScore = (
     ? detail.score.toFixed(1)
     : "--";
 
-export const getEvaluationScoreCaption = (detail: EvaluationDetail): string => {
+export const getEvaluationScoreCaption = (
+  detail: EvaluationDetail,
+  t: AppTranslator = translateRuntimeMessage,
+): string => {
   if (!detail.finalReportAvailable) {
-    return "报告未生成";
+    return t("evaluation.summary.scoreCaptionPending");
   }
 
-  return getLeaderboardStatusLabel(detail);
+  return getLeaderboardStatusLabel(detail, t);
 };
 
 export const getEvaluationReportTagValue = (
@@ -109,22 +120,23 @@ export const getEvaluationReportTagValue = (
 
 export const buildEvaluationSummaryItems = (
   detail: EvaluationDetail,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationDetailTextItem[] => [
   {
-    label: "完成进度",
+    label: t("evaluation.summary.completion"),
     value: `${detail.progress.percent}%`,
   },
   {
-    label: "创建时间",
+    label: t("evaluation.summary.createdAt"),
     value: formatDateTimeLabel(detail.createdAt),
   },
   {
-    label: "开始时间",
-    value: formatOptionalDateTime(detail.startedAt),
+    label: t("evaluation.summary.startedAt"),
+    value: formatOptionalDateTime(detail.startedAt, t),
   },
   {
-    label: "完成时间",
-    value: formatOptionalDateTime(detail.finishedAt),
+    label: t("evaluation.summary.finishedAt"),
+    value: formatOptionalDateTime(detail.finishedAt, t),
   },
 ];
 
@@ -155,21 +167,22 @@ export const getEvaluationCompletionRate = (
 
 export const buildEvaluationSampleSegments = (
   sampleBase: EvaluationSampleBase,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationSampleSegment[] => {
   const total = Math.max(1, sampleBase.total);
   return [
     {
-      label: "成功",
+      label: t("evaluation.outcomes.success"),
       tone: "success",
       width: `${(sampleBase.success / total) * 100}%`,
     },
     {
-      label: "失败",
+      label: t("evaluation.outcomes.failed"),
       tone: "danger",
       width: `${(sampleBase.failed / total) * 100}%`,
     },
     {
-      label: "异常",
+      label: t("evaluation.outcomes.error"),
       tone: "warning",
       width: `${(sampleBase.error / total) * 100}%`,
     },
@@ -179,69 +192,97 @@ export const buildEvaluationSampleSegments = (
 export const buildEvaluationSampleStats = (
   sampleBase: EvaluationSampleBase,
   completionRate: string,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationSampleStat[] => [
-  { label: "总样本数", value: String(sampleBase.total), tone: "neutral" },
-  { label: "成功", value: String(sampleBase.success), tone: "success" },
-  { label: "失败", value: String(sampleBase.failed), tone: "danger" },
-  { label: "异常", value: String(sampleBase.error), tone: "warning" },
-  { label: "完成率", value: completionRate, tone: "primary" },
+  {
+    label: t("evaluation.summary.totalSamples"),
+    value: String(sampleBase.total),
+    tone: "neutral",
+  },
+  {
+    label: t("evaluation.outcomes.success"),
+    value: String(sampleBase.success),
+    tone: "success",
+  },
+  {
+    label: t("evaluation.outcomes.failed"),
+    value: String(sampleBase.failed),
+    tone: "danger",
+  },
+  {
+    label: t("evaluation.outcomes.error"),
+    value: String(sampleBase.error),
+    tone: "warning",
+  },
+  {
+    label: t("evaluation.metrics.completionRate.label"),
+    value: completionRate,
+    tone: "primary",
+  },
 ];
 
 export const buildEvaluationDetailGroups = (
   detail: EvaluationDetail,
   report: EvaluationReportPayload | null,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationDetailGroup[] => [
   {
-    title: "提交信息",
-    icon: "lucide:send",
+    title: t("evaluation.sections.submit"),
+    icon: "app:evaluation.submit",
     items: [
-      { label: "提交方式", value: detail.submitMethod.toUpperCase() },
+      { label: t("evaluation.summary.submitMethod"), value: detail.submitMethod.toUpperCase() },
       {
-        label: "榜单状态",
-        value: getLeaderboardStatusLabel(detail),
+        label: t("evaluation.summary.leaderboardStatus"),
+        value: getLeaderboardStatusLabel(detail, t),
       },
-      { label: "当前状态", value: detail.progress.statusText },
+      { label: t("evaluation.summary.currentStatus"), value: detail.progress.statusText },
     ],
   },
   {
-    title: "数据集",
-    icon: "lucide:database",
+    title: t("evaluation.sections.dataset"),
+    icon: "app:dataset.catalog",
     items: [
       {
-        label: "数据集",
-        value: detail.datasetNames.join("、") || "未返回",
+        label: t("evaluation.summary.datasets"),
+        value:
+          detail.datasetNames.join(t("evaluation.common.listSeparator")) ||
+          t("evaluation.common.noReturn"),
       },
       {
-        label: "数据集数量",
-        value: `${detail.datasetIds.length} 个`,
+        label: t("evaluation.summary.datasetCount"),
+        value: t("evaluation.summary.datasetCountValue", {
+          count: detail.datasetIds.length,
+        }),
       },
     ],
   },
   {
-    title: "运行参数",
-    icon: "lucide:sliders-horizontal",
+    title: t("evaluation.sections.runParameters"),
+    icon: "app:evaluation.runParameters",
     items: [
-      { label: "难度", value: String(detail.parameters.difficulty) },
+      { label: t("evaluation.summary.difficulty"), value: String(detail.parameters.difficulty) },
       {
-        label: "超时时间",
-        value: `${detail.parameters.timeoutMinutes} 分钟`,
+        label: t("evaluation.summary.timeout"),
+        value: t("evaluation.summary.timeoutValue", {
+          value: detail.parameters.timeoutMinutes,
+        }),
       },
-      { label: "最大步骤", value: String(detail.parameters.maxSteps) },
+      { label: t("evaluation.summary.maxSteps"), value: String(detail.parameters.maxSteps) },
     ],
   },
   {
-    title: "报告信息",
-    icon: "lucide:file-bar-chart-2",
+    title: t("evaluation.sections.report"),
+    icon: "app:evaluation.report",
     items: [
       {
-        label: "报告生成时间",
+        label: t("evaluation.summary.reportGeneratedAt"),
         value: report?.generatedAt
           ? formatDateTimeLabel(report.generatedAt)
-          : "未生成",
+          : t("evaluation.common.notGenerated"),
       },
       {
-        label: "评分模型",
-        value: report?.versions.scoreModelVersion ?? "未返回",
+        label: t("evaluation.summary.scoreModel"),
+        value: report?.versions.scoreModelVersion ?? t("evaluation.common.noReturn"),
       },
     ],
   },

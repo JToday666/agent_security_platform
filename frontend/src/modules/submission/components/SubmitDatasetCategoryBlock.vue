@@ -18,7 +18,7 @@
         >
           <AppIcon
             v-if="isFullySelected"
-            icon="lucide:check"
+            icon="app:action.select"
             class="selection-box-icon"
           />
           <span v-else-if="isPartiallySelected" class="selection-box-dash"></span>
@@ -33,17 +33,17 @@
 
       <div class="category-right">
         <span class="category-count">
-          {{ category.subcategories.length }} 个数据集
+          {{ t("submission.dataset.categoryCount", { count: category.subcategories.length }) }}
         </span>
         <button
           class="expand-btn"
           type="button"
-          :aria-label="expanded ? '收起' : '展开'"
-          :title="expanded ? '收起' : '展开'"
+          :aria-label="expanded ? t('submission.dataset.collapse') : t('submission.dataset.expand')"
+          :title="expanded ? t('submission.dataset.collapse') : t('submission.dataset.expand')"
           @click="$emit('toggle-expanded', category.categoryId)"
         >
           <AppIcon
-            :icon="expanded ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+            :icon="expanded ? 'app:control.collapse' : 'app:control.expand'"
             class="expand-btn-icon"
           />
         </button>
@@ -71,14 +71,14 @@
         >
           <AppIcon
             v-if="selectedDatasetIds.includes(dataset.datasetId)"
-            icon="lucide:check"
+            icon="app:action.select"
             class="selection-box-icon"
           />
         </span>
         <div class="dataset-copy">
           <span class="dataset-name">{{ dataset.name }}</span>
           <span class="dataset-description">
-            {{ dataset.shortDescription || "暂无数据集说明。" }}
+            {{ dataset.shortDescription || t("submission.dataset.noDescription") }}
           </span>
         </div>
       </label>
@@ -88,6 +88,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import {
   getCategoryTheme,
   isCategoryFullySelected,
@@ -100,6 +101,8 @@ const props = defineProps<{
   selectedDatasetIds: string[];
   expanded: boolean;
 }>();
+
+const { t } = useI18n();
 
 defineEmits<{
   (event: "toggle-category", categoryId: string): void;

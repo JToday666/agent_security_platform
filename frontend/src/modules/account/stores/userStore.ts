@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import request from "@/shared/api/http-client";
 import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
 import { STORAGE_KEYS } from "@/shared/constants/storage-keys";
@@ -128,9 +129,13 @@ export const useUserStore = defineStore("user", () => {
         return true;
       }
 
-      throw new Error(res.message || "登录失败");
+      throw new Error(
+        res.message || translateRuntimeMessage("auth.storeErrors.loginFailed"),
+      );
     } catch (error: any) {
-      const message = error.message || "用户名/邮箱或密码错误";
+      const message =
+        error.message ||
+        translateRuntimeMessage("auth.storeErrors.loginInvalid");
       throw new Error(message);
     }
   };
@@ -152,9 +157,13 @@ export const useUserStore = defineStore("user", () => {
         return true;
       }
 
-      throw new Error(res.message || "注册失败");
+      throw new Error(
+        res.message || translateRuntimeMessage("auth.storeErrors.registerFailed"),
+      );
     } catch (error: any) {
-      const message = error.message || "用户名或邮箱已被注册";
+      const message =
+        error.message ||
+        translateRuntimeMessage("auth.storeErrors.registerConflict");
       throw new Error(message);
     }
   };
@@ -205,9 +214,13 @@ export const useUserStore = defineStore("user", () => {
         return true;
       }
 
-      throw new Error(res.message || "更新失败");
+      throw new Error(
+        res.message || translateRuntimeMessage("auth.storeErrors.updateFailed"),
+      );
     } catch (error: any) {
-      const message = error.message || "更新失败";
+      const message =
+        error.message ||
+        translateRuntimeMessage("auth.storeErrors.updateFailed");
       throw new Error(message);
     }
   };
@@ -230,9 +243,14 @@ export const useUserStore = defineStore("user", () => {
         return newAvatarUrl || "";
       }
 
-      throw new Error(res.message || "头像上传失败");
+      throw new Error(
+        res.message ||
+          translateRuntimeMessage("auth.storeErrors.avatarUploadFailed"),
+      );
     } catch (error: any) {
-      const message = error.message || "头像上传失败";
+      const message =
+        error.message ||
+        translateRuntimeMessage("auth.storeErrors.avatarUploadFailed");
       throw new Error(message);
     }
   };

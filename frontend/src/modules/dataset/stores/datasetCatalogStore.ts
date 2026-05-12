@@ -1,6 +1,7 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import { getCurrentDisplayLocale } from "@/app/i18n";
+import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import {
   getDatasetCatalog,
   getDatasetDetail,
@@ -66,7 +67,7 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
       error.value =
         fetchError instanceof Error
           ? fetchError.message
-          : "目录加载失败，请稍后重试。";
+          : translateRuntimeMessage("dataset.api.catalogLoadFailed");
       return false;
     } finally {
       loading.value = false;
@@ -113,8 +114,8 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
         errorMessage:
           error.message ||
           (error.code === 40400
-            ? "未找到对应评测项。"
-            : "详情加载失败，请稍后重试。"),
+            ? translateRuntimeMessage("dataset.api.notFound")
+            : translateRuntimeMessage("dataset.api.detailLoadFailed")),
       };
     }
   };

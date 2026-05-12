@@ -1,7 +1,7 @@
 <template>
   <section class="gallery">
     <div v-if="!media.length" class="empty-card">
-      <p>当前评测项暂未提供媒体资源。</p>
+      <p>{{ t("dataset.media.empty") }}</p>
     </div>
 
     <div v-else class="grid-auto-fit" style="--grid-min-size: 280px; --grid-gap: 1rem;">
@@ -26,13 +26,13 @@
             @error="markFailed(item.mediaId)"
           />
           <div v-else class="fallback">
-            <span>资源暂不可用</span>
+            <span>{{ t("dataset.media.unavailable") }}</span>
           </div>
         </div>
 
         <div class="media-body">
           <h3>{{ item.title }}</h3>
-          <p>{{ item.description || "该媒体用于辅助理解评测项结构与运行效果。" }}</p>
+          <p>{{ item.description || t("dataset.media.descriptionFallback") }}</p>
         </div>
       </article>
     </div>
@@ -41,12 +41,14 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import type { DatasetMediaItem } from "@/shared/types/dataset-types";
 
 defineProps<{
   media: DatasetMediaItem[];
 }>();
 
+const { t } = useI18n();
 const failedMediaIds = ref<string[]>([]);
 
 const markFailed = (mediaId: string) => {

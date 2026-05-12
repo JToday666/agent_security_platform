@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import VChart from "vue-echarts";
 import { ensureEvaluationChartsRegistered } from "@/modules/evaluation/charts/echarts-registry";
 import { buildDifficultyBarOption } from "@/modules/evaluation/lib/evaluation-report-chart-options";
@@ -21,13 +22,14 @@ ensureEvaluationChartsRegistered();
 const props = defineProps<{
   report: EvaluationReportPayload;
 }>();
+const { t } = useI18n();
 
 const emit = defineEmits<{
   (event: "preview", bucket: string | null): void;
   (event: "select", bucket: string): void;
 }>();
 
-const option = computed(() => buildDifficultyBarOption(props.report));
+const option = computed(() => buildDifficultyBarOption(props.report, t));
 
 const getBucketFromEvent = (event: { dataIndex?: number }): string | null => {
   const dataIndex = event.dataIndex;

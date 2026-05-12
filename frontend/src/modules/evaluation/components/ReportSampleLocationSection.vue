@@ -2,7 +2,7 @@
   <section class="chart-unit chart-unit--wide">
     <div class="sample-location-layout">
       <div class="report-unit__copy">
-        <span>样本定位</span>
+        <span>{{ t("evaluation.report.sampleLocationTitle") }}</span>
         <h3>{{ insight?.title }}</h3>
         <strong>{{ insight?.value }}</strong>
         <p>{{ insight?.caption }}</p>
@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
+import { useI18n } from "vue-i18n";
 import type { EvaluationReportInsight } from "@/modules/evaluation/lib/evaluation-report-insights";
 import type { EvaluationReportPayload } from "@/shared/types/agent-types";
 
@@ -26,6 +27,8 @@ defineProps<{
   report: EvaluationReportPayload;
   insight: EvaluationReportInsight | undefined;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

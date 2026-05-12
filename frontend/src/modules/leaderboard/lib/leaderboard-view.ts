@@ -1,3 +1,7 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import type { LeaderboardEntry } from "@/modules/leaderboard/types/leaderboard-types";
 
 export type LeaderboardSortKey =
@@ -15,6 +19,13 @@ export interface LeaderboardSortState {
   direction: LeaderboardSortDirection;
 }
 
+interface LeaderboardSortOptionBase {
+  key: LeaderboardSortKey;
+  labelKey: string;
+  shortLabelKey: string;
+  defaultDirection: LeaderboardSortDirection;
+}
+
 export interface LeaderboardSortOption {
   key: LeaderboardSortKey;
   label: string;
@@ -22,29 +33,29 @@ export interface LeaderboardSortOption {
   defaultDirection: LeaderboardSortDirection;
 }
 
-export const LEADERBOARD_SORT_OPTIONS: LeaderboardSortOption[] = [
+const LEADERBOARD_SORT_OPTION_BASE: LeaderboardSortOptionBase[] = [
   {
     key: "officialConservativeScore",
-    label: "综合分",
-    shortLabel: "综合",
+    labelKey: "leaderboard.scores.compositeFull",
+    shortLabelKey: "leaderboard.scores.composite",
     defaultDirection: "desc",
   },
   {
     key: "safeCapabilityScore",
-    label: "安全能力",
-    shortLabel: "安全",
+    labelKey: "leaderboard.scores.safeCapabilityFull",
+    shortLabelKey: "leaderboard.scores.safeCapability",
     defaultDirection: "desc",
   },
   {
     key: "highDifficultyScore",
-    label: "高难分",
-    shortLabel: "高难",
+    labelKey: "leaderboard.scores.highDifficultyFull",
+    shortLabelKey: "leaderboard.scores.highDifficulty",
     defaultDirection: "desc",
   },
   {
     key: "unsafeRiskScore",
-    label: "风险分",
-    shortLabel: "风险",
+    labelKey: "leaderboard.scores.riskFull",
+    shortLabelKey: "leaderboard.scores.risk",
     defaultDirection: "asc",
   },
 ];
@@ -59,9 +70,20 @@ const normalizeScore = (value: number): number =>
 
 export const getLeaderboardSortOption = (
   key: LeaderboardSortKey,
+  t: AppTranslator = translateRuntimeMessage,
 ): LeaderboardSortOption =>
-  LEADERBOARD_SORT_OPTIONS.find((option) => option.key === key) ??
-  LEADERBOARD_SORT_OPTIONS[0];
+  getLeaderboardSortOptions(t).find((option) => option.key === key) ??
+  getLeaderboardSortOptions(t)[0];
+
+export const getLeaderboardSortOptions = (
+  t: AppTranslator = translateRuntimeMessage,
+): LeaderboardSortOption[] =>
+  LEADERBOARD_SORT_OPTION_BASE.map((option) => ({
+    key: option.key,
+    label: t(option.labelKey),
+    shortLabel: t(option.shortLabelKey),
+    defaultDirection: option.defaultDirection,
+  }));
 
 export const getNextLeaderboardSortState = (
   current: LeaderboardSortState,
@@ -99,10 +121,13 @@ export const sortLeaderboardEntries = (
   });
 };
 
-export const formatLeaderboardScore = (value?: number | null): string =>
+export const formatLeaderboardScore = (
+  value?: number | null,
+  t: AppTranslator = translateRuntimeMessage,
+): string =>
   typeof value === "number" && Number.isFinite(value)
     ? value.toFixed(1)
-    : "未返回";
+    : t("leaderboard.scores.notReturned");
 
 export const getLeaderboardRankTone = (rankNo: number): LeaderboardRankTone => {
   if (rankNo === 1) return "gold";

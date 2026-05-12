@@ -1,3 +1,7 @@
+import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import type {
   AgentInputMapping,
   AgentOutputMapping,
@@ -29,26 +33,30 @@ export interface AgentResponseMappingPreview {
   requiredPaths: Array<keyof AgentOutputMapping>;
 }
 
-const PLATFORM_INPUT_SAMPLES: Record<keyof AgentInputMapping, unknown> = {
-  task: "请完成平台下发的任务目标",
+const buildPlatformInputSamples = (
+  t: AppTranslator,
+): Record<keyof AgentInputMapping, unknown> => ({
+  task: t("agent.preview.samples.task"),
   entryUrl: "https://example.com",
   timeoutSeconds: 120,
   sampleId: "sample_001",
   evaluationId: "eval_001",
   maxSteps: 30,
-};
+});
 
 const STRUCTURED_OUTPUT_SCHEMA_SAMPLE = {
   type: "object",
   properties: {},
 };
 
-const RESPONSE_OUTPUT_SAMPLES: Record<keyof AgentOutputMapping, unknown> = {
+const buildResponseOutputSamples = (
+  t: AppTranslator,
+): Record<keyof AgentOutputMapping, unknown> => ({
   externalRunId: "run_123",
   status: "completed",
-  finalAnswer: "最终答案",
-  errorMessage: "错误信息",
-};
+  finalAnswer: t("agent.preview.samples.finalAnswer"),
+  errorMessage: t("agent.preview.samples.errorMessage"),
+});
 
 const joinUrl = (baseUrl: string, path: string): string =>
   `${baseUrl.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
@@ -83,10 +91,12 @@ const setJsonPathValue = (
 const buildResponseMappingPreview = (
   form: AgentRegisterForm,
   baseUrl: string,
+  t: AppTranslator,
 ): AgentResponseMappingPreview => {
   const responsePaths: Partial<Record<keyof AgentOutputMapping, string>> = {};
   const responseBody: Record<string, unknown> = {};
   const outputMapping = normalizeAgentOutputMapping(form.platformOutputMapping);
+  const responseOutputSamples = buildResponseOutputSamples(t);
 
   Object.entries(outputMapping).forEach(([field, path]) => {
     const outputField = field as keyof AgentOutputMapping;
@@ -106,7 +116,7 @@ const buildResponseMappingPreview = (
     setJsonPathValue(
       responseBody,
       parsedPath.segments,
-      RESPONSE_OUTPUT_SAMPLES[outputField],
+      responseOutputSamples[outputField],
     );
   });
 
@@ -127,13 +137,15 @@ const buildResponseMappingPreview = (
 
 export const buildAgentInvocationPreview = (
   form: AgentRegisterForm,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentInvocationPreview => {
   const baseUrl = form.connection.baseUrl.trim();
   const invokePath = form.connection.invokePath.trim();
   const customBody = buildAgentCustomRequestBody(form.customRequestFields).body;
   const requestBody: Record<string, unknown> = { ...customBody };
-  const responseMapping = buildResponseMappingPreview(form, baseUrl);
+  const responseMapping = buildResponseMappingPreview(form, baseUrl, t);
   const inputMapping = normalizeAgentInputMapping(form.platformInputMapping);
+  const platformInputSamples = buildPlatformInputSamples(t);
 
   Object.entries(inputMapping).forEach(([platformField, target]) => {
     if (!target) {
@@ -141,7 +153,7 @@ export const buildAgentInvocationPreview = (
     }
 
     requestBody[target] =
-      PLATFORM_INPUT_SAMPLES[platformField as keyof AgentInputMapping];
+      platformInputSamples[platformField as keyof AgentInputMapping];
   });
 
   const structuredOutputAlias = form.requestOptions.structuredOutput.supported
@@ -153,7 +165,7 @@ export const buildAgentInvocationPreview = (
 
   if (!baseUrl || !invokePath) {
     return {
-      missingMessage: "请填写 baseUrl 和 invokePath 后查看调用预览。",
+      missingMessage: t("agent.preview.missingMessage"),
       requestBody,
       responseMapping,
       curl: "",

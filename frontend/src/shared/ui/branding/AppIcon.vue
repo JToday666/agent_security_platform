@@ -2,7 +2,7 @@
   <component
     :is="iconComponent"
     v-bind="attrs"
-    :size="size"
+    v-bind="iconSizeAttrs"
     :title="title"
     :aria-hidden="decorative ? 'true' : undefined"
     :role="decorative ? undefined : 'img'"
@@ -86,7 +86,17 @@ import {
   X,
   XCircle,
 } from "lucide-vue-next";
-import { computed, useAttrs, type Component } from "vue";
+import { computed, useAttrs, watch, type Component } from "vue";
+import {
+  APP_ICON_FALLBACK,
+  isKnownAppIconName,
+  resolveAppIconName,
+  type AppIconName,
+  type BrandIconName,
+  type LucideIconName,
+} from "./app-icon-registry";
+import BrandGithubIcon from "./BrandGithubIcon.vue";
+import BrandXIcon from "./BrandXIcon.vue";
 
 defineOptions({
   inheritAttrs: false,
@@ -94,7 +104,7 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    icon: string;
+    icon: AppIconName | string;
     size?: string | number;
     decorative?: boolean;
     title?: string;
@@ -106,7 +116,7 @@ const props = withDefaults(
   },
 );
 
-const lucideIcons: Record<string, Component> = {
+const lucideIcons = {
   "alert-triangle": AlertTriangle,
   archive: Archive,
   "arrow-down": ArrowDown,
@@ -181,13 +191,47 @@ const lucideIcons: Record<string, Component> = {
   workflow: Workflow,
   x: X,
   "x-circle": XCircle,
+} satisfies Record<LucideIconName, Component>;
+
+const brandIcons = {
+  github: BrandGithubIcon,
+  x: BrandXIcon,
+} satisfies Record<BrandIconName, Component>;
+
+const warnedUnknownIcons = new Set<string>();
+
+const warnUnknownIcon = (icon: string): void => {
+  if (!import.meta.env.DEV || isKnownAppIconName(icon)) {
+    return;
+  }
+
+  if (warnedUnknownIcons.has(icon)) {
+    return;
+  }
+
+  warnedUnknownIcons.add(icon);
+  console.warn(
+    `[AppIcon] Unknown icon "${icon}". Falling back to "${APP_ICON_FALLBACK}".`,
+  );
 };
 
-const normalizeLucideName = (icon: string): string =>
-  icon.startsWith("lucide:") ? icon.slice("lucide:".length) : icon;
-
 const attrs = useAttrs();
-const iconComponent = computed(
-  () => lucideIcons[normalizeLucideName(props.icon)] ?? CircleCheckBig,
+const iconSizeAttrs = computed(() => ({
+  width: props.size,
+  height: props.size,
+}));
+const resolvedIcon = computed(() => resolveAppIconName(props.icon));
+const iconComponent = computed(() => {
+  if (resolvedIcon.value.kind === "brand") {
+    return brandIcons[resolvedIcon.value.name] ?? lucideIcons[APP_ICON_FALLBACK];
+  }
+
+  return lucideIcons[resolvedIcon.value.name] ?? lucideIcons[APP_ICON_FALLBACK];
+});
+
+watch(
+  () => props.icon,
+  (icon) => warnUnknownIcon(icon),
+  { immediate: true },
 );
 </script>

@@ -2,17 +2,17 @@
   <section class="evidence-section">
     <div class="section-head">
       <div>
-        <h2>样本证据</h2>
-        <p>展示代表性样本回放，完整明细通过下载入口获取。</p>
+        <h2>{{ t("evaluation.evidence.title") }}</h2>
+        <p>{{ t("evaluation.evidence.description") }}</p>
       </div>
       <UiButton
         variant="secondary"
-        leading-icon="lucide:download"
+        leading-icon="app:action.download"
         :loading="downloadLoading"
         :disabled="!detail.finalReportAvailable || downloadLoading"
         @click="$emit('download')"
       >
-        下载全部样本明细
+        {{ t("evaluation.actions.downloadSamples") }}
       </UiButton>
     </div>
 
@@ -23,7 +23,7 @@
     />
 
     <div v-if="samples.length === 0" class="section-state">
-      暂无可回放样本。
+      {{ t("evaluation.evidence.empty") }}
     </div>
 
     <div v-else class="sample-list">
@@ -39,7 +39,9 @@
           </UiTag>
           <div class="sample-row__copy">
             <h3>{{ sample.datasetName }}</h3>
-            <p>{{ sample.outcomeReasonText || "暂无判定摘要。" }}</p>
+            <p>
+              {{ sample.outcomeReasonText || t("evaluation.evidence.noSummary") }}
+            </p>
             <code>{{ sample.sampleId }}</code>
           </div>
         </div>
@@ -50,7 +52,9 @@
           controls
           preload="metadata"
         ></video>
-        <div v-else class="sample-row__empty">暂无回放</div>
+        <div v-else class="sample-row__empty">
+          {{ t("evaluation.evidence.noReplay") }}
+        </div>
       </article>
     </div>
   </section>
@@ -58,6 +62,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { selectRepresentativeSamples } from "@/modules/evaluation/lib/evaluation-report-samples";
 import type {
   EvaluationDetail,
@@ -72,6 +77,7 @@ const props = defineProps<{
   downloadLoading: boolean;
   downloadError: string;
 }>();
+const { t } = useI18n();
 
 defineEmits<{
   (event: "download"): void;
@@ -82,9 +88,9 @@ const samples = computed(() =>
 );
 
 const getOutcomeLabel = (outcome: EvaluationSampleOutcome): string => {
-  if (outcome === "failed") return "失败";
-  if (outcome === "error") return "异常";
-  return "成功";
+  if (outcome === "failed") return t("evaluation.outcomes.failed");
+  if (outcome === "error") return t("evaluation.outcomes.error");
+  return t("evaluation.outcomes.success");
 };
 
 const getOutcomeTone = (

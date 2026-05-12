@@ -1,17 +1,15 @@
 <template>
   <SectionBlock
-    title="评测参数"
-    description="根据目标场景设置难度、超时和失败重试策略。"
+    :title="t('submission.parameters.title')"
+    :description="t('submission.parameters.description')"
   >
     <div class="field-grid">
       <div class="field field--full">
         <div class="label-row">
           <div>
-            <span class="field-label">攻击难度</span>
+            <span class="field-label">{{ t("submission.parameters.difficultyLabel") }}</span>
             <p class="field-help">
-              范围 {{ meta.difficulty.min.toFixed(1) }} -
-              {{ meta.difficulty.max.toFixed(1) }}，步长
-              {{ meta.difficulty.step.toFixed(1) }}。
+              {{ difficultyHelp }}
             </p>
           </div>
           <strong>{{ difficultyLabel }}</strong>
@@ -41,7 +39,7 @@
       </div>
 
       <label class="field">
-        <span class="field-label">超时时间（分钟）</span>
+        <span class="field-label">{{ t("submission.parameters.timeoutLabel") }}</span>
         <input
           type="number"
           :value="form.parameters.timeoutMinutes"
@@ -53,14 +51,13 @@
           @blur="handleTimeoutBlur"
         />
         <small class="field-help">
-          建议设置在 {{ recommendedTimeoutMax }} 分钟内；允许范围
-          {{ meta.timeoutMinutes.min }} - {{ meta.timeoutMinutes.max }} 分钟。
+          {{ timeoutHelp }}
         </small>
         <small v-if="timeoutWarning" class="field-warning">{{ timeoutWarning }}</small>
       </label>
 
       <label class="field">
-        <span class="field-label">最大步数</span>
+        <span class="field-label">{{ t("submission.parameters.maxStepsLabel") }}</span>
         <input
           type="number"
           :value="form.parameters.maxSteps"
@@ -72,7 +69,7 @@
           @blur="handleMaxStepsBlur"
         />
         <small class="field-help">
-          允许范围 {{ meta.maxSteps.min }} - {{ meta.maxSteps.max }} 步。
+          {{ maxStepsHelp }}
         </small>
       </label>
     </div>
@@ -81,6 +78,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 import type {
   SubmitFormState,
@@ -98,6 +96,7 @@ const props = defineProps<{
 }>();
 
 const form = defineModel<SubmitFormState>({ required: true });
+const { t } = useI18n();
 
 const difficultyLabel = computed(() => form.value.parameters.difficulty.toFixed(1));
 const difficultyInputValue = computed(() =>
@@ -106,11 +105,32 @@ const difficultyInputValue = computed(() =>
 const recommendedTimeoutMax = computed(
   () => props.meta.timeoutMinutes.recommendedMax ?? 20,
 );
+const difficultyHelp = computed(() =>
+  t("submission.parameters.difficultyHelp", {
+    min: props.meta.difficulty.min.toFixed(1),
+    max: props.meta.difficulty.max.toFixed(1),
+    step: props.meta.difficulty.step.toFixed(1),
+  }),
+);
+const timeoutHelp = computed(() =>
+  t("submission.parameters.timeoutHelp", {
+    recommended: recommendedTimeoutMax.value,
+    min: props.meta.timeoutMinutes.min,
+    max: props.meta.timeoutMinutes.max,
+  }),
+);
+const maxStepsHelp = computed(() =>
+  t("submission.parameters.maxStepsHelp", {
+    min: props.meta.maxSteps.min,
+    max: props.meta.maxSteps.max,
+  }),
+);
 const timeoutWarning = computed(() =>
   getRangeSoftWarning(
     form.value.parameters.timeoutMinutes,
     props.meta.timeoutMinutes,
     recommendedTimeoutMax.value,
+    t,
   ),
 );
 const rangeStyle = computed(() => {

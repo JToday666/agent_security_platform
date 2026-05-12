@@ -14,12 +14,12 @@
               @click="closeDialog"
               :aria-label="t('common.actions.close')"
             >
-              <AppIcon icon="lucide:x" class="close-icon" />
+              <AppIcon icon="app:action.close" class="close-icon" />
             </button>
 
             <div class="header">
               <div class="logo-wrapper">
-                <AppIcon icon="lucide:shield-check" class="logo-icon" />
+                <AppIcon icon="app:identity.security" class="logo-icon" />
               </div>
               <h3>
                 {{
@@ -43,7 +43,7 @@
                 :model-value="loginForm.username"
                 type="text"
                 :placeholder="t('auth.placeholders.usernameOrEmail')"
-                leading-icon="lucide:user"
+                leading-icon="app:field.username"
                 @update:model-value="loginForm.username = $event"
               />
               <FormField
@@ -51,7 +51,7 @@
                 :model-value="loginForm.password"
                 type="password"
                 :placeholder="t('auth.placeholders.password')"
-                leading-icon="lucide:lock"
+                leading-icon="app:field.password"
                 @update:model-value="loginForm.password = $event"
               />
 
@@ -73,7 +73,7 @@
                 :model-value="registerForm.username"
                 type="text"
                 :placeholder="t('auth.placeholders.username')"
-                leading-icon="lucide:user"
+                leading-icon="app:field.username"
                 @update:model-value="registerForm.username = $event"
               />
               <InlineNotice
@@ -86,7 +86,7 @@
                 :model-value="registerForm.email"
                 type="email"
                 :placeholder="t('auth.placeholders.email')"
-                leading-icon="lucide:mail"
+                leading-icon="app:field.email"
                 @update:model-value="registerForm.email = $event"
               />
               <FormField
@@ -94,7 +94,7 @@
                 :model-value="registerForm.password"
                 type="password"
                 :placeholder="t('auth.placeholders.password')"
-                leading-icon="lucide:lock"
+                leading-icon="app:field.password"
                 @update:model-value="registerForm.password = $event"
               />
               <FormField
@@ -102,7 +102,7 @@
                 :model-value="registerForm.confirmPassword"
                 type="password"
                 :placeholder="t('auth.placeholders.confirmPassword')"
-                leading-icon="lucide:shield-check"
+                leading-icon="app:field.passwordConfirm"
                 @update:model-value="registerForm.confirmPassword = $event"
               />
 

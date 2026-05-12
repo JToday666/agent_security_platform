@@ -1,1 +1,320 @@
-{}
+{
+  "actions": {
+    "archive": "Archive",
+    "backToManagement": "Back to Management",
+    "confirmRegister": "Confirm Registration",
+    "copyCode": "Copy Code",
+    "copyNew": "Copy as New",
+    "details": "Details",
+    "next": "Next",
+    "previous": "Previous",
+    "registerAgent": "Register Agent",
+    "switchTemplate": "Switch Template",
+    "verify": "Verify",
+    "verifyNow": "Verify Now",
+    "viewDetails": "View Details"
+  },
+  "api": {
+    "archiveFailed": "Agent archiving failed.",
+    "createFailed": "Agent creation failed.",
+    "detailLoadFailed": "Agent detail loading failed.",
+    "listLoadFailed": "Agent list loading failed.",
+    "loadFailed": "Agent loading failed.",
+    "templateLoadFailed": "Agent template loading failed.",
+    "verifyFailed": "Agent verification failed."
+  },
+  "auth": {
+    "apiKeyHeader": "API Key Header",
+    "bearer": "Bearer Token",
+    "customHeader": "Custom Header",
+    "none": "No authentication"
+  },
+  "common": {
+    "configured": "Configured",
+    "customField": "Custom field",
+    "noDescription": "No description available",
+    "notConfigured": "Not configured",
+    "recommended": "Recommended",
+    "listSeparator": ", ",
+    "seconds": "{value} sec",
+    "templateTagCustom": "Custom",
+    "unknown": "Unknown"
+  },
+  "detail": {
+    "archiveDialogMessage": "After archiving, this Agent can no longer submit evaluations, but it can still be copied as new.",
+    "archiveDialogTitle": "Archive Agent",
+    "confirmArchive": "Confirm Archive",
+    "description": "View non-sensitive configuration, verification results, and available actions.",
+    "errorTitle": "Agent Loading Failed",
+    "loadingTitle": "Reading Agent",
+    "items": {
+      "authHeaderName": "Header Name",
+      "authMethod": "Authentication Method",
+      "connectionBaseUrl": "Service Base URL",
+      "credentialStatus": "Credential Status",
+      "invokeMode": "Invocation Mode",
+      "pollInterval": "Polling Interval",
+      "pollTimeout": "Total Polling Timeout",
+      "recentVerification": "Latest Verification",
+      "requestTimeout": "Request Timeout",
+      "resultPathTemplate": "Result Path Template",
+      "status": "Status",
+      "successStatuses": "Success Statuses",
+      "taskPath": "Task Submission Path",
+      "terminalStatuses": "Terminal Statuses",
+      "updatedAt": "Updated At"
+    },
+    "sections": {
+      "authSummary": "Authentication Summary",
+      "connection": "Connection Configuration",
+      "customFields": "Custom Fixed Fields",
+      "inputMapping": "Input Field Logical Mapping",
+      "outputMapping": "Output Field Logical Mapping",
+      "statusCollection": "Status Set",
+      "summary": "Status Summary",
+      "verification": "Latest Verification Result"
+    },
+    "titleFallback": "Agent Details"
+  },
+  "display": {
+    "disabledReasons": {
+      "active": "",
+      "archived": "Archived Agents cannot submit evaluations.",
+      "draft": "This Agent has not passed verification and cannot submit evaluations.",
+      "invalid": "This Agent failed verification and cannot submit evaluations.",
+      "verifying": "This Agent is being verified and cannot submit evaluations yet."
+    },
+    "invokeModes": {
+      "submitPoll": "Submit and Poll",
+      "syncResponse": "Synchronous Response"
+    },
+    "status": {
+      "active": "Ready for Evaluation",
+      "archived": "Archived",
+      "draft": "Pending Verification",
+      "invalid": "Verification Failed",
+      "verifying": "Verifying"
+    }
+  },
+  "fields": {
+    "authHeaderName": "Header Name",
+    "authHeaderSecret": "Header Secret",
+    "authMethod": "Authentication Method",
+    "authSecret": "Bearer Token",
+    "connectionBaseUrl": "Service Base URL",
+    "customFieldKey": "Field Name",
+    "customFieldType": "Type",
+    "customFieldValue": "Field Value",
+    "description": "Agent Description",
+    "invokeMode": "Invocation Mode",
+    "name": "Agent Name",
+    "pollInterval": "Polling Interval (sec)",
+    "pollTimeout": "Total Polling Timeout (sec)",
+    "requestTimeout": "Request Timeout (sec)",
+    "resultPathTemplate": "Result Path Template",
+    "structuredOutputAlias": "Structured Output Field Alias",
+    "successStatuses": "Success Statuses",
+    "taskPath": "Task Submission Path",
+    "terminalStatuses": "Terminal Statuses"
+  },
+  "management": {
+    "archiveDialogMessage": "After archiving, {name} can no longer submit evaluations, but it can still be copied as new.",
+    "currentStatus": "Current Status",
+    "description": "View registered Agent status and perform verification, archiving, copy-as-new, and evaluation submission.",
+    "emptyMessageArchived": "Register and verify an Agent to create evaluation tasks.",
+    "emptyMessageVisible": "You can show archived Agents or register a new Agent.",
+    "emptyTitleArchived": "No Agents yet",
+    "emptyTitleVisible": "No visible Agents",
+    "includeArchived": "Show archived",
+    "listSummaryEmpty": "No Agents",
+    "listSummaryNoVisible": "No visible Agents",
+    "listSummaryWithCount": "Showing {count} Agents",
+    "recentVerification": "Latest verification: {value}",
+    "title": "Agent Management"
+  },
+  "mapping": {
+    "agentField": "Agent Field",
+    "empty": "Not configured",
+    "platformField": "Platform Field",
+    "responsePath": "Response Path"
+  },
+  "placeholders": {
+    "descriptionBrief": "Briefly describe the purpose.",
+    "nameExample": "Example: Skyvern Agent"
+  },
+  "preview": {
+    "bodyTab": "Request Body",
+    "missingMessage": "Enter baseUrl and invokePath to view the invocation preview.",
+    "responseTab": "Response Parsing",
+    "samples": {
+      "errorMessage": "Error message",
+      "finalAnswer": "Final answer",
+      "task": "Complete the task objective issued by the platform"
+    }
+  },
+  "register": {
+    "aria": {
+      "actions": "Register Agent actions",
+      "form": "Register Agent form",
+      "preview": "Invocation code preview",
+      "steps": "Registration steps"
+    },
+    "confirmTemplateChange": {
+      "cancel": "Continue Editing",
+      "message": "Switching templates will replace connection, mapping, status, and custom fixed field configuration. The Agent name and description you entered will be kept.",
+      "title": "Switch Registration Template"
+    },
+    "createSuccessMessage": "After verification passes, it can be used to submit evaluations.",
+    "createSuccessTitle": "Agent Created",
+    "copyName": "{name} Copy",
+    "customFieldsChoiceRequired": "Choose whether to add custom fixed fields.",
+    "initFailed": "Registration page initialization failed.",
+    "initFailedTitle": "Registration Initialization Failed",
+    "loadingTitle": "Initializing Registration Page",
+    "submitValidationFailed": "Agent creation parameter validation failed.",
+    "template": {
+      "description": "Start from an empty configuration and manually fill in connection, mapping, and status fields.",
+      "title": "Do not use a template"
+    },
+    "wizard": {
+      "basic": {
+        "description": "Enter the name and usage description.",
+        "title": "Basic Information"
+      },
+      "connection": {
+        "description": "Configure invocation mode, service address, and credentials.",
+        "title": "Connection and Authentication"
+      },
+      "customFields": {
+        "description": "Configure fixed fields included in every request.",
+        "title": "Custom Fixed Fields"
+      },
+      "inputMapping": {
+        "description": "Specify where platform fields and structured output configuration are written into the request body.",
+        "title": "Input Field Mapping"
+      },
+      "outputMapping": {
+        "description": "Specify where the platform reads results from the response.",
+        "title": "Output Field Mapping"
+      },
+      "statuses": {
+        "description": "Confirm terminal and success statuses.",
+        "title": "Status Set"
+      },
+      "template": {
+        "description": "Choose a preset template or start from an empty configuration.",
+        "title": "Choose Template"
+      }
+    }
+  },
+  "registerForm": {
+    "customFields": {
+      "addField": "Add Field",
+      "addFixed": "Add Fixed Fields",
+      "addFixedDescription": "Attach fixed parameters to every request.",
+      "fieldKeyHelp": "Enter the fixed field name in the external request body.",
+      "fieldTypeHelp": "Select the type of the fixed field value.",
+      "fieldValueHelp": "A fixed value sent with every request.",
+      "skipFixed": "Do not add fixed fields",
+      "skipFixedDescription": "Use only the task fields configured in the previous step.",
+      "skipNotice": "No custom fixed fields will be added for this registration."
+    },
+    "fieldTypes": {
+      "boolean": "Boolean",
+      "json": "JSON",
+      "number": "Number",
+      "string": "String"
+    },
+    "helps": {
+      "authHeaderName": "Enter the request header name required by the service.",
+      "authHeaderSecret": "The platform will write this secret into the Header above.",
+      "authMethod": "Select the authentication method the platform uses when calling the Agent service.",
+      "authSecret": "The platform sends this as Authorization: Bearer Token.",
+      "baseUrl": "Enter the protocol, domain, and port of the Agent service, without a specific endpoint path.",
+      "description": "Describe the tasks this Agent is suited for, so it can be selected later when submitting evaluations.",
+      "invokeMode": "Submit and Poll is for asynchronous tasks; Synchronous Response is for requests that return results directly.",
+      "name": "Used to identify this Agent in the platform. A service or capability name is recommended.",
+      "pollInterval": "Wait time between two platform result queries.",
+      "pollTimeout": "The platform stops waiting if the task does not reach a terminal state within this time.",
+      "requestTimeout": "Maximum time to wait for one submission request response.",
+      "resultPathTemplate": "Path used to query task results in polling mode. The {externalRunId} placeholder is supported.",
+      "statusSuccess": "Enter status values that represent successful tasks. They must be included in the terminal status set.",
+      "statusTerminal": "Enter terminal status values returned by the Agent. Separate multiple values with commas or new lines.",
+      "structuredOutput": "The platform adds a structured output field to the request body.",
+      "structuredOutputAlias": "Enter the top-level field name in the Agent request body that receives the output schema.",
+      "taskPath": "Path called by the platform when submitting a task. It is joined with the service base URL."
+    },
+    "inputMappingHelp": {
+      "entryUrl": "Optional. When a start URL is needed, the platform writes the sample entry into this field.",
+      "evaluationId": "Optional. Fill in this field name when the evaluation task ID is needed for tracing.",
+      "maxSteps": "Optional. Fill in this field name when the Agent maximum execution steps need to be limited.",
+      "sampleId": "Optional. Fill in this field name when the sample ID is needed for tracing.",
+      "task": "Required. Enter the top-level field name in the Agent request body that receives the task objective, such as prompt.",
+      "timeoutSeconds": "Optional. Fill in this field name when task-level timeout is needed."
+    },
+    "inputMappingLabels": {
+      "entryUrl": "entryUrl -> Agent Field",
+      "evaluationId": "evaluationId -> Agent Field",
+      "maxSteps": "maxSteps -> Agent Field",
+      "sampleId": "sampleId -> Agent Field",
+      "task": "task -> Agent Field",
+      "timeoutSeconds": "timeoutSeconds -> Agent Field"
+    },
+    "notVisibleSecretPlaceholder": "Written at creation; plaintext is not shown on the details page",
+    "outputMappingHelp": {
+      "errorMessage": "Optional. Enter the path to the error message so failure reasons can be displayed, such as error.message.",
+      "externalRunId": "Required in polling mode. Enter the path to the run ID in the submission response; use runId for a top-level field or data.runId for a nested field.",
+      "finalAnswer": "Optional. Enter the path to the final answer or text result, such as answer or output.answer.",
+      "status": "Required in polling mode. Enter the path to the status field in the result response; use status for a top-level field or data.status for a nested field."
+    },
+    "outputMappingLabels": {
+      "errorMessage": "errorMessage <- Response Path",
+      "externalRunId": "externalRunId <- Response Path",
+      "finalAnswer": "finalAnswer <- Response Path",
+      "status": "status <- Response Path"
+    },
+    "stepCounter": "Step {current} / {total}",
+    "structuredOutputTitle": "Support Structured Output"
+  },
+  "validation": {
+    "authHeaderNameRequired": "Enter the Header name",
+    "authHeaderSecretRequired": "Enter the Header secret",
+    "authSecretRequired": "Enter the Bearer Token",
+    "baseUrlInvalid": "Service base URL format is invalid",
+    "baseUrlRequired": "Enter the service base URL",
+    "customFieldDuplicate": "Custom fixed field {key} is duplicated.",
+    "customFieldJson": "{field} is not valid JSON.",
+    "customFieldKeyRequired": "Custom fixed fields must include a field name.",
+    "customFieldNumber": "{field} must be a number.",
+    "customFieldBoolean": "{field} must be true or false.",
+    "customFieldMappingConflict": "Field {field} is already used by the platform input mapping and cannot be used as a custom fixed field.",
+    "inputMappingTopLevel": "Platform input mapping only accepts top-level field names in the external request body",
+    "invokePathRequired": "Enter the task submission path",
+    "nameRequired": "Enter the Agent name",
+    "outputMappingPath": "Output mapping must be a response field path, such as runId or data.runId. $, array indexes, and empty path segments are not supported.",
+    "pollOutputRequired": "Polling mode requires both run ID and status output paths.",
+    "resultPathTemplateRequired": "Enter the result path template",
+    "statusSuccessInTerminal": "Success statuses must belong to the terminal status set",
+    "structuredOutputAliasInvalid": "Structured output field alias only accepts a top-level request body field name",
+    "structuredOutputAliasRequired": "Enter the structured output field alias",
+    "taskMappingRequired": "Enter the field name mapped to task",
+    "templateRequired": "Choose a registration template",
+    "terminalStatusRequired": "Enter at least one terminal status"
+  },
+  "verification": {
+    "count": "{count} items",
+    "detailHeader": "Diagnostic Details",
+    "failed": "Failed",
+    "failedResult": "Verification Failed",
+    "notVerified": "Not verified",
+    "passed": "Passed",
+    "passedResult": "Verification Passed",
+    "result": "Verification Result",
+    "tableCode": "Type Identifier",
+    "tableDescription": "Details",
+    "time": "Verification Time",
+    "unverifiedNotice": "Not verified yet.",
+    "warnings": "Warnings",
+    "errors": "Errors"
+  }
+}

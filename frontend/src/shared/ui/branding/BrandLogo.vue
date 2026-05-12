@@ -1,7 +1,7 @@
 <template>
   <img
     :src="brandLogoUrl"
-    :alt="alt"
+    :alt="resolvedAlt"
     class="brand-logo"
     :loading="priority ? 'eager' : 'lazy'"
     :fetchpriority="priority ? 'high' : 'auto'"
@@ -11,18 +11,23 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import brandLogoUrl from "@/shared/assets/branding/logo.svg";
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     alt?: string;
     priority?: boolean;
   }>(),
   {
-    alt: "智能体安全评测平台标志",
+    alt: "",
     priority: false,
   },
 );
+
+const { t } = useI18n();
+const resolvedAlt = computed(() => props.alt || t("common.brand.logoAlt"));
 </script>
 
 <style scoped lang="scss">

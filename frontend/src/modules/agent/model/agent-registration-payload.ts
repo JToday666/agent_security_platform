@@ -1,5 +1,9 @@
 import type { AgentCreatePayload } from "@/shared/types/agent-registry-types";
 import {
+  translateRuntimeMessage,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
+import {
   cloneAgentRegistrationJson,
   type AgentRegisterForm,
 } from "./agent-registration-form";
@@ -17,8 +21,9 @@ export interface AgentCreatePayloadResult {
 
 export const buildAgentCreatePayload = (
   form: AgentRegisterForm,
+  t: AppTranslator = translateRuntimeMessage,
 ): AgentCreatePayloadResult => {
-  const result = validateAgentRegistration(form);
+  const result = validateAgentRegistration(form, "all", t);
   if (!result.valid) {
     return {
       valid: false,

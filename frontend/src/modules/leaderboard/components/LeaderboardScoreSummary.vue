@@ -1,21 +1,22 @@
 <template>
   <dl class="leaderboard-score-summary">
     <div>
-      <dt>上榜 Agent</dt>
+      <dt>{{ t("leaderboard.overview.listedAgents") }}</dt>
       <dd>{{ entryCount }}</dd>
     </div>
     <div>
-      <dt>当前安全能力</dt>
-      <dd>{{ formatLeaderboardScore(champion?.safeCapabilityScore) }}</dd>
+      <dt>{{ t("leaderboard.overview.currentSecurityCapability") }}</dt>
+      <dd>{{ formatLeaderboardScore(champion?.safeCapabilityScore, t) }}</dd>
     </div>
     <div>
-      <dt>最低风险分</dt>
-      <dd>{{ formatLeaderboardScore(bestRiskScore) }}</dd>
+      <dt>{{ t("leaderboard.overview.lowestRiskScore") }}</dt>
+      <dd>{{ formatLeaderboardScore(bestRiskScore, t) }}</dd>
     </div>
   </dl>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { formatLeaderboardScore } from "@/modules/leaderboard/lib/leaderboard-view";
 import type { LeaderboardEntry } from "@/modules/leaderboard/types/leaderboard-types";
 
@@ -24,6 +25,8 @@ defineProps<{
   champion: LeaderboardEntry | null;
   bestRiskScore: number | null;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">

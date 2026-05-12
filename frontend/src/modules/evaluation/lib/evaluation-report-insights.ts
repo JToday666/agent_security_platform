@@ -6,6 +6,10 @@ import {
   resolveToneByScore,
   type EvaluationTone,
 } from "@/modules/evaluation/lib/evaluation-report-core";
+import {
+  type AppTranslator,
+  translateRuntimeMessage,
+} from "@/app/i18n/runtime-translator";
 import type {
   EvaluationReportPayload,
   EvaluationScoreTrend,
@@ -43,6 +47,7 @@ export interface EvaluationTrendSummary {
 export const buildTrendSummary = (
   trend: EvaluationScoreTrend | null,
   view: EvaluationScoreTrendView,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationTrendSummary => {
   const items = trend?.items ?? [];
   const latest = items[items.length - 1];
@@ -54,49 +59,53 @@ export const buildTrendSummary = (
   const trendImproved = metricKey === "unsafeRate" ? delta <= 0 : delta >= 0;
 
   return {
-    latestLabel: view === "risk" ? "最新风险率" : "最新综合分",
+    latestLabel:
+      view === "risk"
+        ? t("evaluation.trend.latestRiskRate")
+        : t("evaluation.trend.latestCompositeScore"),
     latestValue: formatMetricValue(metricKey, latestValue),
-    deltaLabel: "较上一条",
+    deltaLabel: t("evaluation.trend.delta"),
     deltaValue:
       delta === 0
-        ? "持平"
+        ? t("evaluation.trend.flat")
         : `${delta > 0 ? "+" : ""}${formatMetricValue(metricKey, delta)}`,
     deltaTone: delta === 0 ? "neutral" : trendImproved ? "success" : "danger",
-    sampleLabel: "趋势样本",
-    sampleValue: `${items.length} 条`,
+    sampleLabel: t("evaluation.trend.sampleCount"),
+    sampleValue: t("evaluation.common.countRecords", { count: items.length }),
   };
 };
 
 export const buildReportHighlights = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationReportHighlight[] => [
   {
-    label: "综合分",
+    label: t("evaluation.metrics.conservativeScore.label"),
     value: formatMetricValue(
       "conservativeScore",
       report.scores.conservativeScore,
     ),
-    caption: "保守估计后的排行榜分数",
+    caption: t("evaluation.report.highlightScoreCaption"),
     tone: resolveToneByScore(report.scores.conservativeScore),
   },
   {
-    label: "安全识别",
+    label: t("evaluation.report.highlightSafetyLabel"),
     value: formatMetricValue("safetyScore", report.scores.safetyScore),
-    caption: "完成任务后的安全决策能力",
+    caption: t("evaluation.report.highlightSafetyCaption"),
     tone: resolveToneByScore(report.scores.safetyScore),
   },
   {
-    label: "风险率",
+    label: t("evaluation.metrics.unsafeRate.label"),
     value: formatMetricValue("unsafeRate", report.scores.unsafeRate),
-    caption: "完成后出现不安全行为的比例",
+    caption: t("evaluation.report.highlightRiskCaption"),
     tone: resolveRiskTone(report.scores.unsafeRate),
   },
   {
-    label: "置信区间",
+    label: t("evaluation.metrics.confidenceInterval.label"),
     value: `${formatNumber(report.posteriorInterval.psQ05)}-${formatNumber(
       report.posteriorInterval.psQ95,
     )}`,
-    caption: "后验分布的主要波动范围",
+    caption: t("evaluation.report.highlightConfidenceCaption"),
     tone: "primary",
   },
 ];
@@ -104,6 +113,7 @@ export const buildReportHighlights = (
 export const resolveDifficultyBucketInsight = (
   report: EvaluationReportPayload,
   selectedBucket: string | null,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationSelectableInsight => {
   const buckets = report.breakdowns.difficultyBuckets;
   const selected = selectedBucket
@@ -119,18 +129,23 @@ export const resolveDifficultyBucketInsight = (
   if (!bucket) {
     return {
       key: "",
-      title: "难度桶",
-      value: "未返回",
-      caption: "暂无难度桶数据。",
+      title: t("evaluation.report.difficultyInsightTitle"),
+      value: t("evaluation.common.noReturn"),
+      caption: t("evaluation.report.difficultyInsightEmpty"),
       tone: "neutral",
     };
   }
 
   return {
     key: bucket.bucket,
-    title: "难度桶",
+    title: t("evaluation.report.difficultyInsightTitle"),
     value: bucket.bucket,
-    caption: `成功率 ${formatPercentValue(bucket.successRate)}。成功 ${bucket.success} 个，失败 ${bucket.failed} 个，异常 ${bucket.error} 个。`,
+    caption: t("evaluation.report.difficultyOutcomeCaption", {
+      rate: formatPercentValue(bucket.successRate),
+      success: bucket.success,
+      failed: bucket.failed,
+      error: bucket.error,
+    }),
     tone:
       bucket.successRate < 0.45
         ? "danger"
@@ -143,6 +158,7 @@ export const resolveDifficultyBucketInsight = (
 export const resolveDatasetSummaryInsight = (
   report: EvaluationReportPayload,
   selectedDatasetId: string | null,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationSelectableInsight => {
   const datasets = report.breakdowns.datasetSummaries;
   const selected = selectedDatasetId
@@ -160,9 +176,9 @@ export const resolveDatasetSummaryInsight = (
   if (!dataset) {
     return {
       key: "",
-      title: "数据集结果",
-      value: "未返回",
-      caption: "暂无数据集结果。",
+      title: t("evaluation.report.datasetInsightTitle"),
+      value: t("evaluation.common.noReturn"),
+      caption: t("evaluation.report.datasetInsightEmpty"),
       tone: "neutral",
     };
   }
@@ -171,15 +187,20 @@ export const resolveDatasetSummaryInsight = (
 
   return {
     key: dataset.datasetId,
-    title: "数据集结果",
+    title: t("evaluation.report.datasetInsightTitle"),
     value: dataset.datasetName,
-    caption: `成功 ${dataset.success} 个，失败 ${dataset.failed} 个，异常 ${dataset.error} 个。`,
+    caption: t("evaluation.report.outcomeCaption", {
+      success: dataset.success,
+      failed: dataset.failed,
+      error: dataset.error,
+    }),
     tone: riskCount > 0 ? "warning" : "success",
   };
 };
 
 const resolveSampleLocationInsight = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationReportInsight => {
   const points = report.breakdowns.sampleScatterPoints;
   const slowestPoint = points.length
@@ -190,9 +211,9 @@ const resolveSampleLocationInsight = (
 
   if (!slowestPoint) {
     return {
-      title: "样本定位",
-      value: "未返回",
-      caption: "暂无散点样本。",
+      title: t("evaluation.report.sampleLocationTitle"),
+      value: t("evaluation.common.noReturn"),
+      caption: t("evaluation.report.sampleLocationEmpty"),
       tone: "neutral",
     };
   }
@@ -217,17 +238,24 @@ const resolveSampleLocationInsight = (
   ).length;
 
   return {
-    title: "样本定位",
+    title: t("evaluation.report.sampleLocationTitle"),
     value: `${Math.round(slowestPoint.durationMs / 1000)}s`,
     caption: riskPoints.length
-      ? `失败/异常 ${riskPoints.length} 个，高难 ${highDifficultyRiskCount} 个，高耗时 ${highDurationRiskCount} 个。`
-      : `最慢样本 ${slowestPoint.sampleId}，未发现失败或异常样本。`,
+      ? t("evaluation.report.sampleLocationRiskCaption", {
+          riskCount: riskPoints.length,
+          highDifficultyCount: highDifficultyRiskCount,
+          highDurationCount: highDurationRiskCount,
+        })
+      : t("evaluation.report.sampleLocationSafeCaption", {
+          sampleId: slowestPoint.sampleId,
+        }),
     tone: riskPoints.length ? "warning" : "neutral",
   };
 };
 
 export const buildReportInsights = (
   report: EvaluationReportPayload,
+  t: AppTranslator = translateRuntimeMessage,
 ): EvaluationReportInsight[] => {
   const outcome = report.breakdowns.outcomeSummary;
   const total = Math.max(1, outcome.success + outcome.failed + outcome.error);
@@ -235,22 +263,26 @@ export const buildReportInsights = (
 
   return [
     {
-      title: "能力结构",
+      title: t("evaluation.report.abilitySection"),
       value: formatMetricValue(
         "performanceScore",
         report.scores.performanceScore,
       ),
-      caption: "综合完成、安全、高难和速度后的表现分。",
+      caption: t("evaluation.report.structureCaption"),
       tone: resolveToneByScore(report.scores.performanceScore),
     },
     {
-      title: "样本结果",
+      title: t("evaluation.report.outcomeSection"),
       value: formatPercentValue(successRate),
-      caption: `成功 ${outcome.success} 个，失败 ${outcome.failed} 个，异常 ${outcome.error} 个。`,
+      caption: t("evaluation.report.outcomeCaption", {
+        success: outcome.success,
+        failed: outcome.failed,
+        error: outcome.error,
+      }),
       tone: resolveToneByScore(successRate * 100),
     },
-    resolveDifficultyBucketInsight(report, null),
-    resolveDatasetSummaryInsight(report, null),
-    resolveSampleLocationInsight(report),
+    resolveDifficultyBucketInsight(report, null, t),
+    resolveDatasetSummaryInsight(report, null, t),
+    resolveSampleLocationInsight(report, t),
   ];
 };

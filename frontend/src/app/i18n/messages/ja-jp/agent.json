@@ -1,1 +1,320 @@
-{}
+{
+  "actions": {
+    "archive": "アーカイブ",
+    "backToManagement": "管理へ戻る",
+    "confirmRegister": "登録を確認",
+    "copyCode": "コードをコピー",
+    "copyNew": "コピーして新規作成",
+    "details": "詳細",
+    "next": "次へ",
+    "previous": "前へ",
+    "registerAgent": "Agent 登録",
+    "switchTemplate": "テンプレート切替",
+    "verify": "検証",
+    "verifyNow": "今すぐ検証",
+    "viewDetails": "詳細を見る"
+  },
+  "api": {
+    "archiveFailed": "Agent アーカイブに失敗しました。",
+    "createFailed": "Agent 作成に失敗しました。",
+    "detailLoadFailed": "Agent 詳細読み込みに失敗しました。",
+    "listLoadFailed": "Agent 一覧読み込みに失敗しました。",
+    "loadFailed": "Agent 読み込みに失敗しました。",
+    "templateLoadFailed": "Agent テンプレート読み込みに失敗しました。",
+    "verifyFailed": "Agent 検証に失敗しました。"
+  },
+  "auth": {
+    "apiKeyHeader": "API Key Header",
+    "bearer": "Bearer Token",
+    "customHeader": "カスタム Header",
+    "none": "認証を使用しない"
+  },
+  "common": {
+    "configured": "設定済み",
+    "customField": "カスタムフィールド",
+    "noDescription": "説明はまだありません",
+    "notConfigured": "未設定",
+    "recommended": "推奨",
+    "listSeparator": "、",
+    "seconds": "{value} 秒",
+    "templateTagCustom": "カスタム",
+    "unknown": "不明"
+  },
+  "detail": {
+    "archiveDialogMessage": "アーカイブ後、この Agent は評価を提出できなくなりますが、コピーして新規作成できます。",
+    "archiveDialogTitle": "Agent をアーカイブ",
+    "confirmArchive": "アーカイブを確認",
+    "description": "非機微設定、検証結果、利用可能な操作を確認します。",
+    "errorTitle": "Agent 読み込み失敗",
+    "loadingTitle": "Agent 読み込み中",
+    "items": {
+      "authHeaderName": "Header 名称",
+      "authMethod": "認証方式",
+      "connectionBaseUrl": "サービスルート URL",
+      "credentialStatus": "認証情報状態",
+      "invokeMode": "呼び出しモード",
+      "pollInterval": "ポーリング間隔",
+      "pollTimeout": "ポーリング総タイムアウト",
+      "recentVerification": "直近検証",
+      "requestTimeout": "リクエストタイムアウト",
+      "resultPathTemplate": "結果パステンプレート",
+      "status": "状態",
+      "successStatuses": "成功状態",
+      "taskPath": "タスク提出パス",
+      "terminalStatuses": "終端状態",
+      "updatedAt": "更新時刻"
+    },
+    "sections": {
+      "authSummary": "認証概要",
+      "connection": "接続設定",
+      "customFields": "カスタム固定フィールド",
+      "inputMapping": "入力フィールド論理マッピング",
+      "outputMapping": "出力フィールド論理マッピング",
+      "statusCollection": "状態集合",
+      "summary": "状態概要",
+      "verification": "直近検証結果"
+    },
+    "titleFallback": "Agent 詳細"
+  },
+  "display": {
+    "disabledReasons": {
+      "active": "",
+      "archived": "アーカイブ済み Agent は評価を提出できません。",
+      "draft": "この Agent はまだ検証に合格していないため、評価を提出できません。",
+      "invalid": "この Agent は検証に失敗したため、評価を提出できません。",
+      "verifying": "この Agent は検証中のため、現在は評価を提出できません。"
+    },
+    "invokeModes": {
+      "submitPoll": "提出後ポーリング",
+      "syncResponse": "同期応答"
+    },
+    "status": {
+      "active": "評価可能",
+      "archived": "アーカイブ済み",
+      "draft": "検証待ち",
+      "invalid": "検証失敗",
+      "verifying": "検証中"
+    }
+  },
+  "fields": {
+    "authHeaderName": "Header 名称",
+    "authHeaderSecret": "Header 秘密値",
+    "authMethod": "認証方式",
+    "authSecret": "Bearer Token",
+    "connectionBaseUrl": "サービスルート URL",
+    "customFieldKey": "フィールド名",
+    "customFieldType": "型",
+    "customFieldValue": "フィールド値",
+    "description": "Agent 説明",
+    "invokeMode": "呼び出しモード",
+    "name": "Agent 名称",
+    "pollInterval": "ポーリング間隔（秒）",
+    "pollTimeout": "ポーリング総タイムアウト（秒）",
+    "requestTimeout": "リクエストタイムアウト（秒）",
+    "resultPathTemplate": "結果パステンプレート",
+    "structuredOutputAlias": "構造化出力フィールド別名",
+    "successStatuses": "成功状態",
+    "taskPath": "タスク提出パス",
+    "terminalStatuses": "終端状態"
+  },
+  "management": {
+    "archiveDialogMessage": "アーカイブ後、{name} は評価を提出できなくなりますが、コピーして新規作成できます。",
+    "currentStatus": "現在の状態",
+    "description": "登録済み Agent の状態を確認し、検証、アーカイブ、コピー新規作成、評価提出を実行します。",
+    "emptyMessageArchived": "Agent を登録して検証すると、評価タスクを作成できます。",
+    "emptyMessageVisible": "アーカイブ済みを表示するか、新しい Agent を登録できます。",
+    "emptyTitleArchived": "Agent はまだありません",
+    "emptyTitleVisible": "表示可能な Agent はありません",
+    "includeArchived": "アーカイブ済みを表示",
+    "listSummaryEmpty": "Agent なし",
+    "listSummaryNoVisible": "表示可能な Agent なし",
+    "listSummaryWithCount": "{count} 個の Agent を表示",
+    "recentVerification": "直近検証：{value}",
+    "title": "Agent 管理"
+  },
+  "mapping": {
+    "agentField": "Agent フィールド",
+    "empty": "未設定",
+    "platformField": "プラットフォームフィールド",
+    "responsePath": "応答パス"
+  },
+  "placeholders": {
+    "descriptionBrief": "用途を簡潔に説明します。",
+    "nameExample": "例：Skyvern Agent"
+  },
+  "preview": {
+    "bodyTab": "リクエストボディ",
+    "missingMessage": "呼び出しプレビューを表示するには baseUrl と invokePath を入力してください。",
+    "responseTab": "応答解析",
+    "samples": {
+      "errorMessage": "エラー情報",
+      "finalAnswer": "最終回答",
+      "task": "プラットフォームから配布されたタスク目標を完了してください"
+    }
+  },
+  "register": {
+    "aria": {
+      "actions": "Agent 登録操作",
+      "form": "Agent 登録フォーム",
+      "preview": "呼び出しコードプレビュー",
+      "steps": "登録ステップ"
+    },
+    "confirmTemplateChange": {
+      "cancel": "編集を続ける",
+      "message": "テンプレートを切り替えると、接続、マッピング、状態、カスタム固定フィールド設定が置き換わります。入力済みの Agent 名称と説明は保持されます。",
+      "title": "登録テンプレート切替"
+    },
+    "createSuccessMessage": "検証に合格すると評価提出に使用できます。",
+    "createSuccessTitle": "Agent 作成済み",
+    "copyName": "{name} のコピー",
+    "customFieldsChoiceRequired": "カスタム固定フィールドを追加するか選択してください。",
+    "initFailed": "登録ページ初期化に失敗しました。",
+    "initFailedTitle": "登録ページ初期化失敗",
+    "loadingTitle": "登録ページ初期化中",
+    "submitValidationFailed": "Agent 作成パラメーター検証に失敗しました。",
+    "template": {
+      "description": "空設定から開始し、接続、マッピング、状態フィールドを手動入力します。",
+      "title": "テンプレートを使用しない"
+    },
+    "wizard": {
+      "basic": {
+        "description": "名称と用途説明を入力します。",
+        "title": "基本情報"
+      },
+      "connection": {
+        "description": "呼び出しモード、サービスアドレス、認証情報を設定します。",
+        "title": "接続と認証"
+      },
+      "customFields": {
+        "description": "各リクエストに付与する固定フィールドを設定します。",
+        "title": "カスタム固定フィールド"
+      },
+      "inputMapping": {
+        "description": "プラットフォームフィールドと構造化出力設定を書き込むリクエストボディ位置を指定します。",
+        "title": "入力フィールドマッピング"
+      },
+      "outputMapping": {
+        "description": "プラットフォームが応答から結果を読み取る位置を指定します。",
+        "title": "出力フィールドマッピング"
+      },
+      "statuses": {
+        "description": "終端状態と成功状態を確認します。",
+        "title": "状態集合"
+      },
+      "template": {
+        "description": "プリセットテンプレートを選択するか、空設定から開始します。",
+        "title": "テンプレート選択"
+      }
+    }
+  },
+  "registerForm": {
+    "customFields": {
+      "addField": "フィールド追加",
+      "addFixed": "固定フィールド追加",
+      "addFixedDescription": "各リクエストに固定パラメーターを付与します。",
+      "fieldKeyHelp": "外部リクエストボディ内の固定フィールド名を入力します。",
+      "fieldTypeHelp": "固定フィールド値の型を選択します。",
+      "fieldValueHelp": "各リクエストに付与される固定値です。",
+      "skipFixed": "固定フィールドを追加しない",
+      "skipFixedDescription": "前ステップで設定したタスクフィールドのみを使用します。",
+      "skipNotice": "今回の登録ではカスタム固定フィールドを追加しません。"
+    },
+    "fieldTypes": {
+      "boolean": "真偽値",
+      "json": "JSON",
+      "number": "数値",
+      "string": "文字列"
+    },
+    "helps": {
+      "authHeaderName": "サービスが要求するリクエスト Header 名称を入力します。",
+      "authHeaderSecret": "プラットフォームはこの秘密値を上記 Header に書き込みます。",
+      "authMethod": "プラットフォームが Agent サービスを呼び出す際に使用する認証方式を選択します。",
+      "authSecret": "プラットフォームは Authorization: Bearer Token 形式で送信します。",
+      "baseUrl": "Agent サービスのプロトコル、ドメイン、ポートを入力します。具体的なインターフェースパスは含めません。",
+      "description": "この Agent に適したタスクを説明し、後続の評価提出時に選択しやすくします。",
+      "invokeMode": "提出後ポーリングは非同期タスク向けです。同期応答は 1 回のリクエストで直接結果を返す場合に適しています。",
+      "name": "プラットフォーム内でこの Agent を識別するために使用します。サービス名または能力名を推奨します。",
+      "pollInterval": "プラットフォームが結果を再照会するまでの待機時間です。",
+      "pollTimeout": "この時間内に終端状態へ到達しない場合、プラットフォームは待機を停止します。",
+      "requestTimeout": "単一の提出リクエストで応答を待機する最長時間です。",
+      "resultPathTemplate": "ポーリングモードでタスク結果を照会するパスです。{externalRunId} プレースホルダーを使用できます。",
+      "statusSuccess": "タスク成功を表す状態値を入力します。終端状態集合に含まれている必要があります。",
+      "statusTerminal": "Agent が返す終端状態値を入力します。複数値はカンマまたは改行で区切ります。",
+      "structuredOutput": "プラットフォームはリクエストボディに構造化出力フィールドを追加します。",
+      "structuredOutputAlias": "出力 schema を受け取る Agent リクエストボディのトップレベルフィールド名を入力します。",
+      "taskPath": "プラットフォームがタスク提出時に呼び出すパスです。サービスルート URL と連結されます。"
+    },
+    "inputMappingHelp": {
+      "entryUrl": "任意。開始 URL が必要な場合、プラットフォームはサンプル入口をこのフィールドへ書き込みます。",
+      "evaluationId": "任意。評価タスク ID を追跡に使用する場合、このフィールド名を入力します。",
+      "maxSteps": "任意。Agent 最大実行ステップ数を制限する場合、このフィールド名を入力します。",
+      "sampleId": "任意。サンプル ID を追跡に使用する場合、このフィールド名を入力します。",
+      "task": "必須。タスク目標を受け取る Agent リクエストボディのトップレベルフィールド名を入力します。例: prompt。",
+      "timeoutSeconds": "任意。タスク単位のタイムアウトが必要な場合、このフィールド名を入力します。"
+    },
+    "inputMappingLabels": {
+      "entryUrl": "entryUrl -> Agent フィールド",
+      "evaluationId": "evaluationId -> Agent フィールド",
+      "maxSteps": "maxSteps -> Agent フィールド",
+      "sampleId": "sampleId -> Agent フィールド",
+      "task": "task -> Agent フィールド",
+      "timeoutSeconds": "timeoutSeconds -> Agent フィールド"
+    },
+    "notVisibleSecretPlaceholder": "作成時に書き込み、詳細ページでは平文を表示しません",
+    "outputMappingHelp": {
+      "errorMessage": "任意。失敗時に理由を表示しやすくするため、エラー情報のパスを入力します。例: error.message。",
+      "externalRunId": "ポーリングモードでは必須。提出応答内の実行 ID パスを入力します。トップレベルフィールドは runId、ネストフィールドは data.runId と書きます。",
+      "finalAnswer": "任意。最終回答またはテキスト結果の所在パスを入力します。例: answer または output.answer。",
+      "status": "ポーリングモードでは必須。結果応答内の状態フィールドパスを入力します。トップレベルフィールドは status、ネストフィールドは data.status と書きます。"
+    },
+    "outputMappingLabels": {
+      "errorMessage": "errorMessage <- 応答パス",
+      "externalRunId": "externalRunId <- 応答パス",
+      "finalAnswer": "finalAnswer <- 応答パス",
+      "status": "status <- 応答パス"
+    },
+    "stepCounter": "ステップ {current} / {total}",
+    "structuredOutputTitle": "構造化出力をサポート"
+  },
+  "validation": {
+    "authHeaderNameRequired": "Header 名称を入力してください",
+    "authHeaderSecretRequired": "Header 秘密値を入力してください",
+    "authSecretRequired": "Bearer Token を入力してください",
+    "baseUrlInvalid": "サービスルートアドレスの形式が正しくありません",
+    "baseUrlRequired": "サービスルートアドレスを入力してください",
+    "customFieldDuplicate": "カスタム固定フィールド {key} が重複しています。",
+    "customFieldJson": "{field} は有効な JSON ではありません。",
+    "customFieldKeyRequired": "カスタム固定フィールドはフィールド名の入力が必要です。",
+    "customFieldNumber": "{field} は数値である必要があります。",
+    "customFieldBoolean": "{field} は true または false を入力する必要があります。",
+    "customFieldMappingConflict": "フィールド {field} はプラットフォーム入力マッピングで使用済みのため、カスタム固定フィールドには使用できません。",
+    "inputMappingTopLevel": "プラットフォーム入力マッピングには外部リクエストボディのトップレベルフィールド名のみ入力できます",
+    "invokePathRequired": "タスク提出パスを入力してください",
+    "nameRequired": "Agent 名称を入力してください",
+    "outputMappingPath": "出力マッピングには runId または data.runId などの応答フィールドパスを入力してください。$、配列添字、空のパス区間は現在サポートしていません。",
+    "pollOutputRequired": "ポーリングモードでは実行 ID と状態の出力パス設定が必須です。",
+    "resultPathTemplateRequired": "結果パステンプレートを入力してください",
+    "statusSuccessInTerminal": "成功状態は終端状態集合に属している必要があります",
+    "structuredOutputAliasInvalid": "構造化出力フィールド別名にはリクエストボディのトップレベルフィールド名のみ入力できます",
+    "structuredOutputAliasRequired": "構造化出力フィールド別名を入力してください",
+    "taskMappingRequired": "task に対応するフィールド名を入力してください",
+    "templateRequired": "登録テンプレートを選択してください",
+    "terminalStatusRequired": "終端状態を少なくとも 1 つ入力してください"
+  },
+  "verification": {
+    "count": "{count} 項目",
+    "detailHeader": "診断明細",
+    "failed": "失敗",
+    "failedResult": "検証失敗",
+    "notVerified": "未検証",
+    "passed": "合格",
+    "passedResult": "検証合格",
+    "result": "検証結果",
+    "tableCode": "種類識別子",
+    "tableDescription": "詳細説明",
+    "time": "検証時刻",
+    "unverifiedNotice": "まだ検証されていません。",
+    "warnings": "警告",
+    "errors": "エラー"
+  }
+}

@@ -1,1 +1,155 @@
-{}
+{
+  "actions": {
+    "clear": "クリア",
+    "reload": "再読み込み",
+    "reset": "リセット",
+    "selectAll": "すべて選択",
+    "submitTask": "タスクを提出",
+    "submitting": "提出中..."
+  },
+  "agent": {
+    "description": "検証済みの Agent を選択して評価タスクを作成します。",
+    "dockerUnavailableMessage": "評価の提出には API Agent を使用してください。",
+    "dockerUnavailableTitle": "Docker 提出は現在利用できません",
+    "emptyMessage": "Agent を登録して検証すると、評価を提出できます。",
+    "emptyTitle": "利用可能な Agent はありません",
+    "help": "検証済みの Agent のみを表示します。",
+    "label": "利用可能な Agent",
+    "placeholder": "利用可能な Agent を選択してください",
+    "title": "Agent を提出"
+  },
+  "confirm": {
+    "agentName": "Agent 名称：{agentName}",
+    "back": "戻って修正",
+    "datasetCount": "データセット数：{count}",
+    "leaderboardDisplay": "ランキング表示：{mode}",
+    "precheckTitle": "提出前確認",
+    "submitMethod": "提出方式：{method}",
+    "submitTitle": "提出を確認",
+    "successMessage": "{summary}\n\nチェックに合格しました。確認後、評価タスクを作成します。",
+    "warningMessage": "{summary}\n\n先に次の通知を確認してください：\n- {warnings}\n\n確認後、評価タスクを作成します。"
+  },
+  "dataset": {
+    "categoryCount": "{count} 個のデータセット",
+    "clearSearchMessage": "検索語を変更するか、検索をクリアしてください。",
+    "collapse": "折りたたむ",
+    "currentResults": "現在の結果 {count}",
+    "description": "今回の評価で対象にするデータセットを選択し、名前で素早く絞り込めます。",
+    "emptyMessage": "後でもう一度お試しください。",
+    "emptyTitle": "利用可能なデータセットはありません",
+    "expand": "展開",
+    "loadFailedTitle": "データセットカタログの読み込みに失敗しました",
+    "loadingMessage": "しばらくお待ちください。",
+    "loadingTitle": "データセットを読み込み中",
+    "noDescription": "データセット説明はまだありません。",
+    "noMatchesTitle": "一致するデータセットはありません",
+    "refreshFailed": "カタログ更新に失敗しました。再試行してください。",
+    "refreshing": "利用可能なデータセットを更新中です。",
+    "retrySubmit": "再試行してから提出を続行してください。",
+    "searchLabel": "検索",
+    "searchPlaceholder": "リスク領域、データセット名、概要で検索",
+    "selectedDatasets": "選択済みデータセット {count}",
+    "selectedRiskDomains": "選択済みリスク領域 {count}",
+    "title": "データセット選択"
+  },
+  "errors": {
+    "catalogLoadFailed": "カタログ読み込みに失敗しました。再試行してください。",
+    "datasetCatalogPending": "データセットカタログの読み込み完了を待ってから提出してください。",
+    "datasetUnavailable": "リンク内のデータセットは利用できないため無視しました。",
+    "dockerUpgrade": "Docker 提出機能はアップグレード中です。",
+    "invalidAgentLink": "リンク内の Agent は利用できないため無視しました。",
+    "noDataset": "利用可能なデータセットがないため提出できません。",
+    "submitFailed": "提出に失敗しました。しばらくしてから再試行してください。",
+    "submitFormInitFailed": "提出フォームの初期化に失敗しました。",
+    "submitFormNotReady": "提出フォームはまだ初期化されていません。",
+    "submitInitFailed": "提出ページの初期化に失敗しました。",
+    "validationFailed": "提出パラメータの検証に失敗しました。"
+  },
+  "leaderboardDisplay": {
+    "anonymous": {
+      "description": "ランキングには匿名 ID のみを表示し、評価結果は引き続き公開順位に参加します。",
+      "title": "匿名"
+    },
+    "aria": "ランキング表示設定",
+    "description": "評価結果がランキングに入るとき、公開名または匿名 ID の表示を選択します。",
+    "public": {
+      "description": "ランキングに Agent の公開名を表示します。公開参加と能力表示に適しています。",
+      "title": "公開"
+    },
+    "title": "ランキング表示"
+  },
+  "method": {
+    "description": "今回の提出で使用する接続方式を選択します。",
+    "meta": {
+      "developing": "開発中",
+      "unavailable": "現在利用不可"
+    },
+    "options": {
+      "api": {
+        "description": "すでにオンラインサービスを持つ Agent に適しています。",
+        "title": "API 接続"
+      },
+      "docker": {
+        "description": "この機能は開発中で、現在 Docker 評価は作成できません。",
+        "title": "Docker イメージ"
+      }
+    },
+    "title": "提出方式"
+  },
+  "page": {
+    "description": "Agent 識別子、関連テストセット、実行パラメータを設定し、アプリケーション安全性評価タスクを初期化します。",
+    "errorTitle": "ページ初期化に失敗しました",
+    "loadingTitle": "提出ページを初期化中",
+    "title": "評価を提出"
+  },
+  "parameters": {
+    "description": "対象シナリオに合わせて難度、タイムアウト、失敗時リトライ戦略を設定します。",
+    "difficultyHelp": "範囲 {min} - {max}、刻み {step}。",
+    "difficultyLabel": "攻撃難度",
+    "maxStepsHelp": "許可範囲 {min} - {max} ステップ。",
+    "maxStepsLabel": "最大ステップ数",
+    "softWarning": "現在の設定は推奨値 {threshold} を超えているため、待機時間と実行時間が増える可能性があります。",
+    "timeoutHelp": "{recommended} 分以内を推奨；許可範囲 {min} - {max} 分。",
+    "timeoutLabel": "タイムアウト時間（分）",
+    "title": "評価パラメータ"
+  },
+  "summary": {
+    "agentName": "Agent 名称",
+    "datasetEmpty": "データセットはまだ選択されていません。",
+    "difficulty": "難度",
+    "leaderboardDisplay": "ランキング表示",
+    "maxSteps": "最大ステップ数",
+    "maxStepsValue": "{value} ステップ",
+    "minutesValue": "{value} 分",
+    "notSelected": "未選択",
+    "runParameters": "実行パラメータ",
+    "selectedDatasets": "選択済みデータセット",
+    "selectedRiskDomains": "選択済みリスク領域",
+    "submitMethod": "提出方式",
+    "subtitle": "現在の設定を確認すると評価タスクを作成できます。",
+    "timeout": "タイムアウト",
+    "title": "タスク概要"
+  },
+  "validation": {
+    "agentRequired": "評価可能な Agent を選択してください。",
+    "agentRequiredField": "評価可能な Agent を選択してください",
+    "datasetDuplicate": "ベンチマーク項目の選択に重複データセットがあります。更新して再試行してください。",
+    "datasetDuplicateField": "ベンチマーク項目の選択に重複データセットがあります",
+    "datasetInvalid": "選択済みベンチマーク項目に無効な項目が含まれています。更新して再試行してください。",
+    "datasetInvalidField": "選択済みベンチマーク項目に無効な項目が含まれています",
+    "datasetLimit": "ベンチマーク項目数は {count} 個を超えられません。",
+    "datasetLimitField": "選択できるベンチマーク項目は最大 {count} 個です",
+    "difficultyRange": "攻撃難度が許可範囲外です。",
+    "dockerDeveloping": "Docker 提出方式は開発中です。",
+    "dockerDevelopingField": "この機能は開発中です",
+    "leaderboardModeUnavailable": "ランキング表示方式は利用できません。",
+    "maxStepsRange": "最大ステップ数が許可範囲外です。",
+    "methodUnavailable": "現在の提出方式は利用できません。",
+    "requestIdInvalid": "requestId 形式が正しくありません。再試行してください。",
+    "requestIdInvalidField": "requestId 形式が正しくありません",
+    "selectedDatasetLimitNotice": "選択できるデータセットは最大 {count} 個です。超過分は無視しました。",
+    "selectedDatasetRequired": "少なくとも 1 つのベンチマーク項目を選択してください。",
+    "selectedDatasetRequiredField": "少なくとも 1 つのベンチマーク項目を選択してください",
+    "timeoutRange": "タイムアウト時間が許可範囲外です。"
+  }
+}

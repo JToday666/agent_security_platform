@@ -1,10 +1,10 @@
 {
   "nav": {
     "home": "Home",
-    "dataset": "Datasets",
+    "dataset": "Dataset Catalog",
     "explore": "Explore",
     "leaderboard": "Leaderboard",
-    "contact": "Contact",
+    "contact": "Contact Us",
     "records": "Evaluation Records",
     "agents": "Agent Management",
     "registerAgent": "Register Agent",
@@ -13,7 +13,7 @@
     "workspace": "Workspace"
   },
   "aria": {
-    "returnHome": "Back home",
+    "returnHome": "Return Home",
     "openMenu": "Open navigation menu",
     "closeMenu": "Close navigation menu"
   },
