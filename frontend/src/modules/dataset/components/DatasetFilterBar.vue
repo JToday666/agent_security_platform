@@ -131,14 +131,19 @@ const getChipStyle = (categoryId: string, active: boolean) => {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+  min-width: 0;
 }
 
 .category-chip {
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.55rem;
+  max-width: 100%;
+  min-width: 0;
   padding: 0.82rem 1.05rem;
   border-radius: var(--radius-pill);
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition: transform var(--duration-fast) var(--ease-standard);
 }
@@ -148,7 +153,9 @@ const getChipStyle = (categoryId: string, active: boolean) => {
 }
 
 .chip-name {
+  min-width: 0;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 900px) {

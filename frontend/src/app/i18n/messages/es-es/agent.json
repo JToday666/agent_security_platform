@@ -78,10 +78,10 @@
   },
   "display": {
     "disabledReasons": {
-      "active": "",
       "archived": "Los Agents archivados no pueden enviar evaluaciones.",
       "draft": "Este Agent aún no ha superado la verificación y no puede enviar evaluaciones.",
       "invalid": "Este Agent falló la verificación y no puede enviar evaluaciones.",
+      "unavailable": "Este Agent no está disponible para enviar evaluaciones.",
       "verifying": "Este Agent se está verificando y aún no puede enviar evaluaciones."
     },
     "invokeModes": {

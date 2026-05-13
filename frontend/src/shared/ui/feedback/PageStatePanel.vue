@@ -57,6 +57,8 @@ defineEmits<{
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .page-state-panel--loading {
@@ -68,18 +70,22 @@ defineEmits<{
   margin: 0;
   color: var(--color-text-dark);
   font-size: 1.18rem;
+  overflow-wrap: anywhere;
 }
 
 .page-state-panel__message {
   margin: 0;
   color: var(--color-text-subtle);
   line-height: 1.72;
+  overflow-wrap: anywhere;
 }
 
 .page-state-panel__extra {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .page-state-panel__action {

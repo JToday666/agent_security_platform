@@ -2,7 +2,8 @@
   <component
     :is="iconComponent"
     v-bind="attrs"
-    v-bind="iconSizeAttrs"
+    :width="size"
+    :height="size"
     :title="title"
     :aria-hidden="decorative ? 'true' : undefined"
     :role="decorative ? undefined : 'img'"
@@ -43,6 +44,7 @@ import {
   Globe,
   House,
   KeyRound,
+  Languages,
   Link,
   List,
   ListFilter,
@@ -149,6 +151,7 @@ const lucideIcons = {
   globe: Globe,
   house: House,
   "key-round": KeyRound,
+  languages: Languages,
   link: Link,
   list: List,
   "list-filter": ListFilter,
@@ -216,10 +219,6 @@ const warnUnknownIcon = (icon: string): void => {
 };
 
 const attrs = useAttrs();
-const iconSizeAttrs = computed(() => ({
-  width: props.size,
-  height: props.size,
-}));
 const resolvedIcon = computed(() => resolveAppIconName(props.icon));
 const iconComponent = computed(() => {
   if (resolvedIcon.value.kind === "brand") {

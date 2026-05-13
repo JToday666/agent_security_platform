@@ -12,6 +12,9 @@
     "profile": "プロフィール",
     "workspace": "ワークスペース"
   },
+  "language": {
+    "trigger": "言語"
+  },
   "aria": {
     "returnHome": "ホームへ戻る",
     "openMenu": "ナビゲーションメニューを開く",

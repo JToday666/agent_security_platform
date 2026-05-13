@@ -72,7 +72,9 @@ export const getAgentSubmitDisabledReason = (
   t: AppTranslator = translateRuntimeMessage,
 ): string => {
   if (agent.status === "active") {
-    return t("agent.display.disabledReasons.active");
+    return agent.canSubmitEvaluation
+      ? ""
+      : t("agent.display.disabledReasons.unavailable");
   }
 
   if (agent.status === "draft") {

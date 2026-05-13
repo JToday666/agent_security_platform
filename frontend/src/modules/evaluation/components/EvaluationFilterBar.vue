@@ -124,6 +124,7 @@ const handleSubmitMethodChange = (value: string) => {
   display: grid;
   grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(160px, 0.8fr));
   gap: 0.9rem;
+  min-width: 0;
 }
 
 @media (max-width: 960px) {

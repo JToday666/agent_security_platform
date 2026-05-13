@@ -159,6 +159,7 @@ const resolved = computed(() => {
 .status-tag__icon {
   width: 0.95rem;
   height: 0.95rem;
+  flex: 0 0 auto;
 }
 
 .status-tag__sr-only {

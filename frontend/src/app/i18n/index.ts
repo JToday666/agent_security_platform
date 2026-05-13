@@ -68,7 +68,9 @@ const localeAliasMap: Record<string, SupportedLocale> = {
 
 const localeSegmentPattern = /^[a-z]{2}(?:-[a-z0-9]+)?$/i;
 const loadedLocales = new Set<SupportedLocale>();
+const loadingLocales = new Map<SupportedLocale, Promise<void>>();
 const messageModules = import.meta.glob("./messages/*/*.json");
+let activateLocaleSeq = 0;
 
 export const i18n = createI18n({
   legacy: false,
@@ -257,15 +259,27 @@ export const loadLocaleMessages = async (
     return;
   }
 
-  const domains = await Promise.all(
+  const loadingLocale = loadingLocales.get(locale);
+  if (loadingLocale) {
+    return loadingLocale;
+  }
+
+  const loadLocale = Promise.all(
     MESSAGE_DOMAINS.map(async (domain) => [
       domain,
       await readMessageDomain(locale, domain),
     ]),
-  );
+  )
+    .then((domains) => {
+      i18n.global.setLocaleMessage(locale, Object.fromEntries(domains));
+      loadedLocales.add(locale);
+    })
+    .finally(() => {
+      loadingLocales.delete(locale);
+    });
 
-  i18n.global.setLocaleMessage(locale, Object.fromEntries(domains));
-  loadedLocales.add(locale);
+  loadingLocales.set(locale, loadLocale);
+  return loadLocale;
 };
 
 export const getCurrentDisplayLocale = (): SupportedLocale =>
@@ -275,7 +289,17 @@ export const activateLocale = async (
   locale: string | null | undefined,
 ): Promise<SupportedLocale> => {
   const normalizedLocale = normalizeLocale(locale);
-  await loadLocaleMessages(normalizedLocale);
+  const currentSeq = ++activateLocaleSeq;
+  await Promise.all([
+    loadLocaleMessages(normalizedLocale),
+    ...(normalizedLocale === DEFAULT_LOCALE
+      ? []
+      : [loadLocaleMessages(DEFAULT_LOCALE)]),
+  ]);
+
+  if (currentSeq !== activateLocaleSeq) {
+    return getCurrentDisplayLocale();
+  }
 
   i18n.global.locale.value = normalizedLocale;
   setApiLocale(normalizedLocale);

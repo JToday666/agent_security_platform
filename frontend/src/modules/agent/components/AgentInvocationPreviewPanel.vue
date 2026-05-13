@@ -101,23 +101,39 @@ const hasCode = computed(() => props.code.trim().length > 0);
   gap: 0.35rem;
   flex: 0 0 auto;
   min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
   padding: 0.22rem;
   border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: var(--radius-control-sm);
   background: rgba(241, 245, 249, 0.72);
+  scrollbar-width: thin;
+}
+
+.preview-pane__tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.preview-pane__tabs::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.36);
 }
 
 .preview-pane__tabs button {
-  flex: 1 1 0;
-  min-width: 0;
+  flex: 0 0 auto;
+  min-width: 5.4rem;
+  max-width: 11rem;
   min-height: 2.05rem;
+  padding: 0.3rem 0.62rem;
   border: 1px solid transparent;
   border-radius: var(--radius-control-sm);
   background: transparent;
   color: var(--color-text-muted);
   font-size: 0.82rem;
   font-weight: 700;
-  white-space: nowrap;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+  text-align: center;
   cursor: pointer;
   transition:
     background var(--duration-fast) var(--ease-standard),
@@ -150,11 +166,4 @@ const hasCode = computed(() => props.code.trim().length > 0);
   flex: 0 0 auto;
   align-self: flex-start;
 }
-
-@media (max-width: 420px) {
-  .preview-pane__tabs button {
-    font-size: 0.76rem;
-  }
-}
-
 </style>

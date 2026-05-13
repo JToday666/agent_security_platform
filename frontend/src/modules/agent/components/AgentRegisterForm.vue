@@ -771,14 +771,9 @@ const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
 .form-grid > :deep(.form-field .form-field-control),
 .mapping-grid > :deep(.form-field .form-field-control) {
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 1;
   width: 100%;
   min-width: 0;
-}
-
-.form-grid > :deep(.form-field:has(.form-field-error) .form-field-control),
-.mapping-grid > :deep(.form-field:has(.form-field-error) .form-field-control) {
-  grid-row: 1;
 }
 
 .form-grid > :deep(.form-field .form-field-help),
@@ -852,47 +847,24 @@ const getOutputMappingPlaceholder = (key: keyof AgentOutputMapping): string =>
   .form-grid > :deep(.form-field),
   .mapping-grid > :deep(.form-field),
   .mapping-grid > :deep(.ui-toggle-field) {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     gap: 0.5rem;
     padding: 0.95rem;
   }
 
-  .form-grid > :deep(.form-field .form-field-label),
-  .mapping-grid > :deep(.form-field .form-field-label) {
-    grid-row: 1;
-    padding-top: 0;
-  }
-
   .form-grid > :deep(.form-field .form-field-help),
-  .mapping-grid > :deep(.form-field .form-field-help) {
-    grid-column: 1;
-    grid-row: 2;
-    max-width: none;
-  }
-
-  .form-grid > :deep(.form-field .form-field-control),
-  .mapping-grid > :deep(.form-field .form-field-control) {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .form-grid > :deep(.form-field:has(.form-field-help) .form-field-control),
-  .mapping-grid > :deep(.form-field:has(.form-field-help) .form-field-control) {
-    grid-row: 3;
-  }
-
+  .mapping-grid > :deep(.form-field .form-field-help),
   .form-grid > :deep(.form-field .form-field-error),
-  .mapping-grid > :deep(.form-field .form-field-error) {
-    grid-column: 1;
-    grid-row: 3;
+  .mapping-grid > :deep(.form-field .form-field-error),
+  .mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__copy) {
     max-width: none;
   }
 
-  .mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__copy),
   .mapping-grid > :deep(.ui-toggle-field .ui-toggle-field__input) {
-    grid-column: 1;
-    grid-row: auto;
-    max-width: none;
+    align-self: flex-start;
+    margin-top: 0;
   }
 }
 
