@@ -118,14 +118,18 @@ const handleClick = (event: MouseEvent) => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
-  flex-shrink: 0;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  flex-shrink: 1;
   max-width: 100%;
   gap: 0.45rem;
   width: fit-content;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -159,13 +163,10 @@ const handleClick = (event: MouseEvent) => {
 }
 
 .ui-button__content {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline;
   min-width: 0;
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 
 .ui-button:hover:not(.ui-button--disabled) {

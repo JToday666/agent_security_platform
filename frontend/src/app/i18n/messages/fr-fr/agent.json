@@ -78,10 +78,10 @@
   },
   "display": {
     "disabledReasons": {
-      "active": "",
       "archived": "Les Agents archivés ne peuvent pas soumettre d’évaluations.",
       "draft": "Cet Agent n’a pas encore réussi la vérification et ne peut pas soumettre d’évaluations.",
       "invalid": "Cet Agent a échoué à la vérification et ne peut pas soumettre d’évaluations.",
+      "unavailable": "Cet Agent n’est pas disponible pour l’envoi d’une évaluation.",
       "verifying": "Cet Agent est en cours de vérification et ne peut pas encore soumettre d’évaluations."
     },
     "invokeModes": {

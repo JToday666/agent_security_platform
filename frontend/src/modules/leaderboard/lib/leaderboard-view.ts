@@ -72,18 +72,30 @@ export const getLeaderboardSortOption = (
   key: LeaderboardSortKey,
   t: AppTranslator = translateRuntimeMessage,
 ): LeaderboardSortOption =>
-  getLeaderboardSortOptions(t).find((option) => option.key === key) ??
-  getLeaderboardSortOptions(t)[0];
+  toLeaderboardSortOption(getLeaderboardSortOptionBase(key), t);
 
 export const getLeaderboardSortOptions = (
   t: AppTranslator = translateRuntimeMessage,
 ): LeaderboardSortOption[] =>
-  LEADERBOARD_SORT_OPTION_BASE.map((option) => ({
-    key: option.key,
-    label: t(option.labelKey),
-    shortLabel: t(option.shortLabelKey),
-    defaultDirection: option.defaultDirection,
-  }));
+  LEADERBOARD_SORT_OPTION_BASE.map((option) =>
+    toLeaderboardSortOption(option, t),
+  );
+
+const getLeaderboardSortOptionBase = (
+  key: LeaderboardSortKey,
+): LeaderboardSortOptionBase =>
+  LEADERBOARD_SORT_OPTION_BASE.find((option) => option.key === key) ??
+  LEADERBOARD_SORT_OPTION_BASE[0];
+
+const toLeaderboardSortOption = (
+  option: LeaderboardSortOptionBase,
+  t: AppTranslator,
+): LeaderboardSortOption => ({
+  key: option.key,
+  label: t(option.labelKey),
+  shortLabel: t(option.shortLabelKey),
+  defaultDirection: option.defaultDirection,
+});
 
 export const getNextLeaderboardSortState = (
   current: LeaderboardSortState,
@@ -98,7 +110,7 @@ export const getNextLeaderboardSortState = (
 
   return {
     key: nextKey,
-    direction: getLeaderboardSortOption(nextKey).defaultDirection,
+    direction: getLeaderboardSortOptionBase(nextKey).defaultDirection,
   };
 };
 

@@ -25,6 +25,17 @@ import type {
   EvaluationScoreTrendView,
 } from "@/shared/types/agent-types";
 
+const HTML_ESCAPE_MAP: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
+
+const escapeHtml = (value: unknown): string =>
+  String(value ?? "").replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
+
 export const getTrendMetricKeys = (
   trend: EvaluationScoreTrend | null,
   view: EvaluationScoreTrendView,
@@ -67,7 +78,9 @@ export const buildTrendLineOption = (
               typeof typedPoint.value === "number"
                 ? formatNumber(typedPoint.value)
                 : t("evaluation.common.noReturn");
-            return `${typedPoint.marker ?? ""}${typedPoint.seriesName ?? ""}：${value}`;
+            return `${typedPoint.marker ?? ""}${escapeHtml(
+              typedPoint.seriesName,
+            )}：${escapeHtml(value)}`;
           })
           .join("<br/>");
 
@@ -76,10 +89,12 @@ export const buildTrendLineOption = (
         }
 
         return [
-          `<strong>${item.agentName}</strong>`,
-          t("evaluation.charts.evaluationId", { id: item.evaluationId }),
+          `<strong>${escapeHtml(item.agentName)}</strong>`,
+          escapeHtml(
+            t("evaluation.charts.evaluationId", { id: item.evaluationId }),
+          ),
           t("evaluation.charts.completionDate", {
-            date: formatShortDate(item.finishedAt ?? item.createdAt),
+            date: escapeHtml(formatShortDate(item.finishedAt ?? item.createdAt)),
           }),
           lines,
         ].join("<br/>");
@@ -467,9 +482,9 @@ export const buildSampleScatterOption = (
     formatter: (params: any) => {
       const value = params.value ?? [];
       return t("evaluation.charts.sampleTooltip", {
-        difficulty: value[0],
-        duration: value[1],
-        sampleId: value[2],
+        difficulty: escapeHtml(value[0]),
+        duration: escapeHtml(value[1]),
+        sampleId: escapeHtml(value[2]),
       });
     },
   },

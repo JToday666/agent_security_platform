@@ -86,7 +86,7 @@ Node 与包管理器要求以 `package.json` 为准。
 - 想脱离后端独立演示数据集、Agent 注册提交、评测历史、趋势分析和报告阅读流时，可切到 `VITE_ENABLE_API_MOCK=true`
 - 若修改 API 基础路径或代理目标，优先同时检查 `src/shared/api/Config.ts` 和 `vite.config.ts`
 
-现阶段还没有页面内语言切换器。需要切换语言时，直接修改 URL 第一段 locale，例如：
+页面顶部导航提供语言切换器。桌面端位于“探索 / 工作台”入口右侧、用户入口左侧；移动端位于导航抽屉内。切换时会保留当前路径、查询参数和 hash，并替换 URL 第一段 locale。也可以直接修改 URL 第一段 locale，例如：
 
 ```text
 /zh-CN/dataset -> /en-US/dataset

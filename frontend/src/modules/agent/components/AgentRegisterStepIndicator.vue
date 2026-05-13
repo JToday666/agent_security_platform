@@ -127,7 +127,8 @@ const handleSelect = (stepId: AgentRegisterStepId) => {
   bottom: calc(100% + 0.45rem);
   left: 50%;
   z-index: 3;
-  max-width: 12rem;
+  width: max-content;
+  max-width: min(14rem, calc(100vw - 2rem));
   padding: 0.35rem 0.55rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: var(--radius-control-sm);
@@ -137,10 +138,11 @@ const handleSelect = (stepId: AgentRegisterStepId) => {
   font-weight: 700;
   line-height: 1.3;
   opacity: 0;
+  overflow-wrap: anywhere;
   pointer-events: none;
   text-align: center;
   transform: translate(-50%, 0.25rem);
-  white-space: nowrap;
+  white-space: normal;
   transition:
     opacity var(--duration-fast) var(--ease-standard),
     transform var(--duration-fast) var(--ease-standard);

@@ -1,4 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  resetRuntimeTranslator,
+  setRuntimeTranslator,
+  type AppTranslator,
+} from "@/app/i18n/runtime-translator";
 import {
   buildAgentInvocationPreview,
   buildAgentCreatePayload,
@@ -16,6 +21,20 @@ import type {
   AgentDetail,
   AgentTemplate,
 } from "@/shared/types/agent-registry-types";
+
+const zhAgentMessages: Record<string, string> = {
+  "agent.preview.samples.errorMessage": "错误信息",
+  "agent.preview.samples.finalAnswer": "最终答案",
+  "agent.preview.samples.task": "请完成平台下发的任务目标",
+  "agent.validation.authHeaderNameRequired": "请填写 Header 名称",
+  "agent.validation.authHeaderSecretRequired": "请填写 Header 密钥",
+  "agent.validation.inputMappingTopLevel":
+    "平台输入映射只能填写外部请求体的顶层字段名",
+  "agent.validation.outputMappingPath":
+    "输出映射需填写响应字段路径，例如 runId 或 data.runId，暂不支持 $、数组下标或空路径段。",
+};
+
+const testTranslator: AppTranslator = (key) => zhAgentMessages[key] ?? key;
 
 const createValidForm = (): AgentRegisterForm => {
   const form = createEmptyAgentRegisterForm();
@@ -125,6 +144,14 @@ const createAgentDetail = (): AgentDetail => ({
   },
   createdAt: "2026-05-01T00:00:00.000Z",
   updatedAt: "2026-05-01T00:00:00.000Z",
+});
+
+beforeEach(() => {
+  setRuntimeTranslator(testTranslator);
+});
+
+afterEach(() => {
+  resetRuntimeTranslator();
 });
 
 describe("agent registration form defaults", () => {

@@ -62,6 +62,7 @@ const handleSelect = (option: ChoiceOption<T>) => {
 }
 
 .ui-choice-card-group__item {
+  min-width: 0;
   padding: 1rem 1.05rem;
   border: 0;
   border-right: 1px solid rgba(148, 163, 184, 0.18);
@@ -112,27 +113,34 @@ const handleSelect = (option: ChoiceOption<T>) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .ui-choice-card-group__title {
   display: block;
+  min-width: 0;
   color: var(--color-text-dark);
   font-size: 1rem;
+  overflow-wrap: anywhere;
 }
 
 .ui-choice-card-group__meta {
-  flex-shrink: 0;
+  min-width: 0;
   color: var(--color-primary);
   font-size: 0.78rem;
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .ui-choice-card-group__description {
   display: block;
+  min-width: 0;
   margin-top: 0.45rem;
   color: var(--color-text-subtle);
   line-height: 1.65;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 640px) {

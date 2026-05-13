@@ -28,12 +28,17 @@ withDefaults(
 .ui-tag {
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.35rem;
   width: fit-content;
+  max-width: 100%;
+  min-width: 0;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   font-weight: 700;
   line-height: 1.2;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .ui-tag--sm {

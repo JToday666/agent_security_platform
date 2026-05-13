@@ -78,10 +78,10 @@
   },
   "display": {
     "disabledReasons": {
-      "active": "",
       "archived": "Archived Agents cannot submit evaluations.",
       "draft": "This Agent has not passed verification and cannot submit evaluations.",
       "invalid": "This Agent failed verification and cannot submit evaluations.",
+      "unavailable": "This Agent is not available for evaluation submission.",
       "verifying": "This Agent is being verified and cannot submit evaluations yet."
     },
     "invokeModes": {

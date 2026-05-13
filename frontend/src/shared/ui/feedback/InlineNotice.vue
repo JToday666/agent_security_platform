@@ -37,9 +37,12 @@ withDefaults(
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.9rem;
+  min-width: 0;
+  max-width: 100%;
   padding: 0.9rem 1rem;
   border-radius: 1rem;
   border: 1px solid transparent;
+  overflow-wrap: anywhere;
 }
 
 .inline-notice-main {
@@ -53,17 +56,21 @@ withDefaults(
 .inline-notice-title {
   color: inherit;
   font-size: 0.92rem;
+  overflow-wrap: anywhere;
 }
 
 .inline-notice-message {
   margin: 0;
   color: inherit;
   line-height: 1.68;
+  overflow-wrap: anywhere;
 }
 
 .inline-notice-extra,
 .inline-notice-actions {
   display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.65rem;
 }

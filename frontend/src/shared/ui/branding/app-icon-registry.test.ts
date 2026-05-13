@@ -19,6 +19,30 @@ describe("app icon registry", () => {
       requested: "app:action.submitEvaluation",
     });
 
+    expect(resolveAppIconName("app:nav.agents")).toEqual({
+      kind: "lucide",
+      name: "bot",
+      requested: "app:nav.agents",
+    });
+
+    expect(resolveAppIconName("app:nav.registerAgent")).toEqual({
+      kind: "lucide",
+      name: "plug-zap",
+      requested: "app:nav.registerAgent",
+    });
+
+    expect(resolveAppIconName("app:action.registerAgent")).toEqual({
+      kind: "lucide",
+      name: "plug-zap",
+      requested: "app:action.registerAgent",
+    });
+
+    expect(resolveAppIconName("app:control.language")).toEqual({
+      kind: "lucide",
+      name: "languages",
+      requested: "app:control.language",
+    });
+
     expect(resolveAppIconName("app:status.running")).toEqual({
       kind: "lucide",
       name: "loader-circle",

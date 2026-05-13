@@ -16,7 +16,7 @@
             <h3 v-if="titleText" class="confirm-title">{{ titleText }}</h3>
             <p class="confirm-message">{{ message }}</p>
 
-            <div class="button-group" :class="{ single: !showCancel }">
+            <div class="button-group">
               <UiButton
                 v-if="showCancel"
                 variant="secondary"
@@ -105,6 +105,7 @@ const afterLeave = () => {};
   -webkit-backdrop-filter: blur(var(--blur-16));
   padding: 2rem 2rem 1.8rem;
   max-width: 380px;
+  min-width: 0;
   box-shadow:
     0 30px 60px -15px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.7) inset;
@@ -129,6 +130,7 @@ const afterLeave = () => {};
   font-weight: 600;
   margin: 0 0 0.5rem;
   color: #0f172a;
+  overflow-wrap: anywhere;
 }
 
 .confirm-message {
@@ -136,6 +138,7 @@ const afterLeave = () => {};
   color: #475569;
   margin: 0 0 2rem;
   line-height: 1.5;
+  overflow-wrap: anywhere;
   white-space: pre-line;
 }
 
@@ -144,13 +147,11 @@ const afterLeave = () => {};
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
-}
-
-.button-group.single {
-  grid-template-columns: 1fr;
+  min-width: 0;
 }
 
 .button-group :deep(.ui-button) {
-  flex: 1;
+  flex: 1 1 min(12rem, 100%);
+  min-width: 0;
 }
 </style>

@@ -38,6 +38,8 @@
       <span>{{ t("common.actions.loginRegister") }}</span>
     </UiButton>
 
+    <LanguageSwitcher variant="mobile" @selected="$emit('close')" />
+
     <div class="mobile-nav-group">
       <p class="mobile-group-label">{{ t("layout.mobile.primaryGroup") }}</p>
       <router-link
@@ -80,6 +82,7 @@
 import { useI18n } from "vue-i18n";
 import { getNavLinkStateProps } from "@/app/shell/nav-link-state";
 import type { AppNavItem } from "@/app/shell/nav-items";
+import LanguageSwitcher from "@/app/shell/LanguageSwitcher.vue";
 import UserNavMenu from "@/app/shell/UserNavMenu.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";

@@ -12,6 +12,9 @@
     "profile": "个人资料",
     "workspace": "工作台"
   },
+  "language": {
+    "trigger": "语言"
+  },
   "aria": {
     "returnHome": "返回首页",
     "openMenu": "打开导航菜单",

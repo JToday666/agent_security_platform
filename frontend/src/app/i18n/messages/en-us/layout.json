@@ -12,6 +12,9 @@
     "profile": "Profile",
     "workspace": "Workspace"
   },
+  "language": {
+    "trigger": "Language"
+  },
   "aria": {
     "returnHome": "Return Home",
     "openMenu": "Open navigation menu",

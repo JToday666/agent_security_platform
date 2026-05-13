@@ -78,10 +78,10 @@
   },
   "display": {
     "disabledReasons": {
-      "active": "",
       "archived": "已归档 Agent 不能提交评测。",
       "draft": "该 Agent 尚未验证通过，不能提交评测。",
       "invalid": "该 Agent 验证失败，不能提交评测。",
+      "unavailable": "该 Agent 暂不可提交评测。",
       "verifying": "该 Agent 正在验证中，暂不能提交评测。"
     },
     "invokeModes": {

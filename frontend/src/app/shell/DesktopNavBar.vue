@@ -45,6 +45,8 @@
     />
 
     <div class="nav-actions">
+      <LanguageSwitcher class="language-switcher-action" />
+
       <UiButton
         v-if="!isLogin && shellContext === 'public'"
         class="cta-btn"
@@ -96,6 +98,7 @@ import { getNavLinkStateProps } from "@/app/shell/nav-link-state";
 import type { AppNavItem } from "@/app/shell/nav-items";
 import type { ShellContext } from "@/app/shell/shell-context";
 import DesktopNavOverflowMenu from "@/app/shell/DesktopNavOverflowMenu.vue";
+import LanguageSwitcher from "@/app/shell/LanguageSwitcher.vue";
 import UserNavMenu from "@/app/shell/UserNavMenu.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
@@ -265,6 +268,10 @@ $NAV_BREAKPOINT_TABLET: 1120px;
   justify-self: end;
   gap: 0.6rem;
   min-width: 0;
+}
+
+.language-switcher-action {
+  flex: 0 1 auto;
 }
 
 .nav-menu-zone {

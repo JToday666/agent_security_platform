@@ -78,10 +78,10 @@
   },
   "display": {
     "disabledReasons": {
-      "active": "",
       "archived": "アーカイブ済み Agent は評価を提出できません。",
       "draft": "この Agent はまだ検証に合格していないため、評価を提出できません。",
       "invalid": "この Agent は検証に失敗したため、評価を提出できません。",
+      "unavailable": "この Agent は評価送信に使用できません。",
       "verifying": "この Agent は検証中のため、現在は評価を提出できません。"
     },
     "invokeModes": {

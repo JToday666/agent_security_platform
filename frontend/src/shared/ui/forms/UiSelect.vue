@@ -270,6 +270,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
+  min-width: 0;
   padding: 0.7rem 0.8rem;
   margin-bottom: 2px;
   border-radius: 0.9rem;
@@ -294,6 +295,7 @@ onUnmounted(() => {
 }
 
 .ui-select__item-label {
+  min-width: 0;
   font-size: 0.9rem;
   overflow-wrap: anywhere;
 }
@@ -301,6 +303,7 @@ onUnmounted(() => {
 .ui-select__item-icon {
   width: 0.95rem;
   height: 0.95rem;
+  flex: 0 0 auto;
   color: var(--color-primary);
 }
 
