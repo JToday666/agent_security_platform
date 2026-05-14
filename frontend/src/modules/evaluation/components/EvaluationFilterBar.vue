@@ -55,6 +55,7 @@ import type {
   EvaluationRecordFilterStatus,
   EvaluationRecordFilterVisibility,
 } from "@/modules/evaluation/lib/evaluation-record-filters";
+import { getEvaluationStatusFilterOptions } from "@/modules/evaluation/lib/evaluation-status";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 
@@ -78,13 +79,7 @@ const statusOptions = computed<Array<{
   value: EvaluationRecordFilterStatus;
 }>>(() => [
   { label: t("evaluation.filter.statusAll"), value: "all" },
-  { label: t("evaluation.status.pending"), value: "pending" },
-  { label: t("evaluation.status.running"), value: "running" },
-  { label: t("evaluation.status.paused"), value: "paused" },
-  { label: t("evaluation.status.completed"), value: "completed" },
-  { label: t("evaluation.status.failed"), value: "failed" },
-  { label: t("evaluation.status.canceled"), value: "canceled" },
-  { label: t("evaluation.status.terminated"), value: "terminated" },
+  ...getEvaluationStatusFilterOptions(t),
 ]);
 
 const visibilityOptions = computed<Array<{

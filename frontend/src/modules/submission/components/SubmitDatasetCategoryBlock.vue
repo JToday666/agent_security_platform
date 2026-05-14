@@ -93,11 +93,11 @@ import {
   getCategoryTheme,
   isCategoryFullySelected,
 } from "@/modules/dataset/lib/dataset-utils";
-import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
+import type { DatasetCategory } from "@/shared/types/dataset-types";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 
 const props = defineProps<{
-  category: DatasetCategoryViewModel;
+  category: DatasetCategory;
   selectedDatasetIds: string[];
   expanded: boolean;
 }>();

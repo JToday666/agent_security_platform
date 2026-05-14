@@ -49,7 +49,9 @@ export const useAgentDetailPage = () => {
     detail.value ? getAgentVerificationResultLabel(detail.value, t) : "",
   );
   const verificationResultIcon = computed<AppIconName>(() =>
-    detail.value ? getAgentVerificationResultIcon(detail.value) : "app:status.warning",
+    detail.value
+      ? getAgentVerificationResultIcon(detail.value)
+      : "app:status.warning",
   );
   const summaryItems = computed(() =>
     detail.value ? buildAgentSummaryItems(detail.value, t) : [],

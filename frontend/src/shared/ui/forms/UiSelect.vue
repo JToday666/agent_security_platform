@@ -1,6 +1,8 @@
 <template>
   <div class="ui-select" ref="containerRef">
     <button
+      :id="triggerId"
+      ref="triggerRef"
       class="ui-select__trigger"
       :class="[
         `ui-select__trigger--${size}`,
@@ -12,9 +14,11 @@
       ]"
       type="button"
       :disabled="disabled"
+      aria-haspopup="listbox"
       :aria-expanded="isOpen ? 'true' : 'false'"
+      :aria-controls="listboxId"
       @click="toggle"
-      @keydown.esc.prevent="close"
+      @keydown="handleTriggerKeydown"
     >
       <span v-if="leadingIcon" class="ui-select__leading-icon" aria-hidden="true">
         <AppIcon :icon="leadingIcon" />
@@ -36,15 +40,29 @@
 
     <Transition name="fade-slide-y">
       <div v-show="isOpen" class="ui-select__dropdown ui-surface-glass">
-        <ul class="ui-select__list" role="listbox">
+        <ul
+          :id="listboxId"
+          ref="listboxRef"
+          class="ui-select__list"
+          role="listbox"
+          tabindex="-1"
+          :aria-labelledby="triggerId"
+          :aria-activedescendant="activeDescendant"
+          @keydown="handleListboxKeydown"
+        >
           <li
-            v-for="option in props.options"
+            v-for="(option, index) in props.options"
             :key="String(option.value)"
+            :id="optionIds[index]"
             class="ui-select__item"
-            :class="{ 'is-selected': isSelected(option.value) }"
+            :class="{
+              'is-active': index === activeIndex,
+              'is-selected': isSelected(option.value),
+            }"
             role="option"
             :aria-selected="isSelected(option.value)"
             @click="selectOption(option.value)"
+            @mouseenter="setActiveIndex(index)"
           >
             <span class="ui-select__item-label">{{ option.label }}</span>
             <AppIcon
@@ -60,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref, useId } from "vue";
 import { useI18n } from "vue-i18n";
 import AppIcon from "../branding/AppIcon.vue";
 import type { AppIconName } from "../branding/app-icon-registry";
@@ -92,8 +110,19 @@ const emit = defineEmits<{
   (e: "update:modelValue", value: string | number): void;
 }>();
 
+const TYPEAHEAD_TIMEOUT_MS = 500;
+
+const selectId = useId();
 const isOpen = ref(false);
+const activeIndex = ref(-1);
 const containerRef = ref<HTMLElement | null>(null);
+const triggerRef = ref<HTMLButtonElement | null>(null);
+const listboxRef = ref<HTMLUListElement | null>(null);
+const typeaheadBuffer = ref("");
+let typeaheadTimer: number | null = null;
+
+const triggerId = `${selectId}-trigger`;
+const listboxId = `${selectId}-listbox`;
 
 const selectedLabel = computed(() => {
   const selected = props.options.find((opt) => opt.value === props.modelValue);
@@ -108,21 +137,258 @@ const hasSelectedLabel = computed(() =>
 
 const isSelected = (val: string | number) => val === props.modelValue;
 
+const selectedIndex = computed(() =>
+  props.options.findIndex((option) => option.value === props.modelValue),
+);
+
+const optionIds = computed(() =>
+  props.options.map((_, index) => `${selectId}-option-${index}`),
+);
+
+const activeDescendant = computed(() =>
+  isOpen.value && activeIndex.value >= 0
+    ? optionIds.value[activeIndex.value]
+    : undefined,
+);
+
+const normalizeIndex = (index: number) => {
+  const optionCount = props.options.length;
+
+  if (!optionCount) {
+    return -1;
+  }
+
+  return ((index % optionCount) + optionCount) % optionCount;
+};
+
+const getInitialActiveIndex = (fallbackIndex = 0) =>
+  selectedIndex.value >= 0 ? selectedIndex.value : fallbackIndex;
+
+const clearTypeahead = () => {
+  typeaheadBuffer.value = "";
+
+  if (typeaheadTimer) {
+    window.clearTimeout(typeaheadTimer);
+    typeaheadTimer = null;
+  }
+};
+
+const scheduleTypeaheadReset = () => {
+  if (typeaheadTimer) {
+    window.clearTimeout(typeaheadTimer);
+  }
+
+  typeaheadTimer = window.setTimeout(() => {
+    typeaheadBuffer.value = "";
+    typeaheadTimer = null;
+  }, TYPEAHEAD_TIMEOUT_MS);
+};
+
+const focusListbox = () => {
+  void nextTick(() => {
+    listboxRef.value?.focus();
+  });
+};
+
+const setActiveIndex = (index: number) => {
+  activeIndex.value = normalizeIndex(index);
+};
+
+const openListbox = (preferredIndex = getInitialActiveIndex()) => {
+  if (props.disabled || !props.options.length) {
+    return;
+  }
+
+  setActiveIndex(preferredIndex);
+  isOpen.value = true;
+  focusListbox();
+};
+
+const close = (restoreFocus = false) => {
+  isOpen.value = false;
+  activeIndex.value = -1;
+  clearTypeahead();
+
+  if (restoreFocus) {
+    triggerRef.value?.focus();
+  }
+};
+
 const toggle = () => {
   if (props.disabled) {
     return;
   }
 
-  isOpen.value = !isOpen.value;
-};
+  if (isOpen.value) {
+    close(true);
+    return;
+  }
 
-const close = () => {
-  isOpen.value = false;
+  openListbox();
 };
 
 const selectOption = (val: string | number) => {
   emit("update:modelValue", val);
-  close();
+  close(true);
+};
+
+const selectActiveOption = () => {
+  const activeOption = props.options[activeIndex.value];
+
+  if (activeOption) {
+    selectOption(activeOption.value);
+  }
+};
+
+const moveActiveOption = (offset: number) => {
+  if (!props.options.length) {
+    return;
+  }
+
+  setActiveIndex(activeIndex.value < 0 ? getInitialActiveIndex() : activeIndex.value + offset);
+};
+
+const setBoundaryActiveOption = (position: "first" | "last") => {
+  if (!props.options.length) {
+    return;
+  }
+
+  setActiveIndex(position === "first" ? 0 : props.options.length - 1);
+};
+
+const normalizeTypeaheadValue = (value: string) =>
+  value.trim().toLocaleLowerCase();
+
+const findTypeaheadIndex = (query: string) => {
+  const normalizedQuery = normalizeTypeaheadValue(query);
+
+  if (!normalizedQuery || !props.options.length) {
+    return -1;
+  }
+
+  const startIndex = activeIndex.value >= 0 ? activeIndex.value + 1 : 0;
+
+  for (let offset = 0; offset < props.options.length; offset += 1) {
+    const index = normalizeIndex(startIndex + offset);
+    const label = normalizeTypeaheadValue(props.options[index]?.label ?? "");
+
+    if (label.startsWith(normalizedQuery)) {
+      return index;
+    }
+  }
+
+  return -1;
+};
+
+const handleTypeaheadKey = (event: KeyboardEvent) => {
+  if (
+    event.key.length !== 1 ||
+    event.key === " " ||
+    event.altKey ||
+    event.ctrlKey ||
+    event.metaKey
+  ) {
+    return false;
+  }
+
+  const nextBuffer = `${typeaheadBuffer.value}${event.key}`;
+  let nextIndex = findTypeaheadIndex(nextBuffer);
+
+  if (nextIndex < 0 && typeaheadBuffer.value) {
+    nextIndex = findTypeaheadIndex(event.key);
+    typeaheadBuffer.value = event.key;
+  } else {
+    typeaheadBuffer.value = nextBuffer;
+  }
+
+  if (nextIndex >= 0) {
+    event.preventDefault();
+    setActiveIndex(nextIndex);
+  }
+
+  scheduleTypeaheadReset();
+  return nextIndex >= 0;
+};
+
+const handleTriggerKeydown = (event: KeyboardEvent) => {
+  if (props.disabled) {
+    return;
+  }
+
+  switch (event.key) {
+    case "ArrowDown":
+      event.preventDefault();
+      if (isOpen.value) {
+        moveActiveOption(1);
+      } else {
+        openListbox(getInitialActiveIndex(0));
+      }
+      break;
+    case "ArrowUp":
+      event.preventDefault();
+      if (isOpen.value) {
+        moveActiveOption(-1);
+      } else {
+        openListbox(
+          selectedIndex.value >= 0 ? selectedIndex.value : props.options.length - 1,
+        );
+      }
+      break;
+    case "Enter":
+    case " ":
+      event.preventDefault();
+      if (isOpen.value) {
+        selectActiveOption();
+      } else {
+        openListbox();
+      }
+      break;
+    case "Escape":
+      if (isOpen.value) {
+        event.preventDefault();
+        close(true);
+      }
+      break;
+    default:
+      if (isOpen.value) {
+        handleTypeaheadKey(event);
+      }
+  }
+};
+
+const handleListboxKeydown = (event: KeyboardEvent) => {
+  switch (event.key) {
+    case "ArrowDown":
+      event.preventDefault();
+      moveActiveOption(1);
+      break;
+    case "ArrowUp":
+      event.preventDefault();
+      moveActiveOption(-1);
+      break;
+    case "Home":
+      event.preventDefault();
+      setBoundaryActiveOption("first");
+      break;
+    case "End":
+      event.preventDefault();
+      setBoundaryActiveOption("last");
+      break;
+    case "Enter":
+    case " ":
+      event.preventDefault();
+      selectActiveOption();
+      break;
+    case "Escape":
+      event.preventDefault();
+      close(true);
+      break;
+    case "Tab":
+      close();
+      break;
+    default:
+      handleTypeaheadKey(event);
+  }
 };
 
 const handleClickOutside = (event: MouseEvent) => {
@@ -137,6 +403,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener("mousedown", handleClickOutside);
+  clearTypeahead();
 });
 </script>
 
@@ -284,7 +551,8 @@ onUnmounted(() => {
   margin-bottom: 0;
 }
 
-.ui-select__item:hover {
+.ui-select__item:hover,
+.ui-select__item.is-active {
   background: rgba(59, 130, 246, 0.08);
 }
 

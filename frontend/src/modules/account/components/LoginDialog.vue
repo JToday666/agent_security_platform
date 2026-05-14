@@ -162,6 +162,9 @@ const { t } = useI18n();
 const userStore = useUserStore();
 const { showLogin } = storeToRefs(userStore);
 
+const getErrorMessage = (error: unknown, fallback: string): string =>
+  error instanceof Error && error.message ? error.message : fallback;
+
 const mode = ref<"login" | "register">("login");
 const loading = ref(false);
 
@@ -247,8 +250,8 @@ const handleLogin = async () => {
     } else {
       loginError.value = t("auth.messages.loginFailed");
     }
-  } catch (error: any) {
-    loginError.value = error.message || t("auth.messages.loginInvalid");
+  } catch (error: unknown) {
+    loginError.value = getErrorMessage(error, t("auth.messages.loginInvalid"));
   } finally {
     loading.value = false;
   }
@@ -282,8 +285,11 @@ const handleRegister = async () => {
     } else {
       registerError.value = t("auth.messages.registerFailed");
     }
-  } catch (error: any) {
-    registerError.value = error.message || t("auth.messages.registerConflict");
+  } catch (error: unknown) {
+    registerError.value = getErrorMessage(
+      error,
+      t("auth.messages.registerConflict"),
+    );
   } finally {
     loading.value = false;
   }

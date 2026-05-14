@@ -1,10 +1,11 @@
 <template>
   <div ref="menuRoot" class="desktop-nav-overflow">
     <button
+      ref="triggerRef"
       class="overflow-trigger"
       type="button"
-      aria-haspopup="menu"
       :aria-expanded="open ? 'true' : 'false'"
+      :aria-controls="menuId"
       :aria-label="label"
       @click="toggleMenu"
     >
@@ -12,14 +13,13 @@
       <AppIcon icon="app:control.more" class="overflow-trigger__icon" />
     </button>
 
-    <div v-if="open" class="overflow-menu" role="menu">
+    <div v-if="open" :id="menuId" class="overflow-menu">
       <router-link
         v-for="item in items"
         :key="`desktop-overflow-${item.key}`"
         v-bind="getNavLinkStateProps(item)"
         :to="item.to"
         class="overflow-menu__item"
-        role="menuitem"
         :aria-label="item.label"
         :title="item.label"
         @click="closeMenu"
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, useId } from "vue";
 import { getNavLinkStateProps } from "@/app/shell/nav-link-state";
 import type { AppNavItem } from "@/app/shell/nav-items";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
@@ -44,9 +44,16 @@ defineProps<{
 
 const open = ref(false);
 const menuRoot = ref<HTMLElement | null>(null);
+const triggerRef = ref<HTMLButtonElement | null>(null);
+const menuId = useId();
 
-const closeMenu = () => {
+const closeMenu = (restoreFocus = false) => {
+  const shouldRestoreFocus = restoreFocus && open.value;
   open.value = false;
+
+  if (shouldRestoreFocus) {
+    triggerRef.value?.focus();
+  }
 };
 
 const toggleMenu = () => {
@@ -60,8 +67,9 @@ const handleDocumentClick = (event: MouseEvent) => {
 };
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (event.key === "Escape") {
-    closeMenu();
+  if (event.key === "Escape" && open.value) {
+    event.preventDefault();
+    closeMenu(true);
   }
 };
 

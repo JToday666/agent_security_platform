@@ -23,8 +23,7 @@ window.addEventListener("unauthorized", (event: Event) => {
 
   const customEvent = event as CustomEvent<{ message?: string }>;
   const message =
-    customEvent.detail?.message ||
-    i18n.global.t("auth.session.expiredMessage");
+    customEvent.detail?.message || i18n.global.t("auth.session.expiredMessage");
   const hadAuth = Boolean(userStore.token || userStore.currentUser);
   const isHomePage = router.currentRoute.value.name === ROUTE_NAME.HOME_PAGE;
 

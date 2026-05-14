@@ -22,7 +22,8 @@ export const getLiveAgentTemplates = async (): Promise<AgentTemplate[]> => {
 
   if (!response.success || !response.data) {
     throw createAgentServiceError(
-      response.message || translateRuntimeMessage("agent.api.templateLoadFailed"),
+      response.message ||
+        translateRuntimeMessage("agent.api.templateLoadFailed"),
       response.code,
     );
   }

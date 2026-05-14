@@ -1,6 +1,5 @@
 import type {
   DatasetCategory,
-  DatasetCategoryViewModel,
   DatasetSubcategory,
 } from "@/shared/types/dataset-types";
 import { formatDateTime, formatNumber } from "@/app/i18n/intl-format";
@@ -201,7 +200,7 @@ export const getCategoryTheme = (categoryId: string): CategoryTheme => {
 
 export const getEnabledCategories = (
   categories: DatasetCategory[],
-): DatasetCategoryViewModel[] =>
+): DatasetCategory[] =>
   categories
     .map((category, index) => ({
       ...category,
@@ -260,7 +259,7 @@ export const resolveActiveCategoryId = (
 export const findDatasetSummary = (
   categories: DatasetCategory[],
   datasetId: string,
-): (DatasetSubcategory & { category: DatasetCategoryViewModel }) | null => {
+): (DatasetSubcategory & { category: DatasetCategory }) | null => {
   for (const category of getEnabledCategories(categories)) {
     const dataset = category.subcategories.find(
       (item) => item.datasetId === datasetId,

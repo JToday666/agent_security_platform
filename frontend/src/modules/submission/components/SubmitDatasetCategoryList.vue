@@ -15,10 +15,10 @@
 
 <script setup lang="ts">
 import SubmitDatasetCategoryBlock from "@/modules/submission/components/SubmitDatasetCategoryBlock.vue";
-import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
+import type { DatasetCategory } from "@/shared/types/dataset-types";
 
 defineProps<{
-  categories: DatasetCategoryViewModel[];
+  categories: DatasetCategory[];
   selectedDatasetIds: string[];
   expandedCategoryIds: string[];
 }>();

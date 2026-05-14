@@ -66,7 +66,8 @@ export const useEvaluationDetailPage = () => {
   });
 
   const actionDialogTitle = computed(() => {
-    if (pendingAction.value === "pause") return t("evaluation.dialogs.pauseTitle");
+    if (pendingAction.value === "pause")
+      return t("evaluation.dialogs.pauseTitle");
     if (pendingAction.value === "terminate")
       return t("evaluation.dialogs.terminateTitle");
     if (pendingAction.value === "cancel")
@@ -85,7 +86,8 @@ export const useEvaluationDetailPage = () => {
   });
 
   const actionDialogConfirmText = computed(() => {
-    if (pendingAction.value === "pause") return t("evaluation.actions.confirmPause");
+    if (pendingAction.value === "pause")
+      return t("evaluation.actions.confirmPause");
     if (pendingAction.value === "terminate")
       return t("evaluation.actions.confirmTerminate");
     return t("evaluation.actions.confirmCancel");

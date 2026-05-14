@@ -79,16 +79,12 @@ export const i18n = createI18n({
   messages: {},
 });
 
-setRuntimeTranslator((key, params) =>
-  String(i18n.global.t(key, params ?? {})),
-);
+setRuntimeTranslator((key, params) => String(i18n.global.t(key, params ?? {})));
 
 export const toLocaleDirectoryName = (locale: SupportedLocale): string =>
   locale.toLowerCase();
 
-export const normalizeLocale = (
-  locale?: string | null,
-): SupportedLocale => {
+export const normalizeLocale = (locale?: string | null): SupportedLocale => {
   if (!locale) {
     return DEFAULT_LOCALE;
   }
@@ -125,7 +121,9 @@ export const resolvePreferredLocale = (
     );
   });
 
-  return supportedCandidate ? normalizeLocale(supportedCandidate) : DEFAULT_LOCALE;
+  return supportedCandidate
+    ? normalizeLocale(supportedCandidate)
+    : DEFAULT_LOCALE;
 };
 
 export const readStoredLocale = (): string | null => {
@@ -141,9 +139,9 @@ export const readBrowserLocales = (): string[] => {
     return [];
   }
 
-  return Array.from(navigator.languages?.length ? navigator.languages : [
-    navigator.language,
-  ]).filter(Boolean);
+  return Array.from(
+    navigator.languages?.length ? navigator.languages : [navigator.language],
+  ).filter(Boolean);
 };
 
 export const resolveRuntimePreferredLocale = (): SupportedLocale =>
@@ -188,7 +186,9 @@ export const resolveLocalePath = (
 ): ResolvedLocalePath => {
   const preferred = normalizeLocale(preferredLocale);
   const { pathname, suffix } = splitFullPath(fullPath || "/");
-  const normalizedPathname = pathname.startsWith("/") ? pathname : `/${pathname}`;
+  const normalizedPathname = pathname.startsWith("/")
+    ? pathname
+    : `/${pathname}`;
   const segments = normalizedPathname.split("/").filter(Boolean);
   const firstSegment = segments[0];
 
@@ -325,8 +325,6 @@ export const switchLocale = async (
   locale: string,
 ) => {
   const targetLocale = normalizeLocale(locale);
-  await activateLocale(targetLocale);
-
   const { pathname, suffix } = splitFullPath(route.fullPath);
   const segments = pathname.split("/").filter(Boolean);
 
