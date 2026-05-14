@@ -1,7 +1,7 @@
 import { ref } from "vue";
 
 export const getErrorMessage = (error: unknown, fallback: string): string =>
-  error instanceof Error ? error.message : fallback;
+  error instanceof Error && error.message ? error.message : fallback;
 
 export const useAsyncState = <T>(initialValue: T | null = null) => {
   const data = ref<T | null>(initialValue);

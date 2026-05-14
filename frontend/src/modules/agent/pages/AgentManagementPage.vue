@@ -152,6 +152,7 @@ import AgentStatusTag from "@/modules/agent/components/AgentStatusTag.vue";
 import { getInvokeModeLabel } from "@/modules/agent/model/agent-display";
 import type { AgentListItem } from "@/shared/types/agent-registry-types";
 import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import UiTag from "@/shared/ui/display/UiTag.vue";
 import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
@@ -220,7 +221,7 @@ const loadAgents = async () => {
     });
   } catch (loadError) {
     error.value =
-      loadError instanceof Error ? loadError.message : t("agent.api.loadFailed");
+      getErrorMessage(loadError, t("agent.api.loadFailed"));
   } finally {
     loading.value = false;
   }
@@ -236,9 +237,7 @@ const handleVerify = async (agentId: string) => {
     await loadAgents();
   } catch (verifyError) {
     actionError.value =
-      verifyError instanceof Error
-        ? verifyError.message
-        : t("agent.api.verifyFailed");
+      getErrorMessage(verifyError, t("agent.api.verifyFailed"));
   } finally {
     busyAgentId.value = "";
     busyAction.value = "";
@@ -266,9 +265,7 @@ const confirmArchive = async () => {
     await loadAgents();
   } catch (archiveError) {
     actionError.value =
-      archiveError instanceof Error
-        ? archiveError.message
-        : t("agent.api.archiveFailed");
+      getErrorMessage(archiveError, t("agent.api.archiveFailed"));
   } finally {
     busyAgentId.value = "";
     busyAction.value = "";

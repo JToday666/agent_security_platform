@@ -8,14 +8,6 @@
 
 ## P2 低优先级 / 结构收敛
 
-- [ ] 后续处理 `shared/api/Config.ts` 命名债
-  - 问题：当前真实文件名为 `Config.ts`，现有 import 均使用 `@/shared/api/Config`，大小写一致，因此 Linux 上不会因大小写不一致直接失败；但普通 `.ts` 文件不符合 `frontend/README.md` 第 7 节 kebab-case 规范。
-  - 待修改文件：
-    - `src/shared/api/Config.ts`
-    - 所有 import `@/shared/api/Config` 的文件
-  - 建议动作：后续单独做大小写安全迁移，例如通过临时文件名中转，最终改为 `config.ts` 并同步所有 import。
-  - 验证点：在大小写敏感文件系统上 `pnpm type-check` 和 `pnpm build` 均通过。
-
 - [ ] 后续确认旧 dataset ID alias 是否可以移除
   - 问题：`dataset-id-aliases.ts` 仍被 API、展示和 mock 链路使用；当前无法确认后端是否还会返回 `A1`、`B1` 等旧 ID。
   - 待修改文件：

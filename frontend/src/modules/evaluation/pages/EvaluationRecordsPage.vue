@@ -99,6 +99,7 @@ import type {
   EvaluationStatus,
   SubmitMethod,
 } from "@/shared/types/agent-types";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
@@ -131,9 +132,7 @@ const loadRecords = async () => {
     records.value = await getEvaluationRecords();
   } catch (loadError) {
     error.value =
-      loadError instanceof Error
-        ? loadError.message
-        : t("evaluation.api.recordsLoadFailed");
+      getErrorMessage(loadError, t("evaluation.api.recordsLoadFailed"));
   } finally {
     loading.value = false;
   }

@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import request from "@/shared/api/http-client";
 import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import { STORAGE_KEYS } from "@/shared/constants/storage-keys";
 import { appendCacheBustParam } from "@/shared/lib/asset-display-url";
 
@@ -47,9 +48,6 @@ const normalizeUser = (user: UserPayload): User => ({
   email: user.email,
   avatarUrl: normalizeAvatarUrl(user.avatarUrl ?? user.avatar_url ?? null),
 });
-
-const getErrorMessage = (error: unknown, fallback: string): string =>
-  error instanceof Error && error.message ? error.message : fallback;
 
 export const useUserStore = defineStore("user", () => {
   const showLogin = ref(false);

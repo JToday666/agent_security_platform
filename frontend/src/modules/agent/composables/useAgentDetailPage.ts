@@ -21,6 +21,7 @@ import {
   getAgentVerificationResultIcon,
   getAgentVerificationResultLabel,
 } from "@/modules/agent/lib/agent-detail-view";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import type { AgentDetail } from "@/shared/types/agent-registry-types";
 import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
@@ -94,9 +95,7 @@ export const useAgentDetailPage = () => {
       detail.value = await getAgentDetail(agentId.value);
     } catch (loadError) {
       error.value =
-        loadError instanceof Error
-          ? loadError.message
-          : t("agent.api.detailLoadFailed");
+        getErrorMessage(loadError, t("agent.api.detailLoadFailed"));
     } finally {
       loading.value = false;
     }
@@ -114,9 +113,7 @@ export const useAgentDetailPage = () => {
       await loadDetail();
     } catch (verifyError) {
       actionError.value =
-        verifyError instanceof Error
-          ? verifyError.message
-          : t("agent.api.verifyFailed");
+        getErrorMessage(verifyError, t("agent.api.verifyFailed"));
     } finally {
       busyAction.value = "";
     }
@@ -135,9 +132,7 @@ export const useAgentDetailPage = () => {
       await router.push(RouteLocation.agentManagement);
     } catch (archiveError) {
       actionError.value =
-        archiveError instanceof Error
-          ? archiveError.message
-          : t("agent.api.archiveFailed");
+        getErrorMessage(archiveError, t("agent.api.archiveFailed"));
     } finally {
       busyAction.value = "";
     }

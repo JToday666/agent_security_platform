@@ -156,6 +156,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import { useUserStore } from "@/modules/account/stores/userStore";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 import ConfirmDialog from "@/shared/ui/feedback/ConfirmDialog.vue";
@@ -171,9 +172,6 @@ const { avatarDisplayUrl, currentUser } = storeToRefs(userStore);
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
 const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png"];
 const SUCCESS_MESSAGE_TIMEOUT_MS = 3000;
-
-const getErrorMessage = (error: unknown, fallback: string): string =>
-  error instanceof Error && error.message ? error.message : fallback;
 
 const form = reactive({
   username: "",

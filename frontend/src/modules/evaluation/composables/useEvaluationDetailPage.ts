@@ -18,7 +18,10 @@ import type {
   EvaluationDetail,
   EvaluationReportPayload,
 } from "@/shared/types/agent-types";
-import { useAsyncState } from "@/shared/composables/useAsyncState";
+import {
+  getErrorMessage,
+  useAsyncState,
+} from "@/shared/composables/useAsyncState";
 import { usePolling } from "@/shared/composables/usePolling";
 
 const getErrorCode = (value: unknown): number | null => {
@@ -147,9 +150,7 @@ export const useEvaluationDetailPage = () => {
       }
 
       reportError.value =
-        loadError instanceof Error
-          ? loadError.message
-          : t("evaluation.api.reportLoadFailed");
+        getErrorMessage(loadError, t("evaluation.api.reportLoadFailed"));
     } finally {
       reportLoading.value = false;
     }
@@ -254,9 +255,7 @@ export const useEvaluationDetailPage = () => {
     } catch (actionErr) {
       const code = getErrorCode(actionErr);
       const message =
-        actionErr instanceof Error
-          ? actionErr.message
-          : t("evaluation.api.actionFailed");
+        getErrorMessage(actionErr, t("evaluation.api.actionFailed"));
       error.value = message;
 
       if (code === 40901 || code === 40902) {
