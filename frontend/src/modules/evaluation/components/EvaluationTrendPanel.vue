@@ -85,6 +85,7 @@ import type {
   EvaluationScoreTrendScope,
   EvaluationScoreTrendView,
 } from "@/shared/types/agent-types";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 
 const EvaluationTrendChart = defineAsyncComponent(
@@ -129,9 +130,7 @@ const loadTrend = async () => {
   } catch (loadError) {
     trend.value = null;
     error.value =
-      loadError instanceof Error
-        ? loadError.message
-        : t("evaluation.api.trendLoadFailed");
+      getErrorMessage(loadError, t("evaluation.api.trendLoadFailed"));
   } finally {
     loading.value = false;
   }

@@ -35,6 +35,7 @@ import type {
   AgentOutputMapping,
   AgentTemplate,
 } from "@/shared/types/agent-registry-types";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 
 const authTypeValues: AgentAuthType[] = [
   "none",
@@ -318,7 +319,7 @@ export const useAgentRegisterPage = () => {
       form.value = createEmptyAgentRegisterForm();
     } catch (error) {
       pageError.value =
-        error instanceof Error ? error.message : t("agent.register.initFailed");
+        getErrorMessage(error, t("agent.register.initFailed"));
     } finally {
       loading.value = false;
     }
@@ -589,7 +590,7 @@ export const useAgentRegisterPage = () => {
       createdAgent.value = await createAgent(result.payload);
     } catch (error) {
       submitError.value =
-        error instanceof Error ? error.message : t("agent.api.createFailed");
+        getErrorMessage(error, t("agent.api.createFailed"));
     } finally {
       submitting.value = false;
     }
@@ -608,7 +609,7 @@ export const useAgentRegisterPage = () => {
       await router.push(RouteLocation.agentDetail(createdAgent.value.agentId));
     } catch (error) {
       submitError.value =
-        error instanceof Error ? error.message : t("agent.api.verifyFailed");
+        getErrorMessage(error, t("agent.api.verifyFailed"));
     } finally {
       verifyingCreatedAgent.value = false;
     }

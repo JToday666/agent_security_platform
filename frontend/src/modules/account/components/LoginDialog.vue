@@ -152,6 +152,7 @@ import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { RouteLocation } from "@/app/router/route-names";
 import { useUserStore } from "@/modules/account/stores/userStore";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
@@ -161,9 +162,6 @@ const router = useRouter();
 const { t } = useI18n();
 const userStore = useUserStore();
 const { showLogin } = storeToRefs(userStore);
-
-const getErrorMessage = (error: unknown, fallback: string): string =>
-  error instanceof Error && error.message ? error.message : fallback;
 
 const mode = ref<"login" | "register">("login");
 const loading = ref(false);

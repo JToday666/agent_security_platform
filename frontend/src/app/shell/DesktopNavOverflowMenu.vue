@@ -5,7 +5,7 @@
       class="overflow-trigger"
       type="button"
       :aria-expanded="open ? 'true' : 'false'"
-      :aria-controls="menuId"
+      :aria-controls="open ? menuId : undefined"
       :aria-label="label"
       @click="toggleMenu"
     >

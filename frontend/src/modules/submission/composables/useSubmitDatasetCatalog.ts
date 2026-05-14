@@ -1,6 +1,7 @@
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import { computed, ref } from "vue";
 import { getDatasetCatalog } from "@/modules/dataset/api/dataset-api";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import type { DatasetCatalogResponse } from "@/shared/types/dataset-types";
 import {
   getAllDatasetIds,
@@ -61,9 +62,10 @@ export const useSubmitDatasetCatalog = () => {
     } catch (error) {
       status.value = "error";
       errorMessage.value =
-        error instanceof Error
-          ? error.message
-          : translateRuntimeMessage("submission.errors.catalogLoadFailed");
+        getErrorMessage(
+          error,
+          translateRuntimeMessage("submission.errors.catalogLoadFailed"),
+        );
       throw error;
     }
   };

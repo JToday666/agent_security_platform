@@ -9,7 +9,7 @@
       class="language-switcher__trigger"
       type="button"
       :aria-expanded="open ? 'true' : 'false'"
-      :aria-controls="menuId"
+      :aria-controls="open ? menuId : undefined"
       :aria-label="buttonLabel"
       :title="buttonLabel"
       :disabled="Boolean(switchingLocale)"
@@ -60,7 +60,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useId, watch } from "vue";
+import {
+  computed,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  ref,
+  useId,
+  watch,
+} from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import {
@@ -98,11 +106,12 @@ const currentLocale = computed(() => normalizeLocale(locale.value));
 const buttonLabel = computed(() => t("layout.language.trigger"));
 
 const closeMenu = (restoreFocus = false) => {
-  const shouldRestoreFocus = restoreFocus && open.value;
   open.value = false;
 
-  if (shouldRestoreFocus) {
-    triggerRef.value?.focus();
+  if (restoreFocus) {
+    void nextTick(() => {
+      triggerRef.value?.focus();
+    });
   }
 };
 
@@ -120,7 +129,7 @@ const selectLocale = async (targetLocale: SupportedLocale) => {
   }
 
   if (targetLocale === currentLocale.value) {
-    closeMenu();
+    closeMenu(true);
     emit("selected");
     return;
   }
@@ -129,7 +138,7 @@ const selectLocale = async (targetLocale: SupportedLocale) => {
 
   try {
     await switchLocale(router, route, targetLocale);
-    closeMenu();
+    closeMenu(true);
     emit("selected");
   } finally {
     switchingLocale.value = null;

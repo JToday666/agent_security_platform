@@ -7,6 +7,7 @@ import {
   getDatasetDetail,
   type DatasetServiceError,
 } from "@/modules/dataset/api/dataset-api";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import type {
   DatasetCategory,
   DatasetDetail,
@@ -65,9 +66,10 @@ export const useDatasetCatalogStore = defineStore("datasetCatalog", () => {
       return true;
     } catch (fetchError) {
       error.value =
-        fetchError instanceof Error
-          ? fetchError.message
-          : translateRuntimeMessage("dataset.api.catalogLoadFailed");
+        getErrorMessage(
+          fetchError,
+          translateRuntimeMessage("dataset.api.catalogLoadFailed"),
+        );
       return false;
     } finally {
       loading.value = false;

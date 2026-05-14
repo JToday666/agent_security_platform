@@ -3,6 +3,7 @@ import {
   createSuccessEnvelope,
   resolveMockEnvelope,
 } from "@/shared/api/mock-api-utils";
+import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import type {
   AgentArchiveResponse,
   AgentCreatePayload,
@@ -105,7 +106,7 @@ export const verifyMockAgent = async (
     const result = await resolveMockEnvelope(
       createErrorEnvelope(
         40400,
-        error instanceof Error ? error.message : "Agent 验证失败。",
+        getErrorMessage(error, "Agent 验证失败。"),
         null,
       ),
       { delay: MOCK_DELAY_MS },
