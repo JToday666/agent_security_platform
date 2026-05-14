@@ -94,7 +94,9 @@ export const buildTrendLineOption = (
             t("evaluation.charts.evaluationId", { id: item.evaluationId }),
           ),
           t("evaluation.charts.completionDate", {
-            date: escapeHtml(formatShortDate(item.finishedAt ?? item.createdAt)),
+            date: escapeHtml(
+              formatShortDate(item.finishedAt ?? item.createdAt),
+            ),
           }),
           lines,
         ].join("<br/>");
@@ -479,8 +481,11 @@ export const buildSampleScatterOption = (
   color: [OUTCOME_COLORS.success, OUTCOME_COLORS.failed, OUTCOME_COLORS.error],
   tooltip: {
     trigger: "item",
-    formatter: (params: any) => {
-      const value = params.value ?? [];
+    formatter: (params: unknown) => {
+      const value =
+        params && typeof params === "object" && "value" in params
+          ? (params.value as unknown[])
+          : [];
       return t("evaluation.charts.sampleTooltip", {
         difficulty: escapeHtml(value[0]),
         duration: escapeHtml(value[1]),
@@ -504,8 +509,7 @@ export const buildSampleScatterOption = (
   },
   series: (["success", "failed", "error"] as EvaluationSampleOutcome[]).map(
     (outcome) => ({
-      name:
-        t(`evaluation.outcomes.${outcome}`),
+      name: t(`evaluation.outcomes.${outcome}`),
       type: "scatter",
       symbolSize: outcome === "success" ? 8 : 10,
       emphasis: {

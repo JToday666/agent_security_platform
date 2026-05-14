@@ -18,8 +18,6 @@ export interface DatasetCategory {
   subcategories: DatasetSubcategory[];
 }
 
-export type DatasetCategoryViewModel = DatasetCategory;
-
 export interface DatasetCatalogResponse {
   catalogVersion: string;
   categoryCount: number;

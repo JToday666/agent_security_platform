@@ -5,10 +5,11 @@
     :class="`language-switcher--${variant}`"
   >
     <button
+      ref="triggerRef"
       class="language-switcher__trigger"
       type="button"
-      aria-haspopup="menu"
       :aria-expanded="open ? 'true' : 'false'"
+      :aria-controls="menuId"
       :aria-label="buttonLabel"
       :title="buttonLabel"
       :disabled="Boolean(switchingLocale)"
@@ -29,9 +30,9 @@
 
     <Transition name="fade-slide-y">
       <div
+        :id="menuId"
         v-if="open"
         class="language-switcher__menu"
-        role="menu"
         :aria-label="t('layout.language.trigger')"
       >
         <button
@@ -40,7 +41,6 @@
           class="language-switcher__option"
           :class="{ 'is-current': option.locale === currentLocale }"
           type="button"
-          role="menuitem"
           :aria-current="option.locale === currentLocale ? 'true' : undefined"
           :disabled="switchingLocale === option.locale"
           @click="selectLocale(option.locale)"
@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, useId, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import {
@@ -91,12 +91,19 @@ const { locale, t } = useI18n();
 const open = ref(false);
 const switchingLocale = ref<SupportedLocale | null>(null);
 const switcherRoot = ref<HTMLElement | null>(null);
+const triggerRef = ref<HTMLButtonElement | null>(null);
+const menuId = useId();
 
 const currentLocale = computed(() => normalizeLocale(locale.value));
 const buttonLabel = computed(() => t("layout.language.trigger"));
 
-const closeMenu = () => {
+const closeMenu = (restoreFocus = false) => {
+  const shouldRestoreFocus = restoreFocus && open.value;
   open.value = false;
+
+  if (shouldRestoreFocus) {
+    triggerRef.value?.focus();
+  }
 };
 
 const toggleMenu = () => {
@@ -136,8 +143,9 @@ const handleDocumentClick = (event: MouseEvent) => {
 };
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (event.key === "Escape") {
-    closeMenu();
+  if (event.key === "Escape" && open.value) {
+    event.preventDefault();
+    closeMenu(true);
   }
 };
 

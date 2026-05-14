@@ -105,7 +105,7 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import SubmitDatasetCategoryList from "@/modules/submission/components/SubmitDatasetCategoryList.vue";
-import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
+import type { DatasetCategory } from "@/shared/types/dataset-types";
 import type { SubmitDatasetCatalogStatus } from "@/modules/submission/composables/useSubmitDatasetCatalog";
 import FormField from "@/shared/ui/forms/FormField.vue";
 import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
@@ -114,7 +114,7 @@ import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 
 const props = defineProps<{
-  categories: DatasetCategoryViewModel[];
+  categories: DatasetCategory[];
   selectedDatasetIds: string[];
   expandedCategoryIds: string[];
   status: SubmitDatasetCatalogStatus;
@@ -134,7 +134,7 @@ defineEmits<{
 const search = ref("");
 const { t } = useI18n();
 
-const matchesSearch = (category: DatasetCategoryViewModel, keyword: string) => {
+const matchesSearch = (category: DatasetCategory, keyword: string) => {
   if (!keyword) {
     return true;
   }

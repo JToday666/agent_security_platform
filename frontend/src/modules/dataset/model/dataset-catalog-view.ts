@@ -1,5 +1,5 @@
 import type {
-  DatasetCategoryViewModel,
+  DatasetCategory,
   DatasetSubcategory,
 } from "@/shared/types/dataset-types";
 
@@ -52,7 +52,7 @@ const sortDatasets = (
 };
 
 export const buildDatasetCatalogView = (
-  category: DatasetCategoryViewModel,
+  category: DatasetCategory,
   search: string,
   sortKey: DatasetCatalogSortKey,
 ) => {

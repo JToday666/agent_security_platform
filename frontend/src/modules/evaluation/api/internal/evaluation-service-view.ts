@@ -158,7 +158,10 @@ const buildSampleSummary = (score: number | null, totalSamples: number) => {
     return null;
   }
 
-  const riskCount = Math.max(0, Math.round(((100 - score) / 100) * totalSamples));
+  const riskCount = Math.max(
+    0,
+    Math.round(((100 - score) / 100) * totalSamples),
+  );
   const error = Math.max(0, Math.round(riskCount * 0.22));
   const failed = Math.max(0, riskCount - error);
 
@@ -250,7 +253,9 @@ export const buildMockReportPayload = (
   const conservativeScore = Number(state.score.toFixed(1));
   const performanceScore = Number(Math.min(99, state.score + 3.7).toFixed(1));
   const hardScore = Number(Math.max(0, state.score - 11.8).toFixed(1));
-  const unsafeRate = Number(((sampleSummary.failed / sampleSummary.total) * 100).toFixed(1));
+  const unsafeRate = Number(
+    ((sampleSummary.failed / sampleSummary.total) * 100).toFixed(1),
+  );
   const completionRate =
     sampleSummary.total === 0
       ? 0
@@ -306,31 +311,41 @@ export const buildMockReportPayload = (
     },
     breakdowns: {
       outcomeSummary: sampleSummary,
-      difficultyBuckets: ["0.0-0.2", "0.2-0.4", "0.4-0.6", "0.6-0.8", "0.8-1.0"].map(
-        (bucket, index) => {
-          const total = Math.max(1, Math.round(totalSamples / 5));
-          const difficultyPenalty = index * 0.07;
-          const success = Math.max(
-            0,
-            Math.round(total * Math.max(0.18, successRate - difficultyPenalty)),
-          );
-          const error = Math.max(0, Math.round((total - success) * 0.25));
-          const failed = Math.max(0, total - success - error);
-          return {
-            bucket,
-            total,
-            success,
-            failed,
-            error,
-            successRate: total === 0 ? 0 : Number((success / total).toFixed(4)),
-          };
-        },
-      ),
+      difficultyBuckets: [
+        "0.0-0.2",
+        "0.2-0.4",
+        "0.4-0.6",
+        "0.6-0.8",
+        "0.8-1.0",
+      ].map((bucket, index) => {
+        const total = Math.max(1, Math.round(totalSamples / 5));
+        const difficultyPenalty = index * 0.07;
+        const success = Math.max(
+          0,
+          Math.round(total * Math.max(0.18, successRate - difficultyPenalty)),
+        );
+        const error = Math.max(0, Math.round((total - success) * 0.25));
+        const failed = Math.max(0, total - success - error);
+        return {
+          bucket,
+          total,
+          success,
+          failed,
+          error,
+          successRate: total === 0 ? 0 : Number((success / total).toFixed(4)),
+        };
+      }),
       datasetSummaries: state.datasetIds.map((datasetId, index) => {
         const total = 20;
         const localScore = Math.max(48, conservativeScore - index * 3);
-        const failed = Math.max(0, Math.round(((100 - localScore) / 100) * total * 0.68));
-        const error = Math.max(0, Math.round(((100 - localScore) / 100) * total * 0.18));
+        const failed = Math.max(
+          0,
+          Math.round(((100 - localScore) / 100) * total * 0.68),
+        );
+        const error = Math.max(
+          0,
+          Math.round(((100 - localScore) / 100) * total * 0.18),
+        );
         return {
           datasetId,
           datasetName: state.datasetNames[index] ?? datasetId,
@@ -340,22 +355,26 @@ export const buildMockReportPayload = (
           error,
         };
       }),
-      sampleScatterPoints: Array.from({ length: Math.min(totalSamples, 80) }, (_, index) => {
-        const difficulty = Number(((index % 20) / 20 + 0.03).toFixed(2));
-        const durationMs = 11000 + index * 390 + Math.round(difficulty * 9000);
-        const riskBand = index % 11;
-        return {
-          sampleId: `${state.evaluationId}_sample_${String(index + 1).padStart(3, "0")}`,
-          difficulty,
-          durationMs,
-          normalizedResult:
-            riskBand === 0
-              ? ("error" as const)
-              : riskBand <= 2
-                ? ("failed" as const)
-                : ("success" as const),
-        };
-      }),
+      sampleScatterPoints: Array.from(
+        { length: Math.min(totalSamples, 80) },
+        (_, index) => {
+          const difficulty = Number(((index % 20) / 20 + 0.03).toFixed(2));
+          const durationMs =
+            11000 + index * 390 + Math.round(difficulty * 9000);
+          const riskBand = index % 11;
+          return {
+            sampleId: `${state.evaluationId}_sample_${String(index + 1).padStart(3, "0")}`,
+            difficulty,
+            durationMs,
+            normalizedResult:
+              riskBand === 0
+                ? ("error" as const)
+                : riskBand <= 2
+                  ? ("failed" as const)
+                  : ("success" as const),
+          };
+        },
+      ),
     },
     versions: {
       difficultyVersion: "dv_2026q2_v1",
@@ -492,7 +511,10 @@ export const buildResolvedStateFromStored = (
   const controls = buildEvaluationControls(record.status, record.pauseUsed);
   const report = buildReport(record);
   const totalDatasetCount = getDatasetCount(record);
-  const sampleSummary = buildSampleSummary(record.score, totalDatasetCount * 20);
+  const sampleSummary = buildSampleSummary(
+    record.score,
+    totalDatasetCount * 20,
+  );
 
   return {
     evaluationId: record.evaluationId,
@@ -544,7 +566,10 @@ export const buildResolvedStateFromReference = (
   };
 
   const safeScore = record.score ?? 0;
-  const sampleSummary = buildSampleSummary(record.score, record.datasetIds.length * 20);
+  const sampleSummary = buildSampleSummary(
+    record.score,
+    record.datasetIds.length * 20,
+  );
 
   return {
     evaluationId: record.evaluationId,

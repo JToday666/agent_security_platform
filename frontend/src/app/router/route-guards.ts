@@ -19,6 +19,7 @@ export const registerRouteGuards = (router: Router) => {
       return localePath.path;
     }
 
+    RouteLocation.setCurrentLocale(localePath.locale);
     const activeLocale = await activateLocale(localePath.locale);
     RouteLocation.setCurrentLocale(activeLocale);
 

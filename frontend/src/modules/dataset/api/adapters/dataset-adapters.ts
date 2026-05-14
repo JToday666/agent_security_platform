@@ -1,8 +1,6 @@
 import type {
   DatasetCatalogResponse,
   DatasetDetail,
-  DatasetCatalogResponse as FrontendDatasetCatalogResponse,
-  DatasetDetail as FrontendDatasetDetail,
   DatasetMediaItem,
   DatasetResourceLink,
 } from "@/shared/types/dataset-types";
@@ -10,6 +8,9 @@ import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 
 type UnknownRecord = Record<string, unknown>;
+
+const toRecord = (value: unknown): UnknownRecord =>
+  value && typeof value === "object" ? (value as UnknownRecord) : {};
 
 const toStringValue = (value: unknown): string =>
   typeof value === "string" ? value.trim() : "";
@@ -96,55 +97,62 @@ const normalizeMedia = (
 };
 
 const sortDatasetCategories = (
-  left: FrontendDatasetCatalogResponse["categories"][number],
-  right: FrontendDatasetCatalogResponse["categories"][number],
+  left: DatasetCatalogResponse["categories"][number],
+  right: DatasetCatalogResponse["categories"][number],
 ): number =>
   toNumberValue(left.sort, Number.MAX_SAFE_INTEGER) -
     toNumberValue(right.sort, Number.MAX_SAFE_INTEGER) ||
   left.categoryId.localeCompare(right.categoryId);
 
 export const adaptDatasetCatalog = (
-  payload: DatasetCatalogResponse,
-): FrontendDatasetCatalogResponse => {
-  const categories = Array.isArray(payload?.categories)
-    ? payload.categories
+  payload: unknown,
+): DatasetCatalogResponse => {
+  const candidate = toRecord(payload);
+  const categories = Array.isArray(candidate.categories)
+    ? candidate.categories
     : [];
 
   const normalizedCategories = categories
-    .map((category) => ({
-      categoryId: toStringValue(category.categoryId),
-      name:
-        toStringValue(category.name) ||
-        translateRuntimeMessage("dataset.fallback.unnamedCategory"),
-      meaning: toOptionalString(category.meaning),
-      description: toOptionalString(category.description),
-      sort: category.sort == null ? null : toNumberValue(category.sort),
-      enabled: toBooleanValue(category.enabled, true),
-      subcategoryCount: Array.isArray(category.subcategories)
-        ? category.subcategories.length
-        : 0,
-      subcategories: (Array.isArray(category.subcategories)
+    .map((value) => {
+      const category = toRecord(value);
+      const subcategories = Array.isArray(category.subcategories)
         ? category.subcategories
-        : []
-      ).map((dataset) => ({
-        datasetId: toStringValue(dataset.datasetId),
+        : [];
+
+      return {
+        categoryId: toStringValue(category.categoryId),
         name:
-          toStringValue(dataset.name) ||
-          translateRuntimeMessage("dataset.fallback.unnamedBenchmarkItem"),
-        shortDescription: toOptionalString(dataset.shortDescription),
-        sampleCount:
-          dataset.sampleCount == null
-            ? null
-            : toNumberValue(dataset.sampleCount),
-        updatedAt: toOptionalString(dataset.updatedAt),
-        enabled: toBooleanValue(dataset.enabled, true),
-      })),
-    }))
+          toStringValue(category.name) ||
+          translateRuntimeMessage("dataset.fallback.unnamedCategory"),
+        meaning: toOptionalString(category.meaning),
+        description: toOptionalString(category.description),
+        sort: category.sort == null ? null : toNumberValue(category.sort),
+        enabled: toBooleanValue(category.enabled, true),
+        subcategoryCount: subcategories.length,
+        subcategories: subcategories.map((value) => {
+          const dataset = toRecord(value);
+
+          return {
+            datasetId: toStringValue(dataset.datasetId),
+            name:
+              toStringValue(dataset.name) ||
+              translateRuntimeMessage("dataset.fallback.unnamedBenchmarkItem"),
+            shortDescription: toOptionalString(dataset.shortDescription),
+            sampleCount:
+              dataset.sampleCount == null
+                ? null
+                : toNumberValue(dataset.sampleCount),
+            updatedAt: toOptionalString(dataset.updatedAt),
+            enabled: toBooleanValue(dataset.enabled, true),
+          };
+        }),
+      };
+    })
     .filter((category) => category.categoryId.length > 0)
     .sort(sortDatasetCategories);
 
   return {
-    catalogVersion: toStringValue(payload?.catalogVersion) || "",
+    catalogVersion: toStringValue(candidate.catalogVersion) || "",
     categoryCount: normalizedCategories.length,
     subcategoryCount: normalizedCategories.reduce(
       (total, category) => total + category.subcategories.length,
@@ -154,19 +162,14 @@ export const adaptDatasetCatalog = (
   };
 };
 
-export const adaptDatasetDetail = (
-  payload: DatasetDetail,
-): FrontendDatasetDetail => {
-  const category = payload?.category ?? {
-    categoryId: "",
-    name: "",
-    meaning: null,
-  };
+export const adaptDatasetDetail = (payload: unknown): DatasetDetail => {
+  const candidate = toRecord(payload);
+  const category = toRecord(candidate.category);
 
   return {
-    datasetId: toStringValue(payload?.datasetId),
+    datasetId: toStringValue(candidate.datasetId),
     name:
-      toStringValue(payload?.name) ||
+      toStringValue(candidate.name) ||
       translateRuntimeMessage("dataset.fallback.unnamedBenchmarkItem"),
     category: {
       categoryId: toStringValue(category.categoryId),
@@ -175,17 +178,19 @@ export const adaptDatasetDetail = (
         translateRuntimeMessage("dataset.fallback.uncategorized"),
       meaning: toOptionalString(category.meaning),
     },
-    shortDescription: toOptionalString(payload?.shortDescription),
-    fullDescription: toOptionalString(payload?.fullDescription),
+    shortDescription: toOptionalString(candidate.shortDescription),
+    fullDescription: toOptionalString(candidate.fullDescription),
     sampleCount:
-      payload?.sampleCount == null ? null : toNumberValue(payload.sampleCount),
-    updatedAt: toOptionalString(payload?.updatedAt),
-    highlights: toStringArray(payload?.highlights),
-    scenarios: toStringArray(payload?.scenarios),
-    resources: (Array.isArray(payload?.resources) ? payload.resources : [])
+      candidate.sampleCount == null
+        ? null
+        : toNumberValue(candidate.sampleCount),
+    updatedAt: toOptionalString(candidate.updatedAt),
+    highlights: toStringArray(candidate.highlights),
+    scenarios: toStringArray(candidate.scenarios),
+    resources: (Array.isArray(candidate.resources) ? candidate.resources : [])
       .map((resource, index) => normalizeResource(resource, index))
       .filter((resource): resource is DatasetResourceLink => resource !== null),
-    media: (Array.isArray(payload?.media) ? payload.media : [])
+    media: (Array.isArray(candidate.media) ? candidate.media : [])
       .map((media, index) => normalizeMedia(media, index))
       .filter((media): media is DatasetMediaItem => media !== null),
   };

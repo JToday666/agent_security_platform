@@ -24,7 +24,6 @@ const createDefaultForm = (meta: SubmitMetaResponse): SubmitFormState => ({
   docker: {
     imageUri: "",
     command: "",
-    envText: "",
   },
   parameters: {
     difficulty: meta.difficulty.default,

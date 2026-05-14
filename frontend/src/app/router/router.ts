@@ -33,7 +33,12 @@ const resolveSessionScrollKey = (
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [localeRootRedirectRoute, ...publicRoutes, ...userRoutes, notFoundRoute],
+  routes: [
+    localeRootRedirectRoute,
+    ...publicRoutes,
+    ...userRoutes,
+    notFoundRoute,
+  ],
   scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition;

@@ -70,12 +70,13 @@ const loadCatalogFromApi = async (
 
   if (!response.success || !response.data) {
     throw createDatasetServiceError(
-      response.message || translateRuntimeMessage("dataset.api.catalogLoadFailed"),
+      response.message ||
+        translateRuntimeMessage("dataset.api.catalogLoadFailed"),
       response.code,
     );
   }
 
-  return adaptDatasetCatalog(response.data as never);
+  return adaptDatasetCatalog(response.data);
 };
 
 const loadDetailFromApi = async (
@@ -88,12 +89,13 @@ const loadDetailFromApi = async (
 
   if (!response.success || !response.data) {
     throw createDatasetServiceError(
-      response.message || translateRuntimeMessage("dataset.api.detailLoadFailed"),
+      response.message ||
+        translateRuntimeMessage("dataset.api.detailLoadFailed"),
       response.code,
     );
   }
 
-  return adaptDatasetDetail(response.data as never);
+  return adaptDatasetDetail(response.data);
 };
 
 export const getDatasetCatalog = async (
@@ -134,11 +136,9 @@ export const getDatasetCatalog = async (
     return setMemoryCache(catalogCacheKey, catalog);
   }
 
-  return withMemoryCache(
-    catalogCacheKey,
-    () => loadCatalogFromApi(signal),
-    { force },
-  );
+  return withMemoryCache(catalogCacheKey, () => loadCatalogFromApi(signal), {
+    force,
+  });
 };
 
 export const getDatasetDetail = async (

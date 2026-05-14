@@ -77,7 +77,11 @@ const extractPlaceholdersByKey = (
 
   if (value && typeof value === "object" && !Array.isArray(value)) {
     Object.entries(value as JsonRecord).forEach(([key, child]) =>
-      extractPlaceholdersByKey(child, prefix ? `${prefix}.${key}` : key, output),
+      extractPlaceholdersByKey(
+        child,
+        prefix ? `${prefix}.${key}` : key,
+        output,
+      ),
     );
   }
 
@@ -118,7 +122,11 @@ describe("i18n message catalogs", () => {
         (locale) => {
           const candidate = JSON.parse(
             readFileSync(
-              join(messagesRoot, toLocaleDirectoryName(locale), `${domain}.json`),
+              join(
+                messagesRoot,
+                toLocaleDirectoryName(locale),
+                `${domain}.json`,
+              ),
               "utf8",
             ),
           ) as JsonRecord;
@@ -127,7 +135,8 @@ describe("i18n message catalogs", () => {
             schemaKeys,
           );
 
-          const candidatePlaceholdersByKey = extractPlaceholdersByKey(candidate);
+          const candidatePlaceholdersByKey =
+            extractPlaceholdersByKey(candidate);
           schemaKeys.forEach((key) => {
             expect(
               candidatePlaceholdersByKey.get(key) ?? [],
@@ -198,9 +207,15 @@ describe("i18n message catalogs", () => {
     const forbiddenJapaneseTerms = [/リスクエリア/, /リスクカテゴリ/];
 
     MESSAGE_DOMAINS.forEach((domain) => {
-      const zhEntries = flattenStringEntries(readDomainMessages("zh-CN", domain));
-      const enEntries = flattenStringEntries(readDomainMessages("en-US", domain));
-      const jaEntries = flattenStringEntries(readDomainMessages("ja-JP", domain));
+      const zhEntries = flattenStringEntries(
+        readDomainMessages("zh-CN", domain),
+      );
+      const enEntries = flattenStringEntries(
+        readDomainMessages("en-US", domain),
+      );
+      const jaEntries = flattenStringEntries(
+        readDomainMessages("ja-JP", domain),
+      );
 
       enEntries.forEach((entry) => {
         forbiddenEnglishTerms.forEach((term) => {
@@ -216,18 +231,21 @@ describe("i18n message catalogs", () => {
 
       zhEntries.forEach((entry, index) => {
         if (entry.value.includes("评测项")) {
-          expect(enEntries[index]?.value, `en-US/${domain}.${entry.key}`).toMatch(
-            /benchmark item/i,
-          );
+          expect(
+            enEntries[index]?.value,
+            `en-US/${domain}.${entry.key}`,
+          ).toMatch(/benchmark item/i);
         }
 
         if (entry.value.includes("风险域")) {
-          expect(enEntries[index]?.value, `en-US/${domain}.${entry.key}`).toMatch(
-            /risk domain/i,
-          );
-          expect(jaEntries[index]?.value, `ja-JP/${domain}.${entry.key}`).toContain(
-            "リスク領域",
-          );
+          expect(
+            enEntries[index]?.value,
+            `en-US/${domain}.${entry.key}`,
+          ).toMatch(/risk domain/i);
+          expect(
+            jaEntries[index]?.value,
+            `ja-JP/${domain}.${entry.key}`,
+          ).toContain("リスク領域");
         }
       });
     });

@@ -1,12 +1,22 @@
-import { describe, expect, it } from "vitest";
+import { createPinia, setActivePinia } from "pinia";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_LOCALE,
+  SUPPORTED_LOCALES,
+  activateLocale,
+  i18n,
   normalizeLocale,
   resolvePreferredLocale,
   resolveLocalePath,
+  switchLocale,
+  type SupportedLocale,
 } from "@/app/i18n";
 
 describe("locale utilities", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
+
   it("normalizes supported language tags and aliases", () => {
     expect(normalizeLocale("zh")).toBe("zh-CN");
     expect(normalizeLocale("zh-hans")).toBe("zh-CN");
@@ -38,9 +48,7 @@ describe("locale utilities", () => {
       }),
     ).toBe("ja-JP");
 
-    expect(resolvePreferredLocale({ browserLocales: ["es-MX"] })).toBe(
-      "es-ES",
-    );
+    expect(resolvePreferredLocale({ browserLocales: ["es-MX"] })).toBe("es-ES");
 
     expect(resolvePreferredLocale({ browserLocales: ["de-DE"] })).toBe(
       DEFAULT_LOCALE,
@@ -84,4 +92,34 @@ describe("locale utilities", () => {
       redirect: true,
     });
   });
+
+  it.each(
+    SUPPORTED_LOCALES.flatMap((sourceLocale) =>
+      SUPPORTED_LOCALES.filter(
+        (targetLocale) => targetLocale !== sourceLocale,
+      ).map((targetLocale) => [sourceLocale, targetLocale] as const),
+    ),
+  )(
+    "switches path from %s to %s without directly activating the display locale",
+    async (sourceLocale: SupportedLocale, targetLocale: SupportedLocale) => {
+      await activateLocale(sourceLocale);
+
+      const router = {
+        push: vi.fn(),
+      };
+
+      await switchLocale(
+        router as never,
+        {
+          fullPath: `/${sourceLocale}/dataset/A1_identity_leakage?tab=meta#top`,
+        } as never,
+        targetLocale,
+      );
+
+      expect(router.push).toHaveBeenCalledWith(
+        `/${targetLocale}/dataset/A1_identity_leakage?tab=meta#top`,
+      );
+      expect(i18n.global.locale.value).toBe(sourceLocale);
+    },
+  );
 });

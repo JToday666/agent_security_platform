@@ -59,7 +59,7 @@ import type { DatasetCatalogSortKey } from "@/modules/dataset/model/dataset-cata
 import FormField from "@/shared/ui/forms/FormField.vue";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
-import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
+import type { DatasetCategory } from "@/shared/types/dataset-types";
 
 const emit = defineEmits<{
   (event: "select-category", categoryId: string): void;
@@ -69,7 +69,7 @@ const emit = defineEmits<{
 }>();
 
 defineProps<{
-  categories: DatasetCategoryViewModel[];
+  categories: DatasetCategory[];
   activeCategoryId: string;
   search: string;
   sortKey: DatasetCatalogSortKey;

@@ -172,6 +172,9 @@ const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
 const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png"];
 const SUCCESS_MESSAGE_TIMEOUT_MS = 3000;
 
+const getErrorMessage = (error: unknown, fallback: string): string =>
+  error instanceof Error && error.message ? error.message : fallback;
+
 const form = reactive({
   username: "",
   email: "",
@@ -285,8 +288,12 @@ const onAvatarChange = async (event: Event) => {
     avatarPreview.value = null;
     hasAvatarError.value = false;
     setMessage(t("auth.profile.avatarUpdated"), "success");
-  } catch (error: any) {
-    setMessage(error.message || t("auth.profile.avatarUploadFailed"), "error", false);
+  } catch (error: unknown) {
+    setMessage(
+      getErrorMessage(error, t("auth.profile.avatarUploadFailed")),
+      "error",
+      false,
+    );
     avatarPreview.value = null;
   } finally {
     uploading.value = false;
@@ -338,8 +345,12 @@ const handleSubmit = async () => {
     setMessage(t("auth.profile.updateSuccess"), "success");
     form.password = "";
     form.confirmPassword = "";
-  } catch (error: any) {
-    setMessage(error.message || t("auth.profile.updateFailed"), "error", false);
+  } catch (error: unknown) {
+    setMessage(
+      getErrorMessage(error, t("auth.profile.updateFailed")),
+      "error",
+      false,
+    );
   } finally {
     submitting.value = false;
   }

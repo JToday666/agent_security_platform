@@ -31,10 +31,10 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import DatasetSubcategoryCard from "@/modules/dataset/components/DatasetSubcategoryCard.vue";
 import { getCategoryTheme } from "@/modules/dataset/lib/dataset-utils";
-import type { DatasetCategoryViewModel } from "@/shared/types/dataset-types";
+import type { DatasetCategory } from "@/shared/types/dataset-types";
 
 const props = defineProps<{
-  category: DatasetCategoryViewModel;
+  category: DatasetCategory;
 }>();
 
 const { t } = useI18n();

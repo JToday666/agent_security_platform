@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from "node:url";
 
 import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 
 const normalizeModuleId = (id: string) => id.replace(/\\/g, "/");
 
@@ -55,7 +56,15 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      VueI18nPlugin({
+        include: [
+          fileURLToPath(new URL("./src/app/i18n/messages/**", import.meta.url)),
+        ],
+        strictMessage: false,
+      }),
+    ],
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),

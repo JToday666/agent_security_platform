@@ -48,6 +48,9 @@ const normalizeUser = (user: UserPayload): User => ({
   avatarUrl: normalizeAvatarUrl(user.avatarUrl ?? user.avatar_url ?? null),
 });
 
+const getErrorMessage = (error: unknown, fallback: string): string =>
+  error instanceof Error && error.message ? error.message : fallback;
+
 export const useUserStore = defineStore("user", () => {
   const showLogin = ref(false);
   const token = ref<string | null>(
@@ -132,10 +135,11 @@ export const useUserStore = defineStore("user", () => {
       throw new Error(
         res.message || translateRuntimeMessage("auth.storeErrors.loginFailed"),
       );
-    } catch (error: any) {
-      const message =
-        error.message ||
-        translateRuntimeMessage("auth.storeErrors.loginInvalid");
+    } catch (error: unknown) {
+      const message = getErrorMessage(
+        error,
+        translateRuntimeMessage("auth.storeErrors.loginInvalid"),
+      );
       throw new Error(message);
     }
   };
@@ -158,12 +162,14 @@ export const useUserStore = defineStore("user", () => {
       }
 
       throw new Error(
-        res.message || translateRuntimeMessage("auth.storeErrors.registerFailed"),
+        res.message ||
+          translateRuntimeMessage("auth.storeErrors.registerFailed"),
       );
-    } catch (error: any) {
-      const message =
-        error.message ||
-        translateRuntimeMessage("auth.storeErrors.registerConflict");
+    } catch (error: unknown) {
+      const message = getErrorMessage(
+        error,
+        translateRuntimeMessage("auth.storeErrors.registerConflict"),
+      );
       throw new Error(message);
     }
   };
@@ -217,10 +223,11 @@ export const useUserStore = defineStore("user", () => {
       throw new Error(
         res.message || translateRuntimeMessage("auth.storeErrors.updateFailed"),
       );
-    } catch (error: any) {
-      const message =
-        error.message ||
-        translateRuntimeMessage("auth.storeErrors.updateFailed");
+    } catch (error: unknown) {
+      const message = getErrorMessage(
+        error,
+        translateRuntimeMessage("auth.storeErrors.updateFailed"),
+      );
       throw new Error(message);
     }
   };
@@ -247,10 +254,11 @@ export const useUserStore = defineStore("user", () => {
         res.message ||
           translateRuntimeMessage("auth.storeErrors.avatarUploadFailed"),
       );
-    } catch (error: any) {
-      const message =
-        error.message ||
-        translateRuntimeMessage("auth.storeErrors.avatarUploadFailed");
+    } catch (error: unknown) {
+      const message = getErrorMessage(
+        error,
+        translateRuntimeMessage("auth.storeErrors.avatarUploadFailed"),
+      );
       throw new Error(message);
     }
   };

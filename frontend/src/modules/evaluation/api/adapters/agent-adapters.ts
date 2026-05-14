@@ -21,22 +21,9 @@ import {
   normalizeEvaluationSampleSummary,
   normalizeRepresentativeSamples,
 } from "./report-adapters";
+import { EVALUATION_STATUS_OPTIONS } from "@/modules/evaluation/lib/evaluation-status";
 
 type UnknownRecord = Record<string, unknown>;
-
-const VALID_EVALUATION_STATUSES: EvaluationStatus[] = [
-  "queued",
-  "pending",
-  "running",
-  "pausing",
-  "paused",
-  "terminating",
-  "canceling",
-  "completed",
-  "terminated",
-  "canceled",
-  "failed",
-] as const;
 
 const VALID_FINALIZATION_REASONS: EvaluationFinalizationReason[] = [
   "completed",
@@ -93,7 +80,7 @@ const toStringArray = (value: unknown): string[] =>
 
 const normalizeEvaluationStatus = (value: unknown): EvaluationStatus => {
   const candidate = toStringValue(value) as EvaluationStatus;
-  return VALID_EVALUATION_STATUSES.includes(candidate) ? candidate : "failed";
+  return EVALUATION_STATUS_OPTIONS.includes(candidate) ? candidate : "failed";
 };
 
 const normalizeFinalizationReason = (
@@ -200,7 +187,8 @@ export const adaptSubmitMeta = (value: unknown): SubmitMetaResponse => {
       default: 30,
     }),
     publicToLeaderboard:
-      candidate.publicToLeaderboard && typeof candidate.publicToLeaderboard === "object"
+      candidate.publicToLeaderboard &&
+      typeof candidate.publicToLeaderboard === "object"
         ? {
             default: toBooleanValue(
               (candidate.publicToLeaderboard as UnknownRecord).default,
@@ -210,7 +198,8 @@ export const adaptSubmitMeta = (value: unknown): SubmitMetaResponse => {
         : undefined,
     leaderboardDisplayMode: {
       default: normalizeLeaderboardDisplayMode(
-        (candidate.leaderboardDisplayMode as UnknownRecord | undefined)?.default,
+        (candidate.leaderboardDisplayMode as UnknownRecord | undefined)
+          ?.default,
         "public",
       ),
       options: normalizeLeaderboardDisplayOptions(

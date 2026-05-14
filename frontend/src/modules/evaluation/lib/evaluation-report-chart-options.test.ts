@@ -127,7 +127,7 @@ describe("evaluation report chart options", () => {
     const html = formatter([
       {
         dataIndex: 0,
-        marker: "<span class=\"marker\"></span>",
+        marker: '<span class="marker"></span>',
         seriesName: "Metric <strong>",
         value: 88,
       },

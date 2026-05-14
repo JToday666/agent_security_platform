@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "pnpm run type-check && pnpm run build-only",
     "build-only": "vite build",
+    "lint": "eslint . --max-warnings=0",
     "preview": "vite preview",
     "type-check": "vue-tsc -b",
     "test": "vitest run --configLoader native --passWithNoTests",

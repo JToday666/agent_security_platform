@@ -1,8 +1,6 @@
 export type SubmitMethod = "api" | "docker";
 export type LeaderboardDisplayMode = "public" | "anonymous";
-export type LeaderboardVisibilityStatus =
-  | LeaderboardDisplayMode
-  | "unranked";
+export type LeaderboardVisibilityStatus = LeaderboardDisplayMode | "unranked";
 export type EvaluationStatus =
   | "queued"
   | "pending"
@@ -333,7 +331,6 @@ export interface SubmitFormState {
   docker: {
     imageUri: string;
     command: string;
-    envText: string;
   };
   parameters: SubmitParameters;
   leaderboardDisplayMode: LeaderboardDisplayMode;

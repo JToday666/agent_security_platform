@@ -48,7 +48,7 @@ export const getLiveSubmitMeta = async (): Promise<SubmitMetaResponse> =>
         );
       }
 
-      return adaptSubmitMeta(response.data as never);
+      return adaptSubmitMeta(response.data);
     },
     { force: false },
   );
@@ -59,10 +59,7 @@ export const precheckLiveAgent = async (
   const response = await request.post<{
     ok: boolean;
     warnings?: Array<string | { message?: string }>;
-  }>(
-    "/evaluations/validate",
-    buildEvaluationCreatePayload(payload),
-  );
+  }>("/evaluations/validate", buildEvaluationCreatePayload(payload));
 
   if (!response.success || !response.data) {
     throw createServiceError(
@@ -77,7 +74,7 @@ export const precheckLiveAgent = async (
     warnings: Array.isArray(response.data.warnings)
       ? response.data.warnings
           .map((item) =>
-            typeof item === "string" ? item : item.message?.trim() ?? "",
+            typeof item === "string" ? item : (item.message?.trim() ?? ""),
           )
           .filter((item) => item.length > 0)
       : [],
@@ -94,7 +91,8 @@ export const submitLiveAgent = async (
 
   if (!response.success || !response.data) {
     throw createServiceError(
-      response.message || translateRuntimeMessage("evaluation.api.submitFailed"),
+      response.message ||
+        translateRuntimeMessage("evaluation.api.submitFailed"),
       response.code,
     );
   }
@@ -168,7 +166,9 @@ export const getLiveEvaluationDetail = async (
 export const getLiveEvaluationReport = async (
   evaluationId: string,
 ): Promise<EvaluationReportPayload> => {
-  const response = await request.get<unknown>(`/evaluations/${evaluationId}/report`);
+  const response = await request.get<unknown>(
+    `/evaluations/${evaluationId}/report`,
+  );
 
   if (!response.success || !response.data) {
     throw createServiceError(
@@ -196,7 +196,8 @@ export const postLiveEvaluationAction = async (
 
   if (!response.success || !response.data) {
     throw createServiceError(
-      response.message || translateRuntimeMessage("evaluation.api.actionFailed"),
+      response.message ||
+        translateRuntimeMessage("evaluation.api.actionFailed"),
       response.code,
     );
   }
