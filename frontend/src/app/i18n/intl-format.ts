@@ -7,7 +7,8 @@ export const formatNumber = (
   value: number,
   options?: Intl.NumberFormatOptions,
   locale?: SupportedLocale,
-): string => new Intl.NumberFormat(resolveLocale(locale), options).format(value);
+): string =>
+  new Intl.NumberFormat(resolveLocale(locale), options).format(value);
 
 export const formatDateTime = (
   value: Date | number | string,
@@ -22,7 +23,11 @@ export const formatPercent = (
   value: number,
   locale?: SupportedLocale,
 ): string =>
-  formatNumber(value, {
-    maximumFractionDigits: 1,
-    style: "percent",
-  }, locale);
+  formatNumber(
+    value,
+    {
+      maximumFractionDigits: 1,
+      style: "percent",
+    },
+    locale,
+  );

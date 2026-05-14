@@ -230,7 +230,11 @@ export const validateSubmitPayload = (
     fieldErrors.requestId = t("submission.validation.requestIdInvalidField");
   }
 
-  if (!meta.leaderboardDisplayMode.options.includes(payload.leaderboardDisplayMode)) {
+  if (
+    !meta.leaderboardDisplayMode.options.includes(
+      payload.leaderboardDisplayMode,
+    )
+  ) {
     errors.push(t("submission.validation.leaderboardModeUnavailable"));
   }
 

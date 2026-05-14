@@ -1,9 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import PublicLayout from "@/app/layouts/PublicLayout.vue";
-import {
-  resolveLocalePath,
-  resolveRuntimePreferredLocale,
-} from "@/app/i18n";
+import { resolveLocalePath, resolveRuntimePreferredLocale } from "@/app/i18n";
 import { ROUTE_NAME } from "@/app/router/route-names";
 
 export const localeRootRedirectRoute: RouteRecordRaw = {

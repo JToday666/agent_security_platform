@@ -3,7 +3,7 @@
     class="status-tag"
     :class="{ 'status-tag--icon-only': iconOnly }"
     :tone="resolved.tone"
-    :size="size"
+    :size="resolvedSize"
   >
     <AppIcon
       v-if="resolved.icon"
@@ -28,71 +28,66 @@ import type {
 import AppIcon from "../branding/AppIcon.vue";
 import Tag from "./UiTag.vue";
 import {
+  getEvaluationStatusIcon,
   getEvaluationStatusLabel,
-  getEvaluationStatusTone,
+  getEvaluationStatusTagTone,
 } from "@/modules/evaluation/lib/evaluation-status";
+import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 
-type StatusTagKind =
-  | "evaluation"
-  | "leaderboard"
-  | "method"
-  | "report";
+type StatusTagTone =
+  | "neutral"
+  | "brand"
+  | "info"
+  | "success"
+  | "warning"
+  | "danger"
+  | "muted";
 
-const props = withDefaults(
-  defineProps<{
-    kind: StatusTagKind;
-    value:
-      | EvaluationStatus
-      | SubmitMethod
-      | LeaderboardVisibilityStatus
-      | "available"
-      | "pending"
-      | "missing"
-      | boolean;
-    size?: "sm" | "md";
-    iconOnly?: boolean;
-  }>(),
-  {
-    size: "md",
-    iconOnly: false,
-  },
-);
+type ReportTagValue = "available" | "pending" | "missing";
+
+interface StatusTagBaseProps {
+  size?: "sm" | "md";
+  iconOnly?: boolean;
+}
+
+type StatusTagProps = StatusTagBaseProps &
+  (
+    | {
+        kind: "evaluation";
+        value: EvaluationStatus;
+      }
+    | {
+        kind: "leaderboard";
+        value: LeaderboardVisibilityStatus;
+      }
+    | {
+        kind: "method";
+        value: SubmitMethod;
+      }
+    | {
+        kind: "report";
+        value: ReportTagValue;
+      }
+  );
+
+interface ResolvedStatusTag {
+  label: string;
+  tone: StatusTagTone;
+  icon: AppIconName;
+}
+
+const props = defineProps<StatusTagProps>();
 
 const { t } = useI18n();
+const resolvedSize = computed(() => props.size ?? "md");
+const iconOnly = computed(() => props.iconOnly ?? false);
 
-const resolved = computed(() => {
+const resolved = computed<ResolvedStatusTag>(() => {
   if (props.kind === "evaluation") {
-    const toneMap = {
-      pending: "warning",
-      running: "info",
-      paused: "warning",
-      completed: "success",
-      terminated: "brand",
-      canceled: "danger",
-      failed: "danger",
-    } as const;
-    const status = props.value as EvaluationStatus;
-    const toneKey = getEvaluationStatusTone(status);
-
     return {
-      label: getEvaluationStatusLabel(status, t),
-      tone:
-        toneMap[toneKey as keyof typeof toneMap] ??
-        ("neutral" as const),
-      icon:
-        status === "completed"
-          ? "app:status.completed"
-            : status === "running"
-              ? "app:status.running"
-              : status === "paused"
-                ? "app:status.paused"
-                : status === "pending" || status === "queued"
-                  ? "app:status.pending"
-                : status === "terminated"
-                  ? "app:status.terminated"
-                  : status === "canceled"
-                    ? "app:status.canceled"
-                    : "app:status.failed",
+      label: getEvaluationStatusLabel(props.value, t),
+      tone: getEvaluationStatusTagTone(props.value),
+      icon: getEvaluationStatusIcon(props.value),
     };
   }
 
@@ -127,7 +122,7 @@ const resolved = computed(() => {
       : { label: "API", tone: "info" as const, icon: "app:method.api" };
   }
 
-  if (props.value === "available") {
+  if (props.kind === "report" && props.value === "available") {
     return {
       label: t("common.status.ready"),
       tone: "success" as const,
@@ -135,7 +130,7 @@ const resolved = computed(() => {
     };
   }
 
-  if (props.value === "pending") {
+  if (props.kind === "report" && props.value === "pending") {
     return {
       label: t("common.status.running"),
       tone: "warning" as const,

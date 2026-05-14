@@ -49,8 +49,6 @@ describe("locale message loading", () => {
 
     expect(i18n.global.locale.value).toBe("ja-JP");
     expect(document.documentElement.lang).toBe("ja-JP");
-    expect(localStorage.getItem(STORAGE_KEYS.i18n.displayLocale)).toBe(
-      "ja-JP",
-    );
+    expect(localStorage.getItem(STORAGE_KEYS.i18n.displayLocale)).toBe("ja-JP");
   });
 });

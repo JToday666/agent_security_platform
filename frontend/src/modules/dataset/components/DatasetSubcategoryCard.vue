@@ -53,7 +53,7 @@ import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import type {
-  DatasetCategoryViewModel,
+  DatasetCategory,
   DatasetSubcategory,
 } from "@/shared/types/dataset-types";
 import { useUserStore } from "@/modules/account/stores/userStore";
@@ -66,7 +66,7 @@ import {
 
 const props = defineProps<{
   dataset: DatasetSubcategory;
-  category: DatasetCategoryViewModel;
+  category: DatasetCategory;
 }>();
 
 const { t } = useI18n();

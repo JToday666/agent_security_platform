@@ -53,7 +53,8 @@ export interface EvaluationSampleBase {
 const formatOptionalDateTime = (
   value?: string | null,
   t: AppTranslator = translateRuntimeMessage,
-): string => (value ? formatDateTimeLabel(value) : t("evaluation.common.noReturn"));
+): string =>
+  value ? formatDateTimeLabel(value) : t("evaluation.common.noReturn");
 
 const formatRate = (value: number): string => `${Math.round(value)}%`;
 
@@ -230,12 +231,18 @@ export const buildEvaluationDetailGroups = (
     title: t("evaluation.sections.submit"),
     icon: "app:evaluation.submit",
     items: [
-      { label: t("evaluation.summary.submitMethod"), value: detail.submitMethod.toUpperCase() },
+      {
+        label: t("evaluation.summary.submitMethod"),
+        value: detail.submitMethod.toUpperCase(),
+      },
       {
         label: t("evaluation.summary.leaderboardStatus"),
         value: getLeaderboardStatusLabel(detail, t),
       },
-      { label: t("evaluation.summary.currentStatus"), value: detail.progress.statusText },
+      {
+        label: t("evaluation.summary.currentStatus"),
+        value: detail.progress.statusText,
+      },
     ],
   },
   {
@@ -260,14 +267,20 @@ export const buildEvaluationDetailGroups = (
     title: t("evaluation.sections.runParameters"),
     icon: "app:evaluation.runParameters",
     items: [
-      { label: t("evaluation.summary.difficulty"), value: String(detail.parameters.difficulty) },
+      {
+        label: t("evaluation.summary.difficulty"),
+        value: String(detail.parameters.difficulty),
+      },
       {
         label: t("evaluation.summary.timeout"),
         value: t("evaluation.summary.timeoutValue", {
           value: detail.parameters.timeoutMinutes,
         }),
       },
-      { label: t("evaluation.summary.maxSteps"), value: String(detail.parameters.maxSteps) },
+      {
+        label: t("evaluation.summary.maxSteps"),
+        value: String(detail.parameters.maxSteps),
+      },
     ],
   },
   {
@@ -282,7 +295,8 @@ export const buildEvaluationDetailGroups = (
       },
       {
         label: t("evaluation.summary.scoreModel"),
-        value: report?.versions.scoreModelVersion ?? t("evaluation.common.noReturn"),
+        value:
+          report?.versions.scoreModelVersion ?? t("evaluation.common.noReturn"),
       },
     ],
   },

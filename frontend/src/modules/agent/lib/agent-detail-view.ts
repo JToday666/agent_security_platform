@@ -107,7 +107,9 @@ export const getAgentVerificationResultLabel = (
     ? t("agent.verification.passedResult")
     : t("agent.verification.failedResult");
 
-export const getAgentVerificationResultIcon = (detail: AgentDetail): AppIconName =>
+export const getAgentVerificationResultIcon = (
+  detail: AgentDetail,
+): AppIconName =>
   detail.lastVerification?.passed
     ? "app:status.completed"
     : "app:status.warning";
@@ -116,10 +118,23 @@ export const buildAgentSummaryItems = (
   detail: AgentDetail,
   t: AppTranslator = translateRuntimeMessage,
 ): AgentDetailTextItem[] => [
-  { label: t("agent.detail.items.status"), value: detail.status, kind: "status" },
-  { label: t("agent.detail.items.invokeMode"), value: getInvokeModeLabel(detail.invokeMode, t) },
-  { label: t("agent.detail.items.recentVerification"), value: formatAgentVerificationLabel(detail, t) },
-  { label: t("agent.detail.items.updatedAt"), value: formatDateTimeLabel(detail.updatedAt) },
+  {
+    label: t("agent.detail.items.status"),
+    value: detail.status,
+    kind: "status",
+  },
+  {
+    label: t("agent.detail.items.invokeMode"),
+    value: getInvokeModeLabel(detail.invokeMode, t),
+  },
+  {
+    label: t("agent.detail.items.recentVerification"),
+    value: formatAgentVerificationLabel(detail, t),
+  },
+  {
+    label: t("agent.detail.items.updatedAt"),
+    value: formatDateTimeLabel(detail.updatedAt),
+  },
 ];
 
 export const buildAgentConnectionItems = (
@@ -128,15 +143,36 @@ export const buildAgentConnectionItems = (
 ): AgentDetailTextItem[] => {
   const { connection } = detail;
   return [
-    { label: t("agent.detail.items.connectionBaseUrl"), value: displayValue(connection.baseUrl) },
-    { label: t("agent.detail.items.taskPath"), value: displayValue(connection.invokePath) },
+    {
+      label: t("agent.detail.items.connectionBaseUrl"),
+      value: displayValue(connection.baseUrl),
+    },
+    {
+      label: t("agent.detail.items.taskPath"),
+      value: displayValue(connection.invokePath),
+    },
     {
       label: t("agent.detail.items.resultPathTemplate"),
       value: displayValue(connection.resultPathTemplate),
     },
-    { label: t("agent.detail.items.requestTimeout"), value: t("agent.common.seconds", { value: connection.requestTimeoutSeconds }) },
-    { label: t("agent.detail.items.pollInterval"), value: t("agent.common.seconds", { value: connection.pollIntervalSeconds }) },
-    { label: t("agent.detail.items.pollTimeout"), value: t("agent.common.seconds", { value: connection.pollTimeoutSeconds }) },
+    {
+      label: t("agent.detail.items.requestTimeout"),
+      value: t("agent.common.seconds", {
+        value: connection.requestTimeoutSeconds,
+      }),
+    },
+    {
+      label: t("agent.detail.items.pollInterval"),
+      value: t("agent.common.seconds", {
+        value: connection.pollIntervalSeconds,
+      }),
+    },
+    {
+      label: t("agent.detail.items.pollTimeout"),
+      value: t("agent.common.seconds", {
+        value: connection.pollTimeoutSeconds,
+      }),
+    },
   ];
 };
 
@@ -144,9 +180,17 @@ export const buildAgentAuthItems = (
   detail: AgentDetail,
   t: AppTranslator = translateRuntimeMessage,
 ): AgentDetailTextItem[] => [
-  { label: t("agent.detail.items.authMethod"), value: getAgentAuthLabel(detail, t) },
+  {
+    label: t("agent.detail.items.authMethod"),
+    value: getAgentAuthLabel(detail, t),
+  },
   ...(getAgentAuthHeaderName(detail)
-    ? [{ label: t("agent.detail.items.authHeaderName"), value: getAgentAuthHeaderName(detail) }]
+    ? [
+        {
+          label: t("agent.detail.items.authHeaderName"),
+          value: getAgentAuthHeaderName(detail),
+        },
+      ]
     : []),
   {
     label: t("agent.detail.items.credentialStatus"),
@@ -221,8 +265,14 @@ export const buildAgentVerificationStatItems = (
         ? formatDateTimeLabel(detail.verifiedAt)
         : t("agent.common.unknown"),
     },
-    { label: t("agent.verification.errors"), value: String(verification.errors.length) },
-    { label: t("agent.verification.warnings"), value: String(verification.warnings.length) },
+    {
+      label: t("agent.verification.errors"),
+      value: String(verification.errors.length),
+    },
+    {
+      label: t("agent.verification.warnings"),
+      value: String(verification.warnings.length),
+    },
   ];
 };
 

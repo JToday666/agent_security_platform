@@ -30,9 +30,7 @@ export const getEvaluationLeaderboardStatus = (
     return "unranked";
   }
 
-  return record.leaderboardDisplayMode === "anonymous"
-    ? "anonymous"
-    : "public";
+  return record.leaderboardDisplayMode === "anonymous" ? "anonymous" : "public";
 };
 
 export const filterEvaluationRecords = (

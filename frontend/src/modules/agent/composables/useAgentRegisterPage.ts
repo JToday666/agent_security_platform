@@ -51,7 +51,10 @@ const customFieldTypeValues: AgentCustomFieldType[] = [
 
 export const buildInvokeModeOptions = (t: AppTranslator) => [
   { label: t("agent.display.invokeModes.submitPoll"), value: "submit_poll" },
-  { label: t("agent.display.invokeModes.syncResponse"), value: "sync_response" },
+  {
+    label: t("agent.display.invokeModes.syncResponse"),
+    value: "sync_response",
+  },
 ];
 
 export const buildAuthOptions = (t: AppTranslator) => [
@@ -75,25 +78,38 @@ export const buildPreviewTabs = (t: AppTranslator) => [
   { label: t("agent.preview.responseTab"), value: "response" as const },
 ];
 
-export const buildInputMappingItems = (t: AppTranslator): Array<{
+export const buildInputMappingItems = (
+  t: AppTranslator,
+): Array<{
   key: keyof AgentInputMapping;
   label: string;
 }> => [
   { key: "task", label: t("agent.registerForm.inputMappingLabels.task") },
-  { key: "entryUrl", label: t("agent.registerForm.inputMappingLabels.entryUrl") },
+  {
+    key: "entryUrl",
+    label: t("agent.registerForm.inputMappingLabels.entryUrl"),
+  },
   {
     key: "timeoutSeconds",
     label: t("agent.registerForm.inputMappingLabels.timeoutSeconds"),
   },
-  { key: "sampleId", label: t("agent.registerForm.inputMappingLabels.sampleId") },
+  {
+    key: "sampleId",
+    label: t("agent.registerForm.inputMappingLabels.sampleId"),
+  },
   {
     key: "evaluationId",
     label: t("agent.registerForm.inputMappingLabels.evaluationId"),
   },
-  { key: "maxSteps", label: t("agent.registerForm.inputMappingLabels.maxSteps") },
+  {
+    key: "maxSteps",
+    label: t("agent.registerForm.inputMappingLabels.maxSteps"),
+  },
 ];
 
-export const buildOutputMappingItems = (t: AppTranslator): Array<{
+export const buildOutputMappingItems = (
+  t: AppTranslator,
+): Array<{
   key: keyof AgentOutputMapping;
   label: string;
 }> => [
@@ -112,7 +128,9 @@ export const buildOutputMappingItems = (t: AppTranslator): Array<{
   },
 ];
 
-export type AgentPreviewTab = ReturnType<typeof buildPreviewTabs>[number]["value"];
+export type AgentPreviewTab = ReturnType<
+  typeof buildPreviewTabs
+>[number]["value"];
 export type AgentRegisterCustomFieldsChoice = "unset" | "use" | "skip";
 
 export const useAgentRegisterPage = () => {
@@ -179,10 +197,13 @@ export const useAgentRegisterPage = () => {
     ),
   );
   const registerSteps = computed(() =>
-    buildAgentRegisterSteps({
-      templateRequiresCustomFields: templateRequiresCustomFields.value,
-      usesNoTemplate: usesNoTemplate.value,
-    }, t),
+    buildAgentRegisterSteps(
+      {
+        templateRequiresCustomFields: templateRequiresCustomFields.value,
+        usesNoTemplate: usesNoTemplate.value,
+      },
+      t,
+    ),
   );
   const currentStep = computed(
     () =>
@@ -460,7 +481,9 @@ export const useAgentRegisterPage = () => {
   };
 
   const setCustomFieldType = (fieldId: string, value: string) => {
-    const nextType = customFieldTypeValues.includes(value as AgentCustomFieldType)
+    const nextType = customFieldTypeValues.includes(
+      value as AgentCustomFieldType,
+    )
       ? (value as AgentCustomFieldType)
       : "string";
     const field = form.value.customRequestFields.find(

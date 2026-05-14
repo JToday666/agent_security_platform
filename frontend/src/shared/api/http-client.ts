@@ -101,7 +101,8 @@ const normalizeValidationErrors = (payload: any): ApiValidationErrorItem[] => {
     return (payload.detail as LegacyValidationErrorItem[]).map((item) => ({
       field:
         item.loc?.filter((value) => value !== "body").join(".") || "request",
-      reason: item.msg || translateRuntimeMessage("network.validation.parameter"),
+      reason:
+        item.msg || translateRuntimeMessage("network.validation.parameter"),
     }));
   }
 

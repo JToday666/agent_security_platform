@@ -17,7 +17,7 @@
       @click="handleSelect(step.id)"
     >
       <span class="agent-register-steps__bar" aria-hidden="true" />
-      <span class="agent-register-steps__tooltip" role="tooltip">
+      <span class="agent-register-steps__tooltip" aria-hidden="true">
         {{ step.title }}
       </span>
     </button>
