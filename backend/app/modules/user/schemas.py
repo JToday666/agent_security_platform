@@ -2,7 +2,7 @@
 
 from pydantic import ConfigDict, EmailStr, Field, field_validator
 
-from app.platform.schemas import CamelModel
+from app.platform.schemas import CamelModel, to_camel
 
 
 class UserProfile(CamelModel):
@@ -13,7 +13,11 @@ class UserProfile(CamelModel):
     email: EmailStr
     avatar_url: str | None = None
 
-    model_config = ConfigDict(from_attributes=True, populate_by_name=True, alias_generator=CamelModel.model_config["alias_generator"])
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True,
+        alias_generator=to_camel,
+    )
 
 
 class ProfileUpdateRequest(CamelModel):

@@ -27,7 +27,10 @@ async def get_evaluation_score(
     return success_payload(response.model_dump(by_alias=True))
 
 
-@router.post("/{evaluationId}/score/recalculate", response_model=Envelope[EvaluationScoreResponse])
+@router.post(
+    "/{evaluationId}/score/recalculate",
+    response_model=Envelope[EvaluationScoreResponse],
+)
 async def recalculate_evaluation_score(
     evaluationId: str,
     payload: ScoreRecalculateRequest,

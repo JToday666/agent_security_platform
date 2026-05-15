@@ -18,7 +18,9 @@ class AgentRepository:
         await self.db.refresh(agent)
         return agent
 
-    async def list_for_user(self, user_id: int, *, include_archived: bool, status: str | None) -> list[Agent]:
+    async def list_for_user(
+        self, user_id: int, *, include_archived: bool, status: str | None
+    ) -> list[Agent]:
         stmt = select(Agent).where(Agent.user_id == user_id)
         if not include_archived:
             stmt = stmt.where(Agent.status != "archived")
@@ -28,7 +30,9 @@ class AgentRepository:
         return list((await self.db.execute(stmt)).scalars())
 
     async def get_by_public_id(self, public_id: str) -> Agent | None:
-        return (await self.db.execute(select(Agent).where(Agent.public_id == public_id))).scalar_one_or_none()
+        return (
+            await self.db.execute(select(Agent).where(Agent.public_id == public_id))
+        ).scalar_one_or_none()
 
     async def commit(self) -> None:
         await self.db.commit()

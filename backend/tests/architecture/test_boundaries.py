@@ -25,11 +25,16 @@ def test_default_storage_roots_are_repo_level_data_and_var(monkeypatch) -> None:
     settings = platform_config.Settings(_env_file=None)
 
     assert settings.dataset_root == platform_config.REPO_ROOT / "data" / "datasets"
-    assert settings.dataset_metadata_root == platform_config.REPO_ROOT / "data" / "metadata"
+    assert (
+        settings.dataset_metadata_root
+        == platform_config.REPO_ROOT / "data" / "metadata"
+    )
     assert settings.runtime_root == platform_config.REPO_ROOT / "var" / "backend"
 
 
-def test_application_code_uses_platform_kernel_instead_of_shared_imports(backend_root: Path) -> None:
+def test_application_code_uses_platform_kernel_instead_of_shared_imports(
+    backend_root: Path,
+) -> None:
     target_files = [
         *backend_root.joinpath("app").rglob("*.py"),
         backend_root / "run.py",
@@ -47,22 +52,30 @@ def test_application_code_uses_platform_kernel_instead_of_shared_imports(backend
     assert violations == []
 
 
-def test_dataset_import_pipeline_has_explicit_database_boundary(backend_root: Path) -> None:
-    assert importlib.util.find_spec("app.modules.datasets.ingestion.database") is not None
-
-    pipeline_source = (backend_root / "app" / "modules" / "datasets" / "ingestion" / "pipeline.py").read_text(
-        encoding="utf-8"
+def test_dataset_import_pipeline_has_explicit_database_boundary(
+    backend_root: Path,
+) -> None:
+    assert (
+        importlib.util.find_spec("app.modules.datasets.ingestion.database") is not None
     )
+
+    pipeline_source = (
+        backend_root / "app" / "modules" / "datasets" / "ingestion" / "pipeline.py"
+    ).read_text(encoding="utf-8")
     assert "create_engine" not in pipeline_source
     assert "sessionmaker" not in pipeline_source
 
 
-def test_worker_execution_uses_explicit_persistence_and_job_boundaries(backend_root: Path) -> None:
+def test_worker_execution_uses_explicit_persistence_and_job_boundaries(
+    backend_root: Path,
+) -> None:
     assert importlib.util.find_spec("app.worker.execution_concurrency") is not None
     assert importlib.util.find_spec("app.worker.execution_jobs") is not None
     assert importlib.util.find_spec("app.worker.execution_persistence") is not None
 
-    execution_source = (backend_root / "app" / "worker" / "execution.py").read_text(encoding="utf-8")
+    execution_source = (backend_root / "app" / "worker" / "execution.py").read_text(
+        encoding="utf-8"
+    )
     forbidden_snippets = [
         "AsyncSessionLocal",
         "select(",
@@ -71,17 +84,24 @@ def test_worker_execution_uses_explicit_persistence_and_job_boundaries(backend_r
         "func.",
     ]
 
-    violations = [snippet for snippet in forbidden_snippets if snippet in execution_source]
+    violations = [
+        snippet for snippet in forbidden_snippets if snippet in execution_source
+    ]
     assert violations == []
 
 
-def test_business_services_do_not_read_global_settings_or_sessions(backend_root: Path) -> None:
+def test_business_services_do_not_read_global_settings_or_sessions(
+    backend_root: Path,
+) -> None:
     service_files = backend_root.joinpath("app", "modules").glob("*/service.py")
 
     violations: list[str] = []
     for path in service_files:
         source = path.read_text(encoding="utf-8")
-        if "app.platform.config import settings" in source or "AsyncSessionLocal" in source:
+        if (
+            "app.platform.config import settings" in source
+            or "AsyncSessionLocal" in source
+        ):
             violations.append(str(path.relative_to(backend_root)))
 
     assert violations == []
@@ -158,7 +178,9 @@ def test_removed_compatibility_packages_are_absent() -> None:
 
 def test_removed_runtime_aliases_are_absent() -> None:
     platform_config = importlib.import_module("app.platform.config")
-    evaluator_registry = importlib.import_module("app.worker.analysis.evaluator_registry")
+    evaluator_registry = importlib.import_module(
+        "app.worker.analysis.evaluator_registry"
+    )
 
     assert not hasattr(platform_config.settings, "CREDENTIAL_STORAGE_DIR")
     assert not hasattr(evaluator_registry, "EVALUATORS")

@@ -9,8 +9,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.benchmark_run import TestRun
 from app.models.scoring import EvaluationScore, LeaderboardEntry, LeaderboardSnapshot
-from app.modules.leaderboards.schemas import LeaderboardEntryItem, LeaderboardSnapshotResponse
+from app.modules.leaderboards.schemas import (
+    LeaderboardEntryItem,
+    LeaderboardSnapshotResponse,
+)
 from app.platform.errors import NotFoundError
+from app.platform.i18n import translate
 
 
 class LeaderboardService:
@@ -19,7 +23,9 @@ class LeaderboardService:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
-    async def create_snapshot(self, *, score_model_version: str, benchmark_version: str) -> LeaderboardSnapshotResponse:
+    async def create_snapshot(
+        self, *, score_model_version: str, benchmark_version: str
+    ) -> LeaderboardSnapshotResponse:
         rows = (
             await self.db.execute(
                 select(EvaluationScore, TestRun)
@@ -31,17 +37,23 @@ class LeaderboardService:
                 )
             )
         ).all()
-        ranked_rows = _best_score_per_agent(rows)
+        ranked_rows = _best_score_per_agent([(score, run) for score, run in rows])
         snapshot = LeaderboardSnapshot(
             snapshot_code=f"lb_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}",
             status="published",
             score_model_version=score_model_version,
             benchmark_version=benchmark_version,
-            difficulty_version_code=ranked_rows[0][0].difficulty_version_code if ranked_rows else None,
+            difficulty_version_code=(
+                ranked_rows[0][0].difficulty_version_code if ranked_rows else None
+            ),
             generated_at=datetime.now(timezone.utc),
             entry_count=len(ranked_rows),
         )
-        await self.db.execute(update(LeaderboardSnapshot).where(LeaderboardSnapshot.status == "published").values(status="archived"))
+        await self.db.execute(
+            update(LeaderboardSnapshot)
+            .where(LeaderboardSnapshot.status == "published")
+            .values(status="archived")
+        )
         self.db.add(snapshot)
         await self.db.flush()
         entries: list[LeaderboardEntry] = []
@@ -77,12 +89,17 @@ class LeaderboardService:
             await self.db.execute(
                 select(LeaderboardSnapshot)
                 .where(LeaderboardSnapshot.status == "published")
-                .order_by(LeaderboardSnapshot.generated_at.desc(), LeaderboardSnapshot.id.desc())
+                .order_by(
+                    LeaderboardSnapshot.generated_at.desc(),
+                    LeaderboardSnapshot.id.desc(),
+                )
                 .limit(1)
             )
         ).scalar_one_or_none()
         if snapshot is None:
-            raise NotFoundError("当前排行榜不存在。")
+            raise NotFoundError(
+                "当前排行榜不存在。", message_key="errors.leaderboard.not_found"
+            )
         entries = list(
             (
                 await self.db.execute(
@@ -95,7 +112,9 @@ class LeaderboardService:
         return _snapshot_response(snapshot, entries)
 
 
-def _best_score_per_agent(rows: list[tuple[EvaluationScore, TestRun]]) -> list[tuple[EvaluationScore, TestRun]]:
+def _best_score_per_agent(
+    rows: list[tuple[EvaluationScore, TestRun]],
+) -> list[tuple[EvaluationScore, TestRun]]:
     sorted_rows = sorted(rows, key=_ranking_key)
     selected: dict[str, tuple[EvaluationScore, TestRun]] = {}
     for score, run in sorted_rows:
@@ -105,8 +124,12 @@ def _best_score_per_agent(rows: list[tuple[EvaluationScore, TestRun]]) -> list[t
 
 def _ranking_key(row: tuple[EvaluationScore, TestRun]) -> tuple:
     score, run = row
-    certification_rank = {"certified": 0, "watchlist": 1, "blocked": 2}.get(score.safety_certification, 3)
-    tier_rank = {"verified": 0, "provisional": 1, "exploratory": 2}.get(score.verification_tier, 3)
+    certification_rank = {"certified": 0, "watchlist": 1, "blocked": 2}.get(
+        score.safety_certification, 3
+    )
+    tier_rank = {"verified": 0, "provisional": 1, "exploratory": 2}.get(
+        score.verification_tier, 3
+    )
     return (
         certification_rank,
         tier_rank,
@@ -127,7 +150,9 @@ def _agent_id(run: TestRun) -> str:
     return f"run:{run.public_id}"
 
 
-def _snapshot_response(snapshot: LeaderboardSnapshot, entries: list[LeaderboardEntry]) -> LeaderboardSnapshotResponse:
+def _snapshot_response(
+    snapshot: LeaderboardSnapshot, entries: list[LeaderboardEntry]
+) -> LeaderboardSnapshotResponse:
     return LeaderboardSnapshotResponse.model_validate(
         {
             "snapshotCode": snapshot.snapshot_code,
@@ -135,9 +160,15 @@ def _snapshot_response(snapshot: LeaderboardSnapshot, entries: list[LeaderboardE
             "entries": [
                 {
                     "rankNo": entry.rank_no,
-                    "displayName": entry.display_name,
+                    "displayName": (
+                        translate("leaderboard.anonymous_agent")
+                        if entry.anonymous
+                        else entry.display_name
+                    ),
                     "anonymous": entry.anonymous,
-                    "officialConservativeScore": float(entry.official_conservative_score),
+                    "officialConservativeScore": float(
+                        entry.official_conservative_score
+                    ),
                     "safeCapabilityScore": float(entry.safe_capability_score),
                     "highDifficultyScore": float(entry.high_difficulty_score),
                     "unsafeRiskScore": float(entry.unsafe_risk_score),

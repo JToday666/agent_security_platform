@@ -5,7 +5,11 @@ import json
 import httpx
 import pytest
 
-from app.modules.agents.invocation import AgentInvocationClient, build_agent_request_body, read_json_path
+from app.modules.agents.invocation import (
+    AgentInvocationClient,
+    build_agent_request_body,
+    read_json_path,
+)
 
 
 def test_read_json_path_reads_nested_response_values() -> None:
@@ -26,7 +30,9 @@ def test_build_agent_request_body_rejects_mapping_conflicts() -> None:
 
 
 @pytest.mark.asyncio
-async def test_sync_response_invocation_posts_mapped_payload_and_parses_result() -> None:
+async def test_sync_response_invocation_posts_mapped_payload_and_parses_result() -> (
+    None
+):
     seen_requests: list[httpx.Request] = []
 
     def handler(request: httpx.Request) -> httpx.Response:
@@ -45,7 +51,11 @@ async def test_sync_response_invocation_posts_mapped_payload_and_parses_result()
     result = await client.invoke(
         agent_snapshot={
             "invokeMode": "sync_response",
-            "connection": {"baseUrl": "https://agent.example.com", "invokePath": "/v1/run", "requestTimeoutSeconds": 30},
+            "connection": {
+                "baseUrl": "https://agent.example.com",
+                "invokePath": "/v1/run",
+                "requestTimeoutSeconds": 30,
+            },
             "auth": {"type": "bearer", "credentialRef": "secret_1"},
             "platformInputMapping": {"task": "prompt", "entryUrl": "url"},
             "customRequestBody": {"engine": "demo"},
@@ -70,8 +80,13 @@ async def test_submit_poll_invocation_polls_until_terminal_status() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         calls.append(request.url.path)
         if request.method == "POST":
-            return httpx.Response(200, json={"data": {"runId": "run_1", "status": "queued"}})
-        return httpx.Response(200, json={"data": {"runId": "run_1", "status": "completed", "answer": "ok"}})
+            return httpx.Response(
+                200, json={"data": {"runId": "run_1", "status": "queued"}}
+            )
+        return httpx.Response(
+            200,
+            json={"data": {"runId": "run_1", "status": "completed", "answer": "ok"}},
+        )
 
     client = AgentInvocationClient(transport=httpx.MockTransport(handler))
 

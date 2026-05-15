@@ -11,7 +11,6 @@ from uuid import uuid4
 from app.platform.config import settings
 from app.worker.runtime.exceptions import RuntimePreparationError
 
-
 DATA_ROOT: Path | None = None
 
 
@@ -53,20 +52,31 @@ def resolve_sample_layout(sample: SampleRuntimeTarget) -> tuple[Path, Path, Path
     data_root = (DATA_ROOT or settings.dataset_root).resolve()
     sample_dir = (data_root / sample.resource_path).resolve()
     if not sample_dir.is_dir():
-        raise RuntimePreparationError(f"sample directory not found: {sample.resource_path}")
+        raise RuntimePreparationError(
+            f"sample directory not found: {sample.resource_path}"
+        )
     if data_root not in sample_dir.parents and sample_dir != data_root:
-        raise RuntimePreparationError(f"sample directory escapes data root: {sample.resource_path}")
+        raise RuntimePreparationError(
+            f"sample directory escapes data root: {sample.resource_path}"
+        )
 
     scope_root = sample_dir
     while True:
         runtime_dir = scope_root / "agent_runtime"
         if runtime_dir.is_dir():
-            return sample_dir, scope_root, runtime_dir, sample_dir.relative_to(scope_root)
+            return (
+                sample_dir,
+                scope_root,
+                runtime_dir,
+                sample_dir.relative_to(scope_root),
+            )
         if scope_root == data_root:
             break
         scope_root = scope_root.parent
 
-    raise RuntimePreparationError(f"agent_runtime not found for sample: {sample.resource_path}")
+    raise RuntimePreparationError(
+        f"agent_runtime not found for sample: {sample.resource_path}"
+    )
 
 
 def build_environment_ref(execution_id: int) -> str:
@@ -81,7 +91,11 @@ def build_probe_token() -> str:
 
 def build_entry_url(host: str, port: int, sample_subpath: str, entry_path: str) -> str:
     """Build the browser entry URL served by the probe runner."""
-    pieces = [piece.strip("/") for piece in (sample_subpath, entry_path) if piece and piece.strip("/")]
+    pieces = [
+        piece.strip("/")
+        for piece in (sample_subpath, entry_path)
+        if piece and piece.strip("/")
+    ]
     browser_path = "/".join(pieces)
     if not browser_path:
         raise RuntimePreparationError("entry path resolves to an empty browser URL")
@@ -115,7 +129,12 @@ def prepare_runtime_workspace(
     run_dir = project_root / "agent_runtime" / "runs" / environment_ref
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    entry_url = build_entry_url(host=host, port=port, sample_subpath=sample_subpath_str, entry_path=sample.entry_path)
+    entry_url = build_entry_url(
+        host=host,
+        port=port,
+        sample_subpath=sample_subpath_str,
+        entry_path=sample.entry_path,
+    )
     stdout_log = work_dir / "runner_stdout.log"
     stderr_log = work_dir / "runner_stderr.log"
     runtime_context_path = run_dir / "runtime_context.json"

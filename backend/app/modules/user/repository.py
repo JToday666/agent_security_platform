@@ -13,7 +13,9 @@ class UserRepository:
         """绑定用户资料管理链路共用的异步数据库会话。"""
         self.db = db
 
-    async def is_username_taken(self, username: str, exclude_user_id: int | None = None) -> bool:
+    async def is_username_taken(
+        self, username: str, exclude_user_id: int | None = None
+    ) -> bool:
         """判断用户名是否已被其他用户占用。"""
         stmt = select(User).where(User.username == username)
         if exclude_user_id is not None:

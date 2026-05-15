@@ -2,13 +2,25 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, TypedDict, cast
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 
 from app.platform.errors import DomainError, ValidationDomainError
 from app.platform.http import build_validation_error_data, json_error_response
+from app.platform.i18n import localize_message, translate
+
+
+class _HttpEnvelopeBaseDetail(TypedDict):
+    code: int
+    message: Any
+    data: Any
+
+
+class _HttpEnvelopeDetail(_HttpEnvelopeBaseDetail, total=False):
+    messageKey: str
+    messageParams: dict[str, Any]
 
 
 def _loc_to_field(loc: tuple[Any, ...]) -> str:
@@ -17,61 +29,121 @@ def _loc_to_field(loc: tuple[Any, ...]) -> str:
     return ".".join(parts) if parts else "request"
 
 
+def _request_locale(request: Request) -> str | None:
+    """Read normalized locale captured by LocaleMiddleware."""
+    return getattr(request.state, "locale", None)
+
+
+def _validation_reason(error: dict[str, Any], *, locale: str | None = None) -> str:
+    """Translate a FastAPI/Pydantic validation error reason."""
+    error_type = str(error.get("type") or "")
+    if error_type == "missing":
+        return translate("validation.field.required", locale=locale)
+    return translate("validation.field.invalid", locale=locale)
+
+
+def _domain_error_message(exc: DomainError, *, locale: str | None = None) -> str:
+    """Return the localized message for a structured domain error."""
+    return localize_message(
+        exc.message,
+        key=exc.message_key,
+        params=exc.message_params,
+        locale=locale,
+    )
+
+
+def _structured_http_detail(detail: Any) -> _HttpEnvelopeDetail | None:
+    """Return a typed HTTPException detail when it matches the platform envelope."""
+    if not isinstance(detail, dict) or not {"code", "message", "data"}.issubset(
+        detail.keys()
+    ):
+        return None
+    if not isinstance(detail.get("code"), int):
+        return None
+    return cast(_HttpEnvelopeDetail, detail)
+
+
 def register_exception_handlers(app: FastAPI) -> None:
     """为应用挂载统一的异常响应处理器。"""
+
     @app.exception_handler(DomainError)
-    async def domain_error_handler(_: Request, exc: DomainError):
+    async def domain_error_handler(request: Request, exc: DomainError):
         """处理业务异常并返回统一 envelope 响应。"""
+        locale = _request_locale(request)
         return json_error_response(
             http_status=exc.http_status,
             code=exc.code,
-            message=exc.message,
+            message=_domain_error_message(exc, locale=locale),
             data=exc.data,
+            locale=locale,
         )
 
     @app.exception_handler(RequestValidationError)
-    async def request_validation_handler(_: Request, exc: RequestValidationError):
+    async def request_validation_handler(request: Request, exc: RequestValidationError):
         """处理请求参数校验错误并转换为统一业务错误结构。"""
+        locale = _request_locale(request)
         payload = build_validation_error_data(
             [
                 {
                     "field": _loc_to_field(tuple(error["loc"])),
-                    "reason": error["msg"],
+                    "reason": _validation_reason(error, locale=locale),
                 }
                 for error in exc.errors()
             ]
         ).model_dump(by_alias=True)
-        validation_error = ValidationDomainError("请求参数校验失败", data=payload)
+        validation_error = ValidationDomainError(
+            "请求参数校验失败", data=payload, message_key="errors.validation.request"
+        )
         return json_error_response(
             http_status=validation_error.http_status,
             code=validation_error.code,
-            message=validation_error.message,
+            message=_domain_error_message(validation_error, locale=locale),
             data=validation_error.data,
+            locale=locale,
         )
 
     @app.exception_handler(HTTPException)
-    async def http_exception_handler(_: Request, exc: HTTPException):
+    async def http_exception_handler(request: Request, exc: HTTPException):
         """处理 FastAPI 原生 HTTP 异常并对齐返回结构。"""
+        locale = _request_locale(request)
         detail = exc.detail
-        if isinstance(detail, dict) and {"code", "message", "data"}.issubset(detail.keys()):
+        structured_detail = _structured_http_detail(detail)
+        if structured_detail is not None:
+            message_key = structured_detail.get("messageKey")
+            message = localize_message(
+                str(structured_detail["message"]),
+                key=message_key if isinstance(message_key, str) else None,
+                params=(
+                    structured_detail.get("messageParams")
+                    if isinstance(structured_detail.get("messageParams"), dict)
+                    else None
+                ),
+                locale=locale,
+            )
             return json_error_response(
                 http_status=exc.status_code,
-                code=detail["code"],
-                message=detail["message"],
-                data=detail.get("data"),
+                code=structured_detail["code"],
+                message=message,
+                data=structured_detail.get("data"),
+                locale=locale,
             )
         return json_error_response(
             http_status=exc.status_code,
             code=exc.status_code,
-            message=str(detail),
+            message=localize_message(str(detail), locale=locale),
+            locale=locale,
         )
 
     @app.exception_handler(Exception)
-    async def unhandled_exception_handler(_: Request, exc: Exception):  # pragma: no cover - safety net
+    async def unhandled_exception_handler(
+        request: Request, exc: Exception
+    ):  # pragma: no cover - safety net
         """兜底处理未捕获异常，供应用入口统一注册调用。"""
+        locale = _request_locale(request)
         return json_error_response(
             http_status=500,
             code=50000,
-            message="服务内部错误，请稍后重试。",
+            message=translate("errors.common.internal", locale=locale),
             data={"errorType": exc.__class__.__name__},
+            locale=locale,
         )

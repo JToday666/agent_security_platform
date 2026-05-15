@@ -7,7 +7,6 @@ from pathlib import Path
 
 import pytest
 
-
 SCRIPT_NAMES = [
     "import_datasets.py",
     "datasets/normalize_samples.py",
@@ -29,7 +28,9 @@ SCRIPTS_REQUIRING_OUTPUT_DIR = [
 
 @pytest.mark.scripts
 @pytest.mark.parametrize("script_name", SCRIPT_NAMES)
-def test_expected_scripts_exist_and_support_help(backend_root: Path, script_name: str) -> None:
+def test_expected_scripts_exist_and_support_help(
+    backend_root: Path, script_name: str
+) -> None:
     script_path = backend_root / "scripts" / script_name
 
     assert script_path.exists(), f"{script_name} should exist"
@@ -46,7 +47,9 @@ def test_expected_scripts_exist_and_support_help(backend_root: Path, script_name
 
 @pytest.mark.scripts
 @pytest.mark.parametrize("script_name", SCRIPTS_REQUIRING_SAMPLE_ROOT)
-def test_sample_root_scripts_require_explicit_sample_root(backend_root: Path, script_name: str) -> None:
+def test_sample_root_scripts_require_explicit_sample_root(
+    backend_root: Path, script_name: str
+) -> None:
     script_path = backend_root / "scripts" / script_name
 
     result = subprocess.run(
@@ -62,7 +65,9 @@ def test_sample_root_scripts_require_explicit_sample_root(backend_root: Path, sc
 
 @pytest.mark.scripts
 @pytest.mark.parametrize("script_name", SCRIPTS_REQUIRING_OUTPUT_DIR)
-def test_normalize_script_requires_explicit_output_dir(backend_root: Path, script_name: str) -> None:
+def test_normalize_script_requires_explicit_output_dir(
+    backend_root: Path, script_name: str
+) -> None:
     script_path = backend_root / "scripts" / script_name
 
     result = subprocess.run(
@@ -128,7 +133,9 @@ def test_sync_registry_and_bundle_import_script_support_explicit_paths(
     sync_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "datasets" / "sync_metadata_from_samples.py"),
+            str(
+                backend_root / "scripts" / "datasets" / "sync_metadata_from_samples.py"
+            ),
             "--sample-root",
             str(repo_sample_bundle.sample_root),
             "--registry-root",
@@ -186,7 +193,9 @@ def test_normalize_script_generates_standard_bundle_consumable_by_sync_and_impor
     sync_result = subprocess.run(
         [
             sys.executable,
-            str(backend_root / "scripts" / "datasets" / "sync_metadata_from_samples.py"),
+            str(
+                backend_root / "scripts" / "datasets" / "sync_metadata_from_samples.py"
+            ),
             "--sample-root",
             str(normalized_root),
             "--registry-root",
@@ -252,7 +261,13 @@ def test_standardize_task_json_rewrites_only_task_json(
     backend_root: Path,
     raw_sample_bundle,
 ) -> None:
-    task_path = raw_sample_bundle.sample_root / "01_Confidentiality" / "A3_Address_and_Location_Leakage" / "EIA_A3_10_high" / "task.json"
+    task_path = (
+        raw_sample_bundle.sample_root
+        / "01_Confidentiality"
+        / "A3_Address_and_Location_Leakage"
+        / "EIA_A3_10_high"
+        / "task.json"
+    )
     sidecar_path = task_path.with_name("CarRentalse-Receipts.json")
     before_sidecar = sidecar_path.read_text(encoding="utf-8")
 

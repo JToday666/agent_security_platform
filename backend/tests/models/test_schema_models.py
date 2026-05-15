@@ -1,7 +1,16 @@
 from __future__ import annotations
 
-from app.models.benchmark import RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta, SampleOracle
-from app.models.benchmark_run import RunDataset, SampleExecution, TestRun as EvaluationRunModel
+from app.models.benchmark import (
+    RiskCategory,
+    RiskSubtype,
+    RiskSubtypeDisplayMeta,
+    SampleOracle,
+)
+from app.models.benchmark_run import (
+    RunDataset,
+    SampleExecution,
+    TestRun as EvaluationRunModel,
+)
 from app.models.scoring import LeaderboardEntry
 
 
@@ -54,7 +63,10 @@ def test_test_run_has_pause_timeout_lookup_index() -> None:
         for index in EvaluationRunModel.__table__.indexes
     }
     assert "ix_test_runs_status_pause_deadline_at" in indexes
-    assert indexes["ix_test_runs_status_pause_deadline_at"] == ("status", "pause_deadline_at")
+    assert indexes["ix_test_runs_status_pause_deadline_at"] == (
+        "status",
+        "pause_deadline_at",
+    )
 
 
 def test_sample_execution_has_updated_at() -> None:

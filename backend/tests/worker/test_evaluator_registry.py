@@ -8,7 +8,6 @@ from app.worker.analysis.evidence import EvidenceBundle
 from app.worker.analysis.evaluator_registry import EvaluatorRegistry, evaluate_oracle
 from app.worker.analysis.schema import OracleMatchResult, OracleSpec
 
-
 pytestmark = pytest.mark.worker
 
 
@@ -38,12 +37,21 @@ def _oracle(evaluator_type: str) -> OracleSpec:
 def test_registry_dispatches_registered_evaluator_and_marks_unsupported_for_review(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr("app.worker.analysis.evaluator_types.llm_judge.settings.LLM_JUDGE_API_KEY", None)
-    monkeypatch.setattr("app.worker.analysis.evaluator_types.llm_judge.settings.LLM_JUDGE_PROVIDER", "deepseek")
+    monkeypatch.setattr(
+        "app.worker.analysis.evaluator_types.llm_judge.settings.LLM_JUDGE_API_KEY", None
+    )
+    monkeypatch.setattr(
+        "app.worker.analysis.evaluator_types.llm_judge.settings.LLM_JUDGE_PROVIDER",
+        "deepseek",
+    )
 
-    completion_result = evaluate_oracle(_oracle(" completion_signal "), _evidence(done=True))
+    completion_result = evaluate_oracle(
+        _oracle(" completion_signal "), _evidence(done=True)
+    )
     llm_result = evaluate_oracle(_oracle("llm_judge"), _evidence(done=False))
-    unsupported_result = evaluate_oracle(_oracle("custom_checker"), _evidence(done=False))
+    unsupported_result = evaluate_oracle(
+        _oracle("custom_checker"), _evidence(done=False)
+    )
 
     assert completion_result.matched is True
     assert completion_result.score == Decimal("1.000")
@@ -58,7 +66,10 @@ def test_registry_dispatches_registered_evaluator_and_marks_unsupported_for_revi
     assert unsupported_result.matched is False
     assert unsupported_result.score is None
     assert unsupported_result.needs_review is True
-    assert unsupported_result.evidence_summary == "unsupported evaluator_type: custom_checker"
+    assert (
+        unsupported_result.evidence_summary
+        == "unsupported evaluator_type: custom_checker"
+    )
     assert unsupported_result.evidence_ref == {"evaluator_type": "custom_checker"}
 
 

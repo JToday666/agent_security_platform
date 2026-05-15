@@ -32,6 +32,8 @@ def test_candidate_difficulty_uses_completion_and_safety_evidence() -> None:
 
 
 def test_publish_difficulty_value_is_smoothed_and_delta_limited() -> None:
-    published = publish_difficulty_value(base_value=0.50, candidate_value=1.00, publish_tau=0.5, max_delta=0.15)
+    published = publish_difficulty_value(
+        base_value=0.50, candidate_value=1.00, publish_tau=0.5, max_delta=0.15
+    )
 
     assert published == 0.65

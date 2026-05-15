@@ -3,10 +3,16 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from typing import cast
 
 from app.models.agent import Agent
 from app.modules.agents.application.ids import generate_agent_id
-from app.modules.agents.application.mappers import runtime_snapshot, to_detail, to_summary, to_zulu
+from app.modules.agents.application.mappers import (
+    runtime_snapshot,
+    to_detail,
+    to_summary,
+    to_zulu,
+)
 from app.modules.agents.domain.policies import (
     actions_for_status,
     invalid_agent,
@@ -26,6 +32,7 @@ from app.modules.agents.schemas import (
 from app.modules.agents.templates import list_agent_templates
 from app.platform.credentials import CredentialStore
 from app.platform.errors import ConflictError, ForbiddenError, NotFoundError
+from app.platform.i18n import translate
 from app.platform.storage import default_credential_store
 
 
@@ -46,12 +53,18 @@ class AgentService:
         """Return built-in templates."""
         return list_agent_templates()
 
-    async def create_agent(self, payload: AgentCreateRequest, current_user) -> AgentSummary:
+    async def create_agent(
+        self, payload: AgentCreateRequest, current_user
+    ) -> AgentSummary:
         """Create a draft Agent and persist any submitted credential separately."""
         validate_create_payload(payload)
         now = datetime.now(timezone.utc)
         public_config, credential_payload = split_auth_config(payload)
-        credential_ref = self.credential_store.store(credential_payload) if credential_payload else None
+        credential_ref = (
+            self.credential_store.store(credential_payload)
+            if credential_payload
+            else None
+        )
         agent = Agent(
             public_id=generate_agent_id(),
             user_id=current_user.id,
@@ -85,9 +98,13 @@ class AgentService:
             raise
         return to_summary(agent, include_actions=False)
 
-    async def list_agents(self, current_user, *, include_archived: bool = False, status: str | None = None) -> list[AgentSummary]:
+    async def list_agents(
+        self, current_user, *, include_archived: bool = False, status: str | None = None
+    ) -> list[AgentSummary]:
         """List Agents for the current user."""
-        agents = await self.repository.list_for_user(current_user.id, include_archived=include_archived, status=status)
+        agents = await self.repository.list_for_user(
+            current_user.id, include_archived=include_archived, status=status
+        )
         return [to_summary(agent, include_actions=True) for agent in agents]
 
     async def get_agent_detail(self, agent_id: str, current_user) -> AgentDetail:
@@ -95,13 +112,23 @@ class AgentService:
         agent = await self._get_owned_agent(agent_id, current_user)
         return to_detail(agent)
 
-    async def verify_agent(self, agent_id: str, payload: AgentVerificationRequest, current_user) -> AgentVerificationResponse:
+    async def verify_agent(
+        self, agent_id: str, payload: AgentVerificationRequest, current_user
+    ) -> AgentVerificationResponse:
         """Run a lightweight live verification against the external Agent."""
         agent = await self._get_owned_agent(agent_id, current_user)
         if agent.status == "archived":
-            raise ConflictError("已归档 Agent 不能验证。", code=40901)
+            raise ConflictError(
+                "已归档 Agent 不能验证。",
+                code=40901,
+                message_key="agents.errors.archived_verify",
+            )
         if agent.status == "verifying":
-            raise ConflictError("Agent 正在验证中，请稍后再试。", code=40901)
+            raise ConflictError(
+                "Agent 正在验证中，请稍后再试。",
+                code=40901,
+                message_key="agents.errors.verifying",
+            )
 
         now = datetime.now(timezone.utc)
         agent.status = "verifying"
@@ -113,7 +140,11 @@ class AgentService:
         errors: list[dict[str, str]] = []
         passed = False
         try:
-            credential_payload = self.credential_store.load(agent.credential_ref) if agent.credential_ref else {}
+            credential_payload = (
+                self.credential_store.load(agent.credential_ref)
+                if agent.credential_ref
+                else {}
+            )
             result = await self.invocation_client.invoke(
                 agent_snapshot=runtime_snapshot(agent),
                 credential_payload=credential_payload,
@@ -128,7 +159,13 @@ class AgentService:
             )
             passed = result.passed
             if not passed:
-                errors.append({"code": "AGENT_STATUS_NOT_SUCCESS", "message": result.error_message or "外部 Agent 未返回成功状态。"})
+                errors.append(
+                    {
+                        "code": "AGENT_STATUS_NOT_SUCCESS",
+                        "message": result.error_message
+                        or translate("agents.errors.status_not_success"),
+                    }
+                )
         except Exception as exc:
             errors.append({"code": exc.__class__.__name__.upper(), "message": str(exc)})
 
@@ -136,7 +173,11 @@ class AgentService:
         agent.status = "active" if passed else "invalid"
         agent.verified_at = verified_at
         agent.last_verification_passed = passed
-        agent.last_verification = {"passed": passed, "warnings": warnings, "errors": errors}
+        agent.last_verification = {
+            "passed": passed,
+            "warnings": warnings,
+            "errors": errors,
+        }
         agent.updated_at = verified_at
         await self.repository.commit()
         await self.repository.refresh(agent)
@@ -156,18 +197,30 @@ class AgentService:
         """Archive an Agent."""
         agent = await self._get_owned_agent(agent_id, current_user)
         if agent.status == "archived":
-            raise ConflictError("已归档 Agent 不能重复归档。", code=40901)
+            raise ConflictError(
+                "已归档 Agent 不能重复归档。",
+                code=40901,
+                message_key="agents.errors.archived_again",
+            )
         now = datetime.now(timezone.utc)
         agent.status = "archived"
         agent.updated_at = now
         await self.repository.commit()
         await self.repository.refresh(agent)
-        return AgentArchiveResponse(agent_id=agent.public_id, status=agent.status, updated_at=to_zulu(agent.updated_at))
+        archived_updated_at = to_zulu(cast(datetime, agent.updated_at))
+        assert archived_updated_at is not None
+        return AgentArchiveResponse(
+            agent_id=agent.public_id,
+            status=agent.status,
+            updated_at=archived_updated_at,
+        )
 
     async def _get_owned_agent(self, agent_id: str, current_user) -> Agent:
         agent = await self.repository.get_by_public_id(agent_id)
         if agent is None:
-            raise NotFoundError("Agent 不存在。")
+            raise NotFoundError("Agent 不存在。", message_key="agents.errors.not_found")
         if agent.user_id != current_user.id:
-            raise ForbiddenError("无权访问该 Agent。")
+            raise ForbiddenError(
+                "无权访问该 Agent。", message_key="agents.errors.forbidden"
+            )
         return agent

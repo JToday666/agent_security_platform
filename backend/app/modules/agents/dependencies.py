@@ -11,4 +11,3 @@ from app.platform.auth import get_db
 def get_agent_service(db: AsyncSession = Depends(get_db)) -> AgentService:
     """Return the Agent service for route handlers."""
     return AgentService(AgentRepository(db))
-

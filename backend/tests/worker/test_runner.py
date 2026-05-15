@@ -8,7 +8,6 @@ import pytest
 
 from app.worker import runner
 
-
 pytestmark = pytest.mark.worker
 
 
@@ -45,11 +44,15 @@ class FakeSessionFactory:
 async def test_process_run_safely_marks_non_terminal_runs_failed() -> None:
     session = FakeSession(run=SimpleNamespace(id=1, status="running"))
 
-    with patch.object(runner, "AsyncSessionLocal", new=FakeSessionFactory(session)), patch.object(
+    with patch.object(
+        runner, "AsyncSessionLocal", new=FakeSessionFactory(session)
+    ), patch.object(
         runner,
         "process_claimed_run",
         new=AsyncMock(side_effect=RuntimeError("runner exploded")),
-    ), patch.object(runner, "mark_run_failed", new=AsyncMock()) as mark_failed_mock, patch.object(
+    ), patch.object(
+        runner, "mark_run_failed", new=AsyncMock()
+    ) as mark_failed_mock, patch.object(
         runner.LOGGER,
         "exception",
     ) as log_mock:
@@ -75,18 +78,28 @@ async def test_run_worker_loop_recovers_from_process_errors() -> None:
         if sleep_calls["count"] >= 2:
             raise asyncio.CancelledError()
 
-    with patch.object(runner, "AsyncSessionLocal", new=FakeSessionFactory()), patch.object(
+    with patch.object(
+        runner, "AsyncSessionLocal", new=FakeSessionFactory()
+    ), patch.object(
         runner,
         "reconcile_expired_paused_runs",
         new=AsyncMock(return_value=[]),
-    ), patch.object(runner, "claim_next_run", new=AsyncMock(side_effect=fake_claim_next_run)) as claim_mock, patch.object(
+    ), patch.object(
+        runner, "claim_next_run", new=AsyncMock(side_effect=fake_claim_next_run)
+    ) as claim_mock, patch.object(
         runner,
         "mark_run_failed",
         new=AsyncMock(return_value=None),
-    ), patch.object(runner, "process_claimed_run", new=AsyncMock(side_effect=fake_process_claimed_run)) as process_mock, patch.object(
+    ), patch.object(
+        runner,
+        "process_claimed_run",
+        new=AsyncMock(side_effect=fake_process_claimed_run),
+    ) as process_mock, patch.object(
         runner.LOGGER,
         "exception",
-    ), patch.object(runner.asyncio, "sleep", new=AsyncMock(side_effect=fake_sleep)):
+    ), patch.object(
+        runner.asyncio, "sleep", new=AsyncMock(side_effect=fake_sleep)
+    ):
         with pytest.raises(asyncio.CancelledError):
             await runner.run_worker_loop("worker-test")
 
@@ -109,12 +122,16 @@ async def test_run_worker_loop_reconciles_paused_runs_before_claiming() -> None:
         events.append("sleep")
         raise asyncio.CancelledError()
 
-    with patch.object(runner, "AsyncSessionLocal", new=FakeSessionFactory()), patch.object(
+    with patch.object(
+        runner, "AsyncSessionLocal", new=FakeSessionFactory()
+    ), patch.object(
         runner,
         "reconcile_expired_paused_runs",
         new=fake_reconcile,
         create=True,
-    ), patch.object(runner, "claim_next_run", new=AsyncMock(side_effect=fake_claim_next_run)), patch.object(
+    ), patch.object(
+        runner, "claim_next_run", new=AsyncMock(side_effect=fake_claim_next_run)
+    ), patch.object(
         runner.asyncio,
         "sleep",
         new=AsyncMock(side_effect=fake_sleep),
@@ -139,11 +156,15 @@ async def test_run_worker_loop_can_claim_multiple_active_runs() -> None:
     async def fake_sleep(seconds: float) -> None:
         raise asyncio.CancelledError()
 
-    with patch.object(runner, "AsyncSessionLocal", new=FakeSessionFactory()), patch.object(
+    with patch.object(
+        runner, "AsyncSessionLocal", new=FakeSessionFactory()
+    ), patch.object(
         runner,
         "reconcile_expired_paused_runs",
         new=AsyncMock(return_value=[]),
-    ), patch.object(runner, "claim_next_run", new=AsyncMock(side_effect=fake_claim_next_run)) as claim_mock, patch.object(
+    ), patch.object(
+        runner, "claim_next_run", new=AsyncMock(side_effect=fake_claim_next_run)
+    ) as claim_mock, patch.object(
         runner,
         "process_claimed_run",
         new=AsyncMock(side_effect=fake_process_claimed_run),
@@ -151,7 +172,9 @@ async def test_run_worker_loop_can_claim_multiple_active_runs() -> None:
         runner.asyncio,
         "sleep",
         new=AsyncMock(side_effect=fake_sleep),
-    ), patch.object(runner.settings, "WORKER_MAX_ACTIVE_RUNS", 2):
+    ), patch.object(
+        runner.settings, "WORKER_MAX_ACTIVE_RUNS", 2
+    ):
         with pytest.raises(asyncio.CancelledError):
             await runner.run_worker_loop("worker-test")
 

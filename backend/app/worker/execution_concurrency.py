@@ -6,7 +6,6 @@ import asyncio
 
 from app.platform.config import settings
 
-
 _RUNTIME_PROCESS_SEMAPHORE: asyncio.Semaphore | None = None
 _RUNTIME_PROCESS_SEMAPHORE_LIMIT: int | None = None
 
@@ -20,4 +19,3 @@ def runtime_process_semaphore() -> asyncio.Semaphore:
         _RUNTIME_PROCESS_SEMAPHORE = asyncio.Semaphore(limit)
         _RUNTIME_PROCESS_SEMAPHORE_LIMIT = limit
     return _RUNTIME_PROCESS_SEMAPHORE
-

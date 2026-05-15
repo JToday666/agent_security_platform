@@ -4,7 +4,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.modules.auth.dependencies import get_current_user
-from app.modules.difficulty.schemas import DifficultyPublishResult, DifficultyRecalculateRequest, DifficultyVersionResult
+from app.modules.difficulty.schemas import (
+    DifficultyPublishResult,
+    DifficultyRecalculateRequest,
+    DifficultyVersionResult,
+)
 from app.modules.difficulty.service import DifficultyService
 from app.platform.auth import get_db
 from app.platform.http import success_payload
@@ -31,7 +35,9 @@ async def recalculate_difficulty_version(
     return success_payload(response.model_dump(by_alias=True))
 
 
-@router.post("/versions/{versionCode}/publish", response_model=Envelope[DifficultyPublishResult])
+@router.post(
+    "/versions/{versionCode}/publish", response_model=Envelope[DifficultyPublishResult]
+)
 async def publish_difficulty_version(
     versionCode: str,
     _current_user=Depends(get_current_user),

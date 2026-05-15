@@ -51,7 +51,9 @@ class AuthRepository:
         result = await self.db.execute(select(User).where(User.email == email))
         return result.scalar_one_or_none() is not None
 
-    async def create_user(self, username: str, email: str, hashed_password: str) -> User:
+    async def create_user(
+        self, username: str, email: str, hashed_password: str
+    ) -> User:
         """创建新用户记录，供认证服务在注册流程中调用。"""
         user = User(username=username, email=email, hashed_password=hashed_password)
         self.db.add(user)

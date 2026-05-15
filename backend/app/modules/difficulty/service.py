@@ -9,7 +9,12 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.benchmark import BenchmarkSample
-from app.models.benchmark_run import ExecutionSummary, RunSample, SampleDifficultyStat, SampleExecution
+from app.models.benchmark_run import (
+    ExecutionSummary,
+    RunSample,
+    SampleDifficultyStat,
+    SampleExecution,
+)
 from app.models.scoring import DifficultyVersion, DifficultyVersionItem
 from app.modules.difficulty.calibration import (
     DEFAULT_MAX_DELTA_PER_VERSION,
@@ -19,7 +24,10 @@ from app.modules.difficulty.calibration import (
     calculate_candidate_difficulty,
     publish_difficulty_value,
 )
-from app.modules.difficulty.schemas import DifficultyPublishResult, DifficultyVersionResult
+from app.modules.difficulty.schemas import (
+    DifficultyPublishResult,
+    DifficultyVersionResult,
+)
 from app.platform.errors import ConflictError, NotFoundError
 
 
@@ -41,10 +49,18 @@ class DifficultyService:
         stats_cutoff_at: str | None = None,
     ) -> DifficultyVersionResult:
         existing = (
-            await self.db.execute(select(DifficultyVersion).where(DifficultyVersion.version_code == new_version_code))
+            await self.db.execute(
+                select(DifficultyVersion).where(
+                    DifficultyVersion.version_code == new_version_code
+                )
+            )
         ).scalar_one_or_none()
         if existing is not None:
-            raise ConflictError("难度版本编号已存在。", code=40910)
+            raise ConflictError(
+                "难度版本编号已存在。",
+                code=40910,
+                message_key="errors.difficulty.duplicate_version",
+            )
 
         cutoff = _parse_zulu(stats_cutoff_at)
         version = DifficultyVersion(
@@ -65,7 +81,10 @@ class DifficultyService:
             (
                 await self.db.execute(
                     select(BenchmarkSample, SampleDifficultyStat)
-                    .outerjoin(SampleDifficultyStat, SampleDifficultyStat.sample_id_ref == BenchmarkSample.id)
+                    .outerjoin(
+                        SampleDifficultyStat,
+                        SampleDifficultyStat.sample_id_ref == BenchmarkSample.id,
+                    )
                     .where(BenchmarkSample.is_active.is_(True))
                     .order_by(BenchmarkSample.id.asc())
                 )
@@ -74,9 +93,17 @@ class DifficultyService:
         base_items = await self._load_base_items(base_version_code)
         for sample, stats in sample_rows:
             base = base_items.get(sample.id)
-            base_score = float(base.difficulty_score) if base is not None else float(sample.difficulty_score)
-            base_completion = float(base.completion_difficulty) if base is not None else base_score
-            base_safety = float(base.safety_difficulty) if base is not None else base_score
+            base_score = (
+                float(base.difficulty_score)
+                if base is not None
+                else float(sample.difficulty_score)
+            )
+            base_completion = (
+                float(base.completion_difficulty) if base is not None else base_score
+            )
+            base_safety = (
+                float(base.safety_difficulty) if base is not None else base_score
+            )
             candidate = _candidate_from_stats(sample, stats)
             completion = publish_difficulty_value(
                 base_value=base_completion,
@@ -87,50 +114,73 @@ class DifficultyService:
                 candidate_value=candidate.safety_difficulty,
             )
             combined_candidate = candidate.difficulty_score
-            combined = publish_difficulty_value(base_value=base_score, candidate_value=combined_candidate)
+            combined = publish_difficulty_value(
+                base_value=base_score, candidate_value=combined_candidate
+            )
             self.db.add(
                 DifficultyVersionItem(
                     version_id=version.id,
                     sample_id_ref=sample.id,
                     previous_difficulty_score=_decimal(base_score),
-                    candidate_completion_difficulty=_decimal(candidate.completion_difficulty),
+                    candidate_completion_difficulty=_decimal(
+                        candidate.completion_difficulty
+                    ),
                     candidate_safety_difficulty=_decimal(candidate.safety_difficulty),
                     candidate_difficulty_score=_decimal(combined_candidate),
                     completion_difficulty=_decimal(completion),
                     safety_difficulty=_decimal(safety),
                     difficulty_score=_decimal(combined),
-                    valid_execution_count=0 if stats is None else stats.valid_execution_count,
+                    valid_execution_count=(
+                        0 if stats is None else stats.valid_execution_count
+                    ),
                 )
             )
         version.item_count = len(sample_rows)
         await self.db.commit()
-        return DifficultyVersionResult(version_code=version.version_code, status=version.status, item_count=version.item_count)
+        return DifficultyVersionResult(
+            version_code=version.version_code,
+            status=version.status,
+            item_count=version.item_count,
+        )
 
     async def publish_version(self, version_code: str) -> DifficultyPublishResult:
         version = (
-            await self.db.execute(select(DifficultyVersion).where(DifficultyVersion.version_code == version_code))
+            await self.db.execute(
+                select(DifficultyVersion).where(
+                    DifficultyVersion.version_code == version_code
+                )
+            )
         ).scalar_one_or_none()
         if version is None:
-            raise NotFoundError("难度版本不存在。")
+            raise NotFoundError(
+                "难度版本不存在。", message_key="errors.difficulty.not_found"
+            )
 
         items = list(
             (
                 await self.db.execute(
-                    select(DifficultyVersionItem).where(DifficultyVersionItem.version_id == version.id)
+                    select(DifficultyVersionItem).where(
+                        DifficultyVersionItem.version_id == version.id
+                    )
                 )
             ).scalars()
         )
         now = datetime.now(timezone.utc)
         await self.db.execute(
             update(DifficultyVersion)
-            .where(DifficultyVersion.status == "published", DifficultyVersion.id != version.id)
+            .where(
+                DifficultyVersion.status == "published",
+                DifficultyVersion.id != version.id,
+            )
             .values(status="archived")
         )
         for item in items:
             await self.db.execute(
                 update(BenchmarkSample)
                 .where(BenchmarkSample.id == item.sample_id_ref)
-                .values(difficulty_score=item.difficulty_score, difficulty_updated_at=now)
+                .values(
+                    difficulty_score=item.difficulty_score, difficulty_updated_at=now
+                )
             )
         version.status = "published"
         version.published_at = now
@@ -142,18 +192,26 @@ class DifficultyService:
             published_item_count=len(items),
         )
 
-    async def _load_base_items(self, base_version_code: str) -> dict[int, DifficultyVersionItem]:
+    async def _load_base_items(
+        self, base_version_code: str
+    ) -> dict[int, DifficultyVersionItem]:
         if base_version_code == "legacy_current":
             return {}
         version = (
-            await self.db.execute(select(DifficultyVersion).where(DifficultyVersion.version_code == base_version_code))
+            await self.db.execute(
+                select(DifficultyVersion).where(
+                    DifficultyVersion.version_code == base_version_code
+                )
+            )
         ).scalar_one_or_none()
         if version is None:
             return {}
         rows = list(
             (
                 await self.db.execute(
-                    select(DifficultyVersionItem).where(DifficultyVersionItem.version_id == version.id)
+                    select(DifficultyVersionItem).where(
+                        DifficultyVersionItem.version_id == version.id
+                    )
                 )
             ).scalars()
         )
@@ -175,13 +233,24 @@ async def update_sample_difficulty_stats_for_run(db: AsyncSession, run_id: int) 
             )
             .join(SampleExecution, SampleExecution.run_sample_id == RunSample.id)
             .join(BenchmarkSample, RunSample.sample_id_ref == BenchmarkSample.id)
-            .outerjoin(ExecutionSummary, ExecutionSummary.sample_execution_id == SampleExecution.id)
+            .outerjoin(
+                ExecutionSummary,
+                ExecutionSummary.sample_execution_id == SampleExecution.id,
+            )
             .where(RunSample.run_id == run_id, SampleExecution.retry_no == 0)
         )
     ).all()
 
     now = datetime.now(timezone.utc)
-    for sample_id, status, task_completed, harm_detected, final_label, risk_level, seed in rows:
+    for (
+        sample_id,
+        status,
+        task_completed,
+        harm_detected,
+        final_label,
+        risk_level,
+        seed,
+    ) in rows:
         stat = await db.get(SampleDifficultyStat, sample_id)
         if stat is None:
             stat = SampleDifficultyStat(
@@ -207,7 +276,9 @@ async def update_sample_difficulty_stats_for_run(db: AsyncSession, run_id: int) 
             db.add(stat)
 
         stat.valid_execution_count += 1
-        outcome = _difficulty_outcome(status, task_completed, harm_detected, final_label)
+        outcome = _difficulty_outcome(
+            status, task_completed, harm_detected, final_label
+        )
         if outcome == "unfinished":
             stat.unfinished_count += 1
         else:
@@ -232,8 +303,12 @@ async def update_sample_difficulty_stats_for_run(db: AsyncSession, run_id: int) 
                 harm_count=stat.harm_count,
             )
         )
-        stat.harm_rate = _decimal(stat.harm_count / max(1, stat.valid_execution_count), "0.0001")
-        stat.safe_completion_rate = _decimal(stat.safe_completion_count / max(1, stat.completed_count), "0.0001")
+        stat.harm_rate = _decimal(
+            stat.harm_count / max(1, stat.valid_execution_count), "0.0001"
+        )
+        stat.safe_completion_rate = _decimal(
+            stat.safe_completion_count / max(1, stat.completed_count), "0.0001"
+        )
         stat.inferred_difficulty = _decimal(candidate.difficulty_score)
         stat.candidate_completion_difficulty = _decimal(candidate.completion_difficulty)
         stat.candidate_safety_difficulty = _decimal(candidate.safety_difficulty)
@@ -266,7 +341,12 @@ def _candidate_from_stats(sample: BenchmarkSample, stats: SampleDifficultyStat |
     )
 
 
-def _difficulty_outcome(status: str, task_completed: bool | None, harm_detected: bool | None, final_label: str | None) -> str:
+def _difficulty_outcome(
+    status: str,
+    task_completed: bool | None,
+    harm_detected: bool | None,
+    final_label: str | None,
+) -> str:
     if status == "error" or task_completed is None or final_label == "needs_review":
         return "unfinished"
     if task_completed and harm_detected:

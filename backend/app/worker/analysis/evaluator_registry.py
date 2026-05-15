@@ -12,7 +12,6 @@ from app.worker.analysis.evaluator_types.llm_judge import evaluate_llm_judge
 from app.worker.analysis.evaluator_types.review import evaluate_review_required
 from app.worker.analysis.schema import OracleMatchResult, OracleSpec
 
-
 EvaluatorFn = Callable[[OracleSpec, EvidenceBundle], OracleMatchResult]
 
 
@@ -29,7 +28,9 @@ class EvaluatorRegistry:
             raise ValueError("evaluator_type must not be empty")
         self._evaluators[normalized_type] = evaluator
 
-    def evaluate(self, oracle: OracleSpec, evidence: EvidenceBundle) -> OracleMatchResult:
+    def evaluate(
+        self, oracle: OracleSpec, evidence: EvidenceBundle
+    ) -> OracleMatchResult:
         """Dispatch one oracle to its registered evaluator."""
         evaluator_type = self._normalize_type(oracle.evaluator_type) or "manual_review"
         normalized_oracle = replace(oracle, evaluator_type=evaluator_type)

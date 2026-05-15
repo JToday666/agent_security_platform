@@ -48,11 +48,18 @@ def test_auth_and_user_routes_work_against_real_database(client, api_db_helper) 
         json={"username": f"{api_db_helper.prefix}_renamed"},
     )
     assert update_response.status_code == 200
-    assert update_response.json()["data"]["username"] == f"{api_db_helper.prefix}_renamed"
+    assert (
+        update_response.json()["data"]["username"] == f"{api_db_helper.prefix}_renamed"
+    )
 
     with TemporaryDirectory() as tmpdir:
         avatars_root = Path(tmpdir)
-        with patch.object(type(settings), "avatars_root", new_callable=PropertyMock, return_value=avatars_root):
+        with patch.object(
+            type(settings),
+            "avatars_root",
+            new_callable=PropertyMock,
+            return_value=avatars_root,
+        ):
             avatar_response = client.post(
                 "/api/v1/user/avatar",
                 headers=headers,

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-
 TERMINAL_STATUSES = {"completed", "terminated", "canceled", "failed"}
 
 
@@ -13,7 +12,14 @@ def build_controls(status: str, pause_used: bool) -> dict[str, bool]:
     can_pause = status == "running" and not pause_used
     can_resume = status == "paused"
     can_terminate = status in {"running", "pausing", "paused"}
-    can_cancel = status in {"pending", "running", "pausing", "paused", "terminating", "canceling"}
+    can_cancel = status in {
+        "pending",
+        "running",
+        "pausing",
+        "paused",
+        "terminating",
+        "canceling",
+    }
     return {
         "canPause": can_pause,
         "canResume": can_resume,

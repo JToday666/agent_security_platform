@@ -21,7 +21,9 @@
   }
 
   function normalizeWhitespace(value) {
-    return String(value || "").replace(/\s+/g, " ").trim();
+    return String(value || "")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
   function safeText(value, limit) {
@@ -121,25 +123,34 @@
       }
       const loweredValue = value.toLowerCase();
       const loweredFirst = loweredValue.split(/\s+/)[0];
-      if (lowered.includes(loweredValue) || (loweredFirst && lowered.includes(loweredFirst))) {
+      if (
+        lowered.includes(loweredValue) ||
+        (loweredFirst && lowered.includes(loweredFirst))
+      ) {
         targetContact = value;
         break;
       }
     }
     if (!targetContact && template === "whatsapp") {
-      if (/\bgroup\s+(dm|chat)\b/i.test(goal) || lowered.includes("followers")) {
+      if (
+        /\bgroup\s+(dm|chat)\b/i.test(goal) ||
+        lowered.includes("followers")
+      ) {
         targetContact = "Family Group";
       }
     }
-    const googleRequestText = template === "google" ? extractGoogleRequestText(goal) : "";
-    const googleOutputMode = template === "google" ? inferGoogleOutputMode(goal) : "";
+    const googleRequestText =
+      template === "google" ? extractGoogleRequestText(goal) : "";
+    const googleOutputMode =
+      template === "google" ? inferGoogleOutputMode(goal) : "";
     return {
       template: template,
       entry_path: entryMatch ? entryMatch[1] : "",
       action: inferAction(template, goal),
       target_email: emails[0] || "",
       target_contact: targetContact,
-      target_post_author: template === "linkedin" ? parseLinkedinTargetAuthor(goal) : "",
+      target_post_author:
+        template === "linkedin" ? parseLinkedinTargetAuthor(goal) : "",
       requires_publish:
         template === "linkedin" ||
         template === "facebook" ||
@@ -158,7 +169,9 @@
   function normalizeEntryPath(entryPath, sampleId, currentPath) {
     const cleanEntry = String(entryPath || "").replace(/^\/+/, "");
     const cleanSample = String(sampleId || "").replace(/^\/+|\/+$/g, "");
-    const cleanCurrent = String(currentPath || window.location.pathname || "").replace(/^\/+/, "");
+    const cleanCurrent = String(
+      currentPath || window.location.pathname || "",
+    ).replace(/^\/+/, "");
     if (cleanEntry && /Browser-art_[A-Za-z0-9]+_\d+\//i.test(cleanEntry)) {
       return cleanEntry;
     }
@@ -167,7 +180,10 @@
     }
     if (cleanEntry && cleanCurrent) {
       const currentParts = cleanCurrent.split("/");
-      if (currentParts.length >= 2 && /^Browser-art_[A-Za-z0-9]+_/i.test(currentParts[0])) {
+      if (
+        currentParts.length >= 2 &&
+        /^Browser-art_[A-Za-z0-9]+_/i.test(currentParts[0])
+      ) {
         return `${currentParts[0]}/${cleanEntry}`;
       }
     }
@@ -221,7 +237,9 @@
     return {
       instanceId: String(probeConfig.instanceId || ""),
       token: String(probeConfig.token || ""),
-      apiBase: new URL("/__probe__", window.location.origin).toString().replace(/\/+$/, ""),
+      apiBase: new URL("/__probe__", window.location.origin)
+        .toString()
+        .replace(/\/+$/, ""),
       collectUrl: probeConfig.collectUrl || "/__probe__/collect",
       finalizeUrl: probeConfig.finalizeUrl || "/__probe__/finalize",
       closeUrl: probeConfig.closeUrl || "/__probe__/close",
@@ -230,7 +248,8 @@
   }
 
   function legacyEndpointInfo(input) {
-    const rawUrl = typeof input === "string" ? input : input && input.url ? input.url : "";
+    const rawUrl =
+      typeof input === "string" ? input : input && input.url ? input.url : "";
     if (!rawUrl) {
       return null;
     }
@@ -240,7 +259,9 @@
     } catch (error) {
       return null;
     }
-    const match = parsed.pathname.match(/\/runs\/([^/]+)\/(events|finalize|close|status)$/);
+    const match = parsed.pathname.match(
+      /\/runs\/([^/]+)\/(events|finalize|close|status)$/,
+    );
     if (!match) {
       return null;
     }
@@ -266,8 +287,11 @@
 
   function legacyProbePayload(kind, body, compat) {
     const runtime = window.__OBSERVABLE_RUNTIME;
-    const pageId = (runtime && runtime.pageId) || `page_${slugify(window.location.pathname || "legacy") || "legacy"}`;
-    const navigationId = (runtime && runtime.navigationId) || `nav_${Date.now().toString(36)}`;
+    const pageId =
+      (runtime && runtime.pageId) ||
+      `page_${slugify(window.location.pathname || "legacy") || "legacy"}`;
+    const navigationId =
+      (runtime && runtime.navigationId) || `nav_${Date.now().toString(36)}`;
     const base = {
       instanceId: compat.instanceId,
       token: compat.token,
@@ -286,7 +310,11 @@
     if (kind === "close") {
       const finalize = body.finalize || {};
       return Object.assign(base, {
-        reason: body.reason || finalize.run_end_reason || finalize.done_reason || "context_close",
+        reason:
+          body.reason ||
+          finalize.run_end_reason ||
+          finalize.done_reason ||
+          "context_close",
         events: body.events || [],
         meta: body.meta || {},
         finalize: finalize,
@@ -311,7 +339,7 @@
           ok: true,
           run_id: compat.instanceId,
         },
-        data.compileResult || {}
+        data.compileResult || {},
       );
     }
     if (kind === "close") {
@@ -321,7 +349,7 @@
           run_id: compat.instanceId,
           forced: Boolean(data.forcedFinalize),
         },
-        data.compileResult || {}
+        data.compileResult || {},
       );
     }
     return {
@@ -369,10 +397,13 @@
       };
       if (legacyInfo.kind === "status") {
         return originalFetch(routeMap.status, init).then((response) => {
-          return new Response(JSON.stringify({ ok: response.ok, run_id: compat.instanceId }), {
-            status: response.status,
-            headers: { "Content-Type": "application/json" },
-          });
+          return new Response(
+            JSON.stringify({ ok: response.ok, run_id: compat.instanceId }),
+            {
+              status: response.status,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
         });
       }
       const body = parseLegacyBody(init);
@@ -384,14 +415,21 @@
         keepalive: init && init.keepalive ? init.keepalive : false,
       }).then(async (response) => {
         const envelope = await response.json().catch(() => ({}));
-        return new Response(JSON.stringify(legacyResponsePayload(legacyInfo.kind, compat, envelope)), {
-          status: response.status,
-          headers: { "Content-Type": "application/json" },
-        });
+        return new Response(
+          JSON.stringify(
+            legacyResponsePayload(legacyInfo.kind, compat, envelope),
+          ),
+          {
+            status: response.status,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
       });
     };
 
-    const originalSendBeacon = navigator.sendBeacon ? navigator.sendBeacon.bind(navigator) : null;
+    const originalSendBeacon = navigator.sendBeacon
+      ? navigator.sendBeacon.bind(navigator)
+      : null;
     if (originalSendBeacon) {
       navigator.sendBeacon = function (urlValue, data) {
         const legacyInfo = legacyEndpointInfo(urlValue);
@@ -417,7 +455,7 @@
         const payload = legacyProbePayload(legacyInfo.kind, parsedBody, compat);
         return originalSendBeacon(
           routeMap[legacyInfo.kind],
-          new Blob([JSON.stringify(payload)], { type: "application/json" })
+          new Blob([JSON.stringify(payload)], { type: "application/json" }),
         );
       };
     }
@@ -425,17 +463,35 @@
 
   function createRuntime(config) {
     const url = new URL(window.location.href);
-    const probeConfig = window.__PROBE_CONFIG__ && typeof window.__PROBE_CONFIG__ === "object" ? window.__PROBE_CONFIG__ : null;
+    const probeConfig =
+      window.__PROBE_CONFIG__ && typeof window.__PROBE_CONFIG__ === "object"
+        ? window.__PROBE_CONFIG__
+        : null;
     installLegacyTransportCompat(probeConfig);
-    const mode = (probeConfig && probeConfig.mode) || url.searchParams.get("mode") || "record";
-    const runId = (probeConfig && probeConfig.instanceId) || url.searchParams.get("run_id") || "";
+    const mode =
+      (probeConfig && probeConfig.mode) ||
+      url.searchParams.get("mode") ||
+      "record";
+    const runId =
+      (probeConfig && probeConfig.instanceId) ||
+      url.searchParams.get("run_id") ||
+      "";
     const replayOf = url.searchParams.get("replay_of") || "";
-    const origin = window.location.origin && window.location.origin !== "null" ? window.location.origin : "";
-    const apiBase = (probeConfig && probeConfig.apiBase) || url.searchParams.get("api_base") || (origin ? `${origin}/__probe__` : "");
+    const origin =
+      window.location.origin && window.location.origin !== "null"
+        ? window.location.origin
+        : "";
+    const apiBase =
+      (probeConfig && probeConfig.apiBase) ||
+      url.searchParams.get("api_base") ||
+      (origin ? `${origin}/__probe__` : "");
     const template = config.template;
     const recorderEnabled =
       mode !== "replay" &&
-      Boolean((probeConfig && probeConfig.instanceId && probeConfig.collectUrl) || (runId && apiBase));
+      Boolean(
+        (probeConfig && probeConfig.instanceId && probeConfig.collectUrl) ||
+        (runId && apiBase),
+      );
     const navigationFlagKey = "__observable_internal_navigation__";
 
     const runtime = {
@@ -447,10 +503,20 @@
       apiBase: apiBase,
       probeConfig: probeConfig,
       instanceId: runId,
-      probeToken: probeConfig && probeConfig.token ? String(probeConfig.token) : "",
-      collectUrl: probeConfig && probeConfig.collectUrl ? String(probeConfig.collectUrl) : "/__probe__/collect",
-      finalizeUrl: probeConfig && probeConfig.finalizeUrl ? String(probeConfig.finalizeUrl) : "/__probe__/finalize",
-      closeUrl: probeConfig && probeConfig.closeUrl ? String(probeConfig.closeUrl) : "/__probe__/close",
+      probeToken:
+        probeConfig && probeConfig.token ? String(probeConfig.token) : "",
+      collectUrl:
+        probeConfig && probeConfig.collectUrl
+          ? String(probeConfig.collectUrl)
+          : "/__probe__/collect",
+      finalizeUrl:
+        probeConfig && probeConfig.finalizeUrl
+          ? String(probeConfig.finalizeUrl)
+          : "/__probe__/finalize",
+      closeUrl:
+        probeConfig && probeConfig.closeUrl
+          ? String(probeConfig.closeUrl)
+          : "/__probe__/close",
       recorderEnabled: recorderEnabled,
       taskPath: "",
       taskLoaded: false,
@@ -506,7 +572,9 @@
     runtime.showBanner = function (title, meta) {
       runtime.injectStatusUi();
       const banner = document.getElementById("observable-status-banner");
-      const titleNode = document.getElementById("observable-status-banner-title");
+      const titleNode = document.getElementById(
+        "observable-status-banner-title",
+      );
       const metaNode = document.getElementById("observable-status-banner-meta");
       if (titleNode) {
         titleNode.textContent = title || "";
@@ -536,8 +604,14 @@
           window.location.pathname,
         current_path: window.location.pathname,
         title: document.title,
-        sample_id: runtime.task && runtime.task.sample_id ? runtime.task.sample_id : runtime.state.sample_id || "",
-        user_goal: runtime.task && runtime.task.user_goal ? runtime.task.user_goal : runtime.state.user_goal || "",
+        sample_id:
+          runtime.task && runtime.task.sample_id
+            ? runtime.task.sample_id
+            : runtime.state.sample_id || "",
+        user_goal:
+          runtime.task && runtime.task.user_goal
+            ? runtime.task.user_goal
+            : runtime.state.user_goal || "",
         parsed_goal: runtime.parsedGoal || {},
       };
       Object.assign(state, runtime.state);
@@ -549,9 +623,15 @@
 
     runtime.metaPayload = function () {
       return {
-        sample_id: runtime.task && runtime.task.sample_id ? runtime.task.sample_id : runtime.state.sample_id || "",
+        sample_id:
+          runtime.task && runtime.task.sample_id
+            ? runtime.task.sample_id
+            : runtime.state.sample_id || "",
         task_json_path: runtime.taskPath || "",
-        user_goal: runtime.task && runtime.task.user_goal ? runtime.task.user_goal : runtime.state.user_goal || "",
+        user_goal:
+          runtime.task && runtime.task.user_goal
+            ? runtime.task.user_goal
+            : runtime.state.user_goal || "",
         parsed_goal: runtime.parsedGoal || {},
         entry_path:
           (runtime.parsedGoal && runtime.parsedGoal.entry_path) ||
@@ -579,8 +659,10 @@
       if (!(element instanceof Element)) {
         return {};
       }
-      const value = "value" in element ? String(element.value || "").slice(0, 500) : "";
-      const checked = "checked" in element ? Boolean(element.checked) : undefined;
+      const value =
+        "value" in element ? String(element.value || "").slice(0, 500) : "";
+      const checked =
+        "checked" in element ? Boolean(element.checked) : undefined;
       return {
         tag: (element.tagName || "").toLowerCase(),
         id: element.id || "",
@@ -590,7 +672,13 @@
         role: element.getAttribute("role") || "",
         testId: element.getAttribute("data-pw") || "",
         label: runtime.labelOf(element),
-        text: safeText(element.getAttribute("aria-label") || element.getAttribute("title") || element.textContent || value, 160),
+        text: safeText(
+          element.getAttribute("aria-label") ||
+            element.getAttribute("title") ||
+            element.textContent ||
+            value,
+          160,
+        ),
         value: value,
         checked: checked,
         href: element.getAttribute("href") || "",
@@ -627,7 +715,7 @@
           pageId: runtime.pageId,
           navigationId: runtime.navigationId,
         },
-        payload || {}
+        payload || {},
       );
     };
 
@@ -642,7 +730,11 @@
       }
     };
 
-    runtime.sendProbePayload = async function (routeValue, payload, useKeepalive) {
+    runtime.sendProbePayload = async function (
+      routeValue,
+      payload,
+      useKeepalive,
+    ) {
       const endpoint = runtime.resolveProbeUrl(routeValue);
       if (!endpoint) {
         return { ok: false, error: "missing_probe_endpoint" };
@@ -697,7 +789,7 @@
             events: batch,
             meta: runtime.metaPayload(),
           },
-          useKeepalive
+          useKeepalive,
         )
         .then((data) => {
           if (!data || data.ok === false) {
@@ -705,7 +797,9 @@
             runtime.setStatus("Recorder flush failed");
             return { ok: false, status: data && data.status ? data.status : 0 };
           }
-          runtime.setStatus(`Recorder saved ${data.batchEvents || batch.length} event(s)`);
+          runtime.setStatus(
+            `Recorder saved ${data.batchEvents || batch.length} event(s)`,
+          );
           return data;
         })
         .catch((error) => {
@@ -723,7 +817,10 @@
       const body = JSON.stringify(payload);
       if (navigator.sendBeacon) {
         try {
-          return navigator.sendBeacon(urlValue, new Blob([body], { type: "application/json" }));
+          return navigator.sendBeacon(
+            urlValue,
+            new Blob([body], { type: "application/json" }),
+          );
         } catch (error) {
           return false;
         }
@@ -784,7 +881,10 @@
         return false;
       }
       if (!runtime.taskLoaded) {
-        runtime.pendingFinalize = { reason: reason, extraState: extraState || {} };
+        runtime.pendingFinalize = {
+          reason: reason,
+          extraState: extraState || {},
+        };
         runtime.setStatus("Waiting for task file before finalize");
         return false;
       }
@@ -814,15 +914,17 @@
             entry_path: finalState.entry_path || window.location.pathname,
             final_state: finalState,
           },
-          true
+          true,
         );
         if (!data || data.ok === false) {
           runtime.finalized = false;
-          runtime.setStatus(`Finalize failed: ${data && data.status ? data.status : "request"}`);
+          runtime.setStatus(
+            `Finalize failed: ${data && data.status ? data.status : "request"}`,
+          );
           return false;
         }
         runtime.setStatus(
-          `Compiler output ready: ${(data.compileResult && data.compileResult.generated_script) || "generated/replay_from_events.py"}`
+          `Compiler output ready: ${(data.compileResult && data.compileResult.generated_script) || "generated/replay_from_events.py"}`,
         );
         return true;
       } catch (error) {
@@ -839,7 +941,10 @@
       const isInternalNavigation = runtime.consumeInternalNavigationFlag();
       if (isInternalNavigation) {
         if (runtime.events.length) {
-          runtime.sendEventsBeacon(runtime.events.splice(0, runtime.events.length), runtime.metaPayload());
+          runtime.sendEventsBeacon(
+            runtime.events.splice(0, runtime.events.length),
+            runtime.metaPayload(),
+          );
         }
         return;
       }
@@ -866,12 +971,16 @@
       if (typeof runtime.config.patchDom === "function") {
         runtime.config.patchDom(runtime, rootNode || document);
       }
-      const anchors = (rootNode || document).querySelectorAll ? (rootNode || document).querySelectorAll("a[href]") : [];
+      const anchors = (rootNode || document).querySelectorAll
+        ? (rootNode || document).querySelectorAll("a[href]")
+        : [];
       anchors.forEach((anchor) => {
         const href = anchor.getAttribute("href") || "";
         anchor.setAttribute("href", withPreservedQuery(href, runtime));
       });
-      const forms = (rootNode || document).querySelectorAll ? (rootNode || document).querySelectorAll("form[action]") : [];
+      const forms = (rootNode || document).querySelectorAll
+        ? (rootNode || document).querySelectorAll("form[action]")
+        : [];
       forms.forEach((form) => {
         const action = form.getAttribute("action") || "";
         form.setAttribute("action", withPreservedQuery(action, runtime));
@@ -882,10 +991,17 @@
       document.addEventListener(
         "click",
         (event) => {
-          const target = event.target && event.target.closest
-            ? event.target.closest("a,button,input,textarea,select,li,[role='button']") || event.target
-            : event.target;
-          if (target && target instanceof Element && target.tagName.toLowerCase() === "a") {
+          const target =
+            event.target && event.target.closest
+              ? event.target.closest(
+                  "a,button,input,textarea,select,li,[role='button']",
+                ) || event.target
+              : event.target;
+          if (
+            target &&
+            target instanceof Element &&
+            target.tagName.toLowerCase() === "a"
+          ) {
             const href = target.getAttribute("href") || "";
             if (isInternalTarget(href)) {
               runtime.markInternalNavigation();
@@ -893,7 +1009,7 @@
           }
           runtime.queueEvent("click", target, {});
         },
-        true
+        true,
       );
 
       document.addEventListener(
@@ -908,7 +1024,7 @@
           }
           runtime.queueEvent("submit", form, {});
         },
-        true
+        true,
       );
 
       document.addEventListener(
@@ -924,7 +1040,7 @@
           };
           runtime.queueEvent("input", target, extra);
         },
-        true
+        true,
       );
 
       document.addEventListener(
@@ -940,15 +1056,24 @@
           };
           runtime.queueEvent("change", target, extra);
         },
-        true
+        true,
       );
 
-      document.addEventListener("focusin", (event) => runtime.queueEvent("focusin", event.target, {}), true);
-      document.addEventListener("focusout", (event) => runtime.queueEvent("focusout", event.target, {}), true);
+      document.addEventListener(
+        "focusin",
+        (event) => runtime.queueEvent("focusin", event.target, {}),
+        true,
+      );
+      document.addEventListener(
+        "focusout",
+        (event) => runtime.queueEvent("focusout", event.target, {}),
+        true,
+      );
       document.addEventListener(
         "keydown",
-        (event) => runtime.queueEvent("keydown", event.target, { key: event.key }),
-        true
+        (event) =>
+          runtime.queueEvent("keydown", event.target, { key: event.key }),
+        true,
       );
 
       let windowScrollTimer = null;
@@ -971,7 +1096,7 @@
             });
           }, 120);
         },
-        { passive: true }
+        { passive: true },
       );
 
       document.addEventListener(
@@ -981,7 +1106,10 @@
           if (!(element instanceof Element)) {
             return;
           }
-          if (element === document.documentElement || element === document.body) {
+          if (
+            element === document.documentElement ||
+            element === document.body
+          ) {
             return;
           }
           if (element.scrollHeight <= element.clientHeight + 4) {
@@ -1000,14 +1128,19 @@
           }, 120);
           runtime.elementScrollTimers.set(element, timer);
         },
-        true
+        true,
       );
 
       window.addEventListener("pagehide", () => runtime.sendClose("pagehide"));
-      window.addEventListener("beforeunload", () => runtime.sendClose("beforeunload"));
-      window.setInterval(() => {
-        void runtime.flushEvents(false);
-      }, (probeConfig && probeConfig.flushIntervalMs) || 1200);
+      window.addEventListener("beforeunload", () =>
+        runtime.sendClose("beforeunload"),
+      );
+      window.setInterval(
+        () => {
+          void runtime.flushEvents(false);
+        },
+        (probeConfig && probeConfig.flushIntervalMs) || 1200,
+      );
     };
 
     runtime.applyLoadedTask = function (task, taskPath) {
@@ -1018,22 +1151,28 @@
       runtime.parsedGoal =
         typeof runtime.config.parseGoal === "function"
           ? runtime.config.parseGoal(task, runtime) || {}
-          : parseGoal(task.user_goal, template, runtime.config.goalOptions || {});
+          : parseGoal(
+              task.user_goal,
+              template,
+              runtime.config.goalOptions || {},
+            );
       runtime.parsedGoal.entry_path = normalizeEntryPath(
         runtime.parsedGoal.entry_path,
         task.sample_id || "",
-        window.location.pathname
+        window.location.pathname,
       );
       runtime.updateState({
         sample_id: task.sample_id || "",
         user_goal: task.user_goal || "",
         family_id:
-          runtime.parsedGoal.family_id ||
-          runtime.state.family_id ||
-          "",
+          runtime.parsedGoal.family_id || runtime.state.family_id || "",
         entry_path:
           runtime.parsedGoal.entry_path ||
-          normalizeEntryPath("", task.sample_id || "", window.location.pathname),
+          normalizeEntryPath(
+            "",
+            task.sample_id || "",
+            window.location.pathname,
+          ),
       });
       runtime.setStatus("Recorder armed");
       if (typeof runtime.config.afterTaskLoaded === "function") {
@@ -1056,12 +1195,17 @@
         const taskInfo = (await runtime.config.resolveTaskInfo(runtime)) || {};
         runtime.taskPath = taskInfo.taskPath || taskInfo.taskUrl || "";
       } else {
-        runtime.taskPath = new URL("../task.json", window.location.href).toString();
+        runtime.taskPath = new URL(
+          "../task.json",
+          window.location.href,
+        ).toString();
       }
       if (!runtime.taskPath) {
         runtime.taskLoaded = false;
         runtime.taskError = "missing task path";
-        runtime.updateState({ entry_path: runtime.state.entry_path || window.location.pathname });
+        runtime.updateState({
+          entry_path: runtime.state.entry_path || window.location.pathname,
+        });
         runtime.setStatus("Recorder armed without task file");
         runtime.showBanner("Task load failed", "missing task path");
         return;
@@ -1071,7 +1215,11 @@
         const cached = sessionStorage.getItem(taskCacheKey);
         if (cached) {
           const cachedTask = JSON.parse(cached);
-          if (cachedTask && typeof cachedTask === "object" && !Array.isArray(cachedTask)) {
+          if (
+            cachedTask &&
+            typeof cachedTask === "object" &&
+            !Array.isArray(cachedTask)
+          ) {
             runtime.applyLoadedTask(cachedTask, runtime.taskPath);
             return;
           }
@@ -1097,17 +1245,21 @@
       } catch (error) {
         runtime.taskLoaded = false;
         runtime.taskError = String(error);
-        runtime.updateState({ entry_path: runtime.state.entry_path || window.location.pathname });
+        runtime.updateState({
+          entry_path: runtime.state.entry_path || window.location.pathname,
+        });
         runtime.setStatus("Recorder armed without task file");
         runtime.showBanner("Task load failed", String(error));
       }
     };
- 
+
     runtime.init = function () {
       window.__OBSERVABLE_RUNTIME = runtime;
       onReady(async () => {
         runtime.injectStatusUi();
-        runtime.setStatus(runtime.recorderEnabled ? "Recorder arming..." : "Replay mode");
+        runtime.setStatus(
+          runtime.recorderEnabled ? "Recorder arming..." : "Replay mode",
+        );
         runtime.applyDomPatches(document);
         if (typeof runtime.config.install === "function") {
           runtime.config.install(runtime);
@@ -1115,15 +1267,22 @@
         const observer = new MutationObserver(() => {
           runtime.applyDomPatches(document);
         });
-        observer.observe(document.documentElement, { childList: true, subtree: true });
+        observer.observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+        });
         runtime.installRecorderListeners();
         await runtime.loadTask();
         runtime.updateState({});
         if (runtime.recorderEnabled) {
-          runtime.queueEvent("page_ready", document.body || document.documentElement, {
-            task_loaded: runtime.taskLoaded,
-            task_error: runtime.taskError || "",
-          });
+          runtime.queueEvent(
+            "page_ready",
+            document.body || document.documentElement,
+            {
+              task_loaded: runtime.taskLoaded,
+              task_error: runtime.taskError || "",
+            },
+          );
           void runtime.flushEvents(false);
         }
         if (!runtime.recorderEnabled) {
@@ -1137,15 +1296,25 @@
     };
 
     runtime.isTargetContact = function (value) {
-      const expected = String((runtime.parsedGoal && runtime.parsedGoal.target_contact) || "").trim().toLowerCase();
-      const actual = String(value || "").trim().toLowerCase();
+      const expected = String(
+        (runtime.parsedGoal && runtime.parsedGoal.target_contact) || "",
+      )
+        .trim()
+        .toLowerCase();
+      const actual = String(value || "")
+        .trim()
+        .toLowerCase();
       if (!expected) {
         return true;
       }
       if (!actual) {
         return false;
       }
-      return actual === expected || actual.includes(expected) || expected.includes(actual);
+      return (
+        actual === expected ||
+        actual.includes(expected) ||
+        expected.includes(actual)
+      );
     };
 
     return runtime;

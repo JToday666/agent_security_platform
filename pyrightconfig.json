@@ -1,0 +1,27 @@
+{
+  "include": ["backend/app", "backend/scripts", "backend/tests"],
+  "exclude": [
+    "**/.*",
+    "**/__pycache__",
+    "**/.pytest_cache",
+    "**/.ruff_cache",
+    "backend/.venv",
+    "backend/.uv-cache",
+    "backend/dist",
+    "backend/coverage",
+    "frontend",
+    "node_modules",
+    "var"
+  ],
+  "ignore": ["backend/tests"],
+  "pythonVersion": "3.12",
+  "venvPath": "backend",
+  "venv": ".venv",
+  "typeCheckingMode": "basic",
+  "executionEnvironments": [
+    {
+      "root": "backend",
+      "extraPaths": ["backend"]
+    }
+  ]
+}

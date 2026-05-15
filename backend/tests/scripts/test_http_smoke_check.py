@@ -10,7 +10,6 @@ import pytest
 
 from tests.helpers.scripts import load_module_from_path
 
-
 pytestmark = pytest.mark.scripts
 
 
@@ -36,7 +35,9 @@ def test_http_smoke_script_exists_and_supports_help(backend_root: Path) -> None:
     assert "Run live HTTP smoke checks" in result.stdout
 
 
-def test_parse_args_supports_base_url_timeout_and_keep_data(backend_root: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_parse_args_supports_base_url_timeout_and_keep_data(
+    backend_root: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     module = load_http_smoke_module(backend_root)
     monkeypatch.setattr(
         sys,

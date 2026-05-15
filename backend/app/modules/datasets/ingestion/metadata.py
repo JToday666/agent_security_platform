@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from dataclasses import asdict
 from pathlib import Path
+from typing import Any, cast
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -43,13 +44,28 @@ def load_metadata_bundle(registry_root: Path) -> MetadataBundle:
     """从 registry/display_meta 目录读取元数据。"""
     root = registry_root.resolve()
     bundle = MetadataBundle(
-        dataset_sources=[DatasetSourceRecord(**item) for item in _load_json_list(root / "registry" / "dataset_sources.json")],
-        attack_delivery_types=[
-            AttackDeliveryTypeRecord(**item) for item in _load_json_list(root / "registry" / "attack_delivery_types.json")
+        dataset_sources=[
+            DatasetSourceRecord(**item)
+            for item in _load_json_list(root / "registry" / "dataset_sources.json")
         ],
-        asset_types=[AssetTypeRecord(**item) for item in _load_json_list(root / "registry" / "asset_types.json")],
-        risk_categories=[RiskCategoryRecord(**item) for item in _load_json_list(root / "registry" / "risk_categories.json")],
-        risk_subtypes=[RiskSubtypeRecord(**item) for item in _load_json_list(root / "registry" / "risk_subtypes.json")],
+        attack_delivery_types=[
+            AttackDeliveryTypeRecord(**item)
+            for item in _load_json_list(
+                root / "registry" / "attack_delivery_types.json"
+            )
+        ],
+        asset_types=[
+            AssetTypeRecord(**item)
+            for item in _load_json_list(root / "registry" / "asset_types.json")
+        ],
+        risk_categories=[
+            RiskCategoryRecord(**item)
+            for item in _load_json_list(root / "registry" / "risk_categories.json")
+        ],
+        risk_subtypes=[
+            RiskSubtypeRecord(**item)
+            for item in _load_json_list(root / "registry" / "risk_subtypes.json")
+        ],
     )
 
     display_meta_dir = root / "display_meta"
@@ -70,23 +86,58 @@ def write_metadata_bundle(registry_root: Path, bundle: MetadataBundle) -> None:
     (root / "registry").mkdir(parents=True, exist_ok=True)
     (root / "display_meta").mkdir(parents=True, exist_ok=True)
 
-    _write_json(root / "registry" / "dataset_sources.json", [asdict(item) for item in sorted(bundle.dataset_sources, key=lambda item: item.code)])
+    _write_json(
+        root / "registry" / "dataset_sources.json",
+        [
+            _record_payload(item)
+            for item in sorted(bundle.dataset_sources, key=lambda item: item.code)
+        ],
+    )
     _write_json(
         root / "registry" / "attack_delivery_types.json",
-        [asdict(item) for item in sorted(bundle.attack_delivery_types, key=lambda item: item.code)],
+        [
+            _record_payload(item)
+            for item in sorted(bundle.attack_delivery_types, key=lambda item: item.code)
+        ],
     )
-    _write_json(root / "registry" / "asset_types.json", [asdict(item) for item in sorted(bundle.asset_types, key=lambda item: item.code)])
+    _write_json(
+        root / "registry" / "asset_types.json",
+        [
+            _record_payload(item)
+            for item in sorted(bundle.asset_types, key=lambda item: item.code)
+        ],
+    )
     _write_json(
         root / "registry" / "risk_categories.json",
-        [asdict(item) for item in sorted(bundle.risk_categories, key=lambda item: ((item.sort_order or 999), item.code))],
+        [
+            _record_payload(item)
+            for item in sorted(
+                bundle.risk_categories,
+                key=lambda item: ((item.sort_order or 999), item.code),
+            )
+        ],
     )
     _write_json(
         root / "registry" / "risk_subtypes.json",
-        [asdict(item) for item in sorted(bundle.risk_subtypes, key=lambda item: ((item.sort_order or 999), item.code))],
+        [
+            _record_payload(item)
+            for item in sorted(
+                bundle.risk_subtypes,
+                key=lambda item: ((item.sort_order or 999), item.code),
+            )
+        ],
     )
     for code, record in sorted(bundle.display_meta_by_code.items()):
-        _write_json(root / "display_meta" / f"{code}.json", asdict(record))
+        _write_json(root / "display_meta" / f"{code}.json", _record_payload(record))
     write_display_meta_index(root, bundle)
+
+
+def _record_payload(record) -> dict[str, object]:
+    """Convert a metadata dataclass to JSON while omitting empty translations."""
+    payload = asdict(record)
+    if not payload.get("translations"):
+        payload.pop("translations", None)
+    return payload
 
 
 def write_display_meta_index(registry_root: Path, bundle: MetadataBundle) -> Path:
@@ -107,7 +158,11 @@ def build_display_meta_index(bundle: MetadataBundle) -> list[dict[str, object]]:
         subtype = subtype_by_code.get(code)
         category = category_by_code.get(subtype.category_code) if subtype else None
         return (
-            category.sort_order if category and category.sort_order is not None else 999,
+            (
+                category.sort_order
+                if category and category.sort_order is not None
+                else 999
+            ),
             subtype.sort_order if subtype and subtype.sort_order is not None else 999,
             code,
         )
@@ -121,14 +176,18 @@ def build_display_meta_index(bundle: MetadataBundle) -> list[dict[str, object]]:
                 "subtype_code": code,
                 "category_code": subtype.category_code if subtype else None,
                 "name": subtype.name if subtype else humanize_code(code),
-                "short_description": display_meta.short_description if display_meta else None,
+                "short_description": (
+                    display_meta.short_description if display_meta else None
+                ),
                 "path": f"display_meta/{code}.json",
             }
         )
     return index_rows
 
 
-def build_metadata_bundle_from_samples(sample_root: Path, registry_root: Path, mode: str = "auto") -> MetadataBundle:
+def build_metadata_bundle_from_samples(
+    sample_root: Path, registry_root: Path, mode: str = "auto"
+) -> MetadataBundle:
     """根据样本目录生成合并后的 metadata bundle，但不落盘。"""
     bundle = load_metadata_bundle(registry_root)
     source_by_code = {item.code: item for item in bundle.dataset_sources}
@@ -143,12 +202,16 @@ def build_metadata_bundle_from_samples(sample_root: Path, registry_root: Path, m
         if sample.dataset_source_code not in source_by_code:
             source_by_code[sample.dataset_source_code] = DatasetSourceRecord(
                 code=sample.dataset_source_code,
-                name=sample.dataset_source_name or humanize_code(sample.dataset_source_code),
+                name=sample.dataset_source_name
+                or humanize_code(sample.dataset_source_code),
             )
         if sample.attack_delivery_type_code not in delivery_by_code:
-            delivery_by_code[sample.attack_delivery_type_code] = AttackDeliveryTypeRecord(
-                code=sample.attack_delivery_type_code,
-                name=sample.attack_delivery_type_name or humanize_code(sample.attack_delivery_type_code),
+            delivery_by_code[sample.attack_delivery_type_code] = (
+                AttackDeliveryTypeRecord(
+                    code=sample.attack_delivery_type_code,
+                    name=sample.attack_delivery_type_name
+                    or humanize_code(sample.attack_delivery_type_code),
+                )
             )
         if sample.asset_type_code and sample.asset_type_code not in asset_by_code:
             asset_by_code[sample.asset_type_code] = AssetTypeRecord(
@@ -158,18 +221,24 @@ def build_metadata_bundle_from_samples(sample_root: Path, registry_root: Path, m
         if sample.risk_category_code not in category_by_code:
             category_by_code[sample.risk_category_code] = RiskCategoryRecord(
                 code=sample.risk_category_code,
-                name=sample.risk_category_name or default_category_name(sample.risk_category_code),
-                sort_order=sample.risk_category_sort_order or default_category_sort_order(sample.risk_category_code),
+                name=sample.risk_category_name
+                or default_category_name(sample.risk_category_code),
+                sort_order=sample.risk_category_sort_order
+                or default_category_sort_order(sample.risk_category_code),
             )
         if sample.risk_subtype_code not in subtype_by_code:
             subtype_by_code[sample.risk_subtype_code] = RiskSubtypeRecord(
                 code=sample.risk_subtype_code,
                 category_code=sample.risk_category_code,
-                name=sample.risk_subtype_name or default_subtype_name(sample.risk_subtype_code),
-                sort_order=sample.risk_subtype_sort_order or default_subtype_sort_order(sample.risk_subtype_code),
+                name=sample.risk_subtype_name
+                or default_subtype_name(sample.risk_subtype_code),
+                sort_order=sample.risk_subtype_sort_order
+                or default_subtype_sort_order(sample.risk_subtype_code),
             )
         if sample.risk_subtype_code not in display_meta_by_code:
-            display_meta_by_code[sample.risk_subtype_code] = DisplayMetaRecord(subtype_code=sample.risk_subtype_code)
+            display_meta_by_code[sample.risk_subtype_code] = DisplayMetaRecord(
+                subtype_code=sample.risk_subtype_code
+            )
 
     return MetadataBundle(
         dataset_sources=list(source_by_code.values()),
@@ -181,7 +250,9 @@ def build_metadata_bundle_from_samples(sample_root: Path, registry_root: Path, m
     )
 
 
-def sync_metadata_from_samples(sample_root: Path, registry_root: Path, mode: str = "auto") -> MetadataBundle:
+def sync_metadata_from_samples(
+    sample_root: Path, registry_root: Path, mode: str = "auto"
+) -> MetadataBundle:
     """从样本目录补齐 registry 与 display_meta 骨架。"""
     bundle = build_metadata_bundle_from_samples(sample_root, registry_root, mode=mode)
     write_metadata_bundle(registry_root, bundle)
@@ -193,8 +264,24 @@ sync_registry_from_samples = sync_metadata_from_samples
 
 def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
     """从数据库导出当前元数据。"""
-    categories = session.execute(select(RiskCategory).order_by(RiskCategory.sort_order.asc().nullslast(), RiskCategory.code.asc())).scalars().all()
-    subtypes = session.execute(select(RiskSubtype).order_by(RiskSubtype.sort_order.asc().nullslast(), RiskSubtype.code.asc())).scalars().all()
+    categories = (
+        session.execute(
+            select(RiskCategory).order_by(
+                RiskCategory.sort_order.asc().nullslast(), RiskCategory.code.asc()
+            )
+        )
+        .scalars()
+        .all()
+    )
+    subtypes = (
+        session.execute(
+            select(RiskSubtype).order_by(
+                RiskSubtype.sort_order.asc().nullslast(), RiskSubtype.code.asc()
+            )
+        )
+        .scalars()
+        .all()
+    )
     category_code_by_id = {item.id: item.code for item in categories}
 
     bundle = MetadataBundle(
@@ -205,7 +292,9 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
                 description=item.description,
                 is_active=item.is_active,
             )
-            for item in session.execute(select(DatasetSource).order_by(DatasetSource.code.asc())).scalars()
+            for item in session.execute(
+                select(DatasetSource).order_by(DatasetSource.code.asc())
+            ).scalars()
         ],
         attack_delivery_types=[
             AttackDeliveryTypeRecord(
@@ -214,7 +303,9 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
                 description=item.description,
                 is_active=item.is_active,
             )
-            for item in session.execute(select(AttackDeliveryType).order_by(AttackDeliveryType.code.asc())).scalars()
+            for item in session.execute(
+                select(AttackDeliveryType).order_by(AttackDeliveryType.code.asc())
+            ).scalars()
         ],
         asset_types=[
             AssetTypeRecord(
@@ -223,7 +314,9 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
                 description=item.description,
                 is_active=item.is_active,
             )
-            for item in session.execute(select(AssetType).order_by(AssetType.code.asc())).scalars()
+            for item in session.execute(
+                select(AssetType).order_by(AssetType.code.asc())
+            ).scalars()
         ],
         risk_categories=[
             RiskCategoryRecord(
@@ -266,9 +359,17 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
     return bundle
 
 
-def apply_metadata_bundle(session: Session, bundle: MetadataBundle) -> MetadataImportResult:
+def apply_metadata_bundle(
+    session: Session, bundle: MetadataBundle
+) -> MetadataImportResult:
     """将 JSON 元数据幂等写入数据库。"""
-    for table_name in ("dataset_sources", "attack_delivery_types", "asset_types", "risk_categories", "risk_subtypes"):
+    for table_name in (
+        "dataset_sources",
+        "attack_delivery_types",
+        "asset_types",
+        "risk_categories",
+        "risk_subtypes",
+    ):
         sync_pk_sequence(session, table_name)
 
     result = MetadataImportResult()
@@ -307,7 +408,9 @@ def apply_metadata_bundle(session: Session, bundle: MetadataBundle) -> MetadataI
     for item in bundle.risk_subtypes:
         category = category_rows.get(item.category_code)
         if category is None:
-            raise ImportValidationError(f"risk_subtypes.json: category_code={item.category_code} 未定义")
+            raise ImportValidationError(
+                f"risk_subtypes.json: category_code={item.category_code} 未定义"
+            )
         row, created = _upsert_risk_subtype(session, item, category.id)
         subtype_rows[item.code] = row
         if created:
@@ -322,8 +425,12 @@ def apply_metadata_bundle(session: Session, bundle: MetadataBundle) -> MetadataI
         )
 
     for item in bundle.risk_subtypes:
-        display_meta = bundle.display_meta_by_code.get(item.code, DisplayMetaRecord(subtype_code=item.code))
-        _, created = _upsert_display_meta(session, subtype_rows[item.code].id, display_meta)
+        display_meta = bundle.display_meta_by_code.get(
+            item.code, DisplayMetaRecord(subtype_code=item.code)
+        )
+        _, created = _upsert_display_meta(
+            session, subtype_rows[item.code].id, display_meta
+        )
         if created:
             result.created_display_meta += 1
         else:
@@ -333,9 +440,13 @@ def apply_metadata_bundle(session: Session, bundle: MetadataBundle) -> MetadataI
     return result
 
 
-def _upsert_dataset_source(session: Session, record: DatasetSourceRecord) -> tuple[DatasetSource, bool]:
+def _upsert_dataset_source(
+    session: Session, record: DatasetSourceRecord
+) -> tuple[DatasetSource, bool]:
     """按 code 幂等写入数据源字典项。"""
-    row = session.execute(select(DatasetSource).where(DatasetSource.code == record.code)).scalar_one_or_none()
+    row = session.execute(
+        select(DatasetSource).where(DatasetSource.code == record.code)
+    ).scalar_one_or_none()
     if row is None:
         row = DatasetSource(
             code=record.code,
@@ -353,9 +464,13 @@ def _upsert_dataset_source(session: Session, record: DatasetSourceRecord) -> tup
     return row, False
 
 
-def _upsert_attack_delivery_type(session: Session, record: AttackDeliveryTypeRecord) -> tuple[AttackDeliveryType, bool]:
+def _upsert_attack_delivery_type(
+    session: Session, record: AttackDeliveryTypeRecord
+) -> tuple[AttackDeliveryType, bool]:
     """按 code 幂等写入攻击投递方式字典项。"""
-    row = session.execute(select(AttackDeliveryType).where(AttackDeliveryType.code == record.code)).scalar_one_or_none()
+    row = session.execute(
+        select(AttackDeliveryType).where(AttackDeliveryType.code == record.code)
+    ).scalar_one_or_none()
     if row is None:
         row = AttackDeliveryType(
             code=record.code,
@@ -373,9 +488,13 @@ def _upsert_attack_delivery_type(session: Session, record: AttackDeliveryTypeRec
     return row, False
 
 
-def _upsert_asset_type(session: Session, record: AssetTypeRecord) -> tuple[AssetType, bool]:
+def _upsert_asset_type(
+    session: Session, record: AssetTypeRecord
+) -> tuple[AssetType, bool]:
     """按 code 幂等写入资产类型字典项。"""
-    row = session.execute(select(AssetType).where(AssetType.code == record.code)).scalar_one_or_none()
+    row = session.execute(
+        select(AssetType).where(AssetType.code == record.code)
+    ).scalar_one_or_none()
     if row is None:
         row = AssetType(
             code=record.code,
@@ -393,9 +512,13 @@ def _upsert_asset_type(session: Session, record: AssetTypeRecord) -> tuple[Asset
     return row, False
 
 
-def _upsert_risk_category(session: Session, record: RiskCategoryRecord) -> tuple[RiskCategory, bool]:
+def _upsert_risk_category(
+    session: Session, record: RiskCategoryRecord
+) -> tuple[RiskCategory, bool]:
     """按 code 幂等写入风险大类字典项。"""
-    row = session.execute(select(RiskCategory).where(RiskCategory.code == record.code)).scalar_one_or_none()
+    row = session.execute(
+        select(RiskCategory).where(RiskCategory.code == record.code)
+    ).scalar_one_or_none()
     if row is None:
         row = RiskCategory(
             code=record.code,
@@ -417,9 +540,13 @@ def _upsert_risk_category(session: Session, record: RiskCategoryRecord) -> tuple
     return row, False
 
 
-def _upsert_risk_subtype(session: Session, record: RiskSubtypeRecord, category_id: int) -> tuple[RiskSubtype, bool]:
+def _upsert_risk_subtype(
+    session: Session, record: RiskSubtypeRecord, category_id: int
+) -> tuple[RiskSubtype, bool]:
     """按 code 幂等写入风险子类字典项。"""
-    row = session.execute(select(RiskSubtype).where(RiskSubtype.code == record.code)).scalar_one_or_none()
+    row = session.execute(
+        select(RiskSubtype).where(RiskSubtype.code == record.code)
+    ).scalar_one_or_none()
     if row is None:
         row = RiskSubtype(
             category_id=category_id,
@@ -446,7 +573,9 @@ def _upsert_display_meta(
 ) -> tuple[RiskSubtypeDisplayMeta, bool]:
     """按子类主键幂等写入展示元数据。"""
     row = session.execute(
-        select(RiskSubtypeDisplayMeta).where(RiskSubtypeDisplayMeta.subtype_id == subtype_id)
+        select(RiskSubtypeDisplayMeta).where(
+            RiskSubtypeDisplayMeta.subtype_id == subtype_id
+        )
     ).scalar_one_or_none()
     if row is None:
         row = RiskSubtypeDisplayMeta(
@@ -471,7 +600,7 @@ def _upsert_display_meta(
     return row, False
 
 
-def _load_json_list(path: Path) -> list[dict[str, object]]:
+def _load_json_list(path: Path) -> list[dict[str, Any]]:
     """读取并校验顶层为数组的 JSON 文件。"""
     if not path.exists():
         return []
@@ -481,18 +610,20 @@ def _load_json_list(path: Path) -> list[dict[str, object]]:
     for index, item in enumerate(payload, start=1):
         if not isinstance(item, dict):
             raise ImportValidationError(f"{path}: 第 {index} 项必须是对象")
-    return payload
+    return cast(list[dict[str, Any]], payload)
 
 
-def _load_json_object(path: Path) -> dict[str, object]:
+def _load_json_object(path: Path) -> dict[str, Any]:
     """读取并校验顶层为对象的 JSON 文件。"""
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise ImportValidationError(f"{path}: 顶层必须是对象")
-    return payload
+    return cast(dict[str, Any], payload)
 
 
 def _write_json(path: Path, payload: object) -> None:
     """以统一格式写出 JSON 文件。"""
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )

@@ -24,7 +24,9 @@ def test_dataset_routes_work_against_real_database(client, api_db_helper) -> Non
     detail_payload = detail_response.json()["data"]
     assert detail_payload["datasetId"] == dataset_code
     assert detail_payload["name"] == f"{api_db_helper.prefix} 数据集"
-    assert detail_payload["category"]["categoryId"] == f"{api_db_helper.prefix}_category"
+    assert (
+        detail_payload["category"]["categoryId"] == f"{api_db_helper.prefix}_category"
+    )
 
     missing_response = client.get(f"/api/v1/datasets/{api_db_helper.prefix}_missing")
     assert missing_response.status_code == 404

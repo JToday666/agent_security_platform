@@ -14,4 +14,3 @@ def default_credential_store() -> CredentialStore:
 def default_avatars_root() -> Path:
     """Return the configured avatar storage directory."""
     return settings.avatars_root
-

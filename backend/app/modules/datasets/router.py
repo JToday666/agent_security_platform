@@ -26,7 +26,9 @@ async def get_dataset_catalog(service: DatasetService = Depends(get_dataset_serv
 
 
 @router.get("/{datasetId}", response_model=Envelope[DatasetDetailResponse])
-async def get_dataset_detail(datasetId: str, service: DatasetService = Depends(get_dataset_service)):
+async def get_dataset_detail(
+    datasetId: str, service: DatasetService = Depends(get_dataset_service)
+):
     """返回指定评测项详情。"""
     response = await service.get_detail(datasetId)
     return success_payload(response.model_dump(by_alias=True))

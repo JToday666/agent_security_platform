@@ -10,7 +10,6 @@ from app.worker.runtime.exceptions import (
     RuntimeStartupError,
 )
 
-
 pytestmark = pytest.mark.worker
 
 
@@ -27,4 +26,3 @@ def test_runtime_exceptions_preserve_error_message() -> None:
     assert str(RuntimeStartupError("startup failed")) == "startup failed"
     assert str(RuntimeDispatchError("dispatch failed")) == "dispatch failed"
     assert str(RuntimeDispatchTimeout("dispatch timed out")) == "dispatch timed out"
-

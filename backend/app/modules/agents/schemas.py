@@ -6,7 +6,6 @@ from pydantic import Field
 
 from app.platform.schemas import CamelModel
 
-
 InvokeMode = Literal["sync_response", "submit_poll"]
 AgentStatus = Literal["draft", "verifying", "active", "invalid", "archived"]
 AuthType = Literal["none", "bearer", "api_key_header", "custom_header"]

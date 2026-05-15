@@ -8,7 +8,12 @@ from sqlalchemy.exc import IntegrityError
 
 from app.modules.user.repository import UserRepository
 from app.modules.user.schemas import AvatarUploadData, ProfileUpdateRequest, UserProfile
-from app.platform.errors import ConflictError, DomainError, ForbiddenError, ValidationDomainError
+from app.platform.errors import (
+    ConflictError,
+    DomainError,
+    ForbiddenError,
+    ValidationDomainError,
+)
 from app.platform.security import hash_password
 from app.platform.storage import default_avatars_root
 
@@ -19,7 +24,9 @@ MAX_AVATAR_SIZE = 2 * 1024 * 1024
 class UserService:
     """封装用户资料相关业务能力。"""
 
-    def __init__(self, repository: UserRepository, avatars_root: Path | None = None) -> None:
+    def __init__(
+        self, repository: UserRepository, avatars_root: Path | None = None
+    ) -> None:
         """绑定用户资料服务使用的仓储实例。"""
         self.repository = repository
         self.avatars_root = avatars_root
@@ -28,17 +35,32 @@ class UserService:
         """返回当前用户资料。"""
         return UserProfile.model_validate(current_user)
 
-    async def update_profile(self, payload: ProfileUpdateRequest, current_user) -> UserProfile:
+    async def update_profile(
+        self, payload: ProfileUpdateRequest, current_user
+    ) -> UserProfile:
         """更新当前用户可编辑的资料字段。"""
         if payload.email is not None:
-            raise ForbiddenError("邮箱不可修改", code=1004)
+            raise ForbiddenError(
+                "邮箱不可修改", code=1004, message_key="errors.user.email_immutable"
+            )
 
         if payload.username is None and payload.password is None:
-            raise ValidationDomainError("没有提供要修改的字段", http_status=status.HTTP_400_BAD_REQUEST, code=1000)
+            raise ValidationDomainError(
+                "没有提供要修改的字段",
+                http_status=status.HTTP_400_BAD_REQUEST,
+                code=1000,
+                message_key="errors.user.profile_empty",
+            )
 
         if payload.username is not None and payload.username != current_user.username:
-            if await self.repository.is_username_taken(payload.username, exclude_user_id=current_user.id):
-                raise ConflictError("用户名已被占用", code=1003)
+            if await self.repository.is_username_taken(
+                payload.username, exclude_user_id=current_user.id
+            ):
+                raise ConflictError(
+                    "用户名已被占用",
+                    code=1003,
+                    message_key="errors.user.username_taken",
+                )
             current_user.username = payload.username
 
         if payload.password is not None:
@@ -50,20 +72,39 @@ class UserService:
             await self.repository.refresh(current_user)
         except IntegrityError as exc:
             await self.repository.rollback()
-            raise ConflictError("用户名已被占用", code=1003) from exc
+            raise ConflictError(
+                "用户名已被占用", code=1003, message_key="errors.user.username_taken"
+            ) from exc
         return UserProfile.model_validate(current_user)
 
-    async def upload_avatar(self, avatar: UploadFile | None, current_user) -> AvatarUploadData:
+    async def upload_avatar(
+        self, avatar: UploadFile | None, current_user
+    ) -> AvatarUploadData:
         """保存用户头像并返回可访问地址。"""
         if avatar is None:
-            raise ValidationDomainError("请选择要上传的头像", http_status=status.HTTP_400_BAD_REQUEST, code=1000)
+            raise ValidationDomainError(
+                "请选择要上传的头像",
+                http_status=status.HTTP_400_BAD_REQUEST,
+                code=1000,
+                message_key="errors.user.avatar_missing",
+            )
 
         if avatar.content_type not in ALLOWED_IMAGE_TYPES:
-            raise ValidationDomainError("仅支持 JPG、PNG 格式", http_status=status.HTTP_400_BAD_REQUEST, code=1000)
+            raise ValidationDomainError(
+                "仅支持 JPG、PNG 格式",
+                http_status=status.HTTP_400_BAD_REQUEST,
+                code=1000,
+                message_key="errors.user.avatar_type",
+            )
 
         content = await avatar.read()
         if len(content) > MAX_AVATAR_SIZE:
-            raise ValidationDomainError("头像大小不能超过 2MB", http_status=status.HTTP_400_BAD_REQUEST, code=1000)
+            raise ValidationDomainError(
+                "头像大小不能超过 2MB",
+                http_status=status.HTTP_400_BAD_REQUEST,
+                code=1000,
+                message_key="errors.user.avatar_size",
+            )
 
         avatars_root = self.avatars_root or default_avatars_root()
         avatars_root.mkdir(parents=True, exist_ok=True)
@@ -79,6 +120,7 @@ class UserService:
                 http_status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 code=500,
                 message="头像上传失败，请稍后重试",
+                message_key="errors.user.avatar_upload_failed",
             ) from exc
 
         current_user.avatar_url = f"/uploads/avatars/{file_name}"

@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES
+from app.platform.i18n import translate
 
 
 def to_zulu(value: datetime) -> str:
@@ -23,7 +24,9 @@ def build_parameters(run) -> dict[str, object]:
 def build_progress_percent(run, datasets: list) -> int:
     """Calculate evaluation progress for list/detail responses."""
     if run.total_samples > 0:
-        return max(0, min(100, round((run.completed_samples / run.total_samples) * 100)))
+        return max(
+            0, min(100, round((run.completed_samples / run.total_samples) * 100))
+        )
     if not datasets:
         return 0
     completed = sum(int(dataset.status in TERMINAL_STATUSES) for dataset in datasets)
@@ -33,26 +36,28 @@ def build_progress_percent(run, datasets: list) -> int:
 def build_status_text(status: str, running_dataset_name: str | None) -> str:
     """Build frontend-facing status text."""
     if status == "pending":
-        return "任务已创建，等待开始评测。"
+        return translate("evaluations.status.pending")
     if status == "running":
         if running_dataset_name is None:
-            return "任务正在评测中。"
-        return f"当前正在评测数据集 {running_dataset_name}。"
+            return translate("evaluations.status.running")
+        return translate(
+            "evaluations.status.running_dataset", {"datasetName": running_dataset_name}
+        )
     if status == "pausing":
-        return "当前数据集完成后任务将进入暂停状态。"
+        return translate("evaluations.status.pausing")
     if status == "paused":
-        return "任务已暂停，请在截止时间前恢复。"
+        return translate("evaluations.status.paused")
     if status == "terminating":
-        return "当前数据集完成后任务将终止并生成报告。"
+        return translate("evaluations.status.terminating")
     if status == "canceling":
-        return "任务正在取消，请稍候。"
+        return translate("evaluations.status.canceling")
     if status == "completed":
-        return "评测已完成。"
+        return translate("evaluations.status.completed")
     if status == "terminated":
-        return "评测已终止。"
+        return translate("evaluations.status.terminated")
     if status == "canceled":
-        return "评测已取消。"
-    return "评测执行失败。"
+        return translate("evaluations.status.canceled")
+    return translate("evaluations.status.failed")
 
 
 def build_report_payload(report) -> dict[str, object]:
@@ -73,4 +78,3 @@ def build_report_payload(report) -> dict[str, object]:
         },
         "reportUri": report.report_uri,
     }
-

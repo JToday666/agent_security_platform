@@ -12,7 +12,12 @@ from app.modules.evaluations import lifecycle
 @pytest.mark.asyncio
 async def test_request_pause_marks_running_run_as_pausing() -> None:
     now = datetime.now(timezone.utc)
-    run = SimpleNamespace(status="running", pause_used=False, requested_action=None, requested_action_at=None)
+    run = SimpleNamespace(
+        status="running",
+        pause_used=False,
+        requested_action=None,
+        requested_action_at=None,
+    )
 
     lifecycle.request_pause(run, now)
 
@@ -66,7 +71,11 @@ async def test_request_cancel_finalizes_paused_run_immediately() -> None:
 @pytest.mark.asyncio
 async def test_reconcile_run_timeout_delegates_to_finalize_when_expired() -> None:
     db = AsyncMock()
-    run = SimpleNamespace(status="paused", finalization_reason=None, pause_deadline_at=datetime.now(timezone.utc))
+    run = SimpleNamespace(
+        status="paused",
+        finalization_reason=None,
+        pause_deadline_at=datetime.now(timezone.utc),
+    )
 
     with patch.object(
         lifecycle,
@@ -95,7 +104,11 @@ async def test_build_report_summary_counts_pending_review() -> None:
             return self._rows
 
     db = AsyncMock()
-    db.get = AsyncMock(return_value=SimpleNamespace(total_samples=3, completed_samples=2, failed_count=1))
+    db.get = AsyncMock(
+        return_value=SimpleNamespace(
+            total_samples=3, completed_samples=2, failed_count=1
+        )
+    )
     db.execute = AsyncMock(
         return_value=FakeResult(
             [

@@ -5,18 +5,41 @@ from __future__ import annotations
 import logging
 from collections import defaultdict
 from datetime import datetime, timezone
+from typing import TypedDict
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.benchmark import BenchmarkSample, RiskCategory, RiskSubtype
-from app.models.benchmark_run import ExecutionSummary, RunDataset, RunReport, SampleExecution, TestRun
+from app.models.benchmark_run import (
+    ExecutionSummary,
+    RunDataset,
+    RunReport,
+    SampleExecution,
+    TestRun,
+)
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES, apply_pause_timeout
 from app.modules.difficulty.service import update_sample_difficulty_stats_for_run
 from app.modules.scoring.service import calculate_and_store_evaluation_score
 
-
 LOGGER = logging.getLogger(__name__)
+
+
+class _CategorySummary(TypedDict):
+    categoryId: str
+    name: str
+    totalSamples: int
+    taskCompletedCount: int
+    harmDetectedCount: int
+
+
+class _LevelSummaryBase(TypedDict):
+    totalSamples: int
+    harmDetectedCount: int
+
+
+class _LevelSummary(_LevelSummaryBase, total=False):
+    level: int
 
 
 def request_pause(run, now: datetime) -> None:
@@ -112,7 +135,11 @@ async def finalize_run(
     run.claimed_at = None
     run.claim_heartbeat_at = None
 
-    datasets = list((await db.execute(select(RunDataset).where(RunDataset.run_id == run.id))).scalars())
+    datasets = list(
+        (
+            await db.execute(select(RunDataset).where(RunDataset.run_id == run.id))
+        ).scalars()
+    )
     for dataset in datasets:
         if dataset.status in TERMINAL_STATUSES:
             continue
@@ -127,7 +154,9 @@ async def finalize_run(
             if run.completed_samples > 0:
                 await calculate_and_store_evaluation_score(db, run.id)
         except Exception:
-            LOGGER.exception("Failed to update difficulty stats or scoring", extra={"run_id": run.id})
+            LOGGER.exception(
+                "Failed to update difficulty stats or scoring", extra={"run_id": run.id}
+            )
 
     await db.commit()
 
@@ -150,7 +179,11 @@ async def reconcile_run_timeout(db: AsyncSession, run: TestRun) -> bool:
         finalization_reason=run.finalization_reason,
         pause_deadline_at=run.pause_deadline_at,
     )
-    if new_status == run.status and new_reason == run.finalization_reason and new_deadline == run.pause_deadline_at:
+    if (
+        new_status == run.status
+        and new_reason == run.finalization_reason
+        and new_deadline == run.pause_deadline_at
+    ):
         return False
 
     await finalize_run(
@@ -185,11 +218,18 @@ async def reconcile_expired_paused_runs(db: AsyncSession) -> list[TestRun]:
 
 async def upsert_report(db: AsyncSession, run_id: int) -> RunReport:
     """创建或刷新指定任务的报告记录。"""
-    report = (await db.execute(select(RunReport).where(RunReport.run_id == run_id))).scalar_one_or_none()
+    report = (
+        await db.execute(select(RunReport).where(RunReport.run_id == run_id))
+    ).scalar_one_or_none()
     summary = await build_report_summary(db, run_id)
 
     if report is None:
-        report = RunReport(run_id=run_id, report_status="available", summary_json=summary, report_uri=None)
+        report = RunReport(
+            run_id=run_id,
+            report_status="available",
+            summary_json=summary,
+            report_uri=None,
+        )
         db.add(report)
     else:
         report.report_status = "available"
@@ -214,7 +254,10 @@ async def build_report_summary(db: AsyncSession, run_id: int) -> dict[str, objec
                 ExecutionSummary.harm_detected,
                 ExecutionSummary.final_label,
             )
-            .join(SampleExecution, ExecutionSummary.sample_execution_id == SampleExecution.id)
+            .join(
+                SampleExecution,
+                ExecutionSummary.sample_execution_id == SampleExecution.id,
+            )
             .join(BenchmarkSample, SampleExecution.sample_id_ref == BenchmarkSample.id)
             .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
             .join(RiskCategory, RiskSubtype.category_id == RiskCategory.id)
@@ -222,15 +265,27 @@ async def build_report_summary(db: AsyncSession, run_id: int) -> dict[str, objec
         )
     ).all()
 
-    by_category: dict[str, dict[str, object]] = {}
-    by_risk_level: dict[int, dict[str, object]] = defaultdict(lambda: {"totalSamples": 0, "harmDetectedCount": 0})
-    by_attack_level: dict[int, dict[str, object]] = defaultdict(lambda: {"totalSamples": 0, "harmDetectedCount": 0})
+    by_category: dict[str, _CategorySummary] = {}
+    by_risk_level: defaultdict[int, _LevelSummary] = defaultdict(
+        lambda: {"totalSamples": 0, "harmDetectedCount": 0}
+    )
+    by_attack_level: defaultdict[int, _LevelSummary] = defaultdict(
+        lambda: {"totalSamples": 0, "harmDetectedCount": 0}
+    )
     task_completed_count = 0
     harm_detected_count = 0
 
     pending_review_count = 0
 
-    for category_code, category_name, risk_level, attack_level, task_completed, harm_detected, final_label in summary_rows:
+    for (
+        category_code,
+        category_name,
+        risk_level,
+        attack_level,
+        task_completed,
+        harm_detected,
+        final_label,
+    ) in summary_rows:
         category_stats = by_category.setdefault(
             category_code,
             {

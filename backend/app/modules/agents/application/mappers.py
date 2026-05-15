@@ -75,7 +75,11 @@ def runtime_snapshot(agent: Agent) -> dict[str, object]:
         "description": agent.description,
         "invokeMode": agent.invoke_mode,
         "connection": agent.connection,
-        "auth": {"type": agent.auth_type, **agent.auth_public_config, "credentialRef": agent.credential_ref},
+        "auth": {
+            "type": agent.auth_type,
+            **agent.auth_public_config,
+            "credentialRef": agent.credential_ref,
+        },
         "platformInputMapping": agent.platform_input_mapping,
         "taskRenderMode": agent.task_render_mode,
         "customRequestBody": agent.custom_request_body,
@@ -84,4 +88,3 @@ def runtime_snapshot(agent: Agent) -> dict[str, object]:
         "terminalStatuses": agent.terminal_statuses,
         "successStatuses": agent.success_statuses,
     }
-

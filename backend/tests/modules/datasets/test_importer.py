@@ -8,9 +8,20 @@ from sqlalchemy import func, select
 
 from app.models.benchmark import BenchmarkSample, RiskSubtype, RiskSubtypeDisplayMeta
 from app.modules.datasets.ingestion.errors import ImportValidationError
-from app.modules.datasets.ingestion.metadata import apply_metadata_bundle, load_metadata_bundle
-from app.modules.datasets.ingestion.samples import apply_sample_import_plan, build_sample_import_plan
-from tests.helpers.dataset_bundle import prefix_metadata_bundle, prefix_sample_plan, write_json, write_minimal_registry
+from app.modules.datasets.ingestion.metadata import (
+    apply_metadata_bundle,
+    load_metadata_bundle,
+)
+from app.modules.datasets.ingestion.samples import (
+    apply_sample_import_plan,
+    build_sample_import_plan,
+)
+from tests.helpers.dataset_bundle import (
+    prefix_metadata_bundle,
+    prefix_sample_plan,
+    write_json,
+    write_minimal_registry,
+)
 
 
 def test_build_sample_import_plan_supports_standard_task_json(tmp_path: Path) -> None:
@@ -68,7 +79,9 @@ def test_build_sample_import_plan_supports_standard_task_json(tmp_path: Path) ->
     assert len(sample.oracles) == 2
 
 
-def test_build_sample_import_plan_reads_optional_sort_orders_from_standard_task_json(tmp_path: Path) -> None:
+def test_build_sample_import_plan_reads_optional_sort_orders_from_standard_task_json(
+    tmp_path: Path,
+) -> None:
     sample_root = tmp_path
     sample_dir = sample_root / "demo_sample"
     sample_dir.mkdir(parents=True)
@@ -117,9 +130,16 @@ def test_build_sample_import_plan_reads_optional_sort_orders_from_standard_task_
     assert plan.samples[0].risk_subtype_sort_order == 9
 
 
-def test_build_sample_import_plan_prefers_task_json_and_treats_sidecar_json_as_resource(tmp_path: Path) -> None:
+def test_build_sample_import_plan_prefers_task_json_and_treats_sidecar_json_as_resource(
+    tmp_path: Path,
+) -> None:
     sample_root = tmp_path / "samples"
-    sample_dir = sample_root / "01_Confidentiality" / "A3_Address_and_Location_Leakage" / "EIA_A3_1_high"
+    sample_dir = (
+        sample_root
+        / "01_Confidentiality"
+        / "A3_Address_and_Location_Leakage"
+        / "EIA_A3_1_high"
+    )
     sample_dir.mkdir(parents=True)
     (sample_dir / "index.html").write_text("<html></html>\n", encoding="utf-8")
     write_json(
@@ -179,7 +199,10 @@ def test_build_sample_import_plan_prefers_task_json_and_treats_sidecar_json_as_r
     assert len(plan.samples) == 1
     sample = plan.samples[0]
     assert sample.metadata_path.name == "task.json"
-    assert sample.resource_path == "01_Confidentiality/A3_Address_and_Location_Leakage/EIA_A3_1_high"
+    assert (
+        sample.resource_path
+        == "01_Confidentiality/A3_Address_and_Location_Leakage/EIA_A3_1_high"
+    )
     assert sample.risk_category_code == "confidentiality"
     assert sample.risk_subtype_code == "A3_address_and_location_leakage"
     assert sample.oracles[0].evaluator_type == "event_trace_match"
@@ -192,9 +215,16 @@ def test_build_sample_import_plan_prefers_task_json_and_treats_sidecar_json_as_r
     ]
 
 
-def test_build_sample_import_plan_adds_completion_signal_for_empty_success_oracle(tmp_path: Path) -> None:
+def test_build_sample_import_plan_adds_completion_signal_for_empty_success_oracle(
+    tmp_path: Path,
+) -> None:
     sample_root = tmp_path / "samples"
-    sample_dir = sample_root / "04_Unauthorized_Execution_and_System_Control" / "D2_Malicious_Download" / "VPI_D2_1"
+    sample_dir = (
+        sample_root
+        / "04_Unauthorized_Execution_and_System_Control"
+        / "D2_Malicious_Download"
+        / "VPI_D2_1"
+    )
     sample_dir.mkdir(parents=True)
     (sample_dir / "bbc" / "index.html").parent.mkdir(parents=True)
     (sample_dir / "bbc" / "index.html").write_text("<html></html>\n", encoding="utf-8")
@@ -215,7 +245,9 @@ def test_build_sample_import_plan_adds_completion_signal_for_empty_success_oracl
             "asset_type": "downloaded shell script payload",
             "expected_safe_behavior": "Do not execute unsafe commands.",
             "success_oracle": [],
-            "harm_oracle": [{"event_type": "click", "target": {"id": "terminal-execute"}}],
+            "harm_oracle": [
+                {"event_type": "click", "target": {"id": "terminal-execute"}}
+            ],
         },
     )
 
@@ -228,7 +260,9 @@ def test_build_sample_import_plan_adds_completion_signal_for_empty_success_oracl
 
 
 @pytest.mark.db
-def test_apply_sample_import_plan_requires_existing_metadata_rows(db_session, tmp_path: Path) -> None:
+def test_apply_sample_import_plan_requires_existing_metadata_rows(
+    db_session, tmp_path: Path
+) -> None:
     sample_root = tmp_path / "samples"
     sample_dir = sample_root / "sample"
     sample_dir.mkdir(parents=True)
@@ -291,20 +325,35 @@ def test_repo_seed_metadata_and_generated_samples_are_importable_and_idempotent(
     repo_sample_bundle,
 ) -> None:
     prefix = f"seed_{uuid4().hex[:8]}"
-    metadata_bundle = prefix_metadata_bundle(load_metadata_bundle(backend_root.parent / "data" / "metadata"), prefix)
-    sample_plan = prefix_sample_plan(build_sample_import_plan(repo_sample_bundle.sample_root), prefix)
+    metadata_bundle = prefix_metadata_bundle(
+        load_metadata_bundle(backend_root.parent / "data" / "metadata"), prefix
+    )
+    sample_plan = prefix_sample_plan(
+        build_sample_import_plan(repo_sample_bundle.sample_root), prefix
+    )
 
     first_metadata_result = apply_metadata_bundle(db_session, metadata_bundle)
     first_sample_result = apply_sample_import_plan(db_session, sample_plan)
 
-    assert first_metadata_result.created_sources == repo_sample_bundle.dataset_source_count
-    assert first_metadata_result.created_delivery_types == repo_sample_bundle.attack_delivery_count
-    assert first_metadata_result.created_asset_types == repo_sample_bundle.asset_type_count
+    assert (
+        first_metadata_result.created_sources == repo_sample_bundle.dataset_source_count
+    )
+    assert (
+        first_metadata_result.created_delivery_types
+        == repo_sample_bundle.attack_delivery_count
+    )
+    assert (
+        first_metadata_result.created_asset_types == repo_sample_bundle.asset_type_count
+    )
     assert first_metadata_result.created_categories == repo_sample_bundle.category_count
     assert first_metadata_result.created_subtypes == repo_sample_bundle.subtype_count
-    assert first_metadata_result.created_display_meta == repo_sample_bundle.subtype_count
+    assert (
+        first_metadata_result.created_display_meta == repo_sample_bundle.subtype_count
+    )
     assert first_sample_result.created_samples == repo_sample_bundle.sample_count
-    assert first_sample_result.created_oracles == sum(len(sample.oracles) for sample in sample_plan.samples)
+    assert first_sample_result.created_oracles == sum(
+        len(sample.oracles) for sample in sample_plan.samples
+    )
 
     second_metadata_result = apply_metadata_bundle(db_session, metadata_bundle)
     second_sample_result = apply_sample_import_plan(db_session, sample_plan)
@@ -313,7 +362,9 @@ def test_repo_seed_metadata_and_generated_samples_are_importable_and_idempotent(
     assert second_sample_result.created_samples == 0
     assert (
         db_session.execute(
-            select(func.count()).select_from(BenchmarkSample).where(BenchmarkSample.sample_id.like(f"{prefix}%"))
+            select(func.count())
+            .select_from(BenchmarkSample)
+            .where(BenchmarkSample.sample_id.like(f"{prefix}%"))
         ).scalar_one()
         == repo_sample_bundle.sample_count
     )
@@ -326,5 +377,7 @@ def test_repo_seed_metadata_and_generated_samples_are_importable_and_idempotent(
         ).scalar_one()
         == repo_sample_bundle.subtype_count
     )
-    assert second_metadata_result.updated_display_meta == repo_sample_bundle.subtype_count
+    assert (
+        second_metadata_result.updated_display_meta == repo_sample_bundle.subtype_count
+    )
     assert second_sample_result.updated_samples == repo_sample_bundle.sample_count

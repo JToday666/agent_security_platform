@@ -16,7 +16,9 @@ from scripts._common import DATASET_METADATA_ROOT
 
 def build_parser() -> argparse.ArgumentParser:
     """构造命令行参数解析器。"""
-    parser = argparse.ArgumentParser(description="Normalize, sync metadata, and import datasets through the full pipeline.")
+    parser = argparse.ArgumentParser(
+        description="Normalize, sync metadata, and import datasets through the full pipeline."
+    )
     parser.add_argument(
         "--sample-root",
         type=Path,

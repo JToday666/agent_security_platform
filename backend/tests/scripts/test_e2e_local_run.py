@@ -9,7 +9,6 @@ import pytest
 
 from tests.helpers.scripts import load_module_from_path
 
-
 pytestmark = pytest.mark.scripts
 
 
@@ -20,7 +19,9 @@ def load_e2e_module(backend_root: Path):
     )
 
 
-def test_parse_args_supports_spawn_services(backend_root: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_parse_args_supports_spawn_services(
+    backend_root: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     module = load_e2e_module(backend_root)
     monkeypatch.setattr(
         sys,
@@ -61,7 +62,9 @@ def test_build_submission_payload_uses_b2_defaults(backend_root: Path) -> None:
     assert payload["requestId"] == "req_demo"
 
 
-def test_is_terminal_run_status_recognizes_backend_terminal_states(backend_root: Path) -> None:
+def test_is_terminal_run_status_recognizes_backend_terminal_states(
+    backend_root: Path,
+) -> None:
     module = load_e2e_module(backend_root)
 
     assert module.is_terminal_run_status("completed") is True
@@ -71,10 +74,14 @@ def test_is_terminal_run_status_recognizes_backend_terminal_states(backend_root:
     assert module.is_terminal_run_status("running") is False
 
 
-def test_ensure_dataset_ready_skips_bootstrap_when_samples_exist(backend_root: Path) -> None:
+def test_ensure_dataset_ready_skips_bootstrap_when_samples_exist(
+    backend_root: Path,
+) -> None:
     module = load_e2e_module(backend_root)
 
-    with patch.object(module, "count_active_samples", side_effect=[6]) as count_mock, patch.object(
+    with patch.object(
+        module, "count_active_samples", side_effect=[6]
+    ) as count_mock, patch.object(
         module,
         "run_command",
     ) as run_command_mock:
@@ -85,10 +92,14 @@ def test_ensure_dataset_ready_skips_bootstrap_when_samples_exist(backend_root: P
     run_command_mock.assert_not_called()
 
 
-def test_ensure_dataset_ready_bootstraps_when_dataset_missing(backend_root: Path) -> None:
+def test_ensure_dataset_ready_bootstraps_when_dataset_missing(
+    backend_root: Path,
+) -> None:
     module = load_e2e_module(backend_root)
 
-    with patch.object(module, "count_active_samples", side_effect=[0, 6]) as count_mock, patch.object(
+    with patch.object(
+        module, "count_active_samples", side_effect=[0, 6]
+    ) as count_mock, patch.object(
         module,
         "run_command",
     ) as run_command_mock:
@@ -99,14 +110,20 @@ def test_ensure_dataset_ready_bootstraps_when_dataset_missing(backend_root: Path
     assert run_command_mock.call_count == 2
 
 
-def test_resolve_submission_difficulty_keeps_preferred_when_bucket_has_samples(backend_root: Path) -> None:
+def test_resolve_submission_difficulty_keeps_preferred_when_bucket_has_samples(
+    backend_root: Path,
+) -> None:
     module = load_e2e_module(backend_root)
 
-    with patch.object(module, "count_matching_samples_for_difficulty", return_value=2) as match_mock, patch.object(
+    with patch.object(
+        module, "count_matching_samples_for_difficulty", return_value=2
+    ) as match_mock, patch.object(
         module,
         "list_active_difficulty_scores",
     ) as list_mock:
-        resolved, adjusted = module.resolve_submission_difficulty("B2_cloud_file_modification", 0.5)
+        resolved, adjusted = module.resolve_submission_difficulty(
+            "B2_cloud_file_modification", 0.5
+        )
 
     assert resolved == 0.5
     assert adjusted is False
@@ -114,15 +131,21 @@ def test_resolve_submission_difficulty_keeps_preferred_when_bucket_has_samples(b
     list_mock.assert_not_called()
 
 
-def test_resolve_submission_difficulty_falls_back_to_nearest_available_score(backend_root: Path) -> None:
+def test_resolve_submission_difficulty_falls_back_to_nearest_available_score(
+    backend_root: Path,
+) -> None:
     module = load_e2e_module(backend_root)
 
-    with patch.object(module, "count_matching_samples_for_difficulty", return_value=0) as match_mock, patch.object(
+    with patch.object(
+        module, "count_matching_samples_for_difficulty", return_value=0
+    ) as match_mock, patch.object(
         module,
         "list_active_difficulty_scores",
         return_value=[0.35, 0.675, 1.0],
     ) as list_mock:
-        resolved, adjusted = module.resolve_submission_difficulty("B2_cloud_file_modification", 0.5)
+        resolved, adjusted = module.resolve_submission_difficulty(
+            "B2_cloud_file_modification", 0.5
+        )
 
     assert resolved == 0.35
     assert adjusted is True
@@ -130,7 +153,9 @@ def test_resolve_submission_difficulty_falls_back_to_nearest_available_score(bac
     list_mock.assert_called_once_with("B2_cloud_file_modification")
 
 
-def test_validate_run_snapshot_requires_done_sample_and_core_artifacts(backend_root: Path) -> None:
+def test_validate_run_snapshot_requires_done_sample_and_core_artifacts(
+    backend_root: Path,
+) -> None:
     module = load_e2e_module(backend_root)
     snapshot = module.RunSnapshot(
         evaluation_id="eval_demo",
@@ -208,7 +233,9 @@ def test_poll_evaluation_detail_uses_auth_headers(backend_root: Path) -> None:
 
         def get(self, path, headers=None):
             self.headers_seen.append(headers)
-            return DummyResponse({"code": 0, "data": {"status": "completed"}, "message": "success"})
+            return DummyResponse(
+                {"code": 0, "data": {"status": "completed"}, "message": "success"}
+            )
 
     client = DummyClient()
 

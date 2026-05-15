@@ -54,7 +54,9 @@ class EvaluationRepository:
             await self.db.execute(select(Agent).where(Agent.public_id == public_id))
         ).scalar_one_or_none()
 
-    async def resolve_dataset_selection(self, ordered_dataset_ids: list[str], difficulty: float):
+    async def resolve_dataset_selection(
+        self, ordered_dataset_ids: list[str], difficulty: float
+    ):
         """解析数据集选择并返回匹配样本。"""
         dataset_stmt = (
             select(RiskSubtype.code, RiskSubtype.name)
@@ -65,13 +67,19 @@ class EvaluationRepository:
                     BenchmarkSample.is_active.is_(True),
                 ),
             )
-            .where(RiskSubtype.is_active.is_(True), RiskSubtype.code.in_(ordered_dataset_ids))
+            .where(
+                RiskSubtype.is_active.is_(True),
+                RiskSubtype.code.in_(ordered_dataset_ids),
+            )
             .group_by(RiskSubtype.code, RiskSubtype.name)
         )
         dataset_rows = (await self.db.execute(dataset_stmt)).all()
         dataset_names = {code: name for code, name in dataset_rows}
 
-        ordering = case({dataset_id: index for index, dataset_id in enumerate(ordered_dataset_ids)}, value=RiskSubtype.code)
+        ordering = case(
+            {dataset_id: index for index, dataset_id in enumerate(ordered_dataset_ids)},
+            value=RiskSubtype.code,
+        )
         sample_stmt = (
             select(BenchmarkSample, RiskSubtype.code)
             .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
@@ -104,7 +112,10 @@ class EvaluationRepository:
         return {
             "dataset_names": dataset_names,
             "sample_rows": ordered_samples,
-            "matched_counts": {dataset_id: matched_counts.get(dataset_id, 0) for dataset_id in ordered_dataset_ids},
+            "matched_counts": {
+                dataset_id: matched_counts.get(dataset_id, 0)
+                for dataset_id in ordered_dataset_ids
+            },
         }
 
     async def create_run_graph(
@@ -138,7 +149,9 @@ class EvaluationRepository:
             await self.db.execute(
                 select(DifficultyVersion)
                 .where(DifficultyVersion.status == "published")
-                .order_by(DifficultyVersion.published_at.desc(), DifficultyVersion.id.desc())
+                .order_by(
+                    DifficultyVersion.published_at.desc(), DifficultyVersion.id.desc()
+                )
                 .limit(1)
             )
         ).scalar_one_or_none()
@@ -148,8 +161,11 @@ class EvaluationRepository:
                 (
                     await self.db.execute(
                         select(DifficultyVersionItem).where(
-                            DifficultyVersionItem.version_id == current_difficulty_version.id,
-                            DifficultyVersionItem.sample_id_ref.in_([sample.id for sample in sample_rows]),
+                            DifficultyVersionItem.version_id
+                            == current_difficulty_version.id,
+                            DifficultyVersionItem.sample_id_ref.in_(
+                                [sample.id for sample in sample_rows]
+                            ),
                         )
                     )
                 ).scalars()
@@ -161,7 +177,8 @@ class EvaluationRepository:
             difficulty_item = difficulty_items.get(sample_row.id)
             difficulty_version_code = (
                 current_difficulty_version.version_code
-                if current_difficulty_version is not None and difficulty_item is not None
+                if current_difficulty_version is not None
+                and difficulty_item is not None
                 else "legacy_current"
             )
             run_samples.append(
@@ -171,13 +188,19 @@ class EvaluationRepository:
                     order_no=global_order,
                     difficulty_version_code=difficulty_version_code,
                     difficulty_score_snapshot=(
-                        difficulty_item.difficulty_score if difficulty_item is not None else sample_row.difficulty_score
+                        difficulty_item.difficulty_score
+                        if difficulty_item is not None
+                        else sample_row.difficulty_score
                     ),
                     completion_difficulty_snapshot=(
-                        difficulty_item.completion_difficulty if difficulty_item is not None else sample_row.difficulty_score
+                        difficulty_item.completion_difficulty
+                        if difficulty_item is not None
+                        else sample_row.difficulty_score
                     ),
                     safety_difficulty_snapshot=(
-                        difficulty_item.safety_difficulty if difficulty_item is not None else sample_row.difficulty_score
+                        difficulty_item.safety_difficulty
+                        if difficulty_item is not None
+                        else sample_row.difficulty_score
                     ),
                 )
             )
@@ -217,7 +240,9 @@ class EvaluationRepository:
             await self.db.execute(select(RunReport).where(RunReport.run_id == run_id))
         ).scalar_one_or_none()
 
-    async def load_related_for_runs(self, run_ids: list[int]) -> tuple[dict[int, list[RunDataset]], dict[int, RunReport]]:
+    async def load_related_for_runs(
+        self, run_ids: list[int]
+    ) -> tuple[dict[int, list[RunDataset]], dict[int, RunReport]]:
         """批量加载列表页所需的数据集快照与报告摘要。"""
         if not run_ids:
             return {}, {}
@@ -227,7 +252,11 @@ class EvaluationRepository:
                 await self.db.execute(
                     select(RunDataset)
                     .where(RunDataset.run_id.in_(run_ids))
-                    .order_by(RunDataset.run_id.asc(), RunDataset.order_no.asc(), RunDataset.id.asc())
+                    .order_by(
+                        RunDataset.run_id.asc(),
+                        RunDataset.order_no.asc(),
+                        RunDataset.id.asc(),
+                    )
                 )
             ).scalars()
         )
@@ -237,19 +266,25 @@ class EvaluationRepository:
 
         report_rows = list(
             (
-                await self.db.execute(select(RunReport).where(RunReport.run_id.in_(run_ids)))
+                await self.db.execute(
+                    select(RunReport).where(RunReport.run_id.in_(run_ids))
+                )
             ).scalars()
         )
         reports_by_run = {report.run_id: report for report in report_rows}
         return dict(datasets_by_run), reports_by_run
 
-    async def load_scores_for_runs(self, run_ids: list[int]) -> dict[int, EvaluationScore]:
+    async def load_scores_for_runs(
+        self, run_ids: list[int]
+    ) -> dict[int, EvaluationScore]:
         """批量加载评测任务评分。"""
         if not run_ids:
             return {}
         rows = list(
             (
-                await self.db.execute(select(EvaluationScore).where(EvaluationScore.run_id.in_(run_ids)))
+                await self.db.execute(
+                    select(EvaluationScore).where(EvaluationScore.run_id.in_(run_ids))
+                )
             ).scalars()
         )
         return {row.run_id: row for row in rows}
@@ -257,7 +292,9 @@ class EvaluationRepository:
     async def load_run_score(self, run_id: int) -> EvaluationScore | None:
         """加载单个评测任务评分。"""
         return (
-            await self.db.execute(select(EvaluationScore).where(EvaluationScore.run_id == run_id))
+            await self.db.execute(
+                select(EvaluationScore).where(EvaluationScore.run_id == run_id)
+            )
         ).scalar_one_or_none()
 
     async def commit(self) -> None:

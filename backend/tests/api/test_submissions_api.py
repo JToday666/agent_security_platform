@@ -7,7 +7,9 @@ from app.modules.agents.invocation import AgentInvocationClient, AgentInvocation
 
 @pytest.mark.db
 @pytest.mark.integration
-def test_agent_and_evaluation_submission_routes_work_against_real_database(client, api_db_helper, monkeypatch) -> None:
+def test_agent_and_evaluation_submission_routes_work_against_real_database(
+    client, api_db_helper, monkeypatch
+) -> None:
     dataset_code = api_db_helper.seed_dataset()
     user_id, token = api_db_helper.seed_user(
         username=f"{api_db_helper.prefix}_submitter",
@@ -30,7 +32,9 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(clien
 
     templates_response = client.get("/api/v1/agents/templates")
     assert templates_response.status_code == 200
-    assert templates_response.json()["data"][0]["templateId"] == "http_submit_poll_basic"
+    assert (
+        templates_response.json()["data"][0]["templateId"] == "http_submit_poll_basic"
+    )
 
     agent_payload = {
         "templateId": "http_submit_poll_basic",
@@ -54,16 +58,26 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(clien
         "taskRenderMode": "goal_only",
         "customRequestBody": {"engine": "demo"},
         "requestOptions": {},
-        "platformOutputMapping": {"status": "status", "finalAnswer": "answer", "errorMessage": "error"},
+        "platformOutputMapping": {
+            "status": "status",
+            "finalAnswer": "answer",
+            "errorMessage": "error",
+        },
         "terminalStatuses": ["completed", "failed"],
         "successStatuses": ["completed"],
     }
 
-    create_agent_response = client.post("/api/v1/agents", headers=headers, json=agent_payload)
+    create_agent_response = client.post(
+        "/api/v1/agents", headers=headers, json=agent_payload
+    )
     assert create_agent_response.status_code == 200
     agent_id = create_agent_response.json()["data"]["agentId"]
 
-    verify_response = client.post(f"/api/v1/agents/{agent_id}/verify", headers=headers, json={"timeoutSeconds": 30})
+    verify_response = client.post(
+        f"/api/v1/agents/{agent_id}/verify",
+        headers=headers,
+        json={"timeoutSeconds": 30},
+    )
     assert verify_response.status_code == 200
     assert verify_response.json()["data"]["passed"] is True
     assert verify_response.json()["data"]["status"] == "active"
@@ -95,11 +109,18 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(clien
         "requestId": f"{api_db_helper.prefix}_request_001",
     }
 
-    validate_response = client.post("/api/v1/evaluations/validate", headers=headers, json=payload)
+    validate_response = client.post(
+        "/api/v1/evaluations/validate", headers=headers, json=payload
+    )
     assert validate_response.status_code == 200
     assert validate_response.json()["data"] == {
         "ok": True,
-        "warnings": [{"code": "PUBLIC_LEADERBOARD", "message": "本次结果将进入公开排行榜，请确认描述中不包含敏感信息。"}],
+        "warnings": [
+            {
+                "code": "PUBLIC_LEADERBOARD",
+                "message": "本次结果将进入公开排行榜，请确认描述中不包含敏感信息。",
+            }
+        ],
     }
 
     submit_response = client.post("/api/v1/evaluations", headers=headers, json=payload)
@@ -109,13 +130,17 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(clien
     assert first_submit["submitMethod"] == "api"
     assert first_submit["agentId"] == agent_id
 
-    repeat_submit_response = client.post("/api/v1/evaluations", headers=headers, json=payload)
+    repeat_submit_response = client.post(
+        "/api/v1/evaluations", headers=headers, json=payload
+    )
     assert repeat_submit_response.status_code == 200
     repeat_submit = repeat_submit_response.json()["data"]
     assert repeat_submit["evaluationId"] == first_submit["evaluationId"]
     assert repeat_submit["status"] == first_submit["status"]
 
-    detail_response = client.get(f"/api/v1/evaluations/{first_submit['evaluationId']}", headers=headers)
+    detail_response = client.get(
+        f"/api/v1/evaluations/{first_submit['evaluationId']}", headers=headers
+    )
     assert detail_response.status_code == 200
     detail = detail_response.json()["data"]
     assert detail["publicToLeaderboard"] is True
@@ -132,7 +157,9 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(clien
         "datasetIds": [dataset_code],
         "requestId": f"{api_db_helper.prefix}_request_002",
     }
-    default_submit_response = client.post("/api/v1/evaluations", headers=headers, json=default_payload)
+    default_submit_response = client.post(
+        "/api/v1/evaluations", headers=headers, json=default_payload
+    )
     assert default_submit_response.status_code == 200
     default_detail_response = client.get(
         f"/api/v1/evaluations/{default_submit_response.json()['data']['evaluationId']}",
@@ -146,6 +173,8 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(clien
         "requestId": f"{api_db_helper.prefix}_request_003",
         "publicToLeaderboard": False,
     }
-    deprecated_response = client.post("/api/v1/evaluations", headers=headers, json=deprecated_payload)
+    deprecated_response = client.post(
+        "/api/v1/evaluations", headers=headers, json=deprecated_payload
+    )
     assert deprecated_response.status_code == 422
     assert deprecated_response.json()["code"] == 1000

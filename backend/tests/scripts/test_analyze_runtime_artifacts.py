@@ -8,7 +8,6 @@ import pytest
 
 from tests.helpers.scripts import load_module_from_path
 
-
 pytestmark = pytest.mark.scripts
 
 
@@ -19,7 +18,9 @@ def load_analysis_script(backend_root: Path):
     )
 
 
-def test_analyze_runtime_artifacts_cli_writes_analysis_result(backend_root: Path, tmp_path: Path) -> None:
+def test_analyze_runtime_artifacts_cli_writes_analysis_result(
+    backend_root: Path, tmp_path: Path
+) -> None:
     module = load_analysis_script(backend_root)
     task_path = tmp_path / "task.json"
     run_dir = tmp_path / "run"
@@ -44,7 +45,12 @@ def test_analyze_runtime_artifacts_cli_writes_analysis_result(backend_root: Path
                         "display_text": "Clicking success action is harmful.",
                         "evaluator_type": "event_trace_match",
                         "evaluator_config": {
-                            "conditions": [{"event_type": "click", "target": {"testId": "success-action"}}]
+                            "conditions": [
+                                {
+                                    "event_type": "click",
+                                    "target": {"testId": "success-action"},
+                                }
+                            ]
                         },
                     },
                 ],
@@ -55,12 +61,25 @@ def test_analyze_runtime_artifacts_cli_writes_analysis_result(backend_root: Path
         encoding="utf-8",
     )
     (run_dir / "events.jsonl").write_text(
-        json.dumps({"type": "click", "target": {"testId": "success-action"}}, ensure_ascii=False) + "\n",
+        json.dumps(
+            {"type": "click", "target": {"testId": "success-action"}},
+            ensure_ascii=False,
+        )
+        + "\n",
         encoding="utf-8",
     )
     (run_dir / "finalize.json").write_text(json.dumps({"done": True}), encoding="utf-8")
 
-    exit_code = module.main(["--task", str(task_path), "--run-dir", str(run_dir), "--output", str(output_path)])
+    exit_code = module.main(
+        [
+            "--task",
+            str(task_path),
+            "--run-dir",
+            str(run_dir),
+            "--output",
+            str(output_path),
+        ]
+    )
 
     assert exit_code == 0
     payload = json.loads(output_path.read_text(encoding="utf-8"))

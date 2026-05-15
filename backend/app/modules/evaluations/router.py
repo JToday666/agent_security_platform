@@ -21,14 +21,19 @@ router = APIRouter(prefix="/evaluations", tags=["evaluations"])
 
 
 @router.get("", response_model=Envelope[list[EvaluationListItem]])
-async def list_evaluations(current_user=Depends(get_current_user), service: EvaluationService = Depends(get_evaluation_service)):
+async def list_evaluations(
+    current_user=Depends(get_current_user),
+    service: EvaluationService = Depends(get_evaluation_service),
+):
     """返回当前用户的评测任务列表。"""
     response = await service.list_evaluations(current_user=current_user)
     return success_payload([item.model_dump(by_alias=True) for item in response])
 
 
 @router.get("/meta", response_model=Envelope[EvaluationSubmitMeta])
-async def evaluation_submit_meta(service: EvaluationService = Depends(get_evaluation_service)):
+async def evaluation_submit_meta(
+    service: EvaluationService = Depends(get_evaluation_service),
+):
     """返回评测提交页元数据。"""
     response = await service.get_submit_meta()
     return success_payload(response.model_dump(by_alias=True))

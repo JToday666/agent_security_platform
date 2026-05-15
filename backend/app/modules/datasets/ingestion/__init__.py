@@ -11,7 +11,10 @@ from app.modules.datasets.ingestion.metadata import (
     write_display_meta_index,
     write_metadata_bundle,
 )
-from app.modules.datasets.ingestion.normalize import detect_sample_root_kind, normalize_sample_bundle
+from app.modules.datasets.ingestion.normalize import (
+    detect_sample_root_kind,
+    normalize_sample_bundle,
+)
 from app.modules.datasets.ingestion.pipeline import run_import_pipeline
 from app.modules.datasets.ingestion.samples import (
     apply_sample_import_plan,

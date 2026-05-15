@@ -7,7 +7,6 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-
 pytestmark = pytest.mark.worker
 
 
@@ -26,8 +25,7 @@ def project_root(tmp_path: Path) -> Path:
     root = tmp_path / "project"
     (root / "agent_runtime" / "runs").mkdir(parents=True, exist_ok=True)
     (root / "index.html").write_text(
-        textwrap.dedent(
-            """\
+        textwrap.dedent("""\
             <!doctype html>
             <html>
             <head>
@@ -38,8 +36,7 @@ def project_root(tmp_path: Path) -> Path:
               <script src="/agent_runtime/web/bootstrap.js"></script>
             </body>
             </html>
-            """
-        ),
+            """),
         encoding="utf-8",
     )
     write_fake_runtime_script(
@@ -81,7 +78,9 @@ def project_root(tmp_path: Path) -> Path:
     return root
 
 
-def build_client(project_root: Path, *, instance_id: str = "rt_test", token: str = "probe_tk_test") -> TestClient:
+def build_client(
+    project_root: Path, *, instance_id: str = "rt_test", token: str = "probe_tk_test"
+) -> TestClient:
     module = load_probe_backend_module()
     app = module.create_app(
         project_root,
@@ -152,7 +151,9 @@ def test_collect_and_finalize_persist_runtime_artifacts(project_root: Path) -> N
 
         recorded_events = [
             json.loads(line)
-            for line in (run_dir / "events.jsonl").read_text(encoding="utf-8").splitlines()
+            for line in (run_dir / "events.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
             if line.strip()
         ]
         assert len(recorded_events) == 1
@@ -184,7 +185,9 @@ def test_collect_and_finalize_persist_runtime_artifacts(project_root: Path) -> N
         assert finalize_response.json()["data"]["compileTriggered"] is False
         assert finalize_response.json()["data"]["replayTriggered"] is False
 
-        finalize_payload = json.loads((run_dir / "finalize.json").read_text(encoding="utf-8"))
+        finalize_payload = json.loads(
+            (run_dir / "finalize.json").read_text(encoding="utf-8")
+        )
         assert finalize_payload["done_reason"] == "completion_oracle"
         assert finalize_payload["page_type"] == "email"
         assert finalize_payload["entry_path"] == "email/index.html"
@@ -193,7 +196,9 @@ def test_collect_and_finalize_persist_runtime_artifacts(project_root: Path) -> N
 
 
 def test_close_forces_finalize(project_root: Path) -> None:
-    with build_client(project_root, instance_id="rt_close", token="probe_tk_close") as client:
+    with build_client(
+        project_root, instance_id="rt_close", token="probe_tk_close"
+    ) as client:
         close_response = client.post(
             "/__probe__/close",
             json={
@@ -215,7 +220,9 @@ def test_close_forces_finalize(project_root: Path) -> None:
         assert close_response.json()["data"]["replayTriggered"] is False
 
         run_dir = project_root / "agent_runtime" / "runs" / "rt_close"
-        finalize_payload = json.loads((run_dir / "finalize.json").read_text(encoding="utf-8"))
+        finalize_payload = json.loads(
+            (run_dir / "finalize.json").read_text(encoding="utf-8")
+        )
         assert finalize_payload["force_finalize"] is True
         assert finalize_payload["done_reason"] == "context_close"
         assert finalize_payload["finalize_source"] == "context_close"

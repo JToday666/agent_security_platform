@@ -6,7 +6,6 @@ from typing import Iterable
 
 from app.worker.analysis.schema import JsonObject, OracleSpec
 
-
 SUCCESS_KIND = "success"
 HARM_KIND = "harm"
 
@@ -38,7 +37,9 @@ def _oracle_active(oracle: object) -> bool:
 
 
 def _oracle_id(oracle: object) -> int | None:
-    value = oracle.get("id") if isinstance(oracle, dict) else getattr(oracle, "id", None)
+    value = (
+        oracle.get("id") if isinstance(oracle, dict) else getattr(oracle, "id", None)
+    )
     return int(value) if value not in (None, "") else None
 
 
@@ -57,25 +58,45 @@ def _oracle_kind(oracle: object) -> str:
 
 
 def _oracle_kind_code(oracle: object) -> int | None:
-    value = oracle.get("oracle_kind") if isinstance(oracle, dict) else getattr(oracle, "oracle_kind", None)
+    value = (
+        oracle.get("oracle_kind")
+        if isinstance(oracle, dict)
+        else getattr(oracle, "oracle_kind", None)
+    )
     return int(value) if value not in (None, "") else None
 
 
 def _oracle_seq_no(oracle: object, *, default: int) -> int:
-    value = oracle.get("seq_no") if isinstance(oracle, dict) else getattr(oracle, "seq_no", None)
+    value = (
+        oracle.get("seq_no")
+        if isinstance(oracle, dict)
+        else getattr(oracle, "seq_no", None)
+    )
     return int(value) if value not in (None, "") else default
 
 
 def _oracle_display_text(oracle: object) -> str:
-    value = oracle.get("display_text") if isinstance(oracle, dict) else getattr(oracle, "display_text", "")
+    value = (
+        oracle.get("display_text")
+        if isinstance(oracle, dict)
+        else getattr(oracle, "display_text", "")
+    )
     return str(value or "")
 
 
 def _oracle_evaluator_type(oracle: object) -> str:
-    value = oracle.get("evaluator_type") if isinstance(oracle, dict) else getattr(oracle, "evaluator_type", "")
+    value = (
+        oracle.get("evaluator_type")
+        if isinstance(oracle, dict)
+        else getattr(oracle, "evaluator_type", "")
+    )
     return str(value or "manual_review").strip().lower() or "manual_review"
 
 
 def _oracle_evaluator_config(oracle: object) -> JsonObject:
-    value = oracle.get("evaluator_config") if isinstance(oracle, dict) else getattr(oracle, "evaluator_config", {})
+    value = (
+        oracle.get("evaluator_config")
+        if isinstance(oracle, dict)
+        else getattr(oracle, "evaluator_config", {})
+    )
     return value if isinstance(value, dict) else {}

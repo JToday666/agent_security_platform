@@ -9,7 +9,6 @@ import pytest
 
 from app.platform.config import settings
 
-
 pytestmark = pytest.mark.scripts
 
 
@@ -34,4 +33,3 @@ def test_worker_py_entrypoint_invokes_worker_main(backend_root: Path) -> None:
         runpy.run_path(str(backend_root / "worker.py"), run_name="__main__")
 
     main_mock.assert_called_once_with()
-

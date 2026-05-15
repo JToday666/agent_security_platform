@@ -10,13 +10,18 @@ _BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
 if str(_BOOTSTRAP_ROOT) not in sys.path:
     sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
-from app.modules.datasets.ingestion.metadata import apply_metadata_bundle, load_metadata_bundle
+from app.modules.datasets.ingestion.metadata import (
+    apply_metadata_bundle,
+    load_metadata_bundle,
+)
 from scripts._common import DATASET_METADATA_ROOT, sync_session_scope
 
 
 def build_parser() -> argparse.ArgumentParser:
     """构造命令行参数解析器。"""
-    parser = argparse.ArgumentParser(description="Import dataset metadata JSON files into the database.")
+    parser = argparse.ArgumentParser(
+        description="Import dataset metadata JSON files into the database."
+    )
     parser.add_argument(
         "--registry-root",
         type=Path,

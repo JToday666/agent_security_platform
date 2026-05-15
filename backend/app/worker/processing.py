@@ -17,7 +17,6 @@ from app.platform.db.session import AsyncSessionLocal
 from app.worker.claims import heartbeat_claim_by_id
 from app.worker.execution import execute_dataset
 
-
 LOGGER = logging.getLogger(__name__)
 
 
@@ -36,8 +35,14 @@ async def load_run_datasets(db, run_id: int) -> list[RunDataset]:
 
 def resolve_timeout_seconds(run: TestRun) -> int:
     """Derive runtime timeout from the saved execution config."""
-    parameters = run.execution_config.get("parameters") if isinstance(run.execution_config, dict) else {}
-    timeout_minutes = parameters.get("timeoutMinutes") if isinstance(parameters, dict) else None
+    parameters = (
+        run.execution_config.get("parameters")
+        if isinstance(run.execution_config, dict)
+        else {}
+    )
+    timeout_minutes = (
+        parameters.get("timeoutMinutes") if isinstance(parameters, dict) else None
+    )
     if isinstance(timeout_minutes, (int, float)) and timeout_minutes > 0:
         return max(1, int(timeout_minutes * 60))
     return settings.WORKER_EXECUTION_TIMEOUT_SECONDS
@@ -45,7 +50,11 @@ def resolve_timeout_seconds(run: TestRun) -> int:
 
 def resolve_dispatch_mode(run: TestRun) -> str:
     """Resolve the worker dispatch mode for this run."""
-    dispatch = run.execution_config.get("dispatch") if isinstance(run.execution_config, dict) else None
+    dispatch = (
+        run.execution_config.get("dispatch")
+        if isinstance(run.execution_config, dict)
+        else None
+    )
     if isinstance(dispatch, dict):
         mode = str(dispatch.get("mode") or "").strip().lower()
         if mode:
@@ -55,11 +64,19 @@ def resolve_dispatch_mode(run: TestRun) -> str:
 
 def resolve_dispatch_config(run: TestRun) -> dict[str, object]:
     """Build dispatch config passed to runtime adapters."""
-    execution_config = run.execution_config if isinstance(run.execution_config, dict) else {}
-    parameters = execution_config.get("parameters") if isinstance(execution_config.get("parameters"), dict) else {}
+    execution_config = (
+        run.execution_config if isinstance(run.execution_config, dict) else {}
+    )
+    parameters = (
+        execution_config.get("parameters")
+        if isinstance(execution_config.get("parameters"), dict)
+        else {}
+    )
     config: dict[str, object] = {
         "evaluationId": run.public_id,
-        "maxSteps": parameters.get("maxSteps") if isinstance(parameters, dict) else None,
+        "maxSteps": (
+            parameters.get("maxSteps") if isinstance(parameters, dict) else None
+        ),
     }
     frozen_agent_snapshot = execution_config.get("frozenAgentSnapshot")
     if isinstance(frozen_agent_snapshot, dict):
@@ -67,7 +84,9 @@ def resolve_dispatch_config(run: TestRun) -> dict[str, object]:
     return config
 
 
-async def _heartbeat_loop(run_id: int, worker_id: str, stop_event: asyncio.Event) -> None:
+async def _heartbeat_loop(
+    run_id: int, worker_id: str, stop_event: asyncio.Event
+) -> None:
     """Refresh the run claim heartbeat while the run task is active."""
     while not stop_event.is_set():
         try:
@@ -76,10 +95,14 @@ async def _heartbeat_loop(run_id: int, worker_id: str, stop_event: asyncio.Event
             if not claimed:
                 return
         except Exception:
-            LOGGER.exception("Failed to heartbeat claimed run", extra={"run_id": run_id})
+            LOGGER.exception(
+                "Failed to heartbeat claimed run", extra={"run_id": run_id}
+            )
 
         try:
-            await asyncio.wait_for(stop_event.wait(), timeout=settings.WORKER_HEARTBEAT_INTERVAL_SECONDS)
+            await asyncio.wait_for(
+                stop_event.wait(), timeout=settings.WORKER_HEARTBEAT_INTERVAL_SECONDS
+            )
         except asyncio.TimeoutError:
             continue
 
@@ -98,7 +121,10 @@ async def process_claimed_run(run_id: int, worker_id: str) -> None:
                 if run.status in TERMINAL_STATUSES:
                     return
 
-                if run.requested_action == "cancel" and run.status in {"pending", "canceling"}:
+                if run.requested_action == "cancel" and run.status in {
+                    "pending",
+                    "canceling",
+                }:
                     await lifecycle.finalize_run(
                         db,
                         run,
@@ -109,7 +135,11 @@ async def process_claimed_run(run_id: int, worker_id: str) -> None:
                     return
 
                 datasets = await load_run_datasets(db, run.id)
-                pending_datasets = [dataset for dataset in datasets if dataset.status not in TERMINAL_STATUSES]
+                pending_datasets = [
+                    dataset
+                    for dataset in datasets
+                    if dataset.status not in TERMINAL_STATUSES
+                ]
                 if not pending_datasets:
                     await lifecycle.finalize_run(
                         db,
@@ -168,7 +198,9 @@ async def process_claimed_run(run_id: int, worker_id: str) -> None:
                     return
 
                 if run.requested_action == "pause":
-                    pause_deadline = datetime.now(timezone.utc) + timedelta(minutes=settings.PAUSE_TIMEOUT_MINUTES)
+                    pause_deadline = datetime.now(timezone.utc) + timedelta(
+                        minutes=settings.PAUSE_TIMEOUT_MINUTES
+                    )
                     lifecycle.pause_after_current_dataset(run, pause_deadline)
                     await db.commit()
                     return
