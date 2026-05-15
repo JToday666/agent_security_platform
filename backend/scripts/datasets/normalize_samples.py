@@ -16,7 +16,9 @@ from scripts._common import DATA_ROOT
 
 def build_parser() -> argparse.ArgumentParser:
     """构造命令行参数解析器。"""
-    parser = argparse.ArgumentParser(description="Normalize raw dataset samples into a standard task.json bundle.")
+    parser = argparse.ArgumentParser(
+        description="Normalize raw dataset samples into a standard task.json bundle."
+    )
     parser.add_argument(
         "--input-root",
         type=Path,

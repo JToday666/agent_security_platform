@@ -10,7 +10,6 @@ from app.worker.analysis.evidence import build_evidence_bundle, event_type
 from app.worker.analysis.evaluators import HARM_KIND, SUCCESS_KIND, evaluate_oracles
 from app.worker.analysis.schema import AnalysisResult, JsonObject, OracleMatchResult
 
-
 ANALYSIS_VERSION = "runtime_analysis_v1"
 
 
@@ -23,17 +22,26 @@ def analyze_runtime_artifacts(
     output_path: Path | None = None,
 ) -> AnalysisResult:
     """Analyze runtime artifacts and optionally write analysis_result.json."""
-    loaded_task = task_payload if task_payload is not None else _load_task_payload(task_path)
+    loaded_task = (
+        task_payload if task_payload is not None else _load_task_payload(task_path)
+    )
     oracle_inputs = list(oracles) if oracles is not None else _task_oracles(loaded_task)
     evidence_bundle = build_evidence_bundle(
         run_dir,
         task_payload=loaded_task if isinstance(loaded_task, dict) else None,
     )
     oracle_results = evaluate_oracles(oracle_inputs, evidence_bundle)
-    result = _build_analysis_result(oracle_results, evidence_bundle.warnings, evidence_bundle.errors, evidence_bundle)
+    result = _build_analysis_result(
+        oracle_results,
+        evidence_bundle.warnings,
+        evidence_bundle.errors,
+        evidence_bundle,
+    )
     if output_path is not None:
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(json.dumps(result.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8")
+        output_path.write_text(
+            json.dumps(result.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8"
+        )
     return result
 
 
@@ -59,10 +67,18 @@ def _build_analysis_result(
     evidence_errors: list[str],
     evidence_bundle,
 ) -> AnalysisResult:
-    success_results = [result for result in oracle_results if result.oracle.oracle_kind == SUCCESS_KIND]
-    harm_results = [result for result in oracle_results if result.oracle.oracle_kind == HARM_KIND]
-    matched_success = [result.to_public_dict() for result in success_results if result.matched]
-    matched_harm = [result.to_public_dict() for result in harm_results if result.matched]
+    success_results = [
+        result for result in oracle_results if result.oracle.oracle_kind == SUCCESS_KIND
+    ]
+    harm_results = [
+        result for result in oracle_results if result.oracle.oracle_kind == HARM_KIND
+    ]
+    matched_success = [
+        result.to_public_dict() for result in success_results if result.matched
+    ]
+    matched_harm = [
+        result.to_public_dict() for result in harm_results if result.matched
+    ]
 
     warnings = list(evidence_warnings)
     errors = list(evidence_errors)
@@ -75,12 +91,18 @@ def _build_analysis_result(
         warnings.append("no actionable events available; safety requires review")
 
     blocking_review = bool(errors)
-    blocking_review = blocking_review or any(result.needs_review for result in oracle_results)
+    blocking_review = blocking_review or any(
+        result.needs_review for result in oracle_results
+    )
     blocking_review = blocking_review or not success_results
     blocking_review = blocking_review or not harm_results
-    blocking_review = blocking_review or (bool(harm_results) and not actionable_events_available)
+    blocking_review = blocking_review or (
+        bool(harm_results) and not actionable_events_available
+    )
 
-    task_completed = bool(success_results) and all(result.matched for result in success_results)
+    task_completed = bool(success_results) and all(
+        result.matched for result in success_results
+    )
     harm_detected = bool(matched_harm)
     needs_review = blocking_review
     safe = bool(task_completed and not harm_detected and not needs_review)
@@ -93,7 +115,9 @@ def _build_analysis_result(
         errors=errors,
         actionable_events_available=actionable_events_available,
     )
-    confidence = _confidence(needs_review=needs_review, errors=errors, warnings=warnings)
+    confidence = _confidence(
+        needs_review=needs_review, errors=errors, warnings=warnings
+    )
 
     return AnalysisResult(
         task_completed=task_completed,
@@ -163,7 +187,9 @@ def _has_actionable_events(events: list[JsonObject]) -> bool:
         "navigation",
         "visibility_change",
     }
-    return any(event_type(event).strip().lower() not in passive_event_types for event in events)
+    return any(
+        event_type(event).strip().lower() not in passive_event_types for event in events
+    )
 
 
 def _load_task_payload(task_path: Path | None) -> JsonObject | None:

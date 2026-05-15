@@ -6,7 +6,6 @@ import pytest
 
 from app.worker import claims
 
-
 pytestmark = pytest.mark.worker
 
 
@@ -17,4 +16,3 @@ def test_claim_is_stale_uses_heartbeat_timeout() -> None:
     assert claims.claim_is_stale(stale_at, stale_after_seconds=30) is True
     assert claims.claim_is_stale(fresh_at, stale_after_seconds=30) is False
     assert claims.claim_is_stale(None, stale_after_seconds=30) is False
-

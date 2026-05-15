@@ -25,7 +25,6 @@ from app.worker.runtime.preparation import (
     resolve_sample_layout,
 )
 
-
 pytestmark = pytest.mark.worker
 
 
@@ -34,7 +33,9 @@ def test_resolve_sample_layout_uses_configured_dataset_root(tmp_path: Path) -> N
     subtype_root = data_root / "01_Confidentiality" / "A3_Address_and_Location_Leakage"
     sample_root = subtype_root / "EIA_A3_1_high"
     (sample_root / "site").mkdir(parents=True)
-    (sample_root / "site" / "index.html").write_text("<html></html>\n", encoding="utf-8")
+    (sample_root / "site" / "index.html").write_text(
+        "<html></html>\n", encoding="utf-8"
+    )
     (subtype_root / "agent_runtime").mkdir(parents=True)
 
     sample = SampleRuntimeTarget(
@@ -47,7 +48,9 @@ def test_resolve_sample_layout_uses_configured_dataset_root(tmp_path: Path) -> N
     )
 
     with patch.object(runtime_preparation.settings, "DATASET_ROOT_DIR", str(data_root)):
-        sample_dir, scope_root, runtime_dir, sample_subpath = resolve_sample_layout(sample)
+        sample_dir, scope_root, runtime_dir, sample_subpath = resolve_sample_layout(
+            sample
+        )
 
     assert sample_dir == sample_root.resolve()
     assert scope_root == subtype_root.resolve()
@@ -81,15 +84,18 @@ async def test_synthetic_local_dispatch_closes_runtime_loop(tmp_path: Path) -> N
         encoding="utf-8",
     )
     (sample_root / "task.json").write_text(
-        json.dumps({"sample_id": "Sample_1", "user_goal": "open the page"}, ensure_ascii=False, indent=2),
+        json.dumps(
+            {"sample_id": "Sample_1", "user_goal": "open the page"},
+            ensure_ascii=False,
+            indent=2,
+        ),
         encoding="utf-8",
     )
 
     runtime_root = subtype_root / "agent_runtime"
     runtime_root.mkdir(parents=True, exist_ok=True)
     (runtime_root / "compiler.py").write_text(
-        textwrap.dedent(
-            """\
+        textwrap.dedent("""\
             import argparse
             import json
 
@@ -102,13 +108,11 @@ async def test_synthetic_local_dispatch_closes_runtime_loop(tmp_path: Path) -> N
                 "page_type": "generic",
                 "generated_script": "agent_runtime/generated/replay_from_events.py"
             }))
-            """
-        ),
+            """),
         encoding="utf-8",
     )
     (runtime_root / "replay.py").write_text(
-        textwrap.dedent(
-            """\
+        textwrap.dedent("""\
             import argparse
             import json
             from pathlib import Path
@@ -124,8 +128,7 @@ async def test_synthetic_local_dispatch_closes_runtime_loop(tmp_path: Path) -> N
                 "ok": True,
                 "report": f"agent_runtime/runs/{args.run_id}/replay_artifacts/report.html"
             }))
-            """
-        ),
+            """),
         encoding="utf-8",
     )
 
@@ -152,7 +155,9 @@ async def test_synthetic_local_dispatch_closes_runtime_loop(tmp_path: Path) -> N
 
     handle = await launch_runtime(prepared)
     try:
-        result = await resolve_dispatch_adapter("synthetic_local").dispatch(prepared, sample, timeout_seconds=10)
+        result = await resolve_dispatch_adapter("synthetic_local").dispatch(
+            prepared, sample, timeout_seconds=10
+        )
     finally:
         await stop_runtime(handle)
 
@@ -165,7 +170,9 @@ async def test_synthetic_local_dispatch_closes_runtime_loop(tmp_path: Path) -> N
     assert result.replay_result == {}
     assert result.finalized is True
 
-    artifact_types = {artifact.artifact_type for artifact in collect_artifacts(prepared)}
+    artifact_types = {
+        artifact.artifact_type for artifact in collect_artifacts(prepared)
+    }
     assert "runtime_meta" in artifact_types
     assert "event_log" in artifact_types
     assert "compile_result" not in artifact_types

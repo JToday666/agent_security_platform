@@ -23,6 +23,7 @@ README 只维护当前状态、启动验证入口、核心约束和文档索引�
 当前已具备的后端基础：
 
 - 统一响应封装：`{ code, data, message }`
+- 后端国际化运行时：`X-App-Locale` 请求级 locale 上下文、JSON 响应 `Content-Language` 与 `Vary: X-App-Locale`、异常统一翻译入口
 - 统一 DB Session、登录态依赖与全局异常处理
 - Alembic 迁移链路
 - 数据集元数据维护、样本标准化与导入链路
@@ -105,6 +106,13 @@ uv run pytest tests/api tests/modules tests/worker tests/scripts -q
 uv run pytest --cov=app --cov=scripts --cov-report=term-missing
 ```
 
+后端国际化运行时定向验证：
+
+```bash
+uv run pytest tests/modules/platform/test_i18n.py tests/modules/platform/test_exception_handlers.py tests/api/test_contracts.py -q
+uv run pytest tests/modules/agents/test_service.py tests/modules/auth/test_service.py tests/modules/user/test_service.py tests/modules/evaluations/test_validation.py tests/modules/evaluations/test_mappers.py tests/modules/evaluations/test_service.py tests/modules/scoring/test_service.py tests/modules/difficulty/test_service.py tests/modules/leaderboards/test_service.py tests/modules/datasets/test_service.py tests/modules/datasets/test_metadata_registry.py -q
+```
+
 数据库连通性检查：
 
 ```bash
@@ -161,6 +169,8 @@ uv run python scripts/qa/e2e_local_run.py --spawn-services
 
 - 新增 API 路由使用 `/api/v1` 前缀
 - 业务响应统一使用 `{ code, data, message }`
+- 后端响应语言只认 `X-App-Locale`；`Accept-Language` 仅作为前端或网关生成 `X-App-Locale` 的输入来源
+- JSON 响应统一返回 `Content-Language` 与 `Vary: X-App-Locale`
 - 复用 `app.platform.auth.get_db` 注入 DB Session
 - 登录态依赖使用 `app.modules.auth.dependencies.get_current_user`
 - 统一通过 `app.platform.http.success_payload` 返回成功 envelope

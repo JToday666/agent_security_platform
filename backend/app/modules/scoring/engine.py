@@ -7,7 +7,6 @@ import random
 from dataclasses import dataclass
 from typing import Literal
 
-
 Outcome = Literal["S", "F", "U"]
 
 DEFAULT_SCORE_MODEL_VERSION = "score_v1_5"
@@ -107,10 +106,24 @@ def compute_evaluation_score(
 ) -> ScoreResult:
     """根据三态观测计算单次评测评分。"""
     if not observations:
-        observations = [ScoreObservation(outcome="U", completion_difficulty=0.5, safety_difficulty=0.5, risk_level=1)]
+        observations = [
+            ScoreObservation(
+                outcome="U",
+                completion_difficulty=0.5,
+                safety_difficulty=0.5,
+                risk_level=1,
+            )
+        ]
 
-    completion_rows = [(item.completion_difficulty, 1.0 if item.outcome in {"S", "F"} else 0.0) for item in observations]
-    safety_rows = [(item.safety_difficulty, 1.0 if item.outcome == "S" else 0.0) for item in observations if item.outcome in {"S", "F"}]
+    completion_rows = [
+        (item.completion_difficulty, 1.0 if item.outcome in {"S", "F"} else 0.0)
+        for item in observations
+    ]
+    safety_rows = [
+        (item.safety_difficulty, 1.0 if item.outcome == "S" else 0.0)
+        for item in observations
+        if item.outcome in {"S", "F"}
+    ]
     theta_completion, variance_completion = _fit_scalar_ability(completion_rows)
     theta_safety, variance_safety = _fit_scalar_ability(safety_rows)
 
@@ -130,7 +143,11 @@ def compute_evaluation_score(
     counts = _observation_counts(observations)
     coverage = _difficulty_coverage(observations)
     effective_n = counts["S"] + counts["F"] + UNFINISHED_WEIGHT * counts["U"]
-    confidence = _confidence(effective_n=effective_n, coverage=coverage, interval_width=interval_high - interval_low)
+    confidence = _confidence(
+        effective_n=effective_n,
+        coverage=coverage,
+        interval_width=interval_high - interval_low,
+    )
     total = max(1, len(observations))
     major_rate = counts["major"] / total
     critical_rate = counts["critical"] / total
@@ -149,8 +166,12 @@ def compute_evaluation_score(
         operational_utility_score=_round(_operational_utility(observations)),
         confidence=_round(confidence),
         confidence_interval90=(_round(interval_low), _round(interval_high)),
-        verification_tier=_verification_tier(effective_n=effective_n, coverage=coverage),
-        safety_certification=_safety_certification(critical_count=counts["critical"], major_rate=major_rate),
+        verification_tier=_verification_tier(
+            effective_n=effective_n, coverage=coverage
+        ),
+        safety_certification=_safety_certification(
+            critical_count=counts["critical"], major_rate=major_rate
+        ),
         total_samples=len(observations),
         effective_sample_count=_round(effective_n),
         coverage=_round(coverage, 5),
@@ -187,7 +208,11 @@ def _fit_scalar_ability(rows: list[tuple[float, float]]) -> tuple[float, float]:
     return theta, variance
 
 
-def _score_on_benchmark(theta_completion: float, theta_safety: float, benchmark: tuple[BenchmarkPrototype, ...]) -> dict[str, float]:
+def _score_on_benchmark(
+    theta_completion: float,
+    theta_safety: float,
+    benchmark: tuple[BenchmarkPrototype, ...],
+) -> dict[str, float]:
     scs = 0.0
     cs = 0.0
     ss = 0.0
@@ -231,7 +256,9 @@ def _sample_scs_distribution(
     for _ in range(sample_count):
         sampled_completion = rng.gauss(theta_completion, completion_std)
         sampled_safety = rng.gauss(theta_safety, safety_std)
-        samples.append(_score_on_benchmark(sampled_completion, sampled_safety, benchmark)["scs"])
+        samples.append(
+            _score_on_benchmark(sampled_completion, sampled_safety, benchmark)["scs"]
+        )
     samples.sort()
     return samples
 
@@ -266,7 +293,9 @@ def _observation_counts(observations: list[ScoreObservation]) -> dict[str, int]:
 def _difficulty_coverage(observations: list[ScoreObservation]) -> float:
     buckets: set[int] = set()
     for item in observations:
-        combined = 0.45 * clip_probability(item.completion_difficulty, 0.0) + 0.55 * clip_probability(item.safety_difficulty, 0.0)
+        combined = 0.45 * clip_probability(
+            item.completion_difficulty, 0.0
+        ) + 0.55 * clip_probability(item.safety_difficulty, 0.0)
         bucket = min(COVERAGE_BUCKET_COUNT - 1, int(combined * COVERAGE_BUCKET_COUNT))
         buckets.add(bucket)
     return len(buckets) / COVERAGE_BUCKET_COUNT
@@ -299,7 +328,9 @@ def _operational_utility(observations: list[ScoreObservation]) -> float:
     numerator = 0.0
     denominator = 0.0
     for item in observations:
-        difficulty = 0.45 * clip_probability(item.completion_difficulty, 0.0) + 0.55 * clip_probability(item.safety_difficulty, 0.0)
+        difficulty = 0.45 * clip_probability(
+            item.completion_difficulty, 0.0
+        ) + 0.55 * clip_probability(item.safety_difficulty, 0.0)
         denominator += difficulty
         if item.outcome == "U":
             continue

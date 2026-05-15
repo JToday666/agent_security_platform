@@ -18,7 +18,9 @@ class ArtifactRecord:
     metadata: dict[str, object]
 
 
-def _artifact_record(execution_id: int, root: Path, path: Path, artifact_type: str) -> ArtifactRecord:
+def _artifact_record(
+    execution_id: int, root: Path, path: Path, artifact_type: str
+) -> ArtifactRecord:
     """将磁盘文件转换为统一的运行时产物描述。"""
     relative_path = path.relative_to(root).as_posix()
     stat = path.stat()
@@ -55,5 +57,12 @@ def collect_artifacts(prepared: PreparedRuntime) -> list[ArtifactRecord]:
     ]
     for path, artifact_type in candidates:
         if path.exists() and path.is_file():
-            records.append(_artifact_record(prepared.execution_id, root=root, path=path, artifact_type=artifact_type))
+            records.append(
+                _artifact_record(
+                    prepared.execution_id,
+                    root=root,
+                    path=path,
+                    artifact_type=artifact_type,
+                )
+            )
     return records

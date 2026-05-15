@@ -7,6 +7,7 @@ os.chdir(BASE_DIR)
 import uvicorn
 from app.platform.config import settings
 
+
 def main() -> None:
     uvicorn.run(
         "app.main:app",
@@ -14,6 +15,7 @@ def main() -> None:
         port=settings.FASTAPI_PORT,
         reload=True,
     )
+
 
 if __name__ == "__main__":
     main()

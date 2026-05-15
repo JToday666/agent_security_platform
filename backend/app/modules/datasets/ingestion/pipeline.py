@@ -11,7 +11,10 @@ from app.modules.datasets.ingestion.metadata import (
     build_metadata_bundle_from_samples,
     write_metadata_bundle,
 )
-from app.modules.datasets.ingestion.normalize import detect_sample_root_kind, normalize_sample_bundle
+from app.modules.datasets.ingestion.normalize import (
+    detect_sample_root_kind,
+    normalize_sample_bundle,
+)
 from app.modules.datasets.ingestion.samples import build_sample_import_plan
 from app.modules.datasets.ingestion.types import ImportPipelineResult
 
@@ -35,17 +38,27 @@ def run_import_pipeline(
 
         if input_kind == "raw":
             if workspace_dir is None:
-                workspace_root = Path(stack.enter_context(TemporaryDirectory(prefix="dataset_import_workspace_")))
+                workspace_root = Path(
+                    stack.enter_context(
+                        TemporaryDirectory(prefix="dataset_import_workspace_")
+                    )
+                )
             else:
                 workspace_root = workspace_dir.resolve()
                 workspace_root.mkdir(parents=True, exist_ok=True)
             normalized_root = workspace_root / "normalized_samples"
-            normalization_result = normalize_sample_bundle(source_root, normalized_root, mode=mode, dry_run=False)
+            normalization_result = normalize_sample_bundle(
+                source_root, normalized_root, mode=mode, dry_run=False
+            )
             effective_sample_root = normalization_result.output_root
 
         effective_mode = "standard" if input_kind == "raw" else mode
-        sample_plan = build_sample_import_plan(effective_sample_root, mode=effective_mode)
-        metadata_bundle = build_metadata_bundle_from_samples(effective_sample_root, registry_root, mode=effective_mode)
+        sample_plan = build_sample_import_plan(
+            effective_sample_root, mode=effective_mode
+        )
+        metadata_bundle = build_metadata_bundle_from_samples(
+            effective_sample_root, registry_root, mode=effective_mode
+        )
 
         metadata_result = None
         sample_result = None

@@ -23,14 +23,22 @@ class EvidenceBundle:
     task_payload: JsonObject | None = None
 
 
-def build_evidence_bundle(run_dir: Path, *, task_payload: JsonObject | None = None) -> EvidenceBundle:
+def build_evidence_bundle(
+    run_dir: Path, *, task_payload: JsonObject | None = None
+) -> EvidenceBundle:
     """Load runtime artifacts and convert them into evaluator-friendly evidence."""
     warnings: list[str] = []
     errors: list[str] = []
     events = _load_events(run_dir / "events.jsonl", warnings=warnings, errors=errors)
-    finalize_payload = _load_json(run_dir / "finalize.json", warnings=warnings, errors=errors, required=True)
-    meta_payload = _load_json(run_dir / "meta.json", warnings=warnings, errors=errors, required=False)
-    evidence = [_event_to_evidence_item(index, event) for index, event in enumerate(events)]
+    finalize_payload = _load_json(
+        run_dir / "finalize.json", warnings=warnings, errors=errors, required=True
+    )
+    meta_payload = _load_json(
+        run_dir / "meta.json", warnings=warnings, errors=errors, required=False
+    )
+    evidence = [
+        _event_to_evidence_item(index, event) for index, event in enumerate(events)
+    ]
     if finalize_payload:
         evidence.append(
             EvidenceItem(
@@ -52,7 +60,9 @@ def build_evidence_bundle(run_dir: Path, *, task_payload: JsonObject | None = No
 
 def event_type(event: JsonObject) -> str:
     """Return a stable event type from common runtime field variants."""
-    return str(event.get("type") or event.get("event_type") or event.get("eventType") or "")
+    return str(
+        event.get("type") or event.get("event_type") or event.get("eventType") or ""
+    )
 
 
 def event_target(event: JsonObject) -> JsonObject:
@@ -81,7 +91,12 @@ def _event_to_evidence_item(index: int, event: JsonObject) -> EvidenceItem:
     value = event_value(event)
     summary_pieces = [f"event[{index}] type={kind}"]
     if target:
-        target_hint = target.get("testId") or target.get("id") or target.get("name") or target.get("selector")
+        target_hint = (
+            target.get("testId")
+            or target.get("id")
+            or target.get("name")
+            or target.get("selector")
+        )
         if target_hint:
             summary_pieces.append(f"target={target_hint}")
     if value not in (None, ""):
@@ -96,13 +111,17 @@ def _event_to_evidence_item(index: int, event: JsonObject) -> EvidenceItem:
     )
 
 
-def _load_events(path: Path, *, warnings: list[str], errors: list[str]) -> list[JsonObject]:
+def _load_events(
+    path: Path, *, warnings: list[str], errors: list[str]
+) -> list[JsonObject]:
     if not path.exists():
         warnings.append(f"{path.name} not found")
         return []
 
     events: list[JsonObject] = []
-    for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+    for line_no, line in enumerate(
+        path.read_text(encoding="utf-8").splitlines(), start=1
+    ):
         if not line.strip():
             continue
         try:
@@ -119,7 +138,9 @@ def _load_events(path: Path, *, warnings: list[str], errors: list[str]) -> list[
     return events
 
 
-def _load_json(path: Path, *, warnings: list[str], errors: list[str], required: bool) -> JsonObject:
+def _load_json(
+    path: Path, *, warnings: list[str], errors: list[str], required: bool
+) -> JsonObject:
     if not path.exists():
         message = f"{path.name} not found"
         if required:

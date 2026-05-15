@@ -11,4 +11,3 @@ from app.platform.auth import get_db
 def get_evaluation_service(db: AsyncSession = Depends(get_db)) -> EvaluationService:
     """Return the evaluation service for route handlers."""
     return EvaluationService(EvaluationRepository(db))
-

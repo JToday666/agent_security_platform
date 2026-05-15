@@ -11,7 +11,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
-
 BACKEND_ROOT = Path(__file__).resolve().parents[1]
 BACKEND_CWD = str(BACKEND_ROOT)
 
@@ -25,7 +24,6 @@ def ensure_backend_root_on_path() -> None:
 ensure_backend_root_on_path()
 
 from app.platform.config import settings
-
 
 DATA_ROOT = settings.dataset_root
 DATASET_METADATA_ROOT = settings.dataset_metadata_root

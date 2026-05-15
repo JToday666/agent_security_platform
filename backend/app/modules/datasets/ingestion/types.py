@@ -85,6 +85,7 @@ class DatasetSourceRecord:
     name: str
     description: str | None = None
     is_active: bool = True
+    translations: dict[str, dict[str, object]] = field(default_factory=dict)
 
 
 @dataclass(slots=True)
@@ -95,6 +96,7 @@ class AttackDeliveryTypeRecord:
     name: str
     description: str | None = None
     is_active: bool = True
+    translations: dict[str, dict[str, object]] = field(default_factory=dict)
 
 
 @dataclass(slots=True)
@@ -105,6 +107,7 @@ class AssetTypeRecord:
     name: str
     description: str | None = None
     is_active: bool = True
+    translations: dict[str, dict[str, object]] = field(default_factory=dict)
 
 
 @dataclass(slots=True)
@@ -117,6 +120,7 @@ class RiskCategoryRecord:
     description: str | None = None
     sort_order: int | None = None
     is_active: bool = True
+    translations: dict[str, dict[str, object]] = field(default_factory=dict)
 
 
 @dataclass(slots=True)
@@ -128,6 +132,7 @@ class RiskSubtypeRecord:
     name: str
     sort_order: int | None = None
     is_active: bool = True
+    translations: dict[str, dict[str, object]] = field(default_factory=dict)
 
 
 @dataclass(slots=True)
@@ -141,6 +146,7 @@ class DisplayMetaRecord:
     scenarios: list[str] = field(default_factory=list)
     resources: list[dict[str, object]] = field(default_factory=list)
     media: list[dict[str, object]] = field(default_factory=list)
+    translations: dict[str, dict[str, object]] = field(default_factory=dict)
 
 
 @dataclass(slots=True)

@@ -24,7 +24,9 @@ router = APIRouter(prefix="/agents", tags=["agents"])
 async def list_agent_templates(service: AgentService = Depends(get_agent_service)):
     """Return built-in Agent registration templates."""
     templates = await service.list_templates()
-    return success_payload([template.model_dump(by_alias=True) for template in templates])
+    return success_payload(
+        [template.model_dump(by_alias=True) for template in templates]
+    )
 
 
 @router.post("", response_model=Envelope[AgentSummary])
@@ -46,7 +48,9 @@ async def list_agents(
     service: AgentService = Depends(get_agent_service),
 ):
     """List current user's Agents."""
-    response = await service.list_agents(current_user, include_archived=includeArchived, status=status)
+    response = await service.list_agents(
+        current_user, include_archived=includeArchived, status=status
+    )
     return success_payload([item.model_dump(by_alias=True) for item in response])
 
 

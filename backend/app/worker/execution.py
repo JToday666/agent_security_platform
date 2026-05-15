@@ -5,7 +5,9 @@ from __future__ import annotations
 import asyncio
 
 from app.platform.config import settings
-from app.worker.execution_concurrency import runtime_process_semaphore as _runtime_process_semaphore
+from app.worker.execution_concurrency import (
+    runtime_process_semaphore as _runtime_process_semaphore,
+)
 from app.worker.execution_jobs import SampleJob, load_sample_jobs
 from app.worker.execution_persistence import (
     mark_dataset_completed,
@@ -52,7 +54,11 @@ def _validate_dispatch_results(prepared, finalized: bool) -> None:
 
 def _resolve_dispatch_mode(explicit_mode: str | None) -> str:
     """Resolve the runtime dispatch mode for the current sample."""
-    normalized = (explicit_mode or settings.WORKER_DISPATCH_MODE_DEFAULT or "synthetic_local").strip().lower()
+    normalized = (
+        (explicit_mode or settings.WORKER_DISPATCH_MODE_DEFAULT or "synthetic_local")
+        .strip()
+        .lower()
+    )
     return normalized or "synthetic_local"
 
 
@@ -96,7 +102,9 @@ async def execute_sample(
             await mark_execution_runtime_ready(execution_id, prepared)
 
             adapter = resolve_dispatch_adapter(resolved_dispatch_mode)
-            dispatch_result = await adapter.dispatch(prepared, sample, timeout, dispatch_config=dispatch_config)
+            dispatch_result = await adapter.dispatch(
+                prepared, sample, timeout, dispatch_config=dispatch_config
+            )
 
             await mark_execution_state(execution_id, "verifying")
             _validate_dispatch_results(prepared, dispatch_result.finalized)
@@ -138,7 +146,9 @@ async def execute_dataset(
 ) -> None:
     """Execute all pending samples for one dataset under configured concurrency."""
     jobs = await load_sample_jobs(run_id, dataset_code)
-    semaphore = asyncio.Semaphore(max(1, settings.WORKER_MAX_PARALLEL_EXECUTIONS_PER_RUN))
+    semaphore = asyncio.Semaphore(
+        max(1, settings.WORKER_MAX_PARALLEL_EXECUTIONS_PER_RUN)
+    )
 
     async def run_job(job: SampleJob) -> None:
         async with semaphore:
@@ -153,4 +163,3 @@ async def execute_dataset(
 
     await asyncio.gather(*(run_job(job) for job in jobs))
     await mark_dataset_completed(run_id, dataset_id, dataset_code)
-

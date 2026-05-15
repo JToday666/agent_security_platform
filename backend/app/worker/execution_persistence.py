@@ -19,7 +19,10 @@ from app.models.benchmark_run import (
 )
 from app.platform.db.session import AsyncSessionLocal
 from app.worker.analysis.service import analyze_runtime_artifacts, summary_from_analysis
-from app.worker.oracle_evaluator import EVALUATOR_VERSION, evaluate_oracles_from_artifacts
+from app.worker.oracle_evaluator import (
+    EVALUATOR_VERSION,
+    evaluate_oracles_from_artifacts,
+)
 from app.worker.runtime import collect_artifacts
 
 
@@ -68,22 +71,36 @@ async def persist_runtime_result(
         if execution is None:
             return
 
-        await db.execute(delete(ExecutionArtifact).where(ExecutionArtifact.sample_execution_id == execution_id))
-        await db.execute(delete(ExecutionSummary).where(ExecutionSummary.sample_execution_id == execution_id))
-        await db.execute(delete(OracleResult).where(OracleResult.sample_execution_id == execution_id))
+        await db.execute(
+            delete(ExecutionArtifact).where(
+                ExecutionArtifact.sample_execution_id == execution_id
+            )
+        )
+        await db.execute(
+            delete(ExecutionSummary).where(
+                ExecutionSummary.sample_execution_id == execution_id
+            )
+        )
+        await db.execute(
+            delete(OracleResult).where(OracleResult.sample_execution_id == execution_id)
+        )
 
         summary_payload = summary
         analysis_output_path = prepared.run_dir / "analysis_result.json"
         task_path = prepared.sample_dir / "task.json"
         if summary_payload is None:
             oracle_rows = (
-                await db.execute(
-                    select(SampleOracle).where(
-                        SampleOracle.sample_id_ref == execution.sample_id_ref,
-                        SampleOracle.is_active.is_(True),
+                (
+                    await db.execute(
+                        select(SampleOracle).where(
+                            SampleOracle.sample_id_ref == execution.sample_id_ref,
+                            SampleOracle.is_active.is_(True),
+                        )
                     )
                 )
-            ).scalars().all()
+                .scalars()
+                .all()
+            )
             if oracle_rows:
                 evaluation_bundle = await asyncio.to_thread(
                     evaluate_oracles_from_artifacts,
@@ -194,7 +211,9 @@ async def mark_execution_state(execution_id: int, status: str) -> None:
         await db.commit()
 
 
-async def mark_execution_system_error(execution_id: int, run_id: int, dataset_id: int, exc: Exception) -> None:
+async def mark_execution_system_error(
+    execution_id: int, run_id: int, dataset_id: int, exc: Exception
+) -> None:
     """Persist system-level execution errors and failed counters."""
     finished_at = now_utc()
     async with AsyncSessionLocal() as db:
@@ -225,7 +244,9 @@ async def mark_execution_system_error(execution_id: int, run_id: int, dataset_id
         await db.commit()
 
 
-async def mark_dataset_completed(run_id: int, dataset_id: int, dataset_code: str) -> None:
+async def mark_dataset_completed(
+    run_id: int, dataset_id: int, dataset_code: str
+) -> None:
     """Persist dataset-level completion after all sample jobs are terminal."""
     finished_at = now_utc()
     async with AsyncSessionLocal() as db:
@@ -234,7 +255,9 @@ async def mark_dataset_completed(run_id: int, dataset_id: int, dataset_code: str
                 select(func.count())
                 .select_from(SampleExecution)
                 .join(RunSample, SampleExecution.run_sample_id == RunSample.id)
-                .join(BenchmarkSample, SampleExecution.sample_id_ref == BenchmarkSample.id)
+                .join(
+                    BenchmarkSample, SampleExecution.sample_id_ref == BenchmarkSample.id
+                )
                 .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
                 .where(
                     SampleExecution.run_id == run_id,
@@ -253,4 +276,3 @@ async def mark_dataset_completed(run_id: int, dataset_id: int, dataset_code: str
         dataset.finished_at = finished_at
         dataset.updated_at = finished_at
         await db.commit()
-

@@ -8,6 +8,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
+from typing import TypedDict
 from urllib.parse import urlparse
 
 from sqlalchemy import select
@@ -61,11 +62,19 @@ DATASET_SOURCE_CODE_ALIASES = {
     "BrowserART": "browser_art",
     "browser-art": "browser_art",
 }
-LEGACY_CATEGORY_DEFINITIONS = {
+
+
+class _LegacyRiskDefinition(TypedDict):
+    code: str
+    name: str
+    sort_order: int
+
+
+LEGACY_CATEGORY_DEFINITIONS: dict[str, _LegacyRiskDefinition] = {
     "01_Confidentiality": {"code": "confidentiality", "name": "Confidentiality", "sort_order": 1},
     "02_Integrity": {"code": "integrity", "name": "Integrity", "sort_order": 2},
 }
-LEGACY_SUBTYPE_DEFINITIONS = {
+LEGACY_SUBTYPE_DEFINITIONS: dict[str, _LegacyRiskDefinition] = {
     "A1_Identity_Information_Leakage": {
         "code": "A1_identity_leakage",
         "name": "Identity Leakage",
@@ -625,11 +634,17 @@ def _level_value_to_code(value: int, metadata_path: Path, field_name: str) -> st
     raise ImportValidationError(f"{metadata_path}: {field_name} 数值档位不合法")
 
 
-def normalize_legacy_category(raw_value: str, metadata_path: Path) -> dict[str, object]:
+def normalize_legacy_category(
+    raw_value: str, metadata_path: Path
+) -> _LegacyRiskDefinition:
     """把 legacy primary_risk 归一化为统一大类定义。"""
     definition = LEGACY_CATEGORY_DEFINITIONS.get(raw_value)
     if definition is not None:
-        return dict(definition)
+        return {
+            "code": definition["code"],
+            "name": definition["name"],
+            "sort_order": definition["sort_order"],
+        }
 
     match = re.fullmatch(r"(?P<order>\d+)_+(?P<label>.+)", raw_value.strip())
     if match is None:
@@ -642,11 +657,17 @@ def normalize_legacy_category(raw_value: str, metadata_path: Path) -> dict[str, 
     }
 
 
-def normalize_legacy_subtype(raw_value: str, metadata_path: Path) -> dict[str, object]:
+def normalize_legacy_subtype(
+    raw_value: str, metadata_path: Path
+) -> _LegacyRiskDefinition:
     """把 legacy secondary_risk 归一化为统一子类定义。"""
     definition = LEGACY_SUBTYPE_DEFINITIONS.get(raw_value)
     if definition is not None:
-        return dict(definition)
+        return {
+            "code": definition["code"],
+            "name": definition["name"],
+            "sort_order": definition["sort_order"],
+        }
 
     match = re.fullmatch(r"(?P<prefix>[A-Za-z])(?P<order>\d+)_+(?P<label>.+)", raw_value.strip())
     if match is None:
@@ -702,22 +723,26 @@ def humanize_code(value: str) -> str:
 
 def default_category_name(code: str) -> str:
     """返回风险大类 code 对应的默认展示名称。"""
-    return KNOWN_CATEGORY_BY_CODE.get(code, {}).get("name", humanize_code(code))
+    definition = KNOWN_CATEGORY_BY_CODE.get(code)
+    return definition["name"] if definition is not None else humanize_code(code)
 
 
 def default_category_sort_order(code: str) -> int | None:
     """返回风险大类 code 对应的默认排序值。"""
-    return KNOWN_CATEGORY_BY_CODE.get(code, {}).get("sort_order")
+    definition = KNOWN_CATEGORY_BY_CODE.get(code)
+    return definition["sort_order"] if definition is not None else None
 
 
 def default_subtype_name(code: str) -> str:
     """返回风险子类 code 对应的默认展示名称。"""
-    return KNOWN_SUBTYPE_BY_CODE.get(code, {}).get("name", humanize_code(code))
+    definition = KNOWN_SUBTYPE_BY_CODE.get(code)
+    return definition["name"] if definition is not None else humanize_code(code)
 
 
 def default_subtype_sort_order(code: str) -> int | None:
     """返回风险子类 code 对应的默认排序值。"""
-    return KNOWN_SUBTYPE_BY_CODE.get(code, {}).get("sort_order")
+    definition = KNOWN_SUBTYPE_BY_CODE.get(code)
+    return definition["sort_order"] if definition is not None else None
 
 
 def _optional_text(value: object) -> str | None:

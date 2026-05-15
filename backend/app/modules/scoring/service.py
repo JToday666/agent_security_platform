@@ -9,12 +9,23 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.benchmark import BenchmarkSample
-from app.models.benchmark_run import ExecutionSummary, RunSample, SampleExecution, TestRun
-from app.models.scoring import BenchmarkVersion, BenchmarkVersionItem, EvaluationScore, ScoreModelVersion
+from app.models.benchmark_run import (
+    ExecutionSummary,
+    RunSample,
+    SampleExecution,
+    TestRun,
+)
+from app.models.scoring import (
+    BenchmarkVersion,
+    BenchmarkVersionItem,
+    EvaluationScore,
+    ScoreModelVersion,
+)
 from app.modules.scoring.engine import (
     DEFAULT_BENCHMARK_PROTOTYPES,
     DEFAULT_BENCHMARK_VERSION,
     DEFAULT_SCORE_MODEL_VERSION,
+    Outcome,
     ScoreObservation,
     ScoreResult,
     compute_evaluation_score,
@@ -53,7 +64,11 @@ def _score_response(run: TestRun, score: EvaluationScore) -> EvaluationScoreResp
 async def ensure_default_scoring_versions(db: AsyncSession) -> None:
     """确保默认评分模型与标准原型版本存在。"""
     score_model = (
-        await db.execute(select(ScoreModelVersion).where(ScoreModelVersion.version_code == DEFAULT_SCORE_MODEL_VERSION))
+        await db.execute(
+            select(ScoreModelVersion).where(
+                ScoreModelVersion.version_code == DEFAULT_SCORE_MODEL_VERSION
+            )
+        )
     ).scalar_one_or_none()
     if score_model is None:
         db.add(
@@ -66,7 +81,11 @@ async def ensure_default_scoring_versions(db: AsyncSession) -> None:
         )
 
     benchmark = (
-        await db.execute(select(BenchmarkVersion).where(BenchmarkVersion.version_code == DEFAULT_BENCHMARK_VERSION))
+        await db.execute(
+            select(BenchmarkVersion).where(
+                BenchmarkVersion.version_code == DEFAULT_BENCHMARK_VERSION
+            )
+        )
     ).scalar_one_or_none()
     if benchmark is None:
         benchmark = BenchmarkVersion(
@@ -97,11 +116,15 @@ class ScoringService:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
-    async def get_score(self, evaluation_id: str, current_user) -> EvaluationScoreResponse:
+    async def get_score(
+        self, evaluation_id: str, current_user
+    ) -> EvaluationScoreResponse:
         run = await self._get_run_for_user(evaluation_id, current_user)
         score = await self._get_score_for_run(run.id)
         if score is None:
-            raise NotFoundError("评分结果不存在，请先触发重算。")
+            raise NotFoundError(
+                "评分结果不存在，请先触发重算。", message_key="errors.scoring.not_found"
+            )
         return _score_response(run, score)
 
     async def recalculate_score(
@@ -123,15 +146,27 @@ class ScoringService:
         return _score_response(run, score)
 
     async def _get_run_for_user(self, evaluation_id: str, current_user) -> TestRun:
-        run = (await self.db.execute(select(TestRun).where(TestRun.public_id == evaluation_id))).scalar_one_or_none()
+        run = (
+            await self.db.execute(
+                select(TestRun).where(TestRun.public_id == evaluation_id)
+            )
+        ).scalar_one_or_none()
         if run is None:
-            raise NotFoundError("评测记录不存在。")
+            raise NotFoundError(
+                "评测记录不存在。", message_key="errors.evaluations.not_found"
+            )
         if run.user_id != current_user.id:
-            raise ForbiddenError("无权访问该评测任务。")
+            raise ForbiddenError(
+                "无权访问该评测任务。", message_key="errors.evaluations.forbidden"
+            )
         return run
 
     async def _get_score_for_run(self, run_id: int) -> EvaluationScore | None:
-        return (await self.db.execute(select(EvaluationScore).where(EvaluationScore.run_id == run_id))).scalar_one_or_none()
+        return (
+            await self.db.execute(
+                select(EvaluationScore).where(EvaluationScore.run_id == run_id)
+            )
+        ).scalar_one_or_none()
 
 
 async def calculate_and_store_evaluation_score(
@@ -144,18 +179,34 @@ async def calculate_and_store_evaluation_score(
     """读取运行结果并写入或刷新评分。"""
     run = await db.get(TestRun, run_id)
     if run is None:
-        raise NotFoundError("评测记录不存在。")
+        raise NotFoundError(
+            "评测记录不存在。", message_key="errors.evaluations.not_found"
+        )
     if run.status not in TERMINAL_STATUSES:
-        raise ValidationDomainError("评测尚未结束，不能计算评分。", http_status=409, code=40903)
+        raise ValidationDomainError(
+            "评测尚未结束，不能计算评分。",
+            http_status=409,
+            code=40903,
+            message_key="errors.scoring.not_ended",
+        )
 
     observations = await load_score_observations(db, run_id)
     if not observations:
-        raise ValidationDomainError("评测没有可评分样本。", http_status=409, code=40904)
+        raise ValidationDomainError(
+            "评测没有可评分样本。",
+            http_status=409,
+            code=40904,
+            message_key="errors.scoring.no_samples",
+        )
 
     await ensure_default_scoring_versions(db)
     result = compute_evaluation_score(observations)
     difficulty_version_code = await _run_difficulty_version_code(db, run_id)
-    existing = (await db.execute(select(EvaluationScore).where(EvaluationScore.run_id == run_id))).scalar_one_or_none()
+    existing = (
+        await db.execute(
+            select(EvaluationScore).where(EvaluationScore.run_id == run_id)
+        )
+    ).scalar_one_or_none()
     payload = _result_payload(result)
     if existing is None:
         existing = EvaluationScore(run_id=run_id, score_payload=payload)
@@ -185,14 +236,18 @@ async def calculate_and_store_evaluation_score(
     existing.coverage = _decimal(result.coverage, "0.00001")
     existing.minor_violation_rate = _decimal(result.minor_violation_rate, "0.00001")
     existing.major_violation_rate = _decimal(result.major_violation_rate, "0.00001")
-    existing.critical_violation_rate = _decimal(result.critical_violation_rate, "0.00001")
+    existing.critical_violation_rate = _decimal(
+        result.critical_violation_rate, "0.00001"
+    )
     existing.score_payload = payload
     existing.updated_at = datetime.now(timezone.utc)
     await db.flush()
     return existing
 
 
-async def load_score_observations(db: AsyncSession, run_id: int) -> list[ScoreObservation]:
+async def load_score_observations(
+    db: AsyncSession, run_id: int
+) -> list[ScoreObservation]:
     """加载评分使用的样本观测。"""
     rows = (
         await db.execute(
@@ -207,14 +262,25 @@ async def load_score_observations(db: AsyncSession, run_id: int) -> list[ScoreOb
             )
             .join(SampleExecution, SampleExecution.run_sample_id == RunSample.id)
             .join(BenchmarkSample, RunSample.sample_id_ref == BenchmarkSample.id)
-            .outerjoin(ExecutionSummary, ExecutionSummary.sample_execution_id == SampleExecution.id)
+            .outerjoin(
+                ExecutionSummary,
+                ExecutionSummary.sample_execution_id == SampleExecution.id,
+            )
             .where(RunSample.run_id == run_id, SampleExecution.retry_no == 0)
             .order_by(RunSample.order_no.asc(), RunSample.id.asc())
         )
     ).all()
 
     observations: list[ScoreObservation] = []
-    for completion_difficulty, safety_difficulty, status, task_completed, harm_detected, final_label, risk_level in rows:
+    for (
+        completion_difficulty,
+        safety_difficulty,
+        status,
+        task_completed,
+        harm_detected,
+        final_label,
+        risk_level,
+    ) in rows:
         outcome = _classify_outcome(status, task_completed, harm_detected, final_label)
         observations.append(
             ScoreObservation(
@@ -227,7 +293,12 @@ async def load_score_observations(db: AsyncSession, run_id: int) -> list[ScoreOb
     return observations
 
 
-def _classify_outcome(status: str, task_completed: bool | None, harm_detected: bool | None, final_label: str | None) -> str:
+def _classify_outcome(
+    status: str,
+    task_completed: bool | None,
+    harm_detected: bool | None,
+    final_label: str | None,
+) -> Outcome:
     if status == "error" or task_completed is None or final_label == "needs_review":
         return "U"
     if task_completed and not harm_detected:

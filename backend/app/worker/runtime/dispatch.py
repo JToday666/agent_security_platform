@@ -57,11 +57,17 @@ def browser_entry_path(prepared: PreparedRuntime, sample: SampleRuntimeTarget) -
     relative_path = urlparse(prepared.entry_url).path
     if relative_path:
         return relative_path
-    pieces = [piece.strip("/") for piece in (prepared.sample_subpath, sample.entry_path) if piece.strip("/")]
+    pieces = [
+        piece.strip("/")
+        for piece in (prepared.sample_subpath, sample.entry_path)
+        if piece.strip("/")
+    ]
     return "/" + "/".join(pieces)
 
 
-def write_dispatch_context(prepared: PreparedRuntime, sample: SampleRuntimeTarget, mode: str) -> Path:
+def write_dispatch_context(
+    prepared: PreparedRuntime, sample: SampleRuntimeTarget, mode: str
+) -> Path:
     """写出本次调度的上下文文件，供后续排查和产物归档使用。"""
     path = prepared.run_dir / "dispatch_context.json"
     path.write_text(
@@ -154,7 +160,9 @@ class SyntheticLocalDispatchAdapter(BaseDispatchAdapter):
         }
         timeout = httpx.Timeout(timeout_seconds)
         async with httpx.AsyncClient(timeout=timeout) as client:
-            collect_response = await client.post(f"{runtime_base_url(prepared)}/__probe__/collect", json=collect_payload)
+            collect_response = await client.post(
+                f"{runtime_base_url(prepared)}/__probe__/collect", json=collect_payload
+            )
             collect_json = collect_response.json()
             if collect_response.status_code != 200 or collect_json.get("code") != 0:
                 raise RuntimeDispatchError(f"collect failed: {collect_json}")
@@ -200,8 +208,16 @@ class DeferredDispatchAdapter(BaseDispatchAdapter):
                 return DispatchResult(
                     mode=self.mode,
                     finalized=True,
-                    compile_result=json.loads(compile_path.read_text(encoding="utf-8")) if compile_path.exists() else {},
-                    replay_result=json.loads(replay_path.read_text(encoding="utf-8")) if replay_path.exists() else {},
+                    compile_result=(
+                        json.loads(compile_path.read_text(encoding="utf-8"))
+                        if compile_path.exists()
+                        else {}
+                    ),
+                    replay_result=(
+                        json.loads(replay_path.read_text(encoding="utf-8"))
+                        if replay_path.exists()
+                        else {}
+                    ),
                     dispatch_context_path=dispatch_context_path,
                 )
             if asyncio.get_running_loop().time() >= deadline:
@@ -225,7 +241,9 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
         config = dispatch_config or {}
         agent_snapshot = config.get("frozenAgentSnapshot")
         if not isinstance(agent_snapshot, dict):
-            raise RuntimeDispatchError("frozenAgentSnapshot missing from dispatch config")
+            raise RuntimeDispatchError(
+                "frozenAgentSnapshot missing from dispatch config"
+            )
 
         dispatch_context_path = write_dispatch_context(prepared, sample, self.mode)
         credential_ref = (
@@ -235,7 +253,9 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
         )
         credential_payload: dict[str, object] = {}
         if credential_ref:
-            credential_payload = FileCredentialStore(settings.credential_storage_dir, settings.SECRET_KEY).load(str(credential_ref))
+            credential_payload = FileCredentialStore(
+                settings.credential_storage_dir, settings.SECRET_KEY
+            ).load(str(credential_ref))
 
         result = await AgentInvocationClient().invoke(
             agent_snapshot=agent_snapshot,
@@ -250,7 +270,10 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
             },
         )
         if not result.passed:
-            raise RuntimeDispatchError(result.error_message or f"external agent status not successful: {result.status}")
+            raise RuntimeDispatchError(
+                result.error_message
+                or f"external agent status not successful: {result.status}"
+            )
 
         close_result = await self._close_runtime(prepared, sample, result)
         return DispatchResult(
@@ -261,7 +284,9 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
             dispatch_context_path=dispatch_context_path,
         )
 
-    async def _close_runtime(self, prepared: PreparedRuntime, sample: SampleRuntimeTarget, result) -> dict[str, Any]:
+    async def _close_runtime(
+        self, prepared: PreparedRuntime, sample: SampleRuntimeTarget, result
+    ) -> dict[str, Any]:
         close_payload = {
             "instanceId": prepared.environment_ref,
             "token": prepared.probe_token,
@@ -285,7 +310,9 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
             "events": [],
         }
         async with httpx.AsyncClient(timeout=httpx.Timeout(30.0)) as client:
-            response = await client.post(f"{runtime_base_url(prepared)}/__probe__/close", json=close_payload)
+            response = await client.post(
+                f"{runtime_base_url(prepared)}/__probe__/close", json=close_payload
+            )
         payload = response.json()
         if response.status_code != 200 or payload.get("code") != 0:
             raise RuntimeDispatchError(f"runtime close failed: {payload}")

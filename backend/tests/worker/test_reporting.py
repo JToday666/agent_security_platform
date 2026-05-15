@@ -5,7 +5,6 @@ import pytest
 from app.modules.evaluations import lifecycle
 from app.worker import reporting
 
-
 pytestmark = pytest.mark.worker
 
 
@@ -22,4 +21,3 @@ def test_reporting_module_reexports_lifecycle_helpers() -> None:
     assert set(reporting.__all__) == set(expected_exports)
     for name, function in expected_exports.items():
         assert getattr(reporting, name) is function
-

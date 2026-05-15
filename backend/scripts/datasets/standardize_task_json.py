@@ -22,7 +22,9 @@ from scripts._common import DATA_ROOT
 
 def build_parser() -> argparse.ArgumentParser:
     """构造命令行参数。"""
-    parser = argparse.ArgumentParser(description="Standardize legacy sample task.json files in-place.")
+    parser = argparse.ArgumentParser(
+        description="Standardize legacy sample task.json files in-place."
+    )
     parser.add_argument(
         "--sample-root",
         type=Path,
@@ -62,7 +64,9 @@ def standardize_task_json(sample_root: Path, *, write: bool) -> tuple[int, int, 
             if fmt != "legacy":
                 raise ImportValidationError(f"{task_path}: 不支持的 task.json 格式")
             planned_sample = normalize_sample_metadata_file(task_path, root, "legacy")
-            next_text = _canonical_json(planned_sample_to_standard_task_payload(planned_sample))
+            next_text = _canonical_json(
+                planned_sample_to_standard_task_payload(planned_sample)
+            )
             if task_path.read_text(encoding="utf-8") == next_text:
                 continue
             changed_count += 1
@@ -70,13 +74,18 @@ def standardize_task_json(sample_root: Path, *, write: bool) -> tuple[int, int, 
                 task_path.write_text(next_text, encoding="utf-8")
         except Exception as exc:
             error_count += 1
-            print(f"[standardize_task_json] error path={task_path} message={exc}", file=sys.stderr)
+            print(
+                f"[standardize_task_json] error path={task_path} message={exc}",
+                file=sys.stderr,
+            )
     return sample_count, changed_count, error_count
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    sample_count, changed_count, error_count = standardize_task_json(args.sample_root, write=args.write)
+    sample_count, changed_count, error_count = standardize_task_json(
+        args.sample_root, write=args.write
+    )
     mode = "write" if args.write else "dry-run"
     print(
         "[standardize_task_json] "

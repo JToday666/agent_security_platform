@@ -8,8 +8,11 @@ from pathlib import Path
 from typing import Iterable
 
 from app.worker.analysis.schema import OracleMatchResult
-from app.worker.analysis.service import ANALYSIS_VERSION, analyze_runtime_artifacts, summary_from_analysis
-
+from app.worker.analysis.service import (
+    ANALYSIS_VERSION,
+    analyze_runtime_artifacts,
+    summary_from_analysis,
+)
 
 EVALUATOR_VERSION = ANALYSIS_VERSION
 
@@ -51,7 +54,11 @@ def evaluate_oracles_from_artifacts(
         output_path=output_path or (run_dir / "analysis_result.json"),
     )
     return OracleEvaluationBundle(
-        results=[_to_oracle_evaluation(result) for result in analysis_result.oracle_results if result.oracle.oracle_id is not None],
+        results=[
+            _to_oracle_evaluation(result)
+            for result in analysis_result.oracle_results
+            if result.oracle.oracle_id is not None
+        ],
         summary=summary_from_analysis(analysis_result),
     )
 

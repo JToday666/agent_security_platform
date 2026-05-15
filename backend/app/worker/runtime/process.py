@@ -16,7 +16,6 @@ from app.platform.config import settings
 from app.worker.runtime.exceptions import RuntimeStartupError
 from app.worker.runtime.preparation import PreparedRuntime
 
-
 SHARED_PROBE_BACKEND = Path(__file__).resolve().with_name("probe_backend.py")
 
 
@@ -76,7 +75,9 @@ def candidate_isolation_modes() -> list[str]:
     return ["process"]
 
 
-async def _wait_until_healthy(handle: RuntimeProcessHandle, timeout_seconds: float) -> None:
+async def _wait_until_healthy(
+    handle: RuntimeProcessHandle, timeout_seconds: float
+) -> None:
     """轮询健康检查接口，直到 probe runner 可用或超时。"""
     deadline = asyncio.get_running_loop().time() + timeout_seconds
     health_url = f"{runtime_base_url(handle.prepared)}/__probe__/health"
@@ -95,11 +96,15 @@ async def _wait_until_healthy(handle: RuntimeProcessHandle, timeout_seconds: flo
                 pass
 
             if asyncio.get_running_loop().time() >= deadline:
-                raise RuntimeStartupError(f"probe runner health check timed out: {health_url}")
+                raise RuntimeStartupError(
+                    f"probe runner health check timed out: {health_url}"
+                )
             await asyncio.sleep(0.25)
 
 
-async def _spawn_process(prepared: PreparedRuntime, isolation_mode: str) -> RuntimeProcessHandle:
+async def _spawn_process(
+    prepared: PreparedRuntime, isolation_mode: str
+) -> RuntimeProcessHandle:
     """启动单个 probe runner 进程并返回运行句柄。"""
     prepared.isolation_mode = isolation_mode
     stdout_handle = prepared.stdout_log.open("w", encoding="utf-8")
@@ -124,7 +129,9 @@ async def launch_runtime(prepared: PreparedRuntime) -> RuntimeProcessHandle:
     for isolation_mode in candidate_isolation_modes():
         handle = await _spawn_process(prepared, isolation_mode=isolation_mode)
         try:
-            await _wait_until_healthy(handle, settings.WORKER_RUNNER_START_TIMEOUT_SECONDS)
+            await _wait_until_healthy(
+                handle, settings.WORKER_RUNNER_START_TIMEOUT_SECONDS
+            )
             return handle
         except Exception as exc:
             last_error = exc
@@ -133,7 +140,9 @@ async def launch_runtime(prepared: PreparedRuntime) -> RuntimeProcessHandle:
     raise RuntimeStartupError(str(last_error or "probe runner failed to start"))
 
 
-async def request_runtime_close(handle: RuntimeProcessHandle, reason: str = "worker_shutdown") -> None:
+async def request_runtime_close(
+    handle: RuntimeProcessHandle, reason: str = "worker_shutdown"
+) -> None:
     """Ask the runtime to close and flush any pending evidence."""
     payload = {
         "instanceId": handle.prepared.environment_ref,

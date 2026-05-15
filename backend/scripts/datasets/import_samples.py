@@ -10,13 +10,18 @@ _BOOTSTRAP_ROOT = Path(__file__).resolve().parents[2]
 if str(_BOOTSTRAP_ROOT) not in sys.path:
     sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
-from app.modules.datasets.ingestion.samples import apply_sample_import_plan, build_sample_import_plan
+from app.modules.datasets.ingestion.samples import (
+    apply_sample_import_plan,
+    build_sample_import_plan,
+)
 from scripts._common import sync_session_scope
 
 
 def build_parser() -> argparse.ArgumentParser:
     """构造命令行参数解析器。"""
-    parser = argparse.ArgumentParser(description="Import dataset samples into the database.")
+    parser = argparse.ArgumentParser(
+        description="Import dataset samples into the database."
+    )
     parser.add_argument(
         "--sample-root",
         type=Path,
@@ -41,7 +46,9 @@ def main(argv: list[str] | None = None) -> int:
     """解析样本目录，先构建导入计划，再按需写库。"""
     args = build_parser().parse_args(argv)
     plan = build_sample_import_plan(args.sample_root.resolve(), mode=args.mode)
-    print(f"[import_samples] validated samples={len(plan.samples)} from {args.sample_root.resolve()}")
+    print(
+        f"[import_samples] validated samples={len(plan.samples)} from {args.sample_root.resolve()}"
+    )
     if args.dry_run:
         return 0
 

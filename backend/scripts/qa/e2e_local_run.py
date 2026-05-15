@@ -24,11 +24,17 @@ if str(_BOOTSTRAP_ROOT) not in sys.path:
 
 from app.models.agent import Agent
 from app.models.benchmark import BenchmarkSample, RiskSubtype
-from app.models.benchmark_run import ExecutionArtifact, ExecutionSummary, RunDataset, RunReport, SampleExecution, TestRun
+from app.models.benchmark_run import (
+    ExecutionArtifact,
+    ExecutionSummary,
+    RunDataset,
+    RunReport,
+    SampleExecution,
+    TestRun,
+)
 from app.platform.config import settings
 from app.platform.runtime_rules import difficulty_bucket_bounds
 from scripts._common import BACKEND_CWD, build_sync_engine, build_sync_session_factory
-
 
 DATASET_ID = "B2_cloud_file_modification"
 DEFAULT_BASE_URL = "http://127.0.0.1:8000"
@@ -71,11 +77,31 @@ class E2ELocalRunError(RuntimeError):
 
 def parse_args() -> argparse.Namespace:
     """构造命令行参数解析器。"""
-    parser = argparse.ArgumentParser(description="Submit a real local run and wait for the worker to complete it.")
-    parser.add_argument("--spawn-services", action="store_true", help="Start the local API service and worker automatically.")
-    parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="Base URL for an already running backend service.")
-    parser.add_argument("--poll-timeout", type=float, default=180.0, help="Seconds to wait for the evaluation to reach a terminal state.")
-    parser.add_argument("--poll-interval", type=float, default=2.0, help="Seconds between evaluation detail polls.")
+    parser = argparse.ArgumentParser(
+        description="Submit a real local run and wait for the worker to complete it."
+    )
+    parser.add_argument(
+        "--spawn-services",
+        action="store_true",
+        help="Start the local API service and worker automatically.",
+    )
+    parser.add_argument(
+        "--base-url",
+        default=DEFAULT_BASE_URL,
+        help="Base URL for an already running backend service.",
+    )
+    parser.add_argument(
+        "--poll-timeout",
+        type=float,
+        default=180.0,
+        help="Seconds to wait for the evaluation to reach a terminal state.",
+    )
+    parser.add_argument(
+        "--poll-interval",
+        type=float,
+        default=2.0,
+        help="Seconds between evaluation detail polls.",
+    )
     return parser.parse_args()
 
 
@@ -103,7 +129,10 @@ def check_envelope(response: httpx.Response, *, status_code: int) -> dict[str, A
     )
     payload = response.json()
     ensure(isinstance(payload, dict), "response must be a JSON object")
-    ensure({"code", "data", "message"}.issubset(payload.keys()), "response must use {code, data, message}")
+    ensure(
+        {"code", "data", "message"}.issubset(payload.keys()),
+        "response must use {code, data, message}",
+    )
     return payload
 
 
@@ -114,7 +143,11 @@ def build_agent_payload(prefix: str) -> dict[str, Any]:
         "name": "local-e2e-agent",
         "description": "local worker e2e",
         "invokeMode": "sync_response",
-        "connection": {"baseUrl": "https://agent.example.com", "invokePath": "/run", "requestTimeoutSeconds": 30},
+        "connection": {
+            "baseUrl": "https://agent.example.com",
+            "invokePath": "/run",
+            "requestTimeoutSeconds": 30,
+        },
         "auth": {"type": "bearer", "config": {"token": f"sk-{prefix}"}},
         "platformInputMapping": {
             "task": "prompt",
@@ -127,13 +160,19 @@ def build_agent_payload(prefix: str) -> dict[str, Any]:
         "taskRenderMode": "goal_only",
         "customRequestBody": {"engine": "local-e2e"},
         "requestOptions": {},
-        "platformOutputMapping": {"status": "status", "finalAnswer": "answer", "errorMessage": "error"},
+        "platformOutputMapping": {
+            "status": "status",
+            "finalAnswer": "answer",
+            "errorMessage": "error",
+        },
         "terminalStatuses": ["completed", "failed"],
         "successStatuses": ["completed"],
     }
 
 
-def build_submission_payload(request_id: str, *, agent_id: str = "agt_local_e2e", difficulty: float = 0.5) -> dict[str, Any]:
+def build_submission_payload(
+    request_id: str, *, agent_id: str = "agt_local_e2e", difficulty: float = 0.5
+) -> dict[str, Any]:
     """构造本地 e2e 用的标准提交请求体。"""
     return {
         "submitMethod": "api",
@@ -194,38 +233,55 @@ def count_matching_samples_for_difficulty(dataset_code: str, difficulty: float) 
 def list_active_difficulty_scores(dataset_code: str) -> list[float]:
     """列出指定数据集当前可用的去重难度分值。"""
     with session_scope() as session:
-        rows = session.execute(
-            select(BenchmarkSample.difficulty_score)
-            .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
-            .where(
-                RiskSubtype.code == dataset_code,
-                RiskSubtype.is_active.is_(True),
-                BenchmarkSample.is_active.is_(True),
+        rows = (
+            session.execute(
+                select(BenchmarkSample.difficulty_score)
+                .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
+                .where(
+                    RiskSubtype.code == dataset_code,
+                    RiskSubtype.is_active.is_(True),
+                    BenchmarkSample.is_active.is_(True),
+                )
+                .distinct()
+                .order_by(BenchmarkSample.difficulty_score.asc())
             )
-            .distinct()
-            .order_by(BenchmarkSample.difficulty_score.asc())
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
     return [float(value) for value in rows]
 
 
-def resolve_submission_difficulty(dataset_code: str, preferred_difficulty: float) -> tuple[float, bool]:
+def resolve_submission_difficulty(
+    dataset_code: str, preferred_difficulty: float
+) -> tuple[float, bool]:
     """优先使用期望难度；没有样本时回退到最接近的可用分值。"""
     if count_matching_samples_for_difficulty(dataset_code, preferred_difficulty) > 0:
         return preferred_difficulty, False
 
     available_scores = list_active_difficulty_scores(dataset_code)
-    ensure(available_scores, f"{dataset_code} has no active samples available for local e2e")
-    fallback = min(available_scores, key=lambda value: (abs(value - preferred_difficulty), value))
+    ensure(
+        bool(available_scores),
+        f"{dataset_code} has no active samples available for local e2e",
+    )
+    fallback = min(
+        available_scores, key=lambda value: (abs(value - preferred_difficulty), value)
+    )
     return fallback, True
 
 
 def current_alembic_revision() -> str:
     """读取当前数据库的 Alembic 版本号，便于诊断环境状态。"""
     with session_scope() as session:
-        return str(session.execute(text("SELECT version_num FROM alembic_version LIMIT 1")).scalar_one())
+        return str(
+            session.execute(
+                text("SELECT version_num FROM alembic_version LIMIT 1")
+            ).scalar_one()
+        )
 
 
-def run_command(command: list[str], description: str) -> subprocess.CompletedProcess[str]:
+def run_command(
+    command: list[str], description: str
+) -> subprocess.CompletedProcess[str]:
     """在 backend 根目录执行外部命令，并把失败转成可读异常。"""
     completed = subprocess.run(
         command,
@@ -238,7 +294,9 @@ def run_command(command: list[str], description: str) -> subprocess.CompletedPro
     )
     if completed.returncode != 0:
         detail = (completed.stderr or completed.stdout or "").strip()
-        raise E2ELocalRunError(f"{description} failed with exit code {completed.returncode}: {detail}")
+        raise E2ELocalRunError(
+            f"{description} failed with exit code {completed.returncode}: {detail}"
+        )
     return completed
 
 
@@ -283,7 +341,9 @@ def build_register_payload(prefix: str) -> dict[str, str]:
 def mark_agent_active(agent_id: str) -> None:
     """本地 e2e 使用 DB 夹具方式跳过真实外部 Agent 验证。"""
     with session_scope() as session:
-        agent = session.execute(select(Agent).where(Agent.public_id == agent_id)).scalar_one()
+        agent = session.execute(
+            select(Agent).where(Agent.public_id == agent_id)
+        ).scalar_one()
         agent.status = "active"
         session.commit()
 
@@ -291,7 +351,9 @@ def mark_agent_active(agent_id: str) -> None:
 def force_synthetic_dispatch(evaluation_id: str) -> None:
     """本地 e2e 继续复用 synthetic runtime 闭环，不依赖外部 Agent 服务。"""
     with session_scope() as session:
-        run = session.execute(select(TestRun).where(TestRun.public_id == evaluation_id)).scalar_one()
+        run = session.execute(
+            select(TestRun).where(TestRun.public_id == evaluation_id)
+        ).scalar_one()
         config = dict(run.execution_config or {})
         config["dispatch"] = {"mode": "synthetic_local"}
         run.execution_config = config
@@ -351,7 +413,16 @@ def spawn_local_services(base_url: str) -> list[SpawnedService]:
     services = [
         start_service(
             "api",
-            ["uv", "run", "uvicorn", "app.main:app", "--host", host, "--port", str(port)],
+            [
+                "uv",
+                "run",
+                "uvicorn",
+                "app.main:app",
+                "--host",
+                host,
+                "--port",
+                str(port),
+            ],
             log_dir / f"api_{suffix}.log",
         ),
         start_service(
@@ -376,7 +447,9 @@ def wait_for_api_ready(base_url: str, timeout_seconds: float) -> None:
             except Exception:
                 pass
             time.sleep(0.5)
-    raise E2ELocalRunError(f"API service did not become ready at {base_url.rstrip('/')}")
+    raise E2ELocalRunError(
+        f"API service did not become ready at {base_url.rstrip('/')}"
+    )
 
 
 def poll_evaluation_detail(
@@ -413,22 +486,49 @@ def poll_evaluation_detail(
 def collect_run_snapshot(evaluation_id: str) -> RunSnapshot:
     """从数据库收集执行快照，便于统一校验产物与状态。"""
     with session_scope() as session:
-        run = session.execute(select(TestRun).where(TestRun.public_id == evaluation_id)).scalar_one_or_none()
+        run = session.execute(
+            select(TestRun).where(TestRun.public_id == evaluation_id)
+        ).scalar_one_or_none()
         ensure(run is not None, f"run not found in database: {evaluation_id}")
+        assert run is not None
 
-        datasets = session.execute(select(RunDataset).where(RunDataset.run_id == run.id)).scalars().all()
-        sample_executions = session.execute(select(SampleExecution).where(SampleExecution.run_id == run.id)).scalars().all()
+        datasets = (
+            session.execute(select(RunDataset).where(RunDataset.run_id == run.id))
+            .scalars()
+            .all()
+        )
+        sample_executions = (
+            session.execute(
+                select(SampleExecution).where(SampleExecution.run_id == run.id)
+            )
+            .scalars()
+            .all()
+        )
         sample_execution_ids = [execution.id for execution in sample_executions]
         artifacts = []
         summaries = []
         if sample_execution_ids:
-            artifacts = session.execute(
-                select(ExecutionArtifact).where(ExecutionArtifact.sample_execution_id.in_(sample_execution_ids))
-            ).scalars().all()
-            summaries = session.execute(
-                select(ExecutionSummary).where(ExecutionSummary.sample_execution_id.in_(sample_execution_ids))
-            ).scalars().all()
-        report = session.execute(select(RunReport).where(RunReport.run_id == run.id)).scalar_one_or_none()
+            artifacts = (
+                session.execute(
+                    select(ExecutionArtifact).where(
+                        ExecutionArtifact.sample_execution_id.in_(sample_execution_ids)
+                    )
+                )
+                .scalars()
+                .all()
+            )
+            summaries = (
+                session.execute(
+                    select(ExecutionSummary).where(
+                        ExecutionSummary.sample_execution_id.in_(sample_execution_ids)
+                    )
+                )
+                .scalars()
+                .all()
+            )
+        report = session.execute(
+            select(RunReport).where(RunReport.run_id == run.id)
+        ).scalar_one_or_none()
 
     runtime_paths = [
         f"{execution.work_dir}/project/agent_runtime/runs/{execution.environment_ref}"
@@ -442,9 +542,15 @@ def collect_run_snapshot(evaluation_id: str) -> RunSnapshot:
         finalization_reason=run.finalization_reason,
         dataset_statuses={dataset.dataset_code: dataset.status for dataset in datasets},
         sample_statuses=[execution.status for execution in sample_executions],
-        sample_errors=[execution.error_message for execution in sample_executions if execution.error_message],
+        sample_errors=[
+            execution.error_message
+            for execution in sample_executions
+            if execution.error_message
+        ],
         artifact_types={artifact.artifact_type for artifact in artifacts},
-        final_labels={summary.final_label for summary in summaries if summary.final_label},
+        final_labels={
+            summary.final_label for summary in summaries if summary.final_label
+        },
         report_summary=None if report is None else report.summary_json,
         runtime_paths=runtime_paths,
     )
@@ -520,7 +626,9 @@ def main() -> int:
 
         # 提交前先确保基础数据存在，否则无法创建可执行的评测任务。
         sample_count = ensure_dataset_ready(DATASET_ID)
-        print(f"[e2e_local_run] dataset {DATASET_ID} ready with activeSamples={sample_count}")
+        print(
+            f"[e2e_local_run] dataset {DATASET_ID} ready with activeSamples={sample_count}"
+        )
         resolved_difficulty, adjusted = resolve_submission_difficulty(DATASET_ID, 0.5)
         if adjusted:
             print(
@@ -533,7 +641,10 @@ def main() -> int:
         )
 
         if args.spawn_services:
-            ensure(shutil.which("uv") is not None, "`uv` command is required for --spawn-services mode")
+            ensure(
+                shutil.which("uv") is not None,
+                "`uv` command is required for --spawn-services mode",
+            )
             spawned_services = spawn_local_services(base_url)
             wait_for_api_ready(base_url, timeout_seconds=20.0)
         else:
@@ -541,20 +652,33 @@ def main() -> int:
 
         with httpx.Client(base_url=base_url, timeout=10.0) as client:
             # 先注册一个独立测试账号，再走真实提交链路。
-            register_response = check_envelope(client.post("/api/v1/auth/register", json=register_payload), status_code=200)
+            register_response = check_envelope(
+                client.post("/api/v1/auth/register", json=register_payload),
+                status_code=200,
+            )
             token = register_response["data"]["token"]
             headers = {"Authorization": f"Bearer {token}"}
 
-            create_agent = check_envelope(client.post("/api/v1/agents", headers=headers, json=build_agent_payload(prefix)), status_code=200)
+            create_agent = check_envelope(
+                client.post(
+                    "/api/v1/agents", headers=headers, json=build_agent_payload(prefix)
+                ),
+                status_code=200,
+            )
             agent_id = str(create_agent["data"]["agentId"])
             mark_agent_active(agent_id)
             submission_payload["agentId"] = agent_id
 
             submit_response = check_envelope(
-                client.post("/api/v1/evaluations", headers=headers, json=submission_payload),
+                client.post(
+                    "/api/v1/evaluations", headers=headers, json=submission_payload
+                ),
                 status_code=200,
             )
-            ensure(submit_response["data"]["status"] == "pending", "submitted run must start from pending")
+            ensure(
+                submit_response["data"]["status"] == "pending",
+                "submitted run must start from pending",
+            )
             evaluation_id = str(submit_response["data"]["evaluationId"])
             force_synthetic_dispatch(evaluation_id)
             print(f"[e2e_local_run] submitted evaluationId={evaluation_id}")
@@ -592,7 +716,10 @@ def main() -> int:
         for service in spawned_services:
             tail = read_log_tail(service.log_path)
             if tail:
-                print(f"[e2e_local_run] {service.name} log tail ({service.log_path}):\n{tail}", file=sys.stderr)
+                print(
+                    f"[e2e_local_run] {service.name} log tail ({service.log_path}):\n{tail}",
+                    file=sys.stderr,
+                )
         return 1
     finally:
         for service in reversed(spawned_services):

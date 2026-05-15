@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
-from app.modules.evaluations.state_rules import TERMINAL_STATUSES, apply_pause_timeout, build_controls
+from app.modules.evaluations.state_rules import (
+    TERMINAL_STATUSES,
+    apply_pause_timeout,
+    build_controls,
+)
 
 
 def test_terminal_statuses_are_defined_for_run_domain() -> None:

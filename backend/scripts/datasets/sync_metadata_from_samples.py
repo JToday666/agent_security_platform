@@ -16,7 +16,9 @@ from scripts._common import DATASET_METADATA_ROOT
 
 def build_parser() -> argparse.ArgumentParser:
     """构造命令行参数解析器。"""
-    parser = argparse.ArgumentParser(description="Sync registry JSON skeletons from sample directories.")
+    parser = argparse.ArgumentParser(
+        description="Sync registry JSON skeletons from sample directories."
+    )
     parser.add_argument(
         "--sample-root",
         type=Path,
@@ -41,7 +43,9 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     """扫描样本目录并同步生成 registry/display_meta 基础文件。"""
     args = build_parser().parse_args(argv)
-    bundle = sync_metadata_from_samples(args.sample_root.resolve(), args.registry_root.resolve(), mode=args.mode)
+    bundle = sync_metadata_from_samples(
+        args.sample_root.resolve(), args.registry_root.resolve(), mode=args.mode
+    )
     print(
         "[sync_metadata_from_samples] synced "
         f"sources={len(bundle.dataset_sources)} "

@@ -10,7 +10,12 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from app.modules.datasets.ingestion.metadata import apply_metadata_bundle
 from app.modules.datasets.ingestion.samples import apply_sample_import_plan
-from app.modules.datasets.ingestion.types import MetadataBundle, MetadataImportResult, SampleImportPlan, SampleImportResult
+from app.modules.datasets.ingestion.types import (
+    MetadataBundle,
+    MetadataImportResult,
+    SampleImportPlan,
+    SampleImportResult,
+)
 from app.platform.config import settings
 
 
@@ -37,4 +42,3 @@ def apply_ingestion_bundle(
         sample_result = apply_sample_import_plan(session, sample_plan)
         session.commit()
     return metadata_result, sample_result
-

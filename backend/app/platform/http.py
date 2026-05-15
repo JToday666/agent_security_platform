@@ -6,6 +6,7 @@ from typing import Any
 
 from fastapi.responses import JSONResponse
 
+from app.platform.i18n import add_locale_headers
 from app.platform.schemas import Envelope, ValidationErrorData, ValidationErrorItem
 
 
@@ -16,16 +17,33 @@ def success_payload(data: Any = None, message: str = "success") -> dict[str, Any
 
 def error_payload(code: int, message: str, data: Any = None) -> dict[str, Any]:
     """构造错误响应的 envelope 数据。"""
-    return Envelope[Any](code=code, data=data, message=message).model_dump(by_alias=True)
+    return Envelope[Any](code=code, data=data, message=message).model_dump(
+        by_alias=True
+    )
 
 
-def json_error_response(http_status: int, code: int, message: str, data: Any = None) -> JSONResponse:
+def json_error_response(
+    http_status: int,
+    code: int,
+    message: str,
+    data: Any = None,
+    *,
+    locale: str | None = None,
+) -> JSONResponse:
     """返回符合统一结构的 JSON 错误响应。"""
-    return JSONResponse(status_code=http_status, content=error_payload(code=code, message=message, data=data))
+    response = JSONResponse(
+        status_code=http_status,
+        content=error_payload(code=code, message=message, data=data),
+    )
+    add_locale_headers(response, locale)
+    return response
 
 
 def build_validation_error_data(errors: list[dict[str, str]]) -> ValidationErrorData:
     """整理参数校验错误的返回数据。"""
     return ValidationErrorData(
-        errors=[ValidationErrorItem(field=item["field"], reason=item["reason"]) for item in errors]
+        errors=[
+            ValidationErrorItem(field=item["field"], reason=item["reason"])
+            for item in errors
+        ]
     )

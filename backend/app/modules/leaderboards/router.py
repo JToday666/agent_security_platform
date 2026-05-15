@@ -4,7 +4,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.modules.auth.dependencies import get_current_user
-from app.modules.leaderboards.schemas import LeaderboardSnapshotCreateRequest, LeaderboardSnapshotResponse
+from app.modules.leaderboards.schemas import (
+    LeaderboardSnapshotCreateRequest,
+    LeaderboardSnapshotResponse,
+)
 from app.modules.leaderboards.service import LeaderboardService
 from app.platform.auth import get_db
 from app.platform.http import success_payload

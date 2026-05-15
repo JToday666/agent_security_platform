@@ -71,7 +71,9 @@ def _join_url(base_url: str, path: str) -> str:
     return urljoin(f"{base}/", path.lstrip("/"))
 
 
-def _auth_headers(auth: dict[str, Any], credential_payload: dict[str, Any]) -> dict[str, str]:
+def _auth_headers(
+    auth: dict[str, Any], credential_payload: dict[str, Any]
+) -> dict[str, str]:
     auth_type = str(auth.get("type") or credential_payload.get("type") or "none")
     if auth_type == "none":
         return {}
@@ -99,11 +101,17 @@ class AgentInvocationClient:
         platform_values: dict[str, Any],
     ) -> AgentInvocationResult:
         """Invoke an Agent according to its frozen snapshot."""
-        mode = str(agent_snapshot.get("invokeMode") or agent_snapshot.get("invoke_mode") or "")
+        mode = str(
+            agent_snapshot.get("invokeMode") or agent_snapshot.get("invoke_mode") or ""
+        )
         if mode == "sync_response":
-            return await self._invoke_sync(agent_snapshot, credential_payload, platform_values)
+            return await self._invoke_sync(
+                agent_snapshot, credential_payload, platform_values
+            )
         if mode == "submit_poll":
-            return await self._invoke_submit_poll(agent_snapshot, credential_payload, platform_values)
+            return await self._invoke_submit_poll(
+                agent_snapshot, credential_payload, platform_values
+            )
         raise AgentInvocationError(f"Unsupported invokeMode: {mode}")
 
     async def _invoke_sync(
@@ -114,15 +122,25 @@ class AgentInvocationClient:
     ) -> AgentInvocationResult:
         connection = agent_snapshot["connection"]
         output_mapping = agent_snapshot["platformOutputMapping"]
-        response_json = await self._post_json(agent_snapshot, credential_payload, platform_values)
-        status = read_json_path(response_json, output_mapping.get("status")) or "completed"
+        response_json = await self._post_json(
+            agent_snapshot, credential_payload, platform_values
+        )
+        status = (
+            read_json_path(response_json, output_mapping.get("status")) or "completed"
+        )
         success_statuses = set(agent_snapshot.get("successStatuses") or ["completed"])
         return AgentInvocationResult(
             passed=str(status) in success_statuses,
             status=str(status),
-            external_run_id=read_json_path(response_json, output_mapping.get("externalRunId")),
-            final_answer=read_json_path(response_json, output_mapping.get("finalAnswer")),
-            error_message=read_json_path(response_json, output_mapping.get("errorMessage")),
+            external_run_id=read_json_path(
+                response_json, output_mapping.get("externalRunId")
+            ),
+            final_answer=read_json_path(
+                response_json, output_mapping.get("finalAnswer")
+            ),
+            error_message=read_json_path(
+                response_json, output_mapping.get("errorMessage")
+            ),
             raw_response=response_json,
         )
 
@@ -134,26 +152,40 @@ class AgentInvocationClient:
     ) -> AgentInvocationResult:
         connection = agent_snapshot["connection"]
         output_mapping = agent_snapshot["platformOutputMapping"]
-        submit_json = await self._post_json(agent_snapshot, credential_payload, platform_values)
-        external_run_id = read_json_path(submit_json, output_mapping.get("externalRunId"))
+        submit_json = await self._post_json(
+            agent_snapshot, credential_payload, platform_values
+        )
+        external_run_id = read_json_path(
+            submit_json, output_mapping.get("externalRunId")
+        )
         if not external_run_id:
-            raise AgentInvocationError(f"未能从响应路径 {output_mapping.get('externalRunId')} 解析 externalRunId。")
+            raise AgentInvocationError(
+                f"未能从响应路径 {output_mapping.get('externalRunId')} 解析 externalRunId。"
+            )
 
         terminal_statuses = set(agent_snapshot.get("terminalStatuses") or [])
         success_statuses = set(agent_snapshot.get("successStatuses") or [])
         poll_interval = float(connection.get("pollIntervalSeconds") or 0)
-        poll_timeout = float(connection.get("pollTimeoutSeconds") or connection.get("requestTimeoutSeconds") or 30)
+        poll_timeout = float(
+            connection.get("pollTimeoutSeconds")
+            or connection.get("requestTimeoutSeconds")
+            or 30
+        )
         deadline = asyncio.get_running_loop().time() + poll_timeout
         result_template = str(connection.get("resultPathTemplate") or "")
         if not result_template:
-            raise AgentInvocationError("submit_poll 模式下 resultPathTemplate 为必填字段。")
+            raise AgentInvocationError(
+                "submit_poll 模式下 resultPathTemplate 为必填字段。"
+            )
 
         while True:
             poll_path = result_template.replace("{externalRunId}", str(external_run_id))
             poll_json = await self._request_json(
                 "GET",
                 _join_url(str(connection["baseUrl"]), poll_path),
-                headers=_auth_headers(agent_snapshot.get("auth") or {}, credential_payload),
+                headers=_auth_headers(
+                    agent_snapshot.get("auth") or {}, credential_payload
+                ),
                 json_body=None,
                 timeout=float(connection.get("requestTimeoutSeconds") or 30),
             )
@@ -163,8 +195,12 @@ class AgentInvocationClient:
                     passed=str(status) in success_statuses,
                     status=str(status),
                     external_run_id=str(external_run_id),
-                    final_answer=read_json_path(poll_json, output_mapping.get("finalAnswer")),
-                    error_message=read_json_path(poll_json, output_mapping.get("errorMessage")),
+                    final_answer=read_json_path(
+                        poll_json, output_mapping.get("finalAnswer")
+                    ),
+                    error_message=read_json_path(
+                        poll_json, output_mapping.get("errorMessage")
+                    ),
                     raw_response=poll_json,
                 )
             if asyncio.get_running_loop().time() >= deadline:
@@ -201,11 +237,19 @@ class AgentInvocationClient:
         timeout: float,
     ) -> dict[str, Any]:
         current_url = url
-        async with httpx.AsyncClient(timeout=httpx.Timeout(timeout), follow_redirects=False, transport=self.transport) as client:
+        async with httpx.AsyncClient(
+            timeout=httpx.Timeout(timeout),
+            follow_redirects=False,
+            transport=self.transport,
+        ) as client:
             for _ in range(settings.AGENT_HTTP_MAX_REDIRECTS + 1):
-                response = await client.request(method, current_url, headers=headers, json=json_body)
+                response = await client.request(
+                    method, current_url, headers=headers, json=json_body
+                )
                 if response.is_redirect and response.headers.get("location"):
-                    current_url = _join_url(str(response.url), response.headers["location"])
+                    current_url = _join_url(
+                        str(response.url), response.headers["location"]
+                    )
                     continue
                 if len(response.content) > settings.AGENT_HTTP_RESPONSE_MAX_BYTES:
                     raise AgentInvocationError("外部 Agent 响应体过大。")

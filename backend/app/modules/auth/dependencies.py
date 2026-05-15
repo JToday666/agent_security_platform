@@ -11,7 +11,6 @@ from app.platform.auth import get_db
 from app.platform.errors import AuthError
 from app.platform.security import decode_access_token
 
-
 bearer_scheme = HTTPBearer(auto_error=False)
 
 

@@ -3,7 +3,12 @@
 from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.benchmark import BenchmarkSample, RiskCategory, RiskSubtype, RiskSubtypeDisplayMeta
+from app.models.benchmark import (
+    BenchmarkSample,
+    RiskCategory,
+    RiskSubtype,
+    RiskSubtypeDisplayMeta,
+)
 
 
 class DatasetRepository:
@@ -24,7 +29,10 @@ class DatasetRepository:
                 func.max(BenchmarkSample.updated_at).label("sample_updated_at"),
             )
             .join(RiskSubtype, RiskSubtype.category_id == RiskCategory.id)
-            .outerjoin(RiskSubtypeDisplayMeta, RiskSubtypeDisplayMeta.subtype_id == RiskSubtype.id)
+            .outerjoin(
+                RiskSubtypeDisplayMeta,
+                RiskSubtypeDisplayMeta.subtype_id == RiskSubtype.id,
+            )
             .outerjoin(
                 BenchmarkSample,
                 and_(
@@ -33,7 +41,9 @@ class DatasetRepository:
                 ),
             )
             .where(RiskCategory.is_active.is_(True), RiskSubtype.is_active.is_(True))
-            .group_by(RiskCategory.id, RiskSubtype.id, RiskSubtypeDisplayMeta.subtype_id)
+            .group_by(
+                RiskCategory.id, RiskSubtype.id, RiskSubtypeDisplayMeta.subtype_id
+            )
             .order_by(
                 RiskCategory.sort_order.asc().nullslast(),
                 RiskCategory.id.asc(),
@@ -54,7 +64,10 @@ class DatasetRepository:
                 func.max(BenchmarkSample.updated_at).label("sample_updated_at"),
             )
             .join(RiskSubtype, RiskSubtype.category_id == RiskCategory.id)
-            .outerjoin(RiskSubtypeDisplayMeta, RiskSubtypeDisplayMeta.subtype_id == RiskSubtype.id)
+            .outerjoin(
+                RiskSubtypeDisplayMeta,
+                RiskSubtypeDisplayMeta.subtype_id == RiskSubtype.id,
+            )
             .outerjoin(
                 BenchmarkSample,
                 and_(
@@ -67,6 +80,8 @@ class DatasetRepository:
                 RiskSubtype.is_active.is_(True),
                 RiskSubtype.code == dataset_id,
             )
-            .group_by(RiskCategory.id, RiskSubtype.id, RiskSubtypeDisplayMeta.subtype_id)
+            .group_by(
+                RiskCategory.id, RiskSubtype.id, RiskSubtypeDisplayMeta.subtype_id
+            )
         )
         return (await self.db.execute(stmt)).one_or_none()

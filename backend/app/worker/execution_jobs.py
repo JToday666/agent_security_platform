@@ -36,7 +36,9 @@ async def load_sample_jobs(run_id: int, dataset_code: str) -> list[SampleJob]:
                     BenchmarkSample.user_goal,
                 )
                 .join(RunSample, SampleExecution.run_sample_id == RunSample.id)
-                .join(BenchmarkSample, SampleExecution.sample_id_ref == BenchmarkSample.id)
+                .join(
+                    BenchmarkSample, SampleExecution.sample_id_ref == BenchmarkSample.id
+                )
                 .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
                 .where(
                     SampleExecution.run_id == run_id,
@@ -48,7 +50,16 @@ async def load_sample_jobs(run_id: int, dataset_code: str) -> list[SampleJob]:
         ).all()
 
     jobs: list[SampleJob] = []
-    for execution_id, status, sample_db_id, sample_id, sample_name, resource_path, entry_path, user_goal in rows:
+    for (
+        execution_id,
+        status,
+        sample_db_id,
+        sample_id,
+        sample_name,
+        resource_path,
+        entry_path,
+        user_goal,
+    ) in rows:
         if status in {"done", "error"}:
             continue
         jobs.append(
@@ -65,4 +76,3 @@ async def load_sample_jobs(run_id: int, dataset_code: str) -> list[SampleJob]:
             )
         )
     return jobs
-

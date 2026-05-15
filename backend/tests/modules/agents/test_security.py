@@ -18,4 +18,7 @@ def test_validate_agent_base_url_rejects_localhost_and_private_hosts() -> None:
 
 
 def test_validate_agent_base_url_allows_public_http_hosts() -> None:
-    assert validate_agent_base_url("https://api.agent.example.com") == "https://api.agent.example.com"
+    assert (
+        validate_agent_base_url("https://api.agent.example.com")
+        == "https://api.agent.example.com"
+    )

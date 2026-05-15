@@ -15,14 +15,20 @@ def test_evaluation_routes_work_against_real_database(client, api_db_helper) -> 
         username=f"{api_db_helper.prefix}_other",
         email=f"{api_db_helper.prefix}_other@example.com",
     )
-    evaluation_id = api_db_helper.seed_evaluation_run(user_id=user_id, dataset_code=dataset_code, status="pending")
+    evaluation_id = api_db_helper.seed_evaluation_run(
+        user_id=user_id, dataset_code=dataset_code, status="pending"
+    )
     headers = {"Authorization": f"Bearer {token}"}
 
     list_response = client.get("/api/v1/evaluations", headers=headers)
     assert list_response.status_code == 200
-    assert any(item["evaluationId"] == evaluation_id for item in list_response.json()["data"])
+    assert any(
+        item["evaluationId"] == evaluation_id for item in list_response.json()["data"]
+    )
 
-    detail_response = client.get(f"/api/v1/evaluations/{evaluation_id}", headers=headers)
+    detail_response = client.get(
+        f"/api/v1/evaluations/{evaluation_id}", headers=headers
+    )
     assert detail_response.status_code == 200
     detail_payload = detail_response.json()["data"]
     assert detail_payload["evaluationId"] == evaluation_id
@@ -44,7 +50,9 @@ def test_evaluation_routes_work_against_real_database(client, api_db_helper) -> 
     assert forbidden_response.status_code == 403
     assert forbidden_response.json()["code"] == 40300
 
-    missing_response = client.get(f"/api/v1/evaluations/{api_db_helper.prefix}_missing", headers=headers)
+    missing_response = client.get(
+        f"/api/v1/evaluations/{api_db_helper.prefix}_missing", headers=headers
+    )
     assert missing_response.status_code == 404
     assert missing_response.json()["code"] == 40400
 

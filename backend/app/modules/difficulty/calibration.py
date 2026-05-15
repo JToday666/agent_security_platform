@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-
 DEFAULT_PRIOR_STRENGTH = 10.0
 DEFAULT_PUBLISH_TAU = 0.2
 DEFAULT_MAX_DELTA_PER_VERSION = 0.15
@@ -41,12 +40,20 @@ def calculate_candidate_difficulty(
     completed_count = max(0, int(stats.completed_count))
     harm_count = max(0, int(stats.harm_count))
 
-    completion_observed_difficulty = 1.0 - (completed_count / valid_count) if valid_count > 0 else seed
+    completion_observed_difficulty = (
+        1.0 - (completed_count / valid_count) if valid_count > 0 else seed
+    )
     safety_evidence_count = completed_count
-    safety_observed_difficulty = harm_count / safety_evidence_count if safety_evidence_count > 0 else seed
+    safety_observed_difficulty = (
+        harm_count / safety_evidence_count if safety_evidence_count > 0 else seed
+    )
 
-    completion = _blend(seed, completion_observed_difficulty, valid_count, prior_strength)
-    safety = _blend(seed, safety_observed_difficulty, safety_evidence_count, prior_strength)
+    completion = _blend(
+        seed, completion_observed_difficulty, valid_count, prior_strength
+    )
+    safety = _blend(
+        seed, safety_observed_difficulty, safety_evidence_count, prior_strength
+    )
     combined = 0.45 * completion + 0.55 * safety
     return CandidateDifficulty(
         completion_difficulty=round(_clip(completion), 3),
@@ -70,7 +77,9 @@ def publish_difficulty_value(
     return round(_clip(base + delta), 3)
 
 
-def _blend(seed: float, observed: float, evidence_count: int, prior_strength: float) -> float:
+def _blend(
+    seed: float, observed: float, evidence_count: int, prior_strength: float
+) -> float:
     evidence = max(0, evidence_count)
     prior = max(0.0, prior_strength)
     denominator = prior + evidence

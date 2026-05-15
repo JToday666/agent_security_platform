@@ -58,10 +58,14 @@ class FileCredentialStore:
 
     def _seal(self, payload: dict[str, object]) -> str:
         """将凭据字典封装成可持久化的密文字符串。"""
-        plaintext = json.dumps(payload, ensure_ascii=True, separators=(",", ":"), sort_keys=True).encode("utf-8")
+        plaintext = json.dumps(
+            payload, ensure_ascii=True, separators=(",", ":"), sort_keys=True
+        ).encode("utf-8")
         nonce = os.urandom(16)
         keystream = self._derive_keystream(nonce, len(plaintext))
-        ciphertext = bytes(source ^ mask for source, mask in zip(plaintext, keystream, strict=True))
+        ciphertext = bytes(
+            source ^ mask for source, mask in zip(plaintext, keystream, strict=True)
+        )
         digest = hmac.new(self.secret_key, nonce + ciphertext, hashlib.sha256).digest()
         return base64.urlsafe_b64encode(nonce + digest + ciphertext).decode("utf-8")
 
@@ -71,12 +75,16 @@ class FileCredentialStore:
         nonce = raw[:16]
         digest = raw[16:48]
         ciphertext = raw[48:]
-        expected = hmac.new(self.secret_key, nonce + ciphertext, hashlib.sha256).digest()
+        expected = hmac.new(
+            self.secret_key, nonce + ciphertext, hashlib.sha256
+        ).digest()
         if not hmac.compare_digest(digest, expected):
             raise ValueError("invalid secret payload")
 
         keystream = self._derive_keystream(nonce, len(ciphertext))
-        plaintext = bytes(source ^ mask for source, mask in zip(ciphertext, keystream, strict=True))
+        plaintext = bytes(
+            source ^ mask for source, mask in zip(ciphertext, keystream, strict=True)
+        )
         return json.loads(plaintext.decode("utf-8"))
 
     def _derive_keystream(self, nonce: bytes, size: int) -> bytes:
@@ -84,7 +92,9 @@ class FileCredentialStore:
         blocks: list[bytes] = []
         counter = 0
         while sum(len(block) for block in blocks) < size:
-            block = hashlib.sha256(self.secret_key + nonce + counter.to_bytes(4, "big")).digest()
+            block = hashlib.sha256(
+                self.secret_key + nonce + counter.to_bytes(4, "big")
+            ).digest()
             blocks.append(block)
             counter += 1
         return b"".join(blocks)[:size]

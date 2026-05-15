@@ -6,13 +6,15 @@ import asyncio
 import logging
 
 from app.models.benchmark_run import TestRun
-from app.modules.evaluations.lifecycle import mark_run_failed, reconcile_expired_paused_runs
+from app.modules.evaluations.lifecycle import (
+    mark_run_failed,
+    reconcile_expired_paused_runs,
+)
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES
 from app.platform.config import settings
 from app.platform.db.session import AsyncSessionLocal
 from app.worker.claims import claim_next_run
 from app.worker.processing import process_claimed_run
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -52,7 +54,9 @@ async def run_worker_loop(worker_id: str) -> None:
                         break
                     if run.id in active_runs:
                         break
-                    active_runs[run.id] = asyncio.create_task(_process_run_safely(run.id, worker_id))
+                    active_runs[run.id] = asyncio.create_task(
+                        _process_run_safely(run.id, worker_id)
+                    )
 
                 if active_runs:
                     done, _ = await asyncio.wait(

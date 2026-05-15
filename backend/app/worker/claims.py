@@ -34,7 +34,9 @@ async def claim_next_run(db: AsyncSession, worker_id: str) -> TestRun | None:
         await db.execute(
             select(TestRun)
             .where(
-                TestRun.status.in_(["pending", "running", "pausing", "terminating", "canceling"]),
+                TestRun.status.in_(
+                    ["pending", "running", "pausing", "terminating", "canceling"]
+                ),
                 or_(
                     TestRun.claimed_by.is_(None),
                     TestRun.claim_heartbeat_at.is_(None),

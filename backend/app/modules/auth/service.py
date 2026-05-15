@@ -25,11 +25,20 @@ class AuthService:
         """校验用户凭据并返回登录结果。"""
         normalized_username = username.strip()
         if not normalized_username or not password:
-            raise ValidationDomainError("用户名和密码不能为空", http_status=status.HTTP_400_BAD_REQUEST, code=1000)
+            raise ValidationDomainError(
+                "用户名和密码不能为空",
+                http_status=status.HTTP_400_BAD_REQUEST,
+                code=1000,
+                message_key="errors.auth.missing_credentials",
+            )
 
         user = await self.repository.get_user_by_login_identifier(normalized_username)
         if user is None or not verify_password(password, user.hashed_password):
-            raise AuthError("用户名或密码错误", code=1001)
+            raise AuthError(
+                "用户名或密码错误",
+                code=1001,
+                message_key="errors.auth.invalid_credentials",
+            )
 
         return AuthSessionData(
             token=create_access_token(user.id),
@@ -42,21 +51,39 @@ class AuthService:
         email = payload.email.lower()
 
         if await self.repository.is_username_taken(username):
-            raise ConflictError("用户名已被注册", code=1002)
+            raise ConflictError(
+                "用户名已被注册",
+                code=1002,
+                message_key="errors.auth.username_or_email_taken",
+            )
 
         if await self.repository.is_email_taken(email):
-            raise ConflictError("邮箱已被注册", code=1002)
+            raise ConflictError(
+                "邮箱已被注册",
+                code=1002,
+                message_key="errors.auth.username_or_email_taken",
+            )
 
         try:
-            user = await self.repository.create_user(username, email, hash_password(payload.password))
+            user = await self.repository.create_user(
+                username, email, hash_password(payload.password)
+            )
             await self.repository.commit()
             await self.repository.refresh(user)
         except IntegrityError as exc:
             await self.repository.rollback()
             detail = integrity_error_text(exc)
             if "email" in detail:
-                raise ConflictError("邮箱已被注册", code=1002) from exc
-            raise ConflictError("用户名已被注册", code=1002) from exc
+                raise ConflictError(
+                    "邮箱已被注册",
+                    code=1002,
+                    message_key="errors.auth.username_or_email_taken",
+                ) from exc
+            raise ConflictError(
+                "用户名已被注册",
+                code=1002,
+                message_key="errors.auth.username_or_email_taken",
+            ) from exc
         return AuthSessionData(
             token=create_access_token(user.id),
             user=UserProfile.model_validate(user),

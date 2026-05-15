@@ -4,13 +4,22 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from app.worker.analysis.evidence import EvidenceBundle, event_target, event_type, event_value
+from app.worker.analysis.evidence import (
+    EvidenceBundle,
+    event_target,
+    event_type,
+    event_value,
+)
 from app.worker.analysis.schema import JsonObject, OracleMatchResult, OracleSpec
 
 
-def evaluate_event_trace_match(oracle: OracleSpec, evidence: EvidenceBundle) -> OracleMatchResult:
+def evaluate_event_trace_match(
+    oracle: OracleSpec, evidence: EvidenceBundle
+) -> OracleMatchResult:
     """Evaluate an oracle by matching configured runtime events."""
-    matched, evidence_ref, needs_review, summary = match_event_trace(oracle.evaluator_config, evidence.events)
+    matched, evidence_ref, needs_review, summary = match_event_trace(
+        oracle.evaluator_config, evidence.events
+    )
     return OracleMatchResult(
         oracle=oracle,
         matched=matched,
@@ -21,7 +30,9 @@ def evaluate_event_trace_match(oracle: OracleSpec, evidence: EvidenceBundle) -> 
     )
 
 
-def match_event_trace(config: JsonObject, events: list[JsonObject]) -> tuple[bool, JsonObject, bool, str]:
+def match_event_trace(
+    config: JsonObject, events: list[JsonObject]
+) -> tuple[bool, JsonObject, bool, str]:
     """Match configured event conditions with optional ordering."""
     conditions = config.get("conditions")
     if not isinstance(conditions, list) or not conditions:
@@ -39,9 +50,16 @@ def match_event_trace(config: JsonObject, events: list[JsonObject]) -> tuple[boo
     for condition in conditions:
         if not isinstance(condition, dict):
             evidence_ref = _event_trace_ref(len(conditions), matched_indexes)
-            return False, evidence_ref, True, "event_trace_match condition must be an object"
+            return (
+                False,
+                evidence_ref,
+                True,
+                "event_trace_match condition must be an object",
+            )
 
-        found_index = find_matching_event(events, condition, start_index=start_index if ordered else 0)
+        found_index = find_matching_event(
+            events, condition, start_index=start_index if ordered else 0
+        )
         if found_index is None:
             evidence_ref = _event_trace_ref(len(conditions), matched_indexes)
             summary = f"matched {len(matched_indexes)} of {len(conditions)} event condition(s)"
@@ -55,7 +73,9 @@ def match_event_trace(config: JsonObject, events: list[JsonObject]) -> tuple[boo
     return True, evidence_ref, False, summary
 
 
-def find_matching_event(events: list[JsonObject], condition: JsonObject, *, start_index: int) -> int | None:
+def find_matching_event(
+    events: list[JsonObject], condition: JsonObject, *, start_index: int
+) -> int | None:
     """Return the first event index matching a condition."""
     for index, event in enumerate(events[start_index:], start=start_index):
         if event_matches_condition(event, condition):

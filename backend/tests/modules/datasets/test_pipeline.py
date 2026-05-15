@@ -41,5 +41,8 @@ def test_run_import_pipeline_normalizes_raw_input_and_keeps_registry_pristine_on
     assert result.input_kind == "raw"
     assert result.normalized is True
     assert result.sample_count == raw_sample_bundle.sample_count
-    assert result.sample_plan.sample_root == (workspace_dir / "normalized_samples").resolve()
+    assert (
+        result.sample_plan.sample_root
+        == (workspace_dir / "normalized_samples").resolve()
+    )
     assert not registry_root.exists()

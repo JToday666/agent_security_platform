@@ -20,7 +20,10 @@ def get_user_service(db: AsyncSession = Depends(get_db)) -> UserService:
 
 
 @router.get("/profile", response_model=Envelope[UserProfile])
-async def get_profile(current_user=Depends(get_current_user), service: UserService = Depends(get_user_service)):
+async def get_profile(
+    current_user=Depends(get_current_user),
+    service: UserService = Depends(get_user_service),
+):
     """返回当前用户资料。"""
     response = await service.get_profile(current_user)
     return success_payload(response.model_dump(by_alias=True))

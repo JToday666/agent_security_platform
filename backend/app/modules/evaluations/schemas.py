@@ -38,7 +38,9 @@ class EvaluationCreateRequest(CamelModel):
     @model_validator(mode="after")
     def reject_deprecated_private_leaderboard(self) -> "EvaluationCreateRequest":
         if self.public_to_leaderboard is False:
-            raise ValueError("publicToLeaderboard=false 已废弃，请改用 leaderboardDisplayMode=anonymous。")
+            raise ValueError(
+                "publicToLeaderboard=false 已废弃，请改用 leaderboardDisplayMode=anonymous。"
+            )
         return self
 
 

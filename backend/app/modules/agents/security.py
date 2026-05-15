@@ -45,7 +45,9 @@ def validate_agent_base_url(url: str) -> str:
         pass
 
     lowered = hostname.lower()
-    if lowered in {"localhost", "localhost.localdomain"} or lowered.endswith(".localhost"):
+    if lowered in {"localhost", "localhost.localdomain"} or lowered.endswith(
+        ".localhost"
+    ):
         raise AgentUrlSecurityError("Agent baseUrl 不允许指向本机或内网地址。")
 
     try:
@@ -54,7 +56,7 @@ def validate_agent_base_url(url: str) -> str:
         return normalized
 
     for info in infos:
-        resolved_ip = info[4][0]
+        resolved_ip = str(info[4][0])
         if _is_forbidden_ip(resolved_ip):
             raise AgentUrlSecurityError("Agent baseUrl 不允许解析到本机或内网地址。")
     return normalized
