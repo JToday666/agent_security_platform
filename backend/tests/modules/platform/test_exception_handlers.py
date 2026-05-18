@@ -8,7 +8,11 @@ from pydantic import BaseModel, Field
 
 from app.modules.evaluations.schemas import EvaluationCreateRequest
 from app.platform.errors import NotFoundError
-from app.platform.exception_handlers import _loc_to_field, register_exception_handlers
+from app.platform.exception_handlers import (
+    _loc_to_field,
+    _validation_reason,
+    register_exception_handlers,
+)
 from app.platform.i18n import LocaleMiddleware
 
 
@@ -150,6 +154,15 @@ def test_request_validation_errors_keep_specific_reasons() -> None:
         {"field": "count", "reason": "Value is too large."},
         {"field": "tags", "reason": "Expected a list."},
     ]
+
+
+def test_unknown_request_validation_reason_uses_localized_generic_message() -> None:
+    reason = _validation_reason(
+        {"type": "value_error.custom", "msg": "technical validator details"},
+        locale="en-US",
+    )
+
+    assert reason == "Invalid value."
 
 
 def test_custom_request_validation_error_uses_stable_translation() -> None:

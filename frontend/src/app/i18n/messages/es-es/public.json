@@ -5,8 +5,17 @@
       "descriptionSecondary": "Un sistema profesional, seguro y fiable de evaluación de Agents con resultados trazables."
     },
     "quickstart": {
+      "kicker": "Flujo estándar",
       "title": "Inicio rápido",
       "description": "Completa la exploración de conjuntos, el envío de evaluaciones, el seguimiento y la revisión de resultados con un flujo estandarizado."
+    },
+    "navigation": {
+      "aria": "Secciones de presentación del inicio",
+      "quickstart": "Completar una evaluación paso a paso",
+      "capabilities": "Entender las capacidades principales",
+      "loop": "Ver el recorrido del envío a la evidencia",
+      "trust": "Entender la base de los resultados públicos",
+      "resources": "Abrir páginas comunes directamente"
     },
     "workflow": {
       "browse": {
@@ -32,6 +41,92 @@
         "actionAuthed": "Abrir área",
         "actionGuest": "Ver contacto"
       }
+    },
+    "sections": {
+      "capabilities": {
+        "kicker": "Capacidades de la plataforma",
+        "title": "Cubrir las etapas clave antes, durante y después de la evaluación",
+        "description": "La plataforma organiza la evaluación alrededor de conjuntos de datos, registro de Agent, seguimiento, informes y comparación en clasificación.",
+        "items": {
+          "datasets": {
+            "title": "Catálogo de conjuntos de riesgo",
+            "description": "Revisa descripciones, muestras y recursos por dominio de riesgo antes de elegir el alcance de evaluación."
+          },
+          "evaluation": {
+            "title": "Registro y envío de Agent",
+            "description": "Registra un Agent con plantilla o configuración personalizada y revisa conexión, autenticación y campos antes del envío."
+          },
+          "report": {
+            "title": "Revisión del informe",
+            "description": "Consulta resúmenes, métricas de riesgo, alertas y evidencia de muestras representativas en la página de detalle."
+          },
+          "ranking": {
+            "title": "Comparación de clasificación pública",
+            "description": "Compara instantáneas públicas por puntuación compuesta, capacidad de seguridad, dificultad alta y riesgo."
+          }
+        }
+      },
+      "loop": {
+        "kicker": "Ciclo de evaluación",
+        "title": "Crear un recorrido completo del alcance a la evidencia",
+        "description": "Los usuarios pueden empezar por conjuntos de datos, enviar, seguir la ejecución, revisar resultados y publicar en la clasificación.",
+        "items": {
+          "scope": {
+            "title": "Definir el alcance",
+            "description": "Elige primero conjuntos y parámetros, incluidos dominios de riesgo, dificultad, tiempo límite y pasos máximos."
+          },
+          "submit": {
+            "title": "Enviar y seguir tareas",
+            "description": "Después del envío, el área de trabajo muestra estados en cola, en ejecución, en pausa, terminados y completados."
+          },
+          "evidence": {
+            "title": "Revisar conclusiones y evidencia",
+            "description": "Los informes reúnen métricas, evidencia de muestras y avisos de riesgo para guiar correcciones posteriores."
+          }
+        }
+      },
+      "trust": {
+        "kicker": "Evaluación confiable",
+        "title": "Los resultados públicos priorizan explicación y trazabilidad",
+        "description": "La clasificación y los informes usan solo campos existentes en la plataforma para aclarar fuentes de puntuación y límites de visualización.",
+        "items": {
+          "standard": {
+            "title": "Entradas estandarizadas",
+            "description": "Los conjuntos, parámetros y mapeos de campos se validan antes del envío para reducir tareas no válidas."
+          },
+          "privacy": {
+            "title": "Opción de visualización anónima",
+            "description": "Los resultados pueden entrar en la clasificación con nombre público o identidad anónima."
+          },
+          "confidence": {
+            "title": "Confianza y riesgo",
+            "description": "La clasificación muestra confianza y riesgo junto al rango para evitar una lectura basada en un solo valor."
+          }
+        }
+      },
+      "resources": {
+        "kicker": "Siguiente paso",
+        "title": "Entrar en flujos comunes desde el inicio",
+        "description": "Elige conjuntos, envía una evaluación, abre la clasificación o contacta con el equipo según la tarea actual.",
+        "items": {
+          "catalog": {
+            "title": "Ver conjuntos",
+            "description": "Explora conjuntos de evaluación disponibles y descripciones de dominios de riesgo."
+          },
+          "submit": {
+            "title": "Enviar evaluación",
+            "description": "Tras iniciar sesión, registra un Agent y crea una tarea de evaluación formal."
+          },
+          "leaderboard": {
+            "title": "Ver clasificación",
+            "description": "Compara resultados públicos y el Agent que lidera actualmente."
+          },
+          "contact": {
+            "title": "Contactar con el equipo",
+            "description": "Consulta sobre integración, colaboración o flujo de evaluación."
+          }
+        }
+      }
     }
   },
   "contact": {
@@ -42,7 +137,38 @@
     "phone": "Teléfono",
     "address": "Dirección",
     "addressValue": "Base nacional de ciberseguridad, distrito de Dongxihu, Wuhan",
-    "social": "Redes sociales"
+    "social": "Redes sociales",
+    "primary": {
+      "kicker": "Ruta de contacto",
+      "title": "Elige el canal adecuado para la pregunta actual",
+      "description": "La integración de evaluaciones, las preguntas sobre conjuntos, la colaboración y los recursos públicos empiezan aquí; el equipo puede dar seguimiento por tema.",
+      "emailAction": "Enviar correo",
+      "phoneAction": "Llamar"
+    },
+    "paths": {
+      "items": {
+        "integration": {
+          "title": "Integración de evaluación",
+          "description": "Consulta sobre integración de Agent, preparación del envío, elección de plantilla y flujo de evaluación.",
+          "action": "Consultar por correo"
+        },
+        "datasets": {
+          "title": "Conjuntos y alcance",
+          "description": "Revisa los conjuntos disponibles y las descripciones de riesgos antes de confirmar el alcance.",
+          "action": "Ver conjuntos"
+        },
+        "collaboration": {
+          "title": "Colaboración",
+          "description": "Comenta requisitos de evaluación conjunta, uso de la plataforma o colaboración de investigación.",
+          "action": "Contactar"
+        },
+        "social": {
+          "title": "Recursos públicos",
+          "description": "Abre el repositorio del proyecto y las actualizaciones públicas para seguir el progreso.",
+          "action": "Abrir GitHub"
+        }
+      }
+    }
   },
   "notFound": {
     "eyebrow": "404",

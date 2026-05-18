@@ -5,8 +5,17 @@
       "descriptionSecondary": "Un système d'évaluation d'Agents sûr, fiable et professionnel, avec des résultats traçables."
     },
     "quickstart": {
+      "kicker": "Flux standard",
       "title": "Démarrage rapide",
       "description": "Parcourez les jeux de données, soumettez une évaluation, suivez l'exécution et révisez les résultats dans un flux standardisé."
+    },
+    "navigation": {
+      "aria": "Sections de présentation de l'accueil",
+      "quickstart": "Réaliser une évaluation étape par étape",
+      "capabilities": "Comprendre les capacités principales",
+      "loop": "Voir le parcours de la soumission aux preuves",
+      "trust": "Comprendre la base des résultats publics",
+      "resources": "Ouvrir directement les pages courantes"
     },
     "workflow": {
       "browse": {
@@ -32,6 +41,92 @@
         "actionAuthed": "Ouvrir l'espace",
         "actionGuest": "Voir les contacts"
       }
+    },
+    "sections": {
+      "capabilities": {
+        "kicker": "Capacités de la plateforme",
+        "title": "Couvrir les étapes clés avant, pendant et après l'évaluation",
+        "description": "La plateforme organise l'évaluation autour des jeux de données, de l'enregistrement d'Agent, du suivi d'exécution, des rapports et du classement.",
+        "items": {
+          "datasets": {
+            "title": "Catalogue de jeux de données de risque",
+            "description": "Consultez les descriptions, exemples et ressources par domaine de risque avant de choisir le périmètre d'évaluation."
+          },
+          "evaluation": {
+            "title": "Enregistrement et soumission d'Agent",
+            "description": "Enregistrez un Agent avec un modèle ou une configuration personnalisée, puis vérifiez la connexion, l'authentification et les champs."
+          },
+          "report": {
+            "title": "Lecture du rapport de résultats",
+            "description": "Examinez les résumés, indicateurs de risque, alertes et preuves d'échantillons représentatifs dans la page de détail."
+          },
+          "ranking": {
+            "title": "Comparaison du classement public",
+            "description": "Comparez les instantanés publics par score global, capacité de sécurité, score haute difficulté et score de risque."
+          }
+        }
+      },
+      "loop": {
+        "kicker": "Boucle d'évaluation",
+        "title": "Construire un parcours complet du périmètre aux preuves",
+        "description": "Les utilisateurs partent des jeux de données, puis soumettent, suivent l'exécution, révisent les résultats et publient au classement.",
+        "items": {
+          "scope": {
+            "title": "Définir le périmètre",
+            "description": "Choisissez d'abord les jeux de données et paramètres, dont le domaine de risque, la difficulté, le délai et le nombre maximal d'étapes."
+          },
+          "submit": {
+            "title": "Soumettre et suivre",
+            "description": "Après la soumission, l'espace de travail affiche les états en file, en cours, en pause, terminés et achevés."
+          },
+          "evidence": {
+            "title": "Réviser conclusions et preuves",
+            "description": "Les rapports regroupent indicateurs, preuves d'échantillons et alertes de risque pour guider les corrections."
+          }
+        }
+      },
+      "trust": {
+        "kicker": "Évaluation fiable",
+        "title": "Les résultats publics privilégient l'explication et la traçabilité",
+        "description": "Le classement et les rapports utilisent uniquement les champs déjà présents dans la plateforme afin de clarifier les sources des scores.",
+        "items": {
+          "standard": {
+            "title": "Entrées standardisées",
+            "description": "Les jeux de données, paramètres et correspondances de champs sont validés avant la soumission afin de réduire les tâches invalides."
+          },
+          "privacy": {
+            "title": "Option d'affichage anonyme",
+            "description": "Les résultats d'évaluation peuvent rejoindre le classement avec un nom public ou une identité anonyme."
+          },
+          "confidence": {
+            "title": "Confiance et score de risque",
+            "description": "Le classement affiche la confiance et le score de risque avec le rang pour éviter une lecture fondée sur un seul score."
+          }
+        }
+      },
+      "resources": {
+        "kicker": "Étape suivante",
+        "title": "Accéder aux flux courants depuis l'accueil",
+        "description": "Choisissez les jeux de données, soumettez une évaluation, ouvrez le classement ou contactez l'équipe selon la tâche en cours.",
+        "items": {
+          "catalog": {
+            "title": "Voir les jeux de données",
+            "description": "Parcourez les jeux de données d'évaluation disponibles et les descriptions des domaines de risque."
+          },
+          "submit": {
+            "title": "Soumettre une évaluation",
+            "description": "Après connexion, enregistrez un Agent et créez une tâche d'évaluation formelle."
+          },
+          "leaderboard": {
+            "title": "Voir le classement",
+            "description": "Comparez les résultats publics et l'Agent actuellement en tête."
+          },
+          "contact": {
+            "title": "Contacter l'équipe",
+            "description": "Posez vos questions sur l'intégration, la collaboration ou le flux d'évaluation."
+          }
+        }
+      }
     }
   },
   "contact": {
@@ -42,7 +137,38 @@
     "phone": "Téléphone",
     "address": "Adresse",
     "addressValue": "Base nationale de cybersécurité, district de Dongxihu, Wuhan",
-    "social": "Réseaux sociaux"
+    "social": "Réseaux sociaux",
+    "primary": {
+      "kicker": "Parcours de contact",
+      "title": "Choisir le bon canal pour la question en cours",
+      "description": "L'intégration d'évaluations, les questions sur les jeux de données, la collaboration et les ressources publiques commencent ici, avec un suivi par sujet.",
+      "emailAction": "Envoyer un e-mail",
+      "phoneAction": "Appeler"
+    },
+    "paths": {
+      "items": {
+        "integration": {
+          "title": "Intégration d'évaluation",
+          "description": "Posez vos questions sur l'intégration d'Agent, la préparation, le choix de modèle et le flux d'évaluation.",
+          "action": "Demander par e-mail"
+        },
+        "datasets": {
+          "title": "Jeux de données et périmètre",
+          "description": "Consultez les jeux disponibles et les domaines de risque avant de confirmer le périmètre.",
+          "action": "Voir les données"
+        },
+        "collaboration": {
+          "title": "Collaboration",
+          "description": "Échangez sur une évaluation conjointe, l'usage de la plateforme ou une collaboration de recherche.",
+          "action": "Contacter l'équipe"
+        },
+        "social": {
+          "title": "Ressources publiques",
+          "description": "Ouvrez le dépôt du projet et les mises à jour publiques pour suivre l'avancement.",
+          "action": "Ouvrir GitHub"
+        }
+      }
+    }
   },
   "notFound": {
     "eyebrow": "404",

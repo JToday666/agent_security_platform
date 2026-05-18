@@ -7,8 +7,7 @@ import {
   validateAgentRegistration,
   type AgentRegisterFieldErrors,
 } from "./agent-registration-validation";
-
-export const AGENT_NO_TEMPLATE_ID = "custom";
+export { AGENT_NO_TEMPLATE_ID } from "./agent-registration-constants";
 
 export type AgentRegisterStepId =
   | "template"

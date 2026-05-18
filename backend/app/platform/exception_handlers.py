@@ -68,9 +68,6 @@ def _validation_reason(error: dict[str, Any], *, locale: str | None = None) -> s
     message_key = _VALIDATION_REASON_KEYS.get(error_type)
     if message_key is not None:
         return translate(message_key, locale=locale)
-    message = error.get("msg")
-    if isinstance(message, str) and message.strip():
-        return message.strip()
     return translate("validation.field.invalid", locale=locale)
 
 
