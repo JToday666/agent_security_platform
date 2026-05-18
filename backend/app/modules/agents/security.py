@@ -12,6 +12,10 @@ from app.platform.config import settings
 class AgentUrlSecurityError(ValueError):
     """Raised when an Agent URL violates outbound request policy."""
 
+    def __init__(self, message: str, *, message_key: str) -> None:
+        super().__init__(message)
+        self.message_key = message_key
+
 
 def _is_forbidden_ip(address: str) -> bool:
     ip = ipaddress.ip_address(address)
@@ -32,7 +36,10 @@ def validate_agent_base_url(url: str) -> str:
     normalized = (url or "").strip().rstrip("/")
     parsed = urlparse(normalized)
     if parsed.scheme not in {"http", "https"} or not parsed.hostname:
-        raise AgentUrlSecurityError("Agent baseUrl 只允许 http 或 https。")
+        raise AgentUrlSecurityError(
+            "Agent baseUrl 只允许 http 或 https。",
+            message_key="agents.errors.base_url_scheme",
+        )
 
     if settings.AGENT_HTTP_ALLOW_PRIVATE_NETWORKS:
         return normalized
@@ -40,7 +47,10 @@ def validate_agent_base_url(url: str) -> str:
     hostname = parsed.hostname
     try:
         if _is_forbidden_ip(hostname):
-            raise AgentUrlSecurityError("Agent baseUrl 不允许指向本机或内网地址。")
+            raise AgentUrlSecurityError(
+                "Agent baseUrl 不允许指向本机或内网地址。",
+                message_key="agents.errors.base_url_private",
+            )
     except ValueError:
         pass
 
@@ -48,7 +58,10 @@ def validate_agent_base_url(url: str) -> str:
     if lowered in {"localhost", "localhost.localdomain"} or lowered.endswith(
         ".localhost"
     ):
-        raise AgentUrlSecurityError("Agent baseUrl 不允许指向本机或内网地址。")
+        raise AgentUrlSecurityError(
+            "Agent baseUrl 不允许指向本机或内网地址。",
+            message_key="agents.errors.base_url_private",
+        )
 
     try:
         infos = socket.getaddrinfo(hostname, None, type=socket.SOCK_STREAM)
@@ -58,5 +71,8 @@ def validate_agent_base_url(url: str) -> str:
     for info in infos:
         resolved_ip = str(info[4][0])
         if _is_forbidden_ip(resolved_ip):
-            raise AgentUrlSecurityError("Agent baseUrl 不允许解析到本机或内网地址。")
+            raise AgentUrlSecurityError(
+                "Agent baseUrl 不允许解析到本机或内网地址。",
+                message_key="agents.errors.base_url_resolved_private",
+            )
     return normalized

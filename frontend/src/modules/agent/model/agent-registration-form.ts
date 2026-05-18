@@ -297,9 +297,9 @@ export const createAgentRegisterFormFromDetail = (
   );
 
   return {
-    templateId: detail.templateId,
+    templateId: detail.templateId ?? "",
     name: t("agent.register.copyName", { name: detail.name }),
-    description: detail.description,
+    description: detail.description ?? "",
     invokeMode: detail.invokeMode,
     connection: normalizeConnection(detail.connection),
     auth: {

@@ -267,7 +267,7 @@ const createStoredRecord = (
     evaluationId: `eval_${Date.now()}`,
     requestId: payload.requestId,
     agentName: agent?.name ?? "未命名智能体",
-    description: agent?.description,
+    description: agent?.description ?? undefined,
     createdAt,
     updatedAt: createdAt,
     status: "pending",

@@ -5,6 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
+from app.modules.agents.domain.policies import validate_create_payload
 from app.modules.agents.schemas import AgentCreateRequest, AgentVerificationRequest
 from app.modules.agents.service import AgentService
 from app.modules.agents.templates import list_agent_templates
@@ -168,6 +169,74 @@ async def test_create_agent_blank_name_carries_message_key() -> None:
         await service.create_agent(build_agent_payload(name=" "), SimpleNamespace(id=1))
 
     assert exc.value.message_key == "agents.errors.name_required"
+
+
+@pytest.mark.parametrize(
+    ("payload_overrides", "expected_key"),
+    [
+        (
+            {"connection": {"baseUrl": "ftp://api.agent.example.com", "invokePath": "/runs"}},
+            "agents.errors.base_url_scheme",
+        ),
+        ({"platformInputMapping": {}}, "agents.errors.platform_input_task_required"),
+        (
+            {"platformInputMapping": {"task": "payload.prompt"}},
+            "agents.errors.platform_input_top_level",
+        ),
+        (
+            {"customRequestBody": {"prompt": "fixed"}},
+            "agents.errors.custom_request_body_conflict",
+        ),
+        (
+            {
+                "connection": {
+                    "baseUrl": "https://api.agent.example.com",
+                    "invokePath": "/runs",
+                    "resultPathTemplate": "",
+                    "requestTimeoutSeconds": 30,
+                    "pollIntervalSeconds": 1,
+                    "pollTimeoutSeconds": 30,
+                }
+            },
+            "agents.errors.result_path_template_required",
+        ),
+        (
+            {"platformOutputMapping": {"status": "status", "finalAnswer": "answer"}},
+            "agents.errors.platform_output_required",
+        ),
+        (
+            {"successStatuses": ["completed", "timeout"]},
+            "agents.errors.success_statuses_subset",
+        ),
+        (
+            {"auth": {"type": "bearer", "config": {}}},
+            "agents.errors.auth_bearer_token_required",
+        ),
+        (
+            {"auth": {"type": "api_key_header", "config": {"headerName": "x-api-key"}}},
+            "agents.errors.auth_header_credentials_required",
+        ),
+    ],
+)
+def test_create_agent_validation_errors_carry_message_keys(
+    payload_overrides: dict[str, object], expected_key: str
+) -> None:
+    payload = build_agent_payload(**payload_overrides)
+
+    with pytest.raises(ValidationDomainError) as exc:
+        validate_create_payload(payload)
+
+    assert exc.value.message_key == expected_key
+
+
+def test_create_agent_validation_error_params_are_localized() -> None:
+    payload = build_agent_payload(customRequestBody={"prompt": "fixed"})
+
+    with pytest.raises(ValidationDomainError) as exc:
+        validate_create_payload(payload)
+
+    assert exc.value.message_key == "agents.errors.custom_request_body_conflict"
+    assert exc.value.message_params == {"field": "prompt"}
 
 
 @pytest.mark.asyncio
