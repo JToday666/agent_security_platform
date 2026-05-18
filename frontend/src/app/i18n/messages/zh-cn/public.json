@@ -5,8 +5,17 @@
       "descriptionSecondary": "安全、可靠、专业的智能体评估系统，让每一次评测都有据可依"
     },
     "quickstart": {
+      "kicker": "标准流程",
       "title": "快速上手",
       "description": "以标准化流程完成数据集浏览、评测提交、执行跟踪与结果复核。"
+    },
+    "navigation": {
+      "aria": "首页介绍区块",
+      "quickstart": "按步骤完成一次评测",
+      "capabilities": "了解平台支持的核心能力",
+      "loop": "查看从提交到复核的闭环",
+      "trust": "理解公开结果的依据",
+      "resources": "直接进入常用页面"
     },
     "workflow": {
       "browse": {
@@ -32,6 +41,92 @@
         "actionAuthed": "进入工作台",
         "actionGuest": "查看联系信息"
       }
+    },
+    "sections": {
+      "capabilities": {
+        "kicker": "平台能力",
+        "title": "覆盖评测前、中、后的关键环节",
+        "description": "平台围绕数据集、Agent 注册、运行跟踪、报告阅读和排行榜对比组织评测流程。",
+        "items": {
+          "datasets": {
+            "title": "风险数据集目录",
+            "description": "按风险域查看数据集说明、样例和资源，先明确本次评测覆盖范围。"
+          },
+          "evaluation": {
+            "title": "Agent 注册与提交",
+            "description": "通过模板或自定义配置登记 Agent，提交前完成连接、鉴权和字段映射检查。"
+          },
+          "report": {
+            "title": "结果报告阅读",
+            "description": "在详情页查看摘要、风险指标、告警和代表样本证据，辅助定位问题。"
+          },
+          "ranking": {
+            "title": "公开排行榜对比",
+            "description": "按综合分、安全能力、高难分和风险分比较公开评测快照。"
+          }
+        }
+      },
+      "loop": {
+        "kicker": "评测闭环",
+        "title": "从评测范围到证据复核形成完整路径",
+        "description": "用户可以从数据集选择开始，完成提交、执行跟踪、结果复核和公开展示。",
+        "items": {
+          "scope": {
+            "title": "确定评测范围",
+            "description": "先选择数据集与参数，明确风险域、难度、超时和最大步数。"
+          },
+          "submit": {
+            "title": "提交并跟踪任务",
+            "description": "正式提交后在工作台查看排队、运行、暂停、终止和完成状态。"
+          },
+          "evidence": {
+            "title": "复核结论与证据",
+            "description": "报告将指标、样本证据和风险提示放在同一阅读流中，便于后续修复。"
+          }
+        }
+      },
+      "trust": {
+        "kicker": "可信评测",
+        "title": "公开结果强调可解释和可追溯",
+        "description": "排行榜与报告只展示当前平台已有字段，帮助用户理解分数来源和展示边界。",
+        "items": {
+          "standard": {
+            "title": "标准化输入",
+            "description": "数据集、参数和字段映射在提交前完成校验，减少无效任务。"
+          },
+          "privacy": {
+            "title": "匿名展示选项",
+            "description": "评测结果可选择公开名称或匿名身份参与榜单，兼顾对比与展示控制。"
+          },
+          "confidence": {
+            "title": "置信度与风险分",
+            "description": "榜单同时展示置信度和风险分，避免只看单一排名。"
+          }
+        }
+      },
+      "resources": {
+        "kicker": "下一步",
+        "title": "从首页直接进入常用工作流",
+        "description": "根据当前任务选择数据集、提交评测、查看排行榜或联系平台团队。",
+        "items": {
+          "catalog": {
+            "title": "查看数据集",
+            "description": "浏览当前可用评测数据集和风险域说明。"
+          },
+          "submit": {
+            "title": "提交评测",
+            "description": "登录后登记 Agent 并创建正式评测任务。"
+          },
+          "leaderboard": {
+            "title": "查看排行榜",
+            "description": "对比公开评测结果和当前榜首表现。"
+          },
+          "contact": {
+            "title": "联系平台团队",
+            "description": "咨询接入、合作或评测流程相关问题。"
+          }
+        }
+      }
     }
   },
   "contact": {
@@ -42,7 +137,38 @@
     "phone": "电话",
     "address": "地址",
     "addressValue": "武汉市东西湖区国家网络安全基地",
-    "social": "社交媒体"
+    "social": "社交媒体",
+    "primary": {
+      "kicker": "联系路径",
+      "title": "按当前问题选择最合适的沟通方式",
+      "description": "评测接入、数据集问题、合作咨询和公开资源都可以从这里进入，平台团队会根据具体事项继续跟进。",
+      "emailAction": "发送邮件",
+      "phoneAction": "拨打电话"
+    },
+    "paths": {
+      "items": {
+        "integration": {
+          "title": "评测接入",
+          "description": "咨询 Agent 接入、提交准备、模板选择和评测流程相关问题。",
+          "action": "邮件咨询"
+        },
+        "datasets": {
+          "title": "数据集与评测范围",
+          "description": "先查看已有数据集和风险域说明，确认本次评测覆盖范围。",
+          "action": "查看数据集"
+        },
+        "collaboration": {
+          "title": "合作咨询",
+          "description": "围绕联合评测、平台使用或研究合作沟通具体需求。",
+          "action": "联系团队"
+        },
+        "social": {
+          "title": "公开资源",
+          "description": "查看项目仓库和公开动态，了解当前平台迭代情况。",
+          "action": "打开 GitHub"
+        }
+      }
+    }
   },
   "notFound": {
     "eyebrow": "404",

@@ -43,8 +43,12 @@ def load_catalog(locale: str) -> dict[str, str]:
     return json.loads((CATALOG_DIR / f"{locale}.json").read_text(encoding="utf-8"))
 
 
-def placeholders(value: str) -> set[str]:
-    return set(PLACEHOLDER_PATTERN.findall(value))
+def placeholders(value: str) -> list[str]:
+    return sorted(PLACEHOLDER_PATTERN.findall(value))
+
+
+def test_backend_placeholder_parser_preserves_duplicate_occurrences() -> None:
+    assert placeholders("{field} must differ from {field}") != placeholders("{field}")
 
 
 def test_backend_catalog_keys_and_placeholders_are_aligned() -> None:

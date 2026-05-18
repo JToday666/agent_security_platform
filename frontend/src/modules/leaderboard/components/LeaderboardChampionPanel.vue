@@ -1,5 +1,8 @@
 <template>
   <article class="leaderboard-champion" :aria-label="t('leaderboard.champion.aria')">
+    <div class="leaderboard-champion__award" aria-hidden="true">
+      <AppIcon icon="app:leaderboard.champion" />
+    </div>
     <span class="leaderboard-champion__rank">No. 1</span>
     <span class="leaderboard-champion__label">{{ t("leaderboard.champion.label") }}</span>
     <strong class="leaderboard-champion__name" :title="entry?.displayName">
@@ -24,6 +27,7 @@ import {
   type LeaderboardSortState,
 } from "@/modules/leaderboard/lib/leaderboard-view";
 import type { LeaderboardEntry } from "@/modules/leaderboard/types/leaderboard-types";
+import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 
 const props = defineProps<{
   entry: LeaderboardEntry | null;
@@ -50,21 +54,35 @@ const scoreValue = computed(() => props.entry?.[props.sortState.key] ?? null);
   text-align: center;
 }
 
-.leaderboard-champion__rank {
+.leaderboard-champion__award {
   display: inline-flex;
-  min-width: 4.2rem;
-  min-height: 4.2rem;
+  width: 5rem;
+  height: 5rem;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(217, 119, 6, 0.24);
-  border-radius: 999px;
+  border-radius: 1.4rem;
   background:
-    radial-gradient(circle at 30% 25%, rgba(254, 243, 199, 0.98), transparent 48%),
-    linear-gradient(135deg, #fde68a, #d97706);
-  box-shadow: 0 22px 40px -30px rgba(146, 64, 14, 0.75);
+    radial-gradient(circle at 34% 25%, rgba(254, 243, 199, 0.96), transparent 48%),
+    linear-gradient(135deg, #fef3c7 0%, #f59e0b 56%, #b45309 100%);
+  box-shadow:
+    0 24px 44px -30px rgba(146, 64, 14, 0.82),
+    0 0 0 1px rgba(255, 255, 255, 0.28) inset;
   color: #451a03;
+}
+
+.leaderboard-champion__award :deep(svg) {
+  width: 2.6rem;
+  height: 2.6rem;
+  stroke-width: 1.8;
+}
+
+.leaderboard-champion__rank {
+  margin-top: 0.62rem;
+  color: #92400e;
   font-size: 0.86rem;
   font-weight: 950;
+  letter-spacing: 0;
 }
 
 .leaderboard-champion__label,
@@ -130,8 +148,18 @@ const scoreValue = computed(() => props.entry?.[props.sortState.key] ?? null);
   }
 
   .leaderboard-champion__rank {
-    min-width: 3.6rem;
-    min-height: 3.6rem;
+    margin-top: 0.5rem;
+  }
+
+  .leaderboard-champion__award {
+    width: 4.1rem;
+    height: 4.1rem;
+    border-radius: 1.15rem;
+  }
+
+  .leaderboard-champion__award :deep(svg) {
+    width: 2.15rem;
+    height: 2.15rem;
   }
 
   .leaderboard-champion__name {

@@ -5,8 +5,17 @@
       "descriptionSecondary": "A secure, reliable, and professional Agent evaluation system with traceable results."
     },
     "quickstart": {
+      "kicker": "Standard Flow",
       "title": "Quick Start",
       "description": "Complete dataset browsing, evaluation submission, execution tracking, and result review through a standardized flow."
+    },
+    "navigation": {
+      "aria": "Home introduction sections",
+      "quickstart": "Complete one evaluation step by step",
+      "capabilities": "Understand the platform's core capabilities",
+      "loop": "Review the path from submission to evidence",
+      "trust": "Understand the basis for public results",
+      "resources": "Open common pages directly"
     },
     "workflow": {
       "browse": {
@@ -32,6 +41,92 @@
         "actionAuthed": "Open Workspace",
         "actionGuest": "View Contact Info"
       }
+    },
+    "sections": {
+      "capabilities": {
+        "kicker": "Platform Capabilities",
+        "title": "Cover the key stages before, during, and after evaluation",
+        "description": "The platform organizes evaluation around datasets, Agent registration, run tracking, report review, and leaderboard comparison.",
+        "items": {
+          "datasets": {
+            "title": "Risk Dataset Catalog",
+            "description": "Review dataset descriptions, samples, and resources by risk domain before choosing the evaluation scope."
+          },
+          "evaluation": {
+            "title": "Agent Registration and Submission",
+            "description": "Register an Agent with a template or custom configuration, then check connection, auth, and field mapping before submission."
+          },
+          "report": {
+            "title": "Result Report Review",
+            "description": "Inspect summaries, risk metrics, alerts, and representative sample evidence on the detail page."
+          },
+          "ranking": {
+            "title": "Public Leaderboard Comparison",
+            "description": "Compare public snapshots by composite score, safety capability, high-difficulty score, and risk score."
+          }
+        }
+      },
+      "loop": {
+        "kicker": "Evaluation Loop",
+        "title": "Build a complete path from scope selection to evidence review",
+        "description": "Users can start with datasets, then submit, track execution, review results, and publish to the public ranking.",
+        "items": {
+          "scope": {
+            "title": "Set the Evaluation Scope",
+            "description": "Choose datasets and parameters first, including risk domains, difficulty, timeout, and max steps."
+          },
+          "submit": {
+            "title": "Submit and Track Tasks",
+            "description": "After submission, use the workspace to follow queued, running, paused, terminated, and completed states."
+          },
+          "evidence": {
+            "title": "Review Conclusions and Evidence",
+            "description": "Reports keep metrics, sample evidence, and risk prompts in one reading flow for follow-up fixes."
+          }
+        }
+      },
+      "trust": {
+        "kicker": "Trusted Evaluation",
+        "title": "Public results emphasize explanation and traceability",
+        "description": "Leaderboards and reports only use fields already present in the platform, helping users understand score sources and display boundaries.",
+        "items": {
+          "standard": {
+            "title": "Standardized Inputs",
+            "description": "Datasets, parameters, and field mappings are validated before submission to reduce invalid tasks."
+          },
+          "privacy": {
+            "title": "Anonymous Display Option",
+            "description": "Evaluation results can join the leaderboard under a public name or anonymous identity."
+          },
+          "confidence": {
+            "title": "Confidence and Risk Score",
+            "description": "The leaderboard shows confidence and risk score alongside rank to avoid a single-score reading."
+          }
+        }
+      },
+      "resources": {
+        "kicker": "Next Step",
+        "title": "Enter common workflows from the home page",
+        "description": "Choose datasets, submit an evaluation, open the leaderboard, or contact the platform team based on the current task.",
+        "items": {
+          "catalog": {
+            "title": "View Datasets",
+            "description": "Browse available evaluation datasets and risk-domain descriptions."
+          },
+          "submit": {
+            "title": "Submit Evaluation",
+            "description": "After signing in, register an Agent and create a formal evaluation task."
+          },
+          "leaderboard": {
+            "title": "View Leaderboard",
+            "description": "Compare public evaluation results and the current champion."
+          },
+          "contact": {
+            "title": "Contact the Team",
+            "description": "Ask about integration, collaboration, or the evaluation flow."
+          }
+        }
+      }
     }
   },
   "contact": {
@@ -42,7 +137,38 @@
     "phone": "Phone",
     "address": "Address",
     "addressValue": "National Cybersecurity Base, Dongxihu District, Wuhan",
-    "social": "Social Media"
+    "social": "Social Media",
+    "primary": {
+      "kicker": "Contact Path",
+      "title": "Choose the right channel for the question at hand",
+      "description": "Evaluation integration, dataset questions, collaboration, and public resources all start here, and the platform team can follow up by topic.",
+      "emailAction": "Send Email",
+      "phoneAction": "Call"
+    },
+    "paths": {
+      "items": {
+        "integration": {
+          "title": "Evaluation Integration",
+          "description": "Ask about Agent integration, submission preparation, template choice, and evaluation flow.",
+          "action": "Ask by Email"
+        },
+        "datasets": {
+          "title": "Datasets and Scope",
+          "description": "Review available datasets and risk-domain descriptions before confirming the evaluation scope.",
+          "action": "View Datasets"
+        },
+        "collaboration": {
+          "title": "Collaboration",
+          "description": "Discuss joint evaluation, platform usage, or research collaboration requirements.",
+          "action": "Contact Team"
+        },
+        "social": {
+          "title": "Public Resources",
+          "description": "Open the project repository and public updates to follow platform progress.",
+          "action": "Open GitHub"
+        }
+      }
+    }
   },
   "notFound": {
     "eyebrow": "404",

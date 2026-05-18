@@ -12,6 +12,7 @@ import type {
   AgentRequestOptions,
   AgentTemplate,
 } from "@/shared/types/agent-registry-types";
+import { AGENT_NO_TEMPLATE_ID } from "./agent-registration-constants";
 
 export type AgentCustomFieldType = "string" | "number" | "boolean" | "json";
 
@@ -297,7 +298,7 @@ export const createAgentRegisterFormFromDetail = (
   );
 
   return {
-    templateId: detail.templateId ?? "",
+    templateId: toText(detail.templateId) || AGENT_NO_TEMPLATE_ID,
     name: t("agent.register.copyName", { name: detail.name }),
     description: detail.description ?? "",
     invokeMode: detail.invokeMode,
