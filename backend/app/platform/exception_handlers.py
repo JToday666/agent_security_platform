@@ -34,11 +34,43 @@ def _request_locale(request: Request) -> str | None:
     return getattr(request.state, "locale", None)
 
 
+_VALIDATION_REASON_KEYS: dict[str, str] = {
+    "missing": "validation.field.required",
+    "string_too_short": "validation.field.too_short",
+    "string_too_long": "validation.field.too_long",
+    "too_short": "validation.field.too_short",
+    "too_long": "validation.field.too_long",
+    "greater_than": "validation.field.too_small",
+    "greater_than_equal": "validation.field.too_small",
+    "less_than": "validation.field.too_large",
+    "less_than_equal": "validation.field.too_large",
+    "literal_error": "validation.field.unsupported",
+    "enum": "validation.field.unsupported",
+    "list_type": "validation.field.expected_list",
+    "dict_type": "validation.field.expected_object",
+    "string_type": "validation.field.expected_string",
+    "int_type": "validation.field.expected_integer",
+    "int_parsing": "validation.field.expected_integer",
+    "float_type": "validation.field.expected_number",
+    "float_parsing": "validation.field.expected_number",
+    "finite_number": "validation.field.expected_number",
+    "bool_type": "validation.field.expected_boolean",
+    "bool_parsing": "validation.field.expected_boolean",
+    "public_leaderboard_deprecated": (
+        "validation.evaluations.public_leaderboard_deprecated"
+    ),
+}
+
+
 def _validation_reason(error: dict[str, Any], *, locale: str | None = None) -> str:
     """Translate a FastAPI/Pydantic validation error reason."""
     error_type = str(error.get("type") or "")
-    if error_type == "missing":
-        return translate("validation.field.required", locale=locale)
+    message_key = _VALIDATION_REASON_KEYS.get(error_type)
+    if message_key is not None:
+        return translate(message_key, locale=locale)
+    message = error.get("msg")
+    if isinstance(message, str) and message.strip():
+        return message.strip()
     return translate("validation.field.invalid", locale=locale)
 
 

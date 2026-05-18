@@ -1,12 +1,12 @@
 {
   "home": {
     "hero": {
-      "descriptionPrimary": "Agents Evaluation and Guardrail Inspection System",
-      "descriptionSecondary": "Un systeme d'evaluation d'Agents sur, fiable et professionnel, avec des resultats tracables."
+      "descriptionPrimary": "Système d'évaluation d'Agents et d'inspection des garde-fous",
+      "descriptionSecondary": "Un système d'évaluation d'Agents sûr, fiable et professionnel, avec des résultats traçables."
     },
     "quickstart": {
-      "title": "Demarrage rapide",
-      "description": "Parcourez les jeux de donnees, soumettez une evaluation, suivez l'execution et revisez les resultats dans un flux standardise."
+      "title": "Démarrage rapide",
+      "description": "Parcourez les jeux de données, soumettez une évaluation, suivez l'exécution et révisez les résultats dans un flux standardisé."
     },
     "workflow": {
       "browse": {
@@ -15,20 +15,20 @@
         "action": "Voir le catalogue"
       },
       "submit": {
-        "title": "Creer une evaluation",
-        "description": "Renseignez les informations de l'Agent et choisissez le perimetre d'evaluation.",
+        "title": "Créer une évaluation",
+        "description": "Renseignez les informations de l'Agent et choisissez le périmètre d'évaluation.",
         "actionAuthed": "Commencer",
         "actionGuest": "Parcourir d'abord"
       },
       "track": {
         "title": "Suivre la progression",
-        "description": "Consultez l'etat d'execution, les pauses et les resultats dans l'espace de travail.",
+        "description": "Consultez l'état d'exécution, les pauses et les résultats dans l'espace de travail.",
         "actionAuthed": "Voir les enregistrements",
         "actionGuest": "Nous contacter"
       },
       "review": {
-        "title": "Reviser les resultats",
-        "description": "Ouvrez la page de detail pour examiner resumes, alertes et indicateurs.",
+        "title": "Réviser les résultats",
+        "description": "Ouvrez la page de détail pour examiner les résumés, les alertes et les indicateurs.",
         "actionAuthed": "Ouvrir l'espace",
         "actionGuest": "Voir les contacts"
       }
@@ -37,19 +37,19 @@
   "contact": {
     "title": "Nous contacter",
     "description": "Pour toute question, suggestion ou collaboration, contactez-nous par les moyens ci-dessous.",
-    "logoAlt": "Marque de la plateforme d'evaluation de securite des Agents",
+    "logoAlt": "Marque de la plateforme d'évaluation de sécurité des Agents",
     "email": "E-mail",
-    "phone": "Telephone",
+    "phone": "Téléphone",
     "address": "Adresse",
-    "addressValue": "Base nationale de cybersecurite, district de Dongxihu, Wuhan",
-    "social": "Reseaux sociaux"
+    "addressValue": "Base nationale de cybersécurité, district de Dongxihu, Wuhan",
+    "social": "Réseaux sociaux"
   },
   "notFound": {
     "eyebrow": "404",
     "title": "Page introuvable",
-    "description": "Cette adresse n'est pas disponible. Utilisez la navigation ou les entrees ci-dessous.",
-    "sectionTitle": "Entrees disponibles",
-    "sectionDescription": "Retournez a l'accueil ou recommencez depuis le catalogue d'evaluation.",
+    "description": "Cette adresse n'est pas disponible. Utilisez la navigation ou les entrées ci-dessous.",
+    "sectionTitle": "Entrées disponibles",
+    "sectionDescription": "Retournez à l'accueil ou recommencez depuis le catalogue d'évaluation.",
     "datasetAction": "Voir le catalogue"
   }
 }

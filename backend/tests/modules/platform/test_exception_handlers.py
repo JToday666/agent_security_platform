@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from typing import Literal
+
 from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
+from app.modules.evaluations.schemas import EvaluationCreateRequest
 from app.platform.errors import NotFoundError
 from app.platform.exception_handlers import _loc_to_field, register_exception_handlers
 from app.platform.i18n import LocaleMiddleware
@@ -11,6 +14,13 @@ from app.platform.i18n import LocaleMiddleware
 
 class ValidationPayload(BaseModel):
     name: str
+
+
+class DetailedValidationPayload(BaseModel):
+    name: str = Field(min_length=3, max_length=5)
+    mode: Literal["api"]
+    count: int = Field(ge=1, le=3)
+    tags: list[str]
 
 
 def build_exception_test_client() -> TestClient:
@@ -41,6 +51,14 @@ def build_exception_test_client() -> TestClient:
 
     @app.post("/validation-error")
     async def validation_error_route(_: ValidationPayload):
+        return {"ok": True}
+
+    @app.post("/detailed-validation-error")
+    async def detailed_validation_error_route(_: DetailedValidationPayload):
+        return {"ok": True}
+
+    @app.post("/evaluation-validation-error")
+    async def evaluation_validation_error_route(_: EvaluationCreateRequest):
         return {"ok": True}
 
     return TestClient(app, raise_server_exceptions=False)
@@ -113,4 +131,52 @@ def test_request_validation_errors_are_localized() -> None:
     assert payload["message"] == "Request parameter validation failed."
     assert payload["data"]["errors"] == [
         {"field": "name", "reason": "This field is required."}
+    ]
+
+
+def test_request_validation_errors_keep_specific_reasons() -> None:
+    client = build_exception_test_client()
+
+    response = client.post(
+        "/detailed-validation-error",
+        json={"name": "ab", "mode": "web", "count": 5, "tags": "tag"},
+        headers={"X-App-Locale": "en-US"},
+    )
+
+    assert response.status_code == 422
+    assert response.json()["data"]["errors"] == [
+        {"field": "name", "reason": "Value is too short."},
+        {"field": "mode", "reason": "Unsupported value."},
+        {"field": "count", "reason": "Value is too large."},
+        {"field": "tags", "reason": "Expected a list."},
+    ]
+
+
+def test_custom_request_validation_error_uses_stable_translation() -> None:
+    client = build_exception_test_client()
+
+    response = client.post(
+        "/evaluation-validation-error",
+        json={
+            "requestId": "req_123456",
+            "submitMethod": "api",
+            "agentId": "agt_demo",
+            "datasetIds": ["A1_identity_leakage"],
+            "parameters": {
+                "difficulty": 0.5,
+                "timeoutMinutes": 15,
+                "maxSteps": 30,
+            },
+            "publicToLeaderboard": False,
+            "leaderboardDisplayMode": "public",
+        },
+        headers={"X-App-Locale": "en-US"},
+    )
+
+    assert response.status_code == 422
+    assert response.json()["data"]["errors"] == [
+        {
+            "field": "request",
+            "reason": "publicToLeaderboard=false is deprecated. Use leaderboardDisplayMode=anonymous instead.",
+        }
     ]

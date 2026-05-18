@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import json
+import re
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse, Response
 from fastapi.testclient import TestClient
@@ -13,6 +17,68 @@ from app.platform.i18n import (
     set_current_locale,
     translate,
 )
+
+
+CATALOG_DIR = Path(__file__).resolve().parents[3] / "app" / "platform" / "i18n" / "messages"
+PLACEHOLDER_PATTERN = re.compile(r"\{([A-Za-z0-9_]+)\}")
+FRENCH_ASCII_ACCENT_WORDS = re.compile(
+    r"\b(?:etre|etes|ete|acces|succes|verification|verifies|Reessayez|tache|"
+    r"resultat|execution|donnees|difficulte|deja|enregistre|parametres|"
+    r"depasser|depassent|criteres|Selectionnez|evaluation|echantillon|"
+    r"echantillons|televerser|echoue|echeance|apres|creee|demarrer|arret|"
+    r"generera|methode|modifie|refuse|connecte|expire|retourne)\b",
+    re.IGNORECASE,
+)
+SPANISH_ASCII_ACCENT_WORDS = re.compile(
+    r"\b(?:vacio|vacios|devolvio|Intentalo|envian|despues|ejecucion|"
+    r"contrasena|sesion|codigo|version|evaluacion|parametros|aparecera|"
+    r"clasificacion|publica|Asegurate|descripcion|informacion|accion|metodo|"
+    r"puntuacion|recalculo|anonimo|envio|Asincrono|valido|terminara|"
+    r"generara|mas|tambien|reanudala|pausara)\b",
+    re.IGNORECASE,
+)
+
+
+def load_catalog(locale: str) -> dict[str, str]:
+    return json.loads((CATALOG_DIR / f"{locale}.json").read_text(encoding="utf-8"))
+
+
+def placeholders(value: str) -> set[str]:
+    return set(PLACEHOLDER_PATTERN.findall(value))
+
+
+def test_backend_catalog_keys_and_placeholders_are_aligned() -> None:
+    source_catalog = load_catalog("zh-CN")
+    source_keys = set(source_catalog)
+
+    for locale_path in CATALOG_DIR.glob("*.json"):
+        catalog = load_catalog(locale_path.stem)
+        assert set(catalog) == source_keys
+        for key, source_value in source_catalog.items():
+            assert placeholders(catalog[key]) == placeholders(source_value)
+
+
+def test_french_and_spanish_backend_catalogs_use_standard_orthography() -> None:
+    french_hits = {
+        key: FRENCH_ASCII_ACCENT_WORDS.findall(value)
+        for key, value in load_catalog("fr-FR").items()
+        if FRENCH_ASCII_ACCENT_WORDS.search(value)
+    }
+    spanish_hits = {
+        key: SPANISH_ASCII_ACCENT_WORDS.findall(value)
+        for key, value in load_catalog("es-ES").items()
+        if SPANISH_ASCII_ACCENT_WORDS.search(value)
+    }
+
+    assert french_hits == {}
+    assert spanish_hits == {}
+
+
+def test_japanese_backend_catalog_preserves_do_not_translate_terms() -> None:
+    catalog_text = "\n".join(load_catalog("ja-JP").values())
+
+    assert "Agent" in catalog_text
+    assert "エージェント" not in catalog_text
 
 
 def test_normalize_locale_accepts_supported_aliases() -> None:

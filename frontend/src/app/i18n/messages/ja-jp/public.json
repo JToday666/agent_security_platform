@@ -1,12 +1,12 @@
 {
   "home": {
     "hero": {
-      "descriptionPrimary": "Agents Evaluation and Guardrail Inspection System",
-      "descriptionSecondary": "安全で信頼性の高い専門的な Agent 評価システムが、追跡可能な評価結果を提供します。"
+      "descriptionPrimary": "Agents 評価とガードレール検査システム",
+      "descriptionSecondary": "安全で信頼性の高い専門的な Agent 評価基盤が、追跡可能な評価結果を提供します。"
     },
     "quickstart": {
       "title": "クイックスタート",
-      "description": "標準化された流れで、データセット閲覧、評価提出、実行追跡、結果確認を完了します。"
+      "description": "標準化された流れで、データセットの閲覧、評価の提出、実行状況の追跡、結果の確認を完了できます。"
     },
     "workflow": {
       "browse": {
@@ -29,7 +29,7 @@
       "review": {
         "title": "結果を確認",
         "description": "詳細ページで概要、アラート、指標を確認します。",
-        "actionAuthed": "ワークスペースへ",
+        "actionAuthed": "ワークスペースを開く",
         "actionGuest": "連絡先を見る"
       }
     }
