@@ -5,17 +5,11 @@
       "descriptionSecondary": "安全、可靠、专业的智能体评估系统，让每一次评测都有据可依"
     },
     "quickstart": {
-      "kicker": "标准流程",
       "title": "快速上手",
-      "description": "以标准化流程完成数据集浏览、评测提交、执行跟踪与结果复核。"
+      "description": "以四个步骤完成一次标准评测"
     },
     "navigation": {
-      "aria": "首页介绍区块",
-      "quickstart": "按步骤完成一次评测",
-      "capabilities": "了解平台支持的核心能力",
-      "loop": "查看从提交到复核的闭环",
-      "trust": "理解公开结果的依据",
-      "resources": "直接进入常用页面"
+      "jumpAria": "前往{section}"
     },
     "workflow": {
       "browse": {
@@ -102,11 +96,31 @@
             "title": "置信度与风险分",
             "description": "榜单同时展示置信度和风险分，避免只看单一排名。"
           }
+        },
+        "leaderboard": {
+          "aria": "可信评测排行榜预览",
+          "kicker": "公开快照",
+          "title": "榜单对比",
+          "rank": "第{rank}名",
+          "meta": "风险分 {risk} · 置信度 {confidence}",
+          "empty": "当前暂无可展示的榜单条目。",
+          "unavailable": "排行榜暂不可用，可进入榜单页查看最新状态。"
         }
       },
-      "resources": {
-        "kicker": "下一步",
-        "title": "从首页直接进入常用工作流",
+      "aegis": {
+        "kicker": "AEGIS 守护意象",
+        "title": "以护盾之名，建立可追溯的安全评测",
+        "nameLabel": "名称含义",
+        "expansion": "Agents Evaluation and Guardrail Inspection System",
+        "description": "AEGIS 将智能体评测、护栏检查和证据复核放在同一体系内，强调结论可验证、过程可追溯、结果可复核。",
+        "story": {
+          "guardian": "Aegis 源自“保护、庇护”的语义，也来自雅典娜持盾守护的神话意象。",
+          "platform": "在这里，护盾代表以评测证据和护栏机制守住 Agent 的安全边界。"
+        }
+      },
+      "experience": {
+        "kicker": "开始体验",
+        "title": "直接进入常用工作流",
         "description": "根据当前任务选择数据集、提交评测、查看排行榜或联系平台团队。",
         "items": {
           "catalog": {

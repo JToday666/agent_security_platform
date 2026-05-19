@@ -5,17 +5,11 @@
       "descriptionSecondary": "A secure, reliable, and professional Agent evaluation system with traceable results."
     },
     "quickstart": {
-      "kicker": "Standard Flow",
       "title": "Quick Start",
-      "description": "Complete dataset browsing, evaluation submission, execution tracking, and result review through a standardized flow."
+      "description": "Complete a standard evaluation in four steps."
     },
     "navigation": {
-      "aria": "Home introduction sections",
-      "quickstart": "Complete one evaluation step by step",
-      "capabilities": "Understand the platform's core capabilities",
-      "loop": "Review the path from submission to evidence",
-      "trust": "Understand the basis for public results",
-      "resources": "Open common pages directly"
+      "jumpAria": "Go to {section}"
     },
     "workflow": {
       "browse": {
@@ -102,11 +96,31 @@
             "title": "Confidence and Risk Score",
             "description": "The leaderboard shows confidence and risk score alongside rank to avoid a single-score reading."
           }
+        },
+        "leaderboard": {
+          "aria": "Trusted evaluation leaderboard preview",
+          "kicker": "Public Snapshot",
+          "title": "Leaderboard View",
+          "rank": "No. {rank}",
+          "meta": "Risk {risk} · Confidence {confidence}",
+          "empty": "No leaderboard entries are available yet.",
+          "unavailable": "The leaderboard is unavailable here. Open the leaderboard page for the latest status."
         }
       },
-      "resources": {
-        "kicker": "Next Step",
-        "title": "Enter common workflows from the home page",
+      "aegis": {
+        "kicker": "AEGIS Guardrail Story",
+        "title": "A name built around protection and evidence",
+        "nameLabel": "Name Meaning",
+        "expansion": "Agents Evaluation and Guardrail Inspection System",
+        "description": "AEGIS brings Agent evaluation, guardrail inspection, and evidence review into one system, so conclusions can be verified, traced, and reviewed.",
+        "story": {
+          "guardian": "Aegis carries the meaning of protection and shelter, echoing the mythic image of Athena's shield.",
+          "platform": "Here, the shield stands for using evidence and guardrails to protect Agent safety boundaries."
+        }
+      },
+      "experience": {
+        "kicker": "Start Now",
+        "title": "Enter common workflows directly",
         "description": "Choose datasets, submit an evaluation, open the leaderboard, or contact the platform team based on the current task.",
         "items": {
           "catalog": {

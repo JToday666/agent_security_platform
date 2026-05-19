@@ -1,5 +1,7 @@
 """数据集模块数据访问层。"""
 
+from typing import Any
+
 from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -17,6 +19,17 @@ class DatasetRepository:
     def __init__(self, db: AsyncSession) -> None:
         """绑定数据集查询流程共用的异步数据库会话。"""
         self.db = db
+
+    async def load_translation_maps(
+        self, locale: str, category_ids: list[int], subtype_ids: list[int]
+    ) -> dict[str, dict[int, dict[str, Any]]]:
+        """返回指定语言的数据集元数据翻译映射。"""
+        _ = (locale, category_ids, subtype_ids)
+        return {
+            "categories": {},
+            "subtypes": {},
+            "display_meta": {},
+        }
 
     async def get_catalog_rows(self):
         """查询目录页所需的分类、子类与样本统计聚合结果。"""
