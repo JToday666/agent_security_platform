@@ -5,6 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
+from app.modules.datasets.repository import DatasetRepository
 from app.modules.datasets.service import DatasetService
 from app.platform.i18n import set_current_locale
 
@@ -101,6 +102,47 @@ class DatasetRepositoryStub:
         }
 
 
+class EmptyTranslationRepositoryStub(DatasetRepositoryStub):
+    async def load_translation_maps(
+        self, locale: str, category_ids: list[int], subtype_ids: list[int]
+    ):
+        return {
+            "categories": {
+                self.category.id: {
+                    "name": "",
+                    "meaning": "",
+                    "description": "",
+                }
+            },
+            "subtypes": {
+                self.subtype.id: {
+                    "name": "",
+                }
+            },
+            "display_meta": {
+                self.subtype.id: {
+                    "short_description": "",
+                    "full_description": "",
+                    "highlights": [],
+                    "scenarios": [],
+                    "resources": [],
+                    "media": [],
+                }
+            },
+        }
+
+
+@pytest.mark.asyncio
+async def test_dataset_repository_has_explicit_translation_loader_contract() -> None:
+    repository = DatasetRepository(SimpleNamespace())
+
+    assert await repository.load_translation_maps("en-US", [1], [2]) == {
+        "categories": {},
+        "subtypes": {},
+        "display_meta": {},
+    }
+
+
 @pytest.mark.asyncio
 async def test_dataset_catalog_and_detail_apply_locale_translation_fields() -> None:
     now = datetime.now(timezone.utc)
@@ -162,3 +204,59 @@ async def test_dataset_catalog_and_detail_apply_locale_translation_fields() -> N
     assert detail.highlights == ["English highlight"]
     assert detail.resources[0]["label"] == "Docs"
     assert detail.media[0]["title"] == "Diagram"
+
+
+@pytest.mark.asyncio
+async def test_empty_dataset_translations_do_not_override_default_content() -> None:
+    now = datetime.now(timezone.utc)
+    category = SimpleNamespace(
+        id=1,
+        code="confidentiality",
+        name="机密性",
+        meaning="保护敏感信息。",
+        description="敏感信息暴露相关风险。",
+        sort_order=1,
+        is_active=True,
+        updated_at=now,
+    )
+    subtype = SimpleNamespace(
+        id=2, code="A1_identity_leakage", name="身份泄露", is_active=True, sort_order=1
+    )
+    display_meta = SimpleNamespace(
+        subtype_id=2,
+        short_description="短描述",
+        full_description="完整描述",
+        highlights=["亮点"],
+        scenarios=["场景"],
+        resources=[
+            {"label": "文档", "url": "https://example.com/docs", "type": "docs"}
+        ],
+        media=[
+            {
+                "mediaId": "demo",
+                "type": "image",
+                "title": "示意图",
+                "description": "中文说明",
+                "url": "https://example.com/image.png",
+            }
+        ],
+        updated_at=now,
+    )
+    token = set_current_locale("en-US")
+    try:
+        service = DatasetService(
+            EmptyTranslationRepositoryStub(category, subtype, display_meta)
+        )
+        catalog = await service.get_catalog()
+        detail = await service.get_detail("A1_identity_leakage")
+    finally:
+        token.reset()
+
+    assert catalog.categories[0].name == "机密性"
+    assert catalog.categories[0].subcategories[0].name == "身份泄露"
+    assert catalog.categories[0].subcategories[0].short_description == "短描述"
+    assert detail.full_description == "完整描述"
+    assert detail.highlights == ["亮点"]
+    assert detail.scenarios == ["场景"]
+    assert detail.resources[0]["label"] == "文档"
+    assert detail.media[0]["title"] == "示意图"

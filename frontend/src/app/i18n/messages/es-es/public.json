@@ -1,21 +1,15 @@
 {
   "home": {
     "hero": {
-      "descriptionPrimary": "Sistema de evaluación de Agents e inspección de barreras de seguridad",
+      "descriptionPrimary": "Agents Evaluation and Guardrail Inspection System",
       "descriptionSecondary": "Un sistema profesional, seguro y fiable de evaluación de Agents con resultados trazables."
     },
     "quickstart": {
-      "kicker": "Flujo estándar",
       "title": "Inicio rápido",
-      "description": "Completa la exploración de conjuntos, el envío de evaluaciones, el seguimiento y la revisión de resultados con un flujo estandarizado."
+      "description": "Completa una evaluación estándar en cuatro pasos."
     },
     "navigation": {
-      "aria": "Secciones de presentación del inicio",
-      "quickstart": "Completar una evaluación paso a paso",
-      "capabilities": "Entender las capacidades principales",
-      "loop": "Ver el recorrido del envío a la evidencia",
-      "trust": "Entender la base de los resultados públicos",
-      "resources": "Abrir páginas comunes directamente"
+      "jumpAria": "Ir a {section}"
     },
     "workflow": {
       "browse": {
@@ -102,11 +96,31 @@
             "title": "Confianza y riesgo",
             "description": "La clasificación muestra confianza y riesgo junto al rango para evitar una lectura basada en un solo valor."
           }
+        },
+        "leaderboard": {
+          "aria": "Vista previa de clasificación de evaluación confiable",
+          "kicker": "Instantánea pública",
+          "title": "Vista de clasificación",
+          "rank": "N.º {rank}",
+          "meta": "Riesgo {risk} · Confianza {confidence}",
+          "empty": "Aún no hay entradas de clasificación disponibles.",
+          "unavailable": "La clasificación no está disponible aquí. Abre la página de clasificación para ver el estado más reciente."
         }
       },
-      "resources": {
-        "kicker": "Siguiente paso",
-        "title": "Entrar en flujos comunes desde el inicio",
+      "aegis": {
+        "kicker": "Imagen protectora de AEGIS",
+        "title": "Un nombre basado en protección y evidencia",
+        "nameLabel": "Significado del nombre",
+        "expansion": "Agents Evaluation and Guardrail Inspection System",
+        "description": "AEGIS reúne evaluación de Agent, inspección de barreras de seguridad y revisión de evidencia en un mismo sistema, para que las conclusiones sean verificables, trazables y revisables.",
+        "story": {
+          "guardian": "Aegis expresa protección y amparo, en referencia a la imagen mítica del escudo de Atenea.",
+          "platform": "Aquí, el escudo representa la protección de los límites de seguridad de Agent mediante evidencia y barreras de seguridad."
+        }
+      },
+      "experience": {
+        "kicker": "Empezar ahora",
+        "title": "Entrar directamente en flujos comunes",
         "description": "Elige conjuntos, envía una evaluación, abre la clasificación o contacta con el equipo según la tarea actual.",
         "items": {
           "catalog": {

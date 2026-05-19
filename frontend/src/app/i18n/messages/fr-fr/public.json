@@ -1,21 +1,15 @@
 {
   "home": {
     "hero": {
-      "descriptionPrimary": "Système d'évaluation d'Agents et d'inspection des garde-fous",
+      "descriptionPrimary": "Agents Evaluation and Guardrail Inspection System",
       "descriptionSecondary": "Un système d'évaluation d'Agents sûr, fiable et professionnel, avec des résultats traçables."
     },
     "quickstart": {
-      "kicker": "Flux standard",
       "title": "Démarrage rapide",
-      "description": "Parcourez les jeux de données, soumettez une évaluation, suivez l'exécution et révisez les résultats dans un flux standardisé."
+      "description": "Réalisez une évaluation standard en quatre étapes."
     },
     "navigation": {
-      "aria": "Sections de présentation de l'accueil",
-      "quickstart": "Réaliser une évaluation étape par étape",
-      "capabilities": "Comprendre les capacités principales",
-      "loop": "Voir le parcours de la soumission aux preuves",
-      "trust": "Comprendre la base des résultats publics",
-      "resources": "Ouvrir directement les pages courantes"
+      "jumpAria": "Aller à {section}"
     },
     "workflow": {
       "browse": {
@@ -102,11 +96,31 @@
             "title": "Confiance et score de risque",
             "description": "Le classement affiche la confiance et le score de risque avec le rang pour éviter une lecture fondée sur un seul score."
           }
+        },
+        "leaderboard": {
+          "aria": "Aperçu du classement d'évaluation fiable",
+          "kicker": "Instantané public",
+          "title": "Vue du classement",
+          "rank": "Nº {rank}",
+          "meta": "Risque {risk} · Confiance {confidence}",
+          "empty": "Aucune entrée de classement n'est encore disponible.",
+          "unavailable": "Le classement n'est pas disponible ici. Ouvrez la page du classement pour l'état le plus récent."
         }
       },
-      "resources": {
-        "kicker": "Étape suivante",
-        "title": "Accéder aux flux courants depuis l'accueil",
+      "aegis": {
+        "kicker": "Image protectrice d’AEGIS",
+        "title": "Un nom fondé sur la protection et les preuves",
+        "nameLabel": "Signification du nom",
+        "expansion": "Agents Evaluation and Guardrail Inspection System",
+        "description": "AEGIS réunit l’évaluation d’Agent, l’inspection des garde-fous et la revue des preuves dans un même système, afin que les conclusions soient vérifiables, traçables et révisables.",
+        "story": {
+          "guardian": "Aegis porte l’idée de protection et d’abri, en écho à l’image mythologique du bouclier d’Athéna.",
+          "platform": "Ici, le bouclier représente la protection des limites de sécurité d’Agent par les preuves et les garde-fous."
+        }
+      },
+      "experience": {
+        "kicker": "Commencer",
+        "title": "Accéder directement aux flux courants",
         "description": "Choisissez les jeux de données, soumettez une évaluation, ouvrez le classement ou contactez l'équipe selon la tâche en cours.",
         "items": {
           "catalog": {

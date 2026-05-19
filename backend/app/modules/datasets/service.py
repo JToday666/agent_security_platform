@@ -43,7 +43,7 @@ def _translated_list(
     fallback: list[Any],
 ) -> list[Any]:
     value = translations.get(entity_id, {}).get(field)
-    return list(fallback if value is None else value)
+    return list(fallback if value in (None, []) else value)
 
 
 def _translated_resources(
@@ -52,7 +52,7 @@ def _translated_resources(
     fallback: list[dict[str, object]],
 ) -> list[dict[str, object]]:
     value = translations.get(entity_id, {}).get("resources")
-    return [dict(item) for item in (fallback if value is None else value)]
+    return [dict(item) for item in (fallback if value in (None, []) else value)]
 
 
 def _translated_media(
@@ -61,7 +61,7 @@ def _translated_media(
     fallback: list[dict[str, object]],
 ) -> list[dict[str, object]]:
     value = translations.get(entity_id, {}).get("media")
-    return [dict(item) for item in (fallback if value is None else value)]
+    return [dict(item) for item in (fallback if value in (None, []) else value)]
 
 
 class DatasetService:

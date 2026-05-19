@@ -98,7 +98,7 @@ def test_evaluation_score_and_leaderboard_api(client, api_db_helper) -> None:
         dataset_code=dataset_code,
         leaderboard_display_mode="anonymous",
     )
-    headers = {"Authorization": f"Bearer {token}"}
+    headers = {"Authorization": f"Bearer {token}", "X-App-Locale": "en-US"}
 
     recalculate_response = client.post(
         f"/api/v1/evaluations/{evaluation_id}/score/recalculate",
@@ -128,7 +128,9 @@ def test_evaluation_score_and_leaderboard_api(client, api_db_helper) -> None:
         "/api/v1/leaderboards/snapshots", headers=headers, json={}
     )
     assert snapshot_response.status_code == 200
-    current_response = client.get("/api/v1/leaderboards/current")
+    current_response = client.get(
+        "/api/v1/leaderboards/current", headers={"X-App-Locale": "en-US"}
+    )
     assert current_response.status_code == 200
     entries = current_response.json()["data"]["entries"]
     assert entries

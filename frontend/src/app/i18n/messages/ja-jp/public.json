@@ -1,21 +1,15 @@
 {
   "home": {
     "hero": {
-      "descriptionPrimary": "Agents 評価とガードレール検査システム",
+      "descriptionPrimary": "Agents Evaluation and Guardrail Inspection System",
       "descriptionSecondary": "安全で信頼性の高い専門的な Agent 評価基盤が、追跡可能な評価結果を提供します。"
     },
     "quickstart": {
-      "kicker": "標準フロー",
       "title": "クイックスタート",
-      "description": "標準化された流れで、データセットの閲覧、評価の提出、実行状況の追跡、結果の確認を完了できます。"
+      "description": "4 つの手順で標準評価を完了します。"
     },
     "navigation": {
-      "aria": "ホームの紹介セクション",
-      "quickstart": "手順に沿って評価を完了",
-      "capabilities": "主要な機能を確認",
-      "loop": "提出から証拠確認までを見る",
-      "trust": "公開結果の根拠を理解",
-      "resources": "よく使うページを開く"
+      "jumpAria": "{section}へ移動"
     },
     "workflow": {
       "browse": {
@@ -102,11 +96,31 @@
             "title": "信頼度とリスクスコア",
             "description": "ランキングは順位だけでなく信頼度とリスクスコアも示し、単一スコアだけの判断を避けます。"
           }
+        },
+        "leaderboard": {
+          "aria": "信頼できる評価のランキングプレビュー",
+          "kicker": "公開スナップショット",
+          "title": "ランキング表示",
+          "rank": "{rank} 位",
+          "meta": "リスク {risk} · 信頼度 {confidence}",
+          "empty": "表示できるランキング項目はまだありません。",
+          "unavailable": "ここではランキングを表示できません。最新状態はランキングページで確認してください。"
         }
       },
-      "resources": {
-        "kicker": "次の操作",
-        "title": "ホームからよく使うワークフローへ進む",
+      "aegis": {
+        "kicker": "AEGIS の守護のイメージ",
+        "title": "保護と証拠を軸にした名称",
+        "nameLabel": "名称の意味",
+        "expansion": "Agents Evaluation and Guardrail Inspection System",
+        "description": "AEGIS は Agent 評価、ガードレール検査、証拠確認を一つの体系にまとめ、結論を検証でき、過程を追跡でき、結果を再確認できる状態にします。",
+        "story": {
+          "guardian": "Aegis は保護と庇護の意味を持ち、アテナの盾という神話的なイメージにも通じています。",
+          "platform": "ここでの盾は、証拠とガードレールによって Agent の安全境界を守ることを表します。"
+        }
+      },
+      "experience": {
+        "kicker": "利用開始",
+        "title": "よく使うワークフローへ直接進む",
         "description": "現在の目的に応じて、データセット、評価提出、ランキング、問い合わせを選択できます。",
         "items": {
           "catalog": {

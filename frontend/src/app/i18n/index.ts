@@ -59,6 +59,7 @@ const localeAliasMap: Record<string, SupportedLocale> = {
   "en-gb": "en-US",
   fr: "fr-FR",
   "fr-fr": "fr-FR",
+  "fr-ca": "fr-FR",
   es: "es-ES",
   "es-es": "es-ES",
   "es-mx": "es-ES",

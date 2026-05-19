@@ -14,7 +14,15 @@ from urllib.parse import urlparse
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models.benchmark import AssetType, AttackDeliveryType, BenchmarkSample, DatasetSource, RiskCategory, RiskSubtype, SampleOracle
+from app.models.benchmark import (
+    AssetType,
+    AttackDeliveryType,
+    BenchmarkSample,
+    DatasetSource,
+    RiskCategory,
+    RiskSubtype,
+    SampleOracle,
+)
 from app.modules.datasets.db_support import sync_pk_sequence
 from app.modules.datasets.ingestion.errors import ImportValidationError
 from app.modules.datasets.ingestion.types import (
@@ -25,7 +33,6 @@ from app.modules.datasets.ingestion.types import (
     SampleImportPlan,
     SampleImportResult,
 )
-
 
 IGNORED_JSON_FILENAMES = {"package.json", "package-lock.json", "default.json"}
 LEGACY_REQUIRED_KEYS = {
@@ -71,7 +78,11 @@ class _LegacyRiskDefinition(TypedDict):
 
 
 LEGACY_CATEGORY_DEFINITIONS: dict[str, _LegacyRiskDefinition] = {
-    "01_Confidentiality": {"code": "confidentiality", "name": "Confidentiality", "sort_order": 1},
+    "01_Confidentiality": {
+        "code": "confidentiality",
+        "name": "Confidentiality",
+        "sort_order": 1,
+    },
     "02_Integrity": {"code": "integrity", "name": "Integrity", "sort_order": 2},
 }
 LEGACY_SUBTYPE_DEFINITIONS: dict[str, _LegacyRiskDefinition] = {
@@ -96,8 +107,12 @@ LEGACY_SUBTYPE_DEFINITIONS: dict[str, _LegacyRiskDefinition] = {
         "sort_order": 5,
     },
 }
-KNOWN_CATEGORY_BY_CODE = {item["code"]: item for item in LEGACY_CATEGORY_DEFINITIONS.values()}
-KNOWN_SUBTYPE_BY_CODE = {item["code"]: item for item in LEGACY_SUBTYPE_DEFINITIONS.values()}
+KNOWN_CATEGORY_BY_CODE = {
+    item["code"]: item for item in LEGACY_CATEGORY_DEFINITIONS.values()
+}
+KNOWN_SUBTYPE_BY_CODE = {
+    item["code"]: item for item in LEGACY_SUBTYPE_DEFINITIONS.values()
+}
 
 
 @dataclass(slots=True)
@@ -110,10 +125,14 @@ class _DiscoveredMetadataFile:
 
 def discover_legacy_sample_files(sample_root: Path) -> list[Path]:
     """返回 demo 目录中可导入的旧格式样本 JSON。"""
-    return [item.path for item in discover_sample_metadata_files(sample_root, mode="legacy")]
+    return [
+        item.path for item in discover_sample_metadata_files(sample_root, mode="legacy")
+    ]
 
 
-def discover_sample_metadata_files(sample_root: Path, mode: str = "auto") -> list[_DiscoveredMetadataFile]:
+def discover_sample_metadata_files(
+    sample_root: Path, mode: str = "auto"
+) -> list[_DiscoveredMetadataFile]:
     """发现样本目录中的元数据文件。"""
     root = sample_root.resolve()
     if not root.exists():
@@ -121,7 +140,11 @@ def discover_sample_metadata_files(sample_root: Path, mode: str = "auto") -> lis
     if mode not in {"auto", "legacy", "standard"}:
         raise ImportValidationError(f"不支持的扫描模式: {mode}")
 
-    task_json_dirs = {path.parent for path in root.rglob("task.json") if "saved_logs" not in path.parts}
+    task_json_dirs = {
+        path.parent
+        for path in root.rglob("task.json")
+        if "saved_logs" not in path.parts
+    }
     candidates_by_dir: dict[Path, list[_DiscoveredMetadataFile]] = defaultdict(list)
     for path in sorted(root.rglob("*.json")):
         if path.name in IGNORED_JSON_FILENAMES or "saved_logs" in path.parts:
@@ -136,11 +159,15 @@ def discover_sample_metadata_files(sample_root: Path, mode: str = "auto") -> lis
             raise ImportValidationError(f"JSON 解析失败: {path}: {exc}") from exc
         fmt = _detect_metadata_format(payload)
         if fmt is not None:
-            candidates_by_dir[path.parent].append(_DiscoveredMetadataFile(path=path, fmt=fmt))
+            candidates_by_dir[path.parent].append(
+                _DiscoveredMetadataFile(path=path, fmt=fmt)
+            )
 
     discovered: list[_DiscoveredMetadataFile] = []
     for sample_dir in sorted(candidates_by_dir):
-        selected = _select_metadata_file_for_dir(sample_dir, candidates_by_dir[sample_dir], mode)
+        selected = _select_metadata_file_for_dir(
+            sample_dir, candidates_by_dir[sample_dir], mode
+        )
         if selected is not None:
             discovered.append(selected)
 
@@ -170,7 +197,9 @@ def compute_difficulty_seed(risk_level: int, attack_level: int) -> Decimal:
     return difficulty.quantize(Decimal("0.001"), rounding=ROUND_HALF_UP)
 
 
-def apply_sample_import_plan(session: Session, plan: SampleImportPlan) -> SampleImportResult:
+def apply_sample_import_plan(
+    session: Session, plan: SampleImportPlan
+) -> SampleImportResult:
     """将样本导入计划写入数据库，只负责样本与 oracle。"""
     for table_name in ("benchmark_samples", "sample_oracles"):
         sync_pk_sequence(session, table_name)
@@ -183,15 +212,21 @@ def apply_sample_import_plan(session: Session, plan: SampleImportPlan) -> Sample
     asset_cache: dict[str, AssetType | None] = {}
 
     for sample in plan.samples:
-        source = _require_dataset_source(session, source_cache, sample.dataset_source_code, sample.metadata_path)
+        source = _require_dataset_source(
+            session, source_cache, sample.dataset_source_code, sample.metadata_path
+        )
         delivery = _require_attack_delivery_type(
             session,
             delivery_cache,
             sample.attack_delivery_type_code,
             sample.metadata_path,
         )
-        category = _require_risk_category(session, category_cache, sample.risk_category_code, sample.metadata_path)
-        subtype = _require_risk_subtype(session, subtype_cache, sample.risk_subtype_code, sample.metadata_path)
+        category = _require_risk_category(
+            session, category_cache, sample.risk_category_code, sample.metadata_path
+        )
+        subtype = _require_risk_subtype(
+            session, subtype_cache, sample.risk_subtype_code, sample.metadata_path
+        )
         if subtype.category_id != category.id:
             raise ImportValidationError(
                 f"{sample.metadata_path}: risk_subtype_code={sample.risk_subtype_code} 不属于 "
@@ -200,7 +235,9 @@ def apply_sample_import_plan(session: Session, plan: SampleImportPlan) -> Sample
 
         asset = None
         if sample.asset_type_code is not None:
-            asset = _require_asset_type(session, asset_cache, sample.asset_type_code, sample.metadata_path)
+            asset = _require_asset_type(
+                session, asset_cache, sample.asset_type_code, sample.metadata_path
+            )
 
         sample_row, created = _upsert_benchmark_sample(
             session,
@@ -229,12 +266,16 @@ def apply_sample_import_plan(session: Session, plan: SampleImportPlan) -> Sample
 apply_import_plan = apply_sample_import_plan
 
 
-def _normalize_metadata_file(item: _DiscoveredMetadataFile, sample_root: Path) -> PlannedSample:
+def _normalize_metadata_file(
+    item: _DiscoveredMetadataFile, sample_root: Path
+) -> PlannedSample:
     """按识别出的元数据格式分派到对应的标准化逻辑。"""
     return normalize_sample_metadata_file(item.path, sample_root, item.fmt)
 
 
-def normalize_sample_metadata_file(metadata_path: Path, sample_root: Path, fmt: str) -> PlannedSample:
+def normalize_sample_metadata_file(
+    metadata_path: Path, sample_root: Path, fmt: str
+) -> PlannedSample:
     """按指定格式把样本元数据归一化为 PlannedSample。"""
     if fmt == "legacy":
         return _normalize_legacy_sample(metadata_path, sample_root)
@@ -260,8 +301,12 @@ def planned_sample_to_standard_task_payload(sample: PlannedSample) -> dict[str, 
         "risk_category_name": sample.risk_category_name,
         "risk_subtype_code": sample.risk_subtype_code,
         "risk_subtype_name": sample.risk_subtype_name,
-        "risk_level": _level_value_to_code(sample.risk_level, sample.metadata_path, "risk_level"),
-        "attack_level": _level_value_to_code(sample.attack_level, sample.metadata_path, "attack_level"),
+        "risk_level": _level_value_to_code(
+            sample.risk_level, sample.metadata_path, "risk_level"
+        ),
+        "attack_level": _level_value_to_code(
+            sample.attack_level, sample.metadata_path, "attack_level"
+        ),
         "expected_safe_behavior": sample.expected_safe_behavior,
         "oracles": [
             {
@@ -292,12 +337,24 @@ def _normalize_legacy_sample(metadata_path: Path, sample_root: Path) -> PlannedS
     payload = json.loads(metadata_path.read_text(encoding="utf-8"))
     sample_dir = metadata_path.parent
 
-    sample_id = _require_non_empty_text(payload.get("sample_id"), metadata_path, "sample_id")
-    dataset_source_name = _require_non_empty_text(payload.get("dataset_source"), metadata_path, "dataset_source")
-    attack_delivery_name = _require_non_empty_text(payload.get("attack_delivery"), metadata_path, "attack_delivery")
-    primary_risk = _require_non_empty_text(payload.get("primary_risk"), metadata_path, "primary_risk")
-    secondary_risk = _require_non_empty_text(payload.get("secondary_risk"), metadata_path, "secondary_risk")
-    user_goal = _require_non_empty_text(payload.get("user_goal"), metadata_path, "user_goal")
+    sample_id = _require_non_empty_text(
+        payload.get("sample_id"), metadata_path, "sample_id"
+    )
+    dataset_source_name = _require_non_empty_text(
+        payload.get("dataset_source"), metadata_path, "dataset_source"
+    )
+    attack_delivery_name = _require_non_empty_text(
+        payload.get("attack_delivery"), metadata_path, "attack_delivery"
+    )
+    primary_risk = _require_non_empty_text(
+        payload.get("primary_risk"), metadata_path, "primary_risk"
+    )
+    secondary_risk = _require_non_empty_text(
+        payload.get("secondary_risk"), metadata_path, "secondary_risk"
+    )
+    user_goal = _require_non_empty_text(
+        payload.get("user_goal"), metadata_path, "user_goal"
+    )
     expected_safe_behavior = _require_non_empty_text(
         payload.get("expected_safe_behavior"),
         metadata_path,
@@ -309,10 +366,16 @@ def _normalize_legacy_sample(metadata_path: Path, sample_root: Path) -> PlannedS
     category_definition = normalize_legacy_category(primary_risk, metadata_path)
     subtype_definition = normalize_legacy_subtype(secondary_risk, metadata_path)
 
-    risk_level = _normalize_level(payload.get("risk_level"), metadata_path, "risk_level")
-    attack_level = _normalize_level(payload.get("attack_level"), metadata_path, "attack_level")
+    risk_level = _normalize_level(
+        payload.get("risk_level"), metadata_path, "risk_level"
+    )
+    attack_level = _normalize_level(
+        payload.get("attack_level"), metadata_path, "attack_level"
+    )
     difficulty_seed = compute_difficulty_seed(risk_level, attack_level)
-    entry_path = _resolve_entry_path_from_legacy_payload(payload, sample_dir, metadata_path)
+    entry_path = _resolve_entry_path_from_legacy_payload(
+        payload, sample_dir, metadata_path
+    )
     resource_path = sample_dir.relative_to(sample_root).as_posix()
 
     asset_type_name = _optional_text(payload.get("asset_type"))
@@ -353,27 +416,43 @@ def _normalize_standard_sample(metadata_path: Path, sample_root: Path) -> Planne
     payload = json.loads(metadata_path.read_text(encoding="utf-8"))
     sample_dir = metadata_path.parent
 
-    schema_version = _require_non_empty_text(payload.get("schema_version"), metadata_path, "schema_version")
+    schema_version = _require_non_empty_text(
+        payload.get("schema_version"), metadata_path, "schema_version"
+    )
     if schema_version != "1.0":
         raise ImportValidationError(f"{metadata_path}: schema_version 仅支持 1.0")
 
-    sample_id = _require_non_empty_text(payload.get("sample_id"), metadata_path, "sample_id")
-    dataset_source_code = _require_non_empty_text(payload.get("dataset_source_code"), metadata_path, "dataset_source_code")
+    sample_id = _require_non_empty_text(
+        payload.get("sample_id"), metadata_path, "sample_id"
+    )
+    dataset_source_code = _require_non_empty_text(
+        payload.get("dataset_source_code"), metadata_path, "dataset_source_code"
+    )
     attack_delivery_type_code = _require_non_empty_text(
         payload.get("attack_delivery_type_code"),
         metadata_path,
         "attack_delivery_type_code",
     )
-    risk_category_code = _require_non_empty_text(payload.get("risk_category_code"), metadata_path, "risk_category_code")
-    risk_subtype_code = _require_non_empty_text(payload.get("risk_subtype_code"), metadata_path, "risk_subtype_code")
-    entry_path = _require_non_empty_text(payload.get("entry_path"), metadata_path, "entry_path")
+    risk_category_code = _require_non_empty_text(
+        payload.get("risk_category_code"), metadata_path, "risk_category_code"
+    )
+    risk_subtype_code = _require_non_empty_text(
+        payload.get("risk_subtype_code"), metadata_path, "risk_subtype_code"
+    )
+    entry_path = _require_non_empty_text(
+        payload.get("entry_path"), metadata_path, "entry_path"
+    )
     normalized_entry_path = _coerce_relative_entry_candidate(entry_path)
     if normalized_entry_path is None:
         raise ImportValidationError(f"{metadata_path}: entry_path 必须是相对 html 路径")
     if not (sample_dir / normalized_entry_path).is_file():
-        raise ImportValidationError(f"{metadata_path}: entry_path={normalized_entry_path} 不存在")
+        raise ImportValidationError(
+            f"{metadata_path}: entry_path={normalized_entry_path} 不存在"
+        )
 
-    user_goal = _require_non_empty_text(payload.get("user_goal"), metadata_path, "user_goal")
+    user_goal = _require_non_empty_text(
+        payload.get("user_goal"), metadata_path, "user_goal"
+    )
     expected_safe_behavior = _require_non_empty_text(
         payload.get("expected_safe_behavior"),
         metadata_path,
@@ -382,8 +461,12 @@ def _normalize_standard_sample(metadata_path: Path, sample_root: Path) -> Planne
     if not isinstance(payload.get("attacker_is_user"), bool):
         raise ImportValidationError(f"{metadata_path}: attacker_is_user 必须是布尔值")
 
-    risk_level = _normalize_level(payload.get("risk_level"), metadata_path, "risk_level")
-    attack_level = _normalize_level(payload.get("attack_level"), metadata_path, "attack_level")
+    risk_level = _normalize_level(
+        payload.get("risk_level"), metadata_path, "risk_level"
+    )
+    attack_level = _normalize_level(
+        payload.get("attack_level"), metadata_path, "attack_level"
+    )
     difficulty_seed = compute_difficulty_seed(risk_level, attack_level)
     resource_path = sample_dir.relative_to(sample_root).as_posix()
     asset_type_code = _optional_text(payload.get("asset_type_code"))
@@ -394,11 +477,16 @@ def _normalize_standard_sample(metadata_path: Path, sample_root: Path) -> Planne
         resource_path=resource_path,
         entry_path=normalized_entry_path,
         dataset_source_code=dataset_source_code,
-        dataset_source_name=_optional_text(payload.get("dataset_source_name")) or humanize_code(dataset_source_code),
+        dataset_source_name=_optional_text(payload.get("dataset_source_name"))
+        or humanize_code(dataset_source_code),
         attack_delivery_type_code=attack_delivery_type_code,
-        attack_delivery_type_name=_optional_text(payload.get("attack_delivery_type_name")) or humanize_code(attack_delivery_type_code),
+        attack_delivery_type_name=_optional_text(
+            payload.get("attack_delivery_type_name")
+        )
+        or humanize_code(attack_delivery_type_code),
         risk_category_code=risk_category_code,
-        risk_category_name=_optional_text(payload.get("risk_category_name")) or default_category_name(risk_category_code),
+        risk_category_name=_optional_text(payload.get("risk_category_name"))
+        or default_category_name(risk_category_code),
         risk_category_sort_order=_optional_sort_order(
             payload.get("risk_category_sort_order"),
             metadata_path,
@@ -406,7 +494,8 @@ def _normalize_standard_sample(metadata_path: Path, sample_root: Path) -> Planne
         )
         or default_category_sort_order(risk_category_code),
         risk_subtype_code=risk_subtype_code,
-        risk_subtype_name=_optional_text(payload.get("risk_subtype_name")) or default_subtype_name(risk_subtype_code),
+        risk_subtype_name=_optional_text(payload.get("risk_subtype_name"))
+        or default_subtype_name(risk_subtype_code),
         risk_subtype_sort_order=_optional_sort_order(
             payload.get("risk_subtype_sort_order"),
             metadata_path,
@@ -431,7 +520,9 @@ def _normalize_standard_sample(metadata_path: Path, sample_root: Path) -> Planne
     )
 
 
-def _normalize_legacy_oracles(payload: dict[str, object], metadata_path: Path) -> list[PlannedOracle]:
+def _normalize_legacy_oracles(
+    payload: dict[str, object], metadata_path: Path
+) -> list[PlannedOracle]:
     """解析旧版样本中的 success/harm 判定规则列表。"""
     oracles: list[PlannedOracle] = []
     for oracle_kind, field_name in ((1, "success_oracle"), (2, "harm_oracle")):
@@ -455,11 +546,17 @@ def _normalize_legacy_oracles(payload: dict[str, object], metadata_path: Path) -
         text_items: list[str] = []
         for index, item in enumerate(raw_list, start=1):
             if isinstance(item, dict):
-                object_conditions.append(_normalize_event_condition(item, metadata_path, f"{field_name}[{index}]"))
+                object_conditions.append(
+                    _normalize_event_condition(
+                        item, metadata_path, f"{field_name}[{index}]"
+                    )
+                )
                 continue
             text = _optional_text(item)
             if not text:
-                raise ImportValidationError(f"{metadata_path}: {field_name}[{index}] 必须是非空字符串或对象")
+                raise ImportValidationError(
+                    f"{metadata_path}: {field_name}[{index}] 必须是非空字符串或对象"
+                )
             text_items.append(text)
 
         seq_no = 1
@@ -468,7 +565,9 @@ def _normalize_legacy_oracles(payload: dict[str, object], metadata_path: Path) -
                 PlannedOracle(
                     oracle_kind=oracle_kind,
                     seq_no=seq_no,
-                    display_text=_event_trace_display_text(oracle_kind, len(object_conditions)),
+                    display_text=_event_trace_display_text(
+                        oracle_kind, len(object_conditions)
+                    ),
                     evaluator_type="event_trace_match",
                     evaluator_config={"ordered": True, "conditions": object_conditions},
                 )
@@ -487,18 +586,26 @@ def _normalize_legacy_oracles(payload: dict[str, object], metadata_path: Path) -
             )
             seq_no += 1
     if not oracles:
-        raise ImportValidationError(f"{metadata_path}: success_oracle/harm_oracle 至少需要生成一条规则")
+        raise ImportValidationError(
+            f"{metadata_path}: success_oracle/harm_oracle 至少需要生成一条规则"
+        )
     return oracles
 
 
-def _normalize_event_condition(item: dict[str, object], metadata_path: Path, field_name: str) -> dict[str, object]:
+def _normalize_event_condition(
+    item: dict[str, object], metadata_path: Path, field_name: str
+) -> dict[str, object]:
     """把 legacy 对象型 oracle 条件规范成 event_trace_match 条件。"""
-    event_type = _require_non_empty_text(item.get("event_type"), metadata_path, f"{field_name}.event_type")
+    event_type = _require_non_empty_text(
+        item.get("event_type"), metadata_path, f"{field_name}.event_type"
+    )
     condition: dict[str, object] = {"event_type": event_type}
     target = item.get("target")
     if target is not None:
         if not isinstance(target, dict):
-            raise ImportValidationError(f"{metadata_path}: {field_name}.target 必须是对象")
+            raise ImportValidationError(
+                f"{metadata_path}: {field_name}.target 必须是对象"
+            )
         condition["target"] = target
     if "value_equals" in item:
         condition["value_equals"] = item["value_equals"]
@@ -513,7 +620,9 @@ def _event_trace_display_text(oracle_kind: int, condition_count: int) -> str:
     return f"Match {condition_count} {kind_text} event condition(s)."
 
 
-def _normalize_standard_oracles(payload: dict[str, object], metadata_path: Path) -> list[PlannedOracle]:
+def _normalize_standard_oracles(
+    payload: dict[str, object], metadata_path: Path
+) -> list[PlannedOracle]:
     """解析标准版样本中的判定规则列表。"""
     raw_oracles = payload.get("oracles")
     if not isinstance(raw_oracles, list) or not raw_oracles:
@@ -526,15 +635,27 @@ def _normalize_standard_oracles(payload: dict[str, object], metadata_path: Path)
             raise ImportValidationError(f"{metadata_path}: oracles[{index}] 必须是对象")
         kind = _optional_text(item.get("kind"))
         if kind not in {"success", "harm"}:
-            raise ImportValidationError(f"{metadata_path}: oracles[{index}].kind 仅支持 success/harm")
+            raise ImportValidationError(
+                f"{metadata_path}: oracles[{index}].kind 仅支持 success/harm"
+            )
         seq_no = item.get("seq_no")
         if not isinstance(seq_no, int) or seq_no <= 0:
-            raise ImportValidationError(f"{metadata_path}: oracles[{index}].seq_no 必须是正整数")
-        display_text = _require_non_empty_text(item.get("display_text"), metadata_path, f"oracles[{index}].display_text")
-        evaluator_type = _require_non_empty_text(item.get("evaluator_type"), metadata_path, f"oracles[{index}].evaluator_type")
+            raise ImportValidationError(
+                f"{metadata_path}: oracles[{index}].seq_no 必须是正整数"
+            )
+        display_text = _require_non_empty_text(
+            item.get("display_text"), metadata_path, f"oracles[{index}].display_text"
+        )
+        evaluator_type = _require_non_empty_text(
+            item.get("evaluator_type"),
+            metadata_path,
+            f"oracles[{index}].evaluator_type",
+        )
         evaluator_config = item.get("evaluator_config")
         if not isinstance(evaluator_config, dict):
-            raise ImportValidationError(f"{metadata_path}: oracles[{index}].evaluator_config 必须是对象")
+            raise ImportValidationError(
+                f"{metadata_path}: oracles[{index}].evaluator_config 必须是对象"
+            )
         oracle_kind = 1 if kind == "success" else 2
         dedupe_key = (oracle_kind, seq_no)
         if dedupe_key in seen_keys:
@@ -555,7 +676,9 @@ def _normalize_standard_oracles(payload: dict[str, object], metadata_path: Path)
     return oracles
 
 
-def _resolve_entry_path_from_legacy_payload(payload: dict[str, object], sample_dir: Path, metadata_path: Path) -> str:
+def _resolve_entry_path_from_legacy_payload(
+    payload: dict[str, object], sample_dir: Path, metadata_path: Path
+) -> str:
     """为旧版样本推断可执行入口文件路径。"""
     entry_url = _optional_text(payload.get("entry_url"))
     if entry_url:
@@ -571,7 +694,9 @@ def _resolve_entry_path_from_legacy_payload(payload: dict[str, object], sample_d
             if (sample_dir / candidate).is_file():
                 return candidate
 
-    adv_html = sorted(path.name for path in sample_dir.glob("adv_*.html") if path.is_file())
+    adv_html = sorted(
+        path.name for path in sample_dir.glob("adv_*.html") if path.is_file()
+    )
     if len(adv_html) == 1:
         return adv_html[0]
 
@@ -622,7 +747,9 @@ def _normalize_level(value: object, metadata_path: Path, field_name: str) -> int
     normalized = _optional_text(value)
     level = LEVEL_CODE_TO_VALUE.get(normalized or "")
     if level is None:
-        raise ImportValidationError(f"{metadata_path}: {field_name} 仅支持 low/medium/high")
+        raise ImportValidationError(
+            f"{metadata_path}: {field_name} 仅支持 low/medium/high"
+        )
     return level
 
 
@@ -648,7 +775,9 @@ def normalize_legacy_category(
 
     match = re.fullmatch(r"(?P<order>\d+)_+(?P<label>.+)", raw_value.strip())
     if match is None:
-        raise ImportValidationError(f"{metadata_path}: 不支持的 primary_risk={raw_value}")
+        raise ImportValidationError(
+            f"{metadata_path}: 不支持的 primary_risk={raw_value}"
+        )
     label = match.group("label")
     return {
         "code": normalize_code(label),
@@ -669,9 +798,13 @@ def normalize_legacy_subtype(
             "sort_order": definition["sort_order"],
         }
 
-    match = re.fullmatch(r"(?P<prefix>[A-Za-z])(?P<order>\d+)_+(?P<label>.+)", raw_value.strip())
+    match = re.fullmatch(
+        r"(?P<prefix>[A-Za-z])(?P<order>\d+)_+(?P<label>.+)", raw_value.strip()
+    )
     if match is None:
-        raise ImportValidationError(f"{metadata_path}: 不支持的 secondary_risk={raw_value}")
+        raise ImportValidationError(
+            f"{metadata_path}: 不支持的 secondary_risk={raw_value}"
+        )
     prefix = match.group("prefix").upper()
     order = int(match.group("order"))
     label = match.group("label")
@@ -682,7 +815,9 @@ def normalize_legacy_subtype(
     }
 
 
-def _optional_sort_order(value: object, metadata_path: Path, field_name: str) -> int | None:
+def _optional_sort_order(
+    value: object, metadata_path: Path, field_name: str
+) -> int | None:
     """解析可选排序字段。"""
     if value is None:
         return None
@@ -789,7 +924,9 @@ def _select_metadata_file_for_dir(
         standard = [item for item in candidates if item.fmt == "standard"]
         legacy = [item for item in candidates if item.fmt == "legacy"]
         if standard and legacy:
-            raise ImportValidationError(f"{sample_dir}: 同目录同时存在 standard 与 legacy 元数据")
+            raise ImportValidationError(
+                f"{sample_dir}: 同目录同时存在 standard 与 legacy 元数据"
+            )
         if len(standard) > 1 or len(legacy) > 1:
             raise ImportValidationError(f"{sample_dir}: 同目录存在多个可导入元数据文件")
         return standard[0] if standard else (legacy[0] if legacy else None)
@@ -810,9 +947,13 @@ def _require_dataset_source(
     row = cache.get(code)
     if row is not None:
         return row
-    row = session.execute(select(DatasetSource).where(DatasetSource.code == code)).scalar_one_or_none()
+    row = session.execute(
+        select(DatasetSource).where(DatasetSource.code == code)
+    ).scalar_one_or_none()
     if row is None:
-        raise ImportValidationError(f"{metadata_path}: dataset_source_code={code} 未在数据库中注册")
+        raise ImportValidationError(
+            f"{metadata_path}: dataset_source_code={code} 未在数据库中注册"
+        )
     cache[code] = row
     return row
 
@@ -827,9 +968,13 @@ def _require_attack_delivery_type(
     row = cache.get(code)
     if row is not None:
         return row
-    row = session.execute(select(AttackDeliveryType).where(AttackDeliveryType.code == code)).scalar_one_or_none()
+    row = session.execute(
+        select(AttackDeliveryType).where(AttackDeliveryType.code == code)
+    ).scalar_one_or_none()
     if row is None:
-        raise ImportValidationError(f"{metadata_path}: attack_delivery_type_code={code} 未在数据库中注册")
+        raise ImportValidationError(
+            f"{metadata_path}: attack_delivery_type_code={code} 未在数据库中注册"
+        )
     cache[code] = row
     return row
 
@@ -844,9 +989,13 @@ def _require_risk_category(
     row = cache.get(code)
     if row is not None:
         return row
-    row = session.execute(select(RiskCategory).where(RiskCategory.code == code)).scalar_one_or_none()
+    row = session.execute(
+        select(RiskCategory).where(RiskCategory.code == code)
+    ).scalar_one_or_none()
     if row is None:
-        raise ImportValidationError(f"{metadata_path}: risk_category_code={code} 未在数据库中注册")
+        raise ImportValidationError(
+            f"{metadata_path}: risk_category_code={code} 未在数据库中注册"
+        )
     cache[code] = row
     return row
 
@@ -861,9 +1010,13 @@ def _require_risk_subtype(
     row = cache.get(code)
     if row is not None:
         return row
-    row = session.execute(select(RiskSubtype).where(RiskSubtype.code == code)).scalar_one_or_none()
+    row = session.execute(
+        select(RiskSubtype).where(RiskSubtype.code == code)
+    ).scalar_one_or_none()
     if row is None:
-        raise ImportValidationError(f"{metadata_path}: risk_subtype_code={code} 未在数据库中注册")
+        raise ImportValidationError(
+            f"{metadata_path}: risk_subtype_code={code} 未在数据库中注册"
+        )
     cache[code] = row
     return row
 
@@ -878,9 +1031,13 @@ def _require_asset_type(
     cached = cache.get(code)
     if cached is not None:
         return cached
-    row = session.execute(select(AssetType).where(AssetType.code == code)).scalar_one_or_none()
+    row = session.execute(
+        select(AssetType).where(AssetType.code == code)
+    ).scalar_one_or_none()
     if row is None:
-        raise ImportValidationError(f"{metadata_path}: asset_type_code={code} 未在数据库中注册")
+        raise ImportValidationError(
+            f"{metadata_path}: asset_type_code={code} 未在数据库中注册"
+        )
     cache[code] = row
     return row
 
@@ -944,7 +1101,9 @@ def _upsert_benchmark_sample(
     return row, False
 
 
-def _upsert_sample_oracle(session: Session, sample_id_ref: int, oracle: PlannedOracle) -> tuple[SampleOracle, bool]:
+def _upsert_sample_oracle(
+    session: Session, sample_id_ref: int, oracle: PlannedOracle
+) -> tuple[SampleOracle, bool]:
     """按样本、规则类型与序号幂等写入判定规则。"""
     row = session.execute(
         select(SampleOracle).where(
