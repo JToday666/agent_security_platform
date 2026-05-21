@@ -22,7 +22,7 @@ AGENTS.md
 .superpowers/
 
 # Data files
-/data/datasets/
+/data/
 /var/backend/
 
 # backend

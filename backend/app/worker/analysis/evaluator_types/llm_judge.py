@@ -45,6 +45,11 @@ PROVIDER_CONFIGS: dict[str, dict[str, object]] = {
         "default_model": "llama3.1",
         "api_key_required": False,
     },
+    "vllm": {
+        "base_url": "http://127.0.0.1:18000/v1",
+        "default_model": "qwen2.5-14b-gptq-int4",
+        "api_key_required": False,
+    },
     "custom": {
         "base_url": None,
         "default_model": None,
@@ -188,14 +193,20 @@ def resolve_llm_judge_config() -> LLMJudgeConfig:
             f"unsupported LLM_JUDGE_PROVIDER: {provider}; supported: {supported}"
         )
 
+    configured_model = settings.LLM_JUDGE_MODEL
+    if provider == "vllm" and not configured_model:
+        configured_model = settings.VLLM_MODEL
     model = (
-        settings.LLM_JUDGE_MODEL or str(provider_config.get("default_model") or "")
+        configured_model or str(provider_config.get("default_model") or "")
     ).strip()
     if not model:
         raise LLMJudgeConfigError("LLM_JUDGE_MODEL is required for provider=custom")
 
+    configured_base_url = settings.LLM_JUDGE_BASE_URL
+    if provider == "vllm" and not configured_base_url:
+        configured_base_url = settings.VLLM_BASE_URL
     base_url = (
-        settings.LLM_JUDGE_BASE_URL or str(provider_config.get("base_url") or "")
+        configured_base_url or str(provider_config.get("base_url") or "")
     ).strip()
     if not base_url:
         raise LLMJudgeConfigError(

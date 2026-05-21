@@ -17,6 +17,7 @@ from app.modules.datasets.ingestion.normalize import (
 )
 from app.modules.datasets.ingestion.samples import build_sample_import_plan
 from app.modules.datasets.ingestion.types import ImportPipelineResult
+from app.platform.config import settings
 
 
 def run_import_pipeline(
@@ -38,9 +39,13 @@ def run_import_pipeline(
 
         if input_kind == "raw":
             if workspace_dir is None:
+                settings.tmp_root.mkdir(parents=True, exist_ok=True)
                 workspace_root = Path(
                     stack.enter_context(
-                        TemporaryDirectory(prefix="dataset_import_workspace_")
+                        TemporaryDirectory(
+                            prefix="dataset_import_workspace_",
+                            dir=settings.tmp_root,
+                        )
                     )
                 )
             else:

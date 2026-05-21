@@ -17,19 +17,105 @@ def test_platform_kernel_modules_are_available() -> None:
     assert platform_credentials.FileCredentialStore.__name__ == "FileCredentialStore"
 
 
-def test_default_storage_roots_are_repo_level_data_and_var(monkeypatch) -> None:
-    for name in ("DATASET_ROOT_DIR", "DATASET_METADATA_ROOT_DIR", "RUNTIME_ROOT_DIR"):
+def test_default_storage_roots_are_server_data_paths(monkeypatch) -> None:
+    for name in (
+        "ASP_DATA_ROOT",
+        "DATASET_ROOT_DIR",
+        "DATASET_METADATA_ROOT_DIR",
+        "UPLOAD_ROOT_DIR",
+        "RUNTIME_ROOT_DIR",
+        "TMP_ROOT_DIR",
+        "LOG_ROOT_DIR",
+    ):
         monkeypatch.delenv(name, raising=False)
 
     platform_config = importlib.import_module("app.platform.config")
     settings = platform_config.Settings(_env_file=None)
 
-    assert settings.dataset_root == platform_config.REPO_ROOT / "data" / "datasets"
+    assert settings.data_root == Path("/data/agent-security-platform")
+    assert settings.dataset_root == Path("/data/agent-security-platform/data/datasets")
     assert (
         settings.dataset_metadata_root
-        == platform_config.REPO_ROOT / "data" / "metadata"
+        == Path("/data/agent-security-platform/data/dataset-registry")
     )
-    assert settings.runtime_root == platform_config.REPO_ROOT / "var" / "backend"
+    assert settings.uploads_root == Path("/data/agent-security-platform/data/uploads")
+    assert settings.runtime_root == Path("/data/agent-security-platform/runtime")
+    assert settings.tmp_root == Path("/data/agent-security-platform/tmp")
+    assert settings.log_root == Path("/data/agent-security-platform/logs")
+
+
+def test_storage_roots_can_be_derived_from_data_root(monkeypatch) -> None:
+    for name in (
+        "DATASET_ROOT_DIR",
+        "DATASET_METADATA_ROOT_DIR",
+        "UPLOAD_ROOT_DIR",
+        "RUNTIME_ROOT_DIR",
+        "TMP_ROOT_DIR",
+        "LOG_ROOT_DIR",
+    ):
+        monkeypatch.delenv(name, raising=False)
+
+    platform_config = importlib.import_module("app.platform.config")
+    settings = platform_config.Settings(ASP_DATA_ROOT="/mnt/asp", _env_file=None)
+
+    assert settings.dataset_root == Path("/mnt/asp/data/datasets")
+    assert settings.dataset_metadata_root == Path("/mnt/asp/data/dataset-registry")
+    assert settings.uploads_root == Path("/mnt/asp/data/uploads")
+    assert settings.runtime_root == Path("/mnt/asp/runtime")
+    assert settings.tmp_root == Path("/mnt/asp/tmp")
+    assert settings.log_root == Path("/mnt/asp/logs")
+
+
+def test_storage_root_overrides_take_precedence(monkeypatch) -> None:
+    for name in (
+        "DATASET_ROOT_DIR",
+        "DATASET_METADATA_ROOT_DIR",
+        "UPLOAD_ROOT_DIR",
+        "RUNTIME_ROOT_DIR",
+        "TMP_ROOT_DIR",
+        "LOG_ROOT_DIR",
+    ):
+        monkeypatch.delenv(name, raising=False)
+
+    platform_config = importlib.import_module("app.platform.config")
+    settings = platform_config.Settings(
+        ASP_DATA_ROOT="/mnt/asp",
+        DATASET_ROOT_DIR="/srv/datasets",
+        DATASET_METADATA_ROOT_DIR="/srv/registry",
+        UPLOAD_ROOT_DIR="/srv/uploads",
+        RUNTIME_ROOT_DIR="/srv/runtime",
+        TMP_ROOT_DIR="/srv/tmp",
+        LOG_ROOT_DIR="/srv/logs",
+        _env_file=None,
+    )
+
+    assert settings.dataset_root == Path("/srv/datasets")
+    assert settings.dataset_metadata_root == Path("/srv/registry")
+    assert settings.uploads_root == Path("/srv/uploads")
+    assert settings.runtime_root == Path("/srv/runtime")
+    assert settings.tmp_root == Path("/srv/tmp")
+    assert settings.log_root == Path("/srv/logs")
+
+
+def test_database_url_override_normalizes_async_and_sync_drivers(monkeypatch) -> None:
+    monkeypatch.delenv("POSTGRES_HOST", raising=False)
+    monkeypatch.delenv("POSTGRES_PORT", raising=False)
+    monkeypatch.delenv("POSTGRES_DB", raising=False)
+    monkeypatch.delenv("POSTGRES_USER", raising=False)
+    monkeypatch.delenv("POSTGRES_PASSWORD", raising=False)
+
+    platform_config = importlib.import_module("app.platform.config")
+    settings = platform_config.Settings(
+        DATABASE_URL="postgresql+psycopg://asp_app:secret@127.0.0.1:5432/asp_db",
+        _env_file=None,
+    )
+
+    assert settings.DATABASE_URL.drivername == "postgresql+asyncpg"
+    assert settings.SYNC_DATABASE_URL.drivername == "postgresql+psycopg"
+    assert settings.DATABASE_URL.username == "asp_app"
+    assert settings.DATABASE_URL.password == "secret"
+    assert settings.DATABASE_URL.host == "127.0.0.1"
+    assert settings.DATABASE_URL.database == "asp_db"
 
 
 def test_application_code_uses_platform_kernel_instead_of_shared_imports(

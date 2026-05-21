@@ -408,20 +408,22 @@ curl http://127.0.0.1:18000/v1/chat/completions \
 
 ```env
 APP_ENV=production
-APP_NAME=agent-security-platform
+PROJECT_NAME=agent-security-platform
 TZ=Asia/Shanghai
 
-DATABASE_URL=postgresql+psycopg://asp_app:<password>@postgres:5432/asp_db
-TEST_DATABASE_URL=postgresql+psycopg://asp_test:<password>@postgres:5432/test_db
+DATABASE_URL=postgresql+psycopg://asp_app:<password>@127.0.0.1:5432/asp_db
 
-VLLM_BASE_URL=http://vllm:8000/v1
+ASP_DATA_ROOT=/data/agent-security-platform
+DATASET_ROOT_DIR=/data/agent-security-platform/data/datasets
+DATASET_METADATA_ROOT_DIR=/data/agent-security-platform/data/dataset-registry
+UPLOAD_ROOT_DIR=/data/agent-security-platform/data/uploads
+RUNTIME_ROOT_DIR=/data/agent-security-platform/runtime
+TMP_ROOT_DIR=/data/agent-security-platform/tmp
+LOG_ROOT_DIR=/data/agent-security-platform/logs
+
+LLM_JUDGE_PROVIDER=vllm
+VLLM_BASE_URL=http://127.0.0.1:18000/v1
 VLLM_MODEL=qwen2.5-14b-gptq-int4
-
-DATASET_ROOT_DIR=/app/data/datasets
-UPLOAD_ROOT_DIR=/app/data/uploads
-RUNTIME_ROOT_DIR=/app/runtime
-ARTIFACT_ROOT_DIR=/app/artifacts
-LOG_ROOT_DIR=/app/logs
 
 PUBLIC_BASE_URL=https://<domain>
 CORS_ALLOWED_ORIGINS=https://<domain>

@@ -31,7 +31,7 @@ README 只维护当前状态、启动验证入口、核心约束和文档索引�
 - `external_agent_api` 调用链路、`synthetic_local` dispatch 闭环、基础产物采集和任务级摘要报告
 - 结构化 oracle 执行、`execution_summaries` 汇总、评测评分重算/查询、动态难度版本重算/发布、排行榜快照
 - Agent 出站 HTTP 默认 SSRF 防护：仅允许 `http/https`，默认拒绝 localhost、回环、内网、链路本地、保留地址，并逐跳校验重定向
-- 运行时目录、上传目录、凭证目录统一收口到仓库根目录 `var/backend/`
+- 运行时目录、上传目录、凭证目录和数据集 JSON 真源默认收口到 `/data/agent-security-platform/`，可通过环境变量迁移
 
 核心目录：
 
@@ -42,8 +42,9 @@ README 只维护当前状态、启动验证入口、核心约束和文档索引�
 - `app/models/`：SQLAlchemy ORM 模型与 Alembic 发现入口
 - `alembic/`：数据库迁移
 - `scripts/`：数据导入、联调和烟测脚本
-- `data/metadata/`：版本化数据集元数据 JSON 真源
-- `var/backend/`：运行时目录（上传、凭证、worker workdir）
+- `/data/agent-security-platform/data/dataset-registry/`：版本化数据集元数据 JSON 真源
+- `/data/agent-security-platform/runtime/`：运行时目录（凭证、worker workdir）
+- `/data/agent-security-platform/data/uploads/`：上传文件目录
 - `docs/`：后端内部说明与规范文档
 
 ## 3. 快速启动
@@ -56,6 +57,8 @@ uv sync
 uv run alembic upgrade head
 uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
+
+默认配置会从 `ASP_DATA_ROOT=/data/agent-security-platform` 派生数据和运行目录。迁移到其他挂载点时，只改 `ASP_DATA_ROOT`，或按需覆盖 `DATASET_ROOT_DIR`、`DATASET_METADATA_ROOT_DIR`、`UPLOAD_ROOT_DIR`、`RUNTIME_ROOT_DIR`、`TMP_ROOT_DIR`、`LOG_ROOT_DIR`。
 
 备用启动：
 
