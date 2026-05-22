@@ -21,7 +21,6 @@ import {
   referenceEvaluationRecords,
   referenceSubmitMeta,
 } from "@/modules/dataset/mock/dataset-fixtures";
-import { normalizeDatasetIds } from "@/modules/dataset/model/dataset-id-aliases";
 import { resolvePublicDatasetNames } from "@/modules/dataset/lib/dataset-display-utils";
 import {
   MAX_SUBMIT_DATASET_COUNT,
@@ -256,11 +255,9 @@ const createStoredRecord = (
   const agent = payload.agentId
     ? getStoredMockAgentById(payload.agentId)
     : null;
-  const datasetIds = normalizeDatasetIds(
-    Array.from(new Set(payload.selectedDatasetIds)).slice(
-      0,
-      MAX_SUBMIT_DATASET_COUNT,
-    ),
+  const datasetIds = Array.from(new Set(payload.selectedDatasetIds)).slice(
+    0,
+    MAX_SUBMIT_DATASET_COUNT,
   );
 
   return {

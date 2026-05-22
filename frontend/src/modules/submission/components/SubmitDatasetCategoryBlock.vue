@@ -281,8 +281,8 @@ const categoryBlockStyle = computed(() => {
 .dataset-list {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  padding: 0 1.05rem 1rem;
+  padding: 0.15rem 1.05rem 0.9rem;
+  background: rgba(248, 250, 252, 0.46);
 }
 
 .dataset-item {
@@ -290,10 +290,22 @@ const categoryBlockStyle = computed(() => {
   display: flex;
   align-items: flex-start;
   gap: 0.7rem;
-  padding: 0.85rem 0.9rem;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.78);
+  min-height: 3.5rem;
+  padding: 0.78rem 0.2rem;
+  cursor: pointer;
+}
+
+.dataset-item + .dataset-item {
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.dataset-item:hover .dataset-name {
+  color: var(--category-text, var(--color-primary));
+}
+
+.dataset-item:focus-within {
+  outline: 2px solid rgba(37, 99, 235, 0.24);
+  outline-offset: -2px;
 }
 
 .dataset-copy {

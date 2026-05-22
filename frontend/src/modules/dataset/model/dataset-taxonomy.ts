@@ -26,7 +26,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
       "聚焦隐私、凭证与业务机密等敏感信息在对话、检索与工具链中的最小暴露要求。",
     datasets: [
       {
-        datasetId: "A1",
+        datasetId: "A1_identity_leakage",
         name: "身份信息泄露",
         shortDescription:
           "评估模型在身份字段核验、回显与引用过程中的泄露风险。",
@@ -38,7 +38,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         includeVideo: true,
       },
       {
-        datasetId: "A2",
+        datasetId: "A2_contact_leakage",
         name: "联系方式泄露",
         shortDescription:
           "评估联系方式在多轮追问、拼接查询和导出场景中的泄露风险。",
@@ -49,7 +49,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "A3",
+        datasetId: "A3_address_location_leakage",
         name: "地址与位置泄露",
         shortDescription:
           "评估家庭住址、定位轨迹与地理线索在推理过程中的暴露风险。",
@@ -60,7 +60,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "A4",
+        datasetId: "A4_financial_payment_leakage",
         name: "金融与支付信息泄露",
         shortDescription:
           "评估账户、支付流水与财务凭证在处理过程中的泄露风险。",
@@ -71,7 +71,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "A5",
+        datasetId: "A5_credential_key_leakage",
         name: "凭证与密钥泄露",
         shortDescription:
           "评估访问令牌、密钥材料与系统凭证在调用链中的泄露风险。",
@@ -82,7 +82,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "A6",
+        datasetId: "A6_document_business_data_leakage",
         name: "文档与业务数据泄露",
         shortDescription:
           "评估合同、方案与经营数据在摘要、问答和检索中的泄露风险。",
@@ -103,7 +103,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
       "关注输入污染、结果改写与身份伪装导致的状态偏移，评估系统输出与操作结果的可信性。",
     datasets: [
       {
-        datasetId: "B1",
+        datasetId: "B1_local_file_tampering",
         name: "本地文件篡改",
         shortDescription:
           "评估模型在本地文件读写流程中被诱导修改关键内容的风险。",
@@ -115,7 +115,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         includeVideo: true,
       },
       {
-        datasetId: "B2",
+        datasetId: "B2_cloud_file_tampering",
         name: "云端文件篡改",
         shortDescription: "评估模型在云盘、对象存储和协同文档中的篡改风险。",
         focus: ["云端文档与表格", "共享存储中的业务文件"],
@@ -125,7 +125,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "B3",
+        datasetId: "B3_form_data_tampering",
         name: "表单数据篡改",
         shortDescription:
           "评估模型在录入、校正与自动填报流程中的数据篡改风险。",
@@ -136,7 +136,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "B4",
+        datasetId: "B4_code_config_tampering",
         name: "代码与系统配置篡改",
         shortDescription: "评估代码片段、部署配置与安全策略被错误改写的风险。",
         focus: ["源代码与脚本逻辑", "部署配置与安全基线"],
@@ -146,7 +146,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "B5",
+        datasetId: "B5_identity_spoofing_tampering",
         name: "身份伪造式篡改",
         shortDescription:
           "评估借助伪造身份、虚假授权或错误归因实施篡改的风险。",
@@ -167,7 +167,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
       "覆盖删除、破坏、削弱与滥用类风险，评估智能体对系统持续可用性和运行环境完整性的保护能力。",
     datasets: [
       {
-        datasetId: "C1",
+        datasetId: "C1_local_file_deletion",
         name: "本地文件删除",
         shortDescription:
           "评估模型在本地目录、日志与关键资产上的误删或恶删风险。",
@@ -179,7 +179,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         includeVideo: true,
       },
       {
-        datasetId: "C2",
+        datasetId: "C2_cloud_file_deletion",
         name: "云端文件删除",
         shortDescription: "评估模型在云盘、对象存储与协作空间中的删除风险。",
         focus: ["云端对象与共享文档", "协作空间中的关键归档资料"],
@@ -189,7 +189,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "C3",
+        datasetId: "C3_local_environment_disruption",
         name: "本地环境破坏",
         shortDescription:
           "评估模型对本地运行环境、依赖和系统状态造成破坏的风险。",
@@ -200,7 +200,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "C4",
+        datasetId: "C4_security_control_weakening",
         name: "安全控制削弱",
         shortDescription:
           "评估模型在配置调整中削弱认证、审计与隔离控制的风险。",
@@ -211,7 +211,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "C5",
+        datasetId: "C5_resource_service_abuse",
         name: "资源或服务滥用",
         shortDescription: "评估模型在计算、网络与外部服务调用中的滥用风险。",
         focus: ["计算与存储资源", "外部服务与接口额度"],
@@ -231,7 +231,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
       "聚焦命令执行、恶意交付、权限提升与平台滥用，评估系统对高危执行链路的边界控制能力。",
     datasets: [
       {
-        datasetId: "D1",
+        datasetId: "D1_command_execution",
         name: "命令执行",
         shortDescription:
           "评估模型在命令拼接、脚本下发与系统调用中的越权执行风险。",
@@ -243,7 +243,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         includeVideo: true,
       },
       {
-        datasetId: "D2",
+        datasetId: "D2_malicious_download_delivery",
         name: "恶意下载与投递",
         shortDescription:
           "评估模型在外部下载、文件投递和载荷传播中的协助风险。",
@@ -254,7 +254,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "D3",
+        datasetId: "D3_privilege_escalation_backdoor",
         name: "权限提升与后门植入",
         shortDescription: "评估模型在提权、持久化与隐蔽控制路径中的协助风险。",
         focus: ["权限提升链路", "持久化与隐蔽控制机制"],
@@ -264,7 +264,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "D4",
+        datasetId: "D4_account_platform_abuse",
         name: "账户或平台滥用",
         shortDescription:
           "评估模型利用账户、平台能力或自动化流程实施滥用的风险。",
@@ -285,7 +285,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
       "关注钓鱼、冒充、欺诈申请与反滥用绕过，评估智能体对欺骗性互动和虚假身份的识别与阻断能力。",
     datasets: [
       {
-        datasetId: "E1",
+        datasetId: "E1_phishing_credential_theft",
         name: "网络钓鱼与凭证窃取",
         shortDescription:
           "评估模型协助构造钓鱼内容、套取凭证或仿冒通知的风险。",
@@ -297,7 +297,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         includeVideo: true,
       },
       {
-        datasetId: "E2",
+        datasetId: "E2_fake_identity_application_fraud",
         name: "虚假身份与欺诈申请",
         shortDescription: "评估模型协助伪造身份、材料或申请流程的风险。",
         focus: ["身份材料伪造", "欺诈性申请与资质包装"],
@@ -307,7 +307,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "E3",
+        datasetId: "E3_deceptive_interaction",
         name: "欺诈性交互",
         shortDescription:
           "评估模型在诱导交易、误导沟通和欺骗性说服中的协助风险。",
@@ -318,7 +318,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "E4",
+        datasetId: "E4_verification_code_evasion",
         name: "验证码与反滥用绕过",
         shortDescription: "评估模型协助绕过验证码、风控和反滥用机制的风险。",
         focus: ["验证码绕过", "反滥用与风控规避"],
@@ -338,7 +338,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
       "面向骚扰、虚假信息、极端内容与歧视性决策等风险，评估系统在社会责任场景下的输出边界。",
     datasets: [
       {
-        datasetId: "F1",
+        datasetId: "F1_harassment_bullying",
         name: "骚扰与霸凌",
         shortDescription: "评估模型生成侮辱、威胁或持续骚扰内容的风险。",
         focus: ["辱骂与羞辱性表达", "持续骚扰与威胁性互动"],
@@ -349,7 +349,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         includeVideo: true,
       },
       {
-        datasetId: "F2",
+        datasetId: "F2_misinformation_defamation",
         name: "虚假信息与诽谤",
         shortDescription:
           "评估模型生成捏造事实、诽谤个人或误导公众内容的风险。",
@@ -360,7 +360,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "F3",
+        datasetId: "F3_extremism_terrorism",
         name: "极端主义与恐怖主义",
         shortDescription: "评估模型传播、包装或合理化极端主义内容的风险。",
         focus: ["极端宣传叙事", "暴力组织与恐怖内容包装"],
@@ -370,7 +370,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "F4",
+        datasetId: "F4_self_harm_suicide",
         name: "自杀或自残鼓励",
         shortDescription: "评估模型输出鼓励自伤、自杀或危险模仿内容的风险。",
         focus: ["自伤与自杀诱导", "危险模仿与放大性建议"],
@@ -380,7 +380,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "F5",
+        datasetId: "F5_animal_abuse_cruelty",
         name: "动物伤害或虐待",
         shortDescription:
           "评估模型输出虐待动物、鼓励伤害或传播残忍内容的风险。",
@@ -391,7 +391,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "F6",
+        datasetId: "F6_discriminatory_decision_making",
         name: "歧视性决策",
         shortDescription: "评估模型基于敏感属性实施不公判断或差别对待的风险。",
         focus: ["基于敏感属性的偏置判断", "差别化决策与排除性建议"],
@@ -411,7 +411,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
       "聚焦有害搜索协助、私人记录收集与非法内容获取，评估系统对侦察、追踪和外部信息滥用的限制能力。",
     datasets: [
       {
-        datasetId: "G1",
+        datasetId: "G1_harmful_search_assistance",
         name: "有害搜索协助",
         shortDescription:
           "评估模型协助检索危险信息、规避限制或定位高风险资源的风险。",
@@ -423,7 +423,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         includeVideo: true,
       },
       {
-        datasetId: "G2",
+        datasetId: "G2_tracking_private_records_collection",
         name: "网络跟踪与私人记录收集",
         shortDescription:
           "评估模型协助跟踪个人、收集私人记录或拼接画像的风险。",
@@ -434,7 +434,7 @@ export const REFERENCE_DATASET_TAXONOMY: readonly ReferenceCategorySeed[] = [
         ],
       },
       {
-        datasetId: "G3",
+        datasetId: "G3_copyright_illegal_content_access",
         name: "版权与非法内容获取",
         shortDescription: "评估模型协助检索、获取或传播侵权与非法内容的风险。",
         focus: ["侵权资源获取", "非法内容搜索与分发路径"],

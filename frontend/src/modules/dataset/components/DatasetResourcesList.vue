@@ -1,11 +1,6 @@
 <template>
-  <section class="resources-section">
-    <div class="layout-section-head">
-      <h2>{{ t("dataset.resources.title") }}</h2>
-      <p>{{ t("dataset.resources.description") }}</p>
-    </div>
-
-    <div v-if="resources.length" class="resource-list">
+  <div class="resources-list-panel">
+    <div class="resource-list">
       <article
         v-for="resource in resources"
         :key="resource.label + resource.url"
@@ -21,13 +16,7 @@
       </article>
     </div>
 
-    <InlineNotice
-      v-else
-      tone="info"
-      :title="t('dataset.resources.emptyTitle')"
-      :message="t('dataset.resources.emptyMessage')"
-    />
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -35,7 +24,6 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { DatasetResourceLink } from "@/shared/types/dataset-types";
 import Button from "@/shared/ui/actions/UiButton.vue";
-import InlineNotice from "@/shared/ui/feedback/InlineNotice.vue";
 
 defineProps<{
   resources: DatasetResourceLink[];
@@ -54,12 +42,10 @@ const typeLabels = computed<Record<DatasetResourceLink["type"], string>>(
 </script>
 
 <style scoped lang="scss">
-.resources-section {
+.resources-list-panel {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 .resource-list {
