@@ -8,7 +8,7 @@
 - Agent 模板、注册、详情、列表、真实轻量验证、归档和凭据脱敏存储
 - `test_runs / run_datasets / run_samples / sample_executions` 任务图创建
 - worker 轮询认领、心跳、暂停/恢复/取消/终止、任务级摘要报告
-- `var/backend/workdir` 工作目录准备、probe backend 拉起、`external_agent_api / synthetic_local` dispatch
+- `settings.worker_workdir_root` 工作目录准备、probe backend 拉起、`external_agent_api / synthetic_local` dispatch
 - `sample_oracles` 规则入库，运行结束后生成 `oracle_results` 与 `execution_summaries`
 - `run_reports.summary_json` 聚合、评测评分重算/查询、动态难度版本重算/发布、排行榜快照/查询
 
