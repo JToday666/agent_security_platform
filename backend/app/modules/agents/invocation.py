@@ -29,6 +29,14 @@ class AgentInvocationResult:
     raw_response: dict[str, Any]
 
 
+@dataclass(slots=True)
+class AgentSuccessEvaluation:
+    """Result of checking external Agent success semantics."""
+
+    passed: bool
+    error_message: str | None
+
+
 def read_json_path(payload: Any, path: str | None) -> Any:
     """Read a dotted path from a JSON-like object."""
     if not path:
@@ -40,6 +48,31 @@ def read_json_path(payload: Any, path: str | None) -> Any:
             continue
         return None
     return current
+
+
+def render_platform_values(
+    *,
+    task_render_mode: str,
+    platform_values: dict[str, Any],
+) -> dict[str, Any]:
+    """Render platform values before applying request field mappings."""
+    rendered = dict(platform_values)
+    if task_render_mode != "goal_with_entry_url":
+        return rendered
+
+    entry_url = rendered.get("entryUrl")
+    entry_url_text = "" if entry_url is None else str(entry_url).strip()
+    if not entry_url_text:
+        return rendered
+
+    task = rendered.get("task")
+    task_text = "" if task is None else str(task).strip()
+    rendered["task"] = (
+        f"{task_text}\n\nStart URL: {entry_url_text}"
+        if task_text
+        else f"Start URL: {entry_url_text}"
+    )
+    return rendered
 
 
 def build_agent_request_body(
@@ -61,6 +94,40 @@ def build_agent_request_body(
         if value is not None:
             body[target_field] = value
     return body
+
+
+def evaluate_agent_success(
+    *,
+    status: Any,
+    response_json: dict[str, Any],
+    output_mapping: dict[str, str],
+    success_statuses: set[str],
+) -> AgentSuccessEvaluation:
+    """Evaluate lifecycle status plus optional Boolean task success output."""
+    if str(status) not in success_statuses:
+        return AgentSuccessEvaluation(passed=False, error_message=None)
+
+    success_path = output_mapping.get("success")
+    if not success_path:
+        return AgentSuccessEvaluation(passed=True, error_message=None)
+
+    success_value = read_json_path(response_json, success_path)
+    if success_value is True:
+        return AgentSuccessEvaluation(passed=True, error_message=None)
+    if success_value is False:
+        return AgentSuccessEvaluation(
+            passed=False,
+            error_message="外部 Agent success 字段为 false。",
+        )
+    if success_value is None:
+        return AgentSuccessEvaluation(
+            passed=False,
+            error_message=f"未能从响应路径 {success_path} 解析 success。",
+        )
+    return AgentSuccessEvaluation(
+        passed=False,
+        error_message=f"响应路径 {success_path} 必须是布尔值。",
+    )
 
 
 def _join_url(base_url: str, path: str) -> str:
@@ -129,8 +196,17 @@ class AgentInvocationClient:
             read_json_path(response_json, output_mapping.get("status")) or "completed"
         )
         success_statuses = set(agent_snapshot.get("successStatuses") or ["completed"])
+        success = evaluate_agent_success(
+            status=status,
+            response_json=response_json,
+            output_mapping=output_mapping,
+            success_statuses=success_statuses,
+        )
+        error_message = read_json_path(
+            response_json, output_mapping.get("errorMessage")
+        )
         return AgentInvocationResult(
-            passed=str(status) in success_statuses,
+            passed=success.passed,
             status=str(status),
             external_run_id=read_json_path(
                 response_json, output_mapping.get("externalRunId")
@@ -138,9 +214,7 @@ class AgentInvocationClient:
             final_answer=read_json_path(
                 response_json, output_mapping.get("finalAnswer")
             ),
-            error_message=read_json_path(
-                response_json, output_mapping.get("errorMessage")
-            ),
+            error_message=error_message or success.error_message,
             raw_response=response_json,
         )
 
@@ -191,16 +265,23 @@ class AgentInvocationClient:
             )
             status = read_json_path(poll_json, output_mapping.get("status"))
             if status is not None and str(status) in terminal_statuses:
+                success = evaluate_agent_success(
+                    status=status,
+                    response_json=poll_json,
+                    output_mapping=output_mapping,
+                    success_statuses=success_statuses,
+                )
+                error_message = read_json_path(
+                    poll_json, output_mapping.get("errorMessage")
+                )
                 return AgentInvocationResult(
-                    passed=str(status) in success_statuses,
+                    passed=success.passed,
                     status=str(status),
                     external_run_id=str(external_run_id),
                     final_answer=read_json_path(
                         poll_json, output_mapping.get("finalAnswer")
                     ),
-                    error_message=read_json_path(
-                        poll_json, output_mapping.get("errorMessage")
-                    ),
+                    error_message=error_message or success.error_message,
                     raw_response=poll_json,
                 )
             if asyncio.get_running_loop().time() >= deadline:
@@ -217,7 +298,10 @@ class AgentInvocationClient:
         body = build_agent_request_body(
             custom_request_body=agent_snapshot.get("customRequestBody") or {},
             platform_input_mapping=agent_snapshot.get("platformInputMapping") or {},
-            platform_values=platform_values,
+            platform_values=render_platform_values(
+                task_render_mode=str(agent_snapshot.get("taskRenderMode") or ""),
+                platform_values=platform_values,
+            ),
         )
         return await self._request_json(
             "POST",
