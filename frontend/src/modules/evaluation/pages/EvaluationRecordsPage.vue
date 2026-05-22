@@ -15,8 +15,6 @@
       </template>
     </PageHero>
 
-    <EvaluationTrendPanel @select="openEvaluationDetail" />
-
     <PageStatePanel
       v-if="loading"
       :title="t('evaluation.records.loadingTitle')"
@@ -33,6 +31,8 @@
     />
 
     <div v-else-if="records.length" class="records-shell">
+      <EvaluationTrendPanel @select="openEvaluationDetail" />
+
       <EvaluationFilterBar
         :search="search"
         :status="status"

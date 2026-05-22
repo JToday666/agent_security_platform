@@ -5,7 +5,6 @@
     "notFound": "No se encontró el ítem de benchmark correspondiente."
   },
   "fallback": {
-    "currentRiskDomain": "Dominio de riesgo actual",
     "dataset": "Conjunto de datos",
     "media": "Medio {index}",
     "pending": "Pendiente de completar",
@@ -16,32 +15,36 @@
   },
   "filter": {
     "clearSearch": "Borrar búsqueda",
-    "description": "Localiza rápidamente conjuntos de datos objetivo por dominio de riesgo, nombre y orden.",
     "searchLabel": "Buscar",
-    "searchPlaceholder": "Buscar por nombre o resumen",
+    "searchPlaceholder": "Buscar por nombre, resumen o dominio de riesgo",
     "sortLabel": "Orden",
     "sortOptions": {
-      "default": "Orden predeterminado",
+      "default": "Orden por dominio de riesgo",
       "samplesDesc": "Número de muestras, de mayor a menor",
       "updatedDesc": "Actualización reciente"
-    },
-    "title": "Filtrar y ordenar"
+    }
+  },
+  "catalog": {
+    "allDatasets": "Todos los conjuntos de datos",
+    "allDatasetsDescription": "Consulta todos los conjuntos de datos de seguridad disponibles para evaluación.",
+    "categoryFilter": "Filtro por dominio de riesgo",
+    "resultUnit": "conjuntos de datos",
+    "stats": {
+      "datasets": "Conjuntos de datos",
+      "riskDomains": "Dominios de riesgo",
+      "samples": "Muestras totales",
+      "updatedAt": "Actualización reciente"
+    }
   },
   "labels": {
-    "benchmarkItemCount": "Número de ítems de benchmark",
     "riskDomain": "Dominio de riesgo",
     "sampleCount": "Número de muestras",
-    "updatedAt": "Actualización reciente",
-    "updateTime": "Hora de actualización"
+    "updatedAt": "Actualización reciente"
   },
   "media": {
     "descriptionFallback": "Este medio ayuda a comprender la estructura del ítem de benchmark y su comportamiento de ejecución.",
-    "empty": "Este ítem de benchmark no tiene recursos multimedia disponibles.",
+    "tab": "Medios",
     "unavailable": "Recurso no disponible"
-  },
-  "meta": {
-    "sampleCountDescription": "Número total de muestras que componen este conjunto de datos.",
-    "updatedAtDescription": "Según la hora devuelta por la API actual."
   },
   "pages": {
     "catalog": {
@@ -58,31 +61,35 @@
     },
     "detail": {
       "backToCatalog": "Volver al catálogo de conjuntos de datos",
-      "ctaDescription": "Después de seleccionar este conjunto de datos, puedes pasar directamente a la página de envío para configurar la integración del Agent y los parámetros de ejecución.",
-      "ctaTitle": "Preparado para iniciar la evaluación",
       "descriptionFallback": "Consulta la descripción, los puntos clave, los recursos y los ejemplos de este conjunto de datos.",
       "detailLoadFailedTitle": "Error al cargar los detalles",
+      "emptyHighlights": "No hay puntos clave de evaluación disponibles.",
+      "emptyScenarios": "No hay escenarios típicos disponibles.",
       "fullDescriptionFallback": "No hay descripción detallada disponible.",
       "loadingMessage": "Espera un momento.",
       "loadingTitle": "Cargando detalles",
       "loginToEvaluateDataset": "Inicia sesión para evaluar este conjunto de datos",
+      "mainLabel": "Contenido detallado del conjunto de datos",
       "notFoundTitle": "Ítem de benchmark no encontrado",
       "retryAction": "Reintentar",
       "sections": {
+        "assets": "Materiales adicionales",
         "details": "Descripción detallada",
         "highlights": "Puntos clave de evaluación",
-        "media": "Material multimedia",
         "scenarios": "Escenarios típicos"
       },
-      "submitWithDataset": "Usar este conjunto de datos para iniciar una evaluación",
-      "titleFallback": "Detalles del conjunto de datos"
+      "sameRiskTitle": "Mismo dominio de riesgo",
+      "sideActionTitle": "Acciones",
+      "sideInfoTitle": "Información del conjunto de datos",
+      "sideLabel": "Información lateral del conjunto de datos",
+      "submitWithDataset": "Usar este conjunto de datos para iniciar una evaluación"
     }
   },
   "resources": {
-    "description": "Solo se muestran documentos, descargas, demostraciones o enlaces externos devueltos por la API actual.",
-    "emptyMessage": "Este conjunto de datos no devolvió recursos externos que puedan mostrarse.",
-    "emptyTitle": "Sin recursos",
-    "title": "Recursos y ejemplos",
+    "emptyMessage": "Este conjunto de datos no tiene recursos ni medios que puedan mostrarse.",
+    "emptyTitle": "Sin materiales adicionales",
+    "tab": "Recursos",
+    "tabsAria": "Tipo de material",
     "types": {
       "demo": "Demostración",
       "docs": "Documentación",

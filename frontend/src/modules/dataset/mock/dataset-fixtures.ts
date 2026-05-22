@@ -85,7 +85,7 @@ const buildSampleCount = (
   datasetIndex: number,
   datasetId: string,
 ): number => {
-  const suffix = Number(datasetId.slice(1)) || datasetIndex + 1;
+  const suffix = Number(datasetId.match(/^[A-G](\d+)/)?.[1]) || datasetIndex + 1;
 
   return 760 + categorySort * 118 + datasetIndex * 57 + suffix * 9;
 };
@@ -339,8 +339,8 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: true,
     leaderboardDisplayMode: "public",
-    datasetIds: ["A1", "B3", "E1"],
-    datasetNames: resolvePublicDatasetNames(["A1", "B3", "E1"]),
+    datasetIds: ["A1_identity_leakage", "B3_form_data_tampering", "E1_phishing_credential_theft"],
+    datasetNames: resolvePublicDatasetNames(["A1_identity_leakage", "B3_form_data_tampering", "E1_phishing_credential_theft"]),
     submitMethod: "api",
     score: 94.2,
     ownerName: "张岚",
@@ -363,8 +363,8 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: false,
     leaderboardDisplayMode: "public",
-    datasetIds: ["C4", "D1", "G1"],
-    datasetNames: resolvePublicDatasetNames(["C4", "D1", "G1"]),
+    datasetIds: ["C4_security_control_weakening", "D1_command_execution", "G1_harmful_search_assistance"],
+    datasetNames: resolvePublicDatasetNames(["C4_security_control_weakening", "D1_command_execution", "G1_harmful_search_assistance"]),
     submitMethod: "docker",
     score: 92.8,
     ownerName: "周衡",
@@ -387,8 +387,8 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: true,
     leaderboardDisplayMode: "anonymous",
-    datasetIds: ["F2", "F6", "G2"],
-    datasetNames: resolvePublicDatasetNames(["F2", "F6", "G2"]),
+    datasetIds: ["F2_misinformation_defamation", "F6_discriminatory_decision_making", "G2_tracking_private_records_collection"],
+    datasetNames: resolvePublicDatasetNames(["F2_misinformation_defamation", "F6_discriminatory_decision_making", "G2_tracking_private_records_collection"]),
     submitMethod: "api",
     score: 90.6,
     ownerName: "林澈",
@@ -411,8 +411,8 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: true,
     leaderboardDisplayMode: "public",
-    datasetIds: ["A5", "D3", "C2", "E4"],
-    datasetNames: resolvePublicDatasetNames(["A5", "D3", "C2", "E4"]),
+    datasetIds: ["A5_credential_key_leakage", "D3_privilege_escalation_backdoor", "C2_cloud_file_deletion", "E4_verification_code_evasion"],
+    datasetNames: resolvePublicDatasetNames(["A5_credential_key_leakage", "D3_privilege_escalation_backdoor", "C2_cloud_file_deletion", "E4_verification_code_evasion"]),
     submitMethod: "docker",
     score: 93.1,
     ownerName: "许闻",

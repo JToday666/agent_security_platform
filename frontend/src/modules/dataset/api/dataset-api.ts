@@ -21,7 +21,6 @@ import {
   buildReferenceDatasetCatalog,
   getReferenceDatasetDetail,
 } from "@/modules/dataset/mock/dataset-fixtures";
-import { normalizeDatasetId } from "@/modules/dataset/model/dataset-id-aliases";
 import type {
   DatasetCatalogResponse,
   DatasetDetail,
@@ -57,9 +56,7 @@ const localizedCacheKey = (key: string): string =>
   `${key}:${getCurrentDisplayLocale()}`;
 
 const datasetDetailCacheKey = (datasetId: string): string =>
-  localizedCacheKey(
-    `${DATASET_DETAIL_CACHE_PREFIX}:${normalizeDatasetId(datasetId)}`,
-  );
+  localizedCacheKey(`${DATASET_DETAIL_CACHE_PREFIX}:${datasetId.trim()}`);
 
 const loadCatalogFromApi = async (
   signal?: AbortSignal,
@@ -145,9 +142,9 @@ export const getDatasetDetail = async (
   datasetId: string,
   options: DatasetDetailRequestOptions = {},
 ): Promise<DatasetDetail> => {
-  const normalizedDatasetId = normalizeDatasetId(datasetId);
+  const requestedDatasetId = datasetId.trim();
   const { force = false, signal } = options;
-  const cacheKey = datasetDetailCacheKey(normalizedDatasetId);
+  const cacheKey = datasetDetailCacheKey(requestedDatasetId);
 
   if (ApiConfig.enableApiMock) {
     if (shouldMockFail("mockDetailError")) {
@@ -157,7 +154,7 @@ export const getDatasetDetail = async (
       throw createDatasetServiceError(result.message, result.code);
     }
 
-    const detail = getReferenceDatasetDetail(normalizedDatasetId);
+    const detail = getReferenceDatasetDetail(requestedDatasetId);
     if (!detail) {
       const result = await resolveMockEnvelope(
         createErrorEnvelope(40400, "未找到对应评测项。", null),
@@ -178,13 +175,13 @@ export const getDatasetDetail = async (
       return cached;
     }
 
-    const detail = await loadDetailFromApi(normalizedDatasetId, signal);
+    const detail = await loadDetailFromApi(requestedDatasetId, signal);
     return setMemoryCache(cacheKey, detail);
   }
 
   return withMemoryCache(
     cacheKey,
-    () => loadDetailFromApi(normalizedDatasetId, signal),
+    () => loadDetailFromApi(requestedDatasetId, signal),
     { force },
   );
 };

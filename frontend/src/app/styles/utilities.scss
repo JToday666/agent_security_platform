@@ -9,19 +9,12 @@
   gap: var(--grid-gap, 1rem);
 }
 
-.grid-cols-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
 .hidden {
   display: none !important;
 }
 
 @media (max-width: 768px) {
-  .grid-auto-fit,
-  .grid-cols-2 {
+  .grid-auto-fit {
     grid-template-columns: 1fr;
   }
 }

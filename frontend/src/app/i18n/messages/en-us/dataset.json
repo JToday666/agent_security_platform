@@ -5,7 +5,6 @@
     "notFound": "No matching benchmark item was found."
   },
   "fallback": {
-    "currentRiskDomain": "Current risk domain",
     "dataset": "Dataset",
     "media": "Media {index}",
     "pending": "To be completed",
@@ -16,32 +15,36 @@
   },
   "filter": {
     "clearSearch": "Clear Search",
-    "description": "Quickly locate target datasets by risk domain, name, and sort order.",
     "searchLabel": "Search",
-    "searchPlaceholder": "Search by name or summary",
+    "searchPlaceholder": "Search dataset name, summary, or risk domain",
     "sortLabel": "Sort",
     "sortOptions": {
-      "default": "Default Sort",
+      "default": "Risk Domain Order",
       "samplesDesc": "Sample Count, High to Low",
       "updatedDesc": "Recently Updated"
-    },
-    "title": "Filter and Sort"
+    }
+  },
+  "catalog": {
+    "allDatasets": "All Datasets",
+    "allDatasetsDescription": "View every security dataset available for evaluation.",
+    "categoryFilter": "Risk domain filter",
+    "resultUnit": "datasets",
+    "stats": {
+      "datasets": "Datasets",
+      "riskDomains": "Risk Domains",
+      "samples": "Total Samples",
+      "updatedAt": "Recently Updated"
+    }
   },
   "labels": {
-    "benchmarkItemCount": "Benchmark item count",
     "riskDomain": "Risk domain",
     "sampleCount": "Sample Count",
-    "updatedAt": "Recently Updated",
-    "updateTime": "Updated At"
+    "updatedAt": "Recently Updated"
   },
   "media": {
     "descriptionFallback": "This media helps explain the benchmark item's structure and runtime behavior.",
-    "empty": "No media resources are available for this benchmark item.",
+    "tab": "Media",
     "unavailable": "Resource unavailable"
-  },
-  "meta": {
-    "sampleCountDescription": "Total number of samples in this dataset.",
-    "updatedAtDescription": "Based on the timestamp returned by the current API."
   },
   "pages": {
     "catalog": {
@@ -58,31 +61,35 @@
     },
     "detail": {
       "backToCatalog": "Back to Dataset Catalog",
-      "ctaDescription": "After selecting this dataset, you can continue to the submission page to configure Agent integration and runtime parameters.",
-      "ctaTitle": "Ready to Start Evaluation",
       "descriptionFallback": "View this dataset's description, focus areas, resources, and examples.",
       "detailLoadFailedTitle": "Detail Loading Failed",
+      "emptyHighlights": "No evaluation focus items are available.",
+      "emptyScenarios": "No typical scenarios are available.",
       "fullDescriptionFallback": "No detailed description available.",
       "loadingMessage": "Please wait.",
       "loadingTitle": "Loading Details",
       "loginToEvaluateDataset": "Log in to evaluate this dataset",
+      "mainLabel": "Dataset detail content",
       "notFoundTitle": "Benchmark item not found",
       "retryAction": "Retry",
       "sections": {
+        "assets": "Additional Materials",
         "details": "Details",
         "highlights": "Evaluation Focus",
-        "media": "Media",
         "scenarios": "Typical Scenarios"
       },
-      "submitWithDataset": "Use this dataset to start an evaluation",
-      "titleFallback": "Dataset Details"
+      "sameRiskTitle": "Same Risk Domain",
+      "sideActionTitle": "Actions",
+      "sideInfoTitle": "Dataset Information",
+      "sideLabel": "Dataset side information",
+      "submitWithDataset": "Use this dataset to start an evaluation"
     }
   },
   "resources": {
-    "description": "Only documents, downloads, demos, or external links returned by the current API are shown.",
-    "emptyMessage": "This dataset did not return external resources that can be displayed.",
-    "emptyTitle": "No resources",
-    "title": "Resources and Examples",
+    "emptyMessage": "This dataset has no displayable resources or media.",
+    "emptyTitle": "No additional materials",
+    "tab": "Resources",
+    "tabsAria": "Asset type",
     "types": {
       "demo": "Demo",
       "docs": "Documentation",

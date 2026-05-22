@@ -11,7 +11,6 @@ import type {
 } from "@/shared/types/agent-types";
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
-import { normalizeDatasetIds } from "@/modules/dataset/model/dataset-id-aliases";
 import {
   resolvePublicDatasetName,
   resolvePublicDatasetNames,
@@ -369,7 +368,7 @@ const normalizeProgress = (
 export const adaptEvaluationRecord = (value: unknown): EvaluationRecord => {
   const candidate =
     value && typeof value === "object" ? (value as UnknownRecord) : {};
-  const datasetIds = normalizeDatasetIds(toStringArray(candidate.datasetIds));
+  const datasetIds = toStringArray(candidate.datasetIds);
   const datasetNames = resolvePublicDatasetNames(
     datasetIds,
     Array.isArray(candidate.datasetNames)

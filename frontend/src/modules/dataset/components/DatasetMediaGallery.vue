@@ -1,10 +1,6 @@
 <template>
   <section class="gallery">
-    <div v-if="!media.length" class="empty-card">
-      <p>{{ t("dataset.media.empty") }}</p>
-    </div>
-
-    <div v-else class="grid-auto-fit" style="--grid-min-size: 280px; --grid-gap: 1rem;">
+    <div class="grid-auto-fit" style="--grid-min-size: 280px; --grid-gap: 1rem;">
       <article
         v-for="item in media"
         :key="item.mediaId"
@@ -58,12 +54,6 @@ const markFailed = (mediaId: string) => {
 </script>
 
 <style scoped lang="scss">
-.empty-card {
-  padding: 1.4rem;
-  border-radius: 1.2rem;
-  color: #64748b;
-}
-
 .media-card {
   overflow: hidden;
   border-radius: 1.4rem;
