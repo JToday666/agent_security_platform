@@ -132,14 +132,55 @@ class EmptyTranslationRepositoryStub(DatasetRepositoryStub):
         }
 
 
+class ExecuteRows:
+    def __init__(self, rows) -> None:
+        self.rows = rows
+
+    def all(self):
+        return self.rows
+
+
+class TranslationSessionStub:
+    def __init__(self) -> None:
+        self.results = [
+            [
+                (
+                    1,
+                    {
+                        "en-US": {
+                            "name": "Confidentiality",
+                            "meaning": "Protect sensitive information.",
+                        }
+                    },
+                )
+            ],
+            [(2, {"en-US": {"name": "Identity Leakage"}})],
+            [
+                (
+                    2,
+                    {"en-US": {"short_description": "Short English description."}},
+                )
+            ],
+        ]
+
+    async def execute(self, stmt):
+        _ = stmt
+        return ExecuteRows(self.results.pop(0))
+
+
 @pytest.mark.asyncio
-async def test_dataset_repository_has_explicit_translation_loader_contract() -> None:
-    repository = DatasetRepository(SimpleNamespace())
+async def test_dataset_repository_loads_locale_translation_maps() -> None:
+    repository = DatasetRepository(TranslationSessionStub())
 
     assert await repository.load_translation_maps("en-US", [1], [2]) == {
-        "categories": {},
-        "subtypes": {},
-        "display_meta": {},
+        "categories": {
+            1: {
+                "name": "Confidentiality",
+                "meaning": "Protect sensitive information.",
+            }
+        },
+        "subtypes": {2: {"name": "Identity Leakage"}},
+        "display_meta": {2: {"short_description": "Short English description."}},
     }
 
 

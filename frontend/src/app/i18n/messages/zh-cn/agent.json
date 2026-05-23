@@ -265,12 +265,14 @@
       "errorMessage": "可选。填写错误信息所在路径，便于失败时展示原因，例如 error.message。",
       "externalRunId": "轮询模式必填。填写提交响应中运行 ID 的路径；顶层字段写 runId，嵌套字段写 data.runId。",
       "finalAnswer": "可选。填写最终答案或文本结果所在路径，例如 answer 或 output.answer。",
+      "success": "可选。填写布尔成功字段所在路径，例如 isSuccess 或 data.success。",
       "status": "轮询模式必填。填写结果响应中状态字段的路径；顶层字段写 status，嵌套字段写 data.status。"
     },
     "outputMappingLabels": {
       "errorMessage": "errorMessage <- 响应路径",
       "externalRunId": "externalRunId <- 响应路径",
       "finalAnswer": "finalAnswer <- 响应路径",
+      "success": "success <- 响应路径",
       "status": "status <- 响应路径"
     },
     "stepCounter": "步骤 {current} / {total}",

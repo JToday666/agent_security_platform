@@ -19,8 +19,8 @@
     "searchPlaceholder": "Search dataset name, summary, or risk domain",
     "sortLabel": "Sort",
     "sortOptions": {
-      "default": "Risk Domain Order",
-      "samplesDesc": "Sample Count, High to Low",
+      "default": "Risk Domain",
+      "samplesDesc": "Sample Count",
       "updatedDesc": "Recently Updated"
     }
   },

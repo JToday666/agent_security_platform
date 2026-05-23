@@ -114,6 +114,13 @@ class RiskCategory(Base):
     description: Mapped[str | None] = mapped_column(
         Text, nullable=True, comment="更详细的描述信息"
     )
+    translations: Mapped[dict[str, dict[str, object]]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'::jsonb"),
+        comment="按 locale 存储的风险大类展示字段翻译",
+    )
     sort_order: Mapped[int | None] = mapped_column(
         SmallInteger,
         nullable=True,
@@ -168,6 +175,13 @@ class RiskSubtype(Base):
     )
     name: Mapped[str] = mapped_column(
         Text, nullable=False, comment="具体诱骗或攻击类别名"
+    )
+    translations: Mapped[dict[str, dict[str, object]]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'::jsonb"),
+        comment="按 locale 存储的风险子类展示字段翻译",
     )
     sort_order: Mapped[int | None] = mapped_column(
         SmallInteger, nullable=True, comment="列表呈现时的排序支持"
@@ -235,6 +249,13 @@ class RiskSubtypeDisplayMeta(Base):
         default=list,
         server_default=text("'[]'::jsonb"),
         comment="包含在富文本中所需的图片或视频演示材料(List<Dict>)",
+    )
+    translations: Mapped[dict[str, dict[str, object]]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'::jsonb"),
+        comment="按 locale 存储的展示元数据翻译",
     )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

@@ -19,8 +19,8 @@
     "searchPlaceholder": "Buscar por nombre, resumen o dominio de riesgo",
     "sortLabel": "Orden",
     "sortOptions": {
-      "default": "Orden por dominio de riesgo",
-      "samplesDesc": "Número de muestras, de mayor a menor",
+      "default": "Dominio de riesgo",
+      "samplesDesc": "Número de muestras",
       "updatedDesc": "Actualización reciente"
     }
   },

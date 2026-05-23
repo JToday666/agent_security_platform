@@ -43,6 +43,7 @@ from app.modules.evaluations.schemas import (
 )
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES, build_controls
 from app.platform.errors import ConflictError, ForbiddenError, NotFoundError
+from app.platform.i18n import DEFAULT_LOCALE, get_current_locale
 
 
 class EvaluationService:
@@ -198,6 +199,13 @@ class EvaluationService:
         datasets_by_run, reports_by_run = await self.repository.load_related_for_runs(
             [run.id for run in runs]
         )
+        dataset_names = await self._localized_dataset_names(
+            [
+                dataset
+                for datasets in datasets_by_run.values()
+                for dataset in datasets
+            ]
+        )
         scores_by_run = {}
         if hasattr(self.repository, "load_scores_for_runs"):
             scores_by_run = await self.repository.load_scores_for_runs(
@@ -226,7 +234,12 @@ class EvaluationService:
                         "publicToLeaderboard": run.public_to_leaderboard,
                         "leaderboardDisplayMode": run.leaderboard_display_mode,
                         "datasetIds": [dataset.dataset_code for dataset in datasets],
-                        "datasetNames": [dataset.dataset_name for dataset in datasets],
+                        "datasetNames": [
+                            dataset_names.get(
+                                dataset.dataset_code, dataset.dataset_name
+                            )
+                            for dataset in datasets
+                        ],
                         "submitMethod": run.submit_method,
                         "score": (
                             None
@@ -347,6 +360,7 @@ class EvaluationService:
     async def _build_detail_snapshot(self, run, owner_name: str) -> EvaluationDetail:
         """组装详情接口返回的完整任务快照。"""
         datasets = await self.repository.load_run_datasets(run.id)
+        dataset_names = await self._localized_dataset_names(datasets)
         report = await self.repository.load_run_report(run.id)
         score = (
             await self.repository.load_run_score(run.id)
@@ -376,7 +390,10 @@ class EvaluationService:
                 "publicToLeaderboard": run.public_to_leaderboard,
                 "leaderboardDisplayMode": run.leaderboard_display_mode,
                 "datasetIds": [dataset.dataset_code for dataset in datasets],
-                "datasetNames": [dataset.dataset_name for dataset in datasets],
+                "datasetNames": [
+                    dataset_names.get(dataset.dataset_code, dataset.dataset_name)
+                    for dataset in datasets
+                ],
                 "submitMethod": run.submit_method,
                 "ownerName": owner_name,
                 "parameters": build_parameters(run),
@@ -392,7 +409,10 @@ class EvaluationService:
                     "runningDatasetName": (
                         None
                         if running_dataset is None
-                        else running_dataset.dataset_name
+                        else dataset_names.get(
+                            running_dataset.dataset_code,
+                            running_dataset.dataset_name,
+                        )
                     ),
                     "pauseDeadlineAt": (
                         None
@@ -404,7 +424,10 @@ class EvaluationService:
                         running_dataset_name=(
                             None
                             if running_dataset is None
-                            else running_dataset.dataset_name
+                            else dataset_names.get(
+                                running_dataset.dataset_code,
+                                running_dataset.dataset_name,
+                            )
                         ),
                     ),
                 },
@@ -418,3 +441,20 @@ class EvaluationService:
                 ),
             }
         )
+
+    async def _localized_dataset_names(self, datasets) -> dict[str, str]:
+        """按当前响应 locale 返回数据集名称，缺失时保留运行快照。"""
+        names = {
+            dataset.dataset_code: dataset.dataset_name
+            for dataset in datasets
+            if getattr(dataset, "dataset_code", None)
+        }
+        locale = get_current_locale()
+        loader = getattr(self.repository, "load_dataset_name_translations", None)
+        if locale == DEFAULT_LOCALE or not callable(loader) or not names:
+            return names
+        translated_names = await loader(locale, list(names))
+        for dataset_code, translated_name in translated_names.items():
+            if isinstance(translated_name, str) and translated_name:
+                names[dataset_code] = translated_name
+        return names

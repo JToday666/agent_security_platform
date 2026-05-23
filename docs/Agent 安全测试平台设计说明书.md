@@ -649,14 +649,14 @@ oracle 结果表。
 
 run 报告表。
 
-| 字段          | 类型        | 说明         |
-| ------------- | ----------- | ------------ |
-| id            | bigint      | 主键         |
-| run_id        | bigint      | FK           |
-| report_status | text        | 报告状态     |
-| summary_json  | jsonb       | 报告摘要     |
-| report_uri    | text        | 报告文件地址 |
-| created_at    | timestamptz | 创建时间     |
+| 字段          | 类型        | 说明                     |
+| ------------- | ----------- | ------------------------ |
+| id            | bigint      | 主键                     |
+| run_id        | bigint      | FK                       |
+| report_status | text        | 报告状态                 |
+| summary_json  | jsonb       | 报告摘要                 |
+| report_uri    | text        | 报告文件地址（当前预留） |
+| created_at    | timestamptz | 创建时间                 |
 
 ---
 

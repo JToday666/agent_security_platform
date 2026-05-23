@@ -118,6 +118,31 @@ class EvaluationRepository:
             },
         }
 
+    async def load_dataset_name_translations(
+        self, locale: str, dataset_codes: list[str]
+    ) -> dict[str, str]:
+        """按公开数据集 ID 加载当前 locale 的展示名称翻译。"""
+        if not locale or not dataset_codes:
+            return {}
+        rows = (
+            await self.db.execute(
+                select(RiskSubtype.code, RiskSubtype.translations).where(
+                    RiskSubtype.code.in_(sorted(set(dataset_codes)))
+                )
+            )
+        ).all()
+        names: dict[str, str] = {}
+        for code, translations in rows:
+            if not isinstance(translations, dict):
+                continue
+            locale_translations = translations.get(locale)
+            if not isinstance(locale_translations, dict):
+                continue
+            name = locale_translations.get("name")
+            if isinstance(name, str) and name:
+                names[str(code)] = name
+        return names
+
     async def create_run_graph(
         self,
         run: TestRun,
