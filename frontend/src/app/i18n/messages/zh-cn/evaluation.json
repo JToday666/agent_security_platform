@@ -30,7 +30,7 @@
     "abilityStructure": "能力结构",
     "baseline": "基线",
     "completionDate": "完成：{date}",
-    "datasetStack": "dataset",
+    "datasetStack": "数据集",
     "difficulty": "难度",
     "durationMs": "耗时 ms",
     "evaluationId": "评测：{id}",

@@ -30,7 +30,7 @@
     "abilityStructure": "Capability Structure",
     "baseline": "Baseline",
     "completionDate": "Completed: {date}",
-    "datasetStack": "dataset",
+    "datasetStack": "Dataset",
     "difficulty": "Difficulty",
     "durationMs": "Duration ms",
     "evaluationId": "Evaluation: {id}",

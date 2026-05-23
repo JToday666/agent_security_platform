@@ -145,7 +145,7 @@
   },
   "contact": {
     "title": "Contactar",
-    "description": "Para preguntas, sugerencias o colaboración, contacta con nosotros por los canales siguientes.",
+    "description": "El equipo de la plataforma atiende acceso a evaluaciones, soporte de conjuntos y consultas de colaboración.",
     "logoAlt": "Marca de la plataforma de evaluación de seguridad de Agents",
     "email": "Correo",
     "phone": "Teléfono",
@@ -153,11 +153,11 @@
     "addressValue": "Base nacional de ciberseguridad, distrito de Dongxihu, Wuhan",
     "social": "Redes sociales",
     "primary": {
-      "kicker": "Ruta de contacto",
-      "title": "Elige el canal adecuado para la pregunta actual",
-      "description": "La integración de evaluaciones, las preguntas sobre conjuntos, la colaboración y los recursos públicos empiezan aquí; el equipo puede dar seguimiento por tema.",
-      "emailAction": "Enviar correo",
-      "phoneAction": "Llamar"
+      "kicker": "Contacto oficial",
+      "title": "Contactar con el equipo de la plataforma",
+      "description": "Acceso a evaluaciones, soporte de conjuntos, colaboración y mantenimiento de recursos públicos quedan a cargo del equipo de la plataforma.",
+      "emailAction": "Escribir al equipo",
+      "phoneAction": "Llamar al equipo"
     },
     "paths": {
       "items": {

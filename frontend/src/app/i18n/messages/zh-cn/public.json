@@ -145,7 +145,7 @@
   },
   "contact": {
     "title": "联系我们",
-    "description": "如果您有任何问题、建议或合作想法，欢迎通过以下方式与我们取得联系。",
+    "description": "平台团队受理评测接入、数据集支持与合作对接。",
     "logoAlt": "智能体安全评测平台标识",
     "email": "邮箱",
     "phone": "电话",
@@ -153,11 +153,11 @@
     "addressValue": "武汉市东西湖区国家网络安全基地",
     "social": "社交媒体",
     "primary": {
-      "kicker": "联系路径",
-      "title": "按当前问题选择最合适的沟通方式",
-      "description": "评测接入、数据集问题、合作咨询和公开资源都可以从这里进入，平台团队会根据具体事项继续跟进。",
-      "emailAction": "发送邮件",
-      "phoneAction": "拨打电话"
+      "kicker": "官方联络",
+      "title": "联系平台团队",
+      "description": "评测接入、数据集支持、合作对接与公开资源维护由平台团队统一受理。",
+      "emailAction": "邮件联系",
+      "phoneAction": "电话联系"
     },
     "paths": {
       "items": {

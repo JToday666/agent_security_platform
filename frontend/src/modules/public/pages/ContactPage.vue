@@ -336,7 +336,7 @@ const contactPaths = computed<ContactPath[]>(() => [
 .contact-panel__copy h2 {
   margin: 0;
   color: var(--color-text-dark);
-  font-size: clamp(1.75rem, 3.2vw, 2.45rem);
+  font-size: 2.45rem;
   line-height: 1.15;
   letter-spacing: 0;
   overflow-wrap: anywhere;
@@ -549,6 +549,10 @@ const contactPaths = computed<ContactPath[]>(() => [
 }
 
 @media (max-width: 768px) {
+  .contact-panel__copy h2 {
+    font-size: 1.85rem;
+  }
+
   .contact-panel__actions,
   .contact-panel__actions :deep(.ui-button) {
     width: 100%;

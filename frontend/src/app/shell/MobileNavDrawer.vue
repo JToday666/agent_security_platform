@@ -118,7 +118,7 @@ defineEmits<{
   gap: 1rem;
   overflow-y: auto;
   width: min(90vw, 390px);
-  height: calc(100vh - var(--nav-height));
+  height: calc(100dvh - var(--nav-height));
   padding: 1rem;
   border-left: 1px solid rgba(148, 163, 184, 0.18);
   background: linear-gradient(
@@ -226,6 +226,12 @@ defineEmits<{
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
+  min-width: 0;
+}
+
+.mobile-link-main span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .mobile-chevron {

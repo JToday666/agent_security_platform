@@ -30,7 +30,7 @@
     "abilityStructure": "Structure de capacité",
     "baseline": "Référence",
     "completionDate": "Terminé : {date}",
-    "datasetStack": "dataset",
+    "datasetStack": "Jeu de données",
     "difficulty": "Difficulté",
     "durationMs": "Durée ms",
     "evaluationId": "Évaluation : {id}",

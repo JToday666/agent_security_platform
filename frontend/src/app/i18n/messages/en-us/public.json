@@ -145,7 +145,7 @@
   },
   "contact": {
     "title": "Contact Us",
-    "description": "For questions, suggestions, or collaboration, contact us through the channels below.",
+    "description": "The platform team handles evaluation access, dataset support, and collaboration inquiries.",
     "logoAlt": "Agent Security Evaluation Platform mark",
     "email": "Email",
     "phone": "Phone",
@@ -153,11 +153,11 @@
     "addressValue": "National Cybersecurity Base, Dongxihu District, Wuhan",
     "social": "Social Media",
     "primary": {
-      "kicker": "Contact Path",
-      "title": "Choose the right channel for the question at hand",
-      "description": "Evaluation integration, dataset questions, collaboration, and public resources all start here, and the platform team can follow up by topic.",
-      "emailAction": "Send Email",
-      "phoneAction": "Call"
+      "kicker": "Official Contact",
+      "title": "Contact the Platform Team",
+      "description": "Evaluation access, dataset support, collaboration inquiries, and public resource maintenance are handled by the platform team.",
+      "emailAction": "Email Team",
+      "phoneAction": "Call Team"
     },
     "paths": {
       "items": {
