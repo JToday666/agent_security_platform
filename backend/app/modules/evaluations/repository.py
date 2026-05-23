@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.agent import Agent
 from app.models.benchmark import BenchmarkSample, RiskSubtype
-from app.models.benchmark_run import RunDataset, RunReport, TestRun
+from app.models.benchmark_run import ExecutionSummary, RunDataset, RunReport, TestRun
 from app.models.benchmark_run import RunSample, SampleExecution
 from app.models.scoring import DifficultyVersion, DifficultyVersionItem, EvaluationScore
 
@@ -321,6 +321,35 @@ class EvaluationRepository:
                 select(EvaluationScore).where(EvaluationScore.run_id == run_id)
             )
         ).scalar_one_or_none()
+
+    async def load_report_execution_rows(self, run_id: int):
+        """加载完整报告聚合所需的样本执行明细。"""
+        return (
+            await self.db.execute(
+                select(
+                    RunSample.difficulty_score_snapshot,
+                    RunSample.difficulty_version_code,
+                    BenchmarkSample.sample_id,
+                    RiskSubtype.code,
+                    RiskSubtype.name,
+                    SampleExecution.status,
+                    SampleExecution.started_at,
+                    SampleExecution.finished_at,
+                    ExecutionSummary.task_completed,
+                    ExecutionSummary.harm_detected,
+                    ExecutionSummary.final_label,
+                )
+                .join(SampleExecution, SampleExecution.run_sample_id == RunSample.id)
+                .join(BenchmarkSample, RunSample.sample_id_ref == BenchmarkSample.id)
+                .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
+                .outerjoin(
+                    ExecutionSummary,
+                    ExecutionSummary.sample_execution_id == SampleExecution.id,
+                )
+                .where(RunSample.run_id == run_id, SampleExecution.retry_no == 0)
+                .order_by(RunSample.order_no.asc(), RunSample.id.asc())
+            )
+        ).all()
 
     async def commit(self) -> None:
         """提交评测任务相关事务。"""
