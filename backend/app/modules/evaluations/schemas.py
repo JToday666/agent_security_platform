@@ -161,6 +161,113 @@ class EvaluationReport(CamelModel):
     report_uri: str | None = None
 
 
+class EvaluationReportScores(CamelModel):
+    """前端完整报告所需评分集合。"""
+
+    conservative_score: float
+    performance_score: float
+    confidence: float
+    completion_score: float
+    safety_score: float
+    hard_score: float
+    unsafe_rate: float
+    time_score: float
+
+
+class EvaluationReportOutcomeSummary(CamelModel):
+    """标准化样本结果计数。"""
+
+    total: int
+    success: int
+    failed: int
+    error: int
+
+
+class EvaluationReportRawStats(EvaluationReportOutcomeSummary):
+    """完整报告原始统计与派生率。"""
+
+    completion_rate: float
+    success_rate: float
+    conditional_success_rate: float
+
+
+class EvaluationReportPosteriorInterval(CamelModel):
+    """评分后验区间。"""
+
+    ps_q05: float
+    ps_q50: float
+    ps_q95: float
+
+
+class EvaluationReportCoverage(CamelModel):
+    """难度覆盖情况。"""
+
+    difficulty_bucket_hit_count: int
+    difficulty_coverage_ratio: float
+
+
+class EvaluationReportDifficultyBucket(CamelModel):
+    """按难度桶统计的样本结果。"""
+
+    bucket: str
+    total: int
+    success: int
+    failed: int
+    error: int
+    success_rate: float
+
+
+class EvaluationReportDatasetSummary(CamelModel):
+    """按数据集统计的样本结果。"""
+
+    dataset_id: str
+    dataset_name: str
+    total: int
+    success: int
+    failed: int
+    error: int
+
+
+class EvaluationReportScatterPoint(CamelModel):
+    """样本散点图数据。"""
+
+    sample_id: str
+    difficulty: float
+    duration_ms: int
+    normalized_result: Literal["success", "failed", "error"]
+
+
+class EvaluationReportBreakdowns(CamelModel):
+    """完整报告图表拆分数据。"""
+
+    outcome_summary: EvaluationReportOutcomeSummary
+    difficulty_buckets: list[EvaluationReportDifficultyBucket]
+    dataset_summaries: list[EvaluationReportDatasetSummary]
+    sample_scatter_points: list[EvaluationReportScatterPoint]
+
+
+class EvaluationReportVersions(CamelModel):
+    """完整报告相关版本信息。"""
+
+    difficulty_version: str
+    score_model_version: str
+    benchmark_version: str
+
+
+class EvaluationReportPayload(CamelModel):
+    """前端完整报告页响应体。"""
+
+    evaluation_id: str
+    status: str
+    generated_at: str
+    scores: EvaluationReportScores
+    raw_stats: EvaluationReportRawStats
+    posterior_interval: EvaluationReportPosteriorInterval
+    coverage: EvaluationReportCoverage
+    breakdowns: EvaluationReportBreakdowns
+    versions: EvaluationReportVersions
+
+
 class EvaluationDetail(CamelModel):
     """评测任务详情响应体。"""
 

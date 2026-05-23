@@ -143,6 +143,193 @@ def test_evaluation_score_and_leaderboard_api(client, api_db_helper) -> None:
     assert all("evaluationId" not in entry for entry in entries)
 
 
+def test_evaluation_report_api_returns_frontend_payload(
+    client, api_db_helper
+) -> None:
+    dataset_code = api_db_helper.seed_dataset()
+    user_id, token = api_db_helper.seed_user(
+        username=f"{api_db_helper.prefix}_report_owner",
+        email=f"{api_db_helper.prefix}_report_owner@example.com",
+    )
+    evaluation_id = _seed_completed_execution(
+        api_db_helper, user_id=user_id, dataset_code=dataset_code
+    )
+    headers = {"Authorization": f"Bearer {token}"}
+
+    recalculate_response = client.post(
+        f"/api/v1/evaluations/{evaluation_id}/score/recalculate",
+        headers=headers,
+        json={"scoreModelVersion": "score_v1_5", "benchmarkVersion": "bm_v1"},
+    )
+    assert recalculate_response.status_code == 200
+
+    response = client.get(
+        f"/api/v1/evaluations/{evaluation_id}/report", headers=headers
+    )
+
+    assert response.status_code == 200
+    payload = response.json()["data"]
+    assert payload["evaluationId"] == evaluation_id
+    assert payload["status"] == "ready"
+    assert payload["generatedAt"]
+    assert set(payload["scores"]) == {
+        "conservativeScore",
+        "performanceScore",
+        "confidence",
+        "completionScore",
+        "safetyScore",
+        "hardScore",
+        "unsafeRate",
+        "timeScore",
+    }
+    assert payload["rawStats"] == {
+        "total": 1,
+        "success": 1,
+        "failed": 0,
+        "error": 0,
+        "completionRate": 1.0,
+        "successRate": 1.0,
+        "conditionalSuccessRate": 1.0,
+    }
+    assert payload["posteriorInterval"]["psQ50"] == payload["scores"][
+        "conservativeScore"
+    ]
+    assert payload["coverage"] == {
+        "difficultyBucketHitCount": 1,
+        "difficultyCoverageRatio": 0.2,
+    }
+    assert len(payload["breakdowns"]["difficultyBuckets"]) == 5
+    assert payload["breakdowns"]["outcomeSummary"] == {
+        "total": 1,
+        "success": 1,
+        "failed": 0,
+        "error": 0,
+    }
+    assert payload["breakdowns"]["datasetSummaries"][0]["datasetId"] == dataset_code
+    assert payload["breakdowns"]["sampleScatterPoints"][0]["sampleId"] == (
+        f"{api_db_helper.prefix}_sample"
+    )
+    assert payload["versions"] == {
+        "difficultyVersion": "legacy_current",
+        "scoreModelVersion": "score_v1_5",
+        "benchmarkVersion": "bm_v1",
+    }
+
+
+def test_evaluation_report_api_rejects_unauthenticated_user(
+    client, api_db_helper
+) -> None:
+    response = client.get(f"/api/v1/evaluations/eval_{api_db_helper.prefix}/report")
+
+    assert response.status_code == 401
+
+
+def test_evaluation_report_api_rejects_other_users(
+    client, api_db_helper
+) -> None:
+    dataset_code = api_db_helper.seed_dataset()
+    owner_id, owner_token = api_db_helper.seed_user(
+        username=f"{api_db_helper.prefix}_report_owner",
+        email=f"{api_db_helper.prefix}_report_owner@example.com",
+    )
+    _, other_token = api_db_helper.seed_user(
+        username=f"{api_db_helper.prefix}_report_other",
+        email=f"{api_db_helper.prefix}_report_other@example.com",
+    )
+    evaluation_id = _seed_completed_execution(
+        api_db_helper, user_id=owner_id, dataset_code=dataset_code
+    )
+    owner_headers = {"Authorization": f"Bearer {owner_token}"}
+    recalculate_response = client.post(
+        f"/api/v1/evaluations/{evaluation_id}/score/recalculate",
+        headers=owner_headers,
+        json={"scoreModelVersion": "score_v1_5", "benchmarkVersion": "bm_v1"},
+    )
+    assert recalculate_response.status_code == 200
+
+    response = client.get(
+        f"/api/v1/evaluations/{evaluation_id}/report",
+        headers={"Authorization": f"Bearer {other_token}"},
+    )
+
+    assert response.status_code == 403
+
+
+def test_evaluation_report_api_returns_404_when_report_is_missing(
+    client, api_db_helper
+) -> None:
+    dataset_code = api_db_helper.seed_dataset()
+    user_id, token = api_db_helper.seed_user(
+        username=f"{api_db_helper.prefix}_report_missing",
+        email=f"{api_db_helper.prefix}_report_missing@example.com",
+    )
+    evaluation_id = api_db_helper.seed_evaluation_run(
+        user_id=user_id, dataset_code=dataset_code, status="completed"
+    )
+
+    response = client.get(
+        f"/api/v1/evaluations/{evaluation_id}/report",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 404
+
+
+def test_evaluation_report_api_returns_404_when_report_is_not_available(
+    client, api_db_helper
+) -> None:
+    dataset_code = api_db_helper.seed_dataset()
+    user_id, token = api_db_helper.seed_user(
+        username=f"{api_db_helper.prefix}_report_generating",
+        email=f"{api_db_helper.prefix}_report_generating@example.com",
+    )
+    evaluation_id = _seed_completed_execution(
+        api_db_helper, user_id=user_id, dataset_code=dataset_code
+    )
+    headers = {"Authorization": f"Bearer {token}"}
+    recalculate_response = client.post(
+        f"/api/v1/evaluations/{evaluation_id}/score/recalculate",
+        headers=headers,
+        json={"scoreModelVersion": "score_v1_5", "benchmarkVersion": "bm_v1"},
+    )
+    assert recalculate_response.status_code == 200
+    with api_db_helper.session() as session:
+        run = session.execute(
+            select(TestRun).where(TestRun.public_id == evaluation_id)
+        ).scalar_one()
+        report = session.execute(
+            select(RunReport).where(RunReport.run_id == run.id)
+        ).scalar_one()
+        report.report_status = "generating"
+        session.commit()
+
+    response = client.get(
+        f"/api/v1/evaluations/{evaluation_id}/report", headers=headers
+    )
+
+    assert response.status_code == 404
+
+
+def test_evaluation_report_api_returns_404_when_score_is_missing(
+    client, api_db_helper
+) -> None:
+    dataset_code = api_db_helper.seed_dataset()
+    user_id, token = api_db_helper.seed_user(
+        username=f"{api_db_helper.prefix}_report_score_missing",
+        email=f"{api_db_helper.prefix}_report_score_missing@example.com",
+    )
+    evaluation_id = _seed_completed_execution(
+        api_db_helper, user_id=user_id, dataset_code=dataset_code
+    )
+
+    response = client.get(
+        f"/api/v1/evaluations/{evaluation_id}/report",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 404
+
+
 def test_leaderboard_snapshot_keeps_legacy_private_runs_out(
     client, api_db_helper
 ) -> None:

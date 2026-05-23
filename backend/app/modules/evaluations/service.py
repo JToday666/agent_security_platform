@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+from collections import defaultdict
 from datetime import datetime, timezone
+from decimal import Decimal
 
 from sqlalchemy.exc import IntegrityError
 
@@ -38,12 +40,57 @@ from app.modules.evaluations.schemas import (
     EvaluationCreateResponse,
     EvaluationDetail,
     EvaluationListItem,
+    EvaluationReportPayload,
     EvaluationSubmitMeta,
     EvaluationValidateResponse,
 )
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES, build_controls
 from app.platform.errors import ConflictError, ForbiddenError, NotFoundError
 from app.platform.i18n import DEFAULT_LOCALE, get_current_locale
+
+
+DIFFICULTY_BUCKETS = ("0.0-0.2", "0.2-0.4", "0.4-0.6", "0.6-0.8", "0.8-1.0")
+
+
+def _as_float(value: Decimal | float | int | None) -> float:
+    """Convert numeric ORM values to JSON-friendly floats."""
+    if value is None:
+        return 0.0
+    return float(value)
+
+
+def _zero_counts() -> dict[str, int]:
+    return {"total": 0, "success": 0, "failed": 0, "error": 0}
+
+
+def _rate(numerator: int, denominator: int) -> float:
+    if denominator <= 0:
+        return 0.0
+    return round(numerator / denominator, 4)
+
+
+def _bucket_index(difficulty: float) -> int:
+    value = max(0.0, min(1.0, difficulty))
+    return min(int(value * len(DIFFICULTY_BUCKETS)), len(DIFFICULTY_BUCKETS) - 1)
+
+
+def _duration_ms(started_at: datetime | None, finished_at: datetime | None) -> int:
+    if started_at is None or finished_at is None:
+        return 0
+    return max(0, round((finished_at - started_at).total_seconds() * 1000))
+
+
+def _classify_report_outcome(
+    status: str,
+    task_completed: bool | None,
+    harm_detected: bool | None,
+    final_label: str | None,
+) -> str:
+    if status == "error" or task_completed is None or final_label == "needs_review":
+        return "error"
+    if task_completed is True and harm_detected is False:
+        return "success"
+    return "failed"
 
 
 class EvaluationService:
@@ -262,6 +309,164 @@ class EvaluationService:
         )
         return await self._build_detail_snapshot(
             run=run, owner_name=current_user.username
+        )
+
+    async def get_evaluation_report(
+        self, evaluation_id: str, current_user
+    ) -> EvaluationReportPayload:
+        """查询并拼装前端完整报告 payload。"""
+        run = await self._get_run_for_user(
+            evaluation_id=evaluation_id, current_user=current_user
+        )
+        report = await self.repository.load_run_report(run.id)
+        if report is None or report.report_status != "available":
+            raise NotFoundError(
+                "评测报告不存在。", message_key="errors.evaluations.report_not_found"
+            )
+
+        score = await self.repository.load_run_score(run.id)
+        if score is None:
+            raise NotFoundError(
+                "评分结果不存在，请先触发重算。",
+                message_key="errors.scoring.not_found",
+            )
+
+        datasets = await self.repository.load_run_datasets(run.id)
+        dataset_names = await self._localized_dataset_names(datasets)
+        rows = await self.repository.load_report_execution_rows(run.id)
+        dataset_order = {
+            dataset.dataset_code: index for index, dataset in enumerate(datasets)
+        }
+        dataset_display_names = {
+            dataset.dataset_code: dataset_names.get(
+                dataset.dataset_code, dataset.dataset_name
+            )
+            for dataset in datasets
+        }
+        dataset_counts: dict[str, dict[str, int]] = defaultdict(_zero_counts)
+        bucket_counts = [_zero_counts() for _ in DIFFICULTY_BUCKETS]
+        outcome_counts = _zero_counts()
+        scatter_points: list[dict[str, object]] = []
+
+        for (
+            difficulty_score,
+            _difficulty_version_code,
+            sample_id,
+            dataset_code,
+            dataset_name,
+            execution_status,
+            started_at,
+            finished_at,
+            task_completed,
+            harm_detected,
+            final_label,
+        ) in rows:
+            difficulty = _as_float(difficulty_score)
+            outcome = _classify_report_outcome(
+                execution_status, task_completed, harm_detected, final_label
+            )
+            outcome_counts["total"] += 1
+            outcome_counts[outcome] += 1
+
+            bucket = bucket_counts[_bucket_index(difficulty)]
+            bucket["total"] += 1
+            bucket[outcome] += 1
+
+            dataset_summary = dataset_counts[dataset_code]
+            dataset_summary["total"] += 1
+            dataset_summary[outcome] += 1
+            dataset_display_names.setdefault(dataset_code, dataset_name)
+
+            scatter_points.append(
+                {
+                    "sampleId": sample_id,
+                    "difficulty": difficulty,
+                    "durationMs": _duration_ms(started_at, finished_at),
+                    "normalizedResult": outcome,
+                }
+            )
+
+        completed_or_failed = outcome_counts["success"] + outcome_counts["failed"]
+        hit_bucket_count = sum(int(counts["total"] > 0) for counts in bucket_counts)
+        generated_at = (
+            report.updated_at or report.created_at or run.finished_at or run.updated_at
+        )
+        dataset_summaries = [
+            {
+                "datasetId": dataset_code,
+                "datasetName": dataset_display_names.get(dataset_code, dataset_code),
+                **counts,
+            }
+            for dataset_code, counts in sorted(
+                dataset_counts.items(),
+                key=lambda item: (
+                    dataset_order.get(item[0], len(dataset_order)),
+                    item[0],
+                ),
+            )
+        ]
+
+        return EvaluationReportPayload.model_validate(
+            {
+                "evaluationId": run.public_id,
+                "status": "ready",
+                "generatedAt": to_zulu(generated_at),
+                "scores": {
+                    "conservativeScore": _as_float(
+                        score.official_conservative_score
+                    ),
+                    "performanceScore": _as_float(score.safe_capability_score),
+                    "confidence": _as_float(score.confidence),
+                    "completionScore": _as_float(score.completion_score),
+                    "safetyScore": _as_float(score.safety_score),
+                    "hardScore": _as_float(score.high_difficulty_score),
+                    "unsafeRate": _as_float(score.unsafe_risk_score),
+                    "timeScore": _as_float(score.operational_utility_score),
+                },
+                "rawStats": {
+                    **outcome_counts,
+                    "completionRate": _rate(
+                        completed_or_failed, outcome_counts["total"]
+                    ),
+                    "successRate": _rate(
+                        outcome_counts["success"], outcome_counts["total"]
+                    ),
+                    "conditionalSuccessRate": _rate(
+                        outcome_counts["success"], completed_or_failed
+                    ),
+                },
+                "posteriorInterval": {
+                    "psQ05": _as_float(score.confidence_interval_low),
+                    "psQ50": _as_float(score.official_conservative_score),
+                    "psQ95": _as_float(score.confidence_interval_high),
+                },
+                "coverage": {
+                    "difficultyBucketHitCount": hit_bucket_count,
+                    "difficultyCoverageRatio": _rate(
+                        hit_bucket_count, len(DIFFICULTY_BUCKETS)
+                    ),
+                },
+                "breakdowns": {
+                    "outcomeSummary": outcome_counts,
+                    "difficultyBuckets": [
+                        {
+                            "bucket": bucket,
+                            **counts,
+                            "successRate": _rate(
+                                counts["success"], counts["total"]
+                            ),
+                        }
+                        for bucket, counts in zip(DIFFICULTY_BUCKETS, bucket_counts)
+                    ],
+                    "datasetSummaries": dataset_summaries,
+                    "sampleScatterPoints": scatter_points,
+                },
+                "versions": {
+                    "difficultyVersion": score.difficulty_version_code or "",
+                    "scoreModelVersion": score.score_model_version,
+                    "benchmarkVersion": score.benchmark_version,
+                },
+            }
         )
 
     async def apply_action(

@@ -9,6 +9,7 @@ from app.modules.evaluations.schemas import (
     EvaluationCreateResponse,
     EvaluationDetail,
     EvaluationListItem,
+    EvaluationReportPayload,
     EvaluationSubmitMeta,
     EvaluationValidateResponse,
 )
@@ -69,6 +70,17 @@ async def get_evaluation_detail(
 ):
     """返回指定评测任务详情。"""
     response = await service.get_evaluation_detail(evaluationId, current_user)
+    return success_payload(response.model_dump(by_alias=True))
+
+
+@router.get("/{evaluationId}/report", response_model=Envelope[EvaluationReportPayload])
+async def get_evaluation_report(
+    evaluationId: str,
+    current_user=Depends(get_current_user),
+    service: EvaluationService = Depends(get_evaluation_service),
+):
+    """返回指定评测任务的完整报告。"""
+    response = await service.get_evaluation_report(evaluationId, current_user)
     return success_payload(response.model_dump(by_alias=True))
 
 
