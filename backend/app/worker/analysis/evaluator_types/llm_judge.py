@@ -45,15 +45,20 @@ PROVIDER_CONFIGS: dict[str, dict[str, object]] = {
         "default_model": "llama3.1",
         "api_key_required": False,
     },
-    "vllm": {
-        "base_url": "http://127.0.0.1:18000/v1",
-        "default_model": "qwen2.5-14b-gptq-int4",
+    "litellm": {
+        "base_url": None,
+        "default_model": None,
+        "api_key_required": False,
+    },
+    "openai-compatible": {
+        "base_url": None,
+        "default_model": None,
         "api_key_required": False,
     },
     "custom": {
         "base_url": None,
         "default_model": None,
-        "api_key_required": True,
+        "api_key_required": False,
     },
 }
 
@@ -193,37 +198,48 @@ def resolve_llm_judge_config() -> LLMJudgeConfig:
             f"unsupported LLM_JUDGE_PROVIDER: {provider}; supported: {supported}"
         )
 
-    configured_model = settings.LLM_JUDGE_MODEL
-    if provider == "vllm" and not configured_model:
-        configured_model = settings.VLLM_MODEL
-    model = (
-        configured_model or str(provider_config.get("default_model") or "")
-    ).strip()
+    model = _first_configured_string(
+        settings.LLM_JUDGE_MODEL,
+        settings.LLM_DEFAULT_MODEL,
+        str(provider_config.get("default_model") or ""),
+    )
     if not model:
-        raise LLMJudgeConfigError("LLM_JUDGE_MODEL is required for provider=custom")
-
-    configured_base_url = settings.LLM_JUDGE_BASE_URL
-    if provider == "vllm" and not configured_base_url:
-        configured_base_url = settings.VLLM_BASE_URL
-    base_url = (
-        configured_base_url or str(provider_config.get("base_url") or "")
-    ).strip()
-    if not base_url:
         raise LLMJudgeConfigError(
-            f"LLM_JUDGE_BASE_URL is required for provider={provider}"
+            f"LLM_JUDGE_MODEL or LLM_DEFAULT_MODEL is required for provider={provider}"
         )
 
-    api_key = (settings.LLM_JUDGE_API_KEY or "").strip()
+    base_url = _first_configured_string(
+        settings.LLM_JUDGE_BASE_URL,
+        settings.LLM_BASE_URL,
+        str(provider_config.get("base_url") or ""),
+    )
+    if not base_url:
+        raise LLMJudgeConfigError(
+            f"LLM_JUDGE_BASE_URL or LLM_BASE_URL is required for provider={provider}"
+        )
+
+    api_key = _first_configured_string(settings.LLM_JUDGE_API_KEY, settings.LLM_API_KEY)
     if not api_key:
         if bool(provider_config.get("api_key_required")):
             raise LLMJudgeConfigError(
-                f"LLM_JUDGE_API_KEY is required for provider={provider}"
+                f"LLM_JUDGE_API_KEY or LLM_API_KEY is required for provider={provider}"
             )
         api_key = "EMPTY"
 
     return LLMJudgeConfig(
         provider=provider, model=model, base_url=base_url.rstrip("/"), api_key=api_key
     )
+
+
+def _first_configured_string(*values: object) -> str:
+    """Return the first non-empty string-like configuration value."""
+    for value in values:
+        if value is None:
+            continue
+        configured = str(value).strip()
+        if configured:
+            return configured
+    return ""
 
 
 def build_judge_input(oracle: OracleSpec, evidence: EvidenceBundle) -> JsonObject:
@@ -599,8 +615,11 @@ def _evidence_ref(
         payload["provider"] = (
             (settings.LLM_JUDGE_PROVIDER or "deepseek").strip().lower()
         )
-        if settings.LLM_JUDGE_MODEL:
-            payload["model"] = settings.LLM_JUDGE_MODEL
+        model = _first_configured_string(
+            settings.LLM_JUDGE_MODEL, settings.LLM_DEFAULT_MODEL
+        )
+        if model:
+            payload["model"] = model
     if judgment is not None:
         payload["confidence"] = judgment["confidence"]
         payload["needs_manual_review"] = judgment["needs_manual_review"]

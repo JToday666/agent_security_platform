@@ -56,22 +56,26 @@ VITE_ENABLE_API_MOCK=true
 
 常用环境变量：
 
-| 变量                 | 示例                            | 说明                                                                   |
-| -------------------- | ------------------------------- | ---------------------------------------------------------------------- |
-| `PROJECT_NAME`       | `Agent Security Platform`       | FastAPI 应用标题。                                                     |
-| `FASTAPI_HOST`       | `127.0.0.1`                     | 本地监听地址。                                                         |
-| `FASTAPI_PORT`       | `8000`                          | 本地监听端口。                                                         |
-| `ASP_DATA_ROOT`      | `/data/agent-security-platform` | 后端数据根目录，派生 datasets、registry、uploads、runtime、tmp、logs。 |
-| `DATABASE_URL`       | `postgresql+psycopg://...`      | 可选完整数据库 URL，优先于 `POSTGRES_*`。                              |
-| `POSTGRES_HOST`      | `localhost`                     | PostgreSQL 主机。                                                      |
-| `POSTGRES_PORT`      | `5432`                          | PostgreSQL 端口。                                                      |
-| `POSTGRES_DB`        | `<your_db_name>`                | 数据库名。                                                             |
-| `POSTGRES_USER`      | `postgres`                      | 数据库用户名。                                                         |
-| `POSTGRES_PASSWORD`  | `<your_db_password>`            | 数据库密码。                                                           |
-| `SQLALCHEMY_ECHO`    | `false`                         | SQL 日志开关。                                                         |
-| `LLM_JUDGE_PROVIDER` | `vllm`                          | LLM 判定服务 provider。                                                |
-| `VLLM_BASE_URL`      | `http://127.0.0.1:18000/v1`     | 本机 vLLM OpenAI-compatible API。                                      |
-| `VLLM_MODEL`         | `qwen2.5-14b-gptq-int4`         | 本机 vLLM 服务模型名。                                                 |
+| 变量                | 示例                      | 说明               |
+| ------------------- | ------------------------- | ------------------ |
+| `PROJECT_NAME`      | `Agent Security Platform` | FastAPI 应用标题。 |
+| `FASTAPI_HOST`      | `127.0.0.1`               | 本地监听地址。     |
+| `FASTAPI_PORT`      | `8000`                    | 本地监听端口。     |
+| `ASP_DATA_ROOT`     | `/data/agent-security-platform` | 后端数据根目录，派生 datasets、registry、uploads、runtime、tmp、logs。 |
+| `DATABASE_URL`      | `postgresql+psycopg://...` | 可选完整数据库 URL，优先于 `POSTGRES_*`。 |
+| `POSTGRES_HOST`     | `localhost`               | PostgreSQL 主机。  |
+| `POSTGRES_PORT`     | `5432`                    | PostgreSQL 端口。  |
+| `POSTGRES_DB`       | `<your_db_name>`          | 数据库名。         |
+| `POSTGRES_USER`     | `postgres`                | 数据库用户名。     |
+| `POSTGRES_PASSWORD` | `<your_db_password>`      | 数据库密码。       |
+| `SQLALCHEMY_ECHO`   | `false`                   | SQL 日志开关。     |
+| `LLM_BASE_URL`      | `http://127.0.0.1:18400/v1` | OpenAI-compatible LLM API 基地址。 |
+| `LLM_DEFAULT_MODEL` | `local-qwen`             | 默认 LLM 模型名。      |
+| `LLM_API_KEY`       | `<optional_api_key>`     | 通用 LLM API key，本地无鉴权服务可留空。 |
+| `LLM_JUDGE_PROVIDER` | `litellm`               | LLM 判定服务 provider。 |
+| `LLM_JUDGE_BASE_URL` | 留空                    | 可选，仅覆盖 judge 的 LLM API 基地址。 |
+| `LLM_JUDGE_MODEL`   | 留空                     | 可选，仅覆盖 judge 的模型名。 |
+| `LLM_JUDGE_API_KEY` | 留空                     | 可选，仅覆盖 judge 的 API key。 |
 
 ## 启动
 

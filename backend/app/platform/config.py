@@ -57,12 +57,13 @@ class Settings(BaseSettings):
     AGENT_HTTP_ALLOW_PRIVATE_NETWORKS: bool = False
     AGENT_HTTP_MAX_REDIRECTS: int = 3
     AGENT_HTTP_RESPONSE_MAX_BYTES: int = 1_000_000
+    LLM_BASE_URL: str | None = None
+    LLM_DEFAULT_MODEL: str | None = None
+    LLM_API_KEY: str | None = None
     LLM_JUDGE_PROVIDER: str = "deepseek"
     LLM_JUDGE_MODEL: str | None = None
     LLM_JUDGE_BASE_URL: str | None = None
     LLM_JUDGE_API_KEY: str | None = None
-    VLLM_BASE_URL: str | None = None
-    VLLM_MODEL: str | None = None
     LLM_JUDGE_TIMEOUT_SECONDS: float = 60.0
     LLM_JUDGE_MAX_TOKENS: int = 2000
     LLM_JUDGE_TEMPERATURE: float = 0.0

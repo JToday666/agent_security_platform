@@ -299,17 +299,17 @@ gateway → backend:8000
 后端访问：
 
 ```env
-LLM_JUDGE_PROVIDER=vllm
-VLLM_BASE_URL=http://vllm:8000/v1
-VLLM_MODEL=qwen2.5-14b-gptq-int4
+LLM_JUDGE_PROVIDER=litellm
+LLM_BASE_URL=http://vllm:8000/v1
+LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
 ```
 
 宿主机测试：
 
 ```env
-LLM_JUDGE_PROVIDER=vllm
-VLLM_BASE_URL=http://127.0.0.1:18000/v1
-VLLM_MODEL=qwen2.5-14b-gptq-int4
+LLM_JUDGE_PROVIDER=litellm
+LLM_BASE_URL=http://127.0.0.1:18000/v1
+LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
 ```
 
 当前参数：
