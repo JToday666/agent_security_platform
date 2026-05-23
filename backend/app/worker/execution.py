@@ -62,6 +62,12 @@ def _resolve_dispatch_mode(explicit_mode: str | None) -> str:
     return normalized or "synthetic_local"
 
 
+def _resolve_browser_entry_host() -> str:
+    """Resolve the host embedded in URLs sent to browser-driving agents."""
+    browser_host = (settings.WORKER_BROWSER_ENTRY_HOST or "").strip()
+    return browser_host or settings.WORKER_RUNNER_HOST
+
+
 async def execute_sample(
     run_id: int,
     dataset_id: int,
@@ -89,7 +95,7 @@ async def execute_sample(
         sample,
         execution_id,
         settings.worker_workdir_root,
-        settings.WORKER_RUNNER_HOST,
+        _resolve_browser_entry_host(),
         port,
         environment_ref,
         probe_token,

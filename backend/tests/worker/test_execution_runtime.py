@@ -4,6 +4,7 @@ import asyncio
 import json
 import textwrap
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import pytest
@@ -71,6 +72,29 @@ def test_runtime_process_semaphore_tracks_configured_global_limit() -> None:
 
     assert resized is not first
     assert resized._value == 1
+
+
+def test_resolve_browser_entry_host_prefers_configured_public_host() -> None:
+    with (
+        patch.object(execution.settings, "WORKER_RUNNER_HOST", "172.17.0.1"),
+        patch.object(
+            execution.settings,
+            "WORKER_BROWSER_ENTRY_HOST",
+            "host.docker.internal",
+            create=True,
+        ),
+    ):
+        assert execution._resolve_browser_entry_host() == "host.docker.internal"
+
+
+def test_resolve_browser_entry_host_falls_back_to_runner_host() -> None:
+    with (
+        patch.object(execution.settings, "WORKER_RUNNER_HOST", "127.0.0.1"),
+        patch.object(
+            execution.settings, "WORKER_BROWSER_ENTRY_HOST", None, create=True
+        ),
+    ):
+        assert execution._resolve_browser_entry_host() == "127.0.0.1"
 
 
 @pytest.mark.asyncio
@@ -178,3 +202,183 @@ async def test_synthetic_local_dispatch_closes_runtime_loop(tmp_path: Path) -> N
     assert "compile_result" not in artifact_types
     assert "replay_result" not in artifact_types
     assert "replay_report" not in artifact_types
+
+
+@pytest.mark.asyncio
+async def test_external_agent_api_dispatch_closes_runtime_after_agent_success(
+    tmp_path: Path,
+) -> None:
+    data_root = tmp_path / "data"
+    subtype_root = data_root / "Example_Subtype"
+    sample_root = subtype_root / "Sample_1"
+    (sample_root / "site").mkdir(parents=True, exist_ok=True)
+    (sample_root / "site" / "index.html").write_text(
+        "<!doctype html><html><head><title>Runtime Test</title></head><body>ok</body></html>",
+        encoding="utf-8",
+    )
+
+    runtime_root = subtype_root / "agent_runtime"
+    runtime_root.mkdir(parents=True, exist_ok=True)
+    (runtime_root / "compiler.py").write_text(
+        'print("{}")\n',
+        encoding="utf-8",
+    )
+    (runtime_root / "replay.py").write_text(
+        'print("{}")\n',
+        encoding="utf-8",
+    )
+
+    sample = SampleRuntimeTarget(
+        sample_db_id=1,
+        sample_id="Sample_1",
+        sample_name="Sample_1",
+        resource_path="Example_Subtype/Sample_1",
+        entry_path="site/index.html",
+        user_goal="open the page",
+    )
+
+    with patch.object(runtime_preparation, "DATA_ROOT", data_root):
+        prepared = await asyncio.to_thread(
+            prepare_runtime_workspace,
+            sample,
+            202,
+            tmp_path / "runtime-workdir",
+            "127.0.0.1",
+            allocate_tcp_port("127.0.0.1"),
+            build_environment_ref(202),
+            build_probe_token(),
+        )
+
+    class FakeInvocationClient:
+        async def invoke(self, *, agent_snapshot, credential_payload, platform_values):
+            assert agent_snapshot["agentId"] == "agt_external"
+            assert credential_payload == {}
+            assert platform_values["task"] == "open the page"
+            assert platform_values["entryUrl"].startswith("http://127.0.0.1:")
+            return SimpleNamespace(
+                passed=True,
+                status="completed",
+                external_run_id="mock_run_202",
+                final_answer={"ok": True},
+                error_message=None,
+            )
+
+    handle = await launch_runtime(prepared)
+    try:
+        with patch(
+            "app.worker.runtime.dispatch.AgentInvocationClient",
+            return_value=FakeInvocationClient(),
+        ):
+            result = await resolve_dispatch_adapter("external_agent_api").dispatch(
+                prepared,
+                sample,
+                timeout_seconds=10,
+                dispatch_config={
+                    "evaluationId": "eval_external",
+                    "maxSteps": 12,
+                    "frozenAgentSnapshot": {
+                        "agentId": "agt_external",
+                        "auth": {"type": "none"},
+                    },
+                },
+            )
+    finally:
+        await stop_runtime(handle)
+
+    finalize_payload = json.loads(
+        (prepared.run_dir / "finalize.json").read_text(encoding="utf-8")
+    )
+    assert result.finalized is True
+    assert finalize_payload["done"] is True
+    assert finalize_payload["done_reason"] == "external_agent_completed"
+    assert finalize_payload["final_state"]["external_run_id"] == "mock_run_202"
+    assert finalize_payload["final_state"]["status"] == "completed"
+
+
+@pytest.mark.asyncio
+async def test_external_agent_api_dispatch_closes_runtime_after_agent_terminal_failure(
+    tmp_path: Path,
+) -> None:
+    data_root = tmp_path / "data"
+    subtype_root = data_root / "Example_Subtype"
+    sample_root = subtype_root / "Sample_1"
+    (sample_root / "site").mkdir(parents=True, exist_ok=True)
+    (sample_root / "site" / "index.html").write_text(
+        "<!doctype html><html><head><title>Runtime Test</title></head><body>ok</body></html>",
+        encoding="utf-8",
+    )
+
+    runtime_root = subtype_root / "agent_runtime"
+    runtime_root.mkdir(parents=True, exist_ok=True)
+    (runtime_root / "compiler.py").write_text(
+        'print("{}")\n',
+        encoding="utf-8",
+    )
+    (runtime_root / "replay.py").write_text(
+        'print("{}")\n',
+        encoding="utf-8",
+    )
+
+    sample = SampleRuntimeTarget(
+        sample_db_id=1,
+        sample_id="Sample_1",
+        sample_name="Sample_1",
+        resource_path="Example_Subtype/Sample_1",
+        entry_path="site/index.html",
+        user_goal="open the page",
+    )
+
+    with patch.object(runtime_preparation, "DATA_ROOT", data_root):
+        prepared = await asyncio.to_thread(
+            prepare_runtime_workspace,
+            sample,
+            203,
+            tmp_path / "runtime-workdir",
+            "127.0.0.1",
+            allocate_tcp_port("127.0.0.1"),
+            build_environment_ref(203),
+            build_probe_token(),
+        )
+
+    class FakeInvocationClient:
+        async def invoke(self, *, agent_snapshot, credential_payload, platform_values):
+            return SimpleNamespace(
+                passed=False,
+                status="terminated",
+                external_run_id="mock_run_203",
+                final_answer={"reason": "agent stopped"},
+                error_message="agent terminated",
+            )
+
+    handle = await launch_runtime(prepared)
+    try:
+        with patch(
+            "app.worker.runtime.dispatch.AgentInvocationClient",
+            return_value=FakeInvocationClient(),
+        ):
+            result = await resolve_dispatch_adapter("external_agent_api").dispatch(
+                prepared,
+                sample,
+                timeout_seconds=10,
+                dispatch_config={
+                    "evaluationId": "eval_external",
+                    "maxSteps": 12,
+                    "frozenAgentSnapshot": {
+                        "agentId": "agt_external",
+                        "auth": {"type": "none"},
+                    },
+                },
+            )
+    finally:
+        await stop_runtime(handle)
+
+    finalize_payload = json.loads(
+        (prepared.run_dir / "finalize.json").read_text(encoding="utf-8")
+    )
+    assert result.finalized is True
+    assert finalize_payload["done"] is True
+    assert finalize_payload["done_reason"] == "external_agent_failed"
+    assert finalize_payload["final_state"]["external_run_id"] == "mock_run_203"
+    assert finalize_payload["final_state"]["status"] == "terminated"
+    assert finalize_payload["final_state"]["passed"] is False
+    assert finalize_payload["final_state"]["error_message"] == "agent terminated"
