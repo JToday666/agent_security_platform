@@ -173,6 +173,7 @@ import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import { useUserStore } from "@/modules/account/stores/userStore";
+import { useDatasetLocaleRefresh } from "@/modules/dataset/composables/useDatasetLocaleRefresh";
 import DatasetAssetsSection from "@/modules/dataset/components/DatasetAssetsSection.vue";
 import {
   formatDateLabel,
@@ -187,7 +188,7 @@ import type {
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 
-const { t } = useI18n();
+const { locale, t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const datasetCatalogStore = useDatasetCatalogStore();
@@ -275,6 +276,10 @@ watch(datasetId, async () => {
   await loadDetail();
 });
 
+useDatasetLocaleRefresh(locale, async () => {
+  await Promise.all([datasetCatalogStore.fetchCatalog(), loadDetail()]);
+});
+
 onMounted(async () => {
   await Promise.all([datasetCatalogStore.fetchCatalog(), loadDetail()]);
 });
@@ -346,7 +351,7 @@ onMounted(async () => {
   min-width: 0;
   margin: 0;
   color: var(--color-text-dark);
-  font-size: clamp(1.9rem, 3vw, 2.65rem);
+  font-size: 2.65rem;
   line-height: 1.12;
   letter-spacing: 0;
   overflow-wrap: anywhere;

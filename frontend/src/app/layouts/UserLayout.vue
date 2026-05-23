@@ -19,7 +19,7 @@ import UserSidebarShell from "@/app/shell/UserSidebarShell.vue";
 
 <style scoped lang="scss">
 .user-layout {
-  min-height: calc(100vh - var(--nav-height));
+  min-height: calc(100dvh - var(--nav-height));
   display: grid;
   grid-template-columns:
     var(--sidebar-active-width, var(--sidebar-width))

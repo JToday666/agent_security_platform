@@ -187,6 +187,7 @@ import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { RouteLocation } from "@/app/router/route-names";
 import { useUserStore } from "@/modules/account/stores/userStore";
+import { useDatasetLocaleRefresh } from "@/modules/dataset/composables/useDatasetLocaleRefresh";
 import {
   formatDateLabel,
   formatSampleCount,
@@ -204,7 +205,7 @@ import UiButton from "@/shared/ui/actions/UiButton.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 
-const { t } = useI18n();
+const { locale, t } = useI18n();
 const router = useRouter();
 const datasetCatalogStore = useDatasetCatalogStore();
 const userStore = useUserStore();
@@ -256,6 +257,8 @@ const activeSectionDescription = computed(() => {
 const reloadCatalog = async () => {
   await datasetCatalogStore.fetchCatalog(true);
 };
+
+useDatasetLocaleRefresh(locale, () => datasetCatalogStore.fetchCatalog());
 
 const handleSortKeyChange = (value: string) => {
   sortKey.value = value as DatasetCatalogSortKey;

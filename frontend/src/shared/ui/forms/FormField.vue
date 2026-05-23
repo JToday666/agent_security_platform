@@ -1,5 +1,5 @@
 <template>
-  <label
+  <div
     :class="[
       'form-field',
       `form-field--${appearance}`,
@@ -10,10 +10,15 @@
       },
     ]"
   >
-    <span v-if="label" class="form-field-label">
+    <label
+      v-if="label"
+      :id="labelId"
+      class="form-field-label"
+      :for="controlId"
+    >
       {{ label }}
       <span v-if="required" class="required-mark">*</span>
-    </span>
+    </label>
 
     <div
       class="form-field-control"
@@ -31,52 +36,65 @@
 
       <UiSelect
         v-if="isSelect"
+        :id="controlId"
         :model-value="modelValue"
         :options="options"
         :disabled="disabled"
         :placeholder="placeholder"
         :leading-icon="leadingIcon"
         :size="size"
+        :label-id="labelId || undefined"
+        :described-by="describedBy"
+        :invalid="isInvalid"
         @update:model-value="$emit('update:modelValue', String($event))"
       />
 
       <textarea
         v-else-if="type === 'textarea'"
+        :id="controlId"
         :value="modelValue"
         :placeholder="placeholder"
         :rows="rows"
         :disabled="disabled"
         :readonly="readonly"
         :autocomplete="autocomplete || undefined"
+        :aria-describedby="describedBy"
+        :aria-invalid="isInvalid ? 'true' : undefined"
         :class="['form-field-input', size === 'sm' ? 'form-field-input--sm' : '']"
         @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
       />
 
       <input
         v-else
+        :id="controlId"
         :type="type"
         :value="modelValue"
         :placeholder="placeholder"
         :disabled="disabled"
         :readonly="readonly"
         :autocomplete="autocomplete || undefined"
+        :aria-describedby="describedBy"
+        :aria-invalid="isInvalid ? 'true' : undefined"
         :class="['form-field-input', size === 'sm' ? 'form-field-input--sm' : '']"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
       />
     </div>
 
-    <small v-if="error" class="form-field-error">{{ error }}</small>
-    <small v-else-if="resolvedHelp" class="form-field-help">{{ resolvedHelp }}</small>
-  </label>
+    <small v-if="error" :id="errorId" class="form-field-error">{{ error }}</small>
+    <small v-else-if="resolvedHelp" :id="helpId" class="form-field-help">
+      {{ resolvedHelp }}
+    </small>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useId } from "vue";
 import AppIcon from "../branding/AppIcon.vue";
 import type { AppIconName } from "../branding/app-icon-registry";
 import UiSelect from "./UiSelect.vue";
 
 interface Props {
+  id?: string;
   modelValue: string;
   label?: string;
   type?:
@@ -108,6 +126,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  id: "",
   type: "text",
   full: false,
   disabled: false,
@@ -126,8 +145,27 @@ defineEmits<{
   (e: "update:modelValue", value: string): void;
 }>();
 
+const fieldId = useId();
 const resolvedHelp = computed(() => props.help || props.hint);
 const isSelect = computed(() => props.type === "select");
+const controlId = computed(() => props.id || `${fieldId}-control`);
+const labelId = computed(() =>
+  props.label ? `${controlId.value}-label` : "",
+);
+const errorId = computed(() =>
+  props.error ? `${controlId.value}-error` : "",
+);
+const helpId = computed(() =>
+  resolvedHelp.value ? `${controlId.value}-help` : "",
+);
+const describedBy = computed(() =>
+  props.error
+    ? errorId.value
+    : resolvedHelp.value
+      ? helpId.value
+      : undefined,
+);
+const isInvalid = computed(() => Boolean(props.error));
 </script>
 
 <style scoped lang="scss">

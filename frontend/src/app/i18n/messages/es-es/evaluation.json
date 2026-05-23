@@ -30,7 +30,7 @@
     "abilityStructure": "Estructura de capacidad",
     "baseline": "Línea base",
     "completionDate": "Completado: {date}",
-    "datasetStack": "dataset",
+    "datasetStack": "Conjunto de datos",
     "difficulty": "Dificultad",
     "durationMs": "Duración ms",
     "evaluationId": "Evaluación: {id}",

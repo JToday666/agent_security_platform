@@ -75,7 +75,7 @@ onUnmounted(() => {
   top: calc(var(--nav-height) + 0.85rem);
   z-index: var(--z-sidebar);
   width: 100%;
-  max-height: calc(100vh - var(--nav-height) - 1.7rem);
+  max-height: calc(100dvh - var(--nav-height) - 1.7rem);
   align-self: start;
   display: flex;
   flex-direction: column;
@@ -191,8 +191,11 @@ onUnmounted(() => {
 }
 
 .text {
+  min-width: 0;
   font-size: 0.94rem;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 

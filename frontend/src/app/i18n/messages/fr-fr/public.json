@@ -145,7 +145,7 @@
   },
   "contact": {
     "title": "Nous contacter",
-    "description": "Pour toute question, suggestion ou collaboration, contactez-nous par les moyens ci-dessous.",
+    "description": "L’équipe de la plateforme traite les demandes d’accès à l’évaluation, de support jeux de données et de collaboration.",
     "logoAlt": "Marque de la plateforme d'évaluation de sécurité des Agents",
     "email": "E-mail",
     "phone": "Téléphone",
@@ -153,11 +153,11 @@
     "addressValue": "Base nationale de cybersécurité, district de Dongxihu, Wuhan",
     "social": "Réseaux sociaux",
     "primary": {
-      "kicker": "Parcours de contact",
-      "title": "Choisir le bon canal pour la question en cours",
-      "description": "L'intégration d'évaluations, les questions sur les jeux de données, la collaboration et les ressources publiques commencent ici, avec un suivi par sujet.",
-      "emailAction": "Envoyer un e-mail",
-      "phoneAction": "Appeler"
+      "kicker": "Contact officiel",
+      "title": "Contacter l’équipe de la plateforme",
+      "description": "Accès à l’évaluation, support jeux de données, collaboration et maintenance des ressources publiques sont pris en charge par l’équipe de la plateforme.",
+      "emailAction": "Écrire à l’équipe",
+      "phoneAction": "Appeler l’équipe"
     },
     "paths": {
       "items": {

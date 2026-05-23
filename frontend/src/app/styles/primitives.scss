@@ -98,7 +98,7 @@ button {
 
 :where(.public-layout, .user-layout) {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding-top: var(--nav-height);
   isolation: isolate;
 }
@@ -222,11 +222,6 @@ button {
   animation: fadeInUp var(--duration-fade-in) var(--ease-emphasized);
 }
 
-:where(.page-subtitle) {
-  color: var(--color-text-muted);
-  line-height: 1.7;
-}
-
 :where(.navbar, .user-sidebar) {
   background: var(--glass-bg);
   backdrop-filter: blur(var(--blur-12));
@@ -246,36 +241,6 @@ button {
   border-radius: var(--radius-dialog);
   position: relative;
   color: var(--color-text-main);
-}
-
-:where(.back-btn) {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.7rem 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.26);
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition:
-    transform var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard),
-    background var(--duration-fast) var(--ease-standard);
-}
-
-:where(.back-btn:hover) {
-  transform: translateY(-1px);
-  border-color: rgba(99, 102, 241, 0.28);
-  background: rgba(255, 255, 255, 0.92);
-}
-
-:where(.page-title, .title) {
-  background: var(--grad-title-bright);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: var(--shadow-title);
 }
 
 :where(.page-shell-enter-active, .page-shell-leave-active) {

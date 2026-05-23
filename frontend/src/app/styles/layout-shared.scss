@@ -6,7 +6,7 @@
 }
 
 :where(.layout-app-shell) {
-  min-height: calc(100vh - var(--nav-height));
+  min-height: calc(100dvh - var(--nav-height));
   min-width: 0;
 }
 

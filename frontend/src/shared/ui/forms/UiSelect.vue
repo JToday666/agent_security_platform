@@ -17,6 +17,9 @@
       aria-haspopup="listbox"
       :aria-expanded="isOpen ? 'true' : 'false'"
       :aria-controls="listboxId"
+      :aria-labelledby="triggerLabelledBy"
+      :aria-describedby="describedBy || undefined"
+      :aria-invalid="invalid ? 'true' : undefined"
       @click="toggle"
       @keydown="handleTriggerKeydown"
     >
@@ -61,7 +64,8 @@
             }"
             role="option"
             :aria-selected="isSelected(option.value)"
-            @click="selectOption(option.value)"
+            @pointerdown.prevent
+            @click.stop="selectOption(option.value)"
             @mouseenter="setActiveIndex(index)"
           >
             <span class="ui-select__item-label">{{ option.label }}</span>
@@ -92,16 +96,24 @@ const props = withDefaults(
   defineProps<{
     modelValue: string | number;
     options: Option[];
+    id?: string;
     placeholder?: string;
     disabled?: boolean;
     leadingIcon?: AppIconName | "";
     size?: "sm" | "md";
+    labelId?: string;
+    describedBy?: string;
+    invalid?: boolean;
   }>(),
   {
+    id: "",
     placeholder: "",
     disabled: false,
     leadingIcon: "",
     size: "md",
+    labelId: "",
+    describedBy: "",
+    invalid: false,
   },
 );
 
@@ -121,8 +133,11 @@ const listboxRef = ref<HTMLUListElement | null>(null);
 const typeaheadBuffer = ref("");
 let typeaheadTimer: number | null = null;
 
-const triggerId = `${selectId}-trigger`;
-const listboxId = `${selectId}-listbox`;
+const triggerId = computed(() => props.id || `${selectId}-trigger`);
+const listboxId = computed(() => `${selectId}-listbox`);
+const triggerLabelledBy = computed(() =>
+  props.labelId ? `${props.labelId} ${triggerId.value}` : triggerId.value,
+);
 
 const selectedLabel = computed(() => {
   const selected = props.options.find((opt) => opt.value === props.modelValue);
@@ -398,11 +413,11 @@ const handleClickOutside = (event: MouseEvent) => {
 };
 
 onMounted(() => {
-  document.addEventListener("mousedown", handleClickOutside);
+  document.addEventListener("pointerdown", handleClickOutside);
 });
 
 onUnmounted(() => {
-  document.removeEventListener("mousedown", handleClickOutside);
+  document.removeEventListener("pointerdown", handleClickOutside);
   clearTypeahead();
 });
 </script>
@@ -426,6 +441,7 @@ onUnmounted(() => {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.92));
   color: var(--color-text-dark);
   cursor: pointer;
+  touch-action: manipulation;
   box-shadow: 0 10px 20px -22px rgba(15, 23, 42, 0.28);
   transition:
     border-color var(--duration-fast) var(--ease-standard),
@@ -448,6 +464,12 @@ onUnmounted(() => {
 .ui-select__trigger:hover:not(.is-disabled) {
   border-color: rgba(99, 102, 241, 0.22);
   box-shadow: 0 14px 26px -24px rgba(79, 70, 229, 0.28);
+}
+
+.ui-select__trigger:focus-visible {
+  outline: none;
+  border-color: rgba(79, 70, 229, 0.42);
+  box-shadow: var(--shadow-focus-primary);
 }
 
 .ui-select__trigger.is-open {
@@ -508,6 +530,7 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   min-width: min(100%, 14rem);
+  max-height: min(260px, calc(100vh - 8rem));
   z-index: var(--z-modal, 2000);
   border-radius: 1.1rem;
   padding: 0.45rem;
@@ -519,8 +542,9 @@ onUnmounted(() => {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 240px;
+  max-height: min(240px, calc(100vh - 9rem));
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .ui-select__list::-webkit-scrollbar {
@@ -577,8 +601,8 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .ui-select__dropdown {
-    position: static;
-    margin-top: 0.55rem;
+    top: calc(100% + 0.38rem);
+    border-radius: 1rem;
   }
 }
 </style>

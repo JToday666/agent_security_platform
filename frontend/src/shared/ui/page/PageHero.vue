@@ -99,7 +99,7 @@ withDefaults(
   margin: 0;
   padding-block: 0.08em 0.12em;
   display: block;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: 0;
@@ -169,6 +169,12 @@ withDefaults(
   .page-hero__actions :deep(button) {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media (max-width: 1180px) {
+  .page-hero__title {
+    font-size: 2.55rem;
   }
 }
 
