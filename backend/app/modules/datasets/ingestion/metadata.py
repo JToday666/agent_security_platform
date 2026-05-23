@@ -326,6 +326,7 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
                 description=item.description,
                 sort_order=item.sort_order,
                 is_active=item.is_active,
+                translations=dict(item.translations or {}),
             )
             for item in categories
         ],
@@ -336,6 +337,7 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
                 name=item.name,
                 sort_order=item.sort_order,
                 is_active=item.is_active,
+                translations=dict(item.translations or {}),
             )
             for item in subtypes
         ],
@@ -354,6 +356,7 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
             scenarios=list(item.scenarios or []),
             resources=list(item.resources or []),
             media=list(item.media or []),
+            translations=dict(item.translations or {}),
         )
 
     return bundle
@@ -527,6 +530,7 @@ def _upsert_risk_category(
             description=record.description,
             sort_order=record.sort_order,
             is_active=record.is_active,
+            translations=dict(record.translations),
         )
         session.add(row)
         session.flush()
@@ -536,6 +540,7 @@ def _upsert_risk_category(
     row.description = record.description
     row.sort_order = record.sort_order
     row.is_active = record.is_active
+    row.translations = dict(record.translations)
     session.flush()
     return row, False
 
@@ -554,6 +559,7 @@ def _upsert_risk_subtype(
             name=record.name,
             sort_order=record.sort_order,
             is_active=record.is_active,
+            translations=dict(record.translations),
         )
         session.add(row)
         session.flush()
@@ -562,6 +568,7 @@ def _upsert_risk_subtype(
     row.name = record.name
     row.sort_order = record.sort_order
     row.is_active = record.is_active
+    row.translations = dict(record.translations)
     session.flush()
     return row, False
 
@@ -586,6 +593,7 @@ def _upsert_display_meta(
             scenarios=list(record.scenarios),
             resources=list(record.resources),
             media=list(record.media),
+            translations=dict(record.translations),
         )
         session.add(row)
         session.flush()
@@ -596,6 +604,7 @@ def _upsert_display_meta(
     row.scenarios = list(record.scenarios)
     row.resources = list(record.resources)
     row.media = list(record.media)
+    row.translations = dict(record.translations)
     session.flush()
     return row, False
 

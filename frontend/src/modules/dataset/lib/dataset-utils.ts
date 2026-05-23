@@ -4,7 +4,6 @@ import type {
 } from "@/shared/types/dataset-types";
 import { formatDateTime, formatNumber } from "@/app/i18n/intl-format";
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
-import { ORDERED_REFERENCE_CATEGORY_IDS } from "@/modules/dataset/model/dataset-taxonomy";
 import { MAX_SUBMIT_DATASET_COUNT } from "@/modules/submission/model/parameter-validator";
 
 export interface CategoryTheme {
@@ -22,12 +21,6 @@ const HUE_JITTER_RANGE = 5;
 const ACCENT_HUE_OFFSET = 7;
 
 const CATEGORY_THEME_CACHE = new Map<string, CategoryTheme>();
-const REFERENCE_CATEGORY_ORDER = new Map(
-  ORDERED_REFERENCE_CATEGORY_IDS.map((categoryId, index) => [
-    categoryId,
-    index,
-  ]),
-);
 
 const hashCategoryId = (value: string): number => {
   let hash = 2166136261;
@@ -70,8 +63,6 @@ const toHsla = (
   `hsla(${Math.round(normalizeHue(hue))}, ${saturation}%, ${lightness}%, ${alpha})`;
 
 const compareCategoryIds = (left: string, right: string): number =>
-  (REFERENCE_CATEGORY_ORDER.get(left) ?? Number.MAX_SAFE_INTEGER) -
-    (REFERENCE_CATEGORY_ORDER.get(right) ?? Number.MAX_SAFE_INTEGER) ||
   left.localeCompare(right);
 
 const getHueDistance = (left: number, right: number): number => {
@@ -142,15 +133,8 @@ const buildResolvedHueMap = (
   return new Map(resolvedEntries);
 };
 
-const REFERENCE_CATEGORY_HUES = buildResolvedHueMap(
-  ORDERED_REFERENCE_CATEGORY_IDS,
-);
-
 const resolveBaseHue = (categoryId: string): number =>
-  REFERENCE_CATEGORY_HUES.get(categoryId) ??
-  buildResolvedHueMap([...ORDERED_REFERENCE_CATEGORY_IDS, categoryId]).get(
-    categoryId,
-  )!;
+  buildResolvedHueMap([categoryId]).get(categoryId)!;
 
 const buildCategoryTheme = (categoryId: string): CategoryTheme => {
   const baseHue = resolveBaseHue(categoryId);

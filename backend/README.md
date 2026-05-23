@@ -206,8 +206,10 @@ uv run python scripts/qa/e2e_local_run.py --spawn-services
 
 - [API 接口协议总表](../share/API接口协议.md)
 - [用户接口补充说明](../share/user接口.md)
-- [数据集与提交接口补充说明](../share/database&submit接口.md)
-- [评测记录与报告接口补充说明](../share/evaluations接口.md)
+- [数据集接口补充说明](../share/database接口.md)
+- [提交接口补充说明](../share/submit接口.md)
+- [评测记录与报告接口补充说明](../share/report接口.md)
+- [排行榜接口补充说明](../share/leaderboard接口.md)
 
 待办事项：
 

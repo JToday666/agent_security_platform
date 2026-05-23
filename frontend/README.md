@@ -97,22 +97,9 @@ Node 与包管理器要求以 `package.json` 为准。
 
 ## 5. 当前共享 UI 基线
 
-页面级共享 UI 目前统一收口为以下组件：
+页面级共享 UI 的完整分类与当前清单，统一维护在 [公共页面与共享 UI 说明](./docs/03-模块/公共页面与共享UI说明.md)。
 
-- `src/shared/ui/page/PageHero.vue`
-  平铺页面头部容器，负责标题、说明、前缀区、动作区与对齐方式
-- `src/shared/ui/page/SectionBlock.vue`
-  内容分区容器，支持 `surface="line" | "panel"`
-- `src/shared/ui/feedback/PageStatePanel.vue`
-  页面级加载、空态、失败态容器
-- `src/shared/ui/display/MetricStat.vue`
-  指标摘要卡
-- `src/shared/ui/forms/UiSelect.vue`
-  统一下拉组件，供 `FormField` 的 `type="select"` 模式内部使用
-- `src/shared/ui/branding/AppIcon.vue`
-  基于 `lucide-vue-next` 的统一图标入口，按语义维护项目内可用图标
-- `src/shared/ui/branding/BrandLogo.vue`
-  品牌 Logo 组件，使用构建可控的轻量矢量 Logo
+README 这里只保留当前常用的跨模块入口示例：`PageHero`、`SectionBlock`、`PageStatePanel`、`MetricStat`、`UiSelect`、`AppIcon`、`BrandLogo`。
 
 > **UI 基线提示**: 平台在共享层引入了现代微交互与玻璃态视觉体系。新组件开发应优先复用 `tokens.scss` 中的高级缓动函数（如 `var(--ease-spring)`）、内发光变量（如 `var(--glass-border-inset)`）及标准的 Hover 反馈，详见 [前端UI设计规范](./docs/05-规范/前端UI设计规范.md)。
 

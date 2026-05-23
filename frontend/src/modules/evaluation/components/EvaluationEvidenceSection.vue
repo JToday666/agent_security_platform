@@ -9,7 +9,11 @@
         variant="secondary"
         leading-icon="app:action.download"
         :loading="downloadLoading"
-        :disabled="!detail.finalReportAvailable || downloadLoading"
+        :disabled="
+          !detail.finalReportAvailable ||
+          !detail.downloads.sampleDetailsUrl ||
+          downloadLoading
+        "
         @click="$emit('download')"
       >
         {{ t("evaluation.actions.downloadSamples") }}

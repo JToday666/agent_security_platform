@@ -19,8 +19,8 @@
     "searchPlaceholder": "搜索数据集名称、摘要或风险域",
     "sortLabel": "排序",
     "sortOptions": {
-      "default": "风险域顺序",
-      "samplesDesc": "样本数从高到低",
+      "default": "风险域",
+      "samplesDesc": "样本数",
       "updatedDesc": "最近更新"
     }
   },

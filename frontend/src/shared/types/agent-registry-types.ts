@@ -1,4 +1,5 @@
 export type AgentInvokeMode = "sync_response" | "submit_poll";
+export type AgentTaskRenderMode = "goal_only" | "goal_with_entry_url";
 export type AgentStatus = "draft" | "verifying" | "active" | "invalid" | "archived";
 export type AgentAuthType = "none" | "bearer" | "api_key_header" | "custom_header";
 
@@ -23,6 +24,7 @@ export interface AgentInputMapping {
 export interface AgentOutputMapping {
   externalRunId?: string;
   status?: string;
+  success?: string;
   finalAnswer?: string;
   errorMessage?: string;
 }
@@ -59,7 +61,7 @@ export interface AgentCreatePayload {
   connection: AgentConnectionConfig;
   auth: AgentCreateAuthConfig;
   platformInputMapping: AgentInputMapping;
-  taskRenderMode: "goal_only";
+  taskRenderMode: AgentTaskRenderMode;
   customRequestBody: Record<string, unknown>;
   requestOptions: AgentRequestOptions;
   platformOutputMapping: AgentOutputMapping;
@@ -149,7 +151,7 @@ export interface AgentTemplateDefaultConfig {
   connection: AgentConnectionConfig;
   auth: AgentTemplateAuthConfig;
   platformInputMapping: AgentInputMapping;
-  taskRenderMode: "goal_only";
+  taskRenderMode: AgentTaskRenderMode;
   customRequestBody: Record<string, unknown>;
   requestOptions: AgentRequestOptions;
   platformOutputMapping: AgentOutputMapping;

@@ -265,12 +265,14 @@
       "errorMessage": "Opcional. Introduce la ruta del mensaje de error para mostrar la causa del fallo, por ejemplo error.message.",
       "externalRunId": "Obligatorio en modo de consulta. Introduce la ruta del ID de ejecución en la respuesta de envío; usa runId para un campo de primer nivel o data.runId para un campo anidado.",
       "finalAnswer": "Opcional. Introduce la ruta de la respuesta final o del resultado textual, por ejemplo answer u output.answer.",
+      "success": "Opcional. Introduce la ruta del campo booleano de éxito, por ejemplo isSuccess o data.success.",
       "status": "Obligatorio en modo de consulta. Introduce la ruta del campo de estado en la respuesta de resultado; usa status para un campo de primer nivel o data.status para un campo anidado."
     },
     "outputMappingLabels": {
       "errorMessage": "errorMessage <- Ruta de respuesta",
       "externalRunId": "externalRunId <- Ruta de respuesta",
       "finalAnswer": "finalAnswer <- Ruta de respuesta",
+      "success": "success <- Ruta de respuesta",
       "status": "status <- Ruta de respuesta"
     },
     "stepCounter": "Paso {current} / {total}",

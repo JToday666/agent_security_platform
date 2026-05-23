@@ -22,10 +22,13 @@ const countDecimals = (value: number): number => {
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value));
 
+const resolvePositiveStep = (value: number): number =>
+  Number.isFinite(value) && value > 0 ? value : 1;
+
 const normalizeToStep = (value: number, meta: RangeMeta): number => {
-  const precision = Math.max(countDecimals(meta.step), countDecimals(meta.min));
-  const stepped =
-    Math.round((value - meta.min) / meta.step) * meta.step + meta.min;
+  const step = resolvePositiveStep(meta.step);
+  const precision = Math.max(countDecimals(step), countDecimals(meta.min));
+  const stepped = Math.round((value - meta.min) / step) * step + meta.min;
 
   return Number(stepped.toFixed(Math.max(precision, 0)));
 };
@@ -71,7 +74,8 @@ export const normalizeMaxSteps = (value: unknown, meta: RangeMeta): number => {
 };
 
 export const isStepAligned = (value: number, meta: RangeMeta): boolean => {
-  const stepped = (value - meta.min) / meta.step;
+  const step = resolvePositiveStep(meta.step);
+  const stepped = (value - meta.min) / step;
   return Number.isInteger(Number(stepped.toFixed(6)));
 };
 

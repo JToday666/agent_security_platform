@@ -83,16 +83,6 @@ const isAllowedHardcodedChinese = (
   if (normalizedPath === "app/shell/language-switcher.ts") {
     return match.includes("汉语") || match.includes("日本語");
   }
-  if (normalizedPath === "modules/dataset/model/dataset-taxonomy.ts") {
-    return true;
-  }
-  if (normalizedPath === "modules/dataset/api/dataset-api.ts") {
-    return [
-      "目录加载失败，请稍后重试。",
-      "详情加载失败，请稍后重试。",
-      "未找到对应评测项。",
-    ].some((allowed) => match.includes(allowed));
-  }
   return false;
 };
 

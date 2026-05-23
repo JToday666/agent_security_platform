@@ -51,7 +51,7 @@ class EvaluationMetaRange(CamelModel):
 
     min: int | float
     max: int | float
-    step: int | float | None = None
+    step: int | float
     default: int | float
 
 

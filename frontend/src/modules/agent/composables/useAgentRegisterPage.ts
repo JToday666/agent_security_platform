@@ -120,6 +120,10 @@ export const buildOutputMappingItems = (
   },
   { key: "status", label: t("agent.registerForm.outputMappingLabels.status") },
   {
+    key: "success",
+    label: t("agent.registerForm.outputMappingLabels.success"),
+  },
+  {
     key: "finalAnswer",
     label: t("agent.registerForm.outputMappingLabels.finalAnswer"),
   },

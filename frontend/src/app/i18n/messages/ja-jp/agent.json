@@ -265,12 +265,14 @@
       "errorMessage": "任意。失敗時に理由を表示しやすくするため、エラー情報のパスを入力します。例: error.message。",
       "externalRunId": "ポーリングモードでは必須。提出応答内の実行 ID パスを入力します。トップレベルフィールドは runId、ネストフィールドは data.runId と書きます。",
       "finalAnswer": "任意。最終回答またはテキスト結果の所在パスを入力します。例: answer または output.answer。",
+      "success": "任意。真偽値の成功フィールドの所在パスを入力します。例: isSuccess または data.success。",
       "status": "ポーリングモードでは必須。結果応答内の状態フィールドパスを入力します。トップレベルフィールドは status、ネストフィールドは data.status と書きます。"
     },
     "outputMappingLabels": {
       "errorMessage": "errorMessage <- 応答パス",
       "externalRunId": "externalRunId <- 応答パス",
       "finalAnswer": "finalAnswer <- 応答パス",
+      "success": "success <- 応答パス",
       "status": "status <- 応答パス"
     },
     "stepCounter": "ステップ {current} / {total}",

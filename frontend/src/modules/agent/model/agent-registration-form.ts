@@ -10,6 +10,7 @@ import type {
   AgentInvokeMode,
   AgentOutputMapping,
   AgentRequestOptions,
+  AgentTaskRenderMode,
   AgentTemplate,
 } from "@/shared/types/agent-registry-types";
 import { AGENT_NO_TEMPLATE_ID } from "./agent-registration-constants";
@@ -36,7 +37,7 @@ export interface AgentRegisterForm {
     secret: string;
   };
   platformInputMapping: AgentInputMapping;
-  taskRenderMode: "goal_only";
+  taskRenderMode: AgentTaskRenderMode;
   customRequestFields: AgentCustomRequestField[];
   requestOptions: AgentRequestOptions;
   platformOutputMapping: AgentOutputMapping;
@@ -79,9 +80,13 @@ const toOutputMappingFormValue = (
 ): AgentOutputMapping => ({
   externalRunId: toText(mapping.externalRunId),
   status: toText(mapping.status),
+  success: toText(mapping.success),
   finalAnswer: toText(mapping.finalAnswer),
   errorMessage: toText(mapping.errorMessage),
 });
+
+const normalizeTaskRenderMode = (value?: string): AgentTaskRenderMode =>
+  value === "goal_with_entry_url" ? "goal_with_entry_url" : "goal_only";
 
 export const cloneAgentRegistrationJson = <T>(value: T): T =>
   JSON.parse(JSON.stringify(value)) as T;
@@ -278,7 +283,7 @@ export const createAgentRegisterFormFromTemplate = (
     platformInputMapping: toInputMappingFormValue(
       defaultConfig.platformInputMapping,
     ),
-    taskRenderMode: "goal_only",
+    taskRenderMode: normalizeTaskRenderMode(defaultConfig.taskRenderMode),
     customRequestFields: customBodyToFields(defaultConfig.customRequestBody),
     requestOptions: normalizeRequestOptions(defaultConfig.requestOptions),
     platformOutputMapping: toOutputMappingFormValue(
@@ -310,7 +315,7 @@ export const createAgentRegisterFormFromDetail = (
       secret: "",
     },
     platformInputMapping: toInputMappingFormValue(detail.platformInputMapping),
-    taskRenderMode: "goal_only",
+    taskRenderMode: normalizeTaskRenderMode(detail.taskRenderMode),
     customRequestFields: customBodyToFields(detail.customRequestBody),
     requestOptions: normalizeRequestOptions(detail.requestOptions),
     platformOutputMapping: toOutputMappingFormValue(
