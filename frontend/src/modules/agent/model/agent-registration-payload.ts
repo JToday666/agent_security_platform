@@ -48,7 +48,7 @@ export const buildAgentCreatePayload = (
       platformInputMapping: cloneAgentRegistrationJson(
         normalized.platformInputMapping,
       ),
-      taskRenderMode: "goal_only",
+      taskRenderMode: form.taskRenderMode,
       customRequestBody: cloneAgentRegistrationJson(
         normalized.customRequestBody,
       ),

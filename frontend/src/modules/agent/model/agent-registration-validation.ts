@@ -75,6 +75,7 @@ const optionalInputMappingKeys: Array<
 export const agentOutputMappingKeys: Array<keyof AgentOutputMapping> = [
   "externalRunId",
   "status",
+  "success",
   "finalAnswer",
   "errorMessage",
 ];

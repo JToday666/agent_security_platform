@@ -265,12 +265,14 @@
       "errorMessage": "Optional. Enter the path to the error message so failure reasons can be displayed, such as error.message.",
       "externalRunId": "Required in polling mode. Enter the path to the run ID in the submission response; use runId for a top-level field or data.runId for a nested field.",
       "finalAnswer": "Optional. Enter the path to the final answer or text result, such as answer or output.answer.",
+      "success": "Optional. Enter the path to the boolean success field, such as isSuccess or data.success.",
       "status": "Required in polling mode. Enter the path to the status field in the result response; use status for a top-level field or data.status for a nested field."
     },
     "outputMappingLabels": {
       "errorMessage": "errorMessage <- Response Path",
       "externalRunId": "externalRunId <- Response Path",
       "finalAnswer": "finalAnswer <- Response Path",
+      "success": "success <- Response Path",
       "status": "status <- Response Path"
     },
     "stepCounter": "Step {current} / {total}",

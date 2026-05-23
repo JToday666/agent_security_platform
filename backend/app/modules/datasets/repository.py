@@ -24,11 +24,57 @@ class DatasetRepository:
         self, locale: str, category_ids: list[int], subtype_ids: list[int]
     ) -> dict[str, dict[int, dict[str, Any]]]:
         """返回指定语言的数据集元数据翻译映射。"""
-        _ = (locale, category_ids, subtype_ids)
+        if not locale:
+            return {
+                "categories": {},
+                "subtypes": {},
+                "display_meta": {},
+            }
+
+        category_translations: dict[int, dict[str, Any]] = {}
+        subtype_translations: dict[int, dict[str, Any]] = {}
+        display_meta_translations: dict[int, dict[str, Any]] = {}
+
+        unique_category_ids = sorted(set(category_ids))
+        unique_subtype_ids = sorted(set(subtype_ids))
+        if unique_category_ids:
+            category_rows = (
+                await self.db.execute(
+                    select(RiskCategory.id, RiskCategory.translations).where(
+                        RiskCategory.id.in_(unique_category_ids)
+                    )
+                )
+            ).all()
+            category_translations = _extract_locale_translations(
+                category_rows, locale
+            )
+
+        if unique_subtype_ids:
+            subtype_rows = (
+                await self.db.execute(
+                    select(RiskSubtype.id, RiskSubtype.translations).where(
+                        RiskSubtype.id.in_(unique_subtype_ids)
+                    )
+                )
+            ).all()
+            subtype_translations = _extract_locale_translations(subtype_rows, locale)
+
+            display_meta_rows = (
+                await self.db.execute(
+                    select(
+                        RiskSubtypeDisplayMeta.subtype_id,
+                        RiskSubtypeDisplayMeta.translations,
+                    ).where(RiskSubtypeDisplayMeta.subtype_id.in_(unique_subtype_ids))
+                )
+            ).all()
+            display_meta_translations = _extract_locale_translations(
+                display_meta_rows, locale
+            )
+
         return {
-            "categories": {},
-            "subtypes": {},
-            "display_meta": {},
+            "categories": category_translations,
+            "subtypes": subtype_translations,
+            "display_meta": display_meta_translations,
         }
 
     async def get_catalog_rows(self):
@@ -98,3 +144,17 @@ class DatasetRepository:
             )
         )
         return (await self.db.execute(stmt)).one_or_none()
+
+
+def _extract_locale_translations(
+    rows, locale: str
+) -> dict[int, dict[str, Any]]:
+    """从 JSONB translations 字段中抽取当前 locale 的对象型翻译。"""
+    translations_by_id: dict[int, dict[str, Any]] = {}
+    for entity_id, translations in rows:
+        if not isinstance(translations, dict):
+            continue
+        locale_translations = translations.get(locale)
+        if isinstance(locale_translations, dict):
+            translations_by_id[int(entity_id)] = dict(locale_translations)
+    return translations_by_id

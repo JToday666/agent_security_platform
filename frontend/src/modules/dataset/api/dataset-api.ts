@@ -1,5 +1,4 @@
 import request from "@/shared/api/http-client";
-import { ApiConfig } from "@/shared/api/Config";
 import { getCurrentDisplayLocale } from "@/app/i18n";
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import {
@@ -8,19 +7,9 @@ import {
   withMemoryCache,
 } from "@/shared/api/memory-cache";
 import {
-  createErrorEnvelope,
-  createSuccessEnvelope,
-  resolveMockEnvelope,
-  shouldMockFail,
-} from "@/shared/api/mock-api-utils";
-import {
   adaptDatasetCatalog,
   adaptDatasetDetail,
 } from "@/modules/dataset/api/adapters/dataset-adapters";
-import {
-  buildReferenceDatasetCatalog,
-  getReferenceDatasetDetail,
-} from "@/modules/dataset/mock/dataset-fixtures";
 import type {
   DatasetCatalogResponse,
   DatasetDetail,
@@ -101,25 +90,6 @@ export const getDatasetCatalog = async (
   const { force = false, signal } = options;
   const catalogCacheKey = localizedCacheKey(DATASET_CATALOG_CACHE_KEY);
 
-  if (ApiConfig.enableApiMock) {
-    if (shouldMockFail("mockCatalogError")) {
-      const result = await resolveMockEnvelope(
-        createErrorEnvelope(50000, "目录加载失败，请稍后重试。", {
-          catalogVersion: "",
-          categoryCount: 0,
-          subcategoryCount: 0,
-          categories: [],
-        }),
-      );
-      throw createDatasetServiceError(result.message, result.code);
-    }
-
-    const result = await resolveMockEnvelope(
-      createSuccessEnvelope(buildReferenceDatasetCatalog()),
-    );
-    return adaptDatasetCatalog(result.data);
-  }
-
   if (signal) {
     const cached = !force
       ? readMemoryCache<DatasetCatalogResponse>(catalogCacheKey)
@@ -145,26 +115,6 @@ export const getDatasetDetail = async (
   const requestedDatasetId = datasetId.trim();
   const { force = false, signal } = options;
   const cacheKey = datasetDetailCacheKey(requestedDatasetId);
-
-  if (ApiConfig.enableApiMock) {
-    if (shouldMockFail("mockDetailError")) {
-      const result = await resolveMockEnvelope(
-        createErrorEnvelope(50000, "详情加载失败，请稍后重试。", null),
-      );
-      throw createDatasetServiceError(result.message, result.code);
-    }
-
-    const detail = getReferenceDatasetDetail(requestedDatasetId);
-    if (!detail) {
-      const result = await resolveMockEnvelope(
-        createErrorEnvelope(40400, "未找到对应评测项。", null),
-      );
-      throw createDatasetServiceError(result.message, result.code);
-    }
-
-    const result = await resolveMockEnvelope(createSuccessEnvelope(detail));
-    return adaptDatasetDetail(result.data);
-  }
 
   if (signal) {
     const cached = !force

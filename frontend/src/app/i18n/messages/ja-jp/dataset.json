@@ -19,8 +19,8 @@
     "searchPlaceholder": "データセット名、概要、リスク領域で検索",
     "sortLabel": "並び順",
     "sortOptions": {
-      "default": "リスク領域順",
-      "samplesDesc": "サンプル数の多い順",
+      "default": "リスク領域",
+      "samplesDesc": "サンプル数",
       "updatedDesc": "最近更新"
     }
   },

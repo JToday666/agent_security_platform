@@ -9,6 +9,7 @@ import pytest
 from app.modules.evaluations.schemas import EvaluationActionRequest
 from app.modules.evaluations.service import EvaluationService
 from app.platform.errors import ConflictError
+from app.platform.i18n import set_current_locale
 
 
 class EvaluationReadOnlyRepositoryStub:
@@ -16,6 +17,7 @@ class EvaluationReadOnlyRepositoryStub:
         self.run = run
         self.datasets = datasets
         self.report = report
+        self.dataset_name_translations: dict[str, str] = {}
         self.commit_calls = 0
         self.rollback_calls = 0
 
@@ -35,6 +37,16 @@ class EvaluationReadOnlyRepositoryStub:
         return {self.run.id: self.datasets}, (
             {self.run.id: self.report} if self.report is not None else {}
         )
+
+    async def load_dataset_name_translations(
+        self, locale: str, dataset_codes: list[str]
+    ):
+        _ = locale
+        return {
+            dataset_code: self.dataset_name_translations[dataset_code]
+            for dataset_code in dataset_codes
+            if dataset_code in self.dataset_name_translations
+        }
 
     async def commit(self) -> None:
         self.commit_calls += 1
@@ -102,6 +114,34 @@ async def test_list_evaluations_does_not_finalize_expired_paused_runs() -> None:
 
 
 @pytest.mark.asyncio
+async def test_list_evaluations_localizes_dataset_names_at_response_time() -> None:
+    now = datetime.now(timezone.utc)
+    run = make_paused_run(now)
+    datasets = [
+        SimpleNamespace(
+            dataset_code="A1_identity_leakage",
+            dataset_name="身份泄露",
+            status="paused",
+        )
+    ]
+    repository = EvaluationReadOnlyRepositoryStub(
+        run=run, datasets=datasets, report=None
+    )
+    repository.dataset_name_translations = {
+        "A1_identity_leakage": "Identity Leakage"
+    }
+    service = EvaluationService(repository)
+    current_user = SimpleNamespace(id=1, username="demo-user")
+    token = set_current_locale("en-US")
+    try:
+        response = await service.list_evaluations(current_user)
+    finally:
+        token.reset()
+
+    assert response[0].dataset_names == ["Identity Leakage"]
+
+
+@pytest.mark.asyncio
 async def test_get_evaluation_detail_does_not_finalize_expired_paused_runs() -> None:
     now = datetime.now(timezone.utc)
     run = make_paused_run(now)
@@ -126,6 +166,39 @@ async def test_get_evaluation_detail_does_not_finalize_expired_paused_runs() -> 
     assert response.status == "paused"
     assert repository.commit_calls == 0
     finalize_mock.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_get_evaluation_detail_localizes_running_dataset_name() -> None:
+    now = datetime.now(timezone.utc)
+    run = make_paused_run(now)
+    run.status = "running"
+    run.pause_used = False
+    run.pause_deadline_at = None
+    datasets = [
+        SimpleNamespace(
+            dataset_code="A1_identity_leakage",
+            dataset_name="身份泄露",
+            status="running",
+        )
+    ]
+    repository = EvaluationReadOnlyRepositoryStub(
+        run=run, datasets=datasets, report=None
+    )
+    repository.dataset_name_translations = {
+        "A1_identity_leakage": "Identity Leakage"
+    }
+    service = EvaluationService(repository)
+    current_user = SimpleNamespace(id=1, username="demo-user")
+    token = set_current_locale("en-US")
+    try:
+        response = await service.get_evaluation_detail("eval_1", current_user)
+    finally:
+        token.reset()
+
+    assert response.dataset_names == ["Identity Leakage"]
+    assert response.progress.running_dataset_name == "Identity Leakage"
+    assert "Identity Leakage" in response.progress.status_text
 
 
 @pytest.mark.asyncio

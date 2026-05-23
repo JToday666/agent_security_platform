@@ -265,12 +265,14 @@
       "errorMessage": "Facultatif. Renseignez le chemin du message d’erreur afin d’afficher la cause d’échec, par exemple error.message.",
       "externalRunId": "Obligatoire en mode d’interrogation. Renseignez le chemin de l’ID d’exécution dans la réponse de soumission ; utilisez runId pour un champ de premier niveau ou data.runId pour un champ imbriqué.",
       "finalAnswer": "Facultatif. Renseignez le chemin de la réponse finale ou du résultat textuel, par exemple answer ou output.answer.",
+      "success": "Facultatif. Renseignez le chemin du champ booléen de succès, par exemple isSuccess ou data.success.",
       "status": "Obligatoire en mode d’interrogation. Renseignez le chemin du champ de statut dans la réponse de résultat ; utilisez status pour un champ de premier niveau ou data.status pour un champ imbriqué."
     },
     "outputMappingLabels": {
       "errorMessage": "errorMessage <- Chemin de réponse",
       "externalRunId": "externalRunId <- Chemin de réponse",
       "finalAnswer": "finalAnswer <- Chemin de réponse",
+      "success": "success <- Chemin de réponse",
       "status": "status <- Chemin de réponse"
     },
     "stepCounter": "Étape {current} / {total}",

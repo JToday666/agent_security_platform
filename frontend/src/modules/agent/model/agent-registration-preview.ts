@@ -54,9 +54,29 @@ const buildResponseOutputSamples = (
 ): Record<keyof AgentOutputMapping, unknown> => ({
   externalRunId: "run_123",
   status: "completed",
+  success: true,
   finalAnswer: t("agent.preview.samples.finalAnswer"),
   errorMessage: t("agent.preview.samples.errorMessage"),
 });
+
+const renderPlatformInputSamples = (
+  form: AgentRegisterForm,
+  samples: Record<keyof AgentInputMapping, unknown>,
+): Record<keyof AgentInputMapping, unknown> => {
+  const rendered = { ...samples };
+  if (form.taskRenderMode !== "goal_with_entry_url") {
+    return rendered;
+  }
+
+  const entryUrl = String(rendered.entryUrl ?? "").trim();
+  if (!entryUrl) {
+    return rendered;
+  }
+
+  const task = String(rendered.task ?? "").trim();
+  rendered.task = task ? `${task}\n\nStart URL: ${entryUrl}` : `Start URL: ${entryUrl}`;
+  return rendered;
+};
 
 const joinUrl = (baseUrl: string, path: string): string =>
   `${baseUrl.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
@@ -145,7 +165,10 @@ export const buildAgentInvocationPreview = (
   const requestBody: Record<string, unknown> = { ...customBody };
   const responseMapping = buildResponseMappingPreview(form, baseUrl, t);
   const inputMapping = normalizeAgentInputMapping(form.platformInputMapping);
-  const platformInputSamples = buildPlatformInputSamples(t);
+  const platformInputSamples = renderPlatformInputSamples(
+    form,
+    buildPlatformInputSamples(t),
+  );
 
   Object.entries(inputMapping).forEach(([platformField, target]) => {
     if (!target) {

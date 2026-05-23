@@ -566,6 +566,7 @@ const inputMappingPlaceholder: Record<keyof AgentInputMapping, string> = {
 const outputMappingPlaceholder: Record<keyof AgentOutputMapping, string> = {
   externalRunId: "runId",
   status: "status",
+  success: "isTaskSuccessful",
   finalAnswer: "answer",
   errorMessage: "error.message",
 };

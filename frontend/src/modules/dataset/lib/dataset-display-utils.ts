@@ -1,13 +1,6 @@
-import { REFERENCE_DATASET_TAXONOMY } from "@/modules/dataset/model/dataset-taxonomy";
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 
 const INTERNAL_DATASET_CODE_PATTERN = /^[A-G]\d(?:_[a-z0-9]+)+$/i;
-
-const PUBLIC_DATASET_NAME_MAP = new Map(
-  REFERENCE_DATASET_TAXONOMY.flatMap((category) =>
-    category.datasets.map((dataset) => [dataset.datasetId, dataset.name] as const),
-  ),
-);
 
 const normalizeLabel = (value?: string | null): string => value?.trim() ?? "";
 
@@ -40,13 +33,6 @@ export const resolvePublicDatasetName = (
     !isInternalDatasetCodeLike(normalizedPreferredName, normalizedDatasetId)
   ) {
     return normalizedPreferredName;
-  }
-
-  const taxonomyName = PUBLIC_DATASET_NAME_MAP.get(
-    normalizeLabel(normalizedDatasetId),
-  );
-  if (taxonomyName) {
-    return taxonomyName;
   }
 
   return translateRuntimeMessage("dataset.fallback.dataset");

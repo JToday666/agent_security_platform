@@ -24,31 +24,25 @@ import {
   submitLiveAgent,
 } from "./internal/live-evaluation-api";
 import {
-  downloadMockEvaluationSampleDetails,
   getMockEvaluationDetail,
   getMockEvaluationReport,
   getMockEvaluationRecords,
-  getMockEvaluationScoreTrend,
-  getMockSubmitMeta,
-  postMockEvaluationAction,
-  precheckMockAgent,
-  submitMockAgent,
 } from "./internal/mock-evaluation-api";
 
 const useMockApi = ApiConfig.enableApiMock;
 
 export const getSubmitMeta = async (): Promise<SubmitMetaResponse> =>
-  useMockApi ? getMockSubmitMeta() : getLiveSubmitMeta();
+  getLiveSubmitMeta();
 
 export const precheckAgent = async (
   payload: SubmitAgentPayload,
 ): Promise<PrecheckResponse> =>
-  useMockApi ? precheckMockAgent(payload) : precheckLiveAgent(payload);
+  precheckLiveAgent(payload);
 
 export const submitAgent = async (
   payload: SubmitAgentPayload,
 ): Promise<SubmitResponse> =>
-  useMockApi ? submitMockAgent(payload) : submitLiveAgent(payload);
+  submitLiveAgent(payload);
 
 export const getEvaluationRecords = async (): Promise<EvaluationRecord[]> =>
   useMockApi ? getMockEvaluationRecords() : getLiveEvaluationRecords();
@@ -56,9 +50,7 @@ export const getEvaluationRecords = async (): Promise<EvaluationRecord[]> =>
 export const getEvaluationScoreTrend = async (
   scope: EvaluationScoreTrendScope,
 ): Promise<EvaluationScoreTrend> =>
-  useMockApi
-    ? getMockEvaluationScoreTrend(scope)
-    : getLiveEvaluationScoreTrend(scope);
+  getLiveEvaluationScoreTrend(scope);
 
 export const getEvaluationDetail = async (
   evaluationId: string,
@@ -77,14 +69,10 @@ export const getEvaluationReport = async (
 export const downloadEvaluationSampleDetails = async (
   evaluationId: string,
 ): Promise<ApiBlobResponse> =>
-  useMockApi
-    ? downloadMockEvaluationSampleDetails(evaluationId)
-    : downloadLiveEvaluationSampleDetails(evaluationId);
+  downloadLiveEvaluationSampleDetails(evaluationId);
 
 export const postEvaluationAction = async (
   evaluationId: string,
   action: EvaluationAction,
 ): Promise<EvaluationDetail> =>
-  useMockApi
-    ? postMockEvaluationAction(evaluationId, action)
-    : postLiveEvaluationAction(evaluationId, action);
+  postLiveEvaluationAction(evaluationId, action);

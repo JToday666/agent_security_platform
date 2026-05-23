@@ -19,8 +19,8 @@
     "searchPlaceholder": "Rechercher par nom, résumé ou domaine de risque",
     "sortLabel": "Tri",
     "sortOptions": {
-      "default": "Ordre des domaines de risque",
-      "samplesDesc": "Nombre d’échantillons décroissant",
+      "default": "Domaine de risque",
+      "samplesDesc": "Nombre d’échantillons",
       "updatedDesc": "Mise à jour récente"
     }
   },

@@ -48,6 +48,11 @@ const toNumberValue = (value: unknown, fallback = 0): number => {
 const toBooleanValue = (value: unknown, fallback = false): boolean =>
   typeof value === "boolean" ? value : fallback;
 
+const normalizePositiveStep = (value: unknown, fallback: number): number => {
+  const normalized = toNumberValue(value, fallback);
+  return Number.isFinite(normalized) && normalized > 0 ? normalized : fallback;
+};
+
 const normalizeLeaderboardDisplayMode = (
   value: unknown,
   fallback: "public" | "anonymous" = "public",
@@ -125,7 +130,7 @@ const normalizeSubmitMetaRange = (
   return {
     min: toNumberValue(candidate.min, fallback.min),
     max: toNumberValue(candidate.max, fallback.max),
-    step: toNumberValue(candidate.step, fallback.step),
+    step: normalizePositiveStep(candidate.step, fallback.step),
     default: toNumberValue(candidate.default, fallback.default),
     recommendedMax:
       candidate.recommendedMax == null
