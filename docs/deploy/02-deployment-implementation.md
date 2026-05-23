@@ -79,8 +79,6 @@ export MODELSCOPE_CACHE="$ASP_HOME/cache/modelscope"
 export HF_HOME="$ASP_HOME/cache/huggingface"
 export TRANSFORMERS_CACHE="$ASP_HOME/cache/huggingface"
 
-export VLLM_CACHE_ROOT="$ASP_HOME/cache/vllm"
-
 export UV_CACHE_DIR="$ASP_HOME/cache/uv"
 export PIP_CACHE_DIR="$ASP_HOME/cache/pip"
 ```
@@ -321,7 +319,6 @@ services:
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
       HF_HOME: /root/.cache/huggingface
       TRANSFORMERS_CACHE: /root/.cache/huggingface
-      VLLM_CACHE_ROOT: /root/.cache/vllm
 
     ports:
       - "127.0.0.1:18000:8000"
@@ -421,9 +418,9 @@ RUNTIME_ROOT_DIR=/data/agent-security-platform/runtime
 TMP_ROOT_DIR=/data/agent-security-platform/tmp
 LOG_ROOT_DIR=/data/agent-security-platform/logs
 
-LLM_JUDGE_PROVIDER=vllm
-VLLM_BASE_URL=http://127.0.0.1:18000/v1
-VLLM_MODEL=qwen2.5-14b-gptq-int4
+LLM_JUDGE_PROVIDER=litellm
+LLM_BASE_URL=http://127.0.0.1:18000/v1
+LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
 
 PUBLIC_BASE_URL=https://<domain>
 CORS_ALLOWED_ORIGINS=https://<domain>
@@ -433,8 +430,8 @@ CORS_ALLOWED_ORIGINS=https://<domain>
 
 ```env
 DATABASE_URL=postgresql+psycopg://asp_app:<password>@127.0.0.1:5432/asp_db
-VLLM_BASE_URL=http://127.0.0.1:18000/v1
-VLLM_MODEL=qwen2.5-14b-gptq-int4
+LLM_BASE_URL=http://127.0.0.1:18000/v1
+LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
 ```
 
 ---

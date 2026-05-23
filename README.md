@@ -69,9 +69,13 @@ VITE_ENABLE_API_MOCK=true
 | `POSTGRES_USER`     | `postgres`                | 数据库用户名。     |
 | `POSTGRES_PASSWORD` | `<your_db_password>`      | 数据库密码。       |
 | `SQLALCHEMY_ECHO`   | `false`                   | SQL 日志开关。     |
-| `LLM_JUDGE_PROVIDER` | `vllm`                   | LLM 判定服务 provider。 |
-| `VLLM_BASE_URL`     | `http://127.0.0.1:18000/v1` | 本机 vLLM OpenAI-compatible API。 |
-| `VLLM_MODEL`        | `qwen2.5-14b-gptq-int4`   | 本机 vLLM 服务模型名。 |
+| `LLM_BASE_URL`      | `http://127.0.0.1:18400/v1` | OpenAI-compatible LLM API 基地址。 |
+| `LLM_DEFAULT_MODEL` | `local-qwen`             | 默认 LLM 模型名。      |
+| `LLM_API_KEY`       | `<optional_api_key>`     | 通用 LLM API key，本地无鉴权服务可留空。 |
+| `LLM_JUDGE_PROVIDER` | `litellm`               | LLM 判定服务 provider。 |
+| `LLM_JUDGE_BASE_URL` | 留空                    | 可选，仅覆盖 judge 的 LLM API 基地址。 |
+| `LLM_JUDGE_MODEL`   | 留空                     | 可选，仅覆盖 judge 的模型名。 |
+| `LLM_JUDGE_API_KEY` | 留空                     | 可选，仅覆盖 judge 的 API key。 |
 
 ## 启动
 
