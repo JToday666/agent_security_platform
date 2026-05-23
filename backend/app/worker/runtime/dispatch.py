@@ -269,11 +269,6 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
                 "maxSteps": config.get("maxSteps"),
             },
         )
-        if not result.passed:
-            raise RuntimeDispatchError(
-                result.error_message
-                or f"external agent status not successful: {result.status}"
-            )
 
         close_result = await self._close_runtime(prepared, sample, result)
         return DispatchResult(
@@ -287,10 +282,15 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
     async def _close_runtime(
         self, prepared: PreparedRuntime, sample: SampleRuntimeTarget, result
     ) -> dict[str, Any]:
+        done_reason = (
+            "external_agent_completed"
+            if result.passed
+            else "external_agent_failed"
+        )
         close_payload = {
             "instanceId": prepared.environment_ref,
             "token": prepared.probe_token,
-            "reason": "external_agent_completed",
+            "reason": done_reason,
             "meta": {
                 "sampleId": sample.sample_id,
                 "entryPath": browser_entry_path(prepared, sample),
@@ -299,12 +299,14 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
             },
             "finalize": {
                 "done": True,
-                "doneReason": "external_agent_completed",
+                "doneReason": done_reason,
                 "finalState": {
                     "sampleId": sample.sample_id,
                     "externalRunId": result.external_run_id,
                     "status": result.status,
+                    "passed": result.passed,
                     "finalAnswer": result.final_answer,
+                    "errorMessage": result.error_message,
                 },
             },
             "events": [],
