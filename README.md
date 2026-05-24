@@ -102,6 +102,10 @@ cd backend
 uv run python worker.py
 ```
 
+本地默认 `WORKER_RUNTIME_LAUNCH_MODE=process`；生产隔离运行可改为 `docker`，
+由 sample worker 为每个样本启动一次性 runtime 容器。管理员可访问
+`/api/v1/ops/workers` 查看 scheduler/sample worker 心跳和 sample 队列状态。
+
 启动前端：
 
 ```bash

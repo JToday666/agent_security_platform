@@ -8,9 +8,8 @@ from app.platform.config import settings
 from app.worker.execution_concurrency import (
     runtime_process_semaphore as _runtime_process_semaphore,
 )
-from app.worker.execution_jobs import SampleJob, load_sample_jobs
+from app.worker.execution_jobs import SampleJob
 from app.worker.execution_persistence import (
-    mark_dataset_completed,
     mark_execution_dispatching,
     mark_execution_runtime_ready,
     mark_execution_state,
@@ -76,6 +75,7 @@ async def execute_sample(
     dispatch_mode: str | None = None,
     dispatch_config: dict[str, object] | None = None,
     timeout_seconds: int | None = None,
+    claim_token: str | None = None,
 ) -> None:
     """Execute one sample through runtime launch, dispatch, verification and persistence."""
     execution_id = job.execution_id
@@ -83,7 +83,9 @@ async def execute_sample(
     timeout = _execution_timeout_seconds(timeout_seconds)
     resolved_dispatch_mode = _resolve_dispatch_mode(dispatch_mode)
 
-    should_execute = await mark_execution_dispatching(execution_id)
+    should_execute = await mark_execution_dispatching(
+        execution_id, claim_token=claim_token
+    )
     if not should_execute:
         return
 
@@ -105,14 +107,18 @@ async def execute_sample(
     async with _runtime_process_semaphore():
         try:
             handle = await launch_runtime(prepared)
-            await mark_execution_runtime_ready(execution_id, prepared)
+            await mark_execution_runtime_ready(
+                execution_id, prepared, claim_token=claim_token
+            )
 
             adapter = resolve_dispatch_adapter(resolved_dispatch_mode)
             dispatch_result = await adapter.dispatch(
                 prepared, sample, timeout, dispatch_config=dispatch_config
             )
 
-            await mark_execution_state(execution_id, "verifying")
+            await mark_execution_state(
+                execution_id, "verifying", claim_token=claim_token
+            )
             _validate_dispatch_results(prepared, dispatch_result.finalized)
 
             await persist_runtime_result(
@@ -123,6 +129,7 @@ async def execute_sample(
                 summary=None,
                 success=True,
                 final_status="done",
+                claim_token=claim_token,
             )
         except RuntimeDispatchTimeout:
             await persist_runtime_result(
@@ -133,39 +140,12 @@ async def execute_sample(
                 summary=_summary_for_timeout(),
                 success=True,
                 final_status="done",
+                claim_token=claim_token,
             )
         except Exception as exc:
-            await mark_execution_system_error(execution_id, run_id, dataset_id, exc)
+            await mark_execution_system_error(
+                execution_id, run_id, dataset_id, exc, claim_token=claim_token
+            )
         finally:
             if handle is not None:
                 await stop_runtime(handle)
-
-
-async def execute_dataset(
-    run_id: int,
-    dataset_id: int,
-    dataset_code: str,
-    *,
-    dispatch_mode: str | None = None,
-    dispatch_config: dict[str, object] | None = None,
-    timeout_seconds: int | None = None,
-) -> None:
-    """Execute all pending samples for one dataset under configured concurrency."""
-    jobs = await load_sample_jobs(run_id, dataset_code)
-    semaphore = asyncio.Semaphore(
-        max(1, settings.WORKER_MAX_PARALLEL_EXECUTIONS_PER_RUN)
-    )
-
-    async def run_job(job: SampleJob) -> None:
-        async with semaphore:
-            await execute_sample(
-                run_id,
-                dataset_id,
-                job,
-                dispatch_mode=dispatch_mode,
-                dispatch_config=dispatch_config,
-                timeout_seconds=timeout_seconds,
-            )
-
-    await asyncio.gather(*(run_job(job) for job in jobs))
-    await mark_dataset_completed(run_id, dataset_id, dataset_code)

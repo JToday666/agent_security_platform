@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import secrets
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import and_, or_, select
@@ -73,6 +74,7 @@ async def claim_next_sample(
     execution.claimed_by = worker_id
     execution.claimed_at = execution.claimed_at or now
     execution.claim_heartbeat_at = now
+    execution.claim_token = secrets.token_urlsafe(24)
     execution.lease_expires_at = lease_expires_at
     execution.updated_at = now
     await db.commit()
@@ -81,13 +83,17 @@ async def claim_next_sample(
 
 
 async def heartbeat_sample_claim_by_id(
-    db: AsyncSession, execution_id: int, worker_id: str
+    db: AsyncSession,
+    execution_id: int,
+    worker_id: str,
+    claim_token: str | None = None,
 ) -> bool:
     """Refresh a sample execution lease when the claim is still owned by worker_id."""
     execution = await db.get(SampleExecution, execution_id)
     if (
         execution is None
         or execution.claimed_by != worker_id
+        or (claim_token is not None and execution.claim_token != claim_token)
         or execution.status not in SAMPLE_IN_FLIGHT_STATUSES
     ):
         return False

@@ -288,5 +288,9 @@ def test_auth_dependency_and_runtime_rule_boundaries() -> None:
 
 
 def test_worker_refactor_boundaries() -> None:
-    assert importlib.util.find_spec("app.worker.processing") is not None
+    assert importlib.util.find_spec("app.worker.runner") is None
+    assert importlib.util.find_spec("app.worker.processing") is None
+    assert importlib.util.find_spec("app.worker.claims") is None
     assert importlib.util.find_spec("app.worker.execution") is not None
+    assert importlib.util.find_spec("app.worker.sample_scheduler") is not None
+    assert importlib.util.find_spec("app.worker.sample_worker") is not None

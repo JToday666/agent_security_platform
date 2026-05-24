@@ -9,27 +9,33 @@ from types import SimpleNamespace
 
 from app.platform.config import settings
 from app.platform.db.session import AsyncSessionLocal
-from app.worker.execution import execute_sample
-from app.worker.execution_jobs import load_sample_job_by_execution_id
-from app.worker.execution_persistence import mark_execution_system_error
-from app.worker.processing import (
+from app.worker.dispatch_config import (
     resolve_dispatch_config,
     resolve_dispatch_mode,
     resolve_timeout_seconds,
 )
+from app.worker.execution import execute_sample
+from app.worker.execution_jobs import load_sample_job_by_execution_id
+from app.worker.observability import heartbeat_worker_process, mark_worker_stopped
+from app.worker.execution_persistence import mark_execution_system_error
 from app.worker.sample_claims import claim_next_sample, heartbeat_sample_claim_by_id
 
 LOGGER = logging.getLogger(__name__)
 
 
 async def _heartbeat_loop(
-    execution_id: int, worker_id: str, stop_event: asyncio.Event
+    execution_id: int,
+    worker_id: str,
+    claim_token: str | None,
+    stop_event: asyncio.Event,
 ) -> None:
     """Refresh the sample execution lease while a worker task is active."""
     while not stop_event.is_set():
         try:
             async with AsyncSessionLocal() as db:
-                claimed = await heartbeat_sample_claim_by_id(db, execution_id, worker_id)
+                claimed = await heartbeat_sample_claim_by_id(
+                    db, execution_id, worker_id, claim_token
+                )
             if not claimed:
                 return
         except Exception:
@@ -46,7 +52,9 @@ async def _heartbeat_loop(
             continue
 
 
-async def _process_sample_safely(execution_id: int, worker_id: str) -> None:
+async def _process_sample_safely(
+    execution_id: int, worker_id: str, claim_token: str | None
+) -> None:
     """Execute one claimed sample and persist unexpected worker errors as sample errors."""
     loaded = await load_sample_job_by_execution_id(execution_id)
     if loaded is None:
@@ -58,7 +66,7 @@ async def _process_sample_safely(execution_id: int, worker_id: str) -> None:
     )
     stop_event = asyncio.Event()
     heartbeat_task = asyncio.create_task(
-        _heartbeat_loop(execution_id, worker_id, stop_event)
+        _heartbeat_loop(execution_id, worker_id, claim_token, stop_event)
     )
     try:
         await execute_sample(
@@ -68,10 +76,11 @@ async def _process_sample_safely(execution_id: int, worker_id: str) -> None:
             dispatch_mode=resolve_dispatch_mode(run_snapshot),
             dispatch_config=resolve_dispatch_config(run_snapshot),
             timeout_seconds=resolve_timeout_seconds(run_snapshot),
+            claim_token=claim_token,
         )
     except Exception as exc:
         await mark_execution_system_error(
-            execution_id, loaded.run_id, loaded.dataset_id, exc
+            execution_id, loaded.run_id, loaded.dataset_id, exc, claim_token=claim_token
         )
         LOGGER.exception(
             "Sample worker failed while executing sample",
@@ -90,6 +99,14 @@ async def run_sample_worker_loop(worker_id: str) -> None:
     try:
         while True:
             try:
+                async with AsyncSessionLocal() as db:
+                    await heartbeat_worker_process(
+                        db,
+                        worker_id=worker_id,
+                        role="sample_worker",
+                        active_count=len(active_executions),
+                        metadata={},
+                    )
                 while len(active_executions) < max(
                     1, settings.SAMPLE_WORKER_MAX_ACTIVE_EXECUTIONS
                 ):
@@ -100,7 +117,9 @@ async def run_sample_worker_loop(worker_id: str) -> None:
                     if execution.id in active_executions:
                         break
                     active_executions[execution.id] = asyncio.create_task(
-                        _process_sample_safely(execution.id, worker_id)
+                        _process_sample_safely(
+                            execution.id, worker_id, execution.claim_token
+                        )
                     )
 
                 if active_executions:
@@ -124,3 +143,6 @@ async def run_sample_worker_loop(worker_id: str) -> None:
             task.cancel()
         if active_executions:
             await asyncio.gather(*active_executions.values(), return_exceptions=True)
+        with contextlib.suppress(Exception):
+            async with AsyncSessionLocal() as db:
+                await mark_worker_stopped(db, worker_id=worker_id)

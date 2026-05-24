@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import logging
+import os
+import socket
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import func, select, update
@@ -20,6 +23,7 @@ from app.modules.evaluations.lifecycle import (
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES
 from app.platform.config import settings
 from app.platform.db.session import AsyncSessionLocal
+from app.worker.observability import heartbeat_worker_process, mark_worker_stopped
 from app.worker.sample_claims import SAMPLE_IN_FLIGHT_STATUSES
 
 LOGGER = logging.getLogger(__name__)
@@ -298,6 +302,37 @@ async def release_ready_samples_once(db: AsyncSession) -> int:
     return released_total
 
 
+async def recover_stale_sample_claims_once(db: AsyncSession) -> int:
+    """Recover sample executions whose worker lease expired."""
+    now = datetime.now(timezone.utc)
+    rows = (
+        await db.execute(
+            select(SampleExecution)
+            .where(
+                SampleExecution.status.in_(SAMPLE_IN_FLIGHT_STATUSES),
+                SampleExecution.lease_expires_at.is_not(None),
+                SampleExecution.lease_expires_at <= now,
+            )
+            .order_by(SampleExecution.lease_expires_at.asc(), SampleExecution.id.asc())
+            .limit(max(1, settings.SCHEDULER_RELEASE_BATCH_SIZE))
+            .with_for_update(skip_locked=True)
+        )
+    ).scalars()
+    executions = list(rows)
+    for execution in executions:
+        execution.status = "ready"
+        execution.ready_at = now
+        execution.claimed_by = None
+        execution.claimed_at = None
+        execution.claim_heartbeat_at = None
+        execution.claim_token = None
+        execution.lease_expires_at = None
+        execution.attempt_reason = "lease_recovered"
+        execution.updated_at = now
+    await db.commit()
+    return len(executions)
+
+
 async def finalize_ready_runs_once(db: AsyncSession) -> int:
     """Finalize non-terminal runs whose sample executions have all reached terminal state."""
     now = datetime.now(timezone.utc)
@@ -355,12 +390,26 @@ async def finalize_ready_runs_once(db: AsyncSession) -> int:
 
 async def run_scheduler_loop() -> None:
     """Run scheduler and finalizer loops in one lightweight coordinator process."""
-    while True:
-        try:
+    worker_id = f"scheduler-{socket.gethostname()}-{os.getpid()}"
+    try:
+        while True:
+            try:
+                async with AsyncSessionLocal() as db:
+                    await heartbeat_worker_process(
+                        db,
+                        worker_id=worker_id,
+                        role="scheduler",
+                        active_count=0,
+                        metadata={},
+                    )
+                    await reconcile_expired_paused_runs(db)
+                    await recover_stale_sample_claims_once(db)
+                    await release_ready_samples_once(db)
+                    await finalize_ready_runs_once(db)
+            except Exception:
+                LOGGER.exception("Sample scheduler loop iteration failed")
+            await asyncio.sleep(settings.SCHEDULER_POLL_INTERVAL_SECONDS)
+    finally:
+        with contextlib.suppress(Exception):
             async with AsyncSessionLocal() as db:
-                await reconcile_expired_paused_runs(db)
-                await release_ready_samples_once(db)
-                await finalize_ready_runs_once(db)
-        except Exception:
-            LOGGER.exception("Sample scheduler loop iteration failed")
-        await asyncio.sleep(settings.SCHEDULER_POLL_INTERVAL_SECONDS)
+                await mark_worker_stopped(db, worker_id=worker_id)

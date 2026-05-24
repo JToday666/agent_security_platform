@@ -2,11 +2,13 @@
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy import text
 
 from app.api.router import api_router
 from app.platform.config import settings
+from app.platform.db.session import AsyncSessionLocal
 from app.platform.exception_handlers import register_exception_handlers
-from app.platform.http import success_payload
+from app.platform.http import json_error_response, success_payload
 from app.platform.i18n import LocaleMiddleware
 from app.platform.runtime import ensure_runtime_dirs
 
@@ -26,3 +28,25 @@ async def read_root():
     return success_payload(
         {"message": f"Hello FastAPI project! PROJECT_NAME: {settings.PROJECT_NAME}"}
     )
+
+
+@app.get("/healthz")
+async def healthz():
+    """Return a lightweight liveness probe response."""
+    return success_payload({"status": "ok"})
+
+
+@app.get("/readyz")
+async def readyz():
+    """Return readiness only when the database is reachable."""
+    try:
+        async with AsyncSessionLocal() as db:
+            await db.execute(text("select 1"))
+    except Exception:
+        return json_error_response(
+            http_status=503,
+            code=50300,
+            message="service not ready",
+            data={"status": "not_ready"},
+        )
+    return success_payload({"status": "ready"})

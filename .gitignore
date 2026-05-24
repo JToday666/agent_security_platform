@@ -9,7 +9,24 @@
 .DS_Store
 
 # Local environment files
-.env
+**/.env*
+!**/.env.example
+!**/.env.*.example
+
+# Deployment runtime files
+/deploy/nginx/logs/
+/deploy/nginx/certs/
+/deploy/nginx/acme/
+/deploy/nginx/html/
+/var/log/
+/var/backend/
+
+# Docker compose local overrides
+docker-compose*.override.yml
+docker-compose*.local.yml
+docker-compose*.prod.yml
+!docker-compose*.example.yml
+!docker-compose*.prod.example.yml
 
 # Python virtual environments
 .venv/
@@ -17,22 +34,20 @@
 # Project tooling
 .github/
 AGENTS.md
-.codex
+.codex/
 .worktrees/
 .superpowers/
 
 # Data files
 /data/
-/var/backend/
 
 # backend
-/backend/.env
 /backend/runtime/
 /backend/data/**
 !/backend/data/agent_runtime_shared/
 !/backend/data/agent_runtime_shared/**
 /backend/.coverage
-
+/backend/.pytest_cache/
 /backend/**/__pycache__/
 
 # Frontend environment files
@@ -60,6 +75,7 @@ AGENTS.md
 # Logs
 logs/
 *.log
+*.log.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

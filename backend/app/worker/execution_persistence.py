@@ -5,15 +5,14 @@ from __future__ import annotations
 import asyncio
 from datetime import datetime, timezone
 
-from sqlalchemy import delete, func, select, update
+from sqlalchemy import delete, select, update
 
-from app.models.benchmark import BenchmarkSample, RiskSubtype, SampleOracle
+from app.models.benchmark import SampleOracle
 from app.models.benchmark_run import (
     ExecutionArtifact,
     ExecutionSummary,
     OracleResult,
     RunDataset,
-    RunSample,
     SampleExecution,
     TestRun,
 )
@@ -38,11 +37,24 @@ def to_error_message(exc: Exception) -> str:
     return text[:2000]
 
 
-async def mark_execution_dispatching(execution_id: int) -> bool:
+def _claim_token_mismatch(
+    execution: SampleExecution, claim_token: str | None
+) -> bool:
+    """Return True when a stale worker attempts to write with an old claim token."""
+    return claim_token is not None and execution.claim_token != claim_token
+
+
+async def mark_execution_dispatching(
+    execution_id: int, *, claim_token: str | None = None
+) -> bool:
     """Mark an execution as dispatching, returning False when it is terminal/missing."""
     async with AsyncSessionLocal() as db:
         execution = await db.get(SampleExecution, execution_id)
-        if execution is None or execution.status in {"done", "error"}:
+        if (
+            execution is None
+            or execution.status in {"done", "error", "canceled"}
+            or _claim_token_mismatch(execution, claim_token)
+        ):
             return False
         current_time = now_utc()
         execution.status = "dispatching"
@@ -63,13 +75,18 @@ async def persist_runtime_result(
     success: bool,
     final_status: str,
     error_message: str | None = None,
+    claim_token: str | None = None,
 ) -> None:
     """Persist sample execution summary, artifacts and aggregate counters."""
     finished_at = now_utc()
 
     async with AsyncSessionLocal() as db:
         execution = await db.get(SampleExecution, execution_id)
-        if execution is None:
+        if (
+            execution is None
+            or execution.status in {"done", "error", "canceled"}
+            or _claim_token_mismatch(execution, claim_token)
+        ):
             return
 
         await db.execute(
@@ -168,6 +185,7 @@ async def persist_runtime_result(
         execution.claimed_by = None
         execution.claimed_at = None
         execution.claim_heartbeat_at = None
+        execution.claim_token = None
         execution.lease_expires_at = None
 
         await db.execute(
@@ -191,11 +209,17 @@ async def persist_runtime_result(
         await db.commit()
 
 
-async def mark_execution_runtime_ready(execution_id: int, prepared) -> None:
+async def mark_execution_runtime_ready(
+    execution_id: int, prepared, *, claim_token: str | None = None
+) -> None:
     """Persist runtime workspace metadata after the probe backend is ready."""
     async with AsyncSessionLocal() as db:
         execution = await db.get(SampleExecution, execution_id)
-        if execution is None:
+        if (
+            execution is None
+            or execution.status in {"done", "error", "canceled"}
+            or _claim_token_mismatch(execution, claim_token)
+        ):
             return
         execution.work_dir = str(prepared.work_dir)
         execution.entry_url = prepared.entry_url
@@ -205,11 +229,17 @@ async def mark_execution_runtime_ready(execution_id: int, prepared) -> None:
         await db.commit()
 
 
-async def mark_execution_state(execution_id: int, status: str) -> None:
+async def mark_execution_state(
+    execution_id: int, status: str, *, claim_token: str | None = None
+) -> None:
     """Update one sample execution status."""
     async with AsyncSessionLocal() as db:
         execution = await db.get(SampleExecution, execution_id)
-        if execution is None:
+        if (
+            execution is None
+            or execution.status in {"done", "error", "canceled"}
+            or _claim_token_mismatch(execution, claim_token)
+        ):
             return
         execution.status = status
         execution.updated_at = now_utc()
@@ -217,13 +247,22 @@ async def mark_execution_state(execution_id: int, status: str) -> None:
 
 
 async def mark_execution_system_error(
-    execution_id: int, run_id: int, dataset_id: int, exc: Exception
+    execution_id: int,
+    run_id: int,
+    dataset_id: int,
+    exc: Exception,
+    *,
+    claim_token: str | None = None,
 ) -> None:
     """Persist system-level execution errors and create a retry attempt when allowed."""
     finished_at = now_utc()
     async with AsyncSessionLocal() as db:
         execution = await db.get(SampleExecution, execution_id)
-        if execution is None:
+        if (
+            execution is None
+            or execution.status in {"done", "error", "canceled"}
+            or _claim_token_mismatch(execution, claim_token)
+        ):
             return
         next_retry_no = int(execution.retry_no) + 1
         execution.status = "error"
@@ -233,6 +272,7 @@ async def mark_execution_system_error(
         execution.claimed_by = None
         execution.claimed_at = None
         execution.claim_heartbeat_at = None
+        execution.claim_token = None
         execution.lease_expires_at = None
 
         if next_retry_no < max(1, settings.SAMPLE_MAX_ATTEMPTS):
@@ -276,38 +316,4 @@ async def mark_execution_system_error(
                 updated_at=finished_at,
             )
         )
-        await db.commit()
-
-
-async def mark_dataset_completed(
-    run_id: int, dataset_id: int, dataset_code: str
-) -> None:
-    """Persist dataset-level completion after all sample jobs are terminal."""
-    finished_at = now_utc()
-    async with AsyncSessionLocal() as db:
-        terminal_count = (
-            await db.execute(
-                select(func.count())
-                .select_from(SampleExecution)
-                .join(RunSample, SampleExecution.run_sample_id == RunSample.id)
-                .join(
-                    BenchmarkSample, SampleExecution.sample_id_ref == BenchmarkSample.id
-                )
-                .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
-                .where(
-                    SampleExecution.run_id == run_id,
-                    SampleExecution.retry_no == 0,
-                    SampleExecution.status.in_(["done", "error"]),
-                    RiskSubtype.code == dataset_code,
-                )
-            )
-        ).scalar_one()
-
-        dataset = await db.get(RunDataset, dataset_id)
-        if dataset is None:
-            return
-        dataset.completed_samples = int(terminal_count or 0)
-        dataset.status = "completed"
-        dataset.finished_at = finished_at
-        dataset.updated_at = finished_at
         await db.commit()

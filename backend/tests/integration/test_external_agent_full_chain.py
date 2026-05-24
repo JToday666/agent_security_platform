@@ -129,7 +129,7 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
     monkeypatch.setattr(settings, "RUNTIME_ROOT_DIR", str(runtime_root))
     monkeypatch.setattr(settings, "AGENT_HTTP_ALLOW_PRIVATE_NETWORKS", True)
     monkeypatch.setattr(settings, "WORKER_NAMESPACE_ISOLATION_ENABLED", False)
-    monkeypatch.setattr(settings, "WORKER_MAX_PARALLEL_EXECUTIONS_PER_RUN", 1)
+    monkeypatch.setattr(settings, "SAMPLE_WORKER_MAX_ACTIVE_EXECUTIONS", 1)
     monkeypatch.setattr(
         worker_execution.settings, "WORKER_MAX_ACTIVE_RUNTIME_PROCESSES", 1
     )
@@ -231,6 +231,7 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
         await _process_sample_safely(
             claimed_execution.id,
             "pytest-sample-worker",
+            claimed_execution.claim_token,
         )
 
         async with AsyncSessionLocal() as db:

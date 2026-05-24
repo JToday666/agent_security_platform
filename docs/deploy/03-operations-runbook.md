@@ -419,6 +419,7 @@ runtime-runner 挂载 /var/run/docker.sock。
 ```text
 Worker 在必要时挂载 /var/run/docker.sock。
 但 Worker 不对外暴露。
+Worker 仅创建平台 runtime 容器，不接收用户提交的 Docker 镜像。
 runtime-runner 只挂载单次 workdir。
 runtime-runner 运行完成后销毁。
 ```

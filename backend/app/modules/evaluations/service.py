@@ -196,9 +196,6 @@ class EvaluationService:
             failed_count=0,
             created_at=now,
             updated_at=now,
-            claimed_by=None,
-            claimed_at=None,
-            claim_heartbeat_at=None,
         )
         try:
             run = await self.repository.create_run_graph(

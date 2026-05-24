@@ -54,6 +54,8 @@ def _build_direct_command(prepared: PreparedRuntime) -> list[str]:
 
 def _build_command(prepared: PreparedRuntime, isolation_mode: str) -> list[str]:
     """按隔离模式构造最终的 probe runner 启动命令。"""
+    if isolation_mode == "docker":
+        return _build_docker_command(prepared)
     direct = _build_direct_command(prepared)
     if isolation_mode != "namespace":
         return direct
@@ -68,8 +70,51 @@ def _build_command(prepared: PreparedRuntime, isolation_mode: str) -> list[str]:
     ]
 
 
+def _build_docker_command(prepared: PreparedRuntime) -> list[str]:
+    """Build a Docker CLI command for one short-lived probe runtime container."""
+    container_root = settings.WORKER_RUNTIME_DOCKER_CONTAINER_WORKDIR.rstrip("/")
+    project_root = f"{container_root}/project"
+    name = f"asp-runtime-{prepared.environment_ref}"
+    return [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        name,
+        "--network",
+        settings.WORKER_RUNTIME_DOCKER_NETWORK,
+        "-p",
+        f"{settings.WORKER_RUNNER_HOST}:{prepared.port}:{prepared.port}",
+        "-v",
+        f"{prepared.work_dir}:{container_root}",
+        "-w",
+        container_root,
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--pids-limit=256",
+        f"--cpus={settings.WORKER_RUNTIME_DOCKER_CPUS}",
+        f"--memory={settings.WORKER_RUNTIME_DOCKER_MEMORY}",
+        settings.WORKER_RUNTIME_DOCKER_IMAGE,
+        "python",
+        "-m",
+        "app.worker.runtime.probe_backend",
+        "--project-root",
+        project_root,
+        "--host",
+        "0.0.0.0",
+        "--port",
+        str(prepared.port),
+        "--instance-id",
+        prepared.environment_ref,
+        "--probe-token",
+        prepared.probe_token,
+    ]
+
+
 def candidate_isolation_modes() -> list[str]:
     """Return launch modes ordered by preference."""
+    if settings.WORKER_RUNTIME_LAUNCH_MODE.strip().lower() == "docker":
+        return ["docker"]
     if settings.WORKER_NAMESPACE_ISOLATION_ENABLED and shutil.which("unshare"):
         return ["namespace", "process"]
     return ["process"]
@@ -165,7 +210,14 @@ async def stop_runtime(handle: RuntimeProcessHandle, close_probe: bool = False) 
         if handle.process.returncode is None:
             handle.process.terminate()
             try:
-                await asyncio.wait_for(handle.process.wait(), timeout=5.0)
+                await asyncio.wait_for(
+                    handle.process.wait(),
+                    timeout=(
+                        settings.WORKER_RUNTIME_DOCKER_STOP_TIMEOUT_SECONDS
+                        if handle.prepared.isolation_mode == "docker"
+                        else 5.0
+                    ),
+                )
             except asyncio.TimeoutError:
                 handle.process.kill()
                 await handle.process.wait()

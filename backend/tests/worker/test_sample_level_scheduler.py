@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 
 import pytest
@@ -23,9 +23,16 @@ from app.models.benchmark_run import (
     TestRun as RunModel,
 )
 from app.platform.db.session import AsyncSessionLocal, engine as async_engine
-from app.worker.execution_persistence import mark_execution_system_error
+from app.worker.execution_persistence import (
+    mark_execution_dispatching,
+    mark_execution_system_error,
+)
 from app.worker.sample_claims import claim_next_sample
-from app.worker.sample_scheduler import finalize_ready_runs_once, release_ready_samples_once
+from app.worker.sample_scheduler import (
+    finalize_ready_runs_once,
+    recover_stale_sample_claims_once,
+    release_ready_samples_once,
+)
 
 pytestmark = pytest.mark.worker
 
@@ -272,6 +279,60 @@ async def test_sample_worker_claim_writes_sample_level_lease(
     assert claimed.claimed_at is not None
     assert claimed.claim_heartbeat_at is not None
     assert claimed.lease_expires_at is not None
+    assert claimed.claim_token is not None
+
+
+@pytest.mark.asyncio
+async def test_scheduler_recovers_stale_claimed_sample(api_db_helper) -> None:
+    ids = _seed_sample_level_run(api_db_helper)
+    stale_time = datetime.now(timezone.utc) - timedelta(minutes=10)
+
+    async with AsyncSessionLocal() as db:
+        execution = await db.get(SampleExecution, ids["first_execution_id"])
+        assert execution is not None
+        execution.status = "claimed"
+        execution.claimed_by = "dead-worker"
+        execution.claimed_at = stale_time
+        execution.claim_heartbeat_at = stale_time
+        execution.lease_expires_at = stale_time
+        execution.claim_token = "old-token"
+        await db.commit()
+
+    async with AsyncSessionLocal() as db:
+        recovered = await recover_stale_sample_claims_once(db)
+
+    with api_db_helper.session() as session:
+        execution = session.get(SampleExecution, ids["first_execution_id"])
+
+    assert recovered == 1
+    assert execution.status == "ready"
+    assert execution.claimed_by is None
+    assert execution.claim_token is None
+    assert execution.attempt_reason == "lease_recovered"
+
+
+@pytest.mark.asyncio
+async def test_stale_claim_token_cannot_update_reclaimed_sample(api_db_helper) -> None:
+    ids = _seed_sample_level_run(api_db_helper)
+
+    async with AsyncSessionLocal() as db:
+        execution = await db.get(SampleExecution, ids["first_execution_id"])
+        assert execution is not None
+        execution.status = "claimed"
+        execution.claimed_by = "new-worker"
+        execution.claim_token = "new-token"
+        await db.commit()
+
+    updated = await mark_execution_dispatching(
+        ids["first_execution_id"], claim_token="old-token"
+    )
+
+    with api_db_helper.session() as session:
+        execution = session.get(SampleExecution, ids["first_execution_id"])
+
+    assert updated is False
+    assert execution.status == "claimed"
+    assert execution.claim_token == "new-token"
 
 
 @pytest.mark.asyncio

@@ -33,6 +33,7 @@ from .scoring import (
 )
 from .agent import Agent
 from .user import User
+from .worker_process import WorkerProcess
 
 __all__ = [
     "Agent",
@@ -62,4 +63,5 @@ __all__ = [
     "ScoreModelVersion",
     "TestRun",
     "User",
+    "WorkerProcess",
 ]

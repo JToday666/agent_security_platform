@@ -41,13 +41,6 @@ class TestRun(Base):
         ),
         Index("ix_test_runs_status_updated_at", "status", "updated_at"),
         Index("ix_test_runs_status_pause_deadline_at", "status", "pause_deadline_at"),
-        Index(
-            "ix_test_runs_worker_claim_lookup",
-            "status",
-            "claimed_by",
-            "claim_heartbeat_at",
-            "created_at",
-        ),
     )
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, comment="任务主键ID")
@@ -183,19 +176,6 @@ class TestRun(Base):
         nullable=True,
         comment="记录最近一次用户控制动作请求时间",
     )
-    claimed_by: Mapped[str | None] = mapped_column(
-        Text, nullable=True, index=True, comment="当前领取该任务的 worker 标识"
-    )
-    claimed_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True, comment="worker 首次领取该任务的时间"
-    )
-    claim_heartbeat_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True),
-        nullable=True,
-        index=True,
-        comment="worker 最近一次心跳时间",
-    )
-
 
 class RunDataset(Base):
     """
@@ -412,6 +392,9 @@ class SampleExecution(Base):
         nullable=True,
         index=True,
         comment="sample worker 最近一次心跳时间",
+    )
+    claim_token: Mapped[str | None] = mapped_column(
+        Text, nullable=True, comment="当前 sample 执行认领的租约令牌"
     )
     lease_expires_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
