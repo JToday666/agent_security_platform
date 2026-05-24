@@ -7,6 +7,7 @@ from decimal import Decimal
 
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
 from app.models.benchmark import BenchmarkSample
 from app.models.benchmark_run import (
@@ -220,6 +221,15 @@ class DifficultyService:
 
 async def update_sample_difficulty_stats_for_run(db: AsyncSession, run_id: int) -> None:
     """根据一次评测结果刷新样本难度统计缓存。"""
+    latest_execution = aliased(SampleExecution)
+    latest_retry_no = (
+        select(latest_execution.retry_no)
+        .where(latest_execution.run_sample_id == RunSample.id)
+        .order_by(latest_execution.retry_no.desc(), latest_execution.id.desc())
+        .limit(1)
+        .correlate(RunSample)
+        .scalar_subquery()
+    )
     rows = (
         await db.execute(
             select(
@@ -237,7 +247,10 @@ async def update_sample_difficulty_stats_for_run(db: AsyncSession, run_id: int) 
                 ExecutionSummary,
                 ExecutionSummary.sample_execution_id == SampleExecution.id,
             )
-            .where(RunSample.run_id == run_id, SampleExecution.retry_no == 0)
+            .where(
+                RunSample.run_id == run_id,
+                SampleExecution.retry_no == latest_retry_no,
+            )
         )
     ).all()
 

@@ -63,9 +63,6 @@ def request_resume(run, now: datetime) -> None:
     run.pause_deadline_at = None
     run.requested_action = None
     run.requested_action_at = now
-    run.claimed_by = None
-    run.claimed_at = None
-    run.claim_heartbeat_at = None
 
 
 def pause_after_current_dataset(run, pause_deadline: datetime) -> None:
@@ -131,9 +128,6 @@ async def finalize_run(
     run.pause_deadline_at = None
     run.requested_action = None
     run.requested_action_at = None
-    run.claimed_by = None
-    run.claimed_at = None
-    run.claim_heartbeat_at = None
 
     datasets = list(
         (

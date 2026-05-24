@@ -38,6 +38,7 @@ from app.models.scoring import (
 )
 from app.models.agent import Agent
 from app.models.user import User
+from app.models.worker_process import WorkerProcess
 from app.platform.security import create_access_token, hash_password
 
 
@@ -379,6 +380,11 @@ class ApiDbHelper:
                 )
             if user_ids:
                 session.execute(delete(User).where(User.id.in_(user_ids)))
+            session.execute(
+                delete(WorkerProcess).where(
+                    WorkerProcess.worker_id.like(f"{self.prefix}%")
+                )
+            )
             session.commit()
 
         for path in self.created_avatar_paths:

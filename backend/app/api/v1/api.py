@@ -11,6 +11,7 @@ from app.modules.datasets.router import router as datasets_router
 from app.modules.difficulty.router import router as difficulty_router
 from app.modules.evaluations.router import router as evaluations_router
 from app.modules.leaderboards.router import router as leaderboards_router
+from app.modules.ops.router import router as ops_router
 from app.modules.scoring.router import router as scoring_router
 from app.modules.user.router import router as user_router
 
@@ -23,6 +24,7 @@ api_router.include_router(evaluations_router)
 api_router.include_router(scoring_router)
 api_router.include_router(difficulty_router)
 api_router.include_router(leaderboards_router)
+api_router.include_router(ops_router)
 
 
 @api_router.get("/", response_model=Envelope[MessagePayload])

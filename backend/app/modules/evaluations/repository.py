@@ -4,6 +4,7 @@ from collections import defaultdict
 
 from sqlalchemy import and_, case, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
 from app.models.agent import Agent
 from app.models.benchmark import BenchmarkSample, RiskSubtype
@@ -238,8 +239,9 @@ class EvaluationRepository:
                     run_id=run.id,
                     run_sample_id=run_sample.id,
                     sample_id_ref=run_sample.sample_id_ref,
-                    status="pending",
+                    status="blocked",
                     retry_no=0,
+                    attempt_reason="initial",
                 )
                 for run_sample in run_samples
             ]
@@ -324,6 +326,15 @@ class EvaluationRepository:
 
     async def load_report_execution_rows(self, run_id: int):
         """加载完整报告聚合所需的样本执行明细。"""
+        latest_execution = aliased(SampleExecution)
+        latest_retry_no = (
+            select(latest_execution.retry_no)
+            .where(latest_execution.run_sample_id == RunSample.id)
+            .order_by(latest_execution.retry_no.desc(), latest_execution.id.desc())
+            .limit(1)
+            .correlate(RunSample)
+            .scalar_subquery()
+        )
         return (
             await self.db.execute(
                 select(
@@ -346,7 +357,10 @@ class EvaluationRepository:
                     ExecutionSummary,
                     ExecutionSummary.sample_execution_id == SampleExecution.id,
                 )
-                .where(RunSample.run_id == run_id, SampleExecution.retry_no == 0)
+                .where(
+                    RunSample.run_id == run_id,
+                    SampleExecution.retry_no == latest_retry_no,
+                )
                 .order_by(RunSample.order_no.asc(), RunSample.id.asc())
             )
         ).all()

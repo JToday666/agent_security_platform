@@ -418,6 +418,29 @@ RUNTIME_ROOT_DIR=/data/agent-security-platform/runtime
 TMP_ROOT_DIR=/data/agent-security-platform/tmp
 LOG_ROOT_DIR=/data/agent-security-platform/logs
 
+WORKER_RUNNER_HOST=172.17.0.1
+WORKER_BROWSER_ENTRY_HOST=host.docker.internal
+
+# 生产建议 docker；本地开发可用 process。
+WORKER_RUNTIME_LAUNCH_MODE=docker
+WORKER_RUNTIME_DOCKER_IMAGE=agent-security-platform-runtime:latest
+WORKER_RUNTIME_DOCKER_NETWORK=bridge
+WORKER_RUNTIME_DOCKER_CONTAINER_WORKDIR=/runtime
+WORKER_RUNTIME_DOCKER_CPUS=1.0
+WORKER_RUNTIME_DOCKER_MEMORY=1g
+WORKER_RUNTIME_DOCKER_STOP_TIMEOUT_SECONDS=10.0
+
+SCHEDULER_POLL_INTERVAL_SECONDS=1.0
+SCHEDULER_RELEASE_BATCH_SIZE=20
+GLOBAL_MAX_IN_FLIGHT_SAMPLES=16
+RUN_MAX_IN_FLIGHT_SAMPLES=4
+USER_MAX_IN_FLIGHT_SAMPLES=8
+AGENT_MAX_IN_FLIGHT_SAMPLES=4
+SAMPLE_WORKER_MAX_ACTIVE_EXECUTIONS=1
+SAMPLE_CLAIM_STALE_AFTER_SECONDS=90
+SAMPLE_HEARTBEAT_INTERVAL_SECONDS=10.0
+SAMPLE_MAX_ATTEMPTS=2
+
 LLM_JUDGE_PROVIDER=litellm
 LLM_BASE_URL=http://127.0.0.1:18000/v1
 LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
@@ -457,9 +480,9 @@ services:
       - /data/agent-security-platform/logs/backend:/app/logs
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
-  worker:
+  scheduler:
     image: crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_code:backend-latest
-    container_name: asp-worker
+    container_name: asp-scheduler
     restart: unless-stopped
     env_file:
       - /data/agent-security-platform/env/prod/backend.env
@@ -467,11 +490,28 @@ services:
       - /data/agent-security-platform/data:/app/data
       - /data/agent-security-platform/runtime:/app/runtime
       - /data/agent-security-platform/artifacts:/app/artifacts
+      - /data/agent-security-platform/logs/scheduler:/app/logs
+    command: ["python", "scheduler.py"]
+
+  worker:
+    image: crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_code:backend-latest
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+    env_file:
+      - /data/agent-security-platform/env/prod/backend.env
+    volumes:
+      - /data/agent-security-platform/data:/app/data
+      - /data/agent-security-platform/runtime:/app/runtime
+      - /data/agent-security-platform/artifacts:/app/artifacts
       - /data/agent-security-platform/logs/worker:/app/logs
-      # 仅当 Worker 需要创建 runtime-runner 容器时启用
+      # WORKER_RUNTIME_LAUNCH_MODE=docker 时启用，由 worker 创建单样本 runtime 容器
       # - /var/run/docker.sock:/var/run/docker.sock
-    command: ["python", "-m", "app.worker"]
+    command: ["python", "worker.py"]
 ```
+
+`/healthz` 用于进程存活探针，`/readyz` 会检查数据库可达性。管理员可通过
+`GET /api/v1/ops/workers` 查看 scheduler/sample worker 心跳、sample 队列计数和轻量告警。
 
 ---
 

@@ -391,8 +391,9 @@ ModelScope 下载模型优先直连；GitHub、Hugging Face、Docker Hub、OpenA
 公网只看到 Gateway。
 Gateway 反向代理 Backend。
 Backend 连接 PostgreSQL 和 vLLM。
-Worker 执行评测任务。
-runtime-runner 隔离执行浏览器/Agent 任务。
+Scheduler 推进 run 生命周期、dataset 阶段和报告聚合。
+Sample Worker 领取并执行 sample_execution，内部低并发，依靠实例数横向扩容。
+runtime-runner 由 Worker 按单样本启动，隔离执行浏览器/Agent 任务。
 PostgreSQL 保存结构化业务数据。
 vLLM 提供本地模型推理。
 runtime 保存临时执行上下文。

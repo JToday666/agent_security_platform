@@ -41,13 +41,6 @@ class TestRun(Base):
         ),
         Index("ix_test_runs_status_updated_at", "status", "updated_at"),
         Index("ix_test_runs_status_pause_deadline_at", "status", "pause_deadline_at"),
-        Index(
-            "ix_test_runs_worker_claim_lookup",
-            "status",
-            "claimed_by",
-            "claim_heartbeat_at",
-            "created_at",
-        ),
     )
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, comment="任务主键ID")
@@ -183,19 +176,6 @@ class TestRun(Base):
         nullable=True,
         comment="记录最近一次用户控制动作请求时间",
     )
-    claimed_by: Mapped[str | None] = mapped_column(
-        Text, nullable=True, index=True, comment="当前领取该任务的 worker 标识"
-    )
-    claimed_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True, comment="worker 首次领取该任务的时间"
-    )
-    claim_heartbeat_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True),
-        nullable=True,
-        index=True,
-        comment="worker 最近一次心跳时间",
-    )
-
 
 class RunDataset(Base):
     """
@@ -350,6 +330,18 @@ class SampleExecution(Base):
         UniqueConstraint("run_sample_id", "retry_no"),
         Index("ix_sample_executions_run_id_status", "run_id", "status"),
         Index(
+            "ix_sample_executions_ready_claim_lookup",
+            "status",
+            "ready_at",
+            "lease_expires_at",
+            "id",
+        ),
+        Index(
+            "ix_sample_executions_claim_heartbeat",
+            "claimed_by",
+            "claim_heartbeat_at",
+        ),
+        Index(
             "ix_sample_executions_run_sample_id_retry_no",
             "run_sample_id",
             "retry_no",
@@ -384,10 +376,40 @@ class SampleExecution(Base):
         Text,
         nullable=False,
         index=True,
-        comment="执行的生命周期状态(pending, dispatching, executing, verifying, done, error等)",
+        comment="执行的生命周期状态(blocked, ready, claimed, dispatching, executing, verifying, done, error等)",
     )
     retry_no: Mapped[int] = mapped_column(
         SmallInteger, nullable=False, comment="当前记录属于第几次重试(首次默认0)"
+    )
+    claimed_by: Mapped[str | None] = mapped_column(
+        Text, nullable=True, index=True, comment="当前领取该样本执行的 worker 标识"
+    )
+    claimed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True, comment="sample worker 首次领取时间"
+    )
+    claim_heartbeat_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        index=True,
+        comment="sample worker 最近一次心跳时间",
+    )
+    claim_token: Mapped[str | None] = mapped_column(
+        Text, nullable=True, comment="当前 sample 执行认领的租约令牌"
+    )
+    lease_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        index=True,
+        comment="sample worker 当前租约过期时间",
+    )
+    ready_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        index=True,
+        comment="样本被调度器释放到可执行队列的时间",
+    )
+    attempt_reason: Mapped[str | None] = mapped_column(
+        Text, nullable=True, comment="创建该执行尝试的原因(initial/retry 等)"
     )
     work_dir: Mapped[str | None] = mapped_column(
         Text, nullable=True, comment="分配到沙箱机进行执行的物理工作目录"
