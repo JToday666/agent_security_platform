@@ -185,6 +185,10 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
         detail = detail_response.json()["data"]
         assert detail["publicToLeaderboard"] is True
         assert detail["leaderboardDisplayMode"] == "anonymous"
+        assert detail["startedAt"] is None
+        assert detail["finishedAt"] is None
+        assert detail["progress"]["totalSampleCount"] >= 1
+        assert detail["progress"]["completedSampleCount"] == 0
 
         default_payload = {
             "submitMethod": "api",

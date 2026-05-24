@@ -547,7 +547,7 @@ export const buildResolvedStateFromStored = (
       sampleSummary,
     ),
     downloads: {
-      sampleDetailsUrl: `/api/v1/evaluations/${record.evaluationId}/samples/export`,
+      sampleDetailsUrl: null,
     },
   };
 };
@@ -601,7 +601,7 @@ export const buildResolvedStateFromReference = (
       sampleSummary,
     ),
     downloads: {
-      sampleDetailsUrl: `/api/v1/evaluations/${record.evaluationId}/samples/export`,
+      sampleDetailsUrl: null,
     },
     report:
       record.finalReportAvailable && typeof record.score === "number"

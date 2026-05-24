@@ -1,0 +1,18 @@
+services:
+  nginx:
+    image: nginx:stable
+    container_name: asp-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./deploy/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./var/log/nginx:/var/log/nginx
+    networks:
+      - asp-net
+
+networks:
+  asp-net:
+    name: asp-net
+    driver: bridge

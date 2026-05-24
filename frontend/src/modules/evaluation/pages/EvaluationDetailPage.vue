@@ -106,6 +106,7 @@ import {
   getEvaluationCompletionRate,
   getEvaluationReportTagValue,
   getEvaluationScoreCaption,
+  resolveEvaluationPrimaryScoreValue,
   resolveEvaluationScoreTone,
 } from "@/modules/evaluation/lib/evaluation-detail-view";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
@@ -142,15 +143,19 @@ const {
 } = useEvaluationDetailPage();
 
 const scoreTone = computed(() =>
-  resolveEvaluationScoreTone(detail.value?.score ?? null),
+  detail.value
+    ? resolveEvaluationScoreTone(
+        resolveEvaluationPrimaryScoreValue(detail.value, report.value),
+      )
+    : "neutral",
 );
 
 const primaryScore = computed(() =>
-  detail.value ? formatEvaluationPrimaryScore(detail.value) : "--",
+  detail.value ? formatEvaluationPrimaryScore(detail.value, report.value) : "--",
 );
 
 const scoreCaption = computed(() =>
-  detail.value ? getEvaluationScoreCaption(detail.value, t) : "",
+  detail.value ? getEvaluationScoreCaption(detail.value, t, report.value) : "",
 );
 
 const reportTagValue = computed(() =>
@@ -163,7 +168,7 @@ const summaryItems = computed(() =>
 
 const sampleBase = computed(() =>
   detail.value
-    ? buildEvaluationSampleBase(detail.value)
+    ? buildEvaluationSampleBase(detail.value, report.value)
     : { total: 0, success: 0, failed: 0, error: 0, completed: 0 },
 );
 

@@ -268,6 +268,11 @@ class EvaluationService:
                         "description": run.description,
                         "createdAt": to_zulu(run.created_at),
                         "updatedAt": to_zulu(run.updated_at),
+                        "finishedAt": (
+                            None
+                            if run.finished_at is None
+                            else to_zulu(run.finished_at)
+                        ),
                         "status": run.status,
                         "progressPercent": build_progress_percent(
                             run=run, datasets=datasets
@@ -585,6 +590,12 @@ class EvaluationService:
                 "description": run.description,
                 "createdAt": to_zulu(run.created_at),
                 "updatedAt": to_zulu(run.updated_at),
+                "startedAt": (
+                    None if run.started_at is None else to_zulu(run.started_at)
+                ),
+                "finishedAt": (
+                    None if run.finished_at is None else to_zulu(run.finished_at)
+                ),
                 "status": run.status,
                 "score": (
                     None if score is None else float(score.official_conservative_score)
@@ -603,6 +614,8 @@ class EvaluationService:
                     "percent": build_progress_percent(run=run, datasets=datasets),
                     "totalDatasetCount": len(datasets),
                     "completedDatasetCount": completed_dataset_count,
+                    "totalSampleCount": run.total_samples,
+                    "completedSampleCount": run.completed_samples,
                     "runningDatasetId": (
                         None
                         if running_dataset is None

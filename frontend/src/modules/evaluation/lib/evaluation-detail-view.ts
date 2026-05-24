@@ -81,18 +81,28 @@ export const resolveEvaluationScoreTone = (
   return "danger";
 };
 
+export const resolveEvaluationPrimaryScoreValue = (
+  detail: EvaluationDetail,
+  report: EvaluationReportPayload | null = null,
+): number | null =>
+  typeof detail.score === "number"
+    ? detail.score
+    : (report?.scores.conservativeScore ?? null);
+
 export const formatEvaluationPrimaryScore = (
   detail: EvaluationDetail,
-): string =>
-  detail.finalReportAvailable && typeof detail.score === "number"
-    ? detail.score.toFixed(1)
-    : "--";
+  report: EvaluationReportPayload | null = null,
+): string => {
+  const score = resolveEvaluationPrimaryScoreValue(detail, report);
+  return detail.finalReportAvailable && score !== null ? score.toFixed(1) : "--";
+};
 
 export const getEvaluationScoreCaption = (
   detail: EvaluationDetail,
   t: AppTranslator = translateRuntimeMessage,
+  report: EvaluationReportPayload | null = null,
 ): string => {
-  if (!detail.finalReportAvailable) {
+  if (!detail.finalReportAvailable && !report) {
     return t("evaluation.summary.scoreCaptionPending");
   }
 
@@ -143,8 +153,9 @@ export const buildEvaluationSummaryItems = (
 
 export const buildEvaluationSampleBase = (
   detail: EvaluationDetail,
+  report: EvaluationReportPayload | null = null,
 ): EvaluationSampleBase => {
-  const summary = detail.sampleSummary;
+  const summary = report?.rawStats ?? detail.sampleSummary;
   const total = summary?.total ?? detail.progress.totalSampleCount ?? 0;
   const completed = summary
     ? summary.success + summary.failed + summary.error

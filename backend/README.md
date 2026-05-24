@@ -15,6 +15,7 @@ README 只维护当前状态、启动验证入口、核心约束和文档索引�
 - `/api/v1/datasets/*`
 - `/api/v1/agents/*`
 - `/api/v1/evaluations/*`
+- `/api/v1/evaluations/{evaluationId}/report`
 - `/api/v1/evaluations/{evaluationId}/score`
 - `/api/v1/evaluations/{evaluationId}/score/recalculate`
 - `/api/v1/difficulty/*`
@@ -165,7 +166,7 @@ uv run python scripts/qa/e2e_local_run.py --spawn-services
 - 默认脚本化链路优先验证 `synthetic_local` runtime 闭环；外部 API Agent 主链已接入，但需要可访问的真实 Agent 服务
 - Docker 调用链当前不开放
 - 评分可在任务终态汇总时生成，也可通过 `POST /api/v1/evaluations/{evaluationId}/score/recalculate` 重算；详情接口会返回已写入评分
-- `run_reports` 当前稳定返回 `summary_json` 摘要，`report_uri` 仍为空
+- `GET /api/v1/evaluations/{evaluationId}/report` 已开放，返回完整报告 payload；`run_reports` 当前稳定返回 `summary_json` 摘要，`report_uri` 仍为空
 - 当前还没有样本级 execution 查询接口
 
 ## 5. 核心约束

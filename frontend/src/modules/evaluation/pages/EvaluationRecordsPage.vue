@@ -31,7 +31,10 @@
     />
 
     <div v-else-if="records.length" class="records-shell">
-      <EvaluationTrendPanel @select="openEvaluationDetail" />
+      <EvaluationTrendPanel
+        :records="records"
+        @select="openEvaluationDetail"
+      />
 
       <EvaluationFilterBar
         :search="search"
@@ -94,12 +97,17 @@ import {
   filterEvaluationRecords,
   type EvaluationRecordFilterVisibility,
 } from "@/modules/evaluation/lib/evaluation-record-filters";
+import {
+  EVALUATION_POLL_INTERVAL_MS,
+  shouldPollEvaluation,
+} from "@/modules/evaluation/lib/evaluation-status";
 import type {
   EvaluationRecord,
   EvaluationStatus,
   SubmitMethod,
 } from "@/shared/types/agent-types";
 import { getErrorMessage } from "@/shared/composables/useAsyncState";
+import { usePolling } from "@/shared/composables/usePolling";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import PageStatePanel from "@/shared/ui/feedback/PageStatePanel.vue";
 import PageHero from "@/shared/ui/page/PageHero.vue";
@@ -124,18 +132,39 @@ const filteredRecords = computed(() =>
   }),
 );
 
-const loadRecords = async () => {
-  loading.value = true;
-  error.value = "";
+const shouldPollRecords = () =>
+  records.value.some((record) => shouldPollEvaluation(record.status));
+
+const loadRecords = async (silent = false) => {
+  if (!silent || records.value.length === 0) {
+    loading.value = true;
+  }
+
+  if (!silent) {
+    error.value = "";
+  }
 
   try {
     records.value = await getEvaluationRecords();
+    error.value = "";
+    syncPolling();
   } catch (loadError) {
     error.value =
       getErrorMessage(loadError, t("evaluation.api.recordsLoadFailed"));
+    recordsPolling.stop();
   } finally {
     loading.value = false;
   }
+};
+
+const recordsPolling = usePolling(
+  () => loadRecords(true),
+  shouldPollRecords,
+  EVALUATION_POLL_INTERVAL_MS,
+);
+
+const syncPolling = () => {
+  recordsPolling.start();
 };
 
 const openEvaluationDetail = (evaluationId: string) => {

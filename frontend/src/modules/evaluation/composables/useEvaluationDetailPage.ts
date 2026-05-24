@@ -12,7 +12,12 @@ import {
   getReportUnavailableMessage,
   isReportEndpointUnavailableError,
 } from "@/modules/evaluation/lib/evaluation-report-state";
-import { shouldPollEvaluation } from "@/modules/evaluation/lib/evaluation-status";
+import {
+  EVALUATION_POLL_INTERVAL_MS,
+  EVALUATION_TERMINAL_REPORT_POLL_WINDOW_MS,
+  shouldExpectEvaluationReport,
+  shouldPollEvaluation,
+} from "@/modules/evaluation/lib/evaluation-status";
 import type {
   EvaluationAction,
   EvaluationDetail,
@@ -44,6 +49,7 @@ export const useEvaluationDetailPage = () => {
   const reportUnavailableFor = ref("");
   const downloadLoading = ref(false);
   const downloadError = ref("");
+  const terminalReportPollingStartedAt = ref<number | null>(null);
 
   const {
     data: detail,
@@ -163,15 +169,45 @@ export const useEvaluationDetailPage = () => {
       return;
     }
 
-    if (report.value?.evaluationId === detail.value.evaluationId) {
-      return;
-    }
-
-    if (reportUnavailableFor.value === detail.value.evaluationId) {
+    if (
+      reportLoading.value ||
+      report.value?.evaluationId === detail.value.evaluationId
+    ) {
       return;
     }
 
     void loadReport();
+  };
+
+  const syncTerminalReportPollingWindow = () => {
+    if (!detail.value) {
+      terminalReportPollingStartedAt.value = null;
+      return;
+    }
+
+    const shouldPollForReport =
+      shouldExpectEvaluationReport(detail.value.status) &&
+      !report.value &&
+      !reportError.value;
+
+    if (!shouldPollForReport) {
+      terminalReportPollingStartedAt.value = null;
+      return;
+    }
+
+    terminalReportPollingStartedAt.value ??= Date.now();
+  };
+
+  const shouldContinueTerminalReportPolling = () => {
+    syncTerminalReportPollingWindow();
+    if (terminalReportPollingStartedAt.value === null) {
+      return false;
+    }
+
+    return (
+      Date.now() - terminalReportPollingStartedAt.value <=
+      EVALUATION_TERMINAL_REPORT_POLL_WINDOW_MS
+    );
   };
 
   const doLoadDetail = async () => {
@@ -179,6 +215,7 @@ export const useEvaluationDetailPage = () => {
       detail.value = await getEvaluationDetail(evaluationId.value);
       error.value = "";
       syncReport();
+      syncTerminalReportPollingWindow();
       syncPolling();
     } catch (loadError) {
       setError(loadError, t("evaluation.api.detailLoadFailed"));
@@ -200,9 +237,16 @@ export const useEvaluationDetailPage = () => {
     stopLoading();
   };
 
-  const poll = usePolling(doLoadDetail, () => {
-    return Boolean(detail.value && shouldPollEvaluation(detail.value.status));
-  });
+  const poll = usePolling(
+    doLoadDetail,
+    () =>
+      Boolean(
+        detail.value &&
+          (shouldPollEvaluation(detail.value.status) ||
+            shouldContinueTerminalReportPolling()),
+      ),
+    EVALUATION_POLL_INTERVAL_MS,
+  );
 
   const syncPolling = () => {
     poll.start();
@@ -220,12 +264,18 @@ export const useEvaluationDetailPage = () => {
   };
 
   const downloadSampleDetails = async () => {
+    const sampleDetailsUrl = detail.value?.downloads.sampleDetailsUrl;
+    if (!sampleDetailsUrl) {
+      downloadError.value = t("evaluation.api.sampleDownloadFailed");
+      return;
+    }
+
     downloadLoading.value = true;
     downloadError.value = "";
 
     try {
       const { blob, fileName } = await downloadEvaluationSampleDetails(
-        evaluationId.value,
+        sampleDetailsUrl,
       );
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -283,6 +333,7 @@ export const useEvaluationDetailPage = () => {
     report.value = null;
     reportError.value = "";
     reportUnavailableFor.value = "";
+    terminalReportPollingStartedAt.value = null;
     downloadError.value = "";
     pendingAction.value = null;
     await loadDetail();
