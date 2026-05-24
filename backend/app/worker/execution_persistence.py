@@ -17,6 +17,7 @@ from app.models.benchmark_run import (
     SampleExecution,
     TestRun,
 )
+from app.platform.config import settings
 from app.platform.db.session import AsyncSessionLocal
 from app.worker.analysis.service import analyze_runtime_artifacts, summary_from_analysis
 from app.worker.oracle_evaluator import (
@@ -164,6 +165,10 @@ async def persist_runtime_result(
         execution.finished_at = finished_at
         execution.updated_at = finished_at
         execution.error_message = error_message
+        execution.claimed_by = None
+        execution.claimed_at = None
+        execution.claim_heartbeat_at = None
+        execution.lease_expires_at = None
 
         await db.execute(
             update(TestRun)
@@ -214,16 +219,46 @@ async def mark_execution_state(execution_id: int, status: str) -> None:
 async def mark_execution_system_error(
     execution_id: int, run_id: int, dataset_id: int, exc: Exception
 ) -> None:
-    """Persist system-level execution errors and failed counters."""
+    """Persist system-level execution errors and create a retry attempt when allowed."""
     finished_at = now_utc()
     async with AsyncSessionLocal() as db:
         execution = await db.get(SampleExecution, execution_id)
         if execution is None:
             return
+        next_retry_no = int(execution.retry_no) + 1
         execution.status = "error"
         execution.finished_at = finished_at
         execution.updated_at = finished_at
         execution.error_message = to_error_message(exc)
+        execution.claimed_by = None
+        execution.claimed_at = None
+        execution.claim_heartbeat_at = None
+        execution.lease_expires_at = None
+
+        if next_retry_no < max(1, settings.SAMPLE_MAX_ATTEMPTS):
+            existing_retry = (
+                await db.execute(
+                    select(SampleExecution).where(
+                        SampleExecution.run_sample_id == execution.run_sample_id,
+                        SampleExecution.retry_no == next_retry_no,
+                    )
+                )
+            ).scalar_one_or_none()
+            if existing_retry is None:
+                db.add(
+                    SampleExecution(
+                        run_id=execution.run_id,
+                        run_sample_id=execution.run_sample_id,
+                        sample_id_ref=execution.sample_id_ref,
+                        status="ready",
+                        retry_no=next_retry_no,
+                        ready_at=finished_at,
+                        attempt_reason="system_error_retry",
+                    )
+                )
+            await db.commit()
+            return
+
         await db.execute(
             update(TestRun)
             .where(TestRun.id == run_id)

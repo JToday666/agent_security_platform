@@ -88,7 +88,14 @@ uv run alembic upgrade head
 uv run python run.py
 ```
 
-启动 worker：
+启动 scheduler/finalizer：
+
+```bash
+cd backend
+uv run python scheduler.py
+```
+
+启动 sample worker：
 
 ```bash
 cd backend

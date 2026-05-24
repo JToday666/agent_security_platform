@@ -418,6 +418,19 @@ RUNTIME_ROOT_DIR=/data/agent-security-platform/runtime
 TMP_ROOT_DIR=/data/agent-security-platform/tmp
 LOG_ROOT_DIR=/data/agent-security-platform/logs
 
+WORKER_RUNNER_HOST=172.17.0.1
+WORKER_BROWSER_ENTRY_HOST=host.docker.internal
+SCHEDULER_POLL_INTERVAL_SECONDS=1.0
+SCHEDULER_RELEASE_BATCH_SIZE=20
+GLOBAL_MAX_IN_FLIGHT_SAMPLES=16
+RUN_MAX_IN_FLIGHT_SAMPLES=4
+USER_MAX_IN_FLIGHT_SAMPLES=8
+AGENT_MAX_IN_FLIGHT_SAMPLES=4
+SAMPLE_WORKER_MAX_ACTIVE_EXECUTIONS=2
+SAMPLE_CLAIM_STALE_AFTER_SECONDS=90
+SAMPLE_HEARTBEAT_INTERVAL_SECONDS=10.0
+SAMPLE_MAX_ATTEMPTS=2
+
 LLM_JUDGE_PROVIDER=litellm
 LLM_BASE_URL=http://127.0.0.1:18000/v1
 LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
@@ -457,10 +470,24 @@ services:
       - /data/agent-security-platform/logs/backend:/app/logs
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
+  scheduler:
+    image: crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_code:backend-latest
+    container_name: asp-scheduler
+    restart: unless-stopped
+    env_file:
+      - /data/agent-security-platform/env/prod/backend.env
+    volumes:
+      - /data/agent-security-platform/data:/app/data
+      - /data/agent-security-platform/runtime:/app/runtime
+      - /data/agent-security-platform/artifacts:/app/artifacts
+      - /data/agent-security-platform/logs/scheduler:/app/logs
+    command: ["python", "scheduler.py"]
+
   worker:
     image: crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_code:backend-latest
-    container_name: asp-worker
     restart: unless-stopped
+    deploy:
+      replicas: 2
     env_file:
       - /data/agent-security-platform/env/prod/backend.env
     volumes:
@@ -470,7 +497,7 @@ services:
       - /data/agent-security-platform/logs/worker:/app/logs
       # 仅当 Worker 需要创建 runtime-runner 容器时启用
       # - /var/run/docker.sock:/var/run/docker.sock
-    command: ["python", "-m", "app.worker"]
+    command: ["python", "worker.py"]
 ```
 
 ---

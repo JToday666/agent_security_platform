@@ -17,7 +17,7 @@ from app.models.benchmark_run import (
     RunDataset,
     RunReport,
     SampleExecution,
-    TestRun,
+    TestRun as RunModel,
 )
 from app.modules.agents.repository import AgentRepository
 from app.modules.agents.schemas import AgentCreateRequest, AgentVerificationRequest
@@ -31,7 +31,9 @@ from app.modules.evaluations.service import EvaluationService
 from app.platform.config import settings
 from app.platform.db.session import AsyncSessionLocal, engine as async_engine
 from app.worker import execution as worker_execution
-from app.worker import processing
+from app.worker.sample_claims import claim_next_sample
+from app.worker.sample_scheduler import finalize_ready_runs_once, release_ready_samples_once
+from app.worker.sample_worker import _process_sample_safely
 from app.worker.runtime import preparation as runtime_preparation
 from app.worker.runtime.ports import allocate_tcp_port
 
@@ -215,11 +217,24 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
 
             run_id = (
                 await db.execute(
-                    select(TestRun.id).where(TestRun.public_id == evaluation_id)
+                    select(RunModel.id).where(RunModel.public_id == evaluation_id)
                 )
             ).scalar_one()
 
-        await processing.process_claimed_run(run_id, "pytest-full-chain-worker")
+        async with AsyncSessionLocal() as db:
+            assert await release_ready_samples_once(db) == 1
+
+        async with AsyncSessionLocal() as db:
+            claimed_execution = await claim_next_sample(db, "pytest-sample-worker")
+            assert claimed_execution is not None
+
+        await _process_sample_safely(
+            claimed_execution.id,
+            "pytest-sample-worker",
+        )
+
+        async with AsyncSessionLocal() as db:
+            assert await finalize_ready_runs_once(db) == 1
 
         async with AsyncSessionLocal() as db:
             detail = await EvaluationService(
@@ -232,7 +247,7 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
 
         with api_db_helper.session() as session:
             run = session.execute(
-                select(TestRun).where(TestRun.public_id == evaluation_id)
+                select(RunModel).where(RunModel.public_id == evaluation_id)
             ).scalar_one()
             dataset = session.execute(
                 select(RunDataset).where(RunDataset.run_id == run.id)

@@ -7,6 +7,7 @@ from decimal import Decimal
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
 from app.models.benchmark import BenchmarkSample
 from app.models.benchmark_run import (
@@ -249,6 +250,15 @@ async def load_score_observations(
     db: AsyncSession, run_id: int
 ) -> list[ScoreObservation]:
     """加载评分使用的样本观测。"""
+    latest_execution = aliased(SampleExecution)
+    latest_retry_no = (
+        select(latest_execution.retry_no)
+        .where(latest_execution.run_sample_id == RunSample.id)
+        .order_by(latest_execution.retry_no.desc(), latest_execution.id.desc())
+        .limit(1)
+        .correlate(RunSample)
+        .scalar_subquery()
+    )
     rows = (
         await db.execute(
             select(
@@ -266,7 +276,10 @@ async def load_score_observations(
                 ExecutionSummary,
                 ExecutionSummary.sample_execution_id == SampleExecution.id,
             )
-            .where(RunSample.run_id == run_id, SampleExecution.retry_no == 0)
+            .where(
+                RunSample.run_id == run_id,
+                SampleExecution.retry_no == latest_retry_no,
+            )
             .order_by(RunSample.order_no.asc(), RunSample.id.asc())
         )
     ).all()
