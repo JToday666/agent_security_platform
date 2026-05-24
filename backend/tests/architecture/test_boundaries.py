@@ -4,6 +4,8 @@ import importlib
 import importlib.util
 from pathlib import Path
 
+import pytest
+
 
 def test_platform_kernel_modules_are_available() -> None:
     platform_config = importlib.import_module("app.platform.config")
@@ -95,6 +97,50 @@ def test_storage_root_overrides_take_precedence(monkeypatch) -> None:
     assert settings.runtime_root == Path("/srv/runtime")
     assert settings.tmp_root == Path("/srv/tmp")
     assert settings.log_root == Path("/srv/logs")
+
+
+def test_data_root_must_not_resolve_inside_project(monkeypatch) -> None:
+    monkeypatch.delenv("ASP_DATA_ROOT", raising=False)
+
+    platform_config = importlib.import_module("app.platform.config")
+    settings = platform_config.Settings(
+        ASP_DATA_ROOT=str(platform_config.REPO_ROOT / "var" / "backend"),
+        _env_file=None,
+    )
+
+    with pytest.raises(ValueError, match="ASP_DATA_ROOT.*project directory"):
+        _ = settings.data_root
+
+
+@pytest.mark.parametrize(
+    ("field_name", "property_name", "relative_path"),
+    [
+        ("DATASET_ROOT_DIR", "dataset_root", "backend/data/datasets"),
+        (
+            "DATASET_METADATA_ROOT_DIR",
+            "dataset_metadata_root",
+            "backend/data/dataset-registry",
+        ),
+        ("UPLOAD_ROOT_DIR", "uploads_root", "backend/uploads"),
+        ("RUNTIME_ROOT_DIR", "runtime_root", "backend/runtime"),
+        ("TMP_ROOT_DIR", "tmp_root", "backend/tmp"),
+        ("LOG_ROOT_DIR", "log_root", "backend/logs"),
+    ],
+)
+def test_generated_storage_root_overrides_must_not_resolve_inside_project(
+    monkeypatch, field_name: str, property_name: str, relative_path: str
+) -> None:
+    monkeypatch.delenv(field_name, raising=False)
+
+    platform_config = importlib.import_module("app.platform.config")
+    settings = platform_config.Settings(
+        ASP_DATA_ROOT="/mnt/asp",
+        **{field_name: str(platform_config.REPO_ROOT / relative_path)},
+        _env_file=None,
+    )
+
+    with pytest.raises(ValueError, match=f"{field_name}.*project directory"):
+        _ = getattr(settings, property_name)
 
 
 def test_database_url_override_normalizes_async_and_sync_drivers(monkeypatch) -> None:

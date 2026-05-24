@@ -33,7 +33,7 @@ def test_agent_templates_include_browser_use_output_and_render_contract(client) 
 @pytest.mark.db
 @pytest.mark.integration
 def test_agent_and_evaluation_submission_routes_work_against_real_database(
-    client, api_db_helper, monkeypatch, backend_root: Path
+    client, api_db_helper, monkeypatch, tmp_path: Path
 ) -> None:
     dataset_code = api_db_helper.seed_dataset()
     user_id, token = api_db_helper.seed_user(
@@ -54,9 +54,7 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
         )
 
     monkeypatch.setattr(AgentInvocationClient, "invoke", fake_invoke)
-    credential_dir = (
-        backend_root / "runtime" / "test-credentials" / api_db_helper.prefix
-    )
+    credential_dir = tmp_path / "test-credentials" / api_db_helper.prefix
     monkeypatch.setattr(
         "app.modules.agents.service.default_credential_store",
         lambda: FileCredentialStore(credential_dir, "pytest-secret-key"),

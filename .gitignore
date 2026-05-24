@@ -13,21 +13,6 @@
 !**/.env.example
 !**/.env.*.example
 
-# Deployment runtime files
-/deploy/nginx/logs/
-/deploy/nginx/certs/
-/deploy/nginx/acme/
-/deploy/nginx/html/
-/var/log/
-/var/backend/
-
-# Docker compose local overrides
-docker-compose*.override.yml
-docker-compose*.local.yml
-docker-compose*.prod.yml
-!docker-compose*.example.yml
-!docker-compose*.prod.example.yml
-
 # Python virtual environments
 .venv/
 
@@ -42,17 +27,9 @@ AGENTS.md
 /data/
 
 # backend
-/backend/runtime/
-/backend/data/**
-!/backend/data/agent_runtime_shared/
-!/backend/data/agent_runtime_shared/**
 /backend/.coverage
 /backend/.pytest_cache/
 /backend/**/__pycache__/
-
-# Frontend environment files
-/frontend/.env
-!/frontend/.env.example
 
 # Frontend dependencies and caches
 /frontend/node_modules/
