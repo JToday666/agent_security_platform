@@ -104,6 +104,7 @@ class EvaluationListItem(CamelModel):
     description: str | None = None
     created_at: str
     updated_at: str
+    finished_at: str | None = None
     status: str
     progress_percent: int
     final_report_available: bool
@@ -124,6 +125,8 @@ class EvaluationProgress(CamelModel):
     percent: int
     total_dataset_count: int
     completed_dataset_count: int
+    total_sample_count: int
+    completed_sample_count: int
     running_dataset_id: str | None = None
     running_dataset_name: str | None = None
     pause_deadline_at: str | None = None
@@ -276,6 +279,8 @@ class EvaluationDetail(CamelModel):
     description: str | None = None
     created_at: str
     updated_at: str
+    started_at: str | None = None
+    finished_at: str | None = None
     status: str
     score: float | None = None
     public_to_leaderboard: bool

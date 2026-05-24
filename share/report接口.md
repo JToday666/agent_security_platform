@@ -94,6 +94,8 @@
       "percent": 100,
       "totalDatasetCount": 1,
       "completedDatasetCount": 1,
+      "totalSampleCount": 20,
+      "completedSampleCount": 20,
       "runningDatasetId": null,
       "runningDatasetName": null,
       "pauseDeadlineAt": null,
@@ -132,6 +134,8 @@
 | -------------------------------- | -------------------------- |
 | `progress.totalDatasetCount`     | 数据集数                   |
 | `progress.completedDatasetCount` | 已完成数据集数             |
+| `progress.totalSampleCount`      | 样本总数                   |
+| `progress.completedSampleCount`  | 已完成样本数               |
 | `progress.runningDatasetId`      | 当前运行的数据集 ID        |
 | `progress.pauseDeadlineAt`       | 暂停截止时间               |
 | `controls`                       | 当前可执行动作集合         |
@@ -140,7 +144,83 @@
 | `report.summary`                 | 任务级汇总摘要             |
 | `report.reportUri`               | 报告文件地址，当前预留为空 |
 
-## 3. 获取评测评分
+## 3. 获取评测报告
+
+`GET /api/v1/evaluations/{evaluationId}/report`
+
+### 作用
+
+返回指定评测任务的完整报告 payload。该接口提供结构化报告数据，不是离线文件下载；离线 `report_uri` 仍需单独生成。
+
+### 成功响应
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "evaluationId": "eval_20260523_ab12cd",
+    "status": "ready",
+    "generatedAt": "2026-05-23T08:30:00Z",
+    "scores": {
+      "conservativeScore": 72.4,
+      "performanceScore": 78.1,
+      "confidence": 80.5,
+      "completionScore": 69.4,
+      "safetyScore": 81.2,
+      "hardScore": 61.9,
+      "unsafeRate": 18.8,
+      "timeScore": 74.5
+    },
+    "rawStats": {
+      "total": 20,
+      "success": 12,
+      "failed": 5,
+      "error": 3,
+      "completionRate": 0.85,
+      "successRate": 0.6,
+      "conditionalSuccessRate": 0.71
+    },
+    "posteriorInterval": {
+      "psQ05": 70.1,
+      "psQ50": 72.4,
+      "psQ95": 84.2
+    },
+    "coverage": {
+      "difficultyBucketHitCount": 5,
+      "difficultyCoverageRatio": 1.0
+    },
+    "breakdowns": {
+      "outcomeSummary": {
+        "total": 20,
+        "success": 12,
+        "failed": 5,
+        "error": 3
+      },
+      "difficultyBuckets": [],
+      "datasetSummaries": [],
+      "sampleScatterPoints": []
+    },
+    "versions": {
+      "difficultyVersion": "difficulty_v1",
+      "scoreModelVersion": "score_v1_5",
+      "benchmarkVersion": "bm_v1"
+    }
+  }
+}
+```
+
+### 失败响应
+
+```json
+{
+  "code": 40400,
+  "message": "评测报告不存在。",
+  "data": null
+}
+```
+
+## 4. 获取评测评分
 
 `GET /api/v1/evaluations/{evaluationId}/score`
 
@@ -177,7 +257,7 @@
 }
 ```
 
-## 4. 重算评测评分
+## 5. 重算评测评分
 
 `POST /api/v1/evaluations/{evaluationId}/score/recalculate`
 
@@ -204,7 +284,7 @@
 }
 ```
 
-## 5. 执行评测动作
+## 6. 执行评测动作
 
 `POST /api/v1/evaluations/{evaluationId}/actions`
 
@@ -237,10 +317,10 @@
 }
 ```
 
-## 6. 当前未实现能力
+## 7. 当前未实现能力
 
 - 独立 `GET /api/v1/evaluations/score-trend` 趋势接口未实现
-- 独立 `GET /api/v1/evaluations/{evaluationId}/report` 报告接口未实现
+- 独立 `GET /api/v1/evaluations/{evaluationId}/report` 报告读取接口已实现
 - 独立 `GET /api/v1/evaluations/{evaluationId}/samples/export` 样本明细导出接口未实现
 - 独立回放或单样本证据查询接口未实现
-- `report_uri` 当前预留为空，只保留任务级 `summary_json`
+- `report_uri` 当前预留为空，只保留任务级 `summary_json`，离线文件下载未实现

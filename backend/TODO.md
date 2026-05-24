@@ -18,12 +18,12 @@
 - `execution_artifacts` 当前覆盖 runtime 元信息、事件日志、编译/回放结果、回放报告等基础产物，仍缺 richer evidence
 - `llm_judge` 已接入 OpenAI-compatible Chat Completions，但缺配置、调用失败、输出不合法、低置信或模型要求复核时仍保守进入待复核
 - `sample_difficulty_stats` 已有运行后基础回刷逻辑，难度版本可重算/发布；仍缺长期观测、审计和自动化治理策略
-- `run_reports` 当前只产出 `summary_json`，`report_uri` 仍为空
+- `run_reports` 当前只产出 `summary_json`，`report_uri` 仍为空；在线报告读取接口已开放
 
 ## 当前优先
 
 - [ ] 完善真实 Agent API 调用链路：补齐调用日志、失败分类、状态观测、外部响应证据归档和更细的超时语义
-- [ ] 补齐样本级结果查询接口：提供 run 下 execution 列表、单 execution 详情、产物索引和独立报告入口
+- [ ] 补齐样本级结果查询接口：提供 run 下 execution 列表、单 execution 详情和产物索引
 - [ ] 生成可下载报告：为 `run_reports` 产出 `report_uri`，补齐典型样本引用和更细粒度统计
 - [ ] 为 worker 增加启动/停止观测、健康检查、告警与异常恢复
 - [ ] 接入真实 Docker 运行链路：为 `submit_method = "docker"` 落地镜像拉起、认证信息注入、生命周期清理和运行期隔离
