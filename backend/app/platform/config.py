@@ -122,36 +122,68 @@ class Settings(BaseSettings):
             return Path(value).expanduser().resolve()
         return fallback.resolve()
 
+    @staticmethod
+    def _reject_project_storage_path(path: Path, env_name: str) -> Path:
+        """Reject generated storage paths that would write inside this checkout."""
+        resolved_path = path.resolve()
+        repo_root = REPO_ROOT.resolve()
+        try:
+            resolved_path.relative_to(repo_root)
+        except ValueError:
+            return resolved_path
+        raise ValueError(
+            f"{env_name} must not resolve inside project directory: {resolved_path}. "
+            "Use /data/agent-security-platform for persistent runtime data, "
+            "or a /tmp path for tests."
+        )
+
+    def _resolve_storage_path(
+        self, value: str | None, fallback: Path, env_name: str
+    ) -> Path:
+        """Resolve and validate a server-generated storage path."""
+        return self._reject_project_storage_path(
+            self._resolve_path(value, fallback), env_name
+        )
+
     @property
     def data_root(self) -> Path:
         """返回服务器数据根目录。"""
-        return self._resolve_path(self.ASP_DATA_ROOT, DEFAULT_DATA_ROOT)
+        return self._resolve_storage_path(
+            self.ASP_DATA_ROOT, DEFAULT_DATA_ROOT, "ASP_DATA_ROOT"
+        )
 
     @property
     def runtime_root(self) -> Path:
         """返回后端运行期文件的根目录。"""
-        return self._resolve_path(self.RUNTIME_ROOT_DIR, self.data_root / "runtime")
+        return self._resolve_storage_path(
+            self.RUNTIME_ROOT_DIR, self.data_root / "runtime", "RUNTIME_ROOT_DIR"
+        )
 
     @property
     def dataset_root(self) -> Path:
         """返回平台使用的一等数据集根目录。"""
-        return self._resolve_path(
-            self.DATASET_ROOT_DIR, self.data_root / "data" / "datasets"
+        return self._resolve_storage_path(
+            self.DATASET_ROOT_DIR,
+            self.data_root / "data" / "datasets",
+            "DATASET_ROOT_DIR",
         )
 
     @property
     def dataset_metadata_root(self) -> Path:
         """返回数据集 registry/display_meta 的 JSON 真源目录。"""
-        return self._resolve_path(
+        return self._resolve_storage_path(
             self.DATASET_METADATA_ROOT_DIR,
             self.data_root / "data" / "dataset-registry",
+            "DATASET_METADATA_ROOT_DIR",
         )
 
     @property
     def uploads_root(self) -> Path:
         """返回上传文件的统一存储目录。"""
-        return self._resolve_path(
-            self.UPLOAD_ROOT_DIR, self.data_root / "data" / "uploads"
+        return self._resolve_storage_path(
+            self.UPLOAD_ROOT_DIR,
+            self.data_root / "data" / "uploads",
+            "UPLOAD_ROOT_DIR",
         )
 
     @property
@@ -172,12 +204,16 @@ class Settings(BaseSettings):
     @property
     def tmp_root(self) -> Path:
         """返回后端临时文件根目录。"""
-        return self._resolve_path(self.TMP_ROOT_DIR, self.data_root / "tmp")
+        return self._resolve_storage_path(
+            self.TMP_ROOT_DIR, self.data_root / "tmp", "TMP_ROOT_DIR"
+        )
 
     @property
     def log_root(self) -> Path:
         """返回后端日志根目录。"""
-        return self._resolve_path(self.LOG_ROOT_DIR, self.data_root / "logs")
+        return self._resolve_storage_path(
+            self.LOG_ROOT_DIR, self.data_root / "logs", "LOG_ROOT_DIR"
+        )
 
 
 settings = Settings()
