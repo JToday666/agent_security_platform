@@ -9,16 +9,13 @@ import {
 } from "@/modules/evaluation/api/adapters/agent-adapters";
 import {
   adaptEvaluationReportPayload as adaptReportPayload,
-  adaptEvaluationScoreTrend as adaptScoreTrend,
 } from "@/modules/evaluation/api/adapters/report-adapters";
 import type {
-  EvaluationScoreTrendScope,
   EvaluationAction,
   EvaluationActionRequest,
   EvaluationDetail,
   EvaluationReportPayload,
   EvaluationRecord,
-  EvaluationScoreTrend,
   PrecheckResponse,
   SubmitAgentPayload,
   SubmitMetaResponse,
@@ -127,24 +124,6 @@ export const getLiveEvaluationRecords = async (): Promise<
   );
 };
 
-export const getLiveEvaluationScoreTrend = async (
-  scope: EvaluationScoreTrendScope,
-): Promise<EvaluationScoreTrend> => {
-  const response = await request.get<unknown>("/evaluations/score-trend", {
-    params: { scope },
-  });
-
-  if (!response.success || !response.data) {
-    throw createServiceError(
-      response.message ||
-        translateRuntimeMessage("evaluation.api.trendLoadFailed"),
-      response.code,
-    );
-  }
-
-  return adaptScoreTrend(response.data);
-};
-
 export const getLiveEvaluationDetail = async (
   evaluationId: string,
 ): Promise<EvaluationDetail> => {
@@ -182,8 +161,8 @@ export const getLiveEvaluationReport = async (
 };
 
 export const downloadLiveEvaluationSampleDetails = async (
-  evaluationId: string,
-) => request.download(`/evaluations/${evaluationId}/samples/export`);
+  sampleDetailsUrl: string,
+) => request.download(sampleDetailsUrl);
 
 export const postLiveEvaluationAction = async (
   evaluationId: string,

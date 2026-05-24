@@ -52,7 +52,9 @@ export const buildTrendSummary = (
   const items = trend?.items ?? [];
   const latest = items[items.length - 1];
   const previous = items[items.length - 2];
-  const metricKey = view === "risk" ? "unsafeRate" : "conservativeScore";
+  const metricKey =
+    trend?.views[view]?.metrics[0] ??
+    (view === "risk" ? "unsafeRate" : "conservativeScore");
   const latestValue = latest?.scores[metricKey] ?? 0;
   const previousValue = previous?.scores[metricKey] ?? latestValue;
   const delta = Number((latestValue - previousValue).toFixed(1));
@@ -60,7 +62,7 @@ export const buildTrendSummary = (
 
   return {
     latestLabel:
-      view === "risk"
+      metricKey === "unsafeRate"
         ? t("evaluation.trend.latestRiskRate")
         : t("evaluation.trend.latestCompositeScore"),
     latestValue: formatMetricValue(metricKey, latestValue),

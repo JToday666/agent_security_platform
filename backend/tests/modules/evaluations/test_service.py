@@ -6,6 +6,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
+from app.modules.evaluations.application.mappers import to_zulu
 from app.modules.evaluations.schemas import EvaluationActionRequest
 from app.modules.evaluations.service import EvaluationService
 from app.platform.errors import ConflictError
@@ -59,6 +60,8 @@ class EvaluationReadOnlyRepositoryStub:
 
 
 def make_paused_run(now: datetime) -> SimpleNamespace:
+    started_at = now - timedelta(minutes=10)
+    finished_at = now - timedelta(minutes=2)
     return SimpleNamespace(
         id=1,
         user_id=1,
@@ -67,6 +70,8 @@ def make_paused_run(now: datetime) -> SimpleNamespace:
         description=None,
         created_at=now,
         updated_at=now,
+        started_at=started_at,
+        finished_at=finished_at,
         status="paused",
         public_to_leaderboard=True,
         leaderboard_display_mode="public",
@@ -81,8 +86,8 @@ def make_paused_run(now: datetime) -> SimpleNamespace:
                 "retryEnabled": False,
             }
         },
-        total_samples=1,
-        completed_samples=0,
+        total_samples=12,
+        completed_samples=7,
     )
 
 
@@ -109,6 +114,7 @@ async def test_list_evaluations_does_not_finalize_expired_paused_runs() -> None:
         response = await service.list_evaluations(current_user)
 
     assert response[0].status == "paused"
+    assert response[0].finished_at == to_zulu(now - timedelta(minutes=2))
     assert repository.commit_calls == 0
     finalize_mock.assert_not_awaited()
 
@@ -199,6 +205,10 @@ async def test_get_evaluation_detail_localizes_running_dataset_name() -> None:
     assert response.dataset_names == ["Identity Leakage"]
     assert response.progress.running_dataset_name == "Identity Leakage"
     assert "Identity Leakage" in response.progress.status_text
+    assert response.started_at == to_zulu(now - timedelta(minutes=10))
+    assert response.finished_at == to_zulu(now - timedelta(minutes=2))
+    assert response.progress.total_sample_count == 12
+    assert response.progress.completed_sample_count == 7
 
 
 @pytest.mark.asyncio

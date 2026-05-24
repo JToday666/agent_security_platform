@@ -1,11 +1,9 @@
 import { ApiConfig } from "@/shared/api/Config";
 import type {
-  EvaluationScoreTrendScope,
   EvaluationAction,
   EvaluationDetail,
   EvaluationReportPayload,
   EvaluationRecord,
-  EvaluationScoreTrend,
   PrecheckResponse,
   SubmitAgentPayload,
   SubmitMetaResponse,
@@ -17,7 +15,6 @@ import {
   getLiveEvaluationDetail,
   getLiveEvaluationReport,
   getLiveEvaluationRecords,
-  getLiveEvaluationScoreTrend,
   getLiveSubmitMeta,
   postLiveEvaluationAction,
   precheckLiveAgent,
@@ -47,11 +44,6 @@ export const submitAgent = async (
 export const getEvaluationRecords = async (): Promise<EvaluationRecord[]> =>
   useMockApi ? getMockEvaluationRecords() : getLiveEvaluationRecords();
 
-export const getEvaluationScoreTrend = async (
-  scope: EvaluationScoreTrendScope,
-): Promise<EvaluationScoreTrend> =>
-  getLiveEvaluationScoreTrend(scope);
-
 export const getEvaluationDetail = async (
   evaluationId: string,
 ): Promise<EvaluationDetail> =>
@@ -67,9 +59,9 @@ export const getEvaluationReport = async (
     : getLiveEvaluationReport(evaluationId);
 
 export const downloadEvaluationSampleDetails = async (
-  evaluationId: string,
+  sampleDetailsUrl: string,
 ): Promise<ApiBlobResponse> =>
-  downloadLiveEvaluationSampleDetails(evaluationId);
+  downloadLiveEvaluationSampleDetails(sampleDetailsUrl);
 
 export const postEvaluationAction = async (
   evaluationId: string,

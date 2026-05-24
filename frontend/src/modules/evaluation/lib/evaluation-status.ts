@@ -34,6 +34,9 @@ export interface EvaluationStatusMetadata {
   pollable: boolean;
 }
 
+export const EVALUATION_POLL_INTERVAL_MS = 10 * 1000;
+export const EVALUATION_TERMINAL_REPORT_POLL_WINDOW_MS = 2 * 60 * 1000;
+
 export const EVALUATION_STATUS_METADATA = [
   {
     status: "queued",
@@ -185,6 +188,9 @@ export const getEvaluationStatusTone = (
 
 export const shouldPollEvaluation = (status: EvaluationStatus): boolean =>
   getEvaluationStatusMetadata(status).pollable;
+
+export const shouldExpectEvaluationReport = (status: EvaluationStatus): boolean =>
+  status === "completed" || status === "terminated" || status === "failed";
 
 export const hasVisibleScore = (
   score: number | null,

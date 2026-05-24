@@ -45,6 +45,19 @@ const toNumberValue = (value: unknown, fallback = 0): number => {
   return Number.isFinite(parsed) ? parsed : fallback;
 };
 
+const toOptionalNumberValue = (value: unknown): number | null => {
+  if (value == null) {
+    return null;
+  }
+
+  if (typeof value === "string" && value.trim().length === 0) {
+    return null;
+  }
+
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
 const toBooleanValue = (value: unknown, fallback = false): boolean =>
   typeof value === "boolean" ? value : fallback;
 
@@ -405,10 +418,7 @@ export const adaptEvaluationRecord = (value: unknown): EvaluationRecord => {
     datasetNames,
     submitMethod:
       toStringValue(candidate.submitMethod) === "docker" ? "docker" : "api",
-    score:
-      candidate.score == null || toStringValue(candidate.score).length === 0
-        ? null
-        : toNumberValue(candidate.score, 0),
+    score: toOptionalNumberValue(candidate.score),
     ownerName:
       toStringValue(candidate.ownerName) ||
       translateRuntimeMessage("evaluation.common.currentUser"),

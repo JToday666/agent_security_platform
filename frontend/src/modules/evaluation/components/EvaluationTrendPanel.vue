@@ -35,16 +35,7 @@
       </div>
     </div>
 
-    <div v-if="loading" class="trend-panel__state">
-      {{ t("evaluation.trend.loading") }}
-    </div>
-    <div v-else-if="error" class="trend-panel__state trend-panel__state--error">
-      <span>{{ error }}</span>
-      <UiButton variant="text" size="sm" @click="loadTrend">
-        {{ t("evaluation.actions.retry") }}
-      </UiButton>
-    </div>
-    <div v-else-if="!trend?.items.length" class="trend-panel__state">
+    <div v-if="!trend.items.length" class="trend-panel__state">
       {{ t("evaluation.trend.empty") }}
     </div>
     <div v-else class="trend-canvas">
@@ -76,22 +67,24 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, ref, watch } from "vue";
+import { computed, defineAsyncComponent, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { getEvaluationScoreTrend } from "@/modules/evaluation/api/evaluation-api";
 import { buildTrendSummary } from "@/modules/evaluation/lib/evaluation-report-insights";
+import { buildEvaluationTrendFromRecords } from "@/modules/evaluation/lib/evaluation-record-trend";
 import type {
-  EvaluationScoreTrend,
+  EvaluationRecord,
   EvaluationScoreTrendScope,
   EvaluationScoreTrendView,
 } from "@/shared/types/agent-types";
-import { getErrorMessage } from "@/shared/composables/useAsyncState";
-import UiButton from "@/shared/ui/actions/UiButton.vue";
 
 const EvaluationTrendChart = defineAsyncComponent(
   () => import("@/modules/evaluation/components/charts/EvaluationTrendChart.vue"),
 );
 const { t } = useI18n();
+
+const props = defineProps<{
+  records: EvaluationRecord[];
+}>();
 
 defineEmits<{
   (event: "select", evaluationId: string): void;
@@ -115,34 +108,10 @@ const viewOptions = computed<Array<{
 
 const scope = ref<EvaluationScoreTrendScope>("recent10");
 const view = ref<EvaluationScoreTrendView>("capability");
-const trend = ref<EvaluationScoreTrend | null>(null);
-const loading = ref(false);
-const error = ref("");
+const trend = computed(() =>
+  buildEvaluationTrendFromRecords(props.records, scope.value),
+);
 const trendSummary = computed(() => buildTrendSummary(trend.value, view.value, t));
-
-const loadTrend = async () => {
-  loading.value = true;
-  error.value = "";
-
-  try {
-    trend.value = await getEvaluationScoreTrend(scope.value);
-    view.value = trend.value.defaultView;
-  } catch (loadError) {
-    trend.value = null;
-    error.value =
-      getErrorMessage(loadError, t("evaluation.api.trendLoadFailed"));
-  } finally {
-    loading.value = false;
-  }
-};
-
-watch(scope, () => {
-  void loadTrend();
-});
-
-onMounted(() => {
-  void loadTrend();
-});
 </script>
 
 <style scoped lang="scss">
