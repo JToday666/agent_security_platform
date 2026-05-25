@@ -94,6 +94,7 @@ services:
       WORKER_RUNTIME_LAUNCH_MODE: docker
       WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
       WORKER_RUNTIME_DOCKER_NETWORK: asp-runtime-net
+      WORKER_RUNTIME_DOCKER_PORT: 8000
     command: ["python", "worker.py"]
     depends_on:
       backend-migrate:

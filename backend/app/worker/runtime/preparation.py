@@ -45,6 +45,7 @@ class PreparedRuntime:
     stderr_log: Path
     runtime_context_path: Path
     isolation_mode: str = "process"
+    run_id: int | None = None
 
 
 def resolve_sample_layout(sample: SampleRuntimeTarget) -> tuple[Path, Path, Path, Path]:
@@ -110,6 +111,7 @@ def prepare_runtime_workspace(
     port: int,
     environment_ref: str,
     probe_token: str,
+    run_id: int | None = None,
 ) -> PreparedRuntime:
     """Prepare an isolated runtime workspace for one sample execution."""
     sample_dir, scope_root, runtime_dir, sample_subpath = resolve_sample_layout(sample)
@@ -142,6 +144,7 @@ def prepare_runtime_workspace(
         json.dumps(
             {
                 "executionId": execution_id,
+                "runId": run_id,
                 "sampleId": sample.sample_id,
                 "resourcePath": sample.resource_path,
                 "entryPath": sample.entry_path,
@@ -169,4 +172,5 @@ def prepare_runtime_workspace(
         stdout_log=stdout_log,
         stderr_log=stderr_log,
         runtime_context_path=runtime_context_path,
+        run_id=run_id,
     )

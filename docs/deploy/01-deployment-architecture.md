@@ -203,7 +203,7 @@ vLLM：
 | Backend Migration | `asp-backend-migrate` | Docker Compose 一次性任务 | 否 | 无持久化 | 模板已提供 |
 | PostgreSQL | `asp-postgres` | Docker Compose | 否 | `services/postgresql/data` | 已部署 |
 | vLLM | `asp-vllm` | Docker Compose + GPU | 否 | `models`、`cache/vllm` | 已部署 |
-| Runtime Runner | 临时容器 | Worker 创建 | 否 | 单次 workdir | 待部署 |
+| Runtime Runner | `asp-runtime-{environmentRef}` | Worker 创建的临时容器 | 否 | 单次 workdir | 待部署 |
 | Redis | `asp-redis` | Docker Compose | 否 | `services/redis/data` | 可选 |
 
 ---
@@ -246,6 +246,10 @@ asp-db-net:   backend-api / scheduler / worker / migrate → asp-postgres:5432
 asp-ai-net:   backend-api / worker → asp-litellm:4000 或 asp-vllm:8000
 asp-runtime-net: backend-worker → 一次性 runtime runner
 ```
+
+runtime runner 不发布宿主机端口。Worker 在 docker mode 下通过 `asp-runtime-net`
+中的容器名或 network alias `asp-runtime-{environmentRef}:8000` 访问单次 runner；
+本地 process mode 仍保留 `WORKER_RUNNER_HOST:动态端口` 的开发路径。
 
 ---
 
@@ -395,6 +399,7 @@ Backend 连接 PostgreSQL 和 vLLM。
 Scheduler 推进 run 生命周期、dataset 阶段和报告聚合。
 Sample Worker 领取并执行 sample_execution，内部低并发，依靠实例数横向扩容。
 runtime-runner 由 Worker 按单样本启动，隔离执行浏览器/Agent 任务。
+runtime-runner 只加入 asp-runtime-net，使用容器内固定端口 8000，不占用宿主机动态端口。
 PostgreSQL 保存结构化业务数据。
 vLLM 提供本地模型推理。
 runtime 保存临时执行上下文。

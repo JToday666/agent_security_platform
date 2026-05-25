@@ -37,6 +37,8 @@ Backend：
   Compose .env 模板：docs/deploy/templates/backend/compose.env.example
   生产 env 模板：docs/deploy/templates/backend/backend.env.example
   API upstream：backend-api:8000
+  Worker runtime 网络：asp-runtime-net
+  Runtime runner：容器内固定端口 8000，不发布宿主机端口
 ```
 
 ## 关键约束
@@ -48,4 +50,6 @@ Backend：
 runtime 和 artifacts 不进 Git。
 公网只暴露 Gateway。
 PostgreSQL、vLLM、Xray 不对公网开放。
+runtime runner 不对公网或宿主机端口开放。
+只有 backend-worker 挂载 Docker socket。
 ```

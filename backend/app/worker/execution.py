@@ -106,6 +106,7 @@ async def execute_sample(
         port,
         environment_ref,
         probe_token,
+        run_id,
     )
     handle = None
 

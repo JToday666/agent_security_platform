@@ -412,6 +412,8 @@ Gateway 前端可访问。
 把数据库 data 目录打包进仓库。
 runtime-runner 使用 privileged。
 runtime-runner 挂载 /var/run/docker.sock。
+runtime-runner 发布宿主机随机端口。
+在安全组中开放 runtime 动态端口段。
 ```
 
 允许：
@@ -420,6 +422,8 @@ runtime-runner 挂载 /var/run/docker.sock。
 Worker 在必要时挂载 /var/run/docker.sock。
 但 Worker 不对外暴露。
 Worker 仅创建平台 runtime 容器，不接收用户提交的 Docker 镜像。
+Worker 创建的 runtime-runner 仅加入 asp-runtime-net。
+runtime-runner 使用容器内固定端口 8000，由 Worker 通过 Docker 内网访问。
 runtime-runner 只挂载单次 workdir。
 runtime-runner 运行完成后销毁。
 ```

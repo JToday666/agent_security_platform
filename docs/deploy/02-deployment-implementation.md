@@ -425,6 +425,7 @@ LOG_ROOT_DIR=/data/agent-security-platform/logs
 WORKER_RUNTIME_LAUNCH_MODE=docker
 WORKER_RUNTIME_DOCKER_IMAGE=<provided-by-compose-BACKEND_IMAGE>
 WORKER_RUNTIME_DOCKER_NETWORK=asp-runtime-net
+WORKER_RUNTIME_DOCKER_PORT=8000
 WORKER_RUNTIME_DOCKER_CONTAINER_WORKDIR=/runtime
 WORKER_RUNTIME_DOCKER_CPUS=1.0
 WORKER_RUNTIME_DOCKER_MEMORY=1g
@@ -520,6 +521,7 @@ docker compose ps
 - `backend-worker`：唯一挂载 `/var/run/docker.sock`，唯一负责按 sample 启动一次性 runtime runner。
 - `backend-migrate`：一次性 Alembic job，执行成功后退出。
 - runtime runner 使用 `backend-worker` 传入的 `WORKER_RUNTIME_DOCKER_IMAGE`，与上述 backend 服务保持同一镜像 tag。
+- runtime runner 只加入 `asp-runtime-net`，使用容器内固定端口 `8000`，不发布宿主机动态端口。
 
 ```yaml
 # 完整模板见 docs/deploy/templates/backend/docker-compose.backend.yml

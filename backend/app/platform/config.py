@@ -51,7 +51,8 @@ class Settings(BaseSettings):
     SAMPLE_MAX_ATTEMPTS: int = 2
     WORKER_RUNTIME_LAUNCH_MODE: str = "process"
     WORKER_RUNTIME_DOCKER_IMAGE: str = "agent-security-platform-runtime:latest"
-    WORKER_RUNTIME_DOCKER_NETWORK: str = "bridge"
+    WORKER_RUNTIME_DOCKER_NETWORK: str = "asp-runtime-net"
+    WORKER_RUNTIME_DOCKER_PORT: int = 8000
     WORKER_RUNTIME_DOCKER_CONTAINER_WORKDIR: str = "/runtime"
     WORKER_RUNTIME_DOCKER_CPUS: str = "1.0"
     WORKER_RUNTIME_DOCKER_MEMORY: str = "1g"

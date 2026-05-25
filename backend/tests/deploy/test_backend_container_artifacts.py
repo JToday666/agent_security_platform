@@ -91,6 +91,7 @@ def test_backend_compose_overrides_container_runtime_addresses() -> None:
     worker = _service_section(compose, "backend-worker")
     assert "WORKER_RUNTIME_LAUNCH_MODE: docker" in worker
     assert "WORKER_RUNTIME_DOCKER_NETWORK: asp-runtime-net" in worker
+    assert "WORKER_RUNTIME_DOCKER_PORT: 8000" in worker
 
 
 def test_only_backend_worker_mounts_docker_socket() -> None:
@@ -142,6 +143,7 @@ def test_backend_prod_env_template_uses_container_network_addresses() -> None:
     assert "WORKER_RUNTIME_LAUNCH_MODE=docker" in env_template
     assert "WORKER_RUNTIME_DOCKER_IMAGE=<provided-by-compose-BACKEND_IMAGE>" in env_template
     assert "WORKER_RUNTIME_DOCKER_NETWORK=asp-runtime-net" in env_template
+    assert "WORKER_RUNTIME_DOCKER_PORT=8000" in env_template
 
 
 def test_backend_compose_env_template_uses_immutable_image_and_network_db_url() -> None:
