@@ -41,6 +41,10 @@ def collect_artifacts(prepared: PreparedRuntime) -> list[ArtifactRecord]:
     root = prepared.work_dir
     candidates = [
         (prepared.run_dir / "dispatch_context.json", "dispatch_context"),
+        (
+            prepared.run_dir / "external_agent_invocation.json",
+            "external_agent_invocation",
+        ),
         (prepared.run_dir / "runtime_context.json", "runtime_meta"),
         (prepared.run_dir / "meta.json", "runtime_meta"),
         (prepared.run_dir / "events.jsonl", "event_log"),

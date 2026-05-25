@@ -11,6 +11,7 @@ from urllib.parse import urlparse
 
 import httpx
 
+from app.modules.agents.evidence import AgentInvocationEvidenceRecorder
 from app.modules.agents.invocation import AgentInvocationClient
 from app.platform.config import settings
 from app.platform.credentials import FileCredentialStore
@@ -257,17 +258,24 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
                 settings.credential_storage_dir, settings.SECRET_KEY
             ).load(str(credential_ref))
 
+        platform_values = {
+            "task": sample.user_goal,
+            "entryUrl": prepared.entry_url,
+            "timeoutSeconds": timeout_seconds,
+            "sampleId": sample.sample_id,
+            "evaluationId": config.get("evaluationId"),
+            "maxSteps": config.get("maxSteps"),
+        }
+
         result = await AgentInvocationClient().invoke(
             agent_snapshot=agent_snapshot,
             credential_payload=credential_payload,
-            platform_values={
-                "task": sample.user_goal,
-                "entryUrl": prepared.entry_url,
-                "timeoutSeconds": timeout_seconds,
-                "sampleId": sample.sample_id,
-                "evaluationId": config.get("evaluationId"),
-                "maxSteps": config.get("maxSteps"),
-            },
+            platform_values=platform_values,
+            evidence_recorder=AgentInvocationEvidenceRecorder(
+                path=prepared.run_dir / "external_agent_invocation.json",
+                agent_snapshot=agent_snapshot,
+                platform_values=platform_values,
+            ),
         )
 
         close_result = await self._close_runtime(prepared, sample, result)

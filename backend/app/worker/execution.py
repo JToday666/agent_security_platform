@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
+import logging
 
 from app.platform.config import settings
 from app.worker.execution_concurrency import (
@@ -14,6 +16,7 @@ from app.worker.execution_persistence import (
     mark_execution_runtime_ready,
     mark_execution_state,
     mark_execution_system_error,
+    persist_execution_artifacts_only,
     persist_runtime_result,
 )
 from app.worker.runtime import (
@@ -26,6 +29,8 @@ from app.worker.runtime import (
 )
 from app.worker.runtime.ports import allocate_tcp_port
 from app.worker.runtime.preparation import build_environment_ref, build_probe_token
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _execution_timeout_seconds(timeout_seconds: int | None) -> int:
@@ -143,6 +148,19 @@ async def execute_sample(
                 claim_token=claim_token,
             )
         except Exception as exc:
+            with contextlib.suppress(Exception):
+                await persist_execution_artifacts_only(
+                    execution_id, prepared=prepared, claim_token=claim_token
+                )
+            LOGGER.exception(
+                "sample_execution_dispatch_failed",
+                extra={
+                    "sample_execution_id": execution_id,
+                    "run_id": run_id,
+                    "dataset_id": dataset_id,
+                    "dispatch_mode": resolved_dispatch_mode,
+                },
+            )
             await mark_execution_system_error(
                 execution_id, run_id, dataset_id, exc, claim_token=claim_token
             )

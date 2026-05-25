@@ -173,7 +173,7 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
                             "maxSteps": "max_steps",
                         },
                         "taskRenderMode": "goal_only",
-                        "customRequestBody": {},
+                        "customRequestBody": {"secret": "full-chain-secret"},
                         "requestOptions": {},
                         "platformOutputMapping": {
                             "status": "status",
@@ -256,12 +256,18 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
             execution = session.execute(
                 select(SampleExecution).where(SampleExecution.run_id == run.id)
             ).scalar_one()
-            artifact_types = set(
+            artifacts = list(
                 session.execute(
-                    select(ExecutionArtifact.artifact_type).where(
+                    select(ExecutionArtifact).where(
                         ExecutionArtifact.sample_execution_id == execution.id
                     )
                 ).scalars()
+            )
+            artifact_types = {artifact.artifact_type for artifact in artifacts}
+            evidence_artifact = next(
+                artifact
+                for artifact in artifacts
+                if artifact.artifact_type == "external_agent_invocation"
             )
             summary = session.execute(
                 select(ExecutionSummary).where(
@@ -284,4 +290,18 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
             "event_log",
             "finalize_payload",
             "analysis_result",
+            "external_agent_invocation",
         }.issubset(artifact_types)
+        evidence_relative_path = evidence_artifact.artifact_metadata["relativePath"]
+        evidence_payload = json.loads(
+            (Path(execution.work_dir) / evidence_relative_path).read_text(
+                encoding="utf-8"
+            )
+        )
+        evidence_text = json.dumps(evidence_payload, ensure_ascii=False)
+        assert evidence_payload["agentId"] == agent_id
+        assert evidence_payload["evaluationId"] == evaluation_id
+        assert evidence_payload["sampleId"].endswith("_sample")
+        assert evidence_payload["outcome"]["status"] == "completed"
+        assert evidence_payload["httpCalls"][0]["responseStatusCode"] == 200
+        assert "full-chain-secret" not in evidence_text

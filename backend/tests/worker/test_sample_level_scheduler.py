@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
+from types import SimpleNamespace
 
 import pytest
 import pytest_asyncio
@@ -15,6 +17,7 @@ from app.models.benchmark import (
     RiskSubtype,
 )
 from app.models.benchmark_run import (
+    ExecutionArtifact,
     ExecutionSummary,
     RunDataset,
     RunReport,
@@ -26,6 +29,7 @@ from app.platform.db.session import AsyncSessionLocal, engine as async_engine
 from app.worker.execution_persistence import (
     mark_execution_dispatching,
     mark_execution_system_error,
+    persist_execution_artifacts_only,
 )
 from app.worker.sample_claims import claim_next_sample
 from app.worker.sample_scheduler import (
@@ -422,6 +426,61 @@ async def test_system_error_creates_retry_attempt_without_counting_sample_comple
     assert first_attempts[1].ready_at is not None
     assert run.completed_samples == 0
     assert dataset.completed_samples == 0
+
+
+@pytest.mark.asyncio
+async def test_failed_execution_can_persist_available_evidence_artifacts(
+    api_db_helper, tmp_path
+) -> None:
+    ids = _seed_sample_level_run(api_db_helper)
+    work_dir = tmp_path / "workdir"
+    run_dir = work_dir / "agent_runtime" / "runs" / "exec-1"
+    run_dir.mkdir(parents=True)
+    (run_dir / "external_agent_invocation.json").write_text(
+        json.dumps(
+            {
+                "schemaVersion": 1,
+                "agentId": "agt_failed",
+                "outcome": {"status": "failed", "errorClass": "http_error"},
+                "httpCalls": [],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    prepared = SimpleNamespace(
+        work_dir=work_dir,
+        run_dir=run_dir,
+        stdout_log=work_dir / "stdout.log",
+        stderr_log=work_dir / "stderr.log",
+        execution_id=ids["first_execution_id"],
+    )
+
+    async with AsyncSessionLocal() as db:
+        execution = await db.get(SampleExecution, ids["first_execution_id"])
+        assert execution is not None
+        execution.status = "executing"
+        await db.commit()
+
+    await persist_execution_artifacts_only(
+        ids["first_execution_id"],
+        prepared=prepared,
+    )
+
+    with api_db_helper.session() as session:
+        artifact = session.execute(
+            select(ExecutionArtifact).where(
+                ExecutionArtifact.sample_execution_id == ids["first_execution_id"],
+                ExecutionArtifact.artifact_type == "external_agent_invocation",
+            )
+        ).scalar_one()
+
+    assert artifact.storage_uri.endswith(
+        "/agent_runtime/runs/exec-1/external_agent_invocation.json"
+    )
+    assert artifact.artifact_metadata["relativePath"] == (
+        "agent_runtime/runs/exec-1/external_agent_invocation.json"
+    )
 
 
 @pytest.mark.asyncio

@@ -209,6 +209,40 @@ async def persist_runtime_result(
         await db.commit()
 
 
+async def persist_execution_artifacts_only(
+    execution_id: int,
+    *,
+    prepared,
+    claim_token: str | None = None,
+) -> None:
+    """Persist available artifacts for an execution that failed before summary."""
+    async with AsyncSessionLocal() as db:
+        execution = await db.get(SampleExecution, execution_id)
+        if (
+            execution is None
+            or execution.status in {"done", "error", "canceled"}
+            or _claim_token_mismatch(execution, claim_token)
+        ):
+            return
+
+        await db.execute(
+            delete(ExecutionArtifact).where(
+                ExecutionArtifact.sample_execution_id == execution_id
+            )
+        )
+        artifacts = await asyncio.to_thread(collect_artifacts, prepared)
+        for artifact in artifacts:
+            db.add(
+                ExecutionArtifact(
+                    sample_execution_id=execution_id,
+                    artifact_type=artifact.artifact_type,
+                    storage_uri=artifact.storage_uri,
+                    artifact_metadata=artifact.metadata,
+                )
+            )
+        await db.commit()
+
+
 async def mark_execution_runtime_ready(
     execution_id: int, prepared, *, claim_token: str | None = None
 ) -> None:
