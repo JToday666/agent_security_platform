@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import sys
 from io import StringIO
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
 
@@ -11,7 +11,15 @@ from fastapi.testclient import TestClient
 from sqlalchemy import select
 
 from app.models.benchmark import BenchmarkSample, RiskSubtype
-from app.models.benchmark_run import SampleDifficultyStat
+from app.models.benchmark_run import (
+    RunSample,
+    RuntimeSession,
+    SampleDifficultyStat,
+    SampleExecution,
+    TestRun as RunModel,
+)
+from app.modules.runtime_gateway.session_store import hash_runtime_token
+from tests.helpers.api_db import ApiDbHelper
 from tests.helpers.scripts import load_module_from_path
 
 
@@ -173,6 +181,90 @@ def test_cleanup_created_records_rejects_non_local_e2e_prefix(e2e_module) -> Non
         e2e_module.cleanup_created_records("pytest_not_local_e2e")
 
     assert "refuses to clean non-local-e2e prefix" in str(exc_info.value)
+
+
+def test_cleanup_summary_reports_runtime_sessions(e2e_module) -> None:
+    summary = e2e_module.CleanupSummary(runtime_sessions=2)
+
+    assert summary.as_dict()["runtimeSessions"] == 2
+
+
+@pytest.mark.db
+def test_cleanup_created_records_removes_runtime_sessions(
+    e2e_module, session_factory, monkeypatch
+) -> None:
+    prefix = "local_e2e_pytest_runtime_cleanup"
+    helper = ApiDbHelper(session_factory=session_factory, prefix=prefix)
+    monkeypatch.setattr(e2e_module, "SessionLocal", session_factory)
+    try:
+        user_id, _ = helper.seed_user(
+            username=f"{prefix}_user",
+            email=f"{prefix}@example.com",
+        )
+        dataset_code = helper.seed_dataset()
+        evaluation_id = helper.seed_evaluation_run(
+            user_id=user_id,
+            dataset_code=dataset_code,
+            status="executing",
+        )
+        with session_factory() as session:
+            run = session.execute(
+                select(RunModel).where(RunModel.public_id == evaluation_id)
+            ).scalar_one()
+            sample = session.execute(
+                select(BenchmarkSample).where(
+                    BenchmarkSample.sample_id == f"{prefix}_sample"
+                )
+            ).scalar_one()
+            run_sample = RunSample(
+                run_id=run.id,
+                sample_id_ref=sample.id,
+                order_no=1,
+            )
+            session.add(run_sample)
+            session.flush()
+            execution = SampleExecution(
+                run_id=run.id,
+                run_sample_id=run_sample.id,
+                sample_id_ref=sample.id,
+                status="executing",
+                retry_no=0,
+            )
+            session.add(execution)
+            session.flush()
+            session.add(
+                RuntimeSession(
+                    sample_execution_id=execution.id,
+                    run_id=run.id,
+                    environment_ref=f"rt_{execution.id}_cleanup",
+                    internal_base_url=f"http://asp-runtime-rt_{execution.id}:8000",
+                    public_entry_url=(
+                        f"https://platform.example.com/runtime/tasks/{execution.id}/"
+                    ),
+                    token_hash=hash_runtime_token("runtime-token"),
+                    expires_at=datetime.now(timezone.utc) + timedelta(minutes=5),
+                    status="active",
+                )
+            )
+            session.commit()
+            execution_id = execution.id
+
+        summary = e2e_module.cleanup_created_records(
+            prefix,
+            evaluation_id=evaluation_id,
+        )
+
+        with session_factory() as session:
+            runtime_session = session.execute(
+                select(RuntimeSession).where(
+                    RuntimeSession.sample_execution_id == execution_id
+                )
+            ).scalar_one_or_none()
+
+        assert summary.runtime_sessions == 1
+        assert runtime_session is None
+    finally:
+        helper.cleanup()
 
 
 def test_fast_terminal_run_without_running_status_is_accepted(e2e_module) -> None:

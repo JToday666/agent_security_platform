@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timedelta, timezone
 
 import httpx
@@ -143,3 +144,41 @@ def test_runtime_gateway_rejects_invalid_or_missing_token(client, monkeypatch) -
 
     assert response.status_code == 403
     assert response.json()["message"] == "runtime session is not authorized"
+
+
+def test_runtime_gateway_auth_failure_audit_includes_latency_without_token(
+    client,
+    monkeypatch,
+    caplog,
+) -> None:
+    async def fake_authorize_runtime_request(
+        *, sample_execution_id: int, query_token: str | None, cookie_token: str | None
+    ):
+        assert query_token == "runtime-token"
+        return None, "invalid"
+
+    monkeypatch.setattr(
+        runtime_gateway_router,
+        "authorize_runtime_request",
+        fake_authorize_runtime_request,
+    )
+
+    with caplog.at_level(
+        logging.WARNING, logger="app.modules.runtime_gateway.router"
+    ):
+        response = client.get(
+            "/runtime/tasks/123/index.html?token=runtime-token",
+        )
+
+    assert response.status_code == 403
+    record = next(
+        item for item in caplog.records if item.message == "runtime_gateway_auth_failed"
+    )
+    assert record.sample_execution_id == 123
+    assert record.path == "index.html"
+    assert record.method == "GET"
+    assert record.status_code == 403
+    assert record.token_result == "invalid"
+    assert isinstance(record.latency_ms, int)
+    assert record.latency_ms >= 0
+    assert "runtime-token" not in caplog.text

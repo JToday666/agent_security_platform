@@ -11,6 +11,7 @@ from typing import Literal
 from urllib.parse import parse_qsl, urlencode, urlsplit
 
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import RuntimeSession
 from app.platform.config import settings
@@ -195,6 +196,31 @@ async def close_runtime_session(execution_id: int, *, status: str = "closed") ->
         session.revoked_at = current_time
         session.updated_at = current_time
         await db.commit()
+
+
+async def expire_runtime_sessions_once(
+    db: AsyncSession, *, limit: int | None = None
+) -> int:
+    """Mark expired runtime sessions revoked without waiting for a gateway hit."""
+    current_time = now_utc()
+    stmt = (
+        select(RuntimeSession)
+        .where(
+            RuntimeSession.status.in_(["preparing", "active"]),
+            RuntimeSession.expires_at <= current_time,
+        )
+        .order_by(RuntimeSession.expires_at.asc(), RuntimeSession.id.asc())
+        .with_for_update(skip_locked=True)
+    )
+    if limit is not None:
+        stmt = stmt.limit(max(1, int(limit)))
+    rows = list((await db.execute(stmt)).scalars())
+    for row in rows:
+        row.status = "expired"
+        row.revoked_at = current_time
+        row.updated_at = current_time
+    await db.commit()
+    return len(rows)
 
 
 async def authorize_runtime_request(

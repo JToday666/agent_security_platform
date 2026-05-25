@@ -19,12 +19,13 @@ from app.modules.runtime_gateway.session_store import (
     build_public_runtime_url,
     close_runtime_session,
     create_runtime_session,
+    expire_runtime_sessions_once,
     generate_runtime_token,
     hash_runtime_token,
     runtime_session_is_active,
     verify_runtime_token,
 )
-from app.platform.db.session import engine
+from app.platform.db.session import AsyncSessionLocal, engine
 
 
 def test_runtime_token_hash_does_not_store_plain_token() -> None:
@@ -176,4 +177,77 @@ async def test_runtime_session_db_lifecycle_hashes_token_and_revokes(
 
     assert loaded is None
     assert token_source == "closed"
+    await engine.dispose()
+
+
+@pytest.mark.asyncio
+async def test_runtime_session_reaper_expires_sessions_without_request(
+    api_db_helper,
+) -> None:
+    user_id, _ = api_db_helper.seed_user(
+        username=f"{api_db_helper.prefix}_runtime_reaper_user",
+        email=f"{api_db_helper.prefix}_runtime_reaper_user@example.com",
+    )
+    dataset_code = api_db_helper.seed_dataset()
+    api_db_helper.seed_evaluation_run(
+        user_id=user_id, dataset_code=dataset_code, status="executing"
+    )
+    expired_at = datetime.now(timezone.utc) - timedelta(minutes=1)
+    with api_db_helper.session() as session:
+        run = session.execute(
+            select(RunModel).where(
+                RunModel.public_id == f"eval_{api_db_helper.prefix}"
+            )
+        ).scalar_one()
+        sample = session.execute(
+            select(BenchmarkSample).where(
+                BenchmarkSample.sample_id == f"{api_db_helper.prefix}_sample"
+            )
+        ).scalar_one()
+        run_sample = RunSample(
+            run_id=run.id,
+            sample_id_ref=sample.id,
+            order_no=1,
+        )
+        session.add(run_sample)
+        session.flush()
+        execution = SampleExecution(
+            run_id=run.id,
+            run_sample_id=run_sample.id,
+            sample_id_ref=sample.id,
+            status="executing",
+            retry_no=0,
+        )
+        session.add(execution)
+        session.flush()
+        session.add(
+            RuntimeSession(
+                sample_execution_id=execution.id,
+                run_id=run.id,
+                environment_ref=f"rt_{execution.id}_expired",
+                internal_base_url=f"http://asp-runtime-rt_{execution.id}_expired:8000",
+                public_entry_url=(
+                    f"https://platform.example.com/runtime/tasks/{execution.id}/"
+                ),
+                token_hash=hash_runtime_token("runtime-token"),
+                expires_at=expired_at,
+                status="active",
+            )
+        )
+        session.commit()
+        execution_id = execution.id
+
+    async with AsyncSessionLocal() as db:
+        expired_count = await expire_runtime_sessions_once(db)
+
+    with api_db_helper.session() as session:
+        row = session.execute(
+            select(RuntimeSession).where(
+                RuntimeSession.sample_execution_id == execution_id
+            )
+        ).scalar_one()
+
+    assert expired_count >= 1
+    assert row.status == "expired"
+    assert row.revoked_at is not None
     await engine.dispose()

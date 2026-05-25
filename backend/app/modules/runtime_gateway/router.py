@@ -189,6 +189,7 @@ async def _proxy_runtime_request(
                 "source_ip": request.client.host if request.client else None,
                 "token_result": token_source,
                 "status_code": status_code,
+                "latency_ms": int((time.perf_counter() - started) * 1000),
             },
         )
         return json_error_response(

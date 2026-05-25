@@ -147,6 +147,8 @@ def test_backend_prod_env_template_uses_container_network_addresses() -> None:
     assert "PUBLIC_BASE_URL=https://<domain>" in env_template
     assert "RUNTIME_SESSION_TTL_SECONDS=900" in env_template
     assert "RUNTIME_GATEWAY_COOKIE_NAME=asp_runtime_token" in env_template
+    assert "RUNTIME_REAPER_INTERVAL_SECONDS=30" in env_template
+    assert "RUNTIME_CONTAINER_REAPER_ENABLED=true" in env_template
 
 
 def test_backend_compose_env_template_uses_immutable_image_and_network_db_url() -> None:
@@ -169,3 +171,14 @@ def test_gateway_documentation_routes_runtime_tasks_to_backend_api() -> None:
     assert "reverse_proxy backend-api:8000" in implementation_doc
     assert "location /runtime/tasks/" in implementation_doc
     assert "proxy_pass http://backend-api:8000" in implementation_doc
+
+
+def test_operations_runbook_documents_runtime_gateway_cleanup_and_verification() -> None:
+    runbook = (
+        REPO_ROOT / "docs" / "deploy" / "03-operations-runbook.md"
+    ).read_text(encoding="utf-8")
+
+    assert "runtime session reaper" in runbook
+    assert "managedBy=asp-worker" in runbook
+    assert "/runtime/tasks/" in runbook
+    assert "token" in runbook

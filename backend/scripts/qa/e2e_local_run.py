@@ -34,6 +34,7 @@ from app.models.benchmark_run import (
     RunDataset,
     RunReport,
     RunSample,
+    RuntimeSession,
     SampleDifficultyStat,
     SampleExecution,
     TestRun,
@@ -91,6 +92,7 @@ class CleanupSummary:
     run_datasets: int = 0
     run_samples: int = 0
     sample_executions: int = 0
+    runtime_sessions: int = 0
     execution_artifacts: int = 0
     oracle_results: int = 0
     execution_summaries: int = 0
@@ -108,6 +110,7 @@ class CleanupSummary:
             "runDatasets": self.run_datasets,
             "runSamples": self.run_samples,
             "sampleExecutions": self.sample_executions,
+            "runtimeSessions": self.runtime_sessions,
             "executionArtifacts": self.execution_artifacts,
             "oracleResults": self.oracle_results,
             "executionSummaries": self.execution_summaries,
@@ -714,6 +717,13 @@ def cleanup_created_records(
             )
 
         if sample_execution_ids:
+            summary.runtime_sessions += _rowcount(
+                session.execute(
+                    delete(RuntimeSession).where(
+                        RuntimeSession.sample_execution_id.in_(sample_execution_ids)
+                    )
+                )
+            )
             summary.execution_artifacts += _rowcount(
                 session.execute(
                     delete(ExecutionArtifact).where(

@@ -65,6 +65,8 @@ class Settings(BaseSettings):
     WORKER_MAX_ACTIVE_RUNTIME_PROCESSES: int = 4
     RUNTIME_SESSION_TTL_SECONDS: int = 900
     RUNTIME_GATEWAY_COOKIE_NAME: str = "asp_runtime_token"
+    RUNTIME_REAPER_INTERVAL_SECONDS: float = 30.0
+    RUNTIME_CONTAINER_REAPER_ENABLED: bool = True
     ASP_DATA_ROOT: str | None = None
     RUNTIME_ROOT_DIR: str | None = None
     DATASET_ROOT_DIR: str | None = None
