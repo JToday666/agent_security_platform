@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+.venv
+.pytest_cache
+__pycache__
+*.py[cod]
+tests/
+docs/
+TODO.md
+README.md
+*.log

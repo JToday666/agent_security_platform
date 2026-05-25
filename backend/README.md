@@ -74,6 +74,16 @@ worker 启动：
 uv run python worker.py
 ```
 
+容器化部署使用同一个后端镜像分别运行 API、scheduler、sample worker 和
+Alembic migration；模板维护在：
+
+```text
+backend/Dockerfile
+docs/deploy/templates/backend/docker-compose.backend.yml
+docs/deploy/templates/backend/backend.env.example
+docs/deploy/templates/backend/compose.env.example
+```
+
 常用入口：
 
 - OpenAPI：`http://127.0.0.1:8000/docs`

@@ -25,7 +25,18 @@ vLLM：
   容器：asp-vllm
   模型：Qwen2.5-14B-Instruct-GPTQ-Int4
   服务模型名：qwen2.5-14b-gptq-int4
-  API：http://127.0.0.1:18000/v1
+
+LiteLLM：
+  容器：asp-litellm
+  宿主机调试入口：http://127.0.0.1:18400/v1
+  后端容器入口：http://asp-litellm:4000/v1
+
+Backend：
+  镜像构建：backend/Dockerfile
+  Compose 模板：docs/deploy/templates/backend/docker-compose.backend.yml
+  Compose .env 模板：docs/deploy/templates/backend/compose.env.example
+  生产 env 模板：docs/deploy/templates/backend/backend.env.example
+  API upstream：backend-api:8000
 ```
 
 ## 关键约束

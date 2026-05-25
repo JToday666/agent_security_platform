@@ -197,8 +197,10 @@ vLLM：
 |---|---|---|---:|---|---|
 | Gateway | `asp-gateway` | Docker Compose | 是，80/443 | `services/caddy` 或 `services/nginx` | 待部署 |
 | Frontend | 无固定容器 | 静态 release + Gateway | 通过 Gateway | `www/frontend` | 待部署 |
-| Backend | `asp-backend` | Docker Compose | 否 | 无状态，挂载 data/runtime/artifacts/logs | 待部署 |
-| Worker | `asp-worker` | Docker Compose | 否 | 挂载 runtime/artifacts/logs | 待部署 |
+| Backend API | `backend-api` | Docker Compose | 否 | 无状态，挂载 data/runtime/logs | 模板已提供 |
+| Backend Scheduler | `asp-backend-scheduler` | Docker Compose | 否 | 主要依赖 DB | 模板已提供 |
+| Backend Worker | `asp-backend-worker-*` | Docker Compose | 否 | 挂载 data/runtime/logs 与 Docker socket | 模板已提供 |
+| Backend Migration | `asp-backend-migrate` | Docker Compose 一次性任务 | 否 | 无持久化 | 模板已提供 |
 | PostgreSQL | `asp-postgres` | Docker Compose | 否 | `services/postgresql/data` | 已部署 |
 | vLLM | `asp-vllm` | Docker Compose + GPU | 否 | `models`、`cache/vllm` | 已部署 |
 | Runtime Runner | 临时容器 | Worker 创建 | 否 | 单次 workdir | 待部署 |
@@ -239,11 +241,10 @@ vLLM：
 ### 6.3 Compose 内部访问
 
 ```text
-backend → postgres:5432
-backend → vllm:8000
-worker  → postgres:5432
-worker  → vllm:8000
-gateway → backend:8000
+asp-net:      nginx → backend-api:8000
+asp-db-net:   backend-api / scheduler / worker / migrate → asp-postgres:5432
+asp-ai-net:   backend-api / worker → asp-litellm:4000 或 asp-vllm:8000
+asp-runtime-net: backend-worker → 一次性 runtime runner
 ```
 
 ---

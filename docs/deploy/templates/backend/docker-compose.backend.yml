@@ -1,0 +1,125 @@
+name: asp-backend
+
+x-backend-common: &backend-common
+  logging:
+    driver: json-file
+    options:
+      max-size: "50m"
+      max-file: "5"
+
+x-backend-data-volumes: &backend-data-volumes
+  - /data/agent-security-platform/data/datasets:/data/agent-security-platform/data/datasets:ro
+  - /data/agent-security-platform/data/dataset-registry:/data/agent-security-platform/data/dataset-registry:ro
+  - /data/agent-security-platform/data/uploads:/data/agent-security-platform/data/uploads
+  - /data/agent-security-platform/runtime:/data/agent-security-platform/runtime
+  - /data/agent-security-platform/tmp:/data/agent-security-platform/tmp
+  - /data/agent-security-platform/logs/backend:/data/agent-security-platform/logs
+
+services:
+  backend-migrate:
+    <<: *backend-common
+    image: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
+    container_name: asp-backend-migrate
+    restart: "no"
+    env_file:
+      - /data/agent-security-platform/env/prod/backend.env
+    environment:
+      DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
+      WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
+    command: ["alembic", "upgrade", "head"]
+    networks:
+      - asp-db-net
+
+  backend-api:
+    <<: *backend-common
+    image: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
+    container_name: backend-api
+    restart: unless-stopped
+    env_file:
+      - /data/agent-security-platform/env/prod/backend.env
+    environment:
+      DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
+      FASTAPI_HOST: 0.0.0.0
+      FASTAPI_PORT: 8000
+      LLM_BASE_URL: ${BACKEND_LLM_BASE_URL:-http://asp-litellm:4000/v1}
+      WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    expose:
+      - "8000"
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+    volumes: *backend-data-volumes
+    networks:
+      - asp-net
+      - asp-db-net
+      - asp-ai-net
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/readyz', timeout=5).read()\"",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  backend-scheduler:
+    <<: *backend-common
+    image: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
+    container_name: asp-backend-scheduler
+    restart: unless-stopped
+    env_file:
+      - /data/agent-security-platform/env/prod/backend.env
+    environment:
+      DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
+      WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
+    command: ["python", "scheduler.py"]
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+    networks:
+      - asp-db-net
+
+  backend-worker:
+    <<: *backend-common
+    image: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
+    restart: unless-stopped
+    env_file:
+      - /data/agent-security-platform/env/prod/backend.env
+    environment:
+      DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
+      LLM_BASE_URL: ${BACKEND_LLM_BASE_URL:-http://asp-litellm:4000/v1}
+      WORKER_RUNTIME_LAUNCH_MODE: docker
+      WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
+      WORKER_RUNTIME_DOCKER_NETWORK: asp-runtime-net
+    command: ["python", "worker.py"]
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - /data/agent-security-platform/data/datasets:/data/agent-security-platform/data/datasets:ro
+      - /data/agent-security-platform/data/dataset-registry:/data/agent-security-platform/data/dataset-registry:ro
+      - /data/agent-security-platform/runtime:/data/agent-security-platform/runtime
+      - /data/agent-security-platform/tmp:/data/agent-security-platform/tmp
+      - /data/agent-security-platform/logs/worker:/data/agent-security-platform/logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - asp-db-net
+      - asp-ai-net
+      - asp-runtime-net
+
+networks:
+  asp-net:
+    external: true
+    name: asp-net
+  asp-db-net:
+    external: true
+    name: asp-db-net
+  asp-ai-net:
+    external: true
+    name: asp-ai-net
+  asp-runtime-net:
+    external: true
+    name: asp-runtime-net
