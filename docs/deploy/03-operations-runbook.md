@@ -13,6 +13,7 @@ docker ps
 nvidia-smi
 df -hT / /data
 docker info | grep "Docker Root Dir"
+docker network ls
 ```
 
 期望：
@@ -21,8 +22,30 @@ docker info | grep "Docker Root Dir"
 Docker Root Dir: /data/docker
 asp-postgres Up healthy
 asp-vllm Up
+asp-litellm Up
+asp-nginx Up healthy
 nvidia-smi 显示 VLLM::EngineCore 占用显存
 /data 有足够剩余空间
+```
+
+后端部署前还需要确认：
+
+```bash
+test -f /data/agent-security-platform/services/backend/compose/docker-compose.yml
+test -f /data/agent-security-platform/services/backend/compose/.env
+test -f /data/agent-security-platform/env/prod/backend.env
+docker network inspect asp-db-net --format '{{range .Containers}}{{.Name}} {{end}}'
+docker images --format '{{.Repository}}:{{.Tag}}' | grep -E 'asp_code:backend|asp-backend'
+```
+
+期望：
+
+```text
+compose 文件存在。
+asp-db-net 中有 asp-postgres。
+存在本次发布要用的后端镜像。
+Docker 后端最终生效的 DATABASE_URL / LLM_BASE_URL 使用 asp-postgres 和 asp-litellm，不使用 127.0.0.1。
+如果 backend.env 保留宿主机联调地址，compose .env 中必须通过 BACKEND_DATABASE_URL / BACKEND_LLM_BASE_URL 覆盖为容器网络地址。
 ```
 
 ### 1.1 Runtime Gateway 验证
@@ -30,6 +53,7 @@ nvidia-smi 显示 VLLM::EngineCore 占用显存
 ```bash
 curl -fsS http://127.0.0.1/healthz
 curl -fsS http://127.0.0.1/readyz
+curl -fsS http://127.0.0.1/api/v1/
 curl -fsS -H "Authorization: Bearer <admin-token>" \
   http://127.0.0.1/api/v1/ops/workers
 docker ps --filter label=managedBy=asp-worker \
@@ -39,8 +63,8 @@ docker ps --filter label=managedBy=asp-worker \
 期望：
 
 ```text
-/healthz 可达。
-/readyz 返回 ready。
+/healthz、/readyz 只在它们被网关代理到后端时才证明后端状态；当前 Nginx 可用前端 SPA 时，非 /api 路径也可能返回 200。
+/api/v1/ 返回后端 envelope。若返回 502，通常是 backend-api 尚未部署或未加入 asp-net。
 /api/v1/ops/workers 返回 scheduler/sample_worker 心跳和 sampleQueues。
 runtime runner 没有 0.0.0.0:随机端口或公网端口映射。
 外部 Agent runtime URL 形如 /runtime/tasks/{sampleExecutionId}/...?token=...
@@ -86,44 +110,55 @@ docker exec -it asp-postgres \
 
 ---
 
-## 3. vLLM 检查
+## 3. LLM 服务检查
 
 ### 3.1 容器状态
 
 ```bash
 docker ps | grep asp-vllm
+docker ps | grep asp-litellm
 docker logs --tail 200 asp-vllm
+docker logs --tail 200 asp-litellm
 nvidia-smi
 ```
 
-### 3.2 模型列表
+### 3.2 LiteLLM 模型列表
 
 ```bash
-curl -s http://127.0.0.1:18000/v1/models | python3 -m json.tool
+set -a
+. /data/agent-security-platform/env/prod/backend.env
+set +a
+
+curl -s http://127.0.0.1:18400/v1/models \
+  -H "Authorization: Bearer ${LLM_API_KEY}" \
+  | python3 -m json.tool
 ```
 
-期望模型名：
+期望至少包含：
 
 ```text
-qwen2.5-14b-gptq-int4
+local-qwen
 ```
+
+未带 API key 访问 `http://127.0.0.1:18400/v1/models` 返回 `401` 是正常鉴权行为。
 
 ### 3.3 聊天测试
 
 ```bash
-curl http://127.0.0.1:18000/v1/chat/completions \
+curl http://127.0.0.1:18400/v1/chat/completions \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${LLM_API_KEY}" \
   -d '{
-    "model": "qwen2.5-14b-gptq-int4",
+    "model": "local-qwen",
     "messages": [
       {"role": "user", "content": "用一句话介绍智能体安全评测平台。"}
     ],
     "max_tokens": 128,
-    "temperature": 0.2,
-    "top_p": 0.8,
-    "repetition_penalty": 1.05
+    "temperature": 0.2
   }'
 ```
+
+后端容器内应使用 `LLM_BASE_URL=http://asp-litellm:4000/v1`。
 
 ---
 
@@ -166,6 +201,31 @@ docker logs -f asp-vllm
 
 ```bash
 docker compose -f docker-compose.vllm.yml stop
+```
+
+### 4.3 Backend
+
+```bash
+cd /data/agent-security-platform/services/backend/compose
+
+docker compose config
+docker compose run --rm backend-migrate
+docker compose up -d backend-api backend-scheduler backend-worker
+docker compose ps
+```
+
+停止：
+
+```bash
+docker compose stop backend-api backend-scheduler backend-worker
+```
+
+查看日志：
+
+```bash
+docker compose logs -f backend-api
+docker compose logs -f backend-scheduler
+docker compose logs -f backend-worker
 ```
 
 ---

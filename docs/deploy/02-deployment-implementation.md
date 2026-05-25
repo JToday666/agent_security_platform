@@ -3,7 +3,7 @@
 > 文件建议路径：`docs/deploy/02-deployment-implementation.md`  
 > 适用对象：开发人员、运维人员、自动化 Agent  
 > 适用环境：阿里云 A10 GPU ECS 主环境  
-> 当前状态：PostgreSQL 与 vLLM 已验证通过；Backend、Worker、Frontend、Gateway 待接入
+> 当前状态：PostgreSQL、vLLM、LiteLLM、Nginx Gateway 已验证运行；Backend API、scheduler、worker、migration 尚待接入
 
 ---
 
@@ -374,13 +374,13 @@ Starting vLLM server on http://0.0.0.0:8000
 Application startup complete
 ```
 
-验证模型列表：
+验证底层 vLLM 模型列表：
 
 ```bash
 curl -s http://127.0.0.1:18000/v1/models | python3 -m json.tool
 ```
 
-验证聊天接口：
+验证底层 vLLM 聊天接口：
 
 ```bash
 curl http://127.0.0.1:18000/v1/chat/completions \
@@ -397,23 +397,31 @@ curl http://127.0.0.1:18000/v1/chat/completions \
   }'
 ```
 
+生产后端默认不直接连接该宿主机端口，而是通过 `asp-litellm` 访问模型代理。
+如果当前服务器没有发布 `127.0.0.1:18000`，以 LiteLLM 的 `127.0.0.1:18400`
+调试入口为准。
+
 ---
 
 ## 6. Backend 环境变量
 
-`/data/agent-security-platform/env/prod/backend.env` 使用容器网络地址。真实密钥只写入
+`/data/agent-security-platform/env/prod/backend.env` 用于后端容器时必须使用容器网络地址。真实密钥只写入
 主机 `/data/agent-security-platform/env/prod/backend.env`，不要提交到 Git；仓库内模板见
 `docs/deploy/templates/backend/backend.env.example`。
+
+不要把宿主机本地联调用的 `127.0.0.1` 地址直接用于 Docker 后端容器。后端容器访问数据库和 LLM 时应使用 `asp-postgres`、`asp-litellm` 这类 Docker DNS 名称。
 
 ```env
 APP_ENV=production
 PROJECT_NAME=agent-security-platform
 FASTAPI_HOST=0.0.0.0
 FASTAPI_PORT=8000
+LOG_LEVEL=INFO
 TZ=Asia/Shanghai
 PUBLIC_BASE_URL=https://<domain>
 
 DATABASE_URL=postgresql+psycopg://asp_app:<password>@asp-postgres:5432/asp_db
+SECRET_KEY=<replace-with-strong-secret>
 
 ASP_DATA_ROOT=/data/agent-security-platform
 DATASET_ROOT_DIR=/data/agent-security-platform/data/datasets
@@ -450,6 +458,7 @@ SAMPLE_MAX_ATTEMPTS=2
 LLM_JUDGE_PROVIDER=litellm
 LLM_BASE_URL=http://asp-litellm:4000/v1
 LLM_DEFAULT_MODEL=local-qwen
+LLM_API_KEY=<litellm-master-key>
 
 CORS_ALLOWED_ORIGINS=https://<domain>
 ```
@@ -458,9 +467,15 @@ CORS_ALLOWED_ORIGINS=https://<domain>
 
 ```env
 DATABASE_URL=postgresql+psycopg://asp_app:<password>@127.0.0.1:5432/asp_db
-LLM_BASE_URL=http://127.0.0.1:18000/v1
-LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
+LLM_BASE_URL=http://127.0.0.1:18400/v1
+LLM_DEFAULT_MODEL=local-qwen
+LLM_API_KEY=<litellm-master-key>
 ```
+
+如果服务器上已有 `/data/agent-security-platform/env/prod/backend.env` 但其中仍是 `127.0.0.1`，说明它只能直接用于宿主机临时运行。
+Docker 后端启动前，最终生效的 `DATABASE_URL` 和 `LLM_BASE_URL` 必须来自上面的容器网络地址；
+可以直接修改 `backend.env`，也可以通过 compose `.env` 中的 `BACKEND_DATABASE_URL` 和
+`BACKEND_LLM_BASE_URL` 覆盖。
 
 ---
 
@@ -502,6 +517,22 @@ docker network create asp-runtime-net || true
 docker network connect asp-db-net asp-postgres || true
 ```
 
+检查网络连接：
+
+```bash
+docker network inspect asp-db-net --format '{{range .Containers}}{{.Name}} {{end}}'
+docker network inspect asp-ai-net --format '{{range .Containers}}{{.Name}} {{end}}'
+docker network inspect asp-net --format '{{range .Containers}}{{.Name}} {{end}}'
+```
+
+期望至少看到：
+
+```text
+asp-db-net: asp-postgres
+asp-ai-net: asp-litellm asp-vllm
+asp-net: asp-nginx，后端启动后还有 backend-api
+```
+
 校验 Compose：
 
 ```bash
@@ -516,6 +547,23 @@ docker compose pull
 docker compose run --rm backend-migrate
 docker compose up -d backend-api backend-scheduler backend-worker
 docker compose ps
+```
+
+本地构建镜像调试时可用：
+
+```bash
+cd /home/ecs-user/apps/agent_security_platform
+docker build -t asp-backend:local backend
+```
+
+然后把 `/data/agent-security-platform/services/backend/compose/.env` 中的 `BACKEND_IMAGE` 设为 `asp-backend:local`。
+
+迁移前后可检查 Alembic 版本：
+
+```bash
+docker exec asp-postgres \
+  psql -U asp_app -d asp_db \
+  -c "SELECT version_num FROM alembic_version;"
 ```
 
 关键边界：
@@ -558,7 +606,54 @@ Gateway root 指向：
 
 ## 9. Gateway 模板
 
-### 9.1 Caddyfile
+### 9.1 Nginx location
+
+当前服务器 Gateway 使用 `asp-nginx`。`/runtime/tasks/` 必须保留原始路径转发给
+FastAPI，不能 strip prefix，也不能直接 proxy 到 runtime runner：
+
+```nginx
+location /api/ {
+    proxy_pass http://backend-api:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+
+location /runtime/tasks/ {
+    proxy_pass http://backend-api:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+### 9.2 Gateway Compose 模板
+
+```yaml
+services:
+  gateway:
+    image: nginx:1.27-alpine
+    container_name: asp-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - /data/agent-security-platform/www/frontend/current:/usr/share/nginx/html:ro
+      - /data/agent-security-platform/services/nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - asp-net
+
+networks:
+  asp-net:
+    external: true
+```
+
+如继续使用 ACR 中的自有 Nginx 镜像，只替换 `image`，容器名、网络和 upstream
+仍按 `asp-nginx`、`asp-net`、`backend-api:8000` 对齐。
+
+### 9.3 可选 Caddyfile
 
 ```caddy
 :80 {
@@ -580,36 +675,13 @@ Gateway root 指向：
 }
 ```
 
-### 9.2 Nginx location
-
-如果 Gateway 继续使用现有 Nginx，`/runtime/tasks/` 必须保留原始路径转发给
-FastAPI，不能 strip prefix，也不能直接 proxy 到 runtime runner：
-
-```nginx
-location /api/ {
-    proxy_pass http://backend-api:8000;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-}
-
-location /runtime/tasks/ {
-    proxy_pass http://backend-api:8000;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-}
-```
-
-### 9.3 Gateway Compose 模板
+### 9.4 可选 Caddy Compose 模板
 
 ```yaml
 services:
   gateway:
     image: crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_docker:caddy-latest
-    container_name: asp-gateway
+    container_name: asp-caddy
     restart: unless-stopped
     ports:
       - "80:80"

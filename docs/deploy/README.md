@@ -12,6 +12,8 @@
 
 ## 当前主环境状态
 
+最近一次服务器只读检查：`2026-05-26 00:43 CST`。
+
 ```text
 PostgreSQL：
   容器：asp-postgres
@@ -20,16 +22,24 @@ PostgreSQL：
   生产用户：asp_app
   测试库：test_db
   测试用户：asp_test
+  当前状态：容器 healthy；生产库已有后端表，但需按当前代码继续迁移到最新 Alembic head
 
 vLLM：
   容器：asp-vllm
   模型：Qwen2.5-14B-Instruct-GPTQ-Int4
   服务模型名：qwen2.5-14b-gptq-int4
+  当前状态：容器运行，GPU 上有 VLLM::EngineCore；当前主要通过 LiteLLM 暴露模型代理
 
 LiteLLM：
   容器：asp-litellm
   宿主机调试入口：http://127.0.0.1:18400/v1
   后端容器入口：http://asp-litellm:4000/v1
+  当前状态：容器运行；未带 API key 访问 /v1/models 返回 401
+
+Gateway：
+  容器：asp-nginx
+  当前状态：容器 healthy，已在 asp-net 中预留 /api/* → backend-api:8000
+  注意：后端未部署前 /api/v1/ 会返回 502；/health 或前端 SPA 200 不代表后端 ready
 
 Backend：
   镜像构建：backend/Dockerfile
@@ -40,6 +50,18 @@ Backend：
   Runtime gateway：/runtime/tasks/* → backend-api:8000
   Worker runtime 网络：asp-runtime-net
   Runtime runner：容器内固定端口 8000，不发布宿主机端口
+  当前状态：/data/.../services/backend/compose 与日志目录已落地；后端镜像 tag、真实 .env 值、migration、backend-api、scheduler、worker 尚未完成
+```
+
+后端 Docker 部署前必须先补齐或确认：
+
+```text
+/data/agent-security-platform/services/backend/compose/docker-compose.yml 已存在
+/data/agent-security-platform/services/backend/compose/.env 已存在，但 BACKEND_IMAGE / BACKEND_DATABASE_URL 仍需替换为真实值
+/data/agent-security-platform/logs/backend 与 logs/worker 已存在
+asp-postgres 已加入 asp-db-net
+Docker 后端运行时必须使用 asp-postgres、asp-litellm 这类容器网络地址；不要依赖 backend.env 中的宿主机 127.0.0.1 联调值
+backend-migrate 迁移到当前代码 head
 ```
 
 ## 关键约束

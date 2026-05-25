@@ -3,7 +3,7 @@
 > 文件建议路径：`docs/deploy/01-deployment-architecture.md`  
 > 适用项目：WEB 智能体安全自动化测评平台  
 > 适用环境：阿里云 A10 GPU ECS 单机主环境  
-> 技术栈：Vue 3、FastAPI、PostgreSQL、vLLM、Docker Compose、ACR、Caddy/Nginx
+> 技术栈：Vue 3、FastAPI、PostgreSQL、vLLM、LiteLLM、Docker Compose、ACR、Nginx
 
 ---
 
@@ -16,7 +16,7 @@
   ↓
 公网 IP / 域名
   ↓
-Gateway，Caddy 或 Nginx
+Gateway，当前为 Nginx
   ├── 前端静态文件
   └── /api/* → FastAPI Backend
   └── /runtime/tasks/* → FastAPI runtime-gateway → Docker 内网 runtime runner
@@ -46,14 +46,14 @@ PostgreSQL、vLLM、Backend、Worker 不直接暴露公网
 
 ## 2. 当前服务器基线
 
-当前 ECS 已可作为主部署节点：
+当前 ECS 已可作为主部署节点。最近一次服务器只读检查为 `2026-05-26 00:43 CST`：
 
 ```text
 OS：Ubuntu 24.04.4 LTS
 GPU：NVIDIA A10，显存约 23GiB
 Driver：NVIDIA 580.126.09
-Docker：Docker Engine 29.3.1
-Docker Compose：v5.1.1
+Docker：Docker Engine 29.5.1
+Docker Compose：v5.1.3
 Docker Root Dir：/data/docker
 数据盘挂载：/data
 普通用户：ecs-user，可直接使用 docker
@@ -79,8 +79,24 @@ vLLM：
   容器：asp-vllm
   模型：Qwen2.5-14B-Instruct-GPTQ-Int4
   服务模型名：qwen2.5-14b-gptq-int4
-  监听：127.0.0.1:18000 → 容器 8000
-  API：/v1/models、/v1/chat/completions 已验证
+  网络：asp-ai-net
+  API：主要通过 LiteLLM 代理访问
+
+LiteLLM：
+  容器：asp-litellm
+  宿主机调试入口：127.0.0.1:18400 → 容器 4000
+  后端容器入口：http://asp-litellm:4000/v1
+  模型代理：gpt-4o、qwen-cloud、local-qwen
+
+Gateway：
+  容器：asp-nginx
+  暴露：0.0.0.0:80
+  网络：asp-net
+  当前已预留 /api/* → backend-api:8000
+
+Backend：
+  Compose 目录和日志目录已落地
+  当前尚未部署容器；需要替换真实 BACKEND_IMAGE / BACKEND_DATABASE_URL、构建或拉取后端镜像，并执行 Alembic migration
 ```
 
 ---
@@ -196,14 +212,15 @@ vLLM：
 
 | 服务 | 容器名 | 部署方式 | 公网暴露 | 持久化目录 | 当前状态 |
 |---|---|---|---:|---|---|
-| Gateway | `asp-gateway` | Docker Compose | 是，80/443 | `services/caddy` 或 `services/nginx` | 待部署 |
+| Gateway | `asp-nginx` | Docker Compose | 是，80 | `www/frontend` / Nginx 配置 | 已部署 |
 | Frontend | 无固定容器 | 静态 release + Gateway | 通过 Gateway | `www/frontend` | 待部署 |
-| Backend API | `backend-api` | Docker Compose | 否 | 无状态，挂载 data/runtime/logs | 模板已提供 |
-| Backend Scheduler | `asp-backend-scheduler` | Docker Compose | 否 | 主要依赖 DB | 模板已提供 |
-| Backend Worker | `asp-backend-worker-*` | Docker Compose | 否 | 挂载 data/runtime/logs 与 Docker socket | 模板已提供 |
-| Backend Migration | `asp-backend-migrate` | Docker Compose 一次性任务 | 否 | 无持久化 | 模板已提供 |
+| Backend API | `backend-api` | Docker Compose | 否 | 无状态，挂载 data/runtime/logs | 待部署 |
+| Backend Scheduler | `asp-backend-scheduler` | Docker Compose | 否 | 主要依赖 DB | 待部署 |
+| Backend Worker | `backend-worker` | Docker Compose | 否 | 挂载 data/runtime/logs 与 Docker socket | 待部署 |
+| Backend Migration | `asp-backend-migrate` | Docker Compose 一次性任务 | 否 | 无持久化 | 待执行 |
 | PostgreSQL | `asp-postgres` | Docker Compose | 否 | `services/postgresql/data` | 已部署 |
 | vLLM | `asp-vllm` | Docker Compose + GPU | 否 | `models`、`cache/vllm` | 已部署 |
+| LiteLLM | `asp-litellm` | Docker Compose | 否 | 配置与日志 | 已部署 |
 | Runtime Runner | `asp-runtime-{environmentRef}` | Worker 创建的临时容器 | 否 | 单次 workdir | 待部署 |
 | Redis | `asp-redis` | Docker Compose | 否 | `services/redis/data` | 可选 |
 
@@ -235,7 +252,7 @@ vLLM：
 
 ```text
 127.0.0.1:5432    PostgreSQL
-127.0.0.1:18000   vLLM OpenAI-compatible API
+127.0.0.1:18400   LiteLLM OpenAI-compatible API
 127.0.0.1:10808   Xray mixed proxy
 ```
 
@@ -244,7 +261,7 @@ vLLM：
 ```text
 asp-net:      nginx → backend-api:8000
 asp-db-net:   backend-api / scheduler / worker / migrate → asp-postgres:5432
-asp-ai-net:   backend-api / worker → asp-litellm:4000 或 asp-vllm:8000
+asp-ai-net:   backend-api / worker 默认 → asp-litellm:4000；底层调试可访问 asp-vllm:8000
 asp-runtime-net: backend-worker → 一次性 runtime runner
 ```
 
@@ -292,9 +309,19 @@ runtime runner 不发布宿主机端口。Worker 在 docker mode 下通过 `asp-
 
 ---
 
-## 8. vLLM 设计
+## 8. vLLM 与 LiteLLM 设计
 
-当前采用：
+当前主链路采用 LiteLLM 作为 OpenAI-compatible 代理，后端不直接访问宿主机
+`127.0.0.1` 端口：
+
+```text
+LiteLLM 容器：asp-litellm
+后端容器入口：http://asp-litellm:4000/v1
+宿主机调试入口：http://127.0.0.1:18400/v1
+后端默认模型：local-qwen
+```
+
+底层本地模型服务：
 
 ```text
 容器：asp-vllm
@@ -302,26 +329,28 @@ runtime runner 不发布宿主机端口。Worker 在 docker mode 下通过 `asp-
 模型：Qwen2.5-14B-Instruct-GPTQ-Int4
 服务模型名：qwen2.5-14b-gptq-int4
 量化：GPTQ Int4
-端口：127.0.0.1:18000 → 容器 8000
+网络：asp-ai-net
 ```
 
-后端访问：
+后端 Docker 访问：
 
 ```env
 LLM_JUDGE_PROVIDER=litellm
-LLM_BASE_URL=http://vllm:8000/v1
-LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
+LLM_BASE_URL=http://asp-litellm:4000/v1
+LLM_DEFAULT_MODEL=local-qwen
+LLM_API_KEY=<litellm-master-key>
 ```
 
 宿主机测试：
 
 ```env
 LLM_JUDGE_PROVIDER=litellm
-LLM_BASE_URL=http://127.0.0.1:18000/v1
-LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
+LLM_BASE_URL=http://127.0.0.1:18400/v1
+LLM_DEFAULT_MODEL=local-qwen
+LLM_API_KEY=<litellm-master-key>
 ```
 
-当前参数：
+vLLM 当前参数：
 
 ```text
 --quantization gptq
@@ -344,7 +373,7 @@ LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
 
 ```text
 agent_platform/asp_docker
-  基础镜像、中间件镜像、CUDA、PostgreSQL、vLLM、Caddy/Nginx、Redis。
+  基础镜像、中间件镜像、CUDA、PostgreSQL、vLLM、LiteLLM、Nginx、Redis。
 
 agent_platform/asp_code
   项目业务镜像：backend、worker、runtime-runner、frontend-build。
