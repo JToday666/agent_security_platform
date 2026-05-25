@@ -10,7 +10,10 @@ from app.platform.db.session import AsyncSessionLocal
 from app.platform.exception_handlers import register_exception_handlers
 from app.platform.http import json_error_response, success_payload
 from app.platform.i18n import LocaleMiddleware
+from app.platform.logging import configure_logging
 from app.platform.runtime import ensure_runtime_dirs
+
+configure_logging()
 
 app = FastAPI(title=settings.PROJECT_NAME)
 

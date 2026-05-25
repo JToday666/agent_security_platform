@@ -7,6 +7,7 @@ import os
 import socket
 import uuid
 
+from app.platform.logging import configure_logging
 from app.worker.sample_worker import run_sample_worker_loop
 
 
@@ -17,6 +18,7 @@ def build_worker_id() -> str:
 
 def main() -> None:
     """启动 worker 主循环。"""
+    configure_logging()
     asyncio.run(run_sample_worker_loop(build_worker_id()))
 
 

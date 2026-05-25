@@ -21,6 +21,7 @@ class Settings(BaseSettings):
 
     FASTAPI_PORT: int = 8000
     FASTAPI_HOST: str = "127.0.0.1"
+    LOG_LEVEL: str = "INFO"
 
     DATABASE_URL_RAW: str | None = Field(default=None, validation_alias="DATABASE_URL")
     POSTGRES_HOST: str = "localhost"
@@ -70,6 +71,7 @@ class Settings(BaseSettings):
     AGENT_HTTP_ALLOW_PRIVATE_NETWORKS: bool = False
     AGENT_HTTP_MAX_REDIRECTS: int = 3
     AGENT_HTTP_RESPONSE_MAX_BYTES: int = 1_000_000
+    AGENT_HTTP_EVIDENCE_MAX_BODY_CHARS: int = 4_000
     LLM_BASE_URL: str | None = None
     LLM_DEFAULT_MODEL: str | None = None
     LLM_API_KEY: str | None = None

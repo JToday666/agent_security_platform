@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import json
+import logging
 from typing import Any
 
 import httpx
 import pytest
 
+from app.modules.agents.evidence import AgentInvocationEvidenceRecorder
+from app.modules.agents.invocation import AgentInvocationError
 from app.modules.agents.invocation import AgentInvocationClient
 
 
@@ -68,6 +72,274 @@ async def _invoke_with_responses(
         },
     )
     return result, requests
+
+
+def _sync_snapshot(*, base_url: str = "https://api.example.com") -> dict[str, Any]:
+    return {
+        "agentId": "agt_evidence",
+        "templateId": "custom_http",
+        "invokeMode": "sync_response",
+        "connection": {
+            "baseUrl": base_url,
+            "invokePath": "/run?api_key=query-secret&trace=abc",
+            "requestTimeoutSeconds": 30,
+        },
+        "auth": {"type": "custom_header", "headerName": "X-Agent-Secret"},
+        "platformInputMapping": {"task": "prompt", "sampleId": "sample_id"},
+        "taskRenderMode": "goal_only",
+        "customRequestBody": {
+            "secret": "body-secret",
+            "nested": {"password": "nested-password"},
+        },
+        "platformOutputMapping": {
+            "status": "status",
+            "finalAnswer": "answer",
+            "errorMessage": "error",
+        },
+        "terminalStatuses": ["completed", "failed"],
+        "successStatuses": ["completed"],
+    }
+
+
+def _platform_values() -> dict[str, Any]:
+    return {
+        "task": "Complete checkout",
+        "entryUrl": "https://shop.example/cart",
+        "timeoutSeconds": 120,
+        "sampleId": "sample_001",
+        "evaluationId": "eval_001",
+        "maxSteps": 42,
+    }
+
+
+def _evidence_recorder(
+    tmp_path,
+    snapshot: dict[str, Any],
+    *,
+    max_body_chars: int = 4000,
+) -> AgentInvocationEvidenceRecorder:
+    return AgentInvocationEvidenceRecorder(
+        path=tmp_path / "external_agent_invocation.json",
+        agent_snapshot=snapshot,
+        platform_values=_platform_values(),
+        max_body_chars=max_body_chars,
+    )
+
+
+@pytest.mark.asyncio
+async def test_sync_invocation_writes_redacted_evidence_and_logs(
+    tmp_path, caplog
+) -> None:
+    snapshot = _sync_snapshot()
+    evidence_recorder = _evidence_recorder(tmp_path, snapshot, max_body_chars=200)
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.headers["X-Agent-Secret"] == "credential-secret"
+        return httpx.Response(
+            200,
+            json={
+                "status": "completed",
+                "answer": {"token": "response-token", "value": "ok"},
+                "error": None,
+                "api_key": "response-api-key",
+            },
+            headers={"Set-Cookie": "session=response-cookie"},
+        )
+
+    caplog.set_level(logging.INFO, logger="app.modules.agents.invocation")
+    result = await AgentInvocationClient(httpx.MockTransport(handler)).invoke(
+        agent_snapshot=snapshot,
+        credential_payload={
+            "type": "custom_header",
+            "headerName": "X-Agent-Secret",
+            "secret": "credential-secret",
+        },
+        platform_values=_platform_values(),
+        evidence_recorder=evidence_recorder,
+    )
+
+    assert result.passed is True
+    evidence_text = evidence_recorder.path.read_text(encoding="utf-8")
+    evidence = json.loads(evidence_text)
+    assert evidence["schemaVersion"] == 1
+    assert evidence["agentId"] == "agt_evidence"
+    assert evidence["invokeMode"] == "sync_response"
+    assert evidence["evaluationId"] == "eval_001"
+    assert evidence["sampleId"] == "sample_001"
+    assert evidence["outcome"]["status"] == "completed"
+    assert len(evidence["httpCalls"]) == 1
+    call = evidence["httpCalls"][0]
+    assert call["method"] == "POST"
+    assert call["url"] == (
+        "https://api.example.com/run?api_key=%5Bredacted%5D&trace=%5Bredacted%5D"
+    )
+    assert call["requestHeaders"]["X-Agent-Secret"] == "[redacted]"
+    assert call["responseHeaders"]["set-cookie"] == "[redacted]"
+    assert call["responseStatusCode"] == 200
+    assert call["errorClass"] is None
+    assert "credential-secret" not in evidence_text
+    assert "body-secret" not in evidence_text
+    assert "nested-password" not in evidence_text
+    assert "response-token" not in evidence_text
+    assert "response-api-key" not in evidence_text
+    assert "response-cookie" not in evidence_text
+    assert any(record.message == "agent_invocation_completed" for record in caplog.records)
+    assert all("credential-secret" not in record.getMessage() for record in caplog.records)
+
+
+@pytest.mark.asyncio
+async def test_submit_poll_evidence_records_each_http_call(tmp_path) -> None:
+    snapshot = _submit_poll_snapshot(
+        base_url="https://api.browser-use.com/api/v3",
+        invoke_path="/sessions",
+        result_path_template="/sessions/{externalRunId}",
+        platform_input_mapping={"task": "task"},
+        platform_output_mapping={
+            "externalRunId": "id",
+            "status": "status",
+            "success": "isTaskSuccessful",
+            "finalAnswer": "output",
+        },
+        terminal_statuses=["stopped", "error"],
+        success_statuses=["stopped"],
+    )
+    snapshot["agentId"] = "agt_poll"
+    snapshot["templateId"] = "browser_use_cloud"
+    evidence_recorder = _evidence_recorder(tmp_path, snapshot)
+    responses = [
+        httpx.Response(200, json={"id": "session_123"}),
+        httpx.Response(200, json={"id": "session_123", "status": "running"}),
+        httpx.Response(
+            200,
+            json={
+                "id": "session_123",
+                "status": "stopped",
+                "isTaskSuccessful": True,
+                "output": "done",
+            },
+        ),
+    ]
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return responses.pop(0)
+
+    result = await AgentInvocationClient(httpx.MockTransport(handler)).invoke(
+        agent_snapshot=snapshot,
+        credential_payload={},
+        platform_values=_platform_values(),
+        evidence_recorder=evidence_recorder,
+    )
+
+    evidence = json.loads(evidence_recorder.path.read_text(encoding="utf-8"))
+    assert result.passed is True
+    assert evidence["outcome"]["externalRunId"] == "session_123"
+    assert evidence["outcome"]["status"] == "stopped"
+    assert [call["method"] for call in evidence["httpCalls"]] == ["POST", "GET", "GET"]
+    assert [call["responseStatusCode"] for call in evidence["httpCalls"]] == [200, 200, 200]
+
+
+@pytest.mark.asyncio
+async def test_invocation_evidence_records_http_error_without_raw_secret(
+    tmp_path, caplog
+) -> None:
+    snapshot = _sync_snapshot()
+    evidence_recorder = _evidence_recorder(tmp_path, snapshot)
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(500, json={"error": "server failed", "token": "bad-token"})
+
+    caplog.set_level(logging.WARNING, logger="app.modules.agents.invocation")
+    with pytest.raises(AgentInvocationError, match="外部 Agent HTTP 调用失败"):
+        await AgentInvocationClient(httpx.MockTransport(handler)).invoke(
+            agent_snapshot=snapshot,
+            credential_payload={"secret": "credential-secret"},
+            platform_values=_platform_values(),
+            evidence_recorder=evidence_recorder,
+        )
+
+    evidence_text = evidence_recorder.path.read_text(encoding="utf-8")
+    evidence = json.loads(evidence_text)
+    assert evidence["outcome"]["status"] == "failed"
+    assert evidence["outcome"]["errorClass"] == "http_error"
+    assert evidence["httpCalls"][0]["errorClass"] == "http_error"
+    assert evidence["httpCalls"][0]["responseStatusCode"] == 500
+    assert "bad-token" not in evidence_text
+    assert any(record.message == "agent_invocation_failed" for record in caplog.records)
+
+
+@pytest.mark.asyncio
+async def test_invocation_evidence_records_invalid_json_and_response_too_large(
+    tmp_path, monkeypatch
+) -> None:
+    invalid_snapshot = _sync_snapshot(base_url="https://invalid-json.example.com")
+    invalid_recorder = _evidence_recorder(tmp_path / "invalid", invalid_snapshot)
+
+    def invalid_json_handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, content=b"not-json")
+
+    with pytest.raises(AgentInvocationError, match="响应必须是 JSON 对象"):
+        await AgentInvocationClient(httpx.MockTransport(invalid_json_handler)).invoke(
+            agent_snapshot=invalid_snapshot,
+            credential_payload={},
+            platform_values=_platform_values(),
+            evidence_recorder=invalid_recorder,
+        )
+    invalid_evidence = json.loads(invalid_recorder.path.read_text(encoding="utf-8"))
+    assert invalid_evidence["outcome"]["errorClass"] == "invalid_json"
+    assert invalid_evidence["httpCalls"][0]["errorClass"] == "invalid_json"
+
+    large_snapshot = _sync_snapshot(base_url="https://large.example.com")
+    large_recorder = _evidence_recorder(tmp_path / "large", large_snapshot)
+
+    def large_handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"status": "completed", "answer": "x" * 200})
+
+    monkeypatch.setattr(
+        "app.modules.agents.invocation.settings.AGENT_HTTP_RESPONSE_MAX_BYTES",
+        20,
+    )
+    with pytest.raises(AgentInvocationError, match="响应体过大"):
+        await AgentInvocationClient(httpx.MockTransport(large_handler)).invoke(
+            agent_snapshot=large_snapshot,
+            credential_payload={},
+            platform_values=_platform_values(),
+            evidence_recorder=large_recorder,
+        )
+    large_evidence = json.loads(large_recorder.path.read_text(encoding="utf-8"))
+    assert large_evidence["outcome"]["errorClass"] == "response_too_large"
+    assert large_evidence["httpCalls"][0]["errorClass"] == "response_too_large"
+
+
+@pytest.mark.asyncio
+async def test_submit_poll_timeout_is_classified_in_evidence(tmp_path) -> None:
+    snapshot = _submit_poll_snapshot(
+        base_url="https://api.poll-timeout.example.com",
+        invoke_path="/tasks",
+        result_path_template="/tasks/{externalRunId}",
+        platform_input_mapping={"task": "task"},
+        platform_output_mapping={"externalRunId": "id", "status": "status"},
+        terminal_statuses=["finished"],
+        success_statuses=["finished"],
+    )
+    snapshot["connection"]["pollTimeoutSeconds"] = 0.001
+    evidence_recorder = _evidence_recorder(tmp_path, snapshot)
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.method == "POST":
+            return httpx.Response(200, json={"id": "task_123"})
+        return httpx.Response(200, json={"id": "task_123", "status": "running"})
+
+    with pytest.raises(AgentInvocationError, match="轮询超时"):
+        await AgentInvocationClient(httpx.MockTransport(handler)).invoke(
+            agent_snapshot=snapshot,
+            credential_payload={},
+            platform_values=_platform_values(),
+            evidence_recorder=evidence_recorder,
+        )
+
+    evidence = json.loads(evidence_recorder.path.read_text(encoding="utf-8"))
+    assert evidence["outcome"]["errorClass"] == "poll_timeout"
+    assert evidence["outcome"]["externalRunId"] == "task_123"
 
 
 @pytest.mark.asyncio

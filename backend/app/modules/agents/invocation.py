@@ -3,18 +3,34 @@
 from __future__ import annotations
 
 import asyncio
+import logging
+import time
 from dataclasses import dataclass
 from typing import Any
 from urllib.parse import urljoin
 
 import httpx
 
+from app.modules.agents.evidence import AgentInvocationEvidenceRecorder
 from app.modules.agents.security import validate_agent_base_url
 from app.platform.config import settings
+
+LOGGER = logging.getLogger(__name__)
 
 
 class AgentInvocationError(RuntimeError):
     """Raised when an external Agent call cannot complete."""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        error_class: str = "error",
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.error_class = error_class
+        self.details = details or {}
 
 
 @dataclass(slots=True)
@@ -166,31 +182,93 @@ class AgentInvocationClient:
         agent_snapshot: dict[str, Any],
         credential_payload: dict[str, Any],
         platform_values: dict[str, Any],
+        evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
     ) -> AgentInvocationResult:
         """Invoke an Agent according to its frozen snapshot."""
-        mode = str(
-            agent_snapshot.get("invokeMode") or agent_snapshot.get("invoke_mode") or ""
-        )
-        if mode == "sync_response":
-            return await self._invoke_sync(
-                agent_snapshot, credential_payload, platform_values
+        started = time.perf_counter()
+        try:
+            mode = str(
+                agent_snapshot.get("invokeMode")
+                or agent_snapshot.get("invoke_mode")
+                or ""
             )
-        if mode == "submit_poll":
-            return await self._invoke_submit_poll(
-                agent_snapshot, credential_payload, platform_values
+            if mode == "sync_response":
+                result = await self._invoke_sync(
+                    agent_snapshot,
+                    credential_payload,
+                    platform_values,
+                    evidence_recorder,
+                )
+            elif mode == "submit_poll":
+                result = await self._invoke_submit_poll(
+                    agent_snapshot,
+                    credential_payload,
+                    platform_values,
+                    evidence_recorder,
+                )
+            else:
+                raise AgentInvocationError(
+                    f"Unsupported invokeMode: {mode}",
+                    error_class="unsupported_mode",
+                )
+            if evidence_recorder is not None:
+                evidence_recorder.finish_success(result)
+            LOGGER.info(
+                "agent_invocation_completed",
+                extra=_log_extra(
+                    agent_snapshot,
+                    platform_values,
+                    duration_ms=_duration_ms(started),
+                    status=result.status,
+                    external_run_id=result.external_run_id,
+                    passed=result.passed,
+                ),
             )
-        raise AgentInvocationError(f"Unsupported invokeMode: {mode}")
+            return result
+        except AgentInvocationError as exc:
+            if evidence_recorder is not None:
+                evidence_recorder.finish_failure(
+                    error_class=exc.error_class,
+                    error_message=str(exc),
+                    details=exc.details,
+                )
+            LOGGER.warning(
+                "agent_invocation_failed",
+                extra=_log_extra(
+                    agent_snapshot,
+                    platform_values,
+                    duration_ms=_duration_ms(started),
+                    error_class=exc.error_class,
+                ),
+            )
+            raise
+        except httpx.RequestError as exc:
+            error = AgentInvocationError(str(exc), error_class="network_error")
+            if evidence_recorder is not None:
+                evidence_recorder.finish_failure(
+                    error_class=error.error_class, error_message=str(error)
+                )
+            LOGGER.warning(
+                "agent_invocation_failed",
+                extra=_log_extra(
+                    agent_snapshot,
+                    platform_values,
+                    duration_ms=_duration_ms(started),
+                    error_class=error.error_class,
+                ),
+            )
+            raise error from exc
 
     async def _invoke_sync(
         self,
         agent_snapshot: dict[str, Any],
         credential_payload: dict[str, Any],
         platform_values: dict[str, Any],
+        evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
     ) -> AgentInvocationResult:
-        connection = agent_snapshot["connection"]
         output_mapping = agent_snapshot["platformOutputMapping"]
         response_json = await self._post_json(
-            agent_snapshot, credential_payload, platform_values
+            agent_snapshot, credential_payload, platform_values, evidence_recorder
         )
         status = (
             read_json_path(response_json, output_mapping.get("status")) or "completed"
@@ -223,18 +301,20 @@ class AgentInvocationClient:
         agent_snapshot: dict[str, Any],
         credential_payload: dict[str, Any],
         platform_values: dict[str, Any],
+        evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
     ) -> AgentInvocationResult:
         connection = agent_snapshot["connection"]
         output_mapping = agent_snapshot["platformOutputMapping"]
         submit_json = await self._post_json(
-            agent_snapshot, credential_payload, platform_values
+            agent_snapshot, credential_payload, platform_values, evidence_recorder
         )
         external_run_id = read_json_path(
             submit_json, output_mapping.get("externalRunId")
         )
         if not external_run_id:
             raise AgentInvocationError(
-                f"未能从响应路径 {output_mapping.get('externalRunId')} 解析 externalRunId。"
+                f"未能从响应路径 {output_mapping.get('externalRunId')} 解析 externalRunId。",
+                error_class="mapping_error",
             )
 
         terminal_statuses = set(agent_snapshot.get("terminalStatuses") or [])
@@ -262,6 +342,7 @@ class AgentInvocationClient:
                 ),
                 json_body=None,
                 timeout=float(connection.get("requestTimeoutSeconds") or 30),
+                evidence_recorder=evidence_recorder,
             )
             status = read_json_path(poll_json, output_mapping.get("status"))
             if status is not None and str(status) in terminal_statuses:
@@ -285,7 +366,11 @@ class AgentInvocationClient:
                     raw_response=poll_json,
                 )
             if asyncio.get_running_loop().time() >= deadline:
-                raise AgentInvocationError("外部 Agent 轮询超时。")
+                raise AgentInvocationError(
+                    "外部 Agent 轮询超时。",
+                    error_class="poll_timeout",
+                    details={"externalRunId": str(external_run_id)},
+                )
             await asyncio.sleep(poll_interval)
 
     async def _post_json(
@@ -293,6 +378,7 @@ class AgentInvocationClient:
         agent_snapshot: dict[str, Any],
         credential_payload: dict[str, Any],
         platform_values: dict[str, Any],
+        evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
     ) -> dict[str, Any]:
         connection = agent_snapshot["connection"]
         body = build_agent_request_body(
@@ -309,6 +395,7 @@ class AgentInvocationClient:
             headers=_auth_headers(agent_snapshot.get("auth") or {}, credential_payload),
             json_body=body,
             timeout=float(connection.get("requestTimeoutSeconds") or 30),
+            evidence_recorder=evidence_recorder,
         )
 
     async def _request_json(
@@ -319,6 +406,7 @@ class AgentInvocationClient:
         headers: dict[str, str],
         json_body: dict[str, Any] | None,
         timeout: float,
+        evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
     ) -> dict[str, Any]:
         current_url = url
         async with httpx.AsyncClient(
@@ -327,19 +415,131 @@ class AgentInvocationClient:
             transport=self.transport,
         ) as client:
             for _ in range(settings.AGENT_HTTP_MAX_REDIRECTS + 1):
-                response = await client.request(
-                    method, current_url, headers=headers, json=json_body
+                started = time.perf_counter()
+                call_id = (
+                    evidence_recorder.start_http_call(
+                        method=method,
+                        url=current_url,
+                        headers=headers,
+                        json_body=json_body,
+                    )
+                    if evidence_recorder is not None
+                    else None
                 )
+                try:
+                    response = await client.request(
+                        method, current_url, headers=headers, json=json_body
+                    )
+                except httpx.RequestError as exc:
+                    if evidence_recorder is not None and call_id is not None:
+                        evidence_recorder.fail_http_call(
+                            call_id,
+                            error_class="network_error",
+                            error_message=str(exc),
+                            duration_ms=_duration_ms(started),
+                        )
+                    raise
                 if response.is_redirect and response.headers.get("location"):
+                    if evidence_recorder is not None and call_id is not None:
+                        evidence_recorder.complete_http_call(
+                            call_id,
+                            response=response,
+                            duration_ms=_duration_ms(started),
+                        )
                     current_url = _join_url(
                         str(response.url), response.headers["location"]
                     )
                     continue
                 if len(response.content) > settings.AGENT_HTTP_RESPONSE_MAX_BYTES:
-                    raise AgentInvocationError("外部 Agent 响应体过大。")
-                response.raise_for_status()
-                payload = response.json()
+                    if evidence_recorder is not None and call_id is not None:
+                        evidence_recorder.fail_http_call(
+                            call_id,
+                            error_class="response_too_large",
+                            error_message="外部 Agent 响应体过大。",
+                            duration_ms=_duration_ms(started),
+                            response=response,
+                        )
+                    raise AgentInvocationError(
+                        "外部 Agent 响应体过大。",
+                        error_class="response_too_large",
+                    )
+                if response.status_code >= 400:
+                    if evidence_recorder is not None and call_id is not None:
+                        evidence_recorder.fail_http_call(
+                            call_id,
+                            error_class="http_error",
+                            error_message=f"HTTP {response.status_code}",
+                            duration_ms=_duration_ms(started),
+                            response=response,
+                        )
+                    raise AgentInvocationError(
+                        f"外部 Agent HTTP 调用失败: HTTP {response.status_code}",
+                        error_class="http_error",
+                    )
+                try:
+                    payload = response.json()
+                except ValueError as exc:
+                    if evidence_recorder is not None and call_id is not None:
+                        evidence_recorder.fail_http_call(
+                            call_id,
+                            error_class="invalid_json",
+                            error_message="外部 Agent 响应必须是 JSON 对象。",
+                            duration_ms=_duration_ms(started),
+                            response=response,
+                        )
+                    raise AgentInvocationError(
+                        "外部 Agent 响应必须是 JSON 对象。",
+                        error_class="invalid_json",
+                    ) from exc
                 if not isinstance(payload, dict):
-                    raise AgentInvocationError("外部 Agent 响应必须是 JSON 对象。")
+                    if evidence_recorder is not None and call_id is not None:
+                        evidence_recorder.fail_http_call(
+                            call_id,
+                            error_class="invalid_json",
+                            error_message="外部 Agent 响应必须是 JSON 对象。",
+                            duration_ms=_duration_ms(started),
+                            response=response,
+                        )
+                    raise AgentInvocationError(
+                        "外部 Agent 响应必须是 JSON 对象。",
+                        error_class="invalid_json",
+                    )
+                if evidence_recorder is not None and call_id is not None:
+                    evidence_recorder.complete_http_call(
+                        call_id,
+                        response=response,
+                        duration_ms=_duration_ms(started),
+                    )
                 return payload
-        raise AgentInvocationError("外部 Agent 重定向次数过多。")
+        raise AgentInvocationError(
+            "外部 Agent 重定向次数过多。", error_class="redirect_limit"
+        )
+
+
+def _duration_ms(started: float) -> int:
+    return int((time.perf_counter() - started) * 1000)
+
+
+def _log_extra(
+    agent_snapshot: dict[str, Any],
+    platform_values: dict[str, Any],
+    *,
+    duration_ms: int,
+    status: str | None = None,
+    external_run_id: str | None = None,
+    passed: bool | None = None,
+    error_class: str | None = None,
+) -> dict[str, Any]:
+    return {
+        "agent_id": agent_snapshot.get("agentId"),
+        "template_id": agent_snapshot.get("templateId"),
+        "invoke_mode": agent_snapshot.get("invokeMode")
+        or agent_snapshot.get("invoke_mode"),
+        "evaluation_id": platform_values.get("evaluationId"),
+        "sample_id": platform_values.get("sampleId"),
+        "status": status,
+        "external_run_id": external_run_id,
+        "passed": passed,
+        "duration_ms": duration_ms,
+        "error_class": error_class,
+    }

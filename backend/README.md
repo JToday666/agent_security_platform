@@ -29,9 +29,10 @@ README 只维护当前状态、启动验证入口、核心约束和文档索引�
 - Alembic 迁移链路
 - 数据集元数据维护、样本标准化与导入链路
 - Agent 模板、注册、详情、列表、真实轻量验证、归档与凭据脱敏存储
-- `external_agent_api` 调用链路、`synthetic_local` dispatch 闭环、基础产物采集和任务级摘要报告
+- `external_agent_api` 调用链路、脱敏调用证据归档、`synthetic_local` dispatch 闭环、基础产物采集和任务级摘要报告
 - 结构化 oracle 执行、`execution_summaries` 汇总、评测评分重算/查询、动态难度版本重算/发布、排行榜快照
 - Agent 出站 HTTP 默认 SSRF 防护：仅允许 `http/https`，默认拒绝 localhost、回环、内网、链路本地、保留地址，并逐跳校验重定向
+- Agent 出站 HTTP 会为每次样本执行写入脱敏 `external_agent_invocation` artifact，记录请求/响应摘要、耗时、状态和失败分类；不会保存完整原始包或密钥
 - 运行时目录、上传目录、凭证目录和数据集 JSON 真源默认收口到 `/data/agent-security-platform/`，可通过环境变量迁移
 
 核心目录：
@@ -164,6 +165,7 @@ uv run python scripts/qa/e2e_local_run.py --spawn-services
 当前联调能力边界：
 
 - 默认脚本化链路优先验证 `synthetic_local` runtime 闭环；外部 API Agent 主链已接入，但需要可访问的真实 Agent 服务
+- 外部 API Agent 主链会在 execution workdir 写入 `external_agent_invocation.json`，并通过 `execution_artifacts.artifact_type = external_agent_invocation` 建立索引；证据只保留脱敏摘要，body preview 长度由 `AGENT_HTTP_EVIDENCE_MAX_BODY_CHARS` 控制
 - Docker 调用链当前不开放
 - 评分可在任务终态汇总时生成，也可通过 `POST /api/v1/evaluations/{evaluationId}/score/recalculate` 重算；详情接口会返回已写入评分
 - `GET /api/v1/evaluations/{evaluationId}/report` 已开放，返回完整报告 payload；`run_reports` 当前稳定返回 `summary_json` 摘要，`report_uri` 仍为空
@@ -182,6 +184,7 @@ uv run python scripts/qa/e2e_local_run.py --spawn-services
 - 数据库结构变更必须通过 Alembic 迁移交付
 - 新增模型后先注册到 `app/models/__init__.py`
 - 新增环境变量必须在 `app/platform/config.py` 中强类型声明
+- 日志等级通过 `LOG_LEVEL` 控制；调用外部 Agent 的日志只输出 agent/evaluation/sample/status/duration/error_class 等摘要字段，不输出 body 和凭据
 
 ## 6. 文档索引
 

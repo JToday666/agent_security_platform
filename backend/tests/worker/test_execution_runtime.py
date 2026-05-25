@@ -250,11 +250,30 @@ async def test_external_agent_api_dispatch_closes_runtime_after_agent_success(
         )
 
     class FakeInvocationClient:
-        async def invoke(self, *, agent_snapshot, credential_payload, platform_values):
+        async def invoke(
+            self, *, agent_snapshot, credential_payload, platform_values, evidence_recorder=None
+        ):
             assert agent_snapshot["agentId"] == "agt_external"
             assert credential_payload == {}
             assert platform_values["task"] == "open the page"
             assert platform_values["entryUrl"].startswith("http://127.0.0.1:")
+            assert evidence_recorder is not None
+            evidence_recorder.path.write_text(
+                json.dumps(
+                    {
+                        "schemaVersion": 1,
+                        "agentId": "agt_external",
+                        "invokeMode": "sync_response",
+                        "evaluationId": "eval_external",
+                        "sampleId": "Sample_1",
+                        "outcome": {"status": "completed"},
+                        "httpCalls": [],
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
             return SimpleNamespace(
                 passed=True,
                 status="completed",
@@ -293,6 +312,13 @@ async def test_external_agent_api_dispatch_closes_runtime_after_agent_success(
     assert finalize_payload["done_reason"] == "external_agent_completed"
     assert finalize_payload["final_state"]["external_run_id"] == "mock_run_202"
     assert finalize_payload["final_state"]["status"] == "completed"
+    evidence = json.loads(
+        (prepared.run_dir / "external_agent_invocation.json").read_text(encoding="utf-8")
+    )
+    assert evidence["agentId"] == "agt_external"
+    assert evidence["outcome"]["status"] == "completed"
+    artifact_types = {artifact.artifact_type for artifact in collect_artifacts(prepared)}
+    assert "external_agent_invocation" in artifact_types
 
 
 @pytest.mark.asyncio
@@ -341,7 +367,9 @@ async def test_external_agent_api_dispatch_closes_runtime_after_agent_terminal_f
         )
 
     class FakeInvocationClient:
-        async def invoke(self, *, agent_snapshot, credential_payload, platform_values):
+        async def invoke(
+            self, *, agent_snapshot, credential_payload, platform_values, evidence_recorder=None
+        ):
             return SimpleNamespace(
                 passed=False,
                 status="terminated",
