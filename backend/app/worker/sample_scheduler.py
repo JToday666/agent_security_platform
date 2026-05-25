@@ -21,6 +21,7 @@ from app.modules.evaluations.lifecycle import (
     reconcile_expired_paused_runs,
 )
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES
+from app.modules.runtime_gateway.session_store import expire_runtime_sessions_once
 from app.platform.config import settings
 from app.platform.db.session import AsyncSessionLocal
 from app.worker.observability import heartbeat_worker_process, mark_worker_stopped
@@ -403,6 +404,7 @@ async def run_scheduler_loop() -> None:
                         metadata={},
                     )
                     await reconcile_expired_paused_runs(db)
+                    await expire_runtime_sessions_once(db)
                     await recover_stale_sample_claims_once(db)
                     await release_ready_samples_once(db)
                     await finalize_ready_runs_once(db)

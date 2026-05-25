@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy import text
 
 from app.api.router import api_router
+from app.modules.runtime_gateway.router import router as runtime_gateway_router
 from app.platform.config import settings
 from app.platform.db.session import AsyncSessionLocal
 from app.platform.exception_handlers import register_exception_handlers
@@ -23,6 +24,7 @@ register_exception_handlers(app)
 app.mount("/uploads", StaticFiles(directory=settings.uploads_root), name="uploads")
 
 app.include_router(api_router)
+app.include_router(runtime_gateway_router)
 
 
 @app.get("/")

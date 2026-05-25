@@ -7,6 +7,10 @@ import contextlib
 import logging
 
 from app.platform.config import settings
+from app.modules.runtime_gateway.session_store import (
+    close_runtime_session,
+    create_runtime_session,
+)
 from app.worker.execution_concurrency import (
     runtime_process_semaphore as _runtime_process_semaphore,
 )
@@ -106,12 +110,16 @@ async def execute_sample(
         port,
         environment_ref,
         probe_token,
+        run_id,
     )
     handle = None
 
     async with _runtime_process_semaphore():
         try:
             handle = await launch_runtime(prepared)
+            await create_runtime_session(
+                prepared=prepared, run_id=run_id, timeout_seconds=timeout
+            )
             await mark_execution_runtime_ready(
                 execution_id, prepared, claim_token=claim_token
             )
@@ -136,6 +144,8 @@ async def execute_sample(
                 final_status="done",
                 claim_token=claim_token,
             )
+            with contextlib.suppress(Exception):
+                await close_runtime_session(execution_id, status="closed")
         except RuntimeDispatchTimeout:
             await persist_runtime_result(
                 execution_id,
@@ -147,7 +157,11 @@ async def execute_sample(
                 final_status="done",
                 claim_token=claim_token,
             )
+            with contextlib.suppress(Exception):
+                await close_runtime_session(execution_id, status="expired")
         except Exception as exc:
+            with contextlib.suppress(Exception):
+                await close_runtime_session(execution_id, status="error")
             with contextlib.suppress(Exception):
                 await persist_execution_artifacts_only(
                     execution_id, prepared=prepared, claim_token=claim_token

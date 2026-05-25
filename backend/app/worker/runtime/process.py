@@ -31,6 +31,11 @@ class RuntimeProcessHandle:
 
 def runtime_base_url(prepared: PreparedRuntime) -> str:
     """返回当前 runtime 对外暴露的基础访问地址。"""
+    if prepared.isolation_mode == "docker":
+        return (
+            f"http://{_runtime_container_name(prepared)}:"
+            f"{settings.WORKER_RUNTIME_DOCKER_PORT}"
+        )
     return f"http://{settings.WORKER_RUNNER_HOST}:{prepared.port}"
 
 
@@ -74,7 +79,14 @@ def _build_docker_command(prepared: PreparedRuntime) -> list[str]:
     """Build a Docker CLI command for one short-lived probe runtime container."""
     container_root = settings.WORKER_RUNTIME_DOCKER_CONTAINER_WORKDIR.rstrip("/")
     project_root = f"{container_root}/project"
-    name = f"asp-runtime-{prepared.environment_ref}"
+    name = _runtime_container_name(prepared)
+    labels = [
+        "managedBy=asp-worker",
+        f"sampleExecutionId={prepared.execution_id}",
+        f"environmentRef={prepared.environment_ref}",
+    ]
+    if prepared.run_id is not None:
+        labels.append(f"runId={prepared.run_id}")
     return [
         "docker",
         "run",
@@ -83,8 +95,9 @@ def _build_docker_command(prepared: PreparedRuntime) -> list[str]:
         name,
         "--network",
         settings.WORKER_RUNTIME_DOCKER_NETWORK,
-        "-p",
-        f"{settings.WORKER_RUNNER_HOST}:{prepared.port}:{prepared.port}",
+        "--network-alias",
+        name,
+        *[item for label in labels for item in ("--label", label)],
         "-v",
         f"{prepared.work_dir}:{container_root}",
         "-w",
@@ -103,12 +116,17 @@ def _build_docker_command(prepared: PreparedRuntime) -> list[str]:
         "--host",
         "0.0.0.0",
         "--port",
-        str(prepared.port),
+        str(settings.WORKER_RUNTIME_DOCKER_PORT),
         "--instance-id",
         prepared.environment_ref,
         "--probe-token",
         prepared.probe_token,
     ]
+
+
+def _runtime_container_name(prepared: PreparedRuntime) -> str:
+    """Return the stable Docker DNS/container name for one runtime."""
+    return f"asp-runtime-{prepared.environment_ref}"
 
 
 def candidate_isolation_modes() -> list[str]:

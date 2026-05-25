@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     FASTAPI_PORT: int = 8000
     FASTAPI_HOST: str = "127.0.0.1"
     LOG_LEVEL: str = "INFO"
+    PUBLIC_BASE_URL: str = "http://127.0.0.1:8000"
 
     DATABASE_URL_RAW: str | None = Field(default=None, validation_alias="DATABASE_URL")
     POSTGRES_HOST: str = "localhost"
@@ -51,7 +52,8 @@ class Settings(BaseSettings):
     SAMPLE_MAX_ATTEMPTS: int = 2
     WORKER_RUNTIME_LAUNCH_MODE: str = "process"
     WORKER_RUNTIME_DOCKER_IMAGE: str = "agent-security-platform-runtime:latest"
-    WORKER_RUNTIME_DOCKER_NETWORK: str = "bridge"
+    WORKER_RUNTIME_DOCKER_NETWORK: str = "asp-runtime-net"
+    WORKER_RUNTIME_DOCKER_PORT: int = 8000
     WORKER_RUNTIME_DOCKER_CONTAINER_WORKDIR: str = "/runtime"
     WORKER_RUNTIME_DOCKER_CPUS: str = "1.0"
     WORKER_RUNTIME_DOCKER_MEMORY: str = "1g"
@@ -61,6 +63,10 @@ class Settings(BaseSettings):
     WORKER_DISPATCH_MODE_DEFAULT: str = "synthetic_local"
     WORKER_NAMESPACE_ISOLATION_ENABLED: bool = True
     WORKER_MAX_ACTIVE_RUNTIME_PROCESSES: int = 4
+    RUNTIME_SESSION_TTL_SECONDS: int = 900
+    RUNTIME_GATEWAY_COOKIE_NAME: str = "asp_runtime_token"
+    RUNTIME_REAPER_INTERVAL_SECONDS: float = 30.0
+    RUNTIME_CONTAINER_REAPER_ENABLED: bool = True
     ASP_DATA_ROOT: str | None = None
     RUNTIME_ROOT_DIR: str | None = None
     DATASET_ROOT_DIR: str | None = None

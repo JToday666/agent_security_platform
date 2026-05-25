@@ -50,6 +50,8 @@ def redact_value(value: Any) -> Any:
         }
     if isinstance(value, list):
         return [redact_value(item) for item in value]
+    if isinstance(value, str) and value.startswith(("http://", "https://")):
+        return redact_url(value)
     return value
 
 

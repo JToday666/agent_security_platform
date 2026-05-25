@@ -19,6 +19,7 @@
 Gateway，Caddy 或 Nginx
   ├── 前端静态文件
   └── /api/* → FastAPI Backend
+  └── /runtime/tasks/* → FastAPI runtime-gateway → Docker 内网 runtime runner
         ├── PostgreSQL
         ├── vLLM OpenAI-compatible API
         ├── Worker 调度接口
@@ -197,11 +198,13 @@ vLLM：
 |---|---|---|---:|---|---|
 | Gateway | `asp-gateway` | Docker Compose | 是，80/443 | `services/caddy` 或 `services/nginx` | 待部署 |
 | Frontend | 无固定容器 | 静态 release + Gateway | 通过 Gateway | `www/frontend` | 待部署 |
-| Backend | `asp-backend` | Docker Compose | 否 | 无状态，挂载 data/runtime/artifacts/logs | 待部署 |
-| Worker | `asp-worker` | Docker Compose | 否 | 挂载 runtime/artifacts/logs | 待部署 |
+| Backend API | `backend-api` | Docker Compose | 否 | 无状态，挂载 data/runtime/logs | 模板已提供 |
+| Backend Scheduler | `asp-backend-scheduler` | Docker Compose | 否 | 主要依赖 DB | 模板已提供 |
+| Backend Worker | `asp-backend-worker-*` | Docker Compose | 否 | 挂载 data/runtime/logs 与 Docker socket | 模板已提供 |
+| Backend Migration | `asp-backend-migrate` | Docker Compose 一次性任务 | 否 | 无持久化 | 模板已提供 |
 | PostgreSQL | `asp-postgres` | Docker Compose | 否 | `services/postgresql/data` | 已部署 |
 | vLLM | `asp-vllm` | Docker Compose + GPU | 否 | `models`、`cache/vllm` | 已部署 |
-| Runtime Runner | 临时容器 | Worker 创建 | 否 | 单次 workdir | 待部署 |
+| Runtime Runner | `asp-runtime-{environmentRef}` | Worker 创建的临时容器 | 否 | 单次 workdir | 待部署 |
 | Redis | `asp-redis` | Docker Compose | 否 | `services/redis/data` | 可选 |
 
 ---
@@ -239,12 +242,18 @@ vLLM：
 ### 6.3 Compose 内部访问
 
 ```text
-backend → postgres:5432
-backend → vllm:8000
-worker  → postgres:5432
-worker  → vllm:8000
-gateway → backend:8000
+asp-net:      nginx → backend-api:8000
+asp-db-net:   backend-api / scheduler / worker / migrate → asp-postgres:5432
+asp-ai-net:   backend-api / worker → asp-litellm:4000 或 asp-vllm:8000
+asp-runtime-net: backend-worker → 一次性 runtime runner
 ```
+
+公网 runtime 访问只进入 `https://<domain>/runtime/tasks/{sampleExecutionId}/...`。
+Gateway 仅把 `/runtime/tasks/` 原样转发给 `backend-api:8000`；鉴权、token、
+session 状态、path strip 和 Docker 内网 upstream 选择都由 FastAPI runtime-gateway 完成。
+runtime runner 不发布宿主机端口。Worker 在 docker mode 下通过 `asp-runtime-net`
+中的容器名或 network alias `asp-runtime-{environmentRef}:8000` 访问单次 runner；
+本地 process mode 仍保留 `WORKER_RUNNER_HOST:动态端口` 的开发路径。
 
 ---
 
@@ -394,6 +403,7 @@ Backend 连接 PostgreSQL 和 vLLM。
 Scheduler 推进 run 生命周期、dataset 阶段和报告聚合。
 Sample Worker 领取并执行 sample_execution，内部低并发，依靠实例数横向扩容。
 runtime-runner 由 Worker 按单样本启动，隔离执行浏览器/Agent 任务。
+runtime-runner 只加入 asp-runtime-net，使用容器内固定端口 8000，不占用宿主机动态端口。
 PostgreSQL 保存结构化业务数据。
 vLLM 提供本地模型推理。
 runtime 保存临时执行上下文。

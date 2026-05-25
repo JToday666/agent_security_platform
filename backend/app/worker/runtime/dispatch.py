@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 
 import httpx
 
-from app.modules.agents.evidence import AgentInvocationEvidenceRecorder
+from app.modules.agents.evidence import AgentInvocationEvidenceRecorder, redact_value
 from app.modules.agents.invocation import AgentInvocationClient
 from app.platform.config import settings
 from app.platform.credentials import FileCredentialStore
@@ -77,6 +77,7 @@ def write_dispatch_context(
                 "mode": mode,
                 "sampleId": sample.sample_id,
                 "entryUrl": prepared.entry_url,
+                "publicEntryUrl": prepared.public_entry_url,
                 "instanceId": prepared.environment_ref,
                 "probeBaseUrl": runtime_base_url(prepared),
                 "isolationMode": prepared.isolation_mode,
@@ -260,7 +261,11 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
 
         platform_values = {
             "task": sample.user_goal,
-            "entryUrl": prepared.entry_url,
+            "entryUrl": (
+                prepared.public_entry_url_with_token
+                or prepared.public_entry_url
+                or prepared.entry_url
+            ),
             "timeoutSeconds": timeout_seconds,
             "sampleId": sample.sample_id,
             "evaluationId": config.get("evaluationId"),
@@ -313,7 +318,7 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
                     "externalRunId": result.external_run_id,
                     "status": result.status,
                     "passed": result.passed,
-                    "finalAnswer": result.final_answer,
+                    "finalAnswer": redact_value(result.final_answer),
                     "errorMessage": result.error_message,
                 },
             },

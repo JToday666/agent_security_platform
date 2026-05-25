@@ -18,6 +18,7 @@ from app.worker.execution import execute_sample
 from app.worker.execution_jobs import load_sample_job_by_execution_id
 from app.worker.observability import heartbeat_worker_process, mark_worker_stopped
 from app.worker.execution_persistence import mark_execution_system_error
+from app.worker.runtime.reaper import reap_runtime_containers_once
 from app.worker.sample_claims import claim_next_sample, heartbeat_sample_claim_by_id
 
 LOGGER = logging.getLogger(__name__)
@@ -96,9 +97,18 @@ async def _process_sample_safely(
 async def run_sample_worker_loop(worker_id: str) -> None:
     """Continuously claim and execute ready sample executions."""
     active_executions: dict[int, asyncio.Task[None]] = {}
+    next_runtime_reap_at = 0.0
     try:
         while True:
             try:
+                loop_now = asyncio.get_running_loop().time()
+                if loop_now >= next_runtime_reap_at:
+                    next_runtime_reap_at = loop_now + max(
+                        1.0, float(settings.RUNTIME_REAPER_INTERVAL_SECONDS)
+                    )
+                    async with AsyncSessionLocal() as db:
+                        await reap_runtime_containers_once(db)
+
                 async with AsyncSessionLocal() as db:
                     await heartbeat_worker_process(
                         db,

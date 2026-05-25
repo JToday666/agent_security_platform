@@ -25,6 +25,28 @@ nvidia-smi 显示 VLLM::EngineCore 占用显存
 /data 有足够剩余空间
 ```
 
+### 1.1 Runtime Gateway 验证
+
+```bash
+curl -fsS http://127.0.0.1/healthz
+curl -fsS http://127.0.0.1/readyz
+curl -fsS -H "Authorization: Bearer <admin-token>" \
+  http://127.0.0.1/api/v1/ops/workers
+docker ps --filter label=managedBy=asp-worker \
+  --format '{{.Names}} {{.Ports}} {{.Label "sampleExecutionId"}}'
+```
+
+期望：
+
+```text
+/healthz 可达。
+/readyz 返回 ready。
+/api/v1/ops/workers 返回 scheduler/sample_worker 心跳和 sampleQueues。
+runtime runner 没有 0.0.0.0:随机端口或公网端口映射。
+外部 Agent runtime URL 形如 /runtime/tasks/{sampleExecutionId}/...?token=...
+过期 token、已关闭 session、非法 sampleExecutionId 不能访问 runtime 页面。
+```
+
 ---
 
 ## 2. PostgreSQL 检查
@@ -412,6 +434,8 @@ Gateway 前端可访问。
 把数据库 data 目录打包进仓库。
 runtime-runner 使用 privileged。
 runtime-runner 挂载 /var/run/docker.sock。
+runtime-runner 发布宿主机随机端口。
+在安全组中开放 runtime 动态端口段。
 ```
 
 允许：
@@ -420,6 +444,8 @@ runtime-runner 挂载 /var/run/docker.sock。
 Worker 在必要时挂载 /var/run/docker.sock。
 但 Worker 不对外暴露。
 Worker 仅创建平台 runtime 容器，不接收用户提交的 Docker 镜像。
+Worker 创建的 runtime-runner 仅加入 asp-runtime-net。
+runtime-runner 使用容器内固定端口 8000，由 Worker 通过 Docker 内网访问。
 runtime-runner 只挂载单次 workdir。
 runtime-runner 运行完成后销毁。
 ```
@@ -427,6 +453,16 @@ runtime-runner 运行完成后销毁。
 ---
 
 ## 11. 清理策略
+
+Runtime 自动清理：
+
+```text
+scheduler 会运行 runtime session reaper，定期把超过 expires_at 的 active session 标记为 expired。
+backend-worker 会扫描 managedBy=asp-worker 的 runtime 容器。
+只有没有 active runtime session 的残留容器会被停止。
+API、scheduler、runtime-runner 都不挂载 /var/run/docker.sock；只有 backend-worker 可清理 runtime 容器。
+外部 Agent 只访问 /runtime/tasks/{sampleExecutionId}/...，初始 token 只通过 query 交给 gateway。
+```
 
 可清理：
 

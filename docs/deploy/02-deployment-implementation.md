@@ -401,14 +401,19 @@ curl http://127.0.0.1:18000/v1/chat/completions \
 
 ## 6. Backend 环境变量
 
-`/data/agent-security-platform/env/prod/backend.env`：
+`/data/agent-security-platform/env/prod/backend.env` 使用容器网络地址。真实密钥只写入
+主机 `/data/agent-security-platform/env/prod/backend.env`，不要提交到 Git；仓库内模板见
+`docs/deploy/templates/backend/backend.env.example`。
 
 ```env
 APP_ENV=production
 PROJECT_NAME=agent-security-platform
+FASTAPI_HOST=0.0.0.0
+FASTAPI_PORT=8000
 TZ=Asia/Shanghai
+PUBLIC_BASE_URL=https://<domain>
 
-DATABASE_URL=postgresql+psycopg://asp_app:<password>@127.0.0.1:5432/asp_db
+DATABASE_URL=postgresql+psycopg://asp_app:<password>@asp-postgres:5432/asp_db
 
 ASP_DATA_ROOT=/data/agent-security-platform
 DATASET_ROOT_DIR=/data/agent-security-platform/data/datasets
@@ -418,17 +423,18 @@ RUNTIME_ROOT_DIR=/data/agent-security-platform/runtime
 TMP_ROOT_DIR=/data/agent-security-platform/tmp
 LOG_ROOT_DIR=/data/agent-security-platform/logs
 
-WORKER_RUNNER_HOST=172.17.0.1
-WORKER_BROWSER_ENTRY_HOST=host.docker.internal
-
-# 生产建议 docker；本地开发可用 process。
 WORKER_RUNTIME_LAUNCH_MODE=docker
-WORKER_RUNTIME_DOCKER_IMAGE=agent-security-platform-runtime:latest
-WORKER_RUNTIME_DOCKER_NETWORK=bridge
+WORKER_RUNTIME_DOCKER_IMAGE=<provided-by-compose-BACKEND_IMAGE>
+WORKER_RUNTIME_DOCKER_NETWORK=asp-runtime-net
+WORKER_RUNTIME_DOCKER_PORT=8000
 WORKER_RUNTIME_DOCKER_CONTAINER_WORKDIR=/runtime
 WORKER_RUNTIME_DOCKER_CPUS=1.0
 WORKER_RUNTIME_DOCKER_MEMORY=1g
 WORKER_RUNTIME_DOCKER_STOP_TIMEOUT_SECONDS=10.0
+RUNTIME_SESSION_TTL_SECONDS=900
+RUNTIME_GATEWAY_COOKIE_NAME=asp_runtime_token
+RUNTIME_REAPER_INTERVAL_SECONDS=30
+RUNTIME_CONTAINER_REAPER_ENABLED=true
 
 SCHEDULER_POLL_INTERVAL_SECONDS=1.0
 SCHEDULER_RELEASE_BATCH_SIZE=20
@@ -442,10 +448,9 @@ SAMPLE_HEARTBEAT_INTERVAL_SECONDS=10.0
 SAMPLE_MAX_ATTEMPTS=2
 
 LLM_JUDGE_PROVIDER=litellm
-LLM_BASE_URL=http://127.0.0.1:18000/v1
-LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
+LLM_BASE_URL=http://asp-litellm:4000/v1
+LLM_DEFAULT_MODEL=local-qwen
 
-PUBLIC_BASE_URL=https://<domain>
 CORS_ALLOWED_ORIGINS=https://<domain>
 ```
 
@@ -459,55 +464,71 @@ LLM_DEFAULT_MODEL=qwen2.5-14b-gptq-int4
 
 ---
 
-## 7. Backend / Worker Compose 模板
+## 7. Backend Compose 模板
 
-实际镜像名称按项目 Dockerfile 调整。
+后端容器统一使用同一个不可变镜像 tag。API、scheduler、sample worker、
+Alembic migration 和 worker 后续启动的一次性 runtime runner 都使用该镜像。
+Compose 模板在仓库中维护：
+
+```text
+backend/Dockerfile
+docs/deploy/templates/backend/docker-compose.backend.yml
+docs/deploy/templates/backend/backend.env.example
+```
+
+部署到主环境时建议放到：
+
+```text
+/data/agent-security-platform/services/backend/compose/docker-compose.yml
+/data/agent-security-platform/services/backend/compose/.env
+```
+
+`.env` 保存本次发布使用的不可变镜像和容器网络连接地址；模板见
+`docs/deploy/templates/backend/compose.env.example`：
+
+```env
+BACKEND_IMAGE=crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_code:backend-<git-sha>
+BACKEND_DATABASE_URL=postgresql+psycopg://asp_app:<password>@asp-postgres:5432/asp_db
+BACKEND_LLM_BASE_URL=http://asp-litellm:4000/v1
+```
+
+首次部署前确保外部网络存在，并把 PostgreSQL 加入 DB 网络：
+
+```bash
+docker network create asp-net || true
+docker network create asp-db-net || true
+docker network create asp-ai-net || true
+docker network create asp-runtime-net || true
+docker network connect asp-db-net asp-postgres || true
+```
+
+校验 Compose：
+
+```bash
+cd /data/agent-security-platform/services/backend/compose
+docker compose config
+```
+
+迁移与启动：
+
+```bash
+docker compose pull
+docker compose run --rm backend-migrate
+docker compose up -d backend-api backend-scheduler backend-worker
+docker compose ps
+```
+
+关键边界：
+
+- `backend-api`：只服务 FastAPI，经 `asp-net` 接收 Nginx 转发，不挂载 Docker socket。
+- `backend-scheduler`：只做 run/sample 调度、过期 lease 恢复与 finalizer，不挂载 Docker socket。
+- `backend-worker`：唯一挂载 `/var/run/docker.sock`，唯一负责按 sample 启动一次性 runtime runner。
+- `backend-migrate`：一次性 Alembic job，执行成功后退出。
+- runtime runner 使用 `backend-worker` 传入的 `WORKER_RUNTIME_DOCKER_IMAGE`，与上述 backend 服务保持同一镜像 tag。
+- runtime runner 只加入 `asp-runtime-net`，使用容器内固定端口 `8000`，不发布宿主机动态端口。
 
 ```yaml
-services:
-  backend:
-    image: crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_code:backend-latest
-    container_name: asp-backend
-    restart: unless-stopped
-    env_file:
-      - /data/agent-security-platform/env/prod/backend.env
-    ports:
-      - "127.0.0.1:8000:8000"
-    volumes:
-      - /data/agent-security-platform/data:/app/data
-      - /data/agent-security-platform/runtime:/app/runtime
-      - /data/agent-security-platform/artifacts:/app/artifacts
-      - /data/agent-security-platform/logs/backend:/app/logs
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-
-  scheduler:
-    image: crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_code:backend-latest
-    container_name: asp-scheduler
-    restart: unless-stopped
-    env_file:
-      - /data/agent-security-platform/env/prod/backend.env
-    volumes:
-      - /data/agent-security-platform/data:/app/data
-      - /data/agent-security-platform/runtime:/app/runtime
-      - /data/agent-security-platform/artifacts:/app/artifacts
-      - /data/agent-security-platform/logs/scheduler:/app/logs
-    command: ["python", "scheduler.py"]
-
-  worker:
-    image: crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_code:backend-latest
-    restart: unless-stopped
-    deploy:
-      replicas: 2
-    env_file:
-      - /data/agent-security-platform/env/prod/backend.env
-    volumes:
-      - /data/agent-security-platform/data:/app/data
-      - /data/agent-security-platform/runtime:/app/runtime
-      - /data/agent-security-platform/artifacts:/app/artifacts
-      - /data/agent-security-platform/logs/worker:/app/logs
-      # WORKER_RUNTIME_LAUNCH_MODE=docker 时启用，由 worker 创建单样本 runtime 容器
-      # - /var/run/docker.sock:/var/run/docker.sock
-    command: ["python", "worker.py"]
+# 完整模板见 docs/deploy/templates/backend/docker-compose.backend.yml
 ```
 
 `/healthz` 用于进程存活探针，`/readyz` 会检查数据库可达性。管理员可通过
@@ -544,8 +565,12 @@ Gateway root 指向：
     root * /www/frontend/current
     encode zstd gzip
 
-    handle_path /api/* {
-        reverse_proxy backend:8000
+    handle /api/* {
+        reverse_proxy backend-api:8000
+    }
+
+    handle /runtime/tasks/* {
+        reverse_proxy backend-api:8000
     }
 
     handle {
@@ -555,7 +580,30 @@ Gateway root 指向：
 }
 ```
 
-### 9.2 Gateway Compose 模板
+### 9.2 Nginx location
+
+如果 Gateway 继续使用现有 Nginx，`/runtime/tasks/` 必须保留原始路径转发给
+FastAPI，不能 strip prefix，也不能直接 proxy 到 runtime runner：
+
+```nginx
+location /api/ {
+    proxy_pass http://backend-api:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+
+location /runtime/tasks/ {
+    proxy_pass http://backend-api:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+### 9.3 Gateway Compose 模板
 
 ```yaml
 services:

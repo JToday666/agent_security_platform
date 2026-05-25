@@ -25,6 +25,7 @@ from app.models.benchmark_run import (
     RunDataset,
     RunReport,
     RunSample,
+    RuntimeSession,
     SampleDifficultyStat,
     SampleExecution,
     TestRun,
@@ -286,6 +287,11 @@ class ApiDbHelper:
                     )
                 session.execute(delete(RunReport).where(RunReport.run_id.in_(run_ids)))
             if sample_execution_ids:
+                session.execute(
+                    delete(RuntimeSession).where(
+                        RuntimeSession.sample_execution_id.in_(sample_execution_ids)
+                    )
+                )
                 session.execute(
                     delete(ExecutionArtifact).where(
                         ExecutionArtifact.sample_execution_id.in_(sample_execution_ids)

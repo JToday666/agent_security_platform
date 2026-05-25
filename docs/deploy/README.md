@@ -25,7 +25,21 @@ vLLM：
   容器：asp-vllm
   模型：Qwen2.5-14B-Instruct-GPTQ-Int4
   服务模型名：qwen2.5-14b-gptq-int4
-  API：http://127.0.0.1:18000/v1
+
+LiteLLM：
+  容器：asp-litellm
+  宿主机调试入口：http://127.0.0.1:18400/v1
+  后端容器入口：http://asp-litellm:4000/v1
+
+Backend：
+  镜像构建：backend/Dockerfile
+  Compose 模板：docs/deploy/templates/backend/docker-compose.backend.yml
+  Compose .env 模板：docs/deploy/templates/backend/compose.env.example
+  生产 env 模板：docs/deploy/templates/backend/backend.env.example
+  API upstream：backend-api:8000
+  Runtime gateway：/runtime/tasks/* → backend-api:8000
+  Worker runtime 网络：asp-runtime-net
+  Runtime runner：容器内固定端口 8000，不发布宿主机端口
 ```
 
 ## 关键约束
@@ -37,4 +51,6 @@ vLLM：
 runtime 和 artifacts 不进 Git。
 公网只暴露 Gateway。
 PostgreSQL、vLLM、Xray 不对公网开放。
+runtime runner 不对公网或宿主机端口开放。
+只有 backend-worker 挂载 Docker socket。
 ```
