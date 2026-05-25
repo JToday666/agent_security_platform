@@ -176,7 +176,6 @@ async def test_synthetic_local_dispatch_closes_runtime_loop(tmp_path: Path) -> N
             build_environment_ref(101),
             build_probe_token(),
         )
-
     handle = await launch_runtime(prepared)
     try:
         result = await resolve_dispatch_adapter("synthetic_local").dispatch(
@@ -248,6 +247,13 @@ async def test_external_agent_api_dispatch_closes_runtime_after_agent_success(
             build_environment_ref(202),
             build_probe_token(),
         )
+    prepared.public_entry_url = (
+        "https://platform.example.com/runtime/tasks/202/Sample_1/site/index.html"
+    )
+    prepared.public_entry_url_with_token = (
+        "https://platform.example.com/runtime/tasks/202/Sample_1/site/index.html"
+        "?token=runtime-token"
+    )
 
     class FakeInvocationClient:
         async def invoke(
@@ -256,7 +262,7 @@ async def test_external_agent_api_dispatch_closes_runtime_after_agent_success(
             assert agent_snapshot["agentId"] == "agt_external"
             assert credential_payload == {}
             assert platform_values["task"] == "open the page"
-            assert platform_values["entryUrl"].startswith("http://127.0.0.1:")
+            assert platform_values["entryUrl"] == prepared.public_entry_url_with_token
             assert evidence_recorder is not None
             evidence_recorder.path.write_text(
                 json.dumps(
@@ -319,6 +325,118 @@ async def test_external_agent_api_dispatch_closes_runtime_after_agent_success(
     assert evidence["outcome"]["status"] == "completed"
     artifact_types = {artifact.artifact_type for artifact in collect_artifacts(prepared)}
     assert "external_agent_invocation" in artifact_types
+
+
+@pytest.mark.asyncio
+async def test_execute_sample_creates_public_runtime_session_before_dispatch(
+    tmp_path: Path, monkeypatch
+) -> None:
+    sample = SampleRuntimeTarget(
+        sample_db_id=1,
+        sample_id="Sample_1",
+        sample_name="Sample_1",
+        resource_path="Example_Subtype/Sample_1",
+        entry_path="site/index.html",
+        user_goal="open the page",
+    )
+    job = execution.SampleJob(execution_id=303, sample=sample)
+    prepared = SimpleNamespace(
+        execution_id=303,
+        entry_url="http://127.0.0.1:18080/Sample_1/site/index.html",
+        public_entry_url=None,
+        public_entry_url_with_token=None,
+        environment_ref="rt_303_test",
+        work_dir=tmp_path / "work",
+        run_dir=tmp_path / "run",
+    )
+    events: list[str] = []
+
+    async def fake_mark_dispatching(*args, **kwargs):
+        events.append("dispatching")
+        return True
+
+    async def fake_launch_runtime(runtime):
+        events.append("launch")
+        return SimpleNamespace(prepared=runtime)
+
+    async def fake_mark_ready(*args, **kwargs):
+        events.append("ready")
+
+    async def fake_create_runtime_session(*, prepared, run_id, timeout_seconds):
+        events.append("session-active")
+        prepared.public_entry_url = (
+            "https://platform.example.com/runtime/tasks/303/Sample_1/site/index.html"
+        )
+        prepared.public_entry_url_with_token = (
+            f"{prepared.public_entry_url}?token=runtime-token"
+        )
+        return SimpleNamespace(
+            token="runtime-token", public_entry_url=prepared.public_entry_url
+        )
+
+    class FakeAdapter:
+        async def dispatch(self, prepared, sample, timeout_seconds, dispatch_config=None):
+            events.append("dispatch")
+            assert (
+                prepared.public_entry_url
+                == "https://platform.example.com/runtime/tasks/303/Sample_1/site/index.html"
+            )
+            assert prepared.public_entry_url_with_token == (
+                "https://platform.example.com/runtime/tasks/303/Sample_1/site/index.html"
+                "?token=runtime-token"
+            )
+            prepared.run_dir.mkdir(parents=True, exist_ok=True)
+            (prepared.run_dir / "finalize.json").write_text("{}", encoding="utf-8")
+            return SimpleNamespace(
+                finalized=True,
+                compile_result={},
+                replay_result={},
+                dispatch_context_path=tmp_path / "dispatch_context.json",
+            )
+
+    async def fake_persist_result(*args, **kwargs):
+        events.append("persist")
+
+    async def fake_mark_state(*args, **kwargs):
+        events.append("verifying")
+
+    async def fake_close_runtime_session(execution_id, *, status):
+        events.append(f"session-{status}")
+
+    async def fake_stop_runtime(*args, **kwargs):
+        events.append("stop")
+
+    monkeypatch.setattr(execution, "mark_execution_dispatching", fake_mark_dispatching)
+    monkeypatch.setattr(execution, "prepare_runtime_workspace", lambda *args: prepared)
+    monkeypatch.setattr(execution, "launch_runtime", fake_launch_runtime)
+    monkeypatch.setattr(execution, "mark_execution_runtime_ready", fake_mark_ready)
+    monkeypatch.setattr(execution, "create_runtime_session", fake_create_runtime_session, raising=False)
+    monkeypatch.setattr(execution, "resolve_dispatch_adapter", lambda mode: FakeAdapter())
+    monkeypatch.setattr(execution, "mark_execution_state", fake_mark_state)
+    monkeypatch.setattr(execution, "persist_runtime_result", fake_persist_result)
+    monkeypatch.setattr(execution, "close_runtime_session", fake_close_runtime_session, raising=False)
+    monkeypatch.setattr(execution, "stop_runtime", fake_stop_runtime)
+
+    await execution.execute_sample(
+        77,
+        88,
+        job,
+        dispatch_mode="external_agent_api",
+        timeout_seconds=30,
+        claim_token="claim-token",
+    )
+
+    assert events == [
+        "dispatching",
+        "launch",
+        "session-active",
+        "ready",
+        "dispatch",
+        "verifying",
+        "persist",
+        "session-closed",
+        "stop",
+    ]
 
 
 @pytest.mark.asyncio

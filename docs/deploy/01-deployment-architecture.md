@@ -19,6 +19,7 @@
 Gateway，Caddy 或 Nginx
   ├── 前端静态文件
   └── /api/* → FastAPI Backend
+  └── /runtime/tasks/* → FastAPI runtime-gateway → Docker 内网 runtime runner
         ├── PostgreSQL
         ├── vLLM OpenAI-compatible API
         ├── Worker 调度接口
@@ -247,6 +248,9 @@ asp-ai-net:   backend-api / worker → asp-litellm:4000 或 asp-vllm:8000
 asp-runtime-net: backend-worker → 一次性 runtime runner
 ```
 
+公网 runtime 访问只进入 `https://<domain>/runtime/tasks/{sampleExecutionId}/...`。
+Gateway 仅把 `/runtime/tasks/` 原样转发给 `backend-api:8000`；鉴权、token、
+session 状态、path strip 和 Docker 内网 upstream 选择都由 FastAPI runtime-gateway 完成。
 runtime runner 不发布宿主机端口。Worker 在 docker mode 下通过 `asp-runtime-net`
 中的容器名或 network alias `asp-runtime-{environmentRef}:8000` 访问单次 runner；
 本地 process mode 仍保留 `WORKER_RUNNER_HOST:动态端口` 的开发路径。

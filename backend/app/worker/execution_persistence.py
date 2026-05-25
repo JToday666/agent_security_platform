@@ -256,7 +256,7 @@ async def mark_execution_runtime_ready(
         ):
             return
         execution.work_dir = str(prepared.work_dir)
-        execution.entry_url = prepared.entry_url
+        execution.entry_url = prepared.public_entry_url or prepared.entry_url
         execution.environment_ref = prepared.environment_ref
         execution.status = "executing"
         execution.updated_at = now_utc()

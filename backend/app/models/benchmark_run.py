@@ -447,6 +447,68 @@ class SampleExecution(Base):
     )
 
 
+class RuntimeSession(Base):
+    """Externally accessible runtime gateway session for one sample execution."""
+
+    __tablename__ = "runtime_sessions"
+    __table_args__ = (
+        UniqueConstraint("sample_execution_id"),
+        Index("ix_runtime_sessions_status_expires_at", "status", "expires_at"),
+        Index("ix_runtime_sessions_run_id_status", "run_id", "status"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    sample_execution_id: Mapped[int] = mapped_column(
+        BigInteger,
+        ForeignKey("sample_executions.id"),
+        nullable=False,
+        index=True,
+        comment="关联的 sample execution ID",
+    )
+    run_id: Mapped[int] = mapped_column(
+        BigInteger,
+        ForeignKey("test_runs.id"),
+        nullable=False,
+        index=True,
+        comment="关联的 run ID",
+    )
+    environment_ref: Mapped[str] = mapped_column(
+        Text, nullable=False, comment="runtime 容器或进程环境标识"
+    )
+    internal_base_url: Mapped[str] = mapped_column(
+        Text, nullable=False, comment="Docker 内网中的 runtime base URL"
+    )
+    public_entry_url: Mapped[str] = mapped_column(
+        Text, nullable=False, comment="外部 Agent 访问的 runtime gateway entry URL"
+    )
+    token_hash: Mapped[str] = mapped_column(
+        Text, nullable=False, comment="runtime gateway token hash"
+    )
+    expires_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, index=True, comment="会话过期时间"
+    )
+    status: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        default="preparing",
+        server_default=text("'preparing'"),
+        index=True,
+        comment="runtime session 生命周期状态",
+    )
+    revoked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True, comment="会话撤销时间"
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+
 class ExecutionArtifact(Base):
     """
     交互与判定副产物表 (Execution Artifact Model)

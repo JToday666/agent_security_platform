@@ -282,6 +282,10 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
         assert dataset.status == "completed"
         assert execution.status == "done"
         assert execution.entry_url is not None
+        assert execution.entry_url.startswith(
+            f"{settings.PUBLIC_BASE_URL}/runtime/tasks/{execution.id}/"
+        )
+        assert "token=" not in execution.entry_url
         assert summary.final_label == "needs_review"
         assert report.report_status == "available"
         assert {
@@ -304,4 +308,10 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
         assert evidence_payload["sampleId"].endswith("_sample")
         assert evidence_payload["outcome"]["status"] == "completed"
         assert evidence_payload["httpCalls"][0]["responseStatusCode"] == 200
+        request_body = evidence_payload["httpCalls"][0]["requestBodyPreview"]["body"]
+        assert request_body["url"].startswith(
+            f"{settings.PUBLIC_BASE_URL}/runtime/tasks/{execution.id}/"
+        )
+        assert "token=runtime-token" not in evidence_text
+        assert "token=%5Bredacted%5D" in request_body["url"]
         assert "full-chain-secret" not in evidence_text

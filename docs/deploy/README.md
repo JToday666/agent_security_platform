@@ -37,6 +37,7 @@ Backend：
   Compose .env 模板：docs/deploy/templates/backend/compose.env.example
   生产 env 模板：docs/deploy/templates/backend/backend.env.example
   API upstream：backend-api:8000
+  Runtime gateway：/runtime/tasks/* → backend-api:8000
   Worker runtime 网络：asp-runtime-net
   Runtime runner：容器内固定端口 8000，不发布宿主机端口
 ```

@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     FASTAPI_PORT: int = 8000
     FASTAPI_HOST: str = "127.0.0.1"
     LOG_LEVEL: str = "INFO"
+    PUBLIC_BASE_URL: str = "http://127.0.0.1:8000"
 
     DATABASE_URL_RAW: str | None = Field(default=None, validation_alias="DATABASE_URL")
     POSTGRES_HOST: str = "localhost"
@@ -62,6 +63,8 @@ class Settings(BaseSettings):
     WORKER_DISPATCH_MODE_DEFAULT: str = "synthetic_local"
     WORKER_NAMESPACE_ISOLATION_ENABLED: bool = True
     WORKER_MAX_ACTIVE_RUNTIME_PROCESSES: int = 4
+    RUNTIME_SESSION_TTL_SECONDS: int = 900
+    RUNTIME_GATEWAY_COOKIE_NAME: str = "asp_runtime_token"
     ASP_DATA_ROOT: str | None = None
     RUNTIME_ROOT_DIR: str | None = None
     DATASET_ROOT_DIR: str | None = None

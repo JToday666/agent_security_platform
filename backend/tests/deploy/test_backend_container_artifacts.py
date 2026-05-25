@@ -144,6 +144,9 @@ def test_backend_prod_env_template_uses_container_network_addresses() -> None:
     assert "WORKER_RUNTIME_DOCKER_IMAGE=<provided-by-compose-BACKEND_IMAGE>" in env_template
     assert "WORKER_RUNTIME_DOCKER_NETWORK=asp-runtime-net" in env_template
     assert "WORKER_RUNTIME_DOCKER_PORT=8000" in env_template
+    assert "PUBLIC_BASE_URL=https://<domain>" in env_template
+    assert "RUNTIME_SESSION_TTL_SECONDS=900" in env_template
+    assert "RUNTIME_GATEWAY_COOKIE_NAME=asp_runtime_token" in env_template
 
 
 def test_backend_compose_env_template_uses_immutable_image_and_network_db_url() -> None:
@@ -155,3 +158,14 @@ def test_backend_compose_env_template_uses_immutable_image_and_network_db_url() 
     assert "backend-<git-sha>" in compose_env
     assert "BACKEND_DATABASE_URL=postgresql+psycopg://asp_app:<password>@asp-postgres:5432/asp_db" in compose_env
     assert "BACKEND_LLM_BASE_URL=http://asp-litellm:4000/v1" in compose_env
+
+
+def test_gateway_documentation_routes_runtime_tasks_to_backend_api() -> None:
+    implementation_doc = (
+        REPO_ROOT / "docs" / "deploy" / "02-deployment-implementation.md"
+    ).read_text(encoding="utf-8")
+
+    assert "handle /runtime/tasks/*" in implementation_doc
+    assert "reverse_proxy backend-api:8000" in implementation_doc
+    assert "location /runtime/tasks/" in implementation_doc
+    assert "proxy_pass http://backend-api:8000" in implementation_doc

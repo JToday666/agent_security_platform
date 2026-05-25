@@ -46,6 +46,8 @@ class PreparedRuntime:
     runtime_context_path: Path
     isolation_mode: str = "process"
     run_id: int | None = None
+    public_entry_url: str | None = None
+    public_entry_url_with_token: str | None = None
 
 
 def resolve_sample_layout(sample: SampleRuntimeTarget) -> tuple[Path, Path, Path, Path]:

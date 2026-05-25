@@ -411,6 +411,7 @@ PROJECT_NAME=agent-security-platform
 FASTAPI_HOST=0.0.0.0
 FASTAPI_PORT=8000
 TZ=Asia/Shanghai
+PUBLIC_BASE_URL=https://<domain>
 
 DATABASE_URL=postgresql+psycopg://asp_app:<password>@asp-postgres:5432/asp_db
 
@@ -430,6 +431,8 @@ WORKER_RUNTIME_DOCKER_CONTAINER_WORKDIR=/runtime
 WORKER_RUNTIME_DOCKER_CPUS=1.0
 WORKER_RUNTIME_DOCKER_MEMORY=1g
 WORKER_RUNTIME_DOCKER_STOP_TIMEOUT_SECONDS=10.0
+RUNTIME_SESSION_TTL_SECONDS=900
+RUNTIME_GATEWAY_COOKIE_NAME=asp_runtime_token
 
 SCHEDULER_POLL_INTERVAL_SECONDS=1.0
 SCHEDULER_RELEASE_BATCH_SIZE=20
@@ -446,7 +449,6 @@ LLM_JUDGE_PROVIDER=litellm
 LLM_BASE_URL=http://asp-litellm:4000/v1
 LLM_DEFAULT_MODEL=local-qwen
 
-PUBLIC_BASE_URL=https://<domain>
 CORS_ALLOWED_ORIGINS=https://<domain>
 ```
 
@@ -561,8 +563,12 @@ Gateway root 指向：
     root * /www/frontend/current
     encode zstd gzip
 
-    handle_path /api/* {
-        reverse_proxy backend:8000
+    handle /api/* {
+        reverse_proxy backend-api:8000
+    }
+
+    handle /runtime/tasks/* {
+        reverse_proxy backend-api:8000
     }
 
     handle {
@@ -572,7 +578,30 @@ Gateway root 指向：
 }
 ```
 
-### 9.2 Gateway Compose 模板
+### 9.2 Nginx location
+
+如果 Gateway 继续使用现有 Nginx，`/runtime/tasks/` 必须保留原始路径转发给
+FastAPI，不能 strip prefix，也不能直接 proxy 到 runtime runner：
+
+```nginx
+location /api/ {
+    proxy_pass http://backend-api:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+
+location /runtime/tasks/ {
+    proxy_pass http://backend-api:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+### 9.3 Gateway Compose 模板
 
 ```yaml
 services:
