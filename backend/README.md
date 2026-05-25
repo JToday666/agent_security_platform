@@ -68,11 +68,15 @@ uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 uv run python run.py
 ```
 
-worker 启动：
+完整本地执行链需要同时启动 API、scheduler/finalizer 和 sample worker。分别开三个终端：
 
 ```bash
+uv run python run.py
+uv run python scheduler.py
 uv run python worker.py
 ```
+
+只启动 API 和 worker 时，`POST /api/v1/evaluations` 创建的 run 会停在 `pending`，因为 `scheduler.py` 负责把 run/dataset/sample 释放到 `running` / `ready`，并在样本终态后执行 finalizer、报告和评分汇总。
 
 容器化部署使用同一个后端镜像分别运行 API、scheduler、sample worker 和
 Alembic migration；模板维护在：
@@ -158,25 +162,34 @@ uv run uvicorn app.main:app --host 127.0.0.1 --port 8000
 uv run python scripts/qa/http_smoke_check.py --base-url http://127.0.0.1:8000
 ```
 
-本地真实 run 联调推荐使用脚本化入口：
+本地真实 run 联调推荐先启动完整三进程链路：
 
 ```bash
-uv run python scripts/qa/e2e_local_run.py --spawn-services
+uv run python run.py
+uv run python scheduler.py
+uv run python worker.py
+```
+
+再另开终端执行：
+
+```bash
+uv run python scripts/qa/e2e_local_run.py --cleanup-created-records --poll-timeout 180
 ```
 
 该脚本会自动完成以下检查：
 
 - 确认数据库与 Alembic revision 可用
 - 确认 `B2_cloud_file_modification` 数据集已有可执行样本，必要时自动导入元数据与样本
-- 自动启动本地 API 与 worker
 - 注册测试用户、注册/验证 Agent、提交任务、轮询详情直至终态
-- 校验运行产物至少包含 `event_log`、`compile_result`、`replay_result`
+- 校验运行产物至少包含 `event_log`、`finalize_payload`、`analysis_result`
+
+`scripts/qa/e2e_local_run.py --spawn-services` 当前只会自动启动 API 与 sample worker，不会启动 scheduler；它适合配合已运行的 scheduler 使用，不适合作为单命令完整链路证明。
 
 当前联调能力边界：
 
 - 默认脚本化链路优先验证 `synthetic_local` runtime 闭环；外部 API Agent 主链已接入，但需要可访问的真实 Agent 服务
 - 外部 API Agent 主链会在 execution workdir 写入 `external_agent_invocation.json`，并通过 `execution_artifacts.artifact_type = external_agent_invocation` 建立索引；证据只保留脱敏摘要，body preview 长度由 `AGENT_HTTP_EVIDENCE_MAX_BODY_CHARS` 控制
-- Docker 调用链当前不开放
+- worker runtime 支持 `process`、可选 `namespace` fallback 和生产 `docker` runner；公开提交方式仍只开放 API Agent，`submit_method = docker` 与 Docker Registry 凭据链路未开放
 - 评分可在任务终态汇总时生成，也可通过 `POST /api/v1/evaluations/{evaluationId}/score/recalculate` 重算；详情接口会返回已写入评分
 - `GET /api/v1/evaluations/{evaluationId}/report` 已开放，返回完整报告 payload；`run_reports` 当前稳定返回 `summary_json` 摘要，`report_uri` 仍为空
 - 当前还没有样本级 execution 查询接口
@@ -198,10 +211,6 @@ uv run python scripts/qa/e2e_local_run.py --spawn-services
 
 ## 6. 文档索引
 
-仓库级协作规范：
-
-- [AGENTS](../AGENTS.md)
-
 后端内部文档：
 
 - [文档地图](./docs/01-总览/文档地图.md)
@@ -215,6 +224,13 @@ uv run python scripts/qa/e2e_local_run.py --spawn-services
 - [接口索引与实现状态](./docs/04-接口/接口索引与实现状态.md)
 - [响应与错误码约定](./docs/05-规范/响应与错误码约定.md)
 - [文档维护约定](./docs/05-规范/文档维护约定.md)
+
+部署与运维文档：
+
+- [部署文档索引](../docs/deploy/README.md)
+- [部署架构与目录规划](../docs/deploy/01-deployment-architecture.md)
+- [主环境部署实施手册](../docs/deploy/02-deployment-implementation.md)
+- [运维与 Agent 操作手册](../docs/deploy/03-operations-runbook.md)
 
 跨端沟通参考：
 
