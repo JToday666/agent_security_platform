@@ -1,8 +1,10 @@
 import type {
   DatasetCatalogResponse,
   DatasetDetail,
+  DatasetDistributionItem,
   DatasetMediaItem,
   DatasetResourceLink,
+  DatasetSampleProfile,
 } from "@/shared/types/dataset-types";
 import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
@@ -32,6 +34,46 @@ const toStringArray = (value: unknown): string[] =>
   Array.isArray(value)
     ? value.map((item) => toStringValue(item)).filter((item) => item.length > 0)
     : [];
+
+const normalizeDistributionItem = (
+  item: unknown,
+): DatasetDistributionItem | null => {
+  if (!item || typeof item !== "object") {
+    return null;
+  }
+
+  const candidate = item as UnknownRecord;
+  const code = toStringValue(candidate.code);
+  if (!code) {
+    return null;
+  }
+
+  return {
+    code,
+    label: toStringValue(candidate.label) || code,
+    count: Math.max(0, Math.round(toNumberValue(candidate.count, 0))),
+    ratio: Math.max(0, toNumberValue(candidate.ratio, 0)),
+  };
+};
+
+const normalizeDistribution = (value: unknown): DatasetDistributionItem[] =>
+  Array.isArray(value)
+    ? value
+        .map((item) => normalizeDistributionItem(item))
+        .filter((item): item is DatasetDistributionItem => item !== null)
+    : [];
+
+const normalizeSampleProfile = (
+  value: unknown,
+): DatasetSampleProfile => {
+  const candidate = toRecord(value);
+
+  return {
+    deliveryDistribution: normalizeDistribution(candidate.deliveryDistribution),
+    assetTypeTop: normalizeDistribution(candidate.assetTypeTop).slice(0, 5),
+    difficultyBuckets: normalizeDistribution(candidate.difficultyBuckets),
+  };
+};
 
 const normalizeResource = (
   resource: unknown,
@@ -165,6 +207,8 @@ export const adaptDatasetCatalog = (
 export const adaptDatasetDetail = (payload: unknown): DatasetDetail => {
   const candidate = toRecord(payload);
   const category = toRecord(candidate.category);
+  const sampleCount =
+    candidate.sampleCount == null ? null : toNumberValue(candidate.sampleCount);
 
   return {
     datasetId: toStringValue(candidate.datasetId),
@@ -180,10 +224,7 @@ export const adaptDatasetDetail = (payload: unknown): DatasetDetail => {
     },
     shortDescription: toOptionalString(candidate.shortDescription),
     fullDescription: toOptionalString(candidate.fullDescription),
-    sampleCount:
-      candidate.sampleCount == null
-        ? null
-        : toNumberValue(candidate.sampleCount),
+    sampleCount,
     updatedAt: toOptionalString(candidate.updatedAt),
     highlights: toStringArray(candidate.highlights),
     scenarios: toStringArray(candidate.scenarios),
@@ -193,5 +234,6 @@ export const adaptDatasetDetail = (payload: unknown): DatasetDetail => {
     media: (Array.isArray(candidate.media) ? candidate.media : [])
       .map((media, index) => normalizeMedia(media, index))
       .filter((media): media is DatasetMediaItem => media !== null),
+    sampleProfile: normalizeSampleProfile(candidate.sampleProfile),
   };
 };

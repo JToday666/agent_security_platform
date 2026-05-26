@@ -14,6 +14,7 @@ import VChart from "vue-echarts";
 import { ensureEvaluationChartsRegistered } from "@/modules/evaluation/charts/echarts-registry";
 import { buildTrendLineOption } from "@/modules/evaluation/lib/evaluation-report-chart-options";
 import type {
+  EvaluationChartAxisMode,
   EvaluationScoreTrend,
   EvaluationScoreTrendView,
 } from "@/shared/types/agent-types";
@@ -23,6 +24,7 @@ ensureEvaluationChartsRegistered();
 const props = defineProps<{
   trend: EvaluationScoreTrend | null;
   view: EvaluationScoreTrendView;
+  axisMode: EvaluationChartAxisMode;
 }>();
 const { t } = useI18n();
 
@@ -30,7 +32,9 @@ const emit = defineEmits<{
   (event: "select", evaluationId: string): void;
 }>();
 
-const option = computed(() => buildTrendLineOption(props.trend, props.view, t));
+const option = computed(() =>
+  buildTrendLineOption(props.trend, props.view, t, props.axisMode),
+);
 
 const handleChartClick = (event: { dataIndex?: number }) => {
   const dataIndex = event.dataIndex;

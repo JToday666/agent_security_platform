@@ -76,6 +76,7 @@
         "assets": "附加材料",
         "details": "详细说明",
         "highlights": "评测重点",
+        "sampleProfile": "样本聚合摘要",
         "scenarios": "典型场景"
       },
       "sameRiskTitle": "同风险域数据集",
@@ -84,6 +85,13 @@
       "sideLabel": "数据集侧栏信息",
       "submitWithDataset": "使用此数据集发起评测"
     }
+  },
+  "profile": {
+    "assetTypeTop": "资产类型 Top",
+    "deliveryDistribution": "攻击投递方式",
+    "description": "快速了解这个数据集的样本难度、攻击呈现方式和主要保护资产。",
+    "difficultyBuckets": "难度区间",
+    "emptyDistribution": "暂无可展示的分布数据。"
   },
   "resources": {
     "emptyMessage": "当前数据集暂无可展示的资源或媒体。",

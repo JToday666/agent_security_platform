@@ -89,15 +89,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import {
-  getCategoryTheme,
-  isCategoryFullySelected,
-} from "@/modules/dataset/lib/dataset-utils";
+import { isCategoryFullySelected } from "@/modules/dataset/lib/dataset-utils";
+import type { CategoryTheme } from "@/modules/dataset/lib/dataset-utils";
 import type { DatasetCategory } from "@/shared/types/dataset-types";
 import AppIcon from "@/shared/ui/branding/AppIcon.vue";
 
 const props = defineProps<{
   category: DatasetCategory;
+  theme: CategoryTheme;
   selectedDatasetIds: string[];
   expanded: boolean;
 }>();
@@ -123,7 +122,7 @@ const isPartiallySelected = computed(() => {
 });
 
 const categoryBlockStyle = computed(() => {
-  const theme = getCategoryTheme(props.category.categoryId);
+  const theme = props.theme;
 
   return {
     "--category-soft": theme.soft,

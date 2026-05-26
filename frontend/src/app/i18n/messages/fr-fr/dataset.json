@@ -76,6 +76,7 @@
         "assets": "Documents complémentaires",
         "details": "Description détaillée",
         "highlights": "Points clés de l’évaluation",
+        "sampleProfile": "Synthèse agrégée des échantillons",
         "scenarios": "Scénarios types"
       },
       "sameRiskTitle": "Même domaine de risque",
@@ -84,6 +85,13 @@
       "sideLabel": "Informations latérales du jeu de données",
       "submitWithDataset": "Utiliser ce jeu de données pour lancer une évaluation"
     }
+  },
+  "profile": {
+    "assetTypeTop": "Principaux types d’actifs",
+    "deliveryDistribution": "Modes de livraison d’attaque",
+    "description": "Consultez rapidement la difficulté des échantillons, les modes de livraison de l’attaque et les principaux actifs protégés de ce jeu de données.",
+    "difficultyBuckets": "Intervalles de difficulté",
+    "emptyDistribution": "Aucune donnée de distribution disponible."
   },
   "resources": {
     "emptyMessage": "Ce jeu de données ne contient aucune ressource ni média affichable.",

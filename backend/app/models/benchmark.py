@@ -43,6 +43,13 @@ class DatasetSource(Base):
     description: Mapped[str | None] = mapped_column(
         Text, nullable=True, comment="详细描述"
     )
+    translations: Mapped[dict[str, dict[str, object]]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'::jsonb"),
+        comment="按 locale 存储的数据源展示字段翻译",
+    )
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
@@ -76,6 +83,13 @@ class AttackDeliveryType(Base):
     name: Mapped[str] = mapped_column(Text, nullable=False, comment="注入手段展示名")
     description: Mapped[str | None] = mapped_column(
         Text, nullable=True, comment="该注入类型的技术详情或补充说明"
+    )
+    translations: Mapped[dict[str, dict[str, object]]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'::jsonb"),
+        comment="按 locale 存储的攻击投递方式展示字段翻译",
     )
     is_active: Mapped[bool] = mapped_column(
         Boolean,
@@ -288,6 +302,13 @@ class AssetType(Base):
     )
     description: Mapped[str | None] = mapped_column(
         Text, nullable=True, comment="描述以及涉及的数据分级评定"
+    )
+    translations: Mapped[dict[str, dict[str, object]]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'::jsonb"),
+        comment="按 locale 存储的资产类型展示字段翻译",
     )
     is_active: Mapped[bool] = mapped_column(
         Boolean,

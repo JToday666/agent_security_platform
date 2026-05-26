@@ -76,6 +76,7 @@
         "assets": "Additional Materials",
         "details": "Details",
         "highlights": "Evaluation Focus",
+        "sampleProfile": "Sample Aggregate Summary",
         "scenarios": "Typical Scenarios"
       },
       "sameRiskTitle": "Same Risk Domain",
@@ -84,6 +85,13 @@
       "sideLabel": "Dataset side information",
       "submitWithDataset": "Use this dataset to start an evaluation"
     }
+  },
+  "profile": {
+    "assetTypeTop": "Top Asset Types",
+    "deliveryDistribution": "Attack Delivery",
+    "description": "Quickly review sample difficulty, attack delivery patterns, and the main protected assets in this dataset.",
+    "difficultyBuckets": "Difficulty Buckets",
+    "emptyDistribution": "No distribution data is available."
   },
   "resources": {
     "emptyMessage": "This dataset has no displayable resources or media.",

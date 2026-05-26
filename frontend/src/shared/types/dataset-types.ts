@@ -41,6 +41,19 @@ export interface DatasetResourceLink {
   type: "docs" | "download" | "demo" | "link";
 }
 
+export interface DatasetDistributionItem {
+  code: string;
+  label: string;
+  count: number;
+  ratio: number;
+}
+
+export interface DatasetSampleProfile {
+  deliveryDistribution: DatasetDistributionItem[];
+  assetTypeTop: DatasetDistributionItem[];
+  difficultyBuckets: DatasetDistributionItem[];
+}
+
 export interface DatasetDetail {
   datasetId: string;
   name: string;
@@ -57,4 +70,5 @@ export interface DatasetDetail {
   scenarios: string[];
   resources: DatasetResourceLink[];
   media: DatasetMediaItem[];
+  sampleProfile: DatasetSampleProfile;
 }

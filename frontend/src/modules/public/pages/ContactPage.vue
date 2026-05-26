@@ -534,6 +534,66 @@ const contactPaths = computed<ContactPath[]>(() => [
   align-self: flex-start;
 }
 
+@media (min-width: 1181px) and (min-height: 760px) {
+  .contact-page {
+    padding-top: 0.95rem;
+    padding-bottom: 1.35rem;
+  }
+
+  .contact-page :deep(.page-hero) {
+    gap: 0.4rem;
+    margin-bottom: clamp(1rem, 2.4vh, 1.45rem);
+  }
+
+  .contact-page :deep(.page-hero__title) {
+    font-size: 2.7rem;
+  }
+
+  .contact-page :deep(.page-hero__description) {
+    margin-top: 0.42rem;
+    line-height: 1.55;
+  }
+
+  .contact-logo {
+    width: 3.7rem;
+  }
+
+  .contact-panel {
+    gap: clamp(1.2rem, 3vw, 2.4rem);
+    padding-block: 0.15rem 0.8rem;
+  }
+
+  .contact-panel__copy {
+    gap: 0.68rem;
+  }
+
+  .contact-panel__copy h2 {
+    font-size: 2.18rem;
+  }
+
+  .contact-panel__copy p:last-of-type {
+    line-height: 1.6;
+  }
+
+  .contact-channel {
+    padding: 0.78rem 1rem;
+  }
+
+  .contact-paths {
+    margin-top: clamp(1rem, 3vh, 2rem);
+  }
+
+  .contact-path-item {
+    min-height: 10.9rem;
+    gap: 0.55rem;
+    padding: 0.95rem 1rem 0.95rem 0;
+  }
+
+  .contact-path-item p {
+    line-height: 1.58;
+  }
+}
+
 @media (max-width: 1080px) {
   .contact-panel {
     grid-template-columns: 1fr;

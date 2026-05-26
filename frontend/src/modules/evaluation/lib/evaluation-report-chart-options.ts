@@ -19,6 +19,7 @@ import {
 } from "@/modules/evaluation/lib/evaluation-report-metrics";
 import type {
   EvaluationReportPayload,
+  EvaluationChartAxisMode,
   EvaluationSampleOutcome,
   EvaluationScoreMetricKey,
   EvaluationScoreTrend,
@@ -36,6 +37,130 @@ const HTML_ESCAPE_MAP: Record<string, string> = {
 const escapeHtml = (value: unknown): string =>
   String(value ?? "").replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
 
+export interface DynamicValueAxisRange {
+  min: number;
+  max: number;
+  interval: number;
+}
+
+export interface DynamicValueAxisRangeOptions {
+  mode: EvaluationChartAxisMode;
+  fullMin?: number;
+  fullMax?: number;
+  targetTickCount?: number;
+}
+
+const niceNumber = (value: number, round: boolean): number => {
+  if (!Number.isFinite(value) || value <= 0) {
+    return 1;
+  }
+
+  const exponent = Math.floor(Math.log10(value));
+  const fraction = value / 10 ** exponent;
+  let niceFraction = 10;
+
+  if (round) {
+    if (fraction < 1.5) niceFraction = 1;
+    else if (fraction < 3) niceFraction = 2;
+    else if (fraction < 7) niceFraction = 5;
+  } else if (fraction <= 1) niceFraction = 1;
+  else if (fraction <= 2) niceFraction = 2;
+  else if (fraction <= 5) niceFraction = 5;
+
+  return niceFraction * 10 ** exponent;
+};
+
+const precisionForStep = (step: number): number =>
+  step >= 1 ? 0 : Math.min(6, Math.ceil(Math.abs(Math.log10(step))) + 1);
+
+const roundAxisValue = (value: number, step: number): number =>
+  Number(value.toFixed(precisionForStep(step)));
+
+const finiteValues = (values: number[]): number[] =>
+  values.filter((value) => Number.isFinite(value));
+
+const fullAxisRange = (
+  values: number[],
+  options: DynamicValueAxisRangeOptions,
+): DynamicValueAxisRange => {
+  const targetTickCount = options.targetTickCount ?? 5;
+  const dataValues = finiteValues(values);
+  const dataMin = dataValues.length ? Math.min(...dataValues) : 0;
+  const dataMax = dataValues.length ? Math.max(...dataValues) : 1;
+  const min = options.fullMin ?? Math.min(0, dataMin);
+  const rawMax =
+    options.fullMax ??
+    (dataValues.length
+      ? dataMax + Math.max((dataMax - min) * 0.08, Math.abs(dataMax) * 0.04, 1)
+      : min + 1);
+  const interval = niceNumber(
+    Math.max(rawMax - min, 1) / targetTickCount,
+    true,
+  );
+  const max = options.fullMax ?? Math.ceil(rawMax / interval) * interval;
+
+  return {
+    min: roundAxisValue(min, interval),
+    max: roundAxisValue(max, interval),
+    interval: roundAxisValue(interval, interval),
+  };
+};
+
+export const buildDynamicValueAxisRange = (
+  values: number[],
+  options: DynamicValueAxisRangeOptions,
+): DynamicValueAxisRange => {
+  if (options.mode === "full") {
+    return fullAxisRange(values, options);
+  }
+
+  const targetTickCount = options.targetTickCount ?? 4;
+  const dataValues = finiteValues(values);
+  if (!dataValues.length) {
+    return fullAxisRange(values, { ...options, mode: "full" });
+  }
+
+  const dataMin = Math.min(...dataValues);
+  const dataMax = Math.max(...dataValues);
+  const fullSpan =
+    typeof options.fullMin === "number" && typeof options.fullMax === "number"
+      ? Math.max(0, options.fullMax - options.fullMin)
+      : 0;
+  const dataSpan = dataMax - dataMin;
+  const paddedMin =
+    dataSpan === 0
+      ? dataMin - Math.max(fullSpan * 0.0075, Math.abs(dataMin) * 0.05, 0.5)
+      : dataMin - dataSpan * 0.1;
+  const paddedMax =
+    dataSpan === 0
+      ? dataMax + Math.max(fullSpan * 0.0075, Math.abs(dataMax) * 0.05, 0.5)
+      : dataMax + dataSpan * 0.1;
+  const boundedMin =
+    typeof options.fullMin === "number"
+      ? Math.max(options.fullMin, paddedMin)
+      : paddedMin;
+  const boundedMax =
+    typeof options.fullMax === "number"
+      ? Math.min(options.fullMax, paddedMax)
+      : paddedMax;
+  const interval = niceNumber(
+    Math.max(boundedMax - boundedMin, Number.EPSILON) / targetTickCount,
+    true,
+  );
+  const min = Math.floor(boundedMin / interval) * interval;
+  const max = Math.ceil(boundedMax / interval) * interval;
+
+  if (min === max) {
+    return fullAxisRange(values, { ...options, mode: "full" });
+  }
+
+  return {
+    min: roundAxisValue(min, interval),
+    max: roundAxisValue(max, interval),
+    interval: roundAxisValue(interval, interval),
+  };
+};
+
 export const getTrendMetricKeys = (
   trend: EvaluationScoreTrend | null,
   view: EvaluationScoreTrendView,
@@ -49,9 +174,20 @@ export const buildTrendLineOption = (
   trend: EvaluationScoreTrend | null,
   view: EvaluationScoreTrendView,
   t: AppTranslator = translateRuntimeMessage,
+  axisMode: EvaluationChartAxisMode = "full",
 ): EChartsOption => {
   const metricKeys = getTrendMetricKeys(trend, view);
   const items = trend?.items ?? [];
+  const trendValues = items.flatMap((item) =>
+    metricKeys
+      .map((key) => item.scores[key])
+      .filter((value): value is number => typeof value === "number"),
+  );
+  const yAxisRange = buildDynamicValueAxisRange(trendValues, {
+    mode: axisMode,
+    fullMin: 0,
+    fullMax: 100,
+  });
 
   return {
     ...baseChartOption(),
@@ -121,8 +257,8 @@ export const buildTrendLineOption = (
     },
     yAxis: {
       type: "value",
-      min: 0,
-      max: 100,
+      ...yAxisRange,
+      scale: axisMode === "focus",
       axisLabel: { color: "#64748b" },
       splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.18)" } },
     },
@@ -476,49 +612,64 @@ export const buildDatasetStackedBarOption = (
 export const buildSampleScatterOption = (
   report: EvaluationReportPayload,
   t: AppTranslator = translateRuntimeMessage,
-): EChartsOption => ({
-  ...baseChartOption(),
-  color: [OUTCOME_COLORS.success, OUTCOME_COLORS.failed, OUTCOME_COLORS.error],
-  tooltip: {
-    trigger: "item",
-    formatter: (params: unknown) => {
-      const value =
-        params && typeof params === "object" && "value" in params
-          ? (params.value as unknown[])
-          : [];
-      return t("evaluation.charts.sampleTooltip", {
-        difficulty: escapeHtml(value[0]),
-        duration: escapeHtml(value[1]),
-        sampleId: escapeHtml(value[2]),
-      });
-    },
-  },
-  legend: { top: 0, right: 0, textStyle: { color: "#475569" } },
-  grid: { left: 54, right: 18, top: 42, bottom: 42 },
-  xAxis: {
-    type: "value",
-    min: 0,
-    max: 1,
-    name: t("evaluation.charts.difficulty"),
-    splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.16)" } },
-  },
-  yAxis: {
-    type: "value",
-    name: t("evaluation.charts.durationMs"),
-    splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.16)" } },
-  },
-  series: (["success", "failed", "error"] as EvaluationSampleOutcome[]).map(
-    (outcome) => ({
-      name: t(`evaluation.outcomes.${outcome}`),
-      type: "scatter",
-      symbolSize: outcome === "success" ? 8 : 10,
-      emphasis: {
-        focus: "series",
-        scale: 1.35,
+  axisMode: EvaluationChartAxisMode = "full",
+): EChartsOption => {
+  const points = report.breakdowns.sampleScatterPoints;
+  const difficultyRange = buildDynamicValueAxisRange(
+    points.map((item) => item.difficulty),
+    { mode: axisMode, fullMin: 0, fullMax: 1 },
+  );
+  const durationRange = buildDynamicValueAxisRange(
+    points.map((item) => item.durationMs),
+    { mode: axisMode, fullMin: 0, targetTickCount: 5 },
+  );
+
+  return {
+    ...baseChartOption(),
+    color: [OUTCOME_COLORS.success, OUTCOME_COLORS.failed, OUTCOME_COLORS.error],
+    tooltip: {
+      trigger: "item",
+      formatter: (params: unknown) => {
+        const value =
+          params && typeof params === "object" && "value" in params
+            ? (params.value as unknown[])
+            : [];
+        return t("evaluation.charts.sampleTooltip", {
+          difficulty: escapeHtml(value[0]),
+          duration: escapeHtml(value[1]),
+          sampleId: escapeHtml(value[2]),
+        });
       },
-      data: report.breakdowns.sampleScatterPoints
-        .filter((item) => item.normalizedResult === outcome)
-        .map((item) => [item.difficulty, item.durationMs, item.sampleId]),
-    }),
-  ),
-});
+    },
+    legend: { top: 0, right: 0, textStyle: { color: "#475569" } },
+    grid: { left: 54, right: 18, top: 42, bottom: 42 },
+    xAxis: {
+      type: "value",
+      ...difficultyRange,
+      scale: axisMode === "focus",
+      name: t("evaluation.charts.difficulty"),
+      splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.16)" } },
+    },
+    yAxis: {
+      type: "value",
+      ...durationRange,
+      scale: axisMode === "focus",
+      name: t("evaluation.charts.durationMs"),
+      splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.16)" } },
+    },
+    series: (["success", "failed", "error"] as EvaluationSampleOutcome[]).map(
+      (outcome) => ({
+        name: t(`evaluation.outcomes.${outcome}`),
+        type: "scatter",
+        symbolSize: outcome === "success" ? 8 : 10,
+        emphasis: {
+          focus: "series",
+          scale: 1.35,
+        },
+        data: points
+          .filter((item) => item.normalizedResult === outcome)
+          .map((item) => [item.difficulty, item.durationMs, item.sampleId]),
+      }),
+    ),
+  };
+};

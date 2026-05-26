@@ -201,6 +201,9 @@
     "sampleLocationEmpty": "Aún no hay muestras de dispersión.",
     "sampleLocationRiskCaption": "Error/anomalía {riskCount}, alta dificultad {highDifficultyCount}, alta duración {highDurationCount}.",
     "sampleLocationSafeCaption": "Muestra más lenta {sampleId}; no se encontraron muestras con error o anomalía.",
+    "sampleLocationAxisAria": "Rango de ejes de localización de muestras",
+    "sampleLocationAxisFocus": "Rango enfocado",
+    "sampleLocationAxisFull": "Rango completo",
     "sampleLocationTitle": "Localización de muestras",
     "summaryAria": "Resumen del informe",
     "stateSync": "Sincronizando estado del informe.",
@@ -277,6 +280,9 @@
     "taskActionsAria": "Acciones de tarea"
   },
   "trend": {
+    "axisAria": "Rango de ejes de tendencia",
+    "axisFocus": "Rango enfocado",
+    "axisFull": "Rango completo",
     "all": "Todas las evaluaciones",
     "capabilityView": "Vista de capacidad",
     "delta": "Comparado con anterior",

@@ -10,12 +10,24 @@ from app.modules.datasets.schemas import (
     DatasetCatalogResponse,
     DatasetCategoryInfo,
     DatasetDetailResponse,
+    DatasetDistributionItem,
+    DatasetSampleProfile,
 )
 from app.platform.errors import NotFoundError
-from app.platform.i18n import DEFAULT_LOCALE, get_current_locale
+from app.platform.i18n import DEFAULT_LOCALE, get_current_locale, translate
 
 TranslationMap = dict[str, dict[int, dict[str, Any]]]
 TranslationMapLoader = Callable[[str, list[int], list[int]], Awaitable[TranslationMap]]
+
+UNASSIGNED_ASSET_CODE = "__unassigned__"
+UNASSIGNED_ASSET_MESSAGE_KEY = "datasets.sample_profile.asset_unassigned"
+DIFFICULTY_BUCKETS: tuple[tuple[str, float, float], ...] = (
+    ("0.0-0.2", 0.0, 0.2),
+    ("0.2-0.4", 0.2, 0.4),
+    ("0.4-0.6", 0.4, 0.6),
+    ("0.6-0.8", 0.6, 0.8),
+    ("0.8-1.0", 0.8, 1.0),
+)
 
 
 def latest_datetime(*values: datetime | None) -> datetime:
@@ -62,6 +74,135 @@ def _translated_media(
 ) -> list[dict[str, object]]:
     value = translations.get(entity_id, {}).get("media")
     return [dict(item) for item in (fallback if value in (None, []) else value)]
+
+
+def _row_value(row: Any, key: str, fallback: Any = None) -> Any:
+    if isinstance(row, dict):
+        return row.get(key, fallback)
+    if hasattr(row, "_mapping"):
+        return row._mapping.get(key, fallback)
+    return getattr(row, key, fallback)
+
+
+def _translated_row_label(row: Any, prefix: str, fallback: Any) -> str:
+    translations = _row_value(row, f"{prefix}_translations", {})
+    if isinstance(translations, dict):
+        locale_translations = translations.get(get_current_locale())
+        if isinstance(locale_translations, dict):
+            label = locale_translations.get("name")
+            if label not in (None, ""):
+                return str(label).strip()
+    return str(fallback or "").strip()
+
+
+def _rounded_ratio(count: int, total: int) -> float:
+    if total <= 0:
+        return 0.0
+    return round(count / total, 4)
+
+
+def _to_float(value: Any) -> float:
+    parsed = float(value)
+    return parsed if parsed == parsed else 0.0
+
+
+def _build_distribution_item(
+    code: str,
+    label: str,
+    count: int,
+    total: int,
+) -> DatasetDistributionItem:
+    return DatasetDistributionItem(
+        code=code,
+        label=label,
+        count=count,
+        ratio=_rounded_ratio(count, total),
+    )
+
+
+def _increment_distribution(
+    accumulator: dict[str, dict[str, Any]],
+    code: Any,
+    label: Any,
+    *,
+    fallback_code: str | None = None,
+    fallback_label: str | None = None,
+) -> None:
+    normalized_code = str(code or fallback_code or "").strip()
+    normalized_label = str(label or fallback_label or normalized_code).strip()
+    if not normalized_code:
+        return
+    entry = accumulator.setdefault(
+        normalized_code, {"code": normalized_code, "label": normalized_label, "count": 0}
+    )
+    entry["count"] += 1
+
+
+def _finalize_distribution(
+    accumulator: dict[str, dict[str, Any]],
+    total: int,
+    *,
+    limit: int | None = None,
+) -> list[DatasetDistributionItem]:
+    items = [
+        _build_distribution_item(
+            str(item["code"]), str(item["label"]), int(item["count"]), total
+        )
+        for item in accumulator.values()
+    ]
+    sorted_items = sorted(items, key=lambda item: (-item.count, item.label, item.code))
+    return sorted_items[:limit] if limit is not None else sorted_items
+
+
+def _build_difficulty_buckets(
+    rows: list[Any],
+    total: int,
+) -> list[DatasetDistributionItem]:
+    scores = [
+        min(1.0, max(0.0, _to_float(_row_value(row, "difficulty_score", 0))))
+        for row in rows
+    ]
+    bucket_counts = {code: 0 for code, _lower, _upper in DIFFICULTY_BUCKETS}
+    for score in scores:
+        for index, (code, lower, upper) in enumerate(DIFFICULTY_BUCKETS):
+            is_last = index == len(DIFFICULTY_BUCKETS) - 1
+            in_bucket = (
+                (lower <= score <= upper) if is_last else (lower <= score < upper)
+            )
+            if in_bucket:
+                bucket_counts[code] += 1
+                break
+
+    return [
+        _build_distribution_item(code, code, bucket_counts[code], total)
+        for code, _lower, _upper in DIFFICULTY_BUCKETS
+    ]
+
+
+def _build_sample_profile(rows: list[Any], total_samples: int) -> DatasetSampleProfile:
+    delivery_distribution: dict[str, dict[str, Any]] = {}
+    asset_distribution: dict[str, dict[str, Any]] = {}
+    total = max(0, int(total_samples))
+
+    for row in rows:
+        _increment_distribution(
+            delivery_distribution,
+            _row_value(row, "delivery_code"),
+            _translated_row_label(row, "delivery", _row_value(row, "delivery_name")),
+        )
+        _increment_distribution(
+            asset_distribution,
+            _row_value(row, "asset_type_code"),
+            _translated_row_label(row, "asset_type", _row_value(row, "asset_type_name")),
+            fallback_code=UNASSIGNED_ASSET_CODE,
+            fallback_label=translate(UNASSIGNED_ASSET_MESSAGE_KEY),
+        )
+
+    return DatasetSampleProfile(
+        delivery_distribution=_finalize_distribution(delivery_distribution, total),
+        asset_type_top=_finalize_distribution(asset_distribution, total, limit=5),
+        difficulty_buckets=_build_difficulty_buckets(rows, total),
+    )
 
 
 class DatasetService:
@@ -174,6 +315,12 @@ class DatasetService:
             getattr(display_meta, "updated_at", None),
             sample_updated_at,
         )
+        sample_rows_loader = getattr(self.repository, "get_detail_sample_rows", None)
+        sample_rows = (
+            await sample_rows_loader(subtype.code)
+            if callable(sample_rows_loader)
+            else []
+        )
         return DatasetDetailResponse(
             dataset_id=subtype.code,
             name=_translated_value(
@@ -224,6 +371,7 @@ class DatasetService:
                 subtype.id,
                 list(getattr(display_meta, "media", []) or []),
             ),
+            sample_profile=_build_sample_profile(sample_rows, int(sample_count)),
         )
 
     async def _load_translation_maps(self, rows) -> TranslationMap:
