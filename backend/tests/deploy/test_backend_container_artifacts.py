@@ -20,11 +20,22 @@ def _service_section(compose_text: str, service_name: str) -> str:
 def test_backend_dockerfile_builds_single_runtime_image() -> None:
     dockerfile = (BACKEND_ROOT / "Dockerfile").read_text(encoding="utf-8")
 
-    assert "FROM python:3.12-slim" in dockerfile
+    assert "ARG DOCKER_CLI_IMAGE=docker:29-cli" in dockerfile
+    assert "FROM ${DOCKER_CLI_IMAGE} AS docker-cli" in dockerfile
+    assert "ARG BASE_IMAGE=python:3.12-slim" in dockerfile
+    assert "FROM ${BASE_IMAGE}" in dockerfile
+    assert dockerfile.index("ARG BASE_IMAGE=python:3.12-slim") < dockerfile.index(
+        "FROM ${DOCKER_CLI_IMAGE} AS docker-cli"
+    )
     assert "WORKDIR /app" in dockerfile
+    assert "COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker" in dockerfile
+    assert "http://mirrors.aliyun.com/debian" in dockerfile
+    assert "http://mirrors.aliyun.com/debian-security" in dockerfile
+    assert "PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple" in dockerfile
+    assert "PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn" in dockerfile
     assert "pip install" in dockerfile
     assert "requirements.txt" in dockerfile
-    assert "docker.io" in dockerfile
+    assert "docker.io" not in dockerfile
     assert "COPY . ." in dockerfile
     assert 'CMD ["uvicorn", "app.main:app"' in dockerfile
 

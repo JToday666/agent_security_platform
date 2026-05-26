@@ -135,6 +135,8 @@ class Settings(BaseSettings):
         """Reject generated storage paths that would write inside this checkout."""
         resolved_path = path.resolve()
         repo_root = REPO_ROOT.resolve()
+        if repo_root == Path("/"):
+            repo_root = BACKEND_DIR.resolve()
         try:
             resolved_path.relative_to(repo_root)
         except ValueError:

@@ -553,8 +553,15 @@ docker compose ps
 
 ```bash
 cd /home/ecs-user/apps/agent_security_platform
-docker build -t asp-backend:local backend
+docker build \
+  --build-arg BASE_IMAGE=crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_docker:python-3.12-slim \
+  --build-arg DOCKER_CLI_IMAGE=crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_docker:docker-29-cli \
+  -t asp-backend:local \
+  backend
 ```
+
+该 Dockerfile 默认使用清华 PyPI 源安装 Python 依赖，并在构建阶段把 Debian 源替换为阿里云镜像源。
+`BASE_IMAGE` 和 `DOCKER_CLI_IMAGE` 在 ECS 上必须传入 ACR 镜像，避免构建时访问 Docker Hub。
 
 然后把 `/data/agent-security-platform/services/backend/compose/.env` 中的 `BACKEND_IMAGE` 设为 `asp-backend:local`。
 
