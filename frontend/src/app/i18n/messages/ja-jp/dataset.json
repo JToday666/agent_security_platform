@@ -76,6 +76,7 @@
         "assets": "追加資料",
         "details": "詳細説明",
         "highlights": "評価重点",
+        "sampleProfile": "サンプル集計概要",
         "scenarios": "典型シナリオ"
       },
       "sameRiskTitle": "同じリスク領域のデータセット",
@@ -84,6 +85,13 @@
       "sideLabel": "データセット補足情報",
       "submitWithDataset": "このデータセットで評価を開始"
     }
+  },
+  "profile": {
+    "assetTypeTop": "主な資産タイプ",
+    "deliveryDistribution": "攻撃配信方式",
+    "description": "このデータセットのサンプル難度、攻撃の提示方法、主な保護資産をすばやく確認できます。",
+    "difficultyBuckets": "難度区間",
+    "emptyDistribution": "表示できる分布データはありません。"
   },
   "resources": {
     "emptyMessage": "現在のデータセットには表示可能なリソースやメディアがありません。",

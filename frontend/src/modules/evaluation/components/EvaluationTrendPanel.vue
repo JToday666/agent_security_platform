@@ -32,6 +32,17 @@
             {{ item.label }}
           </button>
         </div>
+        <div class="segmented" :aria-label="t('evaluation.trend.axisAria')">
+          <button
+            v-for="item in axisModeOptions"
+            :key="item.value"
+            type="button"
+            :class="{ active: axisMode === item.value }"
+            @click="axisMode = item.value"
+          >
+            {{ item.label }}
+          </button>
+        </div>
       </div>
     </div>
 
@@ -60,6 +71,7 @@
       <EvaluationTrendChart
         :trend="trend"
         :view="view"
+        :axis-mode="axisMode"
         @select="$emit('select', $event)"
       />
     </div>
@@ -72,6 +84,7 @@ import { useI18n } from "vue-i18n";
 import { buildTrendSummary } from "@/modules/evaluation/lib/evaluation-report-insights";
 import { buildEvaluationTrendFromRecords } from "@/modules/evaluation/lib/evaluation-record-trend";
 import type {
+  EvaluationChartAxisMode,
   EvaluationRecord,
   EvaluationScoreTrendScope,
   EvaluationScoreTrendView,
@@ -106,8 +119,17 @@ const viewOptions = computed<Array<{
   { label: t("evaluation.trend.riskView"), value: "risk" },
 ]);
 
+const axisModeOptions = computed<Array<{
+  label: string;
+  value: EvaluationChartAxisMode;
+}>>(() => [
+  { label: t("evaluation.trend.axisFull"), value: "full" },
+  { label: t("evaluation.trend.axisFocus"), value: "focus" },
+]);
+
 const scope = ref<EvaluationScoreTrendScope>("recent10");
 const view = ref<EvaluationScoreTrendView>("capability");
+const axisMode = ref<EvaluationChartAxisMode>("full");
 const trend = computed(() =>
   buildEvaluationTrendFromRecords(props.records, scope.value),
 );

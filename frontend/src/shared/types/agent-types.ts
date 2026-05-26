@@ -25,6 +25,7 @@ export type EvaluationAction = "pause" | "resume" | "terminate" | "cancel";
 export type EvaluationSampleOutcome = "success" | "failed" | "error";
 export type EvaluationScoreTrendScope = "recent10" | "all";
 export type EvaluationScoreTrendView = "capability" | "risk";
+export type EvaluationChartAxisMode = "full" | "focus";
 export type EvaluationScoreMetricKey =
   | "conservativeScore"
   | "performanceScore"

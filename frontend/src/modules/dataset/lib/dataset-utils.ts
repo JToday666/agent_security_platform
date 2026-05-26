@@ -15,12 +15,56 @@ export interface CategoryTheme {
   shadow: string;
 }
 
-const COMFORT_HUE_ANCHORS = [162, 192, 220, 244, 270, 24, 340] as const;
-const MIN_HUE_GAP = 22;
-const HUE_JITTER_RANGE = 5;
+interface CategoryPalette {
+  hue: number;
+  saturation: number;
+  lightness: number;
+}
+
+const DEFAULT_CATEGORY_THEME_ID = "__default__";
+const MAX_RISK_DOMAIN_THEME_SLOTS = 15;
+const MIN_THEME_HUE_GAP = 16;
 const ACCENT_HUE_OFFSET = 7;
 
-const CATEGORY_THEME_CACHE = new Map<string, CategoryTheme>();
+const KNOWN_CATEGORY_PALETTE: Record<string, CategoryPalette> = {
+  confidentiality: { hue: 220, saturation: 62, lightness: 45 },
+  integrity: { hue: 170, saturation: 54, lightness: 34 },
+  availability_and_destructive_harm: { hue: 36, saturation: 72, lightness: 42 },
+  unauthorized_execution_and_system_control: {
+    hue: 252,
+    saturation: 58,
+    lightness: 52,
+  },
+  fraud_impersonation_and_social_engineering: {
+    hue: 338,
+    saturation: 58,
+    lightness: 43,
+  },
+  content_and_societal_harm: { hue: 194, saturation: 64, lightness: 38 },
+  harmful_search_and_reconnaissance: {
+    hue: 286,
+    saturation: 48,
+    lightness: 45,
+  },
+};
+
+const GENERATED_CATEGORY_PALETTE: CategoryPalette[] = [
+  { hue: 108, saturation: 52, lightness: 36 },
+  { hue: 12, saturation: 64, lightness: 43 },
+  { hue: 132, saturation: 50, lightness: 35 },
+  { hue: 312, saturation: 46, lightness: 44 },
+  { hue: 60, saturation: 64, lightness: 39 },
+  { hue: 269, saturation: 50, lightness: 48 },
+  { hue: 84, saturation: 54, lightness: 35 },
+  { hue: 154, saturation: 48, lightness: 34 },
+  { hue: 236, saturation: 50, lightness: 48 },
+  { hue: 320, saturation: 48, lightness: 43 },
+  { hue: 300, saturation: 48, lightness: 45 },
+  { hue: 148, saturation: 46, lightness: 35 },
+  { hue: 72, saturation: 58, lightness: 36 },
+  { hue: 120, saturation: 48, lightness: 36 },
+  { hue: 4, saturation: 62, lightness: 43 },
+];
 
 const hashCategoryId = (value: string): number => {
   let hash = 2166136261;
@@ -45,6 +89,9 @@ const mixHash = (value: number): number => {
   return hash >>> 0;
 };
 
+const clamp = (value: number, minimum: number, maximum: number): number =>
+  Math.min(maximum, Math.max(minimum, value));
+
 const normalizeHue = (value: number): number => {
   const normalized = value % 360;
 
@@ -65,89 +112,199 @@ const toHsla = (
 const compareCategoryIds = (left: string, right: string): number =>
   left.localeCompare(right);
 
+const normalizeCategoryThemeId = (categoryId: string): string =>
+  categoryId.trim() || DEFAULT_CATEGORY_THEME_ID;
+
+const normalizeCategoryThemeIds = (categoryIds: readonly string[]): string[] =>
+  Array.from(new Set(categoryIds.map(normalizeCategoryThemeId))).sort(
+    compareCategoryIds,
+  );
+
 const getHueDistance = (left: number, right: number): number => {
   const delta = Math.abs(normalizeHue(left - right));
   return delta > 180 ? 360 - delta : delta;
 };
 
-const ensureMinimumHueGap = (hue: number, usedHues: number[]): number => {
-  let resolvedHue = normalizeHue(hue);
-
-  for (let attempt = 0; attempt < 12; attempt += 1) {
-    const hasConflict = usedHues.some(
-      (item) => getHueDistance(resolvedHue, item) < MIN_HUE_GAP,
-    );
-
-    if (!hasConflict) {
-      return resolvedHue;
-    }
-
-    resolvedHue = normalizeHue(resolvedHue + MIN_HUE_GAP / 2);
+const getMinimumHueDistance = (hue: number, usedHues: readonly number[]): number => {
+  if (usedHues.length === 0) {
+    return 180;
   }
 
-  return resolvedHue;
+  return Math.min(...usedHues.map((item) => getHueDistance(hue, item)));
 };
 
-const buildResolvedHueMap = (
-  categoryIds: readonly string[],
-): Map<string, number> => {
-  const ids = Array.from(
-    new Set(categoryIds.map((item) => item.trim()).filter(Boolean)),
-  ).sort(compareCategoryIds);
+const resolvePaletteHue = (
+  palette: CategoryPalette,
+  seed: number,
+  usedHues: readonly number[],
+): number => {
+  const baseHue = normalizeHue(palette.hue);
 
-  if (ids.length === 0) {
-    return new Map();
+  if (getMinimumHueDistance(baseHue, usedHues) >= MIN_THEME_HUE_GAP) {
+    return baseHue;
   }
 
-  const collectionSeed = ids.reduce(
-    (seed, categoryId) => mixHash(seed ^ hashCategoryId(categoryId)),
-    2166136261,
-  );
-  const anchorRotation = collectionSeed % COMFORT_HUE_ANCHORS.length;
+  const direction = seed % 2 === 0 ? 1 : -1;
+  const step = 5 + (seed % 5);
+  let bestHue = baseHue;
+  let bestDistance = getMinimumHueDistance(baseHue, usedHues);
 
-  const rankedIds = ids
-    .map((categoryId) => ({
-      categoryId,
-      score: mixHash(hashCategoryId(categoryId)) / 0x100000000,
-      jitterSeed: mixHash(hashCategoryId(`${categoryId}:hue-jitter`)),
-    }))
+  for (let attempt = 1; attempt <= 32; attempt += 1) {
+    const candidates = [
+      normalizeHue(baseHue + direction * step * attempt),
+      normalizeHue(baseHue - direction * step * attempt),
+    ];
+
+    for (const candidateHue of candidates) {
+      const distance = getMinimumHueDistance(candidateHue, usedHues);
+
+      if (distance > bestDistance) {
+        bestHue = candidateHue;
+        bestDistance = distance;
+      }
+
+      if (distance >= MIN_THEME_HUE_GAP) {
+        return candidateHue;
+      }
+    }
+  }
+
+  return bestHue;
+};
+
+const resolveGeneratedPalette = (
+  categoryId: string,
+  usedHues: readonly number[],
+  usedCandidateIndexes: ReadonlySet<number>,
+): CategoryPalette & { candidateIndex?: number } => {
+  const seed = hashCategoryId(categoryId);
+  const candidates = GENERATED_CATEGORY_PALETTE.slice(
+    0,
+    MAX_RISK_DOMAIN_THEME_SLOTS,
+  )
+    .map((palette, index) => {
+      const resolvedHue = resolvePaletteHue(
+        palette,
+        mixHash(seed ^ index),
+        usedHues,
+      );
+
+      return {
+        ...palette,
+        hue: resolvedHue,
+        hueAdjusted: resolvedHue !== normalizeHue(palette.hue),
+        index,
+        distance: getMinimumHueDistance(resolvedHue, usedHues),
+        score: mixHash(seed ^ hashCategoryId(`theme-slot:${index}`)),
+      };
+    })
     .sort(
       (left, right) =>
+        Number(usedCandidateIndexes.has(left.index)) -
+          Number(usedCandidateIndexes.has(right.index)) ||
+        right.distance - left.distance ||
         left.score - right.score ||
-        compareCategoryIds(left.categoryId, right.categoryId),
+        left.index - right.index,
     );
 
-  const usedHues: number[] = [];
-  const resolvedEntries = rankedIds.map((item, index) => {
-    const anchor =
-      COMFORT_HUE_ANCHORS[
-        (index + anchorRotation) % COMFORT_HUE_ANCHORS.length
-      ]!;
-    const jitter = ((item.jitterSeed / 0x100000000) * 2 - 1) * HUE_JITTER_RANGE;
-    const baseHue = ensureMinimumHueGap(anchor + jitter, usedHues);
-    usedHues.push(baseHue);
+  const selectedCandidate =
+    candidates.find(
+      (candidate) =>
+        !usedCandidateIndexes.has(candidate.index) &&
+        candidate.distance >= MIN_THEME_HUE_GAP,
+    ) ??
+    candidates.find((candidate) => !usedCandidateIndexes.has(candidate.index)) ??
+    candidates[0];
 
-    return [item.categoryId, baseHue] as const;
-  });
+  if (selectedCandidate) {
+    const { hue, hueAdjusted, index, saturation, lightness } = selectedCandidate;
 
-  return new Map(resolvedEntries);
+    return {
+      hue,
+      saturation: clamp(
+        saturation + (((seed >>> 3) % 3) - 1) * 2 - (hueAdjusted ? 2 : 0),
+        42,
+        66,
+      ),
+      lightness: clamp(
+        lightness + (((seed >>> 5) % 3) - 1) + (hueAdjusted ? 1 : 0),
+        34,
+        50,
+      ),
+      candidateIndex: index,
+    };
+  }
+
+  return {
+    hue: resolvePaletteHue(
+      { hue: seed % 360, saturation: 52, lightness: 42 },
+      seed,
+      usedHues,
+    ),
+    saturation: 52,
+    lightness: 42,
+  };
 };
 
-const resolveBaseHue = (categoryId: string): number =>
-  buildResolvedHueMap([categoryId]).get(categoryId)!;
-
-const buildCategoryTheme = (categoryId: string): CategoryTheme => {
-  const baseHue = resolveBaseHue(categoryId);
+const buildCategoryThemeFromPalette = (
+  baseHue: number,
+  saturation: number,
+  lightness: number,
+): CategoryTheme => {
   const accentHue = normalizeHue(baseHue + ACCENT_HUE_OFFSET);
 
   return {
     soft: toHsl(baseHue, 64, 97),
-    solid: toHsl(baseHue, 60, 43),
+    solid: toHsl(baseHue, saturation, lightness),
     border: toHsl(baseHue, 52, 86),
     text: toHsl(baseHue, 38, 30),
-    gradient: `linear-gradient(135deg, ${toHsl(baseHue, 58, 42)}, ${toHsl(accentHue, 56, 48)})`,
+    gradient: `linear-gradient(135deg, ${toHsl(baseHue, saturation, Math.max(32, lightness - 3))}, ${toHsl(accentHue, Math.max(42, saturation - 6), Math.min(56, lightness + 5))})`,
     shadow: toHsla(baseHue, 36, 40, 0.16),
   };
+};
+
+const buildCategoryTheme = (palette: CategoryPalette): CategoryTheme =>
+  buildCategoryThemeFromPalette(
+    palette.hue,
+    palette.saturation,
+    palette.lightness,
+  );
+
+export const getCategoryThemeMap = (
+  categoryIds: readonly string[],
+): Map<string, CategoryTheme> => {
+  const ids = normalizeCategoryThemeIds(categoryIds);
+  const usedHues = Object.values(KNOWN_CATEGORY_PALETTE).map((item) => item.hue);
+  const usedCandidateIndexes = new Set<number>();
+  const themes = new Map<string, CategoryTheme>();
+
+  for (const categoryId of ids) {
+    const knownPalette = KNOWN_CATEGORY_PALETTE[categoryId];
+
+    if (knownPalette) {
+      themes.set(categoryId, buildCategoryTheme(knownPalette));
+    }
+  }
+
+  for (const categoryId of ids) {
+    if (KNOWN_CATEGORY_PALETTE[categoryId]) {
+      continue;
+    }
+
+    const palette = resolveGeneratedPalette(
+      categoryId,
+      usedHues,
+      usedCandidateIndexes,
+    );
+    themes.set(categoryId, buildCategoryTheme(palette));
+    usedHues.push(palette.hue);
+
+    if (typeof palette.candidateIndex === "number") {
+      usedCandidateIndexes.add(palette.candidateIndex);
+    }
+  }
+
+  return themes;
 };
 
 interface IndexedCategory extends DatasetCategory {
@@ -169,17 +326,15 @@ const applySelectionLimit = (
   maxCount = MAX_SUBMIT_DATASET_COUNT,
 ): string[] => dedupeIds(ids).slice(0, Math.max(0, maxCount));
 
-export const getCategoryTheme = (categoryId: string): CategoryTheme => {
-  const themeKey = categoryId.trim() || "__default__";
-  const cachedTheme = CATEGORY_THEME_CACHE.get(themeKey);
-
-  if (cachedTheme) {
-    return cachedTheme;
-  }
-
-  const theme = buildCategoryTheme(themeKey);
-  CATEGORY_THEME_CACHE.set(themeKey, theme);
-  return theme;
+export const getCategoryTheme = (
+  categoryId: string,
+  categoryIds: readonly string[] = [categoryId],
+): CategoryTheme => {
+  const themeKey = normalizeCategoryThemeId(categoryId);
+  return (
+    getCategoryThemeMap([...categoryIds, themeKey]).get(themeKey) ??
+    buildCategoryTheme({ hue: 220, saturation: 60, lightness: 45 })
+  );
 };
 
 export const getEnabledCategories = (

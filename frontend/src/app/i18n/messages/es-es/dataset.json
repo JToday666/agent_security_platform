@@ -76,6 +76,7 @@
         "assets": "Materiales adicionales",
         "details": "Descripción detallada",
         "highlights": "Puntos clave de evaluación",
+        "sampleProfile": "Resumen agregado de muestras",
         "scenarios": "Escenarios típicos"
       },
       "sameRiskTitle": "Mismo dominio de riesgo",
@@ -84,6 +85,13 @@
       "sideLabel": "Información lateral del conjunto de datos",
       "submitWithDataset": "Usar este conjunto de datos para iniciar una evaluación"
     }
+  },
+  "profile": {
+    "assetTypeTop": "Principales tipos de activo",
+    "deliveryDistribution": "Entrega del ataque",
+    "description": "Revisa rápidamente la dificultad de las muestras, las formas de entrega del ataque y los principales activos protegidos en este conjunto de datos.",
+    "difficultyBuckets": "Intervalos de dificultad",
+    "emptyDistribution": "No hay datos de distribución disponibles."
   },
   "resources": {
     "emptyMessage": "Este conjunto de datos no tiene recursos ni medios que puedan mostrarse.",

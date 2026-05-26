@@ -6,17 +6,34 @@
         <h3>{{ insight?.title }}</h3>
         <strong>{{ insight?.value }}</strong>
         <p>{{ insight?.caption }}</p>
+        <div
+          class="sample-location-axis"
+          :aria-label="t('evaluation.report.sampleLocationAxisAria')"
+        >
+          <button
+            v-for="item in axisModeOptions"
+            :key="item.value"
+            type="button"
+            :class="{ active: axisMode === item.value }"
+            @click="axisMode = item.value"
+          >
+            {{ item.label }}
+          </button>
+        </div>
       </div>
-      <ReportSampleScatterChart :report="report" />
+      <ReportSampleScatterChart :report="report" :axis-mode="axisMode" />
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { EvaluationReportInsight } from "@/modules/evaluation/lib/evaluation-report-insights";
-import type { EvaluationReportPayload } from "@/shared/types/agent-types";
+import type {
+  EvaluationChartAxisMode,
+  EvaluationReportPayload,
+} from "@/shared/types/agent-types";
 
 const ReportSampleScatterChart = defineAsyncComponent(
   () =>
@@ -29,6 +46,14 @@ defineProps<{
 }>();
 
 const { t } = useI18n();
+const axisMode = ref<EvaluationChartAxisMode>("full");
+const axisModeOptions = computed<Array<{
+  label: string;
+  value: EvaluationChartAxisMode;
+}>>(() => [
+  { label: t("evaluation.report.sampleLocationAxisFull"), value: "full" },
+  { label: t("evaluation.report.sampleLocationAxisFocus"), value: "focus" },
+]);
 </script>
 
 <style scoped lang="scss">
@@ -85,6 +110,35 @@ const { t } = useI18n();
   margin: 0.35rem 0 0;
   color: var(--color-text-subtle);
   line-height: 1.68;
+}
+
+.sample-location-axis {
+  display: inline-flex;
+  max-width: 100%;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+  padding: 0.2rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.sample-location-axis button {
+  min-height: 2rem;
+  min-width: 0;
+  padding: 0 0.68rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.sample-location-axis button.active {
+  background: var(--color-white);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-control);
 }
 
 .chart-unit--wide :deep(.report-chart) {

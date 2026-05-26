@@ -130,12 +130,16 @@
                     </span>
                   </div>
 
+                  <span class="dataset-result-card__risk-domain">
+                    <span aria-hidden="true"></span>
+                    {{ dataset.category.name }}
+                  </span>
+
                   <p>
                     {{ dataset.shortDescription || t("dataset.subcategory.noDescription") }}
                   </p>
 
                   <div class="dataset-result-card__meta">
-                    <span>{{ dataset.category.name }}</span>
                     <span>
                       {{ t("dataset.labels.updatedAt") }}
                       {{ formatDateLabel(dataset.updatedAt ?? undefined) }}
@@ -192,6 +196,7 @@ import {
   formatDateLabel,
   formatSampleCount,
   getCategoryTheme,
+  getCategoryThemeMap,
 } from "@/modules/dataset/lib/dataset-utils";
 import {
   buildDatasetCatalogView,
@@ -239,6 +244,16 @@ const catalogView = computed(() =>
     sortKey.value,
   ),
 );
+
+const categoryThemeIds = computed(() =>
+  enabledCategories.value.map((category) => category.categoryId),
+);
+
+const categoryThemeMap = computed(() => getCategoryThemeMap(categoryThemeIds.value));
+
+const resolveCategoryTheme = (categoryId: string) =>
+  categoryThemeMap.value.get(categoryId) ??
+  getCategoryTheme(categoryId, categoryThemeIds.value);
 
 const activeSectionTitle = computed(() =>
   catalogView.value.activeCategory?.name ?? t("dataset.catalog.allDatasets"),
@@ -293,7 +308,7 @@ const getFilterStyle = (filter: DatasetCatalogFilterOption) => {
     };
   }
 
-  const theme = getCategoryTheme(filter.category.categoryId);
+  const theme = resolveCategoryTheme(filter.category.categoryId);
 
   return {
     "--category-accent": theme.solid,
@@ -304,7 +319,7 @@ const getFilterStyle = (filter: DatasetCatalogFilterOption) => {
 };
 
 const getDatasetCardStyle = (categoryId: string) => {
-  const theme = getCategoryTheme(categoryId);
+  const theme = resolveCategoryTheme(categoryId);
 
   return {
     "--category-accent": theme.solid,
@@ -532,10 +547,10 @@ onMounted(async () => {
 .dataset-result-card {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(11rem, auto);
+  gap: 1.1rem;
   min-width: 0;
-  padding: 1rem 1.05rem 1rem 1.2rem;
+  padding: 1.05rem 1.1rem 1.05rem 1.25rem;
   border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-card-sm);
   background: rgba(255, 255, 255, 0.86);
@@ -550,7 +565,7 @@ onMounted(async () => {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
-  width: 3px;
+  width: 4px;
   border-radius: var(--radius-card-sm) 0 0 var(--radius-card-sm);
   background: var(--category-accent);
 }
@@ -562,6 +577,10 @@ onMounted(async () => {
 }
 
 .dataset-result-card__main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
   min-width: 0;
 }
 
@@ -577,7 +596,8 @@ onMounted(async () => {
   min-width: 0;
   margin: 0;
   color: var(--color-text-dark);
-  font-size: 1.06rem;
+  font-size: 1.1rem;
+  line-height: 1.35;
   overflow-wrap: anywhere;
 }
 
@@ -594,8 +614,32 @@ onMounted(async () => {
   font-variant-numeric: tabular-nums;
 }
 
+.dataset-result-card__risk-domain {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  gap: 0.45rem;
+  padding: 0.38rem 0.62rem;
+  border: 1px solid var(--category-border);
+  border-radius: var(--radius-pill);
+  background: var(--category-soft);
+  color: var(--category-text);
+  font-size: 0.95rem;
+  font-weight: 850;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.dataset-result-card__risk-domain span {
+  flex: 0 0 auto;
+  width: 0.52rem;
+  height: 0.52rem;
+  border-radius: var(--radius-circle);
+  background: var(--category-accent);
+}
+
 .dataset-result-card p {
-  margin: 0.55rem 0 0;
+  margin: 0;
   color: var(--color-text-muted);
   line-height: 1.7;
   overflow-wrap: anywhere;
@@ -605,7 +649,6 @@ onMounted(async () => {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 0.8rem;
-  margin-top: 0.72rem;
   color: var(--color-text-subtle);
   font-size: 0.84rem;
   font-weight: 600;
@@ -613,6 +656,7 @@ onMounted(async () => {
 
 .dataset-result-card__actions {
   display: flex;
+  align-self: center;
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;

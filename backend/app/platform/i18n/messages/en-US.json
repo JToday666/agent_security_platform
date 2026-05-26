@@ -34,6 +34,7 @@
   "agents.templates.tags.skyvern": "Skyvern",
   "agents.templates.tags.v2": "v2",
   "agents.templates.tags.v3": "v3",
+  "datasets.sample_profile.asset_unassigned": "Unassigned asset",
   "errors.auth.invalid_credentials": "Incorrect username or password.",
   "errors.auth.missing_credentials": "Username and password cannot be empty.",
   "errors.auth.unauthorized": "You are not signed in or your session has expired.",

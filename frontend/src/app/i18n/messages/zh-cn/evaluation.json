@@ -201,6 +201,9 @@
     "sampleLocationEmpty": "暂无散点样本。",
     "sampleLocationRiskCaption": "失败/异常 {riskCount} 个，高难 {highDifficultyCount} 个，高耗时 {highDurationCount} 个。",
     "sampleLocationSafeCaption": "最慢样本 {sampleId}，未发现失败或异常样本。",
+    "sampleLocationAxisAria": "样本定位坐标范围",
+    "sampleLocationAxisFocus": "聚焦范围",
+    "sampleLocationAxisFull": "完整范围",
     "sampleLocationTitle": "样本定位",
     "summaryAria": "报告摘要",
     "stateSync": "正在同步报告状态。",
@@ -277,6 +280,9 @@
     "taskActionsAria": "任务操作"
   },
   "trend": {
+    "axisAria": "趋势坐标范围",
+    "axisFocus": "聚焦范围",
+    "axisFull": "完整范围",
     "all": "全部评测",
     "capabilityView": "能力视图",
     "delta": "较上一条",

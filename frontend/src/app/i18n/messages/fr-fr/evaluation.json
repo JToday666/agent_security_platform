@@ -201,6 +201,9 @@
     "sampleLocationEmpty": "Aucun échantillon de dispersion pour le moment.",
     "sampleLocationRiskCaption": "Échec/anomalie {riskCount}, haute difficulté {highDifficultyCount}, longue durée {highDurationCount}.",
     "sampleLocationSafeCaption": "Échantillon le plus lent {sampleId} ; aucun échantillon en échec ou anomalie trouvé.",
+    "sampleLocationAxisAria": "Plage d’axe de localisation des échantillons",
+    "sampleLocationAxisFocus": "Plage focalisée",
+    "sampleLocationAxisFull": "Plage complète",
     "sampleLocationTitle": "Localisation des échantillons",
     "summaryAria": "Résumé du rapport",
     "stateSync": "Synchronisation de l’état du rapport.",
@@ -277,6 +280,9 @@
     "taskActionsAria": "Actions de tâche"
   },
   "trend": {
+    "axisAria": "Plage d’axe de tendance",
+    "axisFocus": "Plage focalisée",
+    "axisFull": "Plage complète",
     "all": "Toutes les évaluations",
     "capabilityView": "Vue capacité",
     "delta": "Par rapport au précédent",

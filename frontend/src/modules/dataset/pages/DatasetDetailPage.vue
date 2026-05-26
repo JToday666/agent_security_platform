@@ -66,6 +66,44 @@
 
       <div class="detail-layout">
         <main class="detail-main" :aria-label="t('dataset.pages.detail.mainLabel')">
+          <section class="detail-section detail-section--sample-profile">
+            <div class="detail-section__head">
+              <div>
+                <h2>{{ t("dataset.pages.detail.sections.sampleProfile") }}</h2>
+                <p>{{ t("dataset.profile.description") }}</p>
+              </div>
+            </div>
+
+            <div class="sample-profile-grid">
+              <article
+                v-for="section in sampleProfileSections"
+                :key="section.key"
+                class="sample-profile-panel"
+              >
+                <h3>{{ section.title }}</h3>
+                <div v-if="section.items.length" class="sample-profile-bars">
+                  <div
+                    v-for="item in section.items"
+                    :key="`${section.key}-${item.code}`"
+                    class="sample-profile-bar"
+                  >
+                    <div class="sample-profile-bar__label">
+                      <span>{{ item.label }}</span>
+                      <strong>{{ formatSampleCount(item.count) }}</strong>
+                    </div>
+                    <div class="sample-profile-bar__track" aria-hidden="true">
+                      <span :style="{ width: formatRatioWidth(item.ratio) }"></span>
+                    </div>
+                    <small>{{ formatRatioLabel(item.ratio) }}</small>
+                  </div>
+                </div>
+                <p v-else class="empty-copy">
+                  {{ t("dataset.profile.emptyDistribution") }}
+                </p>
+              </article>
+            </div>
+          </section>
+
           <section class="detail-section">
             <h2>{{ t("dataset.pages.detail.sections.details") }}</h2>
             <p class="long-copy">
@@ -179,10 +217,12 @@ import {
   formatDateLabel,
   formatSampleCount,
   getCategoryTheme,
+  getCategoryThemeMap,
 } from "@/modules/dataset/lib/dataset-utils";
 import { useDatasetCatalogStore } from "@/modules/dataset/stores/datasetCatalogStore";
 import type {
   DatasetDetail as DatasetDetailType,
+  DatasetDistributionItem,
   DatasetSubcategory,
 } from "@/shared/types/dataset-types";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
@@ -203,8 +243,23 @@ const notFound = ref(false);
 
 const datasetId = computed(() => String(route.params.datasetId ?? ""));
 
+const categoryThemeIds = computed(() => {
+  const ids = enabledCategories.value.map((category) => category.categoryId);
+
+  if (detail.value?.category.categoryId) {
+    ids.push(detail.value.category.categoryId);
+  }
+
+  return ids;
+});
+
+const categoryThemeMap = computed(() => getCategoryThemeMap(categoryThemeIds.value));
+
 const detailThemeStyle = computed(() => {
-  const theme = getCategoryTheme(detail.value?.category.categoryId ?? "");
+  const categoryId = detail.value?.category.categoryId ?? "";
+  const theme =
+    categoryThemeMap.value.get(categoryId) ??
+    getCategoryTheme(categoryId, categoryThemeIds.value);
 
   return {
     "--category-accent": theme.solid,
@@ -229,6 +284,39 @@ const sameRiskDatasets = computed<DatasetSubcategory[]>(() => {
       .slice(0, 4) ?? []
   );
 });
+
+const sampleProfileSections = computed<
+  Array<{ key: string; title: string; items: DatasetDistributionItem[] }>
+>(() => {
+  if (!detail.value) {
+    return [];
+  }
+
+  const profile = detail.value.sampleProfile;
+  return [
+    {
+      key: "difficulty",
+      title: t("dataset.profile.difficultyBuckets"),
+      items: profile.difficultyBuckets,
+    },
+    {
+      key: "delivery",
+      title: t("dataset.profile.deliveryDistribution"),
+      items: profile.deliveryDistribution,
+    },
+    {
+      key: "asset",
+      title: t("dataset.profile.assetTypeTop"),
+      items: profile.assetTypeTop,
+    },
+  ];
+});
+
+const formatRatioLabel = (ratio: number): string =>
+  `${Math.max(0, ratio * 100).toFixed(1)}%`;
+
+const formatRatioWidth = (ratio: number): string =>
+  `${Math.min(100, Math.max(4, ratio * 100))}%`;
 
 const loadDetail = async () => {
   loading.value = true;
@@ -419,6 +507,113 @@ onMounted(async () => {
   overflow-wrap: anywhere;
 }
 
+.detail-section__head {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.detail-section__head h2 {
+  margin-bottom: 0.38rem;
+}
+
+.detail-section__head p {
+  margin: 0;
+  max-width: 74ch;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.detail-section--sample-profile {
+  padding-top: 1.1rem;
+}
+
+.sample-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.sample-profile-panel {
+  min-width: 0;
+  padding: 0.95rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: var(--radius-card-sm);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: var(--shadow-surface-soft);
+}
+
+.sample-profile-panel h3 {
+  margin: 0 0 0.75rem;
+  color: var(--color-text-dark);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.sample-profile-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.72rem;
+}
+
+.sample-profile-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.4rem 0.65rem;
+  min-width: 0;
+  align-items: center;
+}
+
+.sample-profile-bar__label {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  grid-column: 1 / -1;
+}
+
+.sample-profile-bar__label span {
+  min-width: 0;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.sample-profile-bar__label strong {
+  flex-shrink: 0;
+  color: var(--color-text-dark);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.sample-profile-bar__track {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: rgba(148, 163, 184, 0.16);
+}
+
+.sample-profile-bar__track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--category-accent);
+}
+
+.sample-profile-bar small {
+  color: var(--color-text-subtle);
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
 .long-copy {
   max-width: 72ch;
   margin: 0;
@@ -568,6 +763,10 @@ onMounted(async () => {
 
   .detail-summary h1 {
     font-size: 2rem;
+  }
+
+  .sample-profile-grid {
+    grid-template-columns: 1fr;
   }
 
   .side-panel {

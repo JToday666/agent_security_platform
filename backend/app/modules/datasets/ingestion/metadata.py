@@ -291,6 +291,7 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
                 name=item.name,
                 description=item.description,
                 is_active=item.is_active,
+                translations=dict(item.translations or {}),
             )
             for item in session.execute(
                 select(DatasetSource).order_by(DatasetSource.code.asc())
@@ -302,6 +303,7 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
                 name=item.name,
                 description=item.description,
                 is_active=item.is_active,
+                translations=dict(item.translations or {}),
             )
             for item in session.execute(
                 select(AttackDeliveryType).order_by(AttackDeliveryType.code.asc())
@@ -313,6 +315,7 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
                 name=item.name,
                 description=item.description,
                 is_active=item.is_active,
+                translations=dict(item.translations or {}),
             )
             for item in session.execute(
                 select(AssetType).order_by(AssetType.code.asc())
@@ -456,6 +459,7 @@ def _upsert_dataset_source(
             name=record.name,
             description=record.description,
             is_active=record.is_active,
+            translations=dict(record.translations),
         )
         session.add(row)
         session.flush()
@@ -463,6 +467,7 @@ def _upsert_dataset_source(
     row.name = record.name
     row.description = record.description
     row.is_active = record.is_active
+    row.translations = dict(record.translations)
     session.flush()
     return row, False
 
@@ -480,6 +485,7 @@ def _upsert_attack_delivery_type(
             name=record.name,
             description=record.description,
             is_active=record.is_active,
+            translations=dict(record.translations),
         )
         session.add(row)
         session.flush()
@@ -487,6 +493,7 @@ def _upsert_attack_delivery_type(
     row.name = record.name
     row.description = record.description
     row.is_active = record.is_active
+    row.translations = dict(record.translations)
     session.flush()
     return row, False
 
@@ -504,6 +511,7 @@ def _upsert_asset_type(
             name=record.name,
             description=record.description,
             is_active=record.is_active,
+            translations=dict(record.translations),
         )
         session.add(row)
         session.flush()
@@ -511,6 +519,7 @@ def _upsert_asset_type(
     row.name = record.name
     row.description = record.description
     row.is_active = record.is_active
+    row.translations = dict(record.translations)
     session.flush()
     return row, False
 

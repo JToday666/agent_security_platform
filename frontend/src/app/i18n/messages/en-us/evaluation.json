@@ -201,6 +201,9 @@
     "sampleLocationEmpty": "No scatter samples yet.",
     "sampleLocationRiskCaption": "Failed/error {riskCount}, high-difficulty {highDifficultyCount}, high-duration {highDurationCount}.",
     "sampleLocationSafeCaption": "Slowest sample {sampleId}; no failed or error samples found.",
+    "sampleLocationAxisAria": "Sample location axis range",
+    "sampleLocationAxisFocus": "Focus Range",
+    "sampleLocationAxisFull": "Full Range",
     "sampleLocationTitle": "Sample Location",
     "summaryAria": "Report Summary",
     "stateSync": "Synchronizing report status.",
@@ -277,6 +280,9 @@
     "taskActionsAria": "Task Actions"
   },
   "trend": {
+    "axisAria": "Trend axis range",
+    "axisFocus": "Focus Range",
+    "axisFull": "Full Range",
     "all": "All Evaluations",
     "capabilityView": "Capability View",
     "delta": "Compared with Previous",

@@ -6,6 +6,8 @@ from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.benchmark import (
+    AssetType,
+    AttackDeliveryType,
     BenchmarkSample,
     RiskCategory,
     RiskSubtype,
@@ -144,6 +146,33 @@ class DatasetRepository:
             )
         )
         return (await self.db.execute(stmt)).one_or_none()
+
+    async def get_detail_sample_rows(self, dataset_id: str):
+        """查询数据集详情聚合摘要所需的样本级字段。"""
+        stmt = (
+            select(
+                AttackDeliveryType.code.label("delivery_code"),
+                AttackDeliveryType.name.label("delivery_name"),
+                AttackDeliveryType.translations.label("delivery_translations"),
+                AssetType.code.label("asset_type_code"),
+                AssetType.name.label("asset_type_name"),
+                AssetType.translations.label("asset_type_translations"),
+                BenchmarkSample.difficulty_score.label("difficulty_score"),
+            )
+            .select_from(BenchmarkSample)
+            .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
+            .join(
+                AttackDeliveryType,
+                BenchmarkSample.attack_delivery_type_id == AttackDeliveryType.id,
+            )
+            .outerjoin(AssetType, BenchmarkSample.asset_type_id == AssetType.id)
+            .where(
+                RiskSubtype.code == dataset_id,
+                BenchmarkSample.is_active.is_(True),
+            )
+            .order_by(BenchmarkSample.id.asc())
+        )
+        return (await self.db.execute(stmt)).mappings().all()
 
 
 def _extract_locale_translations(

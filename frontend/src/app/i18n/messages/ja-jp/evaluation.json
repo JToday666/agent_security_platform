@@ -201,6 +201,9 @@
     "sampleLocationEmpty": "散布サンプルはまだありません。",
     "sampleLocationRiskCaption": "失敗/異常 {riskCount} 個、高難度 {highDifficultyCount} 個、長時間 {highDurationCount} 個。",
     "sampleLocationSafeCaption": "最遅サンプル {sampleId}。失敗または異常サンプルは見つかりませんでした。",
+    "sampleLocationAxisAria": "サンプル位置の軸範囲",
+    "sampleLocationAxisFocus": "フォーカス範囲",
+    "sampleLocationAxisFull": "全体範囲",
     "sampleLocationTitle": "サンプル位置",
     "summaryAria": "レポート概要",
     "stateSync": "レポート状態を同期中です。",
@@ -277,6 +280,9 @@
     "taskActionsAria": "タスク操作"
   },
   "trend": {
+    "axisAria": "トレンド軸範囲",
+    "axisFocus": "フォーカス範囲",
+    "axisFull": "全体範囲",
     "all": "すべての評価",
     "capabilityView": "能力ビュー",
     "delta": "前回比",

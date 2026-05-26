@@ -34,6 +34,7 @@
   "agents.templates.tags.skyvern": "Skyvern",
   "agents.templates.tags.v2": "v2",
   "agents.templates.tags.v3": "v3",
+  "datasets.sample_profile.asset_unassigned": "未割り当ての資産",
   "errors.auth.invalid_credentials": "ユーザー名またはパスワードが正しくありません。",
   "errors.auth.missing_credentials": "ユーザー名とパスワードは空にできません。",
   "errors.auth.unauthorized": "サインインしていないか、セッションの有効期限が切れています。",

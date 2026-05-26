@@ -34,6 +34,7 @@
   "agents.templates.tags.skyvern": "Skyvern",
   "agents.templates.tags.v2": "v2",
   "agents.templates.tags.v3": "v3",
+  "datasets.sample_profile.asset_unassigned": "Activo sin asignar",
   "errors.auth.invalid_credentials": "Nombre de usuario o contraseña incorrectos.",
   "errors.auth.missing_credentials": "El nombre de usuario y la contraseña no pueden estar vacíos.",
   "errors.auth.unauthorized": "No has iniciado sesión o la sesión ha caducado.",

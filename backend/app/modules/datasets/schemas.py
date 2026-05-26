@@ -44,6 +44,23 @@ class DatasetCategoryInfo(CamelModel):
     meaning: str | None = None
 
 
+class DatasetDistributionItem(CamelModel):
+    """数据集详情聚合分布中的单个条目。"""
+
+    code: str
+    label: str
+    count: int
+    ratio: float
+
+
+class DatasetSampleProfile(CamelModel):
+    """数据集详情页使用的样本级聚合摘要。"""
+
+    delivery_distribution: list[DatasetDistributionItem]
+    asset_type_top: list[DatasetDistributionItem]
+    difficulty_buckets: list[DatasetDistributionItem]
+
+
 class DatasetDetailResponse(CamelModel):
     """数据集详情接口响应体。"""
 
@@ -58,3 +75,4 @@ class DatasetDetailResponse(CamelModel):
     scenarios: list[str]
     resources: list[dict[str, object]]
     media: list[dict[str, object]]
+    sample_profile: DatasetSampleProfile
