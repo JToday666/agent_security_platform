@@ -208,6 +208,13 @@ services:
       test: ["CMD-SHELL", "pg_isready -U asp_admin -d postgres"]
       interval: 10s
       timeout: 5s
+    networks:
+      - asp-db-net
+
+networks:
+  asp-db-net:
+    external: true
+    name: asp-db-net
       retries: 5
       start_period: 20s
 
@@ -455,12 +462,22 @@ SAMPLE_CLAIM_STALE_AFTER_SECONDS=90
 SAMPLE_HEARTBEAT_INTERVAL_SECONDS=10.0
 SAMPLE_MAX_ATTEMPTS=2
 
+CORS_ALLOWED_ORIGINS=https://<domain>
+```
+
+LLM judge 配置单独放入 worker 专用环境文件，避免 API、scheduler 和
+migration 继承不需要的 LLM 凭据：
+
+```env
+# /data/agent-security-platform/env/prod/backend-worker.env
 LLM_JUDGE_PROVIDER=litellm
 LLM_BASE_URL=http://asp-litellm:4000/v1
 LLM_DEFAULT_MODEL=local-qwen
 LLM_API_KEY=<litellm-master-key>
-
-CORS_ALLOWED_ORIGINS=https://<domain>
+LLM_JUDGE_TIMEOUT_SECONDS=60.0
+LLM_JUDGE_MAX_TOKENS=2000
+LLM_JUDGE_TEMPERATURE=0.0
+LLM_JUDGE_MAX_EVENTS=160
 ```
 
 宿主机临时运行 Backend 时使用：
@@ -472,10 +489,9 @@ LLM_DEFAULT_MODEL=local-qwen
 LLM_API_KEY=<litellm-master-key>
 ```
 
-如果服务器上已有 `/data/agent-security-platform/env/prod/backend.env` 但其中仍是 `127.0.0.1`，说明它只能直接用于宿主机临时运行。
-Docker 后端启动前，最终生效的 `DATABASE_URL` 和 `LLM_BASE_URL` 必须来自上面的容器网络地址；
-可以直接修改 `backend.env`，也可以通过 compose `.env` 中的 `BACKEND_DATABASE_URL` 和
-`BACKEND_LLM_BASE_URL` 覆盖。
+Docker 后端启动前，最终生效的 `DATABASE_URL` 必须来自 compose `.env`
+中的 `BACKEND_DATABASE_URL`。worker 的 `LLM_BASE_URL` 必须来自
+`backend-worker.env`，并使用容器网络地址 `http://asp-litellm:4000/v1`。
 
 ---
 
@@ -489,6 +505,7 @@ Compose 模板在仓库中维护：
 backend/Dockerfile
 docs/deploy/templates/backend/docker-compose.backend.yml
 docs/deploy/templates/backend/backend.env.example
+docs/deploy/templates/backend/backend-worker.env.example
 ```
 
 部署到主环境时建议放到：
@@ -504,17 +521,16 @@ docs/deploy/templates/backend/backend.env.example
 ```env
 BACKEND_IMAGE=crpi-5gm6gpgyiqxur1oj-vpc.cn-beijing.personal.cr.aliyuncs.com/agent_platform/asp_code:backend-<git-sha>
 BACKEND_DATABASE_URL=postgresql+psycopg://asp_app:<password>@asp-postgres:5432/asp_db
-BACKEND_LLM_BASE_URL=http://asp-litellm:4000/v1
 ```
 
-首次部署前确保外部网络存在，并把 PostgreSQL 加入 DB 网络：
+首次部署前确保外部网络存在。PostgreSQL Compose 已显式加入
+`asp-db-net`，后续重建容器不会丢失后端 DB 网络：
 
 ```bash
 docker network create asp-net || true
 docker network create asp-db-net || true
 docker network create asp-ai-net || true
 docker network create asp-runtime-net || true
-docker network connect asp-db-net asp-postgres || true
 ```
 
 检查网络连接：

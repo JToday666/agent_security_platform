@@ -25,7 +25,6 @@ services:
       - /data/agent-security-platform/env/prod/backend.env
     environment:
       DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
-      WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
     command: ["alembic", "upgrade", "head"]
     networks:
       - asp-db-net
@@ -41,8 +40,6 @@ services:
       DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
       FASTAPI_HOST: 0.0.0.0
       FASTAPI_PORT: 8000
-      LLM_BASE_URL: ${BACKEND_LLM_BASE_URL:-http://asp-litellm:4000/v1}
-      WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
     expose:
       - "8000"
@@ -74,7 +71,6 @@ services:
       - /data/agent-security-platform/env/prod/backend.env
     environment:
       DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
-      WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
     command: ["python", "scheduler.py"]
     depends_on:
       backend-migrate:
@@ -88,9 +84,9 @@ services:
     restart: unless-stopped
     env_file:
       - /data/agent-security-platform/env/prod/backend.env
+      - /data/agent-security-platform/env/prod/backend-worker.env
     environment:
       DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
-      LLM_BASE_URL: ${BACKEND_LLM_BASE_URL:-http://asp-litellm:4000/v1}
       WORKER_RUNTIME_LAUNCH_MODE: docker
       WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
       WORKER_RUNTIME_DOCKER_NETWORK: asp-runtime-net

@@ -332,7 +332,8 @@ LiteLLM 容器：asp-litellm
 网络：asp-ai-net
 ```
 
-后端 Docker 访问：
+后端 Docker 访问。该配置只加载到 `backend-worker`，API、scheduler 和
+migration 不加载 LLM judge 配置：
 
 ```env
 LLM_JUDGE_PROVIDER=litellm

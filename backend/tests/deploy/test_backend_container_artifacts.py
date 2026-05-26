@@ -91,16 +91,25 @@ def test_backend_compose_overrides_container_runtime_addresses() -> None:
         section = _service_section(compose, service)
         assert "DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}" in section
 
-    for service in ("backend-api", "backend-worker"):
-        section = _service_section(compose, service)
-        assert "LLM_BASE_URL: ${BACKEND_LLM_BASE_URL:-http://asp-litellm:4000/v1}" in section
-
     api = _service_section(compose, "backend-api")
     assert "FASTAPI_HOST: 0.0.0.0" in api
     assert "FASTAPI_PORT: 8000" in api
+    assert "LLM_BASE_URL" not in api
+    assert "WORKER_RUNTIME_DOCKER_IMAGE" not in api
+
+    scheduler = _service_section(compose, "backend-scheduler")
+    assert "LLM_BASE_URL" not in scheduler
+    assert "WORKER_RUNTIME_DOCKER_IMAGE" not in scheduler
+
+    migrate = _service_section(compose, "backend-migrate")
+    assert "LLM_BASE_URL" not in migrate
+    assert "WORKER_RUNTIME_DOCKER_IMAGE" not in migrate
 
     worker = _service_section(compose, "backend-worker")
+    assert "- /data/agent-security-platform/env/prod/backend-worker.env" in worker
+    assert "LLM_BASE_URL" not in worker
     assert "WORKER_RUNTIME_LAUNCH_MODE: docker" in worker
+    assert "WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}" in worker
     assert "WORKER_RUNTIME_DOCKER_NETWORK: asp-runtime-net" in worker
     assert "WORKER_RUNTIME_DOCKER_PORT: 8000" in worker
 
@@ -148,18 +157,27 @@ def test_backend_prod_env_template_uses_container_network_addresses() -> None:
         BACKEND_TEMPLATE_ROOT / "backend.env.example"
     ).read_text(encoding="utf-8")
 
-    assert "FASTAPI_HOST=0.0.0.0" in env_template
-    assert "@asp-postgres:5432/asp_db" in env_template
-    assert "LLM_BASE_URL=http://asp-litellm:4000/v1" in env_template
-    assert "WORKER_RUNTIME_LAUNCH_MODE=docker" in env_template
-    assert "WORKER_RUNTIME_DOCKER_IMAGE=<provided-by-compose-BACKEND_IMAGE>" in env_template
-    assert "WORKER_RUNTIME_DOCKER_NETWORK=asp-runtime-net" in env_template
-    assert "WORKER_RUNTIME_DOCKER_PORT=8000" in env_template
+    assert "DATABASE_URL=postgresql" not in env_template
+    assert "LLM_BASE_URL=" not in env_template
+    assert "LLM_API_KEY=" not in env_template
+    assert "LLM_JUDGE_PROVIDER=" not in env_template
+    assert "WORKER_RUNTIME_LAUNCH_MODE=docker" not in env_template
+    assert "WORKER_RUNTIME_DOCKER_IMAGE=<provided-by-compose-BACKEND_IMAGE>" not in env_template
+    assert "WORKER_RUNTIME_DOCKER_NETWORK=asp-runtime-net" not in env_template
+    assert "WORKER_RUNTIME_DOCKER_PORT=8000" not in env_template
     assert "PUBLIC_BASE_URL=https://<domain>" in env_template
     assert "RUNTIME_SESSION_TTL_SECONDS=900" in env_template
     assert "RUNTIME_GATEWAY_COOKIE_NAME=asp_runtime_token" in env_template
     assert "RUNTIME_REAPER_INTERVAL_SECONDS=30" in env_template
     assert "RUNTIME_CONTAINER_REAPER_ENABLED=true" in env_template
+
+    worker_env_template = (
+        BACKEND_TEMPLATE_ROOT / "backend-worker.env.example"
+    ).read_text(encoding="utf-8")
+    assert "LLM_BASE_URL=http://asp-litellm:4000/v1" in worker_env_template
+    assert "LLM_DEFAULT_MODEL=local-qwen" in worker_env_template
+    assert "LLM_API_KEY=<litellm-master-key>" in worker_env_template
+    assert "LLM_JUDGE_PROVIDER=litellm" in worker_env_template
 
 
 def test_backend_compose_env_template_uses_immutable_image_and_network_db_url() -> None:
@@ -170,7 +188,7 @@ def test_backend_compose_env_template_uses_immutable_image_and_network_db_url() 
     assert "BACKEND_IMAGE=" in compose_env
     assert "backend-<git-sha>" in compose_env
     assert "BACKEND_DATABASE_URL=postgresql+psycopg://asp_app:<password>@asp-postgres:5432/asp_db" in compose_env
-    assert "BACKEND_LLM_BASE_URL=http://asp-litellm:4000/v1" in compose_env
+    assert "BACKEND_LLM_BASE_URL" not in compose_env
 
 
 def test_gateway_documentation_routes_runtime_tasks_to_backend_api() -> None:
