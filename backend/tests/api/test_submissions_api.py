@@ -43,7 +43,10 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
     assert user_id > 0
     headers = {"Authorization": f"Bearer {token}"}
 
+    captured_platform_values = {}
+
     async def fake_invoke(self, *, agent_snapshot, credential_payload, platform_values):
+        captured_platform_values.update(platform_values)
         return AgentInvocationResult(
             passed=True,
             status="completed",
@@ -112,6 +115,11 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
         assert verify_response.status_code == 200
         assert verify_response.json()["data"]["passed"] is True
         assert verify_response.json()["data"]["status"] == "active"
+        assert captured_platform_values["entryUrl"] == (
+            "https://www.iana.org/domains/reserved"
+        )
+        assert captured_platform_values["maxSteps"] == 5
+        assert "IANA-managed Reserved Domains" in captured_platform_values["task"]
 
         detail_response = client.get(f"/api/v1/agents/{agent_id}", headers=headers)
         assert detail_response.status_code == 200
