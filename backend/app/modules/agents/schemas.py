@@ -9,6 +9,7 @@ from app.platform.schemas import CamelModel
 InvokeMode = Literal["sync_response", "submit_poll"]
 AgentStatus = Literal["draft", "verifying", "active", "invalid", "archived"]
 AuthType = Literal["none", "bearer", "api_key_header", "custom_header"]
+CancelMethod = Literal["POST", "PATCH", "DELETE"]
 
 
 class AgentConnection(CamelModel):
@@ -17,6 +18,9 @@ class AgentConnection(CamelModel):
     base_url: str
     invoke_path: str
     result_path_template: str | None = None
+    cancel_path_template: str | None = None
+    cancel_method: CancelMethod = "POST"
+    cancel_request_body: dict[str, Any] | None = None
     request_timeout_seconds: int = Field(default=30, ge=1, le=300)
     poll_interval_seconds: float = Field(default=2, ge=0, le=60)
     poll_timeout_seconds: int = Field(default=300, ge=1, le=3600)
@@ -36,6 +40,7 @@ class AgentCreateRequest(CamelModel):
     name: str = Field(max_length=100)
     description: str | None = None
     invoke_mode: InvokeMode
+    max_concurrency: int = Field(default=4, ge=1, le=100)
     connection: AgentConnection
     auth: AgentAuthConfig
     platform_input_mapping: dict[str, str]
@@ -54,6 +59,7 @@ class AgentSummary(CamelModel):
     name: str
     description: str | None = None
     invoke_mode: str
+    max_concurrency: int
     status: str
     verified_at: str | None = None
     last_verification_passed: bool | None = None
@@ -90,6 +96,7 @@ class AgentDetail(CamelModel):
     name: str
     description: str | None = None
     invoke_mode: str
+    max_concurrency: int
     status: str
     connection: AgentConnection
     auth: AgentAuthPublic

@@ -17,7 +17,7 @@ def build_parameters(run) -> dict[str, object]:
     """Expose saved execution parameters with legacy defaults."""
     return run.execution_config.get(
         "parameters",
-        {"difficulty": 0.5, "timeoutMinutes": 15, "retryEnabled": False},
+        {"difficulty": 0.5, "timeoutMinutes": 25, "retryEnabled": False},
     )
 
 

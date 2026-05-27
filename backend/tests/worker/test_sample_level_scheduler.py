@@ -33,6 +33,7 @@ from app.worker.execution_persistence import (
 )
 from app.worker.sample_claims import claim_next_sample
 from app.worker.sample_scheduler import (
+    _release_capacity,
     finalize_ready_runs_once,
     recover_stale_sample_claims_once,
     release_ready_samples_once,
@@ -236,6 +237,39 @@ async def test_scheduler_releases_only_current_dataset_and_respects_run_quota(
 
 
 @pytest.mark.asyncio
+async def test_scheduler_respects_registered_agent_max_concurrency(
+    api_db_helper, monkeypatch
+) -> None:
+    ids = _seed_sample_level_run(api_db_helper)
+
+    from app.worker import sample_scheduler
+
+    monkeypatch.setattr(sample_scheduler.settings, "SCHEDULER_RELEASE_BATCH_SIZE", 50)
+    monkeypatch.setattr(sample_scheduler.settings, "GLOBAL_MAX_IN_FLIGHT_SAMPLES", 16)
+    monkeypatch.setattr(sample_scheduler.settings, "RUN_MAX_IN_FLIGHT_SAMPLES", 4)
+    monkeypatch.setattr(sample_scheduler.settings, "USER_MAX_IN_FLIGHT_SAMPLES", 8)
+    monkeypatch.setattr(sample_scheduler.settings, "AGENT_MAX_IN_FLIGHT_SAMPLES", 4)
+
+    async with AsyncSessionLocal() as db:
+        run = await db.get(RunModel, ids["run_id"])
+        execution = await db.get(SampleExecution, ids["first_execution_id"])
+        assert run is not None
+        assert execution is not None
+        run.execution_config = {
+            "parameters": {"timeoutMinutes": 20},
+            "agentId": "agt_agent_limit",
+            "frozenAgentSnapshot": {
+                "agentId": "agt_agent_limit",
+                "maxConcurrency": 1,
+            },
+        }
+        execution.status = "ready"
+        capacity = await _release_capacity(db, run)
+
+    assert capacity == 0
+
+
+@pytest.mark.asyncio
 async def test_scheduler_advances_to_next_dataset_after_current_dataset_terminal(
     api_db_helper, monkeypatch
 ) -> None:
@@ -426,6 +460,56 @@ async def test_system_error_creates_retry_attempt_without_counting_sample_comple
     assert first_attempts[1].ready_at is not None
     assert run.completed_samples == 0
     assert dataset.completed_samples == 0
+
+
+@pytest.mark.asyncio
+async def test_system_error_respects_disabled_retry_setting(
+    api_db_helper, monkeypatch
+) -> None:
+    ids = _seed_sample_level_run(api_db_helper)
+
+    from app.worker import execution_persistence
+
+    monkeypatch.setattr(execution_persistence.settings, "SAMPLE_MAX_ATTEMPTS", 2)
+
+    async with AsyncSessionLocal() as db:
+        run = await db.get(RunModel, ids["run_id"])
+        assert run is not None
+        run.execution_config = {
+            "dispatchMode": "external_agent",
+            "parameters": {"timeoutMinutes": 25, "retryEnabled": False},
+        }
+        execution = await db.get(SampleExecution, ids["first_execution_id"])
+        assert execution is not None
+        execution.status = "executing"
+        await db.commit()
+
+    await mark_execution_system_error(
+        ids["first_execution_id"],
+        ids["run_id"],
+        ids["first_dataset_id"],
+        RuntimeError("runtime crashed"),
+    )
+
+    with api_db_helper.session() as session:
+        original = session.get(SampleExecution, ids["first_execution_id"])
+        assert original is not None
+        attempts = list(
+            session.execute(
+                select(SampleExecution)
+                .where(SampleExecution.run_sample_id == original.run_sample_id)
+                .order_by(SampleExecution.retry_no.asc())
+            ).scalars()
+        )
+        run = session.get(RunModel, ids["run_id"])
+        dataset = session.get(RunDataset, ids["first_dataset_id"])
+
+    assert len(attempts) == 1
+    assert attempts[0].status == "error"
+    assert attempts[0].retry_no == 0
+    assert run.completed_samples == 1
+    assert run.failed_count == 1
+    assert dataset.completed_samples == 1
 
 
 @pytest.mark.asyncio

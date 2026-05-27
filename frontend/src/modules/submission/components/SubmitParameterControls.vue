@@ -103,7 +103,7 @@ const difficultyInputValue = computed(() =>
   form.value.parameters.difficulty.toFixed(1),
 );
 const recommendedTimeoutMax = computed(
-  () => props.meta.timeoutMinutes.recommendedMax ?? 20,
+  () => props.meta.timeoutMinutes.recommendedMax ?? 25,
 );
 const difficultyHelp = computed(() =>
   t("submission.parameters.difficultyHelp", {

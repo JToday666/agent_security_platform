@@ -59,7 +59,7 @@ Backend：
 /data/agent-security-platform/services/backend/compose/docker-compose.yml 已存在
 /data/agent-security-platform/services/backend/compose/.env 已存在，但 BACKEND_IMAGE / BACKEND_DATABASE_URL 仍需替换为真实值
 /data/agent-security-platform/logs/backend 与 logs/worker 已存在
-asp-postgres 已加入 asp-db-net
+PostgreSQL compose 已声明 asp-db-net，asp-postgres 重建后仍会加入该网络
 Docker 后端运行时必须使用 asp-postgres、asp-litellm 这类容器网络地址；不要依赖 backend.env 中的宿主机 127.0.0.1 联调值
 backend-migrate 迁移到当前代码 head
 ```

@@ -44,6 +44,16 @@ def _claim_token_mismatch(
     return claim_token is not None and execution.claim_token != claim_token
 
 
+def _system_error_retries_enabled(run: TestRun | None) -> bool:
+    """Return whether system-error retries are enabled for a run."""
+    if run is None or not isinstance(run.execution_config, dict):
+        return True
+    parameters = run.execution_config.get("parameters")
+    if not isinstance(parameters, dict):
+        return True
+    return parameters.get("retryEnabled") is not False
+
+
 async def mark_execution_dispatching(
     execution_id: int, *, claim_token: str | None = None
 ) -> bool:
@@ -309,7 +319,12 @@ async def mark_execution_system_error(
         execution.claim_token = None
         execution.lease_expires_at = None
 
-        if next_retry_no < max(1, settings.SAMPLE_MAX_ATTEMPTS):
+        run = await db.get(TestRun, run_id)
+        retry_allowed = (
+            next_retry_no < max(1, settings.SAMPLE_MAX_ATTEMPTS)
+            and _system_error_retries_enabled(run)
+        )
+        if retry_allowed:
             existing_retry = (
                 await db.execute(
                     select(SampleExecution).where(

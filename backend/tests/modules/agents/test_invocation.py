@@ -10,6 +10,7 @@ import pytest
 from app.modules.agents.evidence import AgentInvocationEvidenceRecorder
 from app.modules.agents.invocation import AgentInvocationError
 from app.modules.agents.invocation import AgentInvocationClient
+from app.modules.agents.invocation import _resolve_poll_timeout_seconds
 
 
 def _submit_poll_snapshot(
@@ -333,13 +334,26 @@ async def test_submit_poll_timeout_is_classified_in_evidence(tmp_path) -> None:
         await AgentInvocationClient(httpx.MockTransport(handler)).invoke(
             agent_snapshot=snapshot,
             credential_payload={},
-            platform_values=_platform_values(),
+            platform_values={
+                key: value
+                for key, value in _platform_values().items()
+                if key != "timeoutSeconds"
+            },
             evidence_recorder=evidence_recorder,
         )
 
     evidence = json.loads(evidence_recorder.path.read_text(encoding="utf-8"))
     assert evidence["outcome"]["errorClass"] == "poll_timeout"
     assert evidence["outcome"]["externalRunId"] == "task_123"
+
+
+def test_submit_poll_poll_timeout_uses_runtime_timeout_before_agent_default() -> None:
+    timeout = _resolve_poll_timeout_seconds(
+        {"pollTimeoutSeconds": 900, "requestTimeoutSeconds": 30},
+        {"timeoutSeconds": 1500},
+    )
+
+    assert timeout == 1500
 
 
 @pytest.mark.asyncio
@@ -521,3 +535,58 @@ async def test_goal_with_entry_url_renders_browser_use_v3_task_text() -> None:
     assert requests[0].read() == (
         b'{"task":"Complete checkout\\n\\nStart URL: https://shop.example/cart"}'
     )
+
+
+@pytest.mark.asyncio
+async def test_submit_poll_cancel_uses_browser_use_v3_delete_session_without_body() -> None:
+    snapshot = _submit_poll_snapshot(
+        base_url="https://api.browser-use.com/api/v3",
+        invoke_path="/sessions",
+        result_path_template="/sessions/{externalRunId}",
+        auth={
+            "type": "api_key_header",
+            "headerName": "X-Browser-Use-API-Key",
+        },
+        task_render_mode="goal_with_entry_url",
+        platform_input_mapping={"task": "task"},
+        platform_output_mapping={
+            "externalRunId": "id",
+            "status": "status",
+            "success": "isTaskSuccessful",
+            "finalAnswer": "output",
+            "errorMessage": "lastStepSummary",
+        },
+        terminal_statuses=["stopped", "timed_out", "error"],
+        success_statuses=["stopped"],
+    )
+    snapshot["connection"]["cancelPathTemplate"] = "/sessions/{externalRunId}"
+    snapshot["connection"]["cancelMethod"] = "DELETE"
+    snapshot["connection"]["cancelRequestBody"] = None
+    requests: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        if request.method == "POST":
+            return httpx.Response(200, json={"id": "session_123"})
+        if request.method == "DELETE":
+            return httpx.Response(204)
+        return httpx.Response(200, json={"id": "session_123", "status": "running"})
+
+    async def cancel_requested() -> bool:
+        return True
+
+    with pytest.raises(AgentInvocationError, match="已取消"):
+        await AgentInvocationClient(httpx.MockTransport(handler)).invoke(
+            agent_snapshot=snapshot,
+            credential_payload={
+                "type": "api_key_header",
+                "headerName": "X-Browser-Use-API-Key",
+                "secret": "sk-browser-use",
+            },
+            platform_values=_platform_values(),
+            cancel_requested=cancel_requested,
+        )
+
+    assert [request.method for request in requests] == ["POST", "DELETE"]
+    assert str(requests[1].url) == "https://api.browser-use.com/api/v3/sessions/session_123"
+    assert requests[1].content == b""

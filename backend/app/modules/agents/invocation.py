@@ -6,7 +6,7 @@ import asyncio
 import logging
 import time
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Awaitable, Callable
 from urllib.parse import urljoin
 
 import httpx
@@ -31,6 +31,13 @@ class AgentInvocationError(RuntimeError):
         super().__init__(message)
         self.error_class = error_class
         self.details = details or {}
+
+
+class AgentInvocationCanceled(AgentInvocationError):
+    """Raised when the platform cancels an in-flight external Agent run."""
+
+
+CancelRequested = Callable[[], Awaitable[bool]]
 
 
 @dataclass(slots=True)
@@ -64,6 +71,28 @@ def read_json_path(payload: Any, path: str | None) -> Any:
             continue
         return None
     return current
+
+
+def _positive_float(value: Any) -> float | None:
+    try:
+        candidate = float(value)
+    except (TypeError, ValueError):
+        return None
+    if candidate <= 0:
+        return None
+    return candidate
+
+
+def _resolve_poll_timeout_seconds(
+    connection: dict[str, Any], platform_values: dict[str, Any]
+) -> float:
+    """Resolve submit-poll deadline from the active run before agent defaults."""
+    return (
+        _positive_float(platform_values.get("timeoutSeconds"))
+        or _positive_float(connection.get("pollTimeoutSeconds"))
+        or _positive_float(connection.get("requestTimeoutSeconds"))
+        or 30.0
+    )
 
 
 def render_platform_values(
@@ -183,6 +212,7 @@ class AgentInvocationClient:
         credential_payload: dict[str, Any],
         platform_values: dict[str, Any],
         evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
+        cancel_requested: CancelRequested | None = None,
     ) -> AgentInvocationResult:
         """Invoke an Agent according to its frozen snapshot."""
         started = time.perf_counter()
@@ -205,6 +235,7 @@ class AgentInvocationClient:
                     credential_payload,
                     platform_values,
                     evidence_recorder,
+                    cancel_requested,
                 )
             else:
                 raise AgentInvocationError(
@@ -302,6 +333,7 @@ class AgentInvocationClient:
         credential_payload: dict[str, Any],
         platform_values: dict[str, Any],
         evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
+        cancel_requested: CancelRequested | None = None,
     ) -> AgentInvocationResult:
         connection = agent_snapshot["connection"]
         output_mapping = agent_snapshot["platformOutputMapping"]
@@ -320,11 +352,7 @@ class AgentInvocationClient:
         terminal_statuses = set(agent_snapshot.get("terminalStatuses") or [])
         success_statuses = set(agent_snapshot.get("successStatuses") or [])
         poll_interval = float(connection.get("pollIntervalSeconds") or 0)
-        poll_timeout = float(
-            connection.get("pollTimeoutSeconds")
-            or connection.get("requestTimeoutSeconds")
-            or 30
-        )
+        poll_timeout = _resolve_poll_timeout_seconds(connection, platform_values)
         deadline = asyncio.get_running_loop().time() + poll_timeout
         result_template = str(connection.get("resultPathTemplate") or "")
         if not result_template:
@@ -333,6 +361,42 @@ class AgentInvocationClient:
             )
 
         while True:
+            if cancel_requested is not None and await cancel_requested():
+                cancel_error: str | None = None
+                try:
+                    await self._cancel_external_run(
+                        agent_snapshot=agent_snapshot,
+                        credential_payload=credential_payload,
+                        external_run_id=str(external_run_id),
+                        evidence_recorder=evidence_recorder,
+                    )
+                except (AgentInvocationError, httpx.RequestError) as exc:
+                    cancel_error = str(exc)
+                    LOGGER.warning(
+                        "agent_invocation_cancel_failed",
+                        extra=_log_extra(
+                            agent_snapshot,
+                            platform_values,
+                            duration_ms=0,
+                            external_run_id=str(external_run_id),
+                            error_class=(
+                                exc.error_class
+                                if isinstance(exc, AgentInvocationError)
+                                else "network_error"
+                            ),
+                        ),
+                    )
+                details = {
+                    "status": "canceled",
+                    "externalRunId": str(external_run_id),
+                }
+                if cancel_error:
+                    details["cancelError"] = cancel_error
+                raise AgentInvocationCanceled(
+                    "外部 Agent 调用已取消。",
+                    error_class="canceled",
+                    details=details,
+                )
             poll_path = result_template.replace("{externalRunId}", str(external_run_id))
             poll_json = await self._request_json(
                 "GET",
@@ -373,6 +437,32 @@ class AgentInvocationClient:
                 )
             await asyncio.sleep(poll_interval)
 
+    async def _cancel_external_run(
+        self,
+        *,
+        agent_snapshot: dict[str, Any],
+        credential_payload: dict[str, Any],
+        external_run_id: str,
+        evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
+    ) -> None:
+        connection = agent_snapshot["connection"]
+        cancel_path_template = connection.get("cancelPathTemplate")
+        if not cancel_path_template:
+            return
+        cancel_path = str(cancel_path_template).replace(
+            "{externalRunId}", external_run_id
+        )
+        cancel_body = connection.get("cancelRequestBody")
+        await self._request_json(
+            str(connection.get("cancelMethod") or "POST").upper(),
+            _join_url(str(connection["baseUrl"]), cancel_path),
+            headers=_auth_headers(agent_snapshot.get("auth") or {}, credential_payload),
+            json_body=cancel_body if isinstance(cancel_body, dict) else None,
+            timeout=float(connection.get("requestTimeoutSeconds") or 30),
+            evidence_recorder=evidence_recorder,
+            expect_json=False,
+        )
+
     async def _post_json(
         self,
         agent_snapshot: dict[str, Any],
@@ -407,6 +497,7 @@ class AgentInvocationClient:
         json_body: dict[str, Any] | None,
         timeout: float,
         evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
+        expect_json: bool = True,
     ) -> dict[str, Any]:
         current_url = url
         async with httpx.AsyncClient(
@@ -476,6 +567,14 @@ class AgentInvocationClient:
                         f"外部 Agent HTTP 调用失败: HTTP {response.status_code}",
                         error_class="http_error",
                     )
+                if not expect_json:
+                    if evidence_recorder is not None and call_id is not None:
+                        evidence_recorder.complete_http_call(
+                            call_id,
+                            response=response,
+                            duration_ms=_duration_ms(started),
+                        )
+                    return {}
                 try:
                     payload = response.json()
                 except ValueError as exc:

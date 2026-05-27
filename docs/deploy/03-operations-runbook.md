@@ -44,8 +44,8 @@ docker images --format '{{.Repository}}:{{.Tag}}' | grep -E 'asp_code:backend|as
 compose 文件存在。
 asp-db-net 中有 asp-postgres。
 存在本次发布要用的后端镜像。
-Docker 后端最终生效的 DATABASE_URL / LLM_BASE_URL 使用 asp-postgres 和 asp-litellm，不使用 127.0.0.1。
-如果 backend.env 保留宿主机联调地址，compose .env 中必须通过 BACKEND_DATABASE_URL / BACKEND_LLM_BASE_URL 覆盖为容器网络地址。
+Docker 后端最终生效的 DATABASE_URL 使用 asp-postgres，不使用 127.0.0.1。
+worker 的 LLM_BASE_URL 来自 backend-worker.env，使用 asp-litellm，不由 API 或 scheduler 继承。
 ```
 
 ### 1.1 Runtime Gateway 验证
@@ -158,7 +158,8 @@ curl http://127.0.0.1:18400/v1/chat/completions \
   }'
 ```
 
-后端容器内应使用 `LLM_BASE_URL=http://asp-litellm:4000/v1`。
+backend-worker 容器内应使用 `LLM_BASE_URL=http://asp-litellm:4000/v1`；
+backend-api、backend-scheduler 和 backend-migrate 不应注入 LLM 配置。
 
 ---
 

@@ -120,7 +120,7 @@ const normalizeParameters = (
     difficulty: toNumberValue(candidate.difficulty, 0.5),
     timeoutMinutes: Math.max(
       0,
-      Math.round(toNumberValue(candidate.timeoutMinutes, 15)),
+      Math.round(toNumberValue(candidate.timeoutMinutes, 25)),
     ),
     maxSteps: Math.max(1, Math.round(toNumberValue(candidate.maxSteps, 30))),
     retryEnabled: toBooleanValue(candidate.retryEnabled),
@@ -194,8 +194,8 @@ export const adaptSubmitMeta = (value: unknown): SubmitMetaResponse => {
       min: 15,
       max: 30,
       step: 1,
-      default: 15,
-      recommendedMax: 20,
+      default: 25,
+      recommendedMax: 25,
     }),
     maxSteps: normalizeSubmitMetaRange(candidate.maxSteps, {
       min: 1,

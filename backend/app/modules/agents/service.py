@@ -36,6 +36,14 @@ from app.platform.i18n import translate
 from app.platform.storage import default_credential_store
 
 
+AGENT_VERIFICATION_ENTRY_URL = "https://www.iana.org/domains/reserved"
+AGENT_VERIFICATION_MAX_STEPS = 5
+AGENT_VERIFICATION_TASK = (
+    "Open the provided URL and confirm the main page heading is "
+    "'IANA-managed Reserved Domains'. Return the heading text when complete."
+)
+
+
 class AgentService:
     """Coordinate Agent registration, verification and archival."""
 
@@ -72,6 +80,7 @@ class AgentService:
             name=payload.name.strip(),
             description=(payload.description or "").strip() or None,
             invoke_mode=payload.invoke_mode,
+            max_concurrency=payload.max_concurrency,
             status="draft",
             connection=payload.connection.model_dump(by_alias=True),
             auth_type=payload.auth.type,
@@ -149,12 +158,12 @@ class AgentService:
                 agent_snapshot=runtime_snapshot(agent),
                 credential_payload=credential_payload,
                 platform_values={
-                    "task": "Agent verification probe",
-                    "entryUrl": "https://example.com/__agent_verify__",
+                    "task": AGENT_VERIFICATION_TASK,
+                    "entryUrl": AGENT_VERIFICATION_ENTRY_URL,
                     "timeoutSeconds": payload.timeout_seconds,
                     "sampleId": "verification",
                     "evaluationId": "verification",
-                    "maxSteps": 1,
+                    "maxSteps": AGENT_VERIFICATION_MAX_STEPS,
                 },
             )
             passed = result.passed

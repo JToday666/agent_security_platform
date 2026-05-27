@@ -102,6 +102,8 @@ def _build_docker_command(prepared: PreparedRuntime) -> list[str]:
         f"{prepared.work_dir}:{container_root}",
         "-w",
         container_root,
+        "-e",
+        "PYTHONPATH=/app",
         "--cap-drop=ALL",
         "--security-opt=no-new-privileges",
         "--pids-limit=256",

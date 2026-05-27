@@ -117,7 +117,7 @@ export const ensureSubmitMeta = (payload: unknown): SubmitMetaResponse => {
     difficulty: candidate.difficulty,
     timeoutMinutes: {
       ...candidate.timeoutMinutes,
-      recommendedMax: candidate.timeoutMinutes.recommendedMax ?? 20,
+      recommendedMax: candidate.timeoutMinutes.recommendedMax ?? 25,
     },
     maxSteps: candidate.maxSteps,
     publicToLeaderboard: candidate.publicToLeaderboard,

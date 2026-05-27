@@ -112,6 +112,19 @@ def test_data_root_must_not_resolve_inside_project(monkeypatch) -> None:
         _ = settings.data_root
 
 
+def test_default_data_root_is_valid_when_repo_parent_resolves_to_filesystem_root(
+    monkeypatch,
+) -> None:
+    monkeypatch.delenv("ASP_DATA_ROOT", raising=False)
+
+    platform_config = importlib.import_module("app.platform.config")
+    monkeypatch.setattr(platform_config, "REPO_ROOT", Path("/"))
+
+    settings = platform_config.Settings(_env_file=None)
+
+    assert settings.data_root == Path("/data/agent-security-platform")
+
+
 @pytest.mark.parametrize(
     ("field_name", "property_name", "relative_path"),
     [

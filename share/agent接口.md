@@ -27,10 +27,14 @@ GET /api/v1/agents/templates
       "tags": ["推荐", "异步", "轮询"],
       "defaultConfig": {
         "invokeMode": "submit_poll",
+        "maxConcurrency": 4,
         "connection": {
           "baseUrl": "",
           "invokePath": "/api/runs",
           "resultPathTemplate": "/api/runs/{externalRunId}",
+          "cancelPathTemplate": null,
+          "cancelMethod": "POST",
+          "cancelRequestBody": null,
           "requestTimeoutSeconds": 30,
           "pollIntervalSeconds": 2,
           "pollTimeoutSeconds": 300
@@ -110,10 +114,14 @@ POST /api/v1/agents
   "name": "Skyvern Agent",
   "description": "通过 Skyvern API 执行 Web 自动化任务",
   "invokeMode": "submit_poll",
+  "maxConcurrency": 4,
   "connection": {
     "baseUrl": "https://api.agent.example.com",
     "invokePath": "/v1/run/tasks",
     "resultPathTemplate": "/v1/run/tasks/{externalRunId}",
+    "cancelPathTemplate": "/v1/runs/{externalRunId}/cancel",
+    "cancelMethod": "POST",
+    "cancelRequestBody": null,
     "requestTimeoutSeconds": 30,
     "pollIntervalSeconds": 2,
     "pollTimeoutSeconds": 300
@@ -166,6 +174,7 @@ POST /api/v1/agents
 | name                  | Agent 名称                  | 列表、详情、评测记录展示     |
 | description           | 描述                        | 帮助用户识别用途             |
 | invokeMode            | sync_response / submit_poll | 决定后端调用方式             |
+| maxConcurrency        | 单 Agent 最大并发样本数     | 调度时限制该 Agent 同时执行数 |
 | connection            | 外部服务连接配置            | 后端按该配置发起请求         |
 | auth                  | 鉴权配置                    | 保存凭据并生成请求 header    |
 | platformInputMapping  | 平台字段到外部请求字段名    | 用户填写字段名，不填写值     |
@@ -183,6 +192,8 @@ customRequestBody 必须是 JSON 对象
 customRequestBody 顶层字段不得与输入映射字段名冲突
 submit_poll 模式必须填写 resultPathTemplate
 submit_poll 模式必须能配置 externalRunId 和 status 输出映射
+cancelPathTemplate 如填写，必须包含 {externalRunId}
+cancelRequestBody 为可选 JSON 对象；无请求体取消接口填写 null 或省略
 successStatuses 必须是 terminalStatuses 的子集
 ```
 
@@ -196,6 +207,7 @@ successStatuses 必须是 terminalStatuses 的子集
     "agentId": "agt_001",
     "name": "Skyvern Agent",
     "invokeMode": "submit_poll",
+    "maxConcurrency": 4,
     "status": "draft",
     "verifiedAt": null,
     "lastVerificationPassed": null,
@@ -250,6 +262,7 @@ GET /api/v1/agents?includeArchived=false
       "name": "Skyvern Agent",
       "description": "通过 Skyvern API 执行 Web 自动化任务",
       "invokeMode": "submit_poll",
+      "maxConcurrency": 4,
       "status": "active",
       "verifiedAt": "2026-04-27T08:10:00Z",
       "lastVerificationPassed": true,
@@ -286,11 +299,15 @@ GET /api/v1/agents/{agentId}
     "name": "Skyvern Agent",
     "description": "通过 Skyvern API 执行 Web 自动化任务",
     "invokeMode": "submit_poll",
+    "maxConcurrency": 4,
     "status": "active",
     "connection": {
       "baseUrl": "https://api.agent.example.com",
       "invokePath": "/v1/run/tasks",
       "resultPathTemplate": "/v1/run/tasks/{externalRunId}",
+      "cancelPathTemplate": "/v1/runs/{externalRunId}/cancel",
+      "cancelMethod": "POST",
+      "cancelRequestBody": null,
       "requestTimeoutSeconds": 30,
       "pollIntervalSeconds": 2,
       "pollTimeoutSeconds": 300
@@ -467,8 +484,8 @@ Agent 保存内容：
 
 | 类别       | 内容                                              | 作用                             |
 | ---------- | ------------------------------------------------- | -------------------------------- |
-| 基本信息   | name、description、invokeMode                     | 用于识别和展示                   |
-| 连接配置   | baseUrl、invokePath、resultPathTemplate、超时参数 | 用于后端调用外部 Agent           |
+| 基本信息   | name、description、invokeMode、maxConcurrency     | 用于识别、展示和调度限流         |
+| 连接配置   | baseUrl、invokePath、resultPathTemplate、cancelPathTemplate、cancelMethod、cancelRequestBody、超时参数 | 用于后端调用和取消外部 Agent |
 | 鉴权配置   | none、bearer、api_key_header、custom_header       | 用于访问外部 Agent               |
 | 输入映射   | platformInputMapping                              | 平台字段写入外部请求字段名       |
 | 自定义字段 | customRequestBody                                 | 每次请求固定携带的字段和值       |
@@ -481,6 +498,7 @@ Agent 创建后不允许直接修改核心运行配置：
 
 ```text
 invokeMode
+maxConcurrency
 connection
 auth
 platformInputMapping

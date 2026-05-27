@@ -3,6 +3,7 @@
 from app.worker.runtime.artifacts import ArtifactRecord, collect_artifacts
 from app.worker.runtime.dispatch import DispatchResult, resolve_dispatch_adapter
 from app.worker.runtime.exceptions import (
+    RuntimeDispatchCanceled,
     RuntimeDispatchError,
     RuntimeDispatchTimeout,
     RuntimeExecutionError,
@@ -24,6 +25,7 @@ __all__ = [
     "ArtifactRecord",
     "DispatchResult",
     "PreparedRuntime",
+    "RuntimeDispatchCanceled",
     "RuntimeDispatchError",
     "RuntimeDispatchTimeout",
     "RuntimeExecutionError",
