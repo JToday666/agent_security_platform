@@ -23,6 +23,7 @@ def to_summary(agent: Agent, *, include_actions: bool) -> AgentSummary:
         "name": agent.name,
         "description": agent.description,
         "invokeMode": agent.invoke_mode,
+        "maxConcurrency": agent.max_concurrency,
         "status": agent.status,
         "verifiedAt": to_zulu(agent.verified_at),
         "lastVerificationPassed": agent.last_verification_passed,
@@ -43,6 +44,7 @@ def to_detail(agent: Agent) -> AgentDetail:
             "name": agent.name,
             "description": agent.description,
             "invokeMode": agent.invoke_mode,
+            "maxConcurrency": agent.max_concurrency,
             "status": agent.status,
             "connection": agent.connection,
             "auth": {
@@ -74,6 +76,7 @@ def runtime_snapshot(agent: Agent) -> dict[str, object]:
         "name": agent.name,
         "description": agent.description,
         "invokeMode": agent.invoke_mode,
+        "maxConcurrency": agent.max_concurrency,
         "connection": agent.connection,
         "auth": {
             "type": agent.auth_type,

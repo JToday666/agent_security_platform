@@ -33,6 +33,7 @@ from app.worker.execution_persistence import (
 )
 from app.worker.sample_claims import claim_next_sample
 from app.worker.sample_scheduler import (
+    _release_capacity,
     finalize_ready_runs_once,
     recover_stale_sample_claims_once,
     release_ready_samples_once,
@@ -233,6 +234,39 @@ async def test_scheduler_releases_only_current_dataset_and_respects_run_quota(
     assert first_execution.status == "ready"
     assert first_execution.ready_at is not None
     assert second_execution.status == "blocked"
+
+
+@pytest.mark.asyncio
+async def test_scheduler_respects_registered_agent_max_concurrency(
+    api_db_helper, monkeypatch
+) -> None:
+    ids = _seed_sample_level_run(api_db_helper)
+
+    from app.worker import sample_scheduler
+
+    monkeypatch.setattr(sample_scheduler.settings, "SCHEDULER_RELEASE_BATCH_SIZE", 50)
+    monkeypatch.setattr(sample_scheduler.settings, "GLOBAL_MAX_IN_FLIGHT_SAMPLES", 16)
+    monkeypatch.setattr(sample_scheduler.settings, "RUN_MAX_IN_FLIGHT_SAMPLES", 4)
+    monkeypatch.setattr(sample_scheduler.settings, "USER_MAX_IN_FLIGHT_SAMPLES", 8)
+    monkeypatch.setattr(sample_scheduler.settings, "AGENT_MAX_IN_FLIGHT_SAMPLES", 4)
+
+    async with AsyncSessionLocal() as db:
+        run = await db.get(RunModel, ids["run_id"])
+        execution = await db.get(SampleExecution, ids["first_execution_id"])
+        assert run is not None
+        assert execution is not None
+        run.execution_config = {
+            "parameters": {"timeoutMinutes": 20},
+            "agentId": "agt_agent_limit",
+            "frozenAgentSnapshot": {
+                "agentId": "agt_agent_limit",
+                "maxConcurrency": 1,
+            },
+        }
+        execution.status = "ready"
+        capacity = await _release_capacity(db, run)
+
+    assert capacity == 0
 
 
 @pytest.mark.asyncio

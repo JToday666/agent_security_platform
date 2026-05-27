@@ -47,6 +47,12 @@ def validate_create_payload(payload: AgentCreateRequest) -> None:
         validate_agent_base_url(payload.connection.base_url)
     except AgentUrlSecurityError as exc:
         raise invalid_agent(str(exc), message_key=exc.message_key) from exc
+    cancel_path_template = payload.connection.cancel_path_template
+    if cancel_path_template and "{externalRunId}" not in cancel_path_template:
+        raise invalid_agent(
+            "cancelPathTemplate 必须包含 {externalRunId}。",
+            message_key="agents.errors.cancel_path_template_required",
+        )
     if (
         "task" not in payload.platform_input_mapping
         or not payload.platform_input_mapping["task"]

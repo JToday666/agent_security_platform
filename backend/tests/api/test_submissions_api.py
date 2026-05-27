@@ -75,9 +75,12 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
             "name": f"{api_db_helper.prefix} agent",
             "description": "db smoke submit",
             "invokeMode": "sync_response",
+            "maxConcurrency": 2,
             "connection": {
                 "baseUrl": "https://agent.example.com",
                 "invokePath": "/run",
+                "cancelPathTemplate": "/runs/{externalRunId}/cancel",
+                "cancelMethod": "POST",
                 "requestTimeoutSeconds": 30,
             },
             "auth": {"type": "bearer", "config": {"token": "sk-smoke"}},
@@ -105,7 +108,9 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
             "/api/v1/agents", headers=headers, json=agent_payload
         )
         assert create_agent_response.status_code == 200
-        agent_id = create_agent_response.json()["data"]["agentId"]
+        created_agent = create_agent_response.json()["data"]
+        agent_id = created_agent["agentId"]
+        assert created_agent["maxConcurrency"] == 2
 
         verify_response = client.post(
             f"/api/v1/agents/{agent_id}/verify",
@@ -124,6 +129,10 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
         detail_response = client.get(f"/api/v1/agents/{agent_id}", headers=headers)
         assert detail_response.status_code == 200
         detail = detail_response.json()["data"]
+        assert detail["maxConcurrency"] == 2
+        assert detail["connection"]["cancelPathTemplate"] == "/runs/{externalRunId}/cancel"
+        assert detail["connection"]["cancelMethod"] == "POST"
+        assert detail["connection"]["cancelRequestBody"] is None
         assert detail["auth"]["hasCredential"] is True
         assert "token" not in detail["auth"]["publicConfig"]
 

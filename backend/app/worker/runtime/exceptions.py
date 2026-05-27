@@ -19,3 +19,7 @@ class RuntimeDispatchError(RuntimeExecutionError):
 
 class RuntimeDispatchTimeout(RuntimeExecutionError):
     """Raised when the runtime does not finalize before timeout."""
+
+
+class RuntimeDispatchCanceled(RuntimeExecutionError):
+    """Raised when dispatch stops because the evaluation was canceled."""

@@ -62,21 +62,38 @@ async def _count_in_flight_for_user(db: AsyncSession, user_id: int) -> int:
     )
 
 
-async def _count_in_flight_for_agent(db: AsyncSession, agent_base_url: str) -> int:
-    return int(
-        (
-            await db.execute(
-                select(func.count())
-                .select_from(SampleExecution)
-                .join(TestRun, SampleExecution.run_id == TestRun.id)
-                .where(
-                    TestRun.agent_base_url == agent_base_url,
-                    SampleExecution.status.in_(SAMPLE_RELEASE_OCCUPANCY_STATUSES),
-                )
-            )
-        ).scalar_one()
-        or 0
+def _agent_id_for_run(run: TestRun) -> str | None:
+    execution_config = (
+        run.execution_config if isinstance(run.execution_config, dict) else {}
     )
+    agent_id = execution_config.get("agentId")
+    return str(agent_id) if agent_id else None
+
+
+def _agent_max_concurrency_for_run(run: TestRun) -> int:
+    execution_config = (
+        run.execution_config if isinstance(run.execution_config, dict) else {}
+    )
+    snapshot = execution_config.get("frozenAgentSnapshot")
+    configured = snapshot.get("maxConcurrency") if isinstance(snapshot, dict) else None
+    if isinstance(configured, int) and configured > 0:
+        return configured
+    return max(1, int(settings.AGENT_MAX_IN_FLIGHT_SAMPLES))
+
+
+async def _count_in_flight_for_agent(db: AsyncSession, run: TestRun) -> int:
+    stmt = (
+        select(func.count())
+        .select_from(SampleExecution)
+        .join(TestRun, SampleExecution.run_id == TestRun.id)
+        .where(SampleExecution.status.in_(SAMPLE_RELEASE_OCCUPANCY_STATUSES))
+    )
+    agent_id = _agent_id_for_run(run)
+    if agent_id:
+        stmt = stmt.where(TestRun.execution_config["agentId"].as_string() == agent_id)
+    else:
+        stmt = stmt.where(TestRun.agent_base_url == run.agent_base_url)
+    return int((await db.execute(stmt)).scalar_one() or 0)
 
 
 async def _latest_execution_statuses(
@@ -174,7 +191,11 @@ async def _release_capacity(db: AsyncSession, run: TestRun) -> int:
         db, run_id=run.id, statuses=SAMPLE_RELEASE_OCCUPANCY_STATUSES
     )
     user_in_flight = await _count_in_flight_for_user(db, run.user_id)
-    agent_in_flight = await _count_in_flight_for_agent(db, run.agent_base_url)
+    agent_in_flight = await _count_in_flight_for_agent(db, run)
+    agent_limit = min(
+        max(1, int(settings.AGENT_MAX_IN_FLIGHT_SAMPLES)),
+        _agent_max_concurrency_for_run(run),
+    )
     return max(
         0,
         min(
@@ -182,7 +203,7 @@ async def _release_capacity(db: AsyncSession, run: TestRun) -> int:
             max(0, settings.GLOBAL_MAX_IN_FLIGHT_SAMPLES - global_in_flight),
             max(0, settings.RUN_MAX_IN_FLIGHT_SAMPLES - run_in_flight),
             max(0, settings.USER_MAX_IN_FLIGHT_SAMPLES - user_in_flight),
-            max(0, settings.AGENT_MAX_IN_FLIGHT_SAMPLES - agent_in_flight),
+            max(0, agent_limit - agent_in_flight),
         ),
     )
 

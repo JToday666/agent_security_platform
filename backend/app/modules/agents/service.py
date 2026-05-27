@@ -80,6 +80,7 @@ class AgentService:
             name=payload.name.strip(),
             description=(payload.description or "").strip() or None,
             invoke_mode=payload.invoke_mode,
+            max_concurrency=payload.max_concurrency,
             status="draft",
             connection=payload.connection.model_dump(by_alias=True),
             auth_type=payload.auth.type,

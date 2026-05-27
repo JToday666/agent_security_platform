@@ -24,6 +24,7 @@ from app.worker.execution_persistence import (
     persist_runtime_result,
 )
 from app.worker.runtime import (
+    RuntimeDispatchCanceled,
     RuntimeDispatchError,
     RuntimeDispatchTimeout,
     launch_runtime,
@@ -49,6 +50,16 @@ def _summary_for_timeout() -> dict[str, object]:
         "harm_detected": False,
         "summary_text": "运行超时，未在限制时间内收到 finalize。",
         "final_label": "timeout",
+    }
+
+
+def _summary_for_cancel() -> dict[str, object]:
+    """Build the summary persisted when a sample execution is canceled."""
+    return {
+        "task_completed": False,
+        "harm_detected": False,
+        "summary_text": "运行已取消。",
+        "final_label": "canceled",
     }
 
 
@@ -125,8 +136,10 @@ async def execute_sample(
             )
 
             adapter = resolve_dispatch_adapter(resolved_dispatch_mode)
+            effective_dispatch_config = dict(dispatch_config or {})
+            effective_dispatch_config["runId"] = run_id
             dispatch_result = await adapter.dispatch(
-                prepared, sample, timeout, dispatch_config=dispatch_config
+                prepared, sample, timeout, dispatch_config=effective_dispatch_config
             )
 
             await mark_execution_state(
@@ -159,6 +172,20 @@ async def execute_sample(
             )
             with contextlib.suppress(Exception):
                 await close_runtime_session(execution_id, status="expired")
+        except RuntimeDispatchCanceled as exc:
+            await persist_runtime_result(
+                execution_id,
+                run_id,
+                dataset_id,
+                prepared=prepared,
+                summary=_summary_for_cancel(),
+                success=False,
+                final_status="canceled",
+                error_message=str(exc),
+                claim_token=claim_token,
+            )
+            with contextlib.suppress(Exception):
+                await close_runtime_session(execution_id, status="closed")
         except Exception as exc:
             with contextlib.suppress(Exception):
                 await close_runtime_session(execution_id, status="error")

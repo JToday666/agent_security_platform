@@ -6,16 +6,23 @@ import asyncio
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 from urllib.parse import urlparse
 
 import httpx
 
+from app.models.benchmark_run import TestRun
 from app.modules.agents.evidence import AgentInvocationEvidenceRecorder, redact_value
-from app.modules.agents.invocation import AgentInvocationClient
+from app.modules.agents.invocation import AgentInvocationCanceled, AgentInvocationClient
 from app.platform.config import settings
 from app.platform.credentials import FileCredentialStore
-from app.worker.runtime.exceptions import RuntimeDispatchError, RuntimeDispatchTimeout
+from app.platform.db.session import AsyncSessionLocal
+from app.worker.runtime.exceptions import (
+    RuntimeDispatchCanceled,
+    RuntimeDispatchError,
+    RuntimeDispatchTimeout,
+)
 from app.worker.runtime.preparation import PreparedRuntime, SampleRuntimeTarget
 from app.worker.runtime.process import runtime_base_url
 
@@ -272,16 +279,35 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
             "maxSteps": config.get("maxSteps"),
         }
 
-        result = await AgentInvocationClient().invoke(
+        evidence_recorder = AgentInvocationEvidenceRecorder(
+            path=prepared.run_dir / "external_agent_invocation.json",
             agent_snapshot=agent_snapshot,
-            credential_payload=credential_payload,
             platform_values=platform_values,
-            evidence_recorder=AgentInvocationEvidenceRecorder(
-                path=prepared.run_dir / "external_agent_invocation.json",
-                agent_snapshot=agent_snapshot,
-                platform_values=platform_values,
-            ),
         )
+        invoke_kwargs: dict[str, Any] = {
+            "agent_snapshot": agent_snapshot,
+            "credential_payload": credential_payload,
+            "platform_values": platform_values,
+            "evidence_recorder": evidence_recorder,
+        }
+        run_id = config.get("runId")
+        if isinstance(run_id, int):
+            invoke_kwargs["cancel_requested"] = lambda: _run_cancel_requested(run_id)
+        try:
+            result = await AgentInvocationClient().invoke(**invoke_kwargs)
+        except AgentInvocationCanceled as exc:
+            await self._close_runtime(
+                prepared,
+                sample,
+                SimpleNamespace(
+                    passed=False,
+                    status="canceled",
+                    external_run_id=exc.details.get("externalRunId"),
+                    final_answer=None,
+                    error_message=str(exc),
+                ),
+            )
+            raise RuntimeDispatchCanceled(str(exc)) from exc
 
         close_result = await self._close_runtime(prepared, sample, result)
         return DispatchResult(
@@ -342,3 +368,14 @@ def resolve_dispatch_adapter(mode: str) -> BaseDispatchAdapter:
     if normalized == "deferred":
         return DeferredDispatchAdapter()
     return SyntheticLocalDispatchAdapter()
+
+
+async def _run_cancel_requested(run_id: object) -> bool:
+    if not isinstance(run_id, int):
+        return False
+    async with AsyncSessionLocal() as db:
+        run = await db.get(TestRun, run_id)
+        return bool(
+            run is not None
+            and (run.status == "canceling" or run.requested_action == "cancel")
+        )

@@ -51,6 +51,13 @@ class Agent(Base):
         Text, nullable=True, comment="Agent 描述"
     )
     invoke_mode: Mapped[str] = mapped_column(Text, nullable=False, comment="调用模式")
+    max_concurrency: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=4,
+        server_default=text("4"),
+        comment="该 Agent 允许同时运行的最大样本数",
+    )
     status: Mapped[str] = mapped_column(
         Text,
         nullable=False,

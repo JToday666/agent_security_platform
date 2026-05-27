@@ -20,10 +20,14 @@ TEMPLATES: list[dict[str, Any]] = [
         ],
         "defaultConfig": {
             "invokeMode": "submit_poll",
+            "maxConcurrency": 4,
             "connection": {
                 "baseUrl": "",
                 "invokePath": "/api/runs",
                 "resultPathTemplate": "/api/runs/{externalRunId}",
+                "cancelPathTemplate": None,
+                "cancelMethod": "POST",
+                "cancelRequestBody": None,
                 "requestTimeoutSeconds": 30,
                 "pollIntervalSeconds": 2,
                 "pollTimeoutSeconds": 300,
@@ -68,10 +72,14 @@ TEMPLATES: list[dict[str, Any]] = [
         ],
         "defaultConfig": {
             "invokeMode": "submit_poll",
+            "maxConcurrency": 4,
             "connection": {
                 "baseUrl": "https://api.skyvern.com",
                 "invokePath": "/v1/run/tasks",
                 "resultPathTemplate": "/v1/runs/{externalRunId}",
+                "cancelPathTemplate": "/v1/runs/{externalRunId}/cancel",
+                "cancelMethod": "POST",
+                "cancelRequestBody": None,
                 "requestTimeoutSeconds": 30,
                 "pollIntervalSeconds": 2,
                 "pollTimeoutSeconds": 900,
@@ -124,10 +132,14 @@ TEMPLATES: list[dict[str, Any]] = [
         ],
         "defaultConfig": {
             "invokeMode": "submit_poll",
+            "maxConcurrency": 4,
             "connection": {
                 "baseUrl": "https://api.browser-use.com/api/v2",
                 "invokePath": "/tasks",
                 "resultPathTemplate": "/tasks/{externalRunId}/status",
+                "cancelPathTemplate": "/tasks/{externalRunId}",
+                "cancelMethod": "PATCH",
+                "cancelRequestBody": {"action": "stop_task_and_session"},
                 "requestTimeoutSeconds": 30,
                 "pollIntervalSeconds": 2,
                 "pollTimeoutSeconds": 900,
@@ -178,10 +190,14 @@ TEMPLATES: list[dict[str, Any]] = [
         ],
         "defaultConfig": {
             "invokeMode": "submit_poll",
+            "maxConcurrency": 4,
             "connection": {
                 "baseUrl": "https://api.browser-use.com/api/v3",
                 "invokePath": "/sessions",
                 "resultPathTemplate": "/sessions/{externalRunId}",
+                "cancelPathTemplate": "/sessions/{externalRunId}",
+                "cancelMethod": "DELETE",
+                "cancelRequestBody": None,
                 "requestTimeoutSeconds": 30,
                 "pollIntervalSeconds": 2,
                 "pollTimeoutSeconds": 900,

@@ -32,10 +32,14 @@ def test_skyvern_cloud_template_matches_official_task_api_shape() -> None:
         "baseUrl": "https://api.skyvern.com",
         "invokePath": "/v1/run/tasks",
         "resultPathTemplate": "/v1/runs/{externalRunId}",
+        "cancelPathTemplate": "/v1/runs/{externalRunId}/cancel",
+        "cancelMethod": "POST",
+        "cancelRequestBody": None,
         "requestTimeoutSeconds": 30,
         "pollIntervalSeconds": 2,
         "pollTimeoutSeconds": 900,
     }
+    assert config["maxConcurrency"] == 4
     assert config["auth"] == {
         "type": "api_key_header",
         "config": {"headerName": "x-api-key", "secret": ""},
@@ -70,6 +74,9 @@ def test_browser_use_cloud_templates_match_official_api_shapes() -> None:
         "baseUrl": "https://api.browser-use.com/api/v2",
         "invokePath": "/tasks",
         "resultPathTemplate": "/tasks/{externalRunId}/status",
+        "cancelPathTemplate": "/tasks/{externalRunId}",
+        "cancelMethod": "PATCH",
+        "cancelRequestBody": {"action": "stop_task_and_session"},
         "requestTimeoutSeconds": 30,
         "pollIntervalSeconds": 2,
         "pollTimeoutSeconds": 900,
@@ -100,10 +107,15 @@ def test_browser_use_cloud_templates_match_official_api_shapes() -> None:
         "baseUrl": "https://api.browser-use.com/api/v3",
         "invokePath": "/sessions",
         "resultPathTemplate": "/sessions/{externalRunId}",
+        "cancelPathTemplate": "/sessions/{externalRunId}",
+        "cancelMethod": "DELETE",
+        "cancelRequestBody": None,
         "requestTimeoutSeconds": 30,
         "pollIntervalSeconds": 2,
         "pollTimeoutSeconds": 900,
     }
+    assert v2_config["maxConcurrency"] == 4
+    assert v3_config["maxConcurrency"] == 4
     assert v3_config["auth"] == {
         "type": "api_key_header",
         "config": {"headerName": "X-Browser-Use-API-Key", "secret": ""},
