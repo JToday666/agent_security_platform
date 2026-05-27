@@ -140,6 +140,7 @@ def test_backend_compose_network_boundaries_are_explicit() -> None:
     assert "- asp-net" in api
     assert "- asp-db-net" in api
     assert "- asp-ai-net" in api
+    assert "- asp-runtime-net" in api
     assert "- asp-db-net" in scheduler
     assert "- asp-ai-net" not in scheduler
     assert "- asp-runtime-net" not in scheduler

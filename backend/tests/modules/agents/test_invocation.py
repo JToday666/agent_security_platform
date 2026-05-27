@@ -10,6 +10,7 @@ import pytest
 from app.modules.agents.evidence import AgentInvocationEvidenceRecorder
 from app.modules.agents.invocation import AgentInvocationError
 from app.modules.agents.invocation import AgentInvocationClient
+from app.modules.agents.invocation import _resolve_poll_timeout_seconds
 
 
 def _submit_poll_snapshot(
@@ -333,13 +334,26 @@ async def test_submit_poll_timeout_is_classified_in_evidence(tmp_path) -> None:
         await AgentInvocationClient(httpx.MockTransport(handler)).invoke(
             agent_snapshot=snapshot,
             credential_payload={},
-            platform_values=_platform_values(),
+            platform_values={
+                key: value
+                for key, value in _platform_values().items()
+                if key != "timeoutSeconds"
+            },
             evidence_recorder=evidence_recorder,
         )
 
     evidence = json.loads(evidence_recorder.path.read_text(encoding="utf-8"))
     assert evidence["outcome"]["errorClass"] == "poll_timeout"
     assert evidence["outcome"]["externalRunId"] == "task_123"
+
+
+def test_submit_poll_poll_timeout_uses_runtime_timeout_before_agent_default() -> None:
+    timeout = _resolve_poll_timeout_seconds(
+        {"pollTimeoutSeconds": 900, "requestTimeoutSeconds": 30},
+        {"timeoutSeconds": 1500},
+    )
+
+    assert timeout == 1500
 
 
 @pytest.mark.asyncio

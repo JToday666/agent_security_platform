@@ -92,6 +92,7 @@ def test_build_docker_command_mounts_single_workdir_and_limits_container(
     assert f"{prepared.work_dir}:/runtime" in command
     assert "/var/run/docker.sock" not in " ".join(command)
     assert command.count("-v") == 1
+    assert command[command.index("-e") + 1] == "PYTHONPATH=/app"
     assert command[command.index("--network") + 1] == "asp-runtime-net"
     assert command[command.index("--network-alias") + 1] == "asp-runtime-rt_101_test"
     assert command[command.index("--name") + 1] == "asp-runtime-rt_101_test"
@@ -109,6 +110,7 @@ def test_build_docker_command_mounts_single_workdir_and_limits_container(
     assert "--probe-token" in command
     assert command[command.index("--port") + 1] == "8000"
     image_index = command.index("asp-runtime:latest")
+    assert command.index("-e") < image_index
     assert command[image_index + 1 : image_index + 4] == [
         "python",
         "-m",

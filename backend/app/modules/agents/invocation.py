@@ -66,6 +66,28 @@ def read_json_path(payload: Any, path: str | None) -> Any:
     return current
 
 
+def _positive_float(value: Any) -> float | None:
+    try:
+        candidate = float(value)
+    except (TypeError, ValueError):
+        return None
+    if candidate <= 0:
+        return None
+    return candidate
+
+
+def _resolve_poll_timeout_seconds(
+    connection: dict[str, Any], platform_values: dict[str, Any]
+) -> float:
+    """Resolve submit-poll deadline from the active run before agent defaults."""
+    return (
+        _positive_float(platform_values.get("timeoutSeconds"))
+        or _positive_float(connection.get("pollTimeoutSeconds"))
+        or _positive_float(connection.get("requestTimeoutSeconds"))
+        or 30.0
+    )
+
+
 def render_platform_values(
     *,
     task_render_mode: str,
@@ -320,11 +342,7 @@ class AgentInvocationClient:
         terminal_statuses = set(agent_snapshot.get("terminalStatuses") or [])
         success_statuses = set(agent_snapshot.get("successStatuses") or [])
         poll_interval = float(connection.get("pollIntervalSeconds") or 0)
-        poll_timeout = float(
-            connection.get("pollTimeoutSeconds")
-            or connection.get("requestTimeoutSeconds")
-            or 30
-        )
+        poll_timeout = _resolve_poll_timeout_seconds(connection, platform_values)
         deadline = asyncio.get_running_loop().time() + poll_timeout
         result_template = str(connection.get("resultPathTemplate") or "")
         if not result_template:

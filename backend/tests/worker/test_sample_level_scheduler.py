@@ -429,6 +429,56 @@ async def test_system_error_creates_retry_attempt_without_counting_sample_comple
 
 
 @pytest.mark.asyncio
+async def test_system_error_respects_disabled_retry_setting(
+    api_db_helper, monkeypatch
+) -> None:
+    ids = _seed_sample_level_run(api_db_helper)
+
+    from app.worker import execution_persistence
+
+    monkeypatch.setattr(execution_persistence.settings, "SAMPLE_MAX_ATTEMPTS", 2)
+
+    async with AsyncSessionLocal() as db:
+        run = await db.get(RunModel, ids["run_id"])
+        assert run is not None
+        run.execution_config = {
+            "dispatchMode": "external_agent",
+            "parameters": {"timeoutMinutes": 25, "retryEnabled": False},
+        }
+        execution = await db.get(SampleExecution, ids["first_execution_id"])
+        assert execution is not None
+        execution.status = "executing"
+        await db.commit()
+
+    await mark_execution_system_error(
+        ids["first_execution_id"],
+        ids["run_id"],
+        ids["first_dataset_id"],
+        RuntimeError("runtime crashed"),
+    )
+
+    with api_db_helper.session() as session:
+        original = session.get(SampleExecution, ids["first_execution_id"])
+        assert original is not None
+        attempts = list(
+            session.execute(
+                select(SampleExecution)
+                .where(SampleExecution.run_sample_id == original.run_sample_id)
+                .order_by(SampleExecution.retry_no.asc())
+            ).scalars()
+        )
+        run = session.get(RunModel, ids["run_id"])
+        dataset = session.get(RunDataset, ids["first_dataset_id"])
+
+    assert len(attempts) == 1
+    assert attempts[0].status == "error"
+    assert attempts[0].retry_no == 0
+    assert run.completed_samples == 1
+    assert run.failed_count == 1
+    assert dataset.completed_samples == 1
+
+
+@pytest.mark.asyncio
 async def test_failed_execution_can_persist_available_evidence_artifacts(
     api_db_helper, tmp_path
 ) -> None:

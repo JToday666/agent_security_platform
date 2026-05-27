@@ -51,6 +51,7 @@ services:
       - asp-net
       - asp-db-net
       - asp-ai-net
+      - asp-runtime-net
     healthcheck:
       test:
         [

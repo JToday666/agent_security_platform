@@ -11,7 +11,7 @@ describe("adaptSubmitMeta", () => {
     const meta = adaptSubmitMeta({
       supportedMethods: ["api"],
       difficulty: { min: 0, max: 1, step: 0.1, default: 0.5 },
-      timeoutMinutes: { min: 15, max: 30, step: 1, default: 15 },
+      timeoutMinutes: { min: 15, max: 30, step: 1, default: 25 },
       maxSteps: { min: 1, max: 100, default: 30 },
       leaderboardDisplayMode: {
         default: "public",
@@ -27,7 +27,7 @@ describe("adaptSubmitMeta", () => {
     const meta = adaptSubmitMeta({
       supportedMethods: ["api"],
       difficulty: { min: 0, max: 1, step: 0.1, default: 0.5 },
-      timeoutMinutes: { min: 15, max: 30, step: 1, default: 15 },
+      timeoutMinutes: { min: 15, max: 30, step: 1, default: 25 },
       maxSteps: { min: 1, max: 100, step: 0, default: 30 },
       leaderboardDisplayMode: {
         default: "public",
