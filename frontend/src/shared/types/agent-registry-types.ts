@@ -2,11 +2,15 @@ export type AgentInvokeMode = "sync_response" | "submit_poll";
 export type AgentTaskRenderMode = "goal_only" | "goal_with_entry_url";
 export type AgentStatus = "draft" | "verifying" | "active" | "invalid" | "archived";
 export type AgentAuthType = "none" | "bearer" | "api_key_header" | "custom_header";
+export type AgentCancelMethod = "POST" | "DELETE" | "PATCH";
 
 export interface AgentConnectionConfig {
   baseUrl: string;
   invokePath: string;
   resultPathTemplate?: string;
+  cancelPathTemplate?: string | null;
+  cancelMethod?: AgentCancelMethod;
+  cancelRequestBody?: Record<string, unknown> | null;
   requestTimeoutSeconds: number;
   pollIntervalSeconds: number;
   pollTimeoutSeconds: number;
@@ -58,6 +62,7 @@ export interface AgentCreatePayload {
   name: string;
   description?: string | null;
   invokeMode: AgentInvokeMode;
+  maxConcurrency: number;
   connection: AgentConnectionConfig;
   auth: AgentCreateAuthConfig;
   platformInputMapping: AgentInputMapping;
@@ -74,6 +79,7 @@ export interface AgentListItem {
   name: string;
   description?: string | null;
   invokeMode: AgentInvokeMode;
+  maxConcurrency: number;
   status: AgentStatus;
   verifiedAt?: string | null;
   lastVerificationPassed?: boolean | null;
@@ -148,6 +154,7 @@ export interface AgentArchiveResponse {
 
 export interface AgentTemplateDefaultConfig {
   invokeMode: AgentInvokeMode;
+  maxConcurrency: number;
   connection: AgentConnectionConfig;
   auth: AgentTemplateAuthConfig;
   platformInputMapping: AgentInputMapping;

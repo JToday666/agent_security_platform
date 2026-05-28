@@ -43,6 +43,7 @@ export const buildAgentCreatePayload = (
       name: normalized.name,
       description: normalized.description,
       invokeMode: form.invokeMode,
+      maxConcurrency: normalized.maxConcurrency,
       connection: cloneAgentRegistrationJson(normalized.connection),
       auth: cloneAgentRegistrationJson(normalized.auth),
       platformInputMapping: cloneAgentRegistrationJson(

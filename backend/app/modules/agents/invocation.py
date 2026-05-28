@@ -7,7 +7,7 @@ import logging
 import time
 from dataclasses import dataclass
 from typing import Any, Awaitable, Callable
-from urllib.parse import urljoin
+from urllib.parse import quote, urljoin
 
 import httpx
 
@@ -16,6 +16,8 @@ from app.modules.agents.security import validate_agent_base_url
 from app.platform.config import settings
 
 LOGGER = logging.getLogger(__name__)
+
+SUPPORTED_CANCEL_METHODS = {"POST", "DELETE", "PATCH"}
 
 
 class AgentInvocationError(RuntimeError):
@@ -181,6 +183,21 @@ def _join_url(base_url: str, path: str) -> str:
         return validate_agent_base_url(path)
     base = validate_agent_base_url(base_url)
     return urljoin(f"{base}/", path.lstrip("/"))
+
+
+def _render_external_run_path(path_template: str, external_run_id: str) -> str:
+    encoded_run_id = quote(external_run_id, safe="")
+    return path_template.replace("{externalRunId}", encoded_run_id)
+
+
+def _resolve_cancel_method(value: Any) -> str:
+    method = str(value or "POST").upper()
+    if method not in SUPPORTED_CANCEL_METHODS:
+        raise AgentInvocationError(
+            "cancelMethod 仅支持 POST、DELETE、PATCH。",
+            error_class="invalid_agent_config",
+        )
+    return method
 
 
 def _auth_headers(
@@ -397,7 +414,10 @@ class AgentInvocationClient:
                     error_class="canceled",
                     details=details,
                 )
-            poll_path = result_template.replace("{externalRunId}", str(external_run_id))
+            poll_path = _render_external_run_path(
+                result_template,
+                str(external_run_id),
+            )
             poll_json = await self._request_json(
                 "GET",
                 _join_url(str(connection["baseUrl"]), poll_path),
@@ -449,14 +469,19 @@ class AgentInvocationClient:
         cancel_path_template = connection.get("cancelPathTemplate")
         if not cancel_path_template:
             return
-        cancel_path = str(cancel_path_template).replace(
-            "{externalRunId}", external_run_id
+        cancel_path = _render_external_run_path(
+            str(cancel_path_template),
+            external_run_id,
         )
         cancel_body = connection.get("cancelRequestBody")
+        cancel_method = _resolve_cancel_method(connection.get("cancelMethod"))
         await self._request_json(
-            str(connection.get("cancelMethod") or "POST").upper(),
+            cancel_method,
             _join_url(str(connection["baseUrl"]), cancel_path),
-            headers=_auth_headers(agent_snapshot.get("auth") or {}, credential_payload),
+            headers=_auth_headers(
+                agent_snapshot.get("auth") or {},
+                credential_payload,
+            ),
             json_body=cancel_body if isinstance(cancel_body, dict) else None,
             timeout=float(connection.get("requestTimeoutSeconds") or 30),
             evidence_recorder=evidence_recorder,

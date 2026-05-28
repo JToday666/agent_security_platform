@@ -276,6 +276,7 @@ def build_agent_payload(
             "name": "local-e2e-skyvern-agent",
             "description": "local worker e2e via Skyvern API",
             "invokeMode": "submit_poll",
+            "maxConcurrency": 4,
             "connection": {
                 "baseUrl": agent_base_url,
                 "invokePath": "/v1/run/tasks",
@@ -322,6 +323,7 @@ def build_agent_payload(
         "name": "local-e2e-agent",
         "description": "local worker e2e",
         "invokeMode": "sync_response",
+        "maxConcurrency": 4,
         "connection": {
             "baseUrl": agent_base_url,
             "invokePath": "/run",

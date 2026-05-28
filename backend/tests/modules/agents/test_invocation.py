@@ -407,6 +407,31 @@ async def test_submit_poll_invokes_skyvern_cloud_api_shape() -> None:
 
 
 @pytest.mark.asyncio
+async def test_submit_poll_encodes_external_run_id_in_result_path() -> None:
+    snapshot = _submit_poll_snapshot(
+        base_url="https://api.example.com",
+        invoke_path="/runs",
+        result_path_template="/runs/{externalRunId}/status",
+        platform_input_mapping={"task": "prompt"},
+        platform_output_mapping={"externalRunId": "id", "status": "status"},
+        terminal_statuses=["completed"],
+        success_statuses=["completed"],
+    )
+
+    result, requests = await _invoke_with_responses(
+        snapshot=snapshot,
+        credential_payload={"type": "none"},
+        submit_response={"id": "run/123?force=true"},
+        poll_response={"status": "completed"},
+    )
+
+    assert result.external_run_id == "run/123?force=true"
+    assert str(requests[1].url) == (
+        "https://api.example.com/runs/run%2F123%3Fforce%3Dtrue/status"
+    )
+
+
+@pytest.mark.asyncio
 async def test_success_output_mapping_requires_true_boolean() -> None:
     snapshot = _submit_poll_snapshot(
         base_url="https://api.browser-use.com/api/v2",
@@ -567,7 +592,7 @@ async def test_submit_poll_cancel_uses_browser_use_v3_delete_session_without_bod
     def handler(request: httpx.Request) -> httpx.Response:
         requests.append(request)
         if request.method == "POST":
-            return httpx.Response(200, json={"id": "session_123"})
+            return httpx.Response(200, json={"id": "session/123?force=true"})
         if request.method == "DELETE":
             return httpx.Response(204)
         return httpx.Response(200, json={"id": "session_123", "status": "running"})
@@ -588,5 +613,42 @@ async def test_submit_poll_cancel_uses_browser_use_v3_delete_session_without_bod
         )
 
     assert [request.method for request in requests] == ["POST", "DELETE"]
-    assert str(requests[1].url) == "https://api.browser-use.com/api/v3/sessions/session_123"
+    assert str(requests[1].url) == (
+        "https://api.browser-use.com/api/v3/sessions/"
+        "session%2F123%3Fforce%3Dtrue"
+    )
     assert requests[1].content == b""
+
+
+@pytest.mark.asyncio
+async def test_submit_poll_cancel_rejects_unsupported_cancel_method() -> None:
+    snapshot = _submit_poll_snapshot(
+        base_url="https://api.example.com",
+        invoke_path="/runs",
+        result_path_template="/runs/{externalRunId}",
+        platform_input_mapping={"task": "prompt"},
+        platform_output_mapping={"externalRunId": "id", "status": "status"},
+        terminal_statuses=["completed"],
+        success_statuses=["completed"],
+    )
+    snapshot["connection"]["cancelPathTemplate"] = "/runs/{externalRunId}/cancel"
+    snapshot["connection"]["cancelMethod"] = "GET"
+    requests: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        return httpx.Response(200, json={"id": "run_123", "status": "running"})
+
+    async def cancel_requested() -> bool:
+        return True
+
+    with pytest.raises(AgentInvocationError, match="已取消") as exc_info:
+        await AgentInvocationClient(httpx.MockTransport(handler)).invoke(
+            agent_snapshot=snapshot,
+            credential_payload={"type": "none"},
+            platform_values=_platform_values(),
+            cancel_requested=cancel_requested,
+        )
+
+    assert [request.method for request in requests] == ["POST"]
+    assert "cancelMethod" in exc_info.value.details["cancelError"]

@@ -111,6 +111,20 @@
             @update:model-value="$emit('set-invoke-mode', String($event))"
           />
           <FormField
+            :label="t('agent.fields.maxConcurrency')"
+            :model-value="formatMaxConcurrencyValue(form.maxConcurrency)"
+            type="number"
+            update-on-blur
+            required
+            :min="1"
+            :max="100"
+            :step="1"
+            inputmode="numeric"
+            :error="fieldErrors.maxConcurrency"
+            :help="t('agent.registerForm.helps.maxConcurrency')"
+            @update:model-value="updateMaxConcurrency"
+          />
+          <FormField
             :label="t('agent.fields.connectionBaseUrl')"
             :model-value="form.connection.baseUrl"
             type="url"
@@ -177,7 +191,7 @@
           />
           <FormField
             v-if="form.auth.type === 'bearer'"
-            label="Bearer Token"
+            :label="t('agent.fields.authSecret')"
             :model-value="form.auth.token"
             type="password"
             :error="fieldErrors.authSecret"
@@ -367,6 +381,24 @@
             :help="t('agent.registerForm.helps.statusSuccess')"
             @update:model-value="updateStatusField('successStatusesText', $event)"
           />
+          <template v-if="form.invokeMode === 'submit_poll'">
+            <FormField
+              :label="t('agent.fields.cancelMethod')"
+              :model-value="form.connection.cancelMethod || 'POST'"
+              type="select"
+              :options="cancelMethodOptions"
+              :help="t('agent.registerForm.helps.cancelMethod')"
+              @update:model-value="updateCancelMethod"
+            />
+            <FormField
+              :label="t('agent.fields.cancelPathTemplate')"
+              :model-value="form.connection.cancelPathTemplate || ''"
+              :error="fieldErrors.cancelPathTemplate"
+              placeholder="/v1/runs/{externalRunId}/cancel"
+              :help="t('agent.registerForm.helps.cancelPathTemplate')"
+              @update:model-value="updateCancelPathTemplate"
+            />
+          </template>
         </div>
 
         <AgentCreateResultPanel
@@ -385,6 +417,7 @@ import { useI18n } from "vue-i18n";
 import AgentCreateResultPanel from "@/modules/agent/components/AgentCreateResultPanel.vue";
 import {
   buildAuthOptions,
+  buildCancelMethodOptions,
   buildCustomTypeOptions,
   buildInputMappingItems,
   buildInvokeModeOptions,
@@ -398,6 +431,11 @@ import type {
   AgentRegisterStepId,
 } from "@/modules/agent/model/agent-registration";
 import { AGENT_NO_TEMPLATE_ID } from "@/modules/agent/model/agent-registration";
+import {
+  clearAgentCancelRequestBody,
+  normalizeAgentCancelMethod,
+  parseAgentMaxConcurrencyInput,
+} from "@/modules/agent/model/agent-registration-form";
 import type {
   AgentConnectionConfig,
   AgentInputMapping,
@@ -439,6 +477,7 @@ const emit = defineEmits<{
 const { t } = useI18n();
 const invokeModeOptions = computed(() => buildInvokeModeOptions(t));
 const authOptions = computed(() => buildAuthOptions(t));
+const cancelMethodOptions = computed(() => buildCancelMethodOptions());
 const customTypeOptions = computed(() => buildCustomTypeOptions(t));
 const inputMappingItems = computed(() => buildInputMappingItems(t));
 const outputMappingItems = computed(() => buildOutputMappingItems(t));
@@ -490,6 +529,11 @@ const updateConnectionTextField = (
   value: string,
 ) => {
   props.form.connection[key] = value;
+  markStepEdited("connection");
+};
+
+const updateMaxConcurrency = (value: string) => {
+  props.form.maxConcurrency = parseAgentMaxConcurrencyInput(value);
   markStepEdited("connection");
 };
 
@@ -573,6 +617,18 @@ const updateStatusField = (
   markStepEdited("statuses");
 };
 
+const updateCancelMethod = (value: string) => {
+  props.form.connection.cancelMethod = normalizeAgentCancelMethod(value);
+  clearAgentCancelRequestBody(props.form);
+  markStepEdited("statuses");
+};
+
+const updateCancelPathTemplate = (value: string) => {
+  props.form.connection.cancelPathTemplate = value;
+  clearAgentCancelRequestBody(props.form);
+  markStepEdited("statuses");
+};
+
 const inputMappingPlaceholder: Record<keyof AgentInputMapping, string> = {
   task: "prompt",
   entryUrl: "url",
@@ -592,6 +648,9 @@ const outputMappingPlaceholder: Record<keyof AgentOutputMapping, string> = {
 
 const getInputMappingHelp = (key: keyof AgentInputMapping): string =>
   t(`agent.registerForm.inputMappingHelp.${key}`);
+
+const formatMaxConcurrencyValue = (value: number | null): string =>
+  value === null || !Number.isFinite(value) ? "" : String(value);
 
 const getInputMappingPlaceholder = (key: keyof AgentInputMapping): string =>
   inputMappingPlaceholder[key];
