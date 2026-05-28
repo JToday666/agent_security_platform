@@ -75,6 +75,10 @@
         :disabled="disabled"
         :readonly="readonly"
         :autocomplete="autocomplete || undefined"
+        :min="min ?? undefined"
+        :max="max ?? undefined"
+        :step="step ?? undefined"
+        :inputmode="inputmode || undefined"
         :aria-describedby="describedBy"
         :aria-invalid="isInvalid ? 'true' : undefined"
         :class="['form-field-input', size === 'sm' ? 'form-field-input--sm' : '']"
@@ -96,6 +100,17 @@ import { computed, nextTick, ref, useId, watch } from "vue";
 import AppIcon from "../branding/AppIcon.vue";
 import type { AppIconName } from "../branding/app-icon-registry";
 import UiSelect from "./UiSelect.vue";
+
+type InputMode =
+  | ""
+  | "none"
+  | "text"
+  | "tel"
+  | "url"
+  | "email"
+  | "numeric"
+  | "decimal"
+  | "search";
 
 interface Props {
   id?: string;
@@ -120,6 +135,10 @@ interface Props {
   required?: boolean;
   readonly?: boolean;
   autocomplete?: string;
+  min?: string | number;
+  max?: string | number;
+  step?: string | number;
+  inputmode?: InputMode;
   leadingIcon?: AppIconName | "";
   appearance?: "line" | "soft";
   size?: "sm" | "md";
@@ -139,6 +158,10 @@ const props = withDefaults(defineProps<Props>(), {
   required: false,
   readonly: false,
   autocomplete: "",
+  min: undefined,
+  max: undefined,
+  step: undefined,
+  inputmode: "",
   leadingIcon: "",
   appearance: "line",
   size: "md",

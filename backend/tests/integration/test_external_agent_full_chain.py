@@ -159,6 +159,7 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
                         "name": f"{api_db_helper.prefix} full chain agent",
                         "description": "full chain integration",
                         "invokeMode": "sync_response",
+                        "maxConcurrency": 4,
                         "connection": {
                             "baseUrl": agent_base_url,
                             "invokePath": "/run",

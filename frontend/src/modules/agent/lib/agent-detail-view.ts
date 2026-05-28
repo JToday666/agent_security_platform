@@ -144,6 +144,10 @@ export const buildAgentConnectionItems = (
   const { connection } = detail;
   return [
     {
+      label: t("agent.detail.items.maxConcurrency"),
+      value: displayValue(detail.maxConcurrency),
+    },
+    {
       label: t("agent.detail.items.connectionBaseUrl"),
       value: displayValue(connection.baseUrl),
     },
@@ -172,6 +176,16 @@ export const buildAgentConnectionItems = (
       value: t("agent.common.seconds", {
         value: connection.pollTimeoutSeconds,
       }),
+    },
+    {
+      label: t("agent.detail.items.cancelMethod"),
+      value: connection.cancelPathTemplate
+        ? displayValue(connection.cancelMethod || "POST")
+        : t("agent.common.notConfigured"),
+    },
+    {
+      label: t("agent.detail.items.cancelPathTemplate"),
+      value: displayValue(connection.cancelPathTemplate),
     },
   ];
 };

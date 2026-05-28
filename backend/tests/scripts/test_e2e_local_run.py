@@ -65,6 +65,7 @@ def test_agent_payload_can_target_local_mock_agent(e2e_module) -> None:
 
     assert payload["connection"]["baseUrl"] == "http://127.0.0.1:18081"
     assert payload["connection"]["invokePath"] == "/run"
+    assert payload["maxConcurrency"] == 4
 
 
 def test_agent_payload_can_target_local_skyvern_api(e2e_module) -> None:
@@ -76,6 +77,7 @@ def test_agent_payload_can_target_local_skyvern_api(e2e_module) -> None:
 
     assert payload["templateId"] == "skyvern_cloud_api"
     assert payload["invokeMode"] == "submit_poll"
+    assert payload["maxConcurrency"] == 4
     assert payload["connection"]["baseUrl"] == "http://127.0.0.1:18100"
     assert payload["connection"]["invokePath"] == "/v1/run/tasks"
     assert payload["connection"]["resultPathTemplate"] == "/v1/runs/{externalRunId}"

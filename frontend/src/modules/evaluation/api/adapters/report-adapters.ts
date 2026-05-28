@@ -9,9 +9,6 @@ import type {
   EvaluationSampleOutcome,
   EvaluationSampleSummary,
   EvaluationScoreMetricKey,
-  EvaluationScoreTrend,
-  EvaluationScoreTrendScope,
-  EvaluationScoreTrendView,
 } from "@/shared/types/agent-types";
 
 type UnknownRecord = Record<string, unknown>;
@@ -113,97 +110,6 @@ export const normalizeEvaluationDownloads = (
     sampleDetailsUrl: normalizeApiAssetUrl(
       toOptionalString(candidate.sampleDetailsUrl),
     ),
-  };
-};
-
-const normalizeScope = (value: unknown): EvaluationScoreTrendScope =>
-  toStringValue(value) === "all" ? "all" : "recent10";
-
-const normalizeView = (value: unknown): EvaluationScoreTrendView =>
-  toStringValue(value) === "risk" ? "risk" : "capability";
-
-const normalizeMetricKeys = (
-  value: unknown,
-  fallback: EvaluationScoreMetricKey[],
-): EvaluationScoreMetricKey[] => {
-  if (!Array.isArray(value)) {
-    return fallback;
-  }
-
-  const normalized = value
-    .map((item) => toStringValue(item) as EvaluationScoreMetricKey)
-    .filter((item) => SCORE_KEYS.includes(item));
-
-  return normalized.length ? normalized : fallback;
-};
-
-export const adaptEvaluationScoreTrend = (
-  value: unknown,
-): EvaluationScoreTrend => {
-  const candidate = toRecord(value);
-  const views = toRecord(candidate.views);
-  const capability = toRecord(views.capability);
-  const risk = toRecord(views.risk);
-
-  return {
-    scope: normalizeScope(candidate.scope),
-    defaultScope: normalizeScope(candidate.defaultScope),
-    defaultView: normalizeView(candidate.defaultView),
-    views: {
-      capability: {
-        label:
-          toStringValue(capability.label) ||
-          translateRuntimeMessage("evaluation.trend.capabilityView"),
-        metrics: normalizeMetricKeys(capability.metrics, [
-          "conservativeScore",
-          "performanceScore",
-          "hardScore",
-        ]),
-      },
-      risk: {
-        label:
-          toStringValue(risk.label) ||
-          translateRuntimeMessage("evaluation.trend.riskView"),
-        metrics: normalizeMetricKeys(risk.metrics, [
-          "conservativeScore",
-          "confidence",
-          "unsafeRate",
-        ]),
-      },
-    },
-    items: Array.isArray(candidate.items)
-      ? candidate.items
-          .map((item) => {
-            const row = toRecord(item);
-            const scores = toRecord(row.scores);
-            const evaluationId = toStringValue(row.evaluationId);
-            if (!evaluationId) {
-              return null;
-            }
-
-            return {
-              evaluationId,
-              agentName:
-                toStringValue(row.agentName) ||
-                translateRuntimeMessage("evaluation.common.unnamedAgent"),
-              createdAt: toStringValue(row.createdAt),
-              finishedAt: toOptionalString(row.finishedAt),
-              scores: SCORE_KEYS.reduce(
-                (accumulator, key) => {
-                  if (scores[key] != null) {
-                    accumulator[key] = toScoreValue(scores[key]);
-                  }
-                  return accumulator;
-                },
-                {} as EvaluationScoreTrend["items"][number]["scores"],
-              ),
-            };
-          })
-          .filter(
-            (item): item is EvaluationScoreTrend["items"][number] =>
-              item !== null,
-          )
-      : [],
   };
 };
 

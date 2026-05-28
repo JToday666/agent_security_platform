@@ -4,6 +4,7 @@ import {
 } from "@/app/i18n/runtime-translator";
 import type {
   AgentAuthType,
+  AgentCancelMethod,
   AgentConnectionConfig,
   AgentDetail,
   AgentInputMapping,
@@ -29,6 +30,7 @@ export interface AgentRegisterForm {
   name: string;
   description: string;
   invokeMode: AgentInvokeMode;
+  maxConcurrency: number | null;
   connection: AgentConnectionConfig;
   auth: {
     type: AgentAuthType;
@@ -49,10 +51,19 @@ const DEFAULT_CONNECTION: AgentConnectionConfig = {
   baseUrl: "",
   invokePath: "",
   resultPathTemplate: "",
+  cancelPathTemplate: "",
+  cancelMethod: "POST",
+  cancelRequestBody: null,
   requestTimeoutSeconds: 30,
   pollIntervalSeconds: 2,
   pollTimeoutSeconds: 300,
 };
+
+export const AGENT_MAX_CONCURRENCY_MIN = 1;
+export const AGENT_MAX_CONCURRENCY_MAX = 100;
+export const AGENT_MAX_CONCURRENCY_DEFAULT = 4;
+
+const AGENT_CANCEL_METHODS: AgentCancelMethod[] = ["POST", "DELETE", "PATCH"];
 
 let customFieldIdSeed = 0;
 
@@ -63,6 +74,45 @@ const nextCustomFieldId = (): string => {
 
 const toText = (value: unknown): string =>
   typeof value === "string" ? value.trim() : "";
+
+const isPlainRecord = (value: unknown): value is Record<string, unknown> =>
+  Boolean(value) && typeof value === "object" && !Array.isArray(value);
+
+export const normalizeAgentMaxConcurrency = (value: unknown): number => {
+  const parsed =
+    typeof value === "number" ? value : Number.parseFloat(String(value));
+  if (!Number.isFinite(parsed)) {
+    return AGENT_MAX_CONCURRENCY_DEFAULT;
+  }
+
+  return Math.min(
+    AGENT_MAX_CONCURRENCY_MAX,
+    Math.max(AGENT_MAX_CONCURRENCY_MIN, Math.round(parsed)),
+  );
+};
+
+export const parseAgentMaxConcurrencyInput = (
+  value: string,
+): number | null => {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  return Number(trimmed);
+};
+
+export const normalizeAgentCancelMethod = (
+  value: unknown,
+): AgentCancelMethod =>
+  AGENT_CANCEL_METHODS.includes(value as AgentCancelMethod)
+    ? (value as AgentCancelMethod)
+    : "POST";
+
+const normalizeCancelRequestBody = (
+  value: unknown,
+): Record<string, unknown> | null =>
+  isPlainRecord(value) ? cloneAgentRegistrationJson(value) : null;
 
 const toInputMappingFormValue = (
   mapping: Partial<AgentInputMapping> = {},
@@ -96,6 +146,9 @@ const normalizeConnection = (
 ): AgentConnectionConfig => ({
   ...DEFAULT_CONNECTION,
   ...connection,
+  cancelPathTemplate: toText(connection?.cancelPathTemplate),
+  cancelMethod: normalizeAgentCancelMethod(connection?.cancelMethod),
+  cancelRequestBody: normalizeCancelRequestBody(connection?.cancelRequestBody),
   requestTimeoutSeconds: Number(connection?.requestTimeoutSeconds ?? 30),
   pollIntervalSeconds: Number(connection?.pollIntervalSeconds ?? 2),
   pollTimeoutSeconds: Number(connection?.pollTimeoutSeconds ?? 300),
@@ -273,6 +326,7 @@ export const createAgentRegisterFormFromTemplate = (
     name: "",
     description: "",
     invokeMode: defaultConfig.invokeMode,
+    maxConcurrency: normalizeAgentMaxConcurrency(defaultConfig.maxConcurrency),
     connection: normalizeConnection(defaultConfig.connection),
     auth: {
       type: defaultConfig.auth.type,
@@ -307,6 +361,7 @@ export const createAgentRegisterFormFromDetail = (
     name: t("agent.register.copyName", { name: detail.name }),
     description: detail.description ?? "",
     invokeMode: detail.invokeMode,
+    maxConcurrency: normalizeAgentMaxConcurrency(detail.maxConcurrency),
     connection: normalizeConnection(detail.connection),
     auth: {
       type: detail.auth.type,
@@ -331,10 +386,14 @@ export const createEmptyAgentRegisterForm = (): AgentRegisterForm => ({
   name: "",
   description: "",
   invokeMode: "submit_poll",
+  maxConcurrency: AGENT_MAX_CONCURRENCY_DEFAULT,
   connection: {
     baseUrl: "",
     invokePath: "",
     resultPathTemplate: "",
+    cancelPathTemplate: "",
+    cancelMethod: "POST",
+    cancelRequestBody: null,
     requestTimeoutSeconds: 30,
     pollIntervalSeconds: 2,
     pollTimeoutSeconds: 300,
@@ -365,6 +424,10 @@ export const createCustomRequestField = (): AgentCustomRequestField => ({
   valueType: "string",
   value: "",
 });
+
+export const clearAgentCancelRequestBody = (form: AgentRegisterForm) => {
+  form.connection.cancelRequestBody = null;
+};
 
 export const selectDefaultTemplate = (
   templates: AgentTemplate[],

@@ -11,8 +11,12 @@ import type {
   AgentRequestOptions,
 } from "@/shared/types/agent-registry-types";
 import {
+  AGENT_MAX_CONCURRENCY_MAX,
+  AGENT_MAX_CONCURRENCY_MIN,
   buildAgentCustomRequestBody,
   cloneAgentRegistrationJson,
+  normalizeAgentCancelMethod,
+  normalizeAgentMaxConcurrency,
   parseAgentStatusText,
   type AgentRegisterForm,
 } from "./agent-registration-form";
@@ -23,6 +27,8 @@ export interface AgentRegisterFieldErrors {
   baseUrl?: string;
   invokePath?: string;
   resultPathTemplate?: string;
+  maxConcurrency?: string;
+  cancelPathTemplate?: string;
   taskMapping?: string;
   structuredOutputAlias?: string;
   customRequestBody?: string;
@@ -51,6 +57,7 @@ export interface NormalizedAgentRegistration {
   templateId: string;
   name: string;
   description: string;
+  maxConcurrency: number;
   connection: AgentConnectionConfig;
   auth: { type: AgentAuthType; config: Record<string, string> };
   platformInputMapping: AgentInputMapping;
@@ -202,15 +209,41 @@ const buildAuthConfig = (
 
 const normalizeConnection = (
   connection: AgentConnectionConfig,
-): AgentConnectionConfig => ({
-  ...connection,
-  baseUrl: connection.baseUrl.trim(),
-  invokePath: connection.invokePath.trim(),
-  resultPathTemplate: connection.resultPathTemplate?.trim() || undefined,
-  requestTimeoutSeconds: Number(connection.requestTimeoutSeconds),
-  pollIntervalSeconds: Number(connection.pollIntervalSeconds),
-  pollTimeoutSeconds: Number(connection.pollTimeoutSeconds),
-});
+  invokeMode: AgentRegisterForm["invokeMode"],
+): AgentConnectionConfig => {
+  const cancelPathTemplate = connection.cancelPathTemplate?.trim() || "";
+  const normalized: AgentConnectionConfig = {
+    ...connection,
+    baseUrl: connection.baseUrl.trim(),
+    invokePath: connection.invokePath.trim(),
+    resultPathTemplate: connection.resultPathTemplate?.trim() || undefined,
+    requestTimeoutSeconds: Number(connection.requestTimeoutSeconds),
+    pollIntervalSeconds: Number(connection.pollIntervalSeconds),
+    pollTimeoutSeconds: Number(connection.pollTimeoutSeconds),
+  };
+
+  if (invokeMode === "submit_poll" && cancelPathTemplate) {
+    normalized.cancelPathTemplate = cancelPathTemplate;
+    normalized.cancelMethod = normalizeAgentCancelMethod(connection.cancelMethod);
+    if (
+      connection.cancelRequestBody &&
+      typeof connection.cancelRequestBody === "object" &&
+      !Array.isArray(connection.cancelRequestBody)
+    ) {
+      normalized.cancelRequestBody = cloneAgentRegistrationJson(
+        connection.cancelRequestBody,
+      );
+    } else {
+      normalized.cancelRequestBody = null;
+    }
+  } else {
+    delete normalized.cancelPathTemplate;
+    delete normalized.cancelMethod;
+    delete normalized.cancelRequestBody;
+  }
+
+  return normalized;
+};
 
 const normalizeRequestOptions = (
   requestOptions: AgentRequestOptions,
@@ -229,7 +262,8 @@ const buildNormalizedRegistration = (
   templateId: form.templateId.trim(),
   name: form.name.trim(),
   description: form.description.trim(),
-  connection: normalizeConnection(form.connection),
+  maxConcurrency: normalizeAgentMaxConcurrency(form.maxConcurrency),
+  connection: normalizeConnection(form.connection, form.invokeMode),
   auth: buildAuthConfig(form),
   platformInputMapping: normalizeAgentInputMapping(form.platformInputMapping),
   customRequestBody: buildAgentCustomRequestBody(form.customRequestFields).body,
@@ -271,6 +305,34 @@ export const validateAgentRegistration = (
   }
 
   if (shouldValidateSection(scope, "connection")) {
+    if (form.maxConcurrency === null) {
+      addFieldError(
+        errors,
+        fieldErrors,
+        "maxConcurrency",
+        t("agent.validation.maxConcurrencyRequired"),
+      );
+    }
+
+    const rawMaxConcurrency = Number(form.maxConcurrency);
+    if (
+      form.maxConcurrency !== null &&
+      (!Number.isFinite(rawMaxConcurrency) ||
+        !Number.isInteger(rawMaxConcurrency) ||
+        rawMaxConcurrency < AGENT_MAX_CONCURRENCY_MIN ||
+        rawMaxConcurrency > AGENT_MAX_CONCURRENCY_MAX)
+    ) {
+      addFieldError(
+        errors,
+        fieldErrors,
+        "maxConcurrency",
+        t("agent.validation.maxConcurrencyRange", {
+          min: AGENT_MAX_CONCURRENCY_MIN,
+          max: AGENT_MAX_CONCURRENCY_MAX,
+        }),
+      );
+    }
+
     if (!normalized.connection.baseUrl) {
       addFieldError(
         errors,
@@ -445,6 +507,19 @@ export const validateAgentRegistration = (
   }
 
   if (shouldValidateSection(scope, "statuses")) {
+    if (
+      form.invokeMode === "submit_poll" &&
+      normalized.connection.cancelPathTemplate &&
+      !normalized.connection.cancelPathTemplate.includes("{externalRunId}")
+    ) {
+      addFieldError(
+        errors,
+        fieldErrors,
+        "cancelPathTemplate",
+        t("agent.validation.cancelPathTemplateRequired"),
+      );
+    }
+
     if (normalized.terminalStatuses.length === 0) {
       addFieldError(
         errors,

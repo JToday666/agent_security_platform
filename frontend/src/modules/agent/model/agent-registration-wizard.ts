@@ -2,7 +2,10 @@ import {
   translateRuntimeMessage,
   type AppTranslator,
 } from "@/app/i18n/runtime-translator";
-import type { AgentRegisterForm } from "./agent-registration-form";
+import {
+  AGENT_MAX_CONCURRENCY_DEFAULT,
+  type AgentRegisterForm,
+} from "./agent-registration-form";
 import {
   validateAgentRegistration,
   type AgentRegisterFieldErrors,
@@ -144,6 +147,8 @@ export const hasAgentRegisterConfigurationInput = (
     form.connection.baseUrl.trim() ||
     form.connection.invokePath.trim() ||
     form.connection.resultPathTemplate?.trim() ||
+    form.connection.cancelPathTemplate?.trim() ||
+    form.maxConcurrency !== AGENT_MAX_CONCURRENCY_DEFAULT ||
     form.auth.token.trim() ||
     form.auth.headerName.trim() ||
     form.auth.secret.trim() ||

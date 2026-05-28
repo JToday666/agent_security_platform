@@ -130,7 +130,7 @@ POST /api/v1/agents
     "type": "api_key_header",
     "config": {
       "headerName": "x-api-key",
-      "secret": "sk-demo"
+      "secret": "<YOUR_API_KEY>"
     }
   },
   "platformInputMapping": {
@@ -174,7 +174,7 @@ POST /api/v1/agents
 | name                  | Agent 名称                  | 列表、详情、评测记录展示     |
 | description           | 描述                        | 帮助用户识别用途             |
 | invokeMode            | sync_response / submit_poll | 决定后端调用方式             |
-| maxConcurrency        | 单 Agent 最大并发样本数     | 调度时限制该 Agent 同时执行数 |
+| maxConcurrency        | 单 Agent 最大并发样本数，必填，取值 1-100 | 调度时限制该 Agent 同时执行数 |
 | connection            | 外部服务连接配置            | 后端按该配置发起请求         |
 | auth                  | 鉴权配置                    | 保存凭据并生成请求 header    |
 | platformInputMapping  | 平台字段到外部请求字段名    | 用户填写字段名，不填写值     |
@@ -190,9 +190,11 @@ platformInputMapping.task 必填
 platformInputMapping 的值必须是顶层字段名
 customRequestBody 必须是 JSON 对象
 customRequestBody 顶层字段不得与输入映射字段名冲突
+maxConcurrency 必填，且必须是 1-100 的整数
 submit_poll 模式必须填写 resultPathTemplate
 submit_poll 模式必须能配置 externalRunId 和 status 输出映射
 cancelPathTemplate 如填写，必须包含 {externalRunId}
+cancelMethod 支持 POST、DELETE、PATCH
 cancelRequestBody 为可选 JSON 对象；无请求体取消接口填写 null 或省略
 successStatuses 必须是 terminalStatuses 的子集
 ```

@@ -9,7 +9,7 @@ from app.platform.schemas import CamelModel
 InvokeMode = Literal["sync_response", "submit_poll"]
 AgentStatus = Literal["draft", "verifying", "active", "invalid", "archived"]
 AuthType = Literal["none", "bearer", "api_key_header", "custom_header"]
-CancelMethod = Literal["POST", "PATCH", "DELETE"]
+CancelMethod = Literal["POST", "DELETE", "PATCH"]
 
 
 class AgentConnection(CamelModel):
@@ -40,7 +40,7 @@ class AgentCreateRequest(CamelModel):
     name: str = Field(max_length=100)
     description: str | None = None
     invoke_mode: InvokeMode
-    max_concurrency: int = Field(default=4, ge=1, le=100)
+    max_concurrency: int = Field(ge=1, le=100)
     connection: AgentConnection
     auth: AgentAuthConfig
     platform_input_mapping: dict[str, str]

@@ -33,8 +33,3 @@ export const resolveMockEnvelope = async <T>(
   await new Promise((resolve) => window.setTimeout(resolve, delay));
   return cloneData(envelope);
 };
-
-export const shouldMockFail = (flag: string): boolean => {
-  const params = new URLSearchParams(window.location.search);
-  return params.get(flag) === "1";
-};

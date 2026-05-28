@@ -62,6 +62,30 @@ describe("FormField", () => {
     }
   });
 
+  it("passes numeric bounds and input mode to number inputs", async () => {
+    const { host, unmount } = await mountFormField({
+      label: "Max concurrency",
+      modelValue: "4",
+      type: "number",
+      min: 1,
+      max: 100,
+      step: 1,
+      inputmode: "numeric",
+      "onUpdate:modelValue": () => undefined,
+    });
+
+    try {
+      const input = host.querySelector<HTMLInputElement>("input");
+      expect(input).toBeTruthy();
+      expect(input?.getAttribute("min")).toBe("1");
+      expect(input?.getAttribute("max")).toBe("100");
+      expect(input?.getAttribute("step")).toBe("1");
+      expect(input?.getAttribute("inputmode")).toBe("numeric");
+    } finally {
+      unmount();
+    }
+  });
+
   it("resets the draft when the parent keeps the current value after blur", async () => {
     const updates: string[] = [];
     const { host, unmount } = await mountFormField({

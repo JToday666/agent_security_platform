@@ -30,6 +30,7 @@ import {
 } from "@/modules/agent/model/agent-registration";
 import type {
   AgentAuthType,
+  AgentCancelMethod,
   AgentCreateResponse,
   AgentInputMapping,
   AgentOutputMapping,
@@ -43,6 +44,7 @@ const authTypeValues: AgentAuthType[] = [
   "api_key_header",
   "custom_header",
 ];
+const cancelMethodValues: AgentCancelMethod[] = ["POST", "DELETE", "PATCH"];
 const customFieldTypeValues: AgentCustomFieldType[] = [
   "string",
   "number",
@@ -64,6 +66,9 @@ export const buildAuthOptions = (t: AppTranslator) => [
   { label: t("agent.auth.apiKeyHeader"), value: "api_key_header" },
   { label: t("agent.auth.customHeader"), value: "custom_header" },
 ];
+
+export const buildCancelMethodOptions = () =>
+  cancelMethodValues.map((value) => ({ label: value, value }));
 
 export const buildCustomTypeOptions = (t: AppTranslator) => [
   { label: t("agent.registerForm.fieldTypes.string"), value: "string" },
