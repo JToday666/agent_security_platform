@@ -1,7 +1,8 @@
 {
   "errors": {
     "network": "Error de red",
-    "requestFailed": "Error en la solicitud"
+    "requestFailed": "Error en la solicitud",
+    "serviceUnavailable": "El servicio no está disponible temporalmente. Inténtalo de nuevo más tarde."
   },
   "validation": {
     "parameter": "Parámetro no válido",

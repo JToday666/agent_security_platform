@@ -118,8 +118,9 @@ def write_runtime_sample_tree(data_root: Path, prefix: str) -> None:
 @pytest.mark.integration
 @pytest.mark.asyncio
 async def test_service_submission_worker_external_agent_runtime_full_chain(
-    api_db_helper, tmp_path: Path, monkeypatch
+    selectable_api_db_helper, tmp_path: Path, monkeypatch
 ) -> None:
+    api_db_helper = selectable_api_db_helper
     dataset_code = api_db_helper.seed_dataset()
     data_root = tmp_path / "datasets"
     runtime_root = tmp_path / "runtime"

@@ -52,7 +52,7 @@
       <textarea
         v-else-if="type === 'textarea'"
         :id="controlId"
-        :value="modelValue"
+        :value="textInputValue"
         :placeholder="placeholder"
         :rows="rows"
         :disabled="disabled"
@@ -61,14 +61,16 @@
         :aria-describedby="describedBy"
         :aria-invalid="isInvalid ? 'true' : undefined"
         :class="['form-field-input', size === 'sm' ? 'form-field-input--sm' : '']"
-        @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
+        @focus="handleFocus"
+        @input="handleTextInput"
+        @blur="handleBlur"
       />
 
       <input
         v-else
         :id="controlId"
         :type="type"
-        :value="modelValue"
+        :value="textInputValue"
         :placeholder="placeholder"
         :disabled="disabled"
         :readonly="readonly"
@@ -76,7 +78,9 @@
         :aria-describedby="describedBy"
         :aria-invalid="isInvalid ? 'true' : undefined"
         :class="['form-field-input', size === 'sm' ? 'form-field-input--sm' : '']"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+        @focus="handleFocus"
+        @input="handleTextInput"
+        @blur="handleBlur"
       />
     </div>
 
@@ -88,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useId } from "vue";
+import { computed, nextTick, ref, useId, watch } from "vue";
 import AppIcon from "../branding/AppIcon.vue";
 import type { AppIconName } from "../branding/app-icon-registry";
 import UiSelect from "./UiSelect.vue";
@@ -119,6 +123,7 @@ interface Props {
   leadingIcon?: AppIconName | "";
   appearance?: "line" | "soft";
   size?: "sm" | "md";
+  updateOnBlur?: boolean;
   options?: Array<{
     label: string;
     value: string;
@@ -137,15 +142,18 @@ const props = withDefaults(defineProps<Props>(), {
   leadingIcon: "",
   appearance: "line",
   size: "md",
+  updateOnBlur: false,
   hint: "",
   options: () => [],
 });
 
-defineEmits<{
+const emit = defineEmits<{
   (e: "update:modelValue", value: string): void;
 }>();
 
 const fieldId = useId();
+const draftValue = ref(props.modelValue);
+const isEditing = ref(false);
 const resolvedHelp = computed(() => props.help || props.hint);
 const isSelect = computed(() => props.type === "select");
 const controlId = computed(() => props.id || `${fieldId}-control`);
@@ -166,6 +174,49 @@ const describedBy = computed(() =>
       : undefined,
 );
 const isInvalid = computed(() => Boolean(props.error));
+const textInputValue = computed(() =>
+  props.updateOnBlur ? draftValue.value : props.modelValue,
+);
+
+watch(
+  () => props.modelValue,
+  (value) => {
+    if (!props.updateOnBlur || !isEditing.value) {
+      draftValue.value = value;
+    }
+  },
+);
+
+const getInputValue = (event: Event): string =>
+  (event.target as HTMLInputElement | HTMLTextAreaElement).value;
+
+const handleFocus = () => {
+  if (props.updateOnBlur) {
+    isEditing.value = true;
+  }
+};
+
+const handleTextInput = (event: Event) => {
+  const value = getInputValue(event);
+  if (props.updateOnBlur) {
+    draftValue.value = value;
+    return;
+  }
+  emit("update:modelValue", value);
+};
+
+const handleBlur = () => {
+  if (!props.updateOnBlur) {
+    return;
+  }
+  isEditing.value = false;
+  emit("update:modelValue", draftValue.value);
+  void nextTick(() => {
+    if (!isEditing.value) {
+      draftValue.value = props.modelValue;
+    }
+  });
+};
 </script>
 
 <style scoped lang="scss">

@@ -11,6 +11,7 @@ from app.models.benchmark import BenchmarkSample, RiskSubtype
 from app.models.benchmark_run import ExecutionSummary, RunDataset, RunReport, TestRun
 from app.models.benchmark_run import RunSample, SampleExecution
 from app.models.scoring import DifficultyVersion, DifficultyVersionItem, EvaluationScore
+from app.modules.datasets.visibility import public_dataset_code_filter
 
 
 class EvaluationRepository:
@@ -71,6 +72,7 @@ class EvaluationRepository:
             .where(
                 RiskSubtype.is_active.is_(True),
                 RiskSubtype.code.in_(ordered_dataset_ids),
+                public_dataset_code_filter(RiskSubtype.code),
             )
             .group_by(RiskSubtype.code, RiskSubtype.name)
         )
@@ -87,6 +89,7 @@ class EvaluationRepository:
             .where(
                 BenchmarkSample.is_active.is_(True),
                 RiskSubtype.code.in_(ordered_dataset_ids),
+                public_dataset_code_filter(RiskSubtype.code),
             )
             .order_by(ordering.asc(), BenchmarkSample.id.asc())
         )

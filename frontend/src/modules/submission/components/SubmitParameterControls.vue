@@ -24,16 +24,17 @@
             :step="meta.difficulty.step"
             class="range-input"
             :style="rangeStyle"
-            @input="handleDifficultyInput"
+            @input="handleDifficultyRangeInput"
           />
           <input
             type="number"
-            :value="difficultyInputValue"
+            :value="difficultyDraft"
             :min="meta.difficulty.min"
             :max="meta.difficulty.max"
             :step="meta.difficulty.step"
             class="number-input ui-input-pill ui-input-focus-ring"
             @input="handleDifficultyInput"
+            @blur="handleDifficultyBlur"
           />
         </div>
       </div>
@@ -42,7 +43,7 @@
         <span class="field-label">{{ t("submission.parameters.timeoutLabel") }}</span>
         <input
           type="number"
-          :value="form.parameters.timeoutMinutes"
+          :value="timeoutDraft"
           :min="meta.timeoutMinutes.min"
           :max="meta.timeoutMinutes.max"
           :step="meta.timeoutMinutes.step"
@@ -60,7 +61,7 @@
         <span class="field-label">{{ t("submission.parameters.maxStepsLabel") }}</span>
         <input
           type="number"
-          :value="form.parameters.maxSteps"
+          :value="maxStepsDraft"
           :min="meta.maxSteps.min"
           :max="meta.maxSteps.max"
           :step="meta.maxSteps.step"
@@ -77,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import SectionBlock from "@/shared/ui/page/SectionBlock.vue";
 import type {
@@ -99,12 +100,13 @@ const form = defineModel<SubmitFormState>({ required: true });
 const { t } = useI18n();
 
 const difficultyLabel = computed(() => form.value.parameters.difficulty.toFixed(1));
-const difficultyInputValue = computed(() =>
-  form.value.parameters.difficulty.toFixed(1),
-);
 const recommendedTimeoutMax = computed(
   () => props.meta.timeoutMinutes.recommendedMax ?? 25,
 );
+const difficultyDraft = ref(form.value.parameters.difficulty.toFixed(1));
+const timeoutDraft = ref(String(form.value.parameters.timeoutMinutes));
+const maxStepsDraft = ref(String(form.value.parameters.maxSteps));
+const editingField = ref<"difficulty" | "timeout" | "maxSteps" | null>(null);
 const difficultyHelp = computed(() =>
   t("submission.parameters.difficultyHelp", {
     min: props.meta.difficulty.min.toFixed(1),
@@ -149,39 +151,85 @@ const rangeStyle = computed(() => {
 const getInputValue = (event: Event): string =>
   (event.target as HTMLInputElement).value;
 
-const handleDifficultyInput = (event: Event) => {
-  form.value.parameters.difficulty = normalizeDifficulty(
+watch(
+  () => form.value.parameters.difficulty,
+  (value) => {
+    if (editingField.value !== "difficulty") {
+      difficultyDraft.value = value.toFixed(1);
+    }
+  },
+);
+
+watch(
+  () => form.value.parameters.timeoutMinutes,
+  (value) => {
+    if (editingField.value !== "timeout") {
+      timeoutDraft.value = String(value);
+    }
+  },
+);
+
+watch(
+  () => form.value.parameters.maxSteps,
+  (value) => {
+    if (editingField.value !== "maxSteps") {
+      maxStepsDraft.value = String(value);
+    }
+  },
+);
+
+const handleDifficultyRangeInput = (event: Event) => {
+  const normalized = normalizeDifficulty(
     getInputValue(event),
     props.meta.difficulty,
   );
+  form.value.parameters.difficulty = normalized;
+  difficultyDraft.value = normalized.toFixed(1);
+};
+
+const handleDifficultyInput = (event: Event) => {
+  editingField.value = "difficulty";
+  difficultyDraft.value = getInputValue(event);
+};
+
+const handleDifficultyBlur = () => {
+  const normalized = normalizeDifficulty(
+    difficultyDraft.value,
+    props.meta.difficulty,
+  );
+  form.value.parameters.difficulty = normalized;
+  difficultyDraft.value = normalized.toFixed(1);
+  editingField.value = null;
 };
 
 const handleTimeoutInput = (event: Event) => {
-  form.value.parameters.timeoutMinutes = normalizeTimeoutMinutes(
-    getInputValue(event),
-    props.meta.timeoutMinutes,
-  );
+  editingField.value = "timeout";
+  timeoutDraft.value = getInputValue(event);
 };
 
 const handleTimeoutBlur = () => {
-  form.value.parameters.timeoutMinutes = normalizeTimeoutMinutes(
-    form.value.parameters.timeoutMinutes,
+  const normalized = normalizeTimeoutMinutes(
+    timeoutDraft.value,
     props.meta.timeoutMinutes,
   );
+  form.value.parameters.timeoutMinutes = normalized;
+  timeoutDraft.value = String(normalized);
+  editingField.value = null;
 };
 
 const handleMaxStepsInput = (event: Event) => {
-  form.value.parameters.maxSteps = normalizeMaxSteps(
-    getInputValue(event),
-    props.meta.maxSteps,
-  );
+  editingField.value = "maxSteps";
+  maxStepsDraft.value = getInputValue(event);
 };
 
 const handleMaxStepsBlur = () => {
-  form.value.parameters.maxSteps = normalizeMaxSteps(
-    form.value.parameters.maxSteps,
+  const normalized = normalizeMaxSteps(
+    maxStepsDraft.value,
     props.meta.maxSteps,
   );
+  form.value.parameters.maxSteps = normalized;
+  maxStepsDraft.value = String(normalized);
+  editingField.value = null;
 };
 </script>
 

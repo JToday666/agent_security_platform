@@ -33,8 +33,9 @@ def test_agent_templates_include_browser_use_output_and_render_contract(client) 
 @pytest.mark.db
 @pytest.mark.integration
 def test_agent_and_evaluation_submission_routes_work_against_real_database(
-    client, api_db_helper, monkeypatch, tmp_path: Path
+    client, selectable_api_db_helper, monkeypatch, tmp_path: Path
 ) -> None:
+    api_db_helper = selectable_api_db_helper
     dataset_code = api_db_helper.seed_dataset()
     user_id, token = api_db_helper.seed_user(
         username=f"{api_db_helper.prefix}_submitter",
@@ -73,7 +74,7 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
         agent_payload = {
             "templateId": "http_submit_poll_basic",
             "name": f"{api_db_helper.prefix} agent",
-            "description": "db smoke submit",
+            "description": "db api submit",
             "invokeMode": "sync_response",
             "maxConcurrency": 2,
             "connection": {
@@ -83,7 +84,7 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
                 "cancelMethod": "POST",
                 "requestTimeoutSeconds": 30,
             },
-            "auth": {"type": "bearer", "config": {"token": "sk-smoke"}},
+            "auth": {"type": "bearer", "config": {"token": "sk-test"}},
             "platformInputMapping": {
                 "task": "prompt",
                 "entryUrl": "url",

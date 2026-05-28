@@ -143,6 +143,12 @@ class ExecuteRows:
     def all(self):
         return self.rows
 
+    def one_or_none(self):
+        return self.rows[0] if self.rows else None
+
+    def mappings(self):
+        return self
+
 
 class TranslationSessionStub:
     def __init__(self) -> None:
@@ -170,6 +176,32 @@ class TranslationSessionStub:
     async def execute(self, stmt):
         _ = stmt
         return ExecuteRows(self.results.pop(0))
+
+
+class CaptureExecuteSession:
+    def __init__(self) -> None:
+        self.statements = []
+
+    async def execute(self, stmt):
+        self.statements.append(stmt)
+        return ExecuteRows([])
+
+
+@pytest.mark.asyncio
+async def test_dataset_repository_public_queries_exclude_internal_fixture_codes() -> None:
+    session = CaptureExecuteSession()
+    repository = DatasetRepository(session)
+
+    await repository.get_catalog_rows()
+    await repository.get_detail_row("pytest_abcd_dataset")
+    await repository.get_detail_sample_rows("pytest_abcd_dataset")
+
+    compiled_params = [
+        value
+        for statement in session.statements
+        for value in statement.compile().params.values()
+    ]
+    assert compiled_params.count("pytest_%") == 3
 
 
 @pytest.mark.asyncio

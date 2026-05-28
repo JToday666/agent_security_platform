@@ -76,6 +76,17 @@ def api_db_helper(session_factory) -> Iterator[ApiDbHelper]:
 
 
 @pytest.fixture
+def selectable_api_db_helper(session_factory) -> Iterator[ApiDbHelper]:
+    helper = ApiDbHelper(
+        session_factory=session_factory, prefix=f"selectable_{uuid4().hex[:8]}"
+    )
+    try:
+        yield helper
+    finally:
+        helper.cleanup()
+
+
+@pytest.fixture
 def repo_sample_bundle(tmp_path: Path) -> SampleBundleInfo:
     return write_repo_like_sample_bundle(tmp_path / "samples")
 

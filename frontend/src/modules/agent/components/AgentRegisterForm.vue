@@ -144,6 +144,7 @@
             :label="t('agent.fields.requestTimeout')"
             :model-value="String(form.connection.requestTimeoutSeconds)"
             type="number"
+            update-on-blur
             :help="t('agent.registerForm.helps.requestTimeout')"
             @update:model-value="updateConnectionNumberField('requestTimeoutSeconds', $event)"
           />
@@ -152,6 +153,7 @@
             :label="t('agent.fields.pollInterval')"
             :model-value="String(form.connection.pollIntervalSeconds)"
             type="number"
+            update-on-blur
             :help="t('agent.registerForm.helps.pollInterval')"
             @update:model-value="updateConnectionNumberField('pollIntervalSeconds', $event)"
           />
@@ -160,6 +162,7 @@
             :label="t('agent.fields.pollTimeout')"
             :model-value="String(form.connection.pollTimeoutSeconds)"
             type="number"
+            update-on-blur
             :help="t('agent.registerForm.helps.pollTimeout')"
             @update:model-value="updateConnectionNumberField('pollTimeoutSeconds', $event)"
           />
@@ -490,6 +493,18 @@ const updateConnectionTextField = (
   markStepEdited("connection");
 };
 
+const connectionNumberDefaults: Record<
+  Extract<
+    keyof AgentConnectionConfig,
+    "requestTimeoutSeconds" | "pollIntervalSeconds" | "pollTimeoutSeconds"
+  >,
+  number
+> = {
+  requestTimeoutSeconds: 30,
+  pollIntervalSeconds: 2,
+  pollTimeoutSeconds: 300,
+};
+
 const updateConnectionNumberField = (
   key: Extract<
     keyof AgentConnectionConfig,
@@ -497,7 +512,11 @@ const updateConnectionNumberField = (
   >,
   value: string,
 ) => {
-  props.form.connection[key] = Number(value);
+  const parsed = Number(value);
+  props.form.connection[key] =
+    Number.isFinite(parsed) && parsed > 0
+      ? parsed
+      : connectionNumberDefaults[key];
   markStepEdited("connection");
 };
 
