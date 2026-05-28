@@ -15,6 +15,7 @@ from app.modules.leaderboards.schemas import (
 )
 from app.platform.errors import NotFoundError
 from app.platform.i18n import translate
+from app.platform.observability import AuditActorType, record_audit_log
 
 
 class LeaderboardService:
@@ -24,7 +25,7 @@ class LeaderboardService:
         self.db = db
 
     async def create_snapshot(
-        self, *, score_model_version: str, benchmark_version: str
+        self, *, score_model_version: str, benchmark_version: str, current_user
     ) -> LeaderboardSnapshotResponse:
         rows = (
             await self.db.execute(
@@ -81,6 +82,20 @@ class LeaderboardService:
             )
             self.db.add(entry)
             entries.append(entry)
+        await record_audit_log(
+            self.db,
+            actor_type=AuditActorType.USER,
+            actor_id=str(current_user.id),
+            action="leaderboard.snapshot.created",
+            resource_type="leaderboard_snapshot",
+            resource_id=snapshot.snapshot_code,
+            result="success",
+            payload={
+                "scoreModelVersion": score_model_version,
+                "benchmarkVersion": benchmark_version,
+                "entryCount": len(entries),
+            },
+        )
         await self.db.commit()
         return _snapshot_response(snapshot, entries)
 

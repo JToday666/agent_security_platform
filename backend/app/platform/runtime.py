@@ -16,5 +16,6 @@ def ensure_runtime_dirs() -> None:
         settings.worker_workdir_root,
         settings.tmp_root,
         settings.log_root,
+        settings.artifact_root,
     ):
         path.mkdir(parents=True, exist_ok=True)

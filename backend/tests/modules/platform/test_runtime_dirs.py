@@ -20,6 +20,7 @@ def test_ensure_runtime_dirs_creates_all_configured_storage_roots(
         "worker_workdir_root": tmp_path / "root" / "runtime" / "workdir",
         "tmp_root": tmp_path / "root" / "tmp",
         "log_root": tmp_path / "root" / "logs",
+        "artifact_root": tmp_path / "root" / "artifacts",
     }
     monkeypatch.setattr(runtime, "settings", SimpleNamespace(**configured_paths))
 

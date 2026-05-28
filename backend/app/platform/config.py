@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     FASTAPI_PORT: int = 8000
     FASTAPI_HOST: str = "127.0.0.1"
     LOG_LEVEL: str = "INFO"
+    LOG_FORMAT: str = "json"
+    LOG_ENV: str = "dev"
+    LOG_SERVICE_NAME: str = "backend"
     PUBLIC_BASE_URL: str = "http://127.0.0.1:8000"
 
     DATABASE_URL_RAW: str | None = Field(default=None, validation_alias="DATABASE_URL")
@@ -74,6 +77,7 @@ class Settings(BaseSettings):
     UPLOAD_ROOT_DIR: str | None = None
     TMP_ROOT_DIR: str | None = None
     LOG_ROOT_DIR: str | None = None
+    ARTIFACT_ROOT_DIR: str | None = None
     AGENT_HTTP_ALLOW_PRIVATE_NETWORKS: bool = False
     AGENT_HTTP_MAX_REDIRECTS: int = 3
     AGENT_HTTP_RESPONSE_MAX_BYTES: int = 1_000_000
@@ -223,6 +227,15 @@ class Settings(BaseSettings):
         """返回后端日志根目录。"""
         return self._resolve_storage_path(
             self.LOG_ROOT_DIR, self.data_root / "logs", "LOG_ROOT_DIR"
+        )
+
+    @property
+    def artifact_root(self) -> Path:
+        """返回评测产物归档根目录。"""
+        return self._resolve_storage_path(
+            self.ARTIFACT_ROOT_DIR,
+            self.data_root / "artifacts",
+            "ARTIFACT_ROOT_DIR",
         )
 
 

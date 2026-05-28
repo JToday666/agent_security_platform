@@ -47,6 +47,12 @@ from app.modules.evaluations.schemas import (
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES, build_controls
 from app.platform.errors import ConflictError, ForbiddenError, NotFoundError
 from app.platform.i18n import DEFAULT_LOCALE, get_current_locale
+from app.platform.observability import (
+    AuditActorType,
+    SampleExecutionEventType,
+    record_audit_log,
+    record_sample_execution_event,
+)
 
 
 DIFFICULTY_BUCKETS = ("0.0-0.2", "0.2-0.4", "0.4-0.6", "0.6-0.8", "0.8-1.0")
@@ -204,6 +210,35 @@ class EvaluationService:
                 dataset_names=selection["dataset_names"],
                 matched_counts=selection["matched_counts"],
                 sample_rows=selection["sample_rows"],
+            )
+            await record_sample_execution_event(
+                self.repository.db,
+                run_id=run.id,
+                event_type=SampleExecutionEventType.EVALUATION_CREATED,
+                status=run.status,
+                message="Evaluation created",
+                payload={
+                    "evaluationId": run.public_id,
+                    "agentId": agent.public_id,
+                    "datasetCount": len(selection["dataset_ids"]),
+                    "sampleCount": len(selection["sample_rows"]),
+                    "submitMethod": run.submit_method,
+                },
+            )
+            await record_audit_log(
+                self.repository.db,
+                actor_type=AuditActorType.USER,
+                actor_id=str(current_user.id),
+                action="evaluation.created",
+                resource_type="evaluation",
+                resource_id=run.public_id,
+                result="success",
+                payload={
+                    "agentId": agent.public_id,
+                    "datasetCount": len(selection["dataset_ids"]),
+                    "sampleCount": len(selection["sample_rows"]),
+                    "submitMethod": run.submit_method,
+                },
             )
             await self.repository.commit()
         except IntegrityError as exc:
@@ -408,7 +443,7 @@ class EvaluationService:
             )
         ]
 
-        return EvaluationReportPayload.model_validate(
+        response = EvaluationReportPayload.model_validate(
             {
                 "evaluationId": run.public_id,
                 "status": "ready",
@@ -470,6 +505,22 @@ class EvaluationService:
                 },
             }
         )
+        await record_audit_log(
+            self.repository.db,
+            actor_type=AuditActorType.USER,
+            actor_id=str(current_user.id),
+            action="evaluation.report.viewed",
+            resource_type="evaluation",
+            resource_id=run.public_id,
+            result="success",
+            payload={
+                "reportStatus": report.report_status,
+                "totalSamples": run.total_samples,
+                "completedSamples": run.completed_samples,
+            },
+        )
+        await self.repository.commit()
+        return response
 
     async def apply_action(
         self, evaluation_id: str, payload: EvaluationActionRequest, current_user
@@ -480,6 +531,7 @@ class EvaluationService:
         )
         owner_name = current_user.username
         now = datetime.now(timezone.utc)
+        previous_status = run.status
 
         try:
             reconciled = await lifecycle.reconcile_run_timeout(self.repository.db, run)
@@ -542,9 +594,28 @@ class EvaluationService:
                     message_key="errors.evaluations.state_action_not_allowed",
                     message_params={"action": payload.action},
                 )
+            audit_action = {
+                "pause": "evaluation.paused",
+                "resume": "evaluation.resumed",
+                "terminate": "evaluation.terminated",
+                "cancel": "evaluation.cancelled",
+            }[payload.action]
+            await record_audit_log(
+                self.repository.db,
+                actor_type=AuditActorType.USER,
+                actor_id=str(current_user.id),
+                action=audit_action,
+                resource_type="evaluation",
+                resource_id=run.public_id,
+                result="success",
+                payload={
+                    "requestedAction": payload.action,
+                    "previousStatus": previous_status,
+                    "currentStatus": run.status,
+                },
+            )
 
-            if run.status not in TERMINAL_STATUSES:
-                await self.repository.commit()
+            await self.repository.commit()
             await self.repository.refresh(run)
         except Exception:
             await self.repository.rollback()

@@ -4,7 +4,9 @@ import shutil
 from pathlib import Path
 
 import pytest
+from sqlalchemy import select
 
+from app.models.observability import AuditLog
 from app.modules.agents.invocation import AgentInvocationClient, AgentInvocationResult
 from app.platform.credentials import FileCredentialStore
 
@@ -241,5 +243,33 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
         )
         assert deprecated_response.status_code == 422
         assert deprecated_response.json()["code"] == 1000
+
+        archive_response = client.post(
+            f"/api/v1/agents/{agent_id}/archive", headers=headers
+        )
+        assert archive_response.status_code == 200
+
+        with api_db_helper.session() as session:
+            audit_rows = list(
+                (
+                    session.execute(
+                        select(AuditLog)
+                        .where(AuditLog.actor_id == str(user_id))
+                        .order_by(AuditLog.id)
+                    )
+                ).scalars()
+            )
+        audit_actions = {(row.action, row.result) for row in audit_rows}
+        assert ("agent.created", "success") in audit_actions
+        assert ("agent.verification.completed", "success") in audit_actions
+        assert ("agent.archived", "success") in audit_actions
+        assert ("evaluation.created", "success") in audit_actions
+
+        agent_created_audit = next(
+            row for row in audit_rows if row.action == "agent.created"
+        )
+        assert agent_created_audit.resource_id == agent_id
+        assert agent_created_audit.payload["maxConcurrency"] == 2
+        assert "sk-smoke" not in str([row.payload for row in audit_rows])
     finally:
         shutil.rmtree(credential_dir, ignore_errors=True)

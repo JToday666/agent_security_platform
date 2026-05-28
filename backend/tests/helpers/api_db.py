@@ -30,6 +30,7 @@ from app.models.benchmark_run import (
     SampleExecution,
     TestRun,
 )
+from app.models.observability import AuditLog, SampleExecutionEvent
 from app.models.scoring import (
     DifficultyVersion,
     DifficultyVersionItem,
@@ -286,6 +287,11 @@ class ApiDbHelper:
                         delete(EvaluationScore).where(EvaluationScore.id.in_(score_ids))
                     )
                 session.execute(delete(RunReport).where(RunReport.run_id.in_(run_ids)))
+                session.execute(
+                    delete(SampleExecutionEvent).where(
+                        SampleExecutionEvent.run_id.in_(run_ids)
+                    )
+                )
             if sample_execution_ids:
                 session.execute(
                     delete(RuntimeSession).where(
@@ -320,6 +326,16 @@ class ApiDbHelper:
                 session.execute(delete(TestRun).where(TestRun.id.in_(run_ids)))
             if user_ids:
                 session.execute(delete(Agent).where(Agent.user_id.in_(user_ids)))
+                session.execute(
+                    delete(AuditLog).where(
+                        AuditLog.actor_id.in_([str(user_id) for user_id in user_ids])
+                    )
+                )
+            session.execute(
+                delete(AuditLog).where(
+                    AuditLog.resource_id.like(f"eval_{self.prefix}%")
+                )
+            )
             if subtype_ids:
                 sample_ids = list(
                     (

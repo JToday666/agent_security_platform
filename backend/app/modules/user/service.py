@@ -14,6 +14,7 @@ from app.platform.errors import (
     ForbiddenError,
     ValidationDomainError,
 )
+from app.platform.observability import AuditActorType, record_audit_log
 from app.platform.security import hash_password
 from app.platform.storage import default_avatars_root
 
@@ -52,6 +53,7 @@ class UserService:
                 message_key="errors.user.profile_empty",
             )
 
+        changed_fields: list[str] = []
         if payload.username is not None and payload.username != current_user.username:
             if await self.repository.is_username_taken(
                 payload.username, exclude_user_id=current_user.id
@@ -62,12 +64,24 @@ class UserService:
                     message_key="errors.user.username_taken",
                 )
             current_user.username = payload.username
+            changed_fields.append("username")
 
         if payload.password is not None:
             current_user.hashed_password = hash_password(payload.password)
+            changed_fields.append("password")
 
         try:
             await self.repository.save_user(current_user)
+            await record_audit_log(
+                self.repository.db,
+                actor_type=AuditActorType.USER,
+                actor_id=str(current_user.id),
+                action="user.profile.updated",
+                resource_type="user",
+                resource_id=str(current_user.id),
+                result="success",
+                payload={"changedFields": changed_fields},
+            )
             await self.repository.commit()
             await self.repository.refresh(current_user)
         except IntegrityError as exc:
@@ -126,6 +140,16 @@ class UserService:
         current_user.avatar_url = f"/uploads/avatars/{file_name}"
         try:
             await self.repository.save_user(current_user)
+            await record_audit_log(
+                self.repository.db,
+                actor_type=AuditActorType.USER,
+                actor_id=str(current_user.id),
+                action="user.avatar.uploaded",
+                resource_type="user",
+                resource_id=str(current_user.id),
+                result="success",
+                payload={"contentType": avatar.content_type},
+            )
             await self.repository.commit()
             await self.repository.refresh(current_user)
         except Exception:

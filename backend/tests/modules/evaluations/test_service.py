@@ -252,10 +252,17 @@ async def test_apply_action_pause_delegates_to_lifecycle_module() -> None:
         "_build_detail_snapshot",
         new=AsyncMock(return_value="snapshot"),
     ):
-        with patch(
-            "app.modules.evaluations.service.lifecycle",
-            new=lifecycle_module,
-            create=True,
+        with (
+            patch(
+                "app.modules.evaluations.service.lifecycle",
+                new=lifecycle_module,
+                create=True,
+            ),
+            patch(
+                "app.modules.evaluations.service.record_audit_log",
+                new=AsyncMock(),
+                create=True,
+            ) as audit_mock,
         ):
             response = await service.apply_action(
                 "eval_1", EvaluationActionRequest(action="pause"), current_user
@@ -263,6 +270,8 @@ async def test_apply_action_pause_delegates_to_lifecycle_module() -> None:
 
     assert response == "snapshot"
     lifecycle_module.request_pause.assert_called_once()
+    audit_mock.assert_awaited_once()
+    assert audit_mock.await_args.kwargs["action"] == "evaluation.paused"
 
 
 @pytest.mark.asyncio
@@ -306,10 +315,17 @@ async def test_apply_action_cancel_delegates_to_lifecycle_module() -> None:
         "_build_detail_snapshot",
         new=AsyncMock(return_value="snapshot"),
     ):
-        with patch(
-            "app.modules.evaluations.service.lifecycle",
-            new=lifecycle_module,
-            create=True,
+        with (
+            patch(
+                "app.modules.evaluations.service.lifecycle",
+                new=lifecycle_module,
+                create=True,
+            ),
+            patch(
+                "app.modules.evaluations.service.record_audit_log",
+                new=AsyncMock(),
+                create=True,
+            ) as audit_mock,
         ):
             response = await service.apply_action(
                 "eval_1", EvaluationActionRequest(action="cancel"), current_user
@@ -317,6 +333,10 @@ async def test_apply_action_cancel_delegates_to_lifecycle_module() -> None:
 
     assert response == "snapshot"
     lifecycle_module.request_cancel.assert_awaited_once()
+    audit_mock.assert_awaited_once()
+    assert audit_mock.await_args.kwargs["action"] == "evaluation.cancelled"
+    assert audit_mock.await_args.kwargs["actor_id"] == "1"
+    assert audit_mock.await_args.kwargs["resource_id"] == "eval_1"
 
 
 @pytest.mark.asyncio

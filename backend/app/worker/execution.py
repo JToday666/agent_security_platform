@@ -7,6 +7,10 @@ import contextlib
 import logging
 
 from app.platform.config import settings
+from app.platform.observability import (
+    SampleExecutionEventType,
+    record_sample_execution_event_once,
+)
 from app.modules.runtime_gateway.session_store import (
     close_runtime_session,
     create_runtime_session,
@@ -36,6 +40,29 @@ from app.worker.runtime.ports import allocate_tcp_port
 from app.worker.runtime.preparation import build_environment_ref, build_probe_token
 
 LOGGER = logging.getLogger(__name__)
+
+
+async def _record_execution_event(
+    *,
+    run_id: int,
+    execution_id: int,
+    sample_id: str | None,
+    event_type: SampleExecutionEventType,
+    status: str | None = None,
+    message: str | None = None,
+    payload: dict[str, object] | None = None,
+) -> None:
+    """Best-effort sample timeline event; execution must not depend on it."""
+    with contextlib.suppress(Exception):
+        await record_sample_execution_event_once(
+            run_id=run_id,
+            sample_execution_id=execution_id,
+            sample_id=sample_id,
+            event_type=event_type,
+            status=status,
+            message=message,
+            payload=payload,
+        )
 
 
 def _execution_timeout_seconds(timeout_seconds: int | None) -> int:
@@ -108,6 +135,15 @@ async def execute_sample(
     )
     if not should_execute:
         return
+    await _record_execution_event(
+        run_id=run_id,
+        execution_id=execution_id,
+        sample_id=sample.sample_id,
+        event_type=SampleExecutionEventType.SAMPLE_EXECUTION_STARTED,
+        status="dispatching",
+        message="Sample execution started",
+        payload={"dispatchMode": resolved_dispatch_mode},
+    )
 
     environment_ref = build_environment_ref(execution_id)
     probe_token = build_probe_token()
@@ -134,10 +170,31 @@ async def execute_sample(
             await mark_execution_runtime_ready(
                 execution_id, prepared, claim_token=claim_token
             )
+            await _record_execution_event(
+                run_id=run_id,
+                execution_id=execution_id,
+                sample_id=sample.sample_id,
+                event_type=SampleExecutionEventType.RUNTIME_ROUTE_BOUND,
+                status="active",
+                message="Runtime gateway route bound",
+                payload={
+                    "environmentRef": prepared.environment_ref,
+                    "publicEntryUrl": prepared.public_entry_url,
+                },
+            )
 
             adapter = resolve_dispatch_adapter(resolved_dispatch_mode)
             effective_dispatch_config = dict(dispatch_config or {})
             effective_dispatch_config["runId"] = run_id
+            await _record_execution_event(
+                run_id=run_id,
+                execution_id=execution_id,
+                sample_id=sample.sample_id,
+                event_type=SampleExecutionEventType.AGENT_DISPATCH_STARTED,
+                status="started",
+                message="Agent dispatch started",
+                payload={"dispatchMode": resolved_dispatch_mode},
+            )
             dispatch_result = await adapter.dispatch(
                 prepared, sample, timeout, dispatch_config=effective_dispatch_config
             )
@@ -157,6 +214,15 @@ async def execute_sample(
                 final_status="done",
                 claim_token=claim_token,
             )
+            await _record_execution_event(
+                run_id=run_id,
+                execution_id=execution_id,
+                sample_id=sample.sample_id,
+                event_type=SampleExecutionEventType.SAMPLE_EXECUTION_FINISHED,
+                status="done",
+                message="Sample execution finished",
+                payload={"dispatchMode": resolved_dispatch_mode},
+            )
             with contextlib.suppress(Exception):
                 await close_runtime_session(execution_id, status="closed")
         except RuntimeDispatchTimeout:
@@ -169,6 +235,15 @@ async def execute_sample(
                 success=True,
                 final_status="done",
                 claim_token=claim_token,
+            )
+            await _record_execution_event(
+                run_id=run_id,
+                execution_id=execution_id,
+                sample_id=sample.sample_id,
+                event_type=SampleExecutionEventType.SAMPLE_EXECUTION_TIMEOUT,
+                status="timeout",
+                message="Sample execution timed out",
+                payload={"dispatchMode": resolved_dispatch_mode},
             )
             with contextlib.suppress(Exception):
                 await close_runtime_session(execution_id, status="expired")
@@ -184,6 +259,15 @@ async def execute_sample(
                 error_message=str(exc),
                 claim_token=claim_token,
             )
+            await _record_execution_event(
+                run_id=run_id,
+                execution_id=execution_id,
+                sample_id=sample.sample_id,
+                event_type=SampleExecutionEventType.SAMPLE_EXECUTION_CANCELLED,
+                status="canceled",
+                message="Sample execution canceled",
+                payload={"dispatchMode": resolved_dispatch_mode},
+            )
             with contextlib.suppress(Exception):
                 await close_runtime_session(execution_id, status="closed")
         except Exception as exc:
@@ -194,12 +278,27 @@ async def execute_sample(
                     execution_id, prepared=prepared, claim_token=claim_token
                 )
             LOGGER.exception(
-                "sample_execution_dispatch_failed",
+                "sample.execution.dispatch_failed",
                 extra={
-                    "sample_execution_id": execution_id,
-                    "run_id": run_id,
-                    "dataset_id": dataset_id,
-                    "dispatch_mode": resolved_dispatch_mode,
+                    "event": "sample.execution.dispatch_failed",
+                    "sampleExecutionId": execution_id,
+                    "runId": run_id,
+                    "datasetId": dataset_id,
+                    "sampleId": sample.sample_id,
+                    "dispatchMode": resolved_dispatch_mode,
+                },
+            )
+            await _record_execution_event(
+                run_id=run_id,
+                execution_id=execution_id,
+                sample_id=sample.sample_id,
+                event_type=SampleExecutionEventType.SAMPLE_EXECUTION_FAILED,
+                status="error",
+                message="Sample execution failed",
+                payload={
+                    "dispatchMode": resolved_dispatch_mode,
+                    "errorClass": exc.__class__.__name__,
+                    "errorMessage": str(exc),
                 },
             )
             await mark_execution_system_error(

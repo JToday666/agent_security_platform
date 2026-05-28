@@ -6,6 +6,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[3]
 BACKEND_ROOT = REPO_ROOT / "backend"
 BACKEND_TEMPLATE_ROOT = REPO_ROOT / "docs" / "deploy" / "templates" / "backend"
+NGINX_TEMPLATE_ROOT = REPO_ROOT / "docs" / "deploy" / "templates" / "nginx"
 
 
 def _service_section(compose_text: str, service_name: str) -> str:
@@ -66,7 +67,7 @@ def test_backend_compose_defines_phase1_services_with_same_image() -> None:
     assert 'command: ["alembic", "upgrade", "head"]' in _service_section(
         compose, "backend-migrate"
     )
-    assert 'command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]' in _service_section(
+    assert 'command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log", "--log-config", "/app/uvicorn_logging.json"]' in _service_section(
         compose, "backend-api"
     )
     assert 'command: ["python", "scheduler.py"]' in _service_section(
@@ -94,19 +95,23 @@ def test_backend_compose_overrides_container_runtime_addresses() -> None:
     api = _service_section(compose, "backend-api")
     assert "FASTAPI_HOST: 0.0.0.0" in api
     assert "FASTAPI_PORT: 8000" in api
+    assert "LOG_SERVICE_NAME: backend-api" in api
     assert "LLM_BASE_URL" not in api
     assert "WORKER_RUNTIME_DOCKER_IMAGE" not in api
 
     scheduler = _service_section(compose, "backend-scheduler")
+    assert "LOG_SERVICE_NAME: backend-scheduler" in scheduler
     assert "LLM_BASE_URL" not in scheduler
     assert "WORKER_RUNTIME_DOCKER_IMAGE" not in scheduler
 
     migrate = _service_section(compose, "backend-migrate")
+    assert "LOG_SERVICE_NAME: backend-migrate" in migrate
     assert "LLM_BASE_URL" not in migrate
     assert "WORKER_RUNTIME_DOCKER_IMAGE" not in migrate
 
     worker = _service_section(compose, "backend-worker")
     assert "- /data/agent-security-platform/env/prod/backend-worker.env" in worker
+    assert "LOG_SERVICE_NAME: backend-worker" in worker
     assert "LLM_BASE_URL" not in worker
     assert "WORKER_RUNTIME_LAUNCH_MODE: docker" in worker
     assert "WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}" in worker
@@ -168,9 +173,28 @@ def test_backend_prod_env_template_uses_container_network_addresses() -> None:
     assert "WORKER_RUNTIME_DOCKER_PORT=8000" not in env_template
     assert "PUBLIC_BASE_URL=https://<domain>" in env_template
     assert "RUNTIME_SESSION_TTL_SECONDS=900" in env_template
+    assert "LOG_FORMAT=json" in env_template
+    assert "LOG_ENV=production" in env_template
+    assert "ARTIFACT_ROOT_DIR=/data/agent-security-platform/artifacts" in env_template
     assert "RUNTIME_GATEWAY_COOKIE_NAME=asp_runtime_token" in env_template
     assert "RUNTIME_REAPER_INTERVAL_SECONDS=30" in env_template
     assert "RUNTIME_CONTAINER_REAPER_ENABLED=true" in env_template
+
+
+def test_backend_compose_mounts_artifacts_and_keeps_json_file_rotation() -> None:
+    compose = (
+        BACKEND_TEMPLATE_ROOT / "docker-compose.backend.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "driver: json-file" in compose
+    assert 'max-size: "50m"' in compose
+    assert 'max-file: "5"' in compose
+
+    assert (
+        "/data/agent-security-platform/artifacts:"
+        "/data/agent-security-platform/artifacts"
+    ) in compose
+    assert "volumes: *backend-data-volumes" in _service_section(compose, "backend-api")
 
     worker_env_template = (
         BACKEND_TEMPLATE_ROOT / "backend-worker.env.example"
@@ -212,3 +236,34 @@ def test_operations_runbook_documents_runtime_gateway_cleanup_and_verification()
     assert "managedBy=asp-worker" in runbook
     assert "/runtime/tasks/" in runbook
     assert "token" in runbook
+
+
+def test_operations_runbook_documents_simple_log_tracing_workflow() -> None:
+    runbook = (
+        REPO_ROOT / "docs" / "deploy" / "03-operations-runbook.md"
+    ).read_text(encoding="utf-8")
+
+    assert "sample_execution_events" in runbook
+    assert "audit_logs" in runbook
+    assert "x-request-id" in runbook
+    assert "/data/agent-security-platform/logs/nginx/access.log" in runbook
+    assert "不记录 query" in runbook
+    assert "sampleExecutionId" in runbook
+    assert "manifest.json" in runbook
+    assert "/data/agent-security-platform/artifacts/evaluations" in runbook
+    assert "scripts/prune_storage.py" in runbook
+    assert "--include-artifacts" in runbook
+
+
+def test_nginx_template_uses_json_access_log_and_request_id_forwarding() -> None:
+    nginx_conf = (NGINX_TEMPLATE_ROOT / "nginx.conf").read_text(encoding="utf-8")
+    default_conf = (NGINX_TEMPLATE_ROOT / "default.conf").read_text(encoding="utf-8")
+
+    assert "log_format asp_json escape=json" in nginx_conf
+    assert '"event":"http.access"' in nginx_conf
+    assert '"requestId":"$asp_request_id"' in nginx_conf
+    assert '"upstreamRequestId":"$upstream_http_x_request_id"' in nginx_conf
+    assert "$args" not in nginx_conf
+    assert "access_log  /var/log/nginx/access.log asp_json;" in nginx_conf
+    assert "proxy_set_header X-Request-ID $asp_request_id;" in default_conf
+    assert "proxy_set_header X-Trace-ID $asp_request_id;" in default_conf

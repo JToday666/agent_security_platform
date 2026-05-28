@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any, TypedDict, cast
 
 from fastapi import FastAPI, HTTPException, Request
@@ -10,6 +11,8 @@ from fastapi.exceptions import RequestValidationError
 from app.platform.errors import DomainError, ValidationDomainError
 from app.platform.http import build_validation_error_data, json_error_response
 from app.platform.i18n import localize_message, translate
+
+LOGGER = logging.getLogger(__name__)
 
 
 class _HttpEnvelopeBaseDetail(TypedDict):
@@ -168,6 +171,15 @@ def register_exception_handlers(app: FastAPI) -> None:
         request: Request, exc: Exception
     ):  # pragma: no cover - safety net
         """兜底处理未捕获异常，供应用入口统一注册调用。"""
+        LOGGER.exception(
+            "http.unhandled_exception",
+            extra={
+                "event": "http.unhandled_exception",
+                "method": request.method,
+                "path": request.url.path,
+                "errorClass": exc.__class__.__name__,
+            },
+        )
         locale = _request_locale(request)
         return json_error_response(
             http_status=500,

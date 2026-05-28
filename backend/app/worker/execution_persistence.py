@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import asyncio
+import json
+import shutil
 from datetime import datetime, timezone
+from pathlib import Path
 
 from sqlalchemy import delete, select, update
 
@@ -18,12 +21,16 @@ from app.models.benchmark_run import (
 )
 from app.platform.config import settings
 from app.platform.db.session import AsyncSessionLocal
+from app.platform.observability import (
+    SampleExecutionEventType,
+    record_sample_execution_event,
+)
 from app.worker.analysis.service import analyze_runtime_artifacts, summary_from_analysis
 from app.worker.oracle_evaluator import (
     EVALUATOR_VERSION,
     evaluate_oracles_from_artifacts,
 )
-from app.worker.runtime import collect_artifacts
+from app.worker.runtime import ArtifactRecord, collect_artifacts
 
 
 def now_utc() -> datetime:
@@ -52,6 +59,95 @@ def _system_error_retries_enabled(run: TestRun | None) -> bool:
     if not isinstance(parameters, dict):
         return True
     return parameters.get("retryEnabled") is not False
+
+
+def _archive_relative_path(prepared, artifact: ArtifactRecord) -> Path:
+    try:
+        return artifact.path.relative_to(prepared.run_dir)
+    except ValueError:
+        return Path(str(artifact.metadata.get("relativePath") or artifact.path.name))
+
+
+def _archive_artifacts(
+    *, run_id: int, execution_id: int, prepared, artifacts: list[ArtifactRecord]
+) -> list[ArtifactRecord]:
+    """Copy runtime workdir artifacts into the durable artifact root."""
+    archived: list[ArtifactRecord] = []
+    sample_root = (
+        settings.artifact_root
+        / "evaluations"
+        / str(run_id)
+        / "samples"
+        / str(execution_id)
+    )
+    for artifact in artifacts:
+        relative_path = _archive_relative_path(prepared, artifact)
+        target_path = sample_root / relative_path
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(artifact.path, target_path)
+        stat = target_path.stat()
+        artifact_relative_path = relative_path.as_posix()
+        source_relative_path = str(
+            artifact.metadata.get("relativePath") or artifact_relative_path
+        )
+        archived.append(
+            ArtifactRecord(
+                artifact_type=artifact.artifact_type,
+                path=target_path,
+                storage_uri=(
+                    f"artifact://evaluations/{run_id}/samples/"
+                    f"{execution_id}/{artifact_relative_path}"
+                ),
+                metadata={
+                    **artifact.metadata,
+                    "sourceRelativePath": source_relative_path,
+                    "artifactRelativePath": artifact_relative_path,
+                    "sizeBytes": stat.st_size,
+                },
+            )
+        )
+    manifest_path = sample_root / "manifest.json"
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_payload = {
+        "schemaVersion": 1,
+        "runId": run_id,
+        "sampleExecutionId": execution_id,
+        "sampleArtifactUri": f"artifact://evaluations/{run_id}/samples/{execution_id}/",
+        "generatedAt": now_utc().isoformat(),
+        "artifactCount": len(archived),
+        "artifacts": [
+            {
+                "type": artifact.artifact_type,
+                "uri": artifact.storage_uri,
+                "relativePath": artifact.metadata.get("artifactRelativePath"),
+                "sourceRelativePath": artifact.metadata.get("sourceRelativePath"),
+                "sizeBytes": artifact.metadata.get("sizeBytes"),
+            }
+            for artifact in archived
+        ],
+    }
+    manifest_path.write_text(
+        json.dumps(manifest_payload, ensure_ascii=False, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    manifest_stat = manifest_path.stat()
+    archived.append(
+        ArtifactRecord(
+            artifact_type="artifact_manifest",
+            path=manifest_path,
+            storage_uri=(
+                f"artifact://evaluations/{run_id}/samples/{execution_id}/manifest.json"
+            ),
+            metadata={
+                "artifactRelativePath": "manifest.json",
+                "sourceRelativePath": "manifest.json",
+                "sizeBytes": manifest_stat.st_size,
+                "manifestVersion": 1,
+                "listedArtifactCount": manifest_payload["artifactCount"],
+            },
+        )
+    )
+    return archived
 
 
 async def mark_execution_dispatching(
@@ -167,6 +263,13 @@ async def persist_runtime_result(
             )
 
         artifacts = await asyncio.to_thread(collect_artifacts, prepared)
+        artifacts = await asyncio.to_thread(
+            _archive_artifacts,
+            run_id=run_id,
+            execution_id=execution_id,
+            prepared=prepared,
+            artifacts=artifacts,
+        )
 
         db.add(
             ExecutionSummary(
@@ -187,6 +290,31 @@ async def persist_runtime_result(
                     artifact_metadata=artifact.metadata,
                 )
             )
+        await record_sample_execution_event(
+            db,
+            run_id=run_id,
+            sample_execution_id=execution_id,
+            event_type=SampleExecutionEventType.ARTIFACT_PERSISTED,
+            status="persisted",
+            message="Execution artifacts persisted",
+            payload={
+                "artifactCount": len(artifacts),
+                "artifactTypes": sorted({artifact.artifact_type for artifact in artifacts}),
+            },
+        )
+        await record_sample_execution_event(
+            db,
+            run_id=run_id,
+            sample_execution_id=execution_id,
+            event_type=SampleExecutionEventType.ORACLE_JUDGEMENT_FINISHED,
+            status=str(summary_payload["final_label"]),
+            message="Oracle judgement finished",
+            payload={
+                "taskCompleted": bool(summary_payload["task_completed"]),
+                "harmDetected": bool(summary_payload["harm_detected"]),
+                "finalLabel": str(summary_payload["final_label"]),
+            },
+        )
 
         execution.status = final_status
         execution.finished_at = finished_at
@@ -241,6 +369,13 @@ async def persist_execution_artifacts_only(
             )
         )
         artifacts = await asyncio.to_thread(collect_artifacts, prepared)
+        artifacts = await asyncio.to_thread(
+            _archive_artifacts,
+            run_id=execution.run_id,
+            execution_id=execution_id,
+            prepared=prepared,
+            artifacts=artifacts,
+        )
         for artifact in artifacts:
             db.add(
                 ExecutionArtifact(
@@ -250,6 +385,18 @@ async def persist_execution_artifacts_only(
                     artifact_metadata=artifact.metadata,
                 )
             )
+        await record_sample_execution_event(
+            db,
+            run_id=execution.run_id,
+            sample_execution_id=execution_id,
+            event_type=SampleExecutionEventType.ARTIFACT_PERSISTED,
+            status="persisted",
+            message="Available execution artifacts persisted",
+            payload={
+                "artifactCount": len(artifacts),
+                "artifactTypes": sorted({artifact.artifact_type for artifact in artifacts}),
+            },
+        )
         await db.commit()
 
 

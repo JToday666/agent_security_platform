@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from app.modules.auth.repository import AuthRepository
 from app.modules.auth.schemas import AuthSessionData, RegisterRequest, UserProfile
 from app.platform.errors import AuthError, ConflictError, ValidationDomainError
+from app.platform.observability import AuditActorType, record_audit_log
 from app.platform.security import create_access_token, hash_password, verify_password
 
 
@@ -34,12 +35,45 @@ class AuthService:
 
         user = await self.repository.get_user_by_login_identifier(normalized_username)
         if user is None or not verify_password(password, user.hashed_password):
+            await record_audit_log(
+                self.repository.db,
+                actor_type=(
+                    AuditActorType.USER
+                    if user is not None
+                    else AuditActorType.ANONYMOUS
+                ),
+                actor_id=None if user is None else str(user.id),
+                action="auth.login",
+                resource_type="user",
+                resource_id=None if user is None else str(user.id),
+                result="failure",
+                payload={
+                    "reason": "invalid_credentials",
+                    "identifierType": (
+                        "email" if "@" in normalized_username else "username"
+                    ),
+                },
+            )
+            await self.repository.commit()
             raise AuthError(
                 "用户名或密码错误",
                 code=1001,
                 message_key="errors.auth.invalid_credentials",
             )
 
+        await record_audit_log(
+            self.repository.db,
+            actor_type=AuditActorType.USER,
+            actor_id=str(user.id),
+            action="auth.login",
+            resource_type="user",
+            resource_id=str(user.id),
+            result="success",
+            payload={
+                "identifierType": "email" if "@" in normalized_username else "username"
+            },
+        )
+        await self.repository.commit()
         return AuthSessionData(
             token=create_access_token(user.id),
             user=UserProfile.model_validate(user),
@@ -67,6 +101,16 @@ class AuthService:
         try:
             user = await self.repository.create_user(
                 username, email, hash_password(payload.password)
+            )
+            await record_audit_log(
+                self.repository.db,
+                actor_type=AuditActorType.USER,
+                actor_id=str(user.id),
+                action="auth.registered",
+                resource_type="user",
+                resource_id=str(user.id),
+                result="success",
+                payload={"username": username},
             )
             await self.repository.commit()
             await self.repository.refresh(user)

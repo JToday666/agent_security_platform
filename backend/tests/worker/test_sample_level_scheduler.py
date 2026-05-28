@@ -25,6 +25,7 @@ from app.models.benchmark_run import (
     SampleExecution,
     TestRun as RunModel,
 )
+from app.models.observability import SampleExecutionEvent
 from app.platform.db.session import AsyncSessionLocal, engine as async_engine
 from app.worker.execution_persistence import (
     mark_execution_dispatching,
@@ -318,6 +319,14 @@ async def test_sample_worker_claim_writes_sample_level_lease(
     assert claimed.claim_heartbeat_at is not None
     assert claimed.lease_expires_at is not None
     assert claimed.claim_token is not None
+    with api_db_helper.session() as session:
+        event = session.execute(
+            select(SampleExecutionEvent).where(
+                SampleExecutionEvent.sample_execution_id == ids["first_execution_id"],
+                SampleExecutionEvent.event_type == "sample.claimed",
+            )
+        ).scalar_one()
+    assert event.worker_id == "sample-worker-test"
 
 
 @pytest.mark.asyncio
@@ -406,12 +415,19 @@ async def test_finalizer_generates_report_after_all_samples_reach_terminal_state
                 select(RunReport).where(RunReport.run_id == ids["run_id"])
             ).scalars()
         )
+        event = session.execute(
+            select(SampleExecutionEvent).where(
+                SampleExecutionEvent.run_id == ids["run_id"],
+                SampleExecutionEvent.event_type == "evaluation.completed",
+            )
+        ).scalar_one()
 
     assert finalized == 1
     assert run.status == "completed"
     assert run.completed_samples == 2
     assert reports
     assert reports[0].report_status == "available"
+    assert event.status == "completed"
 
 
 @pytest.mark.asyncio
@@ -514,9 +530,15 @@ async def test_system_error_respects_disabled_retry_setting(
 
 @pytest.mark.asyncio
 async def test_failed_execution_can_persist_available_evidence_artifacts(
-    api_db_helper, tmp_path
+    api_db_helper, tmp_path, monkeypatch
 ) -> None:
     ids = _seed_sample_level_run(api_db_helper)
+    artifact_root = tmp_path / "artifacts"
+    monkeypatch.setattr(
+        "app.worker.execution_persistence.settings.ARTIFACT_ROOT_DIR",
+        str(artifact_root),
+        raising=False,
+    )
     work_dir = tmp_path / "workdir"
     run_dir = work_dir / "agent_runtime" / "runs" / "exec-1"
     run_dir.mkdir(parents=True)
@@ -558,13 +580,68 @@ async def test_failed_execution_can_persist_available_evidence_artifacts(
                 ExecutionArtifact.artifact_type == "external_agent_invocation",
             )
         ).scalar_one()
+        manifest_artifact = session.execute(
+            select(ExecutionArtifact).where(
+                ExecutionArtifact.sample_execution_id == ids["first_execution_id"],
+                ExecutionArtifact.artifact_type == "artifact_manifest",
+            )
+        ).scalar_one()
+        event = session.execute(
+            select(SampleExecutionEvent).where(
+                SampleExecutionEvent.sample_execution_id == ids["first_execution_id"],
+                SampleExecutionEvent.event_type == "artifact.persisted",
+            )
+        ).scalar_one()
 
-    assert artifact.storage_uri.endswith(
-        "/agent_runtime/runs/exec-1/external_agent_invocation.json"
+    assert artifact.storage_uri == (
+        f"artifact://evaluations/{ids['run_id']}/samples/"
+        f"{ids['first_execution_id']}/external_agent_invocation.json"
     )
-    assert artifact.artifact_metadata["relativePath"] == (
+    assert artifact.artifact_metadata["sourceRelativePath"] == (
         "agent_runtime/runs/exec-1/external_agent_invocation.json"
     )
+    assert artifact.artifact_metadata["artifactRelativePath"] == (
+        "external_agent_invocation.json"
+    )
+    assert (
+        artifact_root
+        / "evaluations"
+        / str(ids["run_id"])
+        / "samples"
+        / str(ids["first_execution_id"])
+        / "external_agent_invocation.json"
+    ).exists()
+    manifest_path = (
+        artifact_root
+        / "evaluations"
+        / str(ids["run_id"])
+        / "samples"
+        / str(ids["first_execution_id"])
+        / "manifest.json"
+    )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert manifest_artifact.storage_uri == (
+        f"artifact://evaluations/{ids['run_id']}/samples/"
+        f"{ids['first_execution_id']}/manifest.json"
+    )
+    assert manifest_artifact.artifact_metadata["listedArtifactCount"] == 1
+    assert manifest["artifactCount"] == 1
+    assert manifest["artifacts"] == [
+        {
+            "type": "external_agent_invocation",
+            "uri": artifact.storage_uri,
+            "relativePath": "external_agent_invocation.json",
+            "sourceRelativePath": (
+                "agent_runtime/runs/exec-1/external_agent_invocation.json"
+            ),
+            "sizeBytes": artifact.artifact_metadata["sizeBytes"],
+        }
+    ]
+    assert event.payload["artifactCount"] == 2
+    assert event.payload["artifactTypes"] == [
+        "artifact_manifest",
+        "external_agent_invocation",
+    ]
 
 
 @pytest.mark.asyncio
