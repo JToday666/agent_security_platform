@@ -7,6 +7,7 @@ from unittest.mock import AsyncMock, Mock, patch
 import pytest
 
 from app.modules.evaluations.application.mappers import to_zulu
+from app.modules.evaluations.repository import EvaluationRepository
 from app.modules.evaluations.schemas import EvaluationActionRequest
 from app.modules.evaluations.service import EvaluationService
 from app.platform.errors import ConflictError
@@ -59,6 +60,23 @@ class EvaluationReadOnlyRepositoryStub:
         self.rollback_calls += 1
 
 
+class ExecuteRows:
+    def __init__(self, rows) -> None:
+        self.rows = rows
+
+    def all(self):
+        return self.rows
+
+
+class CaptureExecuteSession:
+    def __init__(self) -> None:
+        self.statements = []
+
+    async def execute(self, stmt):
+        self.statements.append(stmt)
+        return ExecuteRows([])
+
+
 def make_paused_run(now: datetime) -> SimpleNamespace:
     started_at = now - timedelta(minutes=10)
     finished_at = now - timedelta(minutes=2)
@@ -89,6 +107,24 @@ def make_paused_run(now: datetime) -> SimpleNamespace:
         total_samples=12,
         completed_samples=7,
     )
+
+
+@pytest.mark.asyncio
+async def test_evaluation_repository_selection_excludes_internal_fixture_codes() -> None:
+    session = CaptureExecuteSession()
+    repository = EvaluationRepository(session)
+
+    await repository.resolve_dataset_selection(
+        ["A1_identity_leakage", "pytest_abcd_dataset"],
+        0.5,
+    )
+
+    compiled_params = [
+        value
+        for statement in session.statements
+        for value in statement.compile().params.values()
+    ]
+    assert compiled_params.count("pytest_%") == 2
 
 
 @pytest.mark.asyncio

@@ -1,7 +1,11 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
-import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import { ApiConfig } from "@/shared/api/Config";
+import {
+  extractErrorMessage,
+  normalizeValidationErrors,
+  type ApiValidationErrorItem,
+} from "@/shared/api/api-error-normalizer";
 import { STORAGE_KEYS } from "@/shared/constants/storage-keys";
 
 export interface ApiRequestConfig extends AxiosRequestConfig {
@@ -27,20 +31,10 @@ interface ApiError extends Error {
   validationErrors?: ApiValidationErrorItem[];
 }
 
-interface ApiValidationErrorItem {
-  field: string;
-  reason: string;
-}
-
 interface BackendResponse<T = any> {
   code: number;
   data: T;
   message: string;
-}
-
-interface LegacyValidationErrorItem {
-  msg?: string;
-  loc?: Array<string | number>;
 }
 
 const axiosInstance = axios.create({
@@ -52,111 +46,6 @@ let apiLocale = "zh-CN";
 
 export const setApiLocale = (locale: string) => {
   apiLocale = locale;
-};
-
-const buildLegacyValidationMessage = (
-  errors: LegacyValidationErrorItem[],
-): string => {
-  if (!errors.length) {
-    return translateRuntimeMessage("network.validation.requestParameters");
-  }
-
-  return errors
-    .map((item) => {
-      const field =
-        item.loc?.filter((value) => value !== "body").join(".") || "";
-      return field
-        ? `${field}: ${
-            item.msg || translateRuntimeMessage("network.validation.parameter")
-          }`
-        : item.msg || translateRuntimeMessage("network.validation.parameter");
-    })
-    .join("；");
-};
-
-const normalizeValidationErrors = (payload: any): ApiValidationErrorItem[] => {
-  const candidateErrors = payload?.data?.errors;
-  if (Array.isArray(candidateErrors)) {
-    return candidateErrors
-      .map((item) => {
-        if (!item || typeof item !== "object") {
-          return null;
-        }
-
-        const field =
-          typeof item.field === "string" && item.field.trim()
-            ? item.field.trim()
-            : "request";
-        const reason =
-          typeof item.reason === "string" && item.reason.trim()
-            ? item.reason.trim()
-            : translateRuntimeMessage("network.validation.parameter");
-
-        return { field, reason };
-      })
-      .filter((item): item is ApiValidationErrorItem => item !== null);
-  }
-
-  if (Array.isArray(payload?.detail)) {
-    return (payload.detail as LegacyValidationErrorItem[]).map((item) => ({
-      field:
-        item.loc?.filter((value) => value !== "body").join(".") || "request",
-      reason:
-        item.msg || translateRuntimeMessage("network.validation.parameter"),
-    }));
-  }
-
-  return [];
-};
-
-const buildValidationMessage = (errors: ApiValidationErrorItem[]): string => {
-  if (!errors.length) {
-    return translateRuntimeMessage("network.validation.requestParameters");
-  }
-
-  return errors
-    .map((item) =>
-      item.field && item.field !== "request"
-        ? `${item.field}: ${item.reason}`
-        : item.reason,
-    )
-    .join("；");
-};
-
-const extractErrorMessage = (payload: any): string => {
-  if (!payload) return translateRuntimeMessage("network.errors.network");
-
-  if (typeof payload === "string") return payload;
-
-  if (typeof payload.message === "string" && payload.message.trim()) {
-    return payload.message;
-  }
-
-  const validationErrors = normalizeValidationErrors(payload);
-  if (validationErrors.length > 0) {
-    return buildValidationMessage(validationErrors);
-  }
-
-  if (payload.detail) {
-    if (typeof payload.detail === "string") {
-      return payload.detail;
-    }
-
-    if (
-      typeof payload.detail.message === "string" &&
-      payload.detail.message.trim()
-    ) {
-      return payload.detail.message;
-    }
-
-    if (Array.isArray(payload.detail)) {
-      return buildLegacyValidationMessage(
-        payload.detail as LegacyValidationErrorItem[],
-      );
-    }
-  }
-
-  return translateRuntimeMessage("network.errors.requestFailed");
 };
 
 const createApiError = (
@@ -192,6 +81,24 @@ const toApiResponse = <T = any>(payload: any): ApiResponse<T> => {
 const resolveResponse = async <T = any>(
   requestPromise: Promise<{ data: unknown }>,
 ): Promise<ApiResponse<T>> => toApiResponse<T>((await requestPromise).data);
+
+const readHeaderValue = (headers: unknown, name: string): string | undefined => {
+  if (!headers || typeof headers !== "object") {
+    return undefined;
+  }
+
+  const getter = (headers as { get?: (headerName: string) => unknown }).get;
+  if (typeof getter === "function") {
+    const value = getter.call(headers, name);
+    if (typeof value === "string") {
+      return value;
+    }
+  }
+
+  const record = headers as Record<string, unknown>;
+  const value = record[name] ?? record[name.toLowerCase()];
+  return typeof value === "string" ? value : undefined;
+};
 
 const parseFileName = (value?: string): string => {
   if (!value) {
@@ -238,9 +145,12 @@ axiosInstance.interceptors.response.use(
     const responseData = error.response?.data;
     const validationErrors = normalizeValidationErrors(responseData);
     const message =
-      extractErrorMessage(responseData) ||
+      extractErrorMessage(responseData, {
+        httpStatus: error.response?.status,
+        contentType: readHeaderValue(error.response?.headers, "content-type"),
+      }) ||
       error.message ||
-      translateRuntimeMessage("network.errors.network");
+      extractErrorMessage(null);
 
     const requestConfig = error.config as ApiRequestConfig | undefined;
     const shouldDispatchUnauthorizedEvent =

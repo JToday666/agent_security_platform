@@ -13,6 +13,7 @@ from app.models.benchmark import (
     RiskSubtype,
     RiskSubtypeDisplayMeta,
 )
+from app.modules.datasets.visibility import public_dataset_code_filter
 
 
 class DatasetRepository:
@@ -101,7 +102,11 @@ class DatasetRepository:
                     BenchmarkSample.is_active.is_(True),
                 ),
             )
-            .where(RiskCategory.is_active.is_(True), RiskSubtype.is_active.is_(True))
+            .where(
+                RiskCategory.is_active.is_(True),
+                RiskSubtype.is_active.is_(True),
+                public_dataset_code_filter(RiskSubtype.code),
+            )
             .group_by(
                 RiskCategory.id, RiskSubtype.id, RiskSubtypeDisplayMeta.subtype_id
             )
@@ -140,6 +145,7 @@ class DatasetRepository:
                 RiskCategory.is_active.is_(True),
                 RiskSubtype.is_active.is_(True),
                 RiskSubtype.code == dataset_id,
+                public_dataset_code_filter(RiskSubtype.code),
             )
             .group_by(
                 RiskCategory.id, RiskSubtype.id, RiskSubtypeDisplayMeta.subtype_id
@@ -168,6 +174,7 @@ class DatasetRepository:
             .outerjoin(AssetType, BenchmarkSample.asset_type_id == AssetType.id)
             .where(
                 RiskSubtype.code == dataset_id,
+                public_dataset_code_filter(RiskSubtype.code),
                 BenchmarkSample.is_active.is_(True),
             )
             .order_by(BenchmarkSample.id.asc())

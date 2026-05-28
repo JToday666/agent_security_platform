@@ -1,7 +1,8 @@
 {
   "errors": {
     "network": "ネットワークエラー",
-    "requestFailed": "リクエスト失敗"
+    "requestFailed": "リクエスト失敗",
+    "serviceUnavailable": "サービスは一時的に利用できません。しばらくしてからもう一度お試しください。"
   },
   "validation": {
     "parameter": "パラメーターエラー",

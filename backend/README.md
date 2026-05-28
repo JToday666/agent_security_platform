@@ -43,7 +43,7 @@ README 只维护当前状态、启动验证入口、核心约束和文档索引�
 - `app/worker/runtime/`：runtime 准备、调度适配器、产物收集
 - `app/models/`：SQLAlchemy ORM 模型与 Alembic 发现入口
 - `alembic/`：数据库迁移
-- `scripts/`：数据导入、联调和烟测脚本
+- `scripts/`：数据导入与联调脚本
 - `/data/agent-security-platform/data/dataset-registry/`：版本化数据集元数据 JSON 真源
 - `/data/agent-security-platform/runtime/`：运行时目录（凭证、worker workdir）
 - `/data/agent-security-platform/data/uploads/`：上传文件目录
@@ -148,18 +148,6 @@ async def main() -> None:
 
 asyncio.run(main())
 PY
-```
-
-真实 HTTP 冒烟需要先启动 API：
-
-```bash
-uv run uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
-
-另开终端执行：
-
-```bash
-uv run python scripts/qa/http_smoke_check.py --base-url http://127.0.0.1:8000
 ```
 
 本地真实 run 联调推荐先启动完整三进程链路：

@@ -1,7 +1,8 @@
 {
   "errors": {
     "network": "Erreur réseau",
-    "requestFailed": "Échec de la requête"
+    "requestFailed": "Échec de la requête",
+    "serviceUnavailable": "Le service est temporairement indisponible. Veuillez réessayer plus tard."
   },
   "validation": {
     "parameter": "Paramètre invalide",

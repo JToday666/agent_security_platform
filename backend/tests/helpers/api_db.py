@@ -45,7 +45,7 @@ from app.platform.security import create_access_token, hash_password
 
 @dataclass(slots=True)
 class ApiDbHelper:
-    """为真实数据库 API 烟测提供种子数据与清理能力。"""
+    """为真实数据库 API 测试提供种子数据与清理能力。"""
 
     session_factory: Callable[[], Session]
     prefix: str
@@ -72,8 +72,8 @@ class ApiDbHelper:
             category = RiskCategory(
                 code=f"{self.prefix}_category",
                 name=f"{self.prefix} 大类",
-                meaning="烟测大类",
-                description="真实数据库烟测数据",
+                meaning="测试夹具大类",
+                description="真实数据库测试数据",
                 sort_order=1,
                 is_active=True,
             )
@@ -166,7 +166,7 @@ class ApiDbHelper:
                 user_id=user_id,
                 public_id=public_id,
                 agent_name=f"{self.prefix} agent",
-                description="评测烟测任务",
+                description="评测测试任务",
                 submit_method="api",
                 public_to_leaderboard=False,
                 request_id=f"{self.prefix}_eval_request",

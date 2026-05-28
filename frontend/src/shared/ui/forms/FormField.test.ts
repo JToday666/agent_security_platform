@@ -28,7 +28,68 @@ const click = async (element: Element) => {
   await nextTick();
 };
 
-describe("FormField select", () => {
+describe("FormField", () => {
+  it("keeps number edits local until blur when configured", async () => {
+    const updates: string[] = [];
+    const { host, unmount } = await mountFormField({
+      label: "Timeout",
+      modelValue: "30",
+      type: "number",
+      updateOnBlur: true,
+      "onUpdate:modelValue": (value: string) => updates.push(value),
+    });
+
+    try {
+      const input = host.querySelector<HTMLInputElement>("input");
+      expect(input).toBeTruthy();
+
+      (input as HTMLInputElement).value = "";
+      input?.dispatchEvent(new Event("input", { bubbles: true }));
+      await nextTick();
+
+      expect(input?.value).toBe("");
+      expect(updates).toEqual([]);
+
+      (input as HTMLInputElement).value = "45";
+      input?.dispatchEvent(new Event("input", { bubbles: true }));
+      await nextTick();
+      input?.dispatchEvent(new FocusEvent("blur", { bubbles: true }));
+      await nextTick();
+
+      expect(updates).toEqual(["45"]);
+    } finally {
+      unmount();
+    }
+  });
+
+  it("resets the draft when the parent keeps the current value after blur", async () => {
+    const updates: string[] = [];
+    const { host, unmount } = await mountFormField({
+      label: "Timeout",
+      modelValue: "30",
+      type: "number",
+      updateOnBlur: true,
+      "onUpdate:modelValue": (value: string) => updates.push(value),
+    });
+
+    try {
+      const input = host.querySelector<HTMLInputElement>("input");
+      expect(input).toBeTruthy();
+
+      (input as HTMLInputElement).value = "";
+      input?.dispatchEvent(new Event("input", { bubbles: true }));
+      await nextTick();
+      input?.dispatchEvent(new FocusEvent("blur", { bubbles: true }));
+      await nextTick();
+      await nextTick();
+
+      expect(updates).toEqual([""]);
+      expect(input?.value).toBe("30");
+    } finally {
+      unmount();
+    }
+  });
+
   it("keeps the dropdown closed after selecting an option", async () => {
     const { host, unmount } = await mountFormField({
       label: "Status",
