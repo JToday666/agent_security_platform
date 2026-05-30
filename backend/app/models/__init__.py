@@ -33,11 +33,13 @@ from .scoring import (
     ScoreModelVersion,
 )
 from .agent import Agent
+from .observability import AuditLog, SampleExecutionEvent
 from .user import User
 from .worker_process import WorkerProcess
 
 __all__ = [
     "Agent",
+    "AuditLog",
     "AssetType",
     "AttackDeliveryType",
     "BenchmarkSample",
@@ -61,6 +63,7 @@ __all__ = [
     "RuntimeSession",
     "SampleDifficultyStat",
     "SampleExecution",
+    "SampleExecutionEvent",
     "SampleOracle",
     "ScoreModelVersion",
     "TestRun",

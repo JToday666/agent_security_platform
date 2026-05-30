@@ -33,6 +33,7 @@ from app.modules.agents.templates import list_agent_templates
 from app.platform.credentials import CredentialStore
 from app.platform.errors import ConflictError, ForbiddenError, NotFoundError
 from app.platform.i18n import translate
+from app.platform.observability import AuditActorType, record_audit_log
 from app.platform.storage import default_credential_store
 
 
@@ -105,6 +106,22 @@ class AgentService:
             if credential_ref is not None:
                 self.credential_store.delete(credential_ref)
             raise
+        await record_audit_log(
+            self.repository.db,
+            actor_type=AuditActorType.USER,
+            actor_id=str(current_user.id),
+            action="agent.created",
+            resource_type="agent",
+            resource_id=agent.public_id,
+            result="success",
+            payload={
+                "templateId": agent.template_id,
+                "invokeMode": agent.invoke_mode,
+                "maxConcurrency": agent.max_concurrency,
+                "authType": agent.auth_type,
+            },
+        )
+        await self.repository.commit()
         return to_summary(agent, include_actions=False)
 
     async def list_agents(
@@ -188,6 +205,21 @@ class AgentService:
             "errors": errors,
         }
         agent.updated_at = verified_at
+        await record_audit_log(
+            self.repository.db,
+            actor_type=AuditActorType.USER,
+            actor_id=str(current_user.id),
+            action="agent.verification.completed",
+            resource_type="agent",
+            resource_id=agent.public_id,
+            result="success" if passed else "failure",
+            payload={
+                "status": agent.status,
+                "passed": passed,
+                "warningCount": len(warnings),
+                "errorCount": len(errors),
+            },
+        )
         await self.repository.commit()
         await self.repository.refresh(agent)
 
@@ -212,8 +244,22 @@ class AgentService:
                 message_key="agents.errors.archived_again",
             )
         now = datetime.now(timezone.utc)
+        previous_status = agent.status
         agent.status = "archived"
         agent.updated_at = now
+        await record_audit_log(
+            self.repository.db,
+            actor_type=AuditActorType.USER,
+            actor_id=str(current_user.id),
+            action="agent.archived",
+            resource_type="agent",
+            resource_id=agent.public_id,
+            result="success",
+            payload={
+                "previousStatus": previous_status,
+                "currentStatus": agent.status,
+            },
+        )
         await self.repository.commit()
         await self.repository.refresh(agent)
         archived_updated_at = to_zulu(cast(datetime, agent.updated_at))

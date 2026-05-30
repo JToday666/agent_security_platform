@@ -23,13 +23,14 @@ def get_leaderboard_service(db: AsyncSession = Depends(get_db)) -> LeaderboardSe
 @router.post("/snapshots", response_model=Envelope[LeaderboardSnapshotResponse])
 async def create_leaderboard_snapshot(
     payload: LeaderboardSnapshotCreateRequest | None = None,
-    _current_user=Depends(get_current_user),
+    current_user=Depends(get_current_user),
     service: LeaderboardService = Depends(get_leaderboard_service),
 ):
     request = payload or LeaderboardSnapshotCreateRequest()
     response = await service.create_snapshot(
         score_model_version=request.score_model_version,
         benchmark_version=request.benchmark_version,
+        current_user=current_user,
     )
     return success_payload(response.model_dump(by_alias=True))
 

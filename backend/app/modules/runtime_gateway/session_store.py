@@ -16,6 +16,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models import RuntimeSession
 from app.platform.config import settings
 from app.platform.db.session import AsyncSessionLocal
+from app.platform.observability import (
+    SampleExecutionEventType,
+    record_sample_execution_event,
+)
 
 RuntimeTokenSource = Literal[
     "query", "cookie", "missing", "invalid", "expired", "closed"
@@ -170,6 +174,18 @@ async def create_runtime_session(
             existing.status = "active"
             existing.revoked_at = None
             existing.updated_at = current_time
+        await record_sample_execution_event(
+            db,
+            run_id=run_id,
+            sample_execution_id=prepared.execution_id,
+            event_type=SampleExecutionEventType.RUNTIME_SESSION_CREATED,
+            status="active",
+            message="Runtime gateway session created",
+            payload={
+                "environmentRef": prepared.environment_ref,
+                "publicEntryUrl": public_entry_url_without_token,
+            },
+        )
         await db.commit()
 
     return RuntimeSessionCreation(
@@ -195,6 +211,15 @@ async def close_runtime_session(execution_id: int, *, status: str = "closed") ->
         session.status = status
         session.revoked_at = current_time
         session.updated_at = current_time
+        await record_sample_execution_event(
+            db,
+            run_id=session.run_id,
+            sample_execution_id=session.sample_execution_id,
+            event_type=SampleExecutionEventType.RUNTIME_SESSION_DESTROYED,
+            status=status,
+            message="Runtime gateway session closed",
+            payload={"environmentRef": session.environment_ref},
+        )
         await db.commit()
 
 
@@ -219,6 +244,15 @@ async def expire_runtime_sessions_once(
         row.status = "expired"
         row.revoked_at = current_time
         row.updated_at = current_time
+        await record_sample_execution_event(
+            db,
+            run_id=row.run_id,
+            sample_execution_id=row.sample_execution_id,
+            event_type=SampleExecutionEventType.RUNTIME_SESSION_EXPIRED,
+            status="expired",
+            message="Runtime gateway session expired",
+            payload={"environmentRef": row.environment_ref},
+        )
     await db.commit()
     return len(rows)
 

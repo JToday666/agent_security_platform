@@ -14,6 +14,7 @@ from app.models.benchmark_run import (
     SampleExecution,
     TestRun,
 )
+from app.models.observability import AuditLog
 
 pytestmark = [pytest.mark.db, pytest.mark.integration]
 
@@ -142,6 +143,24 @@ def test_evaluation_score_and_leaderboard_api(client, api_db_helper) -> None:
     assert all("agentName" not in entry for entry in entries)
     assert all("evaluationId" not in entry for entry in entries)
 
+    with api_db_helper.session() as session:
+        audit_rows = list(
+            (
+                session.execute(
+                    select(AuditLog)
+                    .where(AuditLog.actor_id == str(user_id))
+                    .order_by(AuditLog.id)
+                )
+            ).scalars()
+        )
+    audit_actions = {(row.action, row.result) for row in audit_rows}
+    assert ("evaluation.score.recalculated", "success") in audit_actions
+    assert ("leaderboard.snapshot.created", "success") in audit_actions
+    snapshot_audit = next(
+        row for row in audit_rows if row.action == "leaderboard.snapshot.created"
+    )
+    assert snapshot_audit.payload["entryCount"] >= 1
+
 
 def test_evaluation_report_api_returns_frontend_payload(
     client, api_db_helper
@@ -213,6 +232,23 @@ def test_evaluation_report_api_returns_frontend_payload(
         "difficultyVersion": "legacy_current",
         "scoreModelVersion": "score_v1_5",
         "benchmarkVersion": "bm_v1",
+    }
+
+    with api_db_helper.session() as session:
+        report_audit = (
+            session.execute(
+                select(AuditLog).where(
+                    AuditLog.actor_id == str(user_id),
+                    AuditLog.action == "evaluation.report.viewed",
+                    AuditLog.resource_id == evaluation_id,
+                )
+            )
+        ).scalar_one()
+    assert report_audit.result == "success"
+    assert report_audit.payload == {
+        "reportStatus": "available",
+        "totalSamples": 1,
+        "completedSamples": 1,
     }
 
 

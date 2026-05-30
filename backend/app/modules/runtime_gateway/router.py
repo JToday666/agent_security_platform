@@ -181,15 +181,16 @@ async def _proxy_runtime_request(
             token_source, query_token=query_token, cookie_token=cookie_token
         )
         LOGGER.warning(
-            "runtime_gateway_auth_failed",
+            "runtime.gateway.auth_failed",
             extra={
-                "sample_execution_id": sample_execution_id,
+                "event": "runtime.gateway.auth_failed",
+                "sampleExecutionId": sample_execution_id,
                 "path": path,
                 "method": request.method,
-                "source_ip": request.client.host if request.client else None,
-                "token_result": token_source,
-                "status_code": status_code,
-                "latency_ms": int((time.perf_counter() - started) * 1000),
+                "clientIp": request.client.host if request.client else None,
+                "tokenResult": token_source,
+                "statusCode": status_code,
+                "durationMs": int((time.perf_counter() - started) * 1000),
             },
         )
         return json_error_response(
@@ -240,15 +241,16 @@ async def _proxy_runtime_request(
         )
 
     LOGGER.info(
-        "runtime_gateway_proxy",
+        "runtime.gateway.proxy",
         extra={
-            "sample_execution_id": sample_execution_id,
+            "event": "runtime.gateway.proxy",
+            "sampleExecutionId": sample_execution_id,
             "path": path,
             "method": request.method,
-            "status_code": upstream_response.status_code,
-            "latency_ms": int((time.perf_counter() - started) * 1000),
-            "source_ip": request.client.host if request.client else None,
-            "token_result": token_source,
+            "statusCode": upstream_response.status_code,
+            "durationMs": int((time.perf_counter() - started) * 1000),
+            "clientIp": request.client.host if request.client else None,
+            "tokenResult": token_source,
         },
     )
     return response

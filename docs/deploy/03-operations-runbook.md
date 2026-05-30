@@ -229,6 +229,54 @@ docker compose logs -f backend-scheduler
 docker compose logs -f backend-worker
 ```
 
+### 4.4 日志、事件与审计排查
+
+边界：
+
+```text
+业务状态以 PostgreSQL 为准：test_runs、run_datasets、sample_executions、run_reports。
+服务运行日志走 stdout，由 Docker json-file 管理，不用写单个业务 log 文件。
+sample_execution_events 只放轻量时间线事件，不放截图、trace、HTML、视频。
+audit_logs 只放用户、管理员、系统的关键操作审计。
+大体积证据放 /data/agent-security-platform/artifacts/evaluations/{run_id}/samples/{sample_execution_id}/。
+每个 sample 产物目录都有 manifest.json，只记录 artifact 类型、URI、相对路径和大小，不记录产物正文。
+```
+
+常用定位：
+
+```bash
+# 先从 API 响应头拿 x-request-id。Nginx access log 和 backend-api 使用同一个 requestId。
+grep '<requestId>' /data/agent-security-platform/logs/nginx/access.log
+
+# 再查 backend-api 结构化日志。
+docker logs backend-api --since 30m | grep '<requestId>'
+
+# 查某次评测的业务状态，日志只用于解释原因。
+docker exec -it asp-postgres psql -U asp_test -d test_db \
+  -c "select id, public_id, status, completed_samples, total_samples, finalization_reason from test_runs where public_id = '<evaluationId>';"
+
+# 查 sample 级时间线。
+docker exec -it asp-postgres psql -U asp_test -d test_db \
+  -c "select occurred_at, event_type, status, sample_execution_id, worker_id, message from sample_execution_events where run_id = <run_id> order by occurred_at;"
+
+# 查审计记录。
+docker exec -it asp-postgres psql -U asp_test -d test_db \
+  -c "select created_at, actor_type, actor_id, action, resource_type, resource_id, result from audit_logs where resource_id = '<evaluationId>' order by created_at;"
+
+# 查某个 sample 的产物目录索引。
+cat /data/agent-security-platform/artifacts/evaluations/<run_id>/samples/<sampleExecutionId>/manifest.json
+```
+
+日志字段约定：
+
+```text
+固定字段：ts、level、service、env、logger、event、message。
+链路字段：requestId、traceId、runId、sampleId、sampleExecutionId、workerId、runtimeSessionId。
+结果字段：status、statusCode、durationMs、errorCode、errorClass。
+Nginx access log 使用 JSON，记录 path，不记录 query，避免 runtime token 落盘。
+安全要求：不得记录 Authorization、Cookie、Bearer token、API key、密码、Agent secret。
+```
+
 ---
 
 ## 5. 数据库备份与恢复
@@ -536,6 +584,25 @@ Docker build cache
 过期备份，按保留策略删除
 ```
 
+推荐使用后端维护脚本先 dry-run：
+
+```bash
+cd /home/ecs-user/apps/agent_security_platform/backend
+
+# 默认只打印清理计划，不删除文件。
+env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/prune_storage.py
+
+# 应用默认策略：tmp 7 天、runtime/workdir 14 天、轮转日志 30 天。
+env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/prune_storage.py --apply
+
+# artifacts/evaluations 默认不清理；确需清理旧证据时显式开启。
+env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/prune_storage.py \
+  --include-artifacts --artifact-days 180 --apply
+```
+
+脚本输出 JSON，包含 `dryRun`、`candidateCount`、`candidateBytes`、`deletedCount`、`categories` 和候选路径。
+脚本只允许清理 data root 下的 `tmp`、`runtime/workdir`、轮转日志和显式开启的 `artifacts/evaluations` 子项。
+
 不可随意清理：
 
 ```text
@@ -544,7 +611,7 @@ Docker build cache
 /data/agent-security-platform/models
 /data/agent-security-platform/data/datasets
 /data/agent-security-platform/data/uploads
-/data/agent-security-platform/artifacts/runs
+/data/agent-security-platform/artifacts/evaluations
 /data/agent-security-platform/backups
 /data/agent-security-platform/env
 /data/agent-security-platform/www/frontend/releases 中仍可能回滚的版本

@@ -10,6 +10,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.benchmark_run import SampleExecution, TestRun
 from app.platform.config import settings
+from app.platform.observability import (
+    SampleExecutionEventType,
+    record_sample_execution_event,
+)
 
 SAMPLE_IN_FLIGHT_STATUSES = {"claimed", "dispatching", "executing", "verifying"}
 SAMPLE_TERMINAL_STATUSES = {"done", "error", "canceled"}
@@ -77,6 +81,16 @@ async def claim_next_sample(
     execution.claim_token = secrets.token_urlsafe(24)
     execution.lease_expires_at = lease_expires_at
     execution.updated_at = now
+    await record_sample_execution_event(
+        db,
+        run_id=execution.run_id,
+        sample_execution_id=execution.id,
+        worker_id=worker_id,
+        event_type=SampleExecutionEventType.SAMPLE_CLAIMED,
+        status="claimed",
+        message="Sample execution claimed",
+        payload={"leaseExpiresAt": lease_expires_at.isoformat()},
+    )
     await db.commit()
     await db.refresh(execution)
     return execution

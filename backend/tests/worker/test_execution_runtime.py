@@ -406,6 +406,9 @@ async def test_execute_sample_creates_public_runtime_session_before_dispatch(
     async def fake_stop_runtime(*args, **kwargs):
         events.append("stop")
 
+    async def fake_record_event(*, event_type, status=None, **kwargs):
+        events.append(f"event:{event_type.value}:{status}")
+
     monkeypatch.setattr(execution, "mark_execution_dispatching", fake_mark_dispatching)
     monkeypatch.setattr(execution, "prepare_runtime_workspace", lambda *args: prepared)
     monkeypatch.setattr(execution, "launch_runtime", fake_launch_runtime)
@@ -416,6 +419,12 @@ async def test_execute_sample_creates_public_runtime_session_before_dispatch(
     monkeypatch.setattr(execution, "persist_runtime_result", fake_persist_result)
     monkeypatch.setattr(execution, "close_runtime_session", fake_close_runtime_session, raising=False)
     monkeypatch.setattr(execution, "stop_runtime", fake_stop_runtime)
+    monkeypatch.setattr(
+        execution,
+        "record_sample_execution_event_once",
+        fake_record_event,
+        raising=False,
+    )
 
     await execution.execute_sample(
         77,
@@ -428,12 +437,16 @@ async def test_execute_sample_creates_public_runtime_session_before_dispatch(
 
     assert events == [
         "dispatching",
+        "event:sample.execution.started:dispatching",
         "launch",
         "session-active",
         "ready",
+        "event:runtime.route.bound:active",
+        "event:agent.dispatch.started:started",
         "dispatch",
         "verifying",
         "persist",
+        "event:sample.execution.finished:done",
         "session-closed",
         "stop",
     ]

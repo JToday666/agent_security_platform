@@ -34,6 +34,7 @@ from app.modules.scoring.engine import (
 from app.modules.scoring.schemas import EvaluationScoreResponse
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES
 from app.platform.errors import ForbiddenError, NotFoundError, ValidationDomainError
+from app.platform.observability import AuditActorType, record_audit_log
 
 
 def _decimal(value: float, digits: str = "0.001") -> Decimal:
@@ -142,6 +143,20 @@ class ScoringService:
             run.id,
             score_model_version=score_model_version,
             benchmark_version=benchmark_version,
+        )
+        await record_audit_log(
+            self.db,
+            actor_type=AuditActorType.USER,
+            actor_id=str(current_user.id),
+            action="evaluation.score.recalculated",
+            resource_type="evaluation",
+            resource_id=run.public_id,
+            result="success",
+            payload={
+                "scoreModelVersion": score_model_version,
+                "benchmarkVersion": benchmark_version,
+                "totalSamples": score.total_samples,
+            },
         )
         await self.db.commit()
         return _score_response(run, score)

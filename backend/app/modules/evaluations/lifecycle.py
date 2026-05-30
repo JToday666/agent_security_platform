@@ -21,8 +21,19 @@ from app.models.benchmark_run import (
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES, apply_pause_timeout
 from app.modules.difficulty.service import update_sample_difficulty_stats_for_run
 from app.modules.scoring.service import calculate_and_store_evaluation_score
+from app.platform.observability import (
+    SampleExecutionEventType,
+    record_sample_execution_event,
+)
 
 LOGGER = logging.getLogger(__name__)
+
+_FINAL_STATUS_EVENT_TYPES = {
+    "completed": SampleExecutionEventType.EVALUATION_COMPLETED,
+    "failed": SampleExecutionEventType.EVALUATION_FAILED,
+    "canceled": SampleExecutionEventType.EVALUATION_CANCELLED,
+    "terminated": SampleExecutionEventType.EVALUATION_TERMINATED,
+}
 
 
 class _CategorySummary(TypedDict):
@@ -149,9 +160,26 @@ async def finalize_run(
                 await calculate_and_store_evaluation_score(db, run.id)
         except Exception:
             LOGGER.exception(
-                "Failed to update difficulty stats or scoring", extra={"run_id": run.id}
+                "evaluation.finalization_scoring_failed",
+                extra={"event": "evaluation.finalization_scoring_failed", "runId": run.id},
             )
 
+    await record_sample_execution_event(
+        db,
+        run_id=run.id,
+        event_type=_FINAL_STATUS_EVENT_TYPES.get(
+            final_status, SampleExecutionEventType.EVALUATION_FAILED
+        ),
+        status=final_status,
+        message="Evaluation finalized",
+        payload={
+            "evaluationId": run.public_id,
+            "finalizationReason": final_reason,
+            "createReport": create_report,
+            "completedSamples": run.completed_samples,
+            "totalSamples": run.total_samples,
+        },
+    )
     await db.commit()
 
 

@@ -12,6 +12,7 @@ x-backend-data-volumes: &backend-data-volumes
   - /data/agent-security-platform/data/dataset-registry:/data/agent-security-platform/data/dataset-registry:ro
   - /data/agent-security-platform/data/uploads:/data/agent-security-platform/data/uploads
   - /data/agent-security-platform/runtime:/data/agent-security-platform/runtime
+  - /data/agent-security-platform/artifacts:/data/agent-security-platform/artifacts
   - /data/agent-security-platform/tmp:/data/agent-security-platform/tmp
   - /data/agent-security-platform/logs/backend:/data/agent-security-platform/logs
 
@@ -25,6 +26,7 @@ services:
       - /data/agent-security-platform/env/prod/backend.env
     environment:
       DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
+      LOG_SERVICE_NAME: backend-migrate
     command: ["alembic", "upgrade", "head"]
     networks:
       - asp-db-net
@@ -40,7 +42,8 @@ services:
       DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
       FASTAPI_HOST: 0.0.0.0
       FASTAPI_PORT: 8000
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+      LOG_SERVICE_NAME: backend-api
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log", "--log-config", "/app/uvicorn_logging.json"]
     expose:
       - "8000"
     depends_on:
@@ -72,6 +75,7 @@ services:
       - /data/agent-security-platform/env/prod/backend.env
     environment:
       DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
+      LOG_SERVICE_NAME: backend-scheduler
     command: ["python", "scheduler.py"]
     depends_on:
       backend-migrate:
@@ -88,6 +92,7 @@ services:
       - /data/agent-security-platform/env/prod/backend-worker.env
     environment:
       DATABASE_URL: ${BACKEND_DATABASE_URL:?set BACKEND_DATABASE_URL}
+      LOG_SERVICE_NAME: backend-worker
       WORKER_RUNTIME_LAUNCH_MODE: docker
       WORKER_RUNTIME_DOCKER_IMAGE: ${BACKEND_IMAGE:?set BACKEND_IMAGE}
       WORKER_RUNTIME_DOCKER_NETWORK: asp-runtime-net
@@ -100,6 +105,7 @@ services:
       - /data/agent-security-platform/data/datasets:/data/agent-security-platform/data/datasets:ro
       - /data/agent-security-platform/data/dataset-registry:/data/agent-security-platform/data/dataset-registry:ro
       - /data/agent-security-platform/runtime:/data/agent-security-platform/runtime
+      - /data/agent-security-platform/artifacts:/data/agent-security-platform/artifacts
       - /data/agent-security-platform/tmp:/data/agent-security-platform/tmp
       - /data/agent-security-platform/logs/worker:/data/agent-security-platform/logs
       - /var/run/docker.sock:/var/run/docker.sock

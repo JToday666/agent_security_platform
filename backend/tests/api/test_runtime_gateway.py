@@ -172,13 +172,14 @@ def test_runtime_gateway_auth_failure_audit_includes_latency_without_token(
 
     assert response.status_code == 403
     record = next(
-        item for item in caplog.records if item.message == "runtime_gateway_auth_failed"
+        item for item in caplog.records if item.message == "runtime.gateway.auth_failed"
     )
-    assert record.sample_execution_id == 123
+    assert record.event == "runtime.gateway.auth_failed"
+    assert record.sampleExecutionId == 123
     assert record.path == "index.html"
     assert record.method == "GET"
-    assert record.status_code == 403
-    assert record.token_result == "invalid"
-    assert isinstance(record.latency_ms, int)
-    assert record.latency_ms >= 0
+    assert record.statusCode == 403
+    assert record.tokenResult == "invalid"
+    assert isinstance(record.durationMs, int)
+    assert record.durationMs >= 0
     assert "runtime-token" not in caplog.text

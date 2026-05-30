@@ -19,6 +19,7 @@ from app.models.benchmark_run import (
     SampleExecution,
     TestRun as RunModel,
 )
+from app.models.observability import AuditLog, SampleExecutionEvent
 from app.modules.agents.repository import AgentRepository
 from app.modules.agents.schemas import AgentCreateRequest, AgentVerificationRequest
 from app.modules.agents.service import AgentService
@@ -124,10 +125,12 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
     dataset_code = api_db_helper.seed_dataset()
     data_root = tmp_path / "datasets"
     runtime_root = tmp_path / "runtime"
+    artifact_root = tmp_path / "artifacts"
     write_runtime_sample_tree(data_root, api_db_helper.prefix)
 
     monkeypatch.setattr(settings, "DATASET_ROOT_DIR", str(data_root))
     monkeypatch.setattr(settings, "RUNTIME_ROOT_DIR", str(runtime_root))
+    monkeypatch.setattr(settings, "ARTIFACT_ROOT_DIR", str(artifact_root))
     monkeypatch.setattr(settings, "AGENT_HTTP_ALLOW_PRIVATE_NETWORKS", True)
     monkeypatch.setattr(settings, "WORKER_NAMESPACE_ISOLATION_ENABLED", False)
     monkeypatch.setattr(settings, "SAMPLE_WORKER_MAX_ACTIVE_EXECUTIONS", 1)
@@ -271,6 +274,11 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
                 for artifact in artifacts
                 if artifact.artifact_type == "external_agent_invocation"
             )
+            manifest_artifact = next(
+                artifact
+                for artifact in artifacts
+                if artifact.artifact_type == "artifact_manifest"
+            )
             summary = session.execute(
                 select(ExecutionSummary).where(
                     ExecutionSummary.sample_execution_id == execution.id
@@ -279,6 +287,20 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
             report = session.execute(
                 select(RunReport).where(RunReport.run_id == run.id)
             ).scalar_one()
+            events = list(
+                session.execute(
+                    select(SampleExecutionEvent.event_type).where(
+                        SampleExecutionEvent.run_id == run.id
+                    )
+                ).scalars()
+            )
+            audit_actions = list(
+                session.execute(
+                    select(AuditLog.action).where(
+                        AuditLog.resource_id == evaluation_id
+                    )
+                ).scalars()
+            )
 
         assert run.status == "completed"
         assert dataset.status == "completed"
@@ -297,7 +319,24 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
             "finalize_payload",
             "analysis_result",
             "external_agent_invocation",
+            "artifact_manifest",
         }.issubset(artifact_types)
+        manifest_payload = json.loads(
+            (
+                artifact_root
+                / "evaluations"
+                / str(run.id)
+                / "samples"
+                / str(execution.id)
+                / "manifest.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert manifest_artifact.artifact_metadata["listedArtifactCount"] >= 1
+        assert manifest_payload["sampleExecutionId"] == execution.id
+        assert any(
+            item["type"] == "external_agent_invocation"
+            for item in manifest_payload["artifacts"]
+        )
         evidence_relative_path = evidence_artifact.artifact_metadata["relativePath"]
         evidence_payload = json.loads(
             (Path(execution.work_dir) / evidence_relative_path).read_text(
@@ -317,3 +356,6 @@ async def test_service_submission_worker_external_agent_runtime_full_chain(
         assert "token=runtime-token" not in evidence_text
         assert "token=%5Bredacted%5D" in request_body["url"]
         assert "full-chain-secret" not in evidence_text
+        assert "evaluation.created" in events
+        assert "evaluation.completed" in events
+        assert "evaluation.created" in audit_actions

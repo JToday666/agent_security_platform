@@ -7,6 +7,7 @@ import pytest
 from sqlalchemy import select
 
 from app.models.benchmark import BenchmarkSample
+from app.models import SampleExecutionEvent
 from app.models.benchmark_run import (
     TestRun as RunModel,
     RunSample,
@@ -154,6 +155,14 @@ async def test_runtime_session_db_lifecycle_hashes_token_and_revokes(
         assert row.public_entry_url == created.public_entry_url_without_token
         assert created.public_entry_url.startswith(row.public_entry_url)
         assert "token=" in created.public_entry_url
+        created_event = session.execute(
+            select(SampleExecutionEvent).where(
+                SampleExecutionEvent.sample_execution_id == execution_id,
+                SampleExecutionEvent.event_type == "runtime.session.created",
+            )
+        ).scalar_one()
+        assert created_event.run_id == run_id
+        assert created_event.payload["environmentRef"] == f"rt_{execution_id}_test"
 
     loaded, token_source = await authorize_runtime_request(
         sample_execution_id=execution_id,
@@ -177,6 +186,14 @@ async def test_runtime_session_db_lifecycle_hashes_token_and_revokes(
 
     assert loaded is None
     assert token_source == "closed"
+    with api_db_helper.session() as session:
+        destroyed_event = session.execute(
+            select(SampleExecutionEvent).where(
+                SampleExecutionEvent.sample_execution_id == execution_id,
+                SampleExecutionEvent.event_type == "runtime.session.destroyed",
+            )
+        ).scalar_one()
+        assert destroyed_event.status == "closed"
     await engine.dispose()
 
 
@@ -250,4 +267,12 @@ async def test_runtime_session_reaper_expires_sessions_without_request(
     assert expired_count >= 1
     assert row.status == "expired"
     assert row.revoked_at is not None
+    with api_db_helper.session() as session:
+        expired_event = session.execute(
+            select(SampleExecutionEvent).where(
+                SampleExecutionEvent.sample_execution_id == execution_id,
+                SampleExecutionEvent.event_type == "runtime.session.expired",
+            )
+        ).scalar_one()
+        assert expired_event.status == "expired"
     await engine.dispose()
