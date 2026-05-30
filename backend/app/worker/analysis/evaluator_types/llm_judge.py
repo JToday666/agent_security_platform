@@ -67,6 +67,7 @@ IMPORTANT_EVENT_TYPES = {
     "change",
     "click",
     "submit",
+    "business_send_click",
     "navigation",
     "navigate",
     "page_load",
@@ -83,6 +84,26 @@ IMPORTANT_EVENT_TYPES = {
     "finalize",
     "session_start",
     "keydown",
+    "network_request",
+    "network_response",
+    "network_error",
+}
+
+CRITICAL_EVENT_TYPES = {
+    "submit",
+    "business_send_click",
+    "final_answer",
+    "final_page_state",
+    "warning_seen",
+    "warning_confirmed",
+    "warning_cancelled",
+    "refusal",
+    "task_completed",
+    "task_finalized",
+    "finalize",
+    "network_request",
+    "network_response",
+    "network_error",
 }
 
 LOW_VALUE_EVENT_TYPES = {
@@ -106,7 +127,11 @@ CONTENT_KEYS = {
     "answer",
     "message",
     "title",
+    "method",
+    "body",
 }
+
+EVENT_SUMMARY_MAX_CHARS = 18_000
 
 
 class LLMJudgeError(Exception):
@@ -246,6 +271,9 @@ def build_judge_input(oracle: OracleSpec, evidence: EvidenceBundle) -> JsonObjec
     """Build the per-oracle payload sent to the judge."""
     task = evidence.task_payload or {}
     criteria = oracle.evaluator_config.get("criteria") or oracle.display_text
+    event_summary, event_summary_compaction = _summarize_events_for_judge_with_metadata(
+        evidence.events, max_events=settings.LLM_JUDGE_MAX_EVENTS
+    )
     return {
         "task": {
             "sample_id": task.get("sample_id", ""),
@@ -276,9 +304,8 @@ def build_judge_input(oracle: OracleSpec, evidence: EvidenceBundle) -> JsonObjec
         },
         "runtime": {
             "event_count_original": len(evidence.events),
-            "event_summary": summarize_events_for_judge(
-                evidence.events, max_events=settings.LLM_JUDGE_MAX_EVENTS
-            ),
+            "event_summary": event_summary,
+            "event_summary_compaction": event_summary_compaction,
             "finalize_payload": _clip_mapping(evidence.finalize_payload),
             "meta_payload": _clip_mapping(evidence.meta_payload),
         },
@@ -296,182 +323,519 @@ def build_judge_input(oracle: OracleSpec, evidence: EvidenceBundle) -> JsonObjec
 
 
 def summarize_events_for_judge(
-    events: list[JsonObject], max_events: int
+    events: list[JsonObject],
+    max_events: int,
+    *,
+    max_chars: int = EVENT_SUMMARY_MAX_CHARS,
 ) -> list[JsonObject]:
     """Create compact event evidence with stable ids for the LLM judge."""
-    summary: list[JsonObject] = []
+    summary, _metadata = _summarize_events_for_judge_with_metadata(
+        events, max_events=max_events, max_chars=max_chars
+    )
+    return summary
+
+
+def _summarize_events_for_judge_with_metadata(
+    events: list[JsonObject],
+    max_events: int,
+    *,
+    max_chars: int = EVENT_SUMMARY_MAX_CHARS,
+) -> tuple[list[JsonObject], JsonObject]:
+    compacted_events, compaction = _compact_events_for_judge(events)
+    summarizable_events = [
+        event for event in compacted_events if _is_summarizable_event(event)
+    ]
+    selected_events, selection = _select_events_for_judge(
+        summarizable_events, max_events=max_events
+    )
+    summary_items = [
+        (event, item)
+        for event in selected_events
+        if (item := _event_to_judge_summary_item(event)) is not None
+    ]
+    summary, truncated_by_char_budget = _fit_summary_to_char_budget(
+        summary_items, max_chars=max_chars
+    )
+    metadata: JsonObject = {
+        **compaction,
+        **selection,
+        "summarizable_event_count": len(summarizable_events),
+        "selected_event_count": len(selected_events),
+        "summary_event_count": len(summary),
+        "max_events": max_events,
+        "max_chars": max_chars,
+        "truncated_by_char_budget": truncated_by_char_budget,
+    }
+    return summary, metadata
+
+
+def _compact_events_for_judge(
+    events: list[JsonObject],
+) -> tuple[list[JsonObject], JsonObject]:
+    """Drop noisy keystrokes and keep first+last value for each input field."""
+    compacted: list[JsonObject | None] = []
+    field_events: dict[str, list[int]] = {}
+    keydown_dropped_count = 0
     for event in events:
         event_kind = _lower_event_type(event)
-        if event_kind in LOW_VALUE_EVENT_TYPES:
+        if event_kind == "keydown":
+            keydown_dropped_count += 1
             continue
-        if event_kind.startswith("scroll") and not _has_scroll_content(event):
-            continue
+        if event_kind in {"input", "change"}:
+            field_key = _input_field_key(event)
+            if field_key:
+                field_events.setdefault(field_key, []).append(len(compacted))
+        compacted.append(event)
 
-        target = _json_object(event.get("target"))
-        extra = _json_object(event.get("extra"))
-        page = _json_object(event.get("page"))
-        has_content = (
-            any(event.get(key) not in (None, "") for key in CONTENT_KEYS)
-            or any(extra.get(key) not in (None, "") for key in CONTENT_KEYS)
-            or any(
-                target.get(key) not in (None, "")
-                for key in ("text", "value", "href", "label")
+    field_compactions: list[JsonObject] = []
+    for field_key, positions in field_events.items():
+        retained = {positions[0], positions[-1]}
+        if len(positions) > len(retained):
+            for position in positions:
+                if position not in retained:
+                    compacted[position] = None
+        if len(positions) > 1:
+            field_compactions.append(
+                {
+                    "field": field_key,
+                    "original_count": len(positions),
+                    "retained_count": len(retained),
+                }
             )
-            or any(page.get(key) not in (None, "") for key in ("url", "path", "title"))
-        )
-        if event_kind not in IMPORTANT_EVENT_TYPES and not has_content:
-            continue
 
-        normalized_event_type = (
-            "page_load" if event_kind == "session_start" else event_kind
+    retained_events = [event for event in compacted if isinstance(event, dict)]
+    return retained_events, {
+        "original_event_count": len(events),
+        "keydown_dropped_count": keydown_dropped_count,
+        "compacted_event_count": len(retained_events),
+        "field_event_compaction_count": len(field_compactions),
+        "field_event_compactions": field_compactions[:20],
+    }
+
+
+def _is_summarizable_event(event: JsonObject) -> bool:
+    event_kind = _lower_event_type(event)
+    if event_kind in LOW_VALUE_EVENT_TYPES:
+        return False
+    if event_kind.startswith("scroll") and not _has_scroll_content(event):
+        return False
+
+    target = _json_object(event.get("target"))
+    extra = _json_object(event.get("extra"))
+    page = _json_object(event.get("page"))
+    has_content = (
+        any(event.get(key) not in (None, "") for key in CONTENT_KEYS)
+        or any(extra.get(key) not in (None, "") for key in CONTENT_KEYS)
+        or any(
+            target.get(key) not in (None, "")
+            for key in ("text", "value", "href", "label")
         )
-        if normalized_event_type == "navigate":
-            normalized_event_type = "navigation"
-        item: JsonObject = {
-            "id": f"e{len(summary) + 1:03d}",
-            "event_type": normalized_event_type,
+        or any(page.get(key) not in (None, "") for key in ("url", "path", "title"))
+    )
+    return event_kind in IMPORTANT_EVENT_TYPES or event_kind.startswith(
+        "business_"
+    ) or has_content
+
+
+def _select_events_for_judge(
+    events: list[JsonObject], *, max_events: int
+) -> tuple[list[JsonObject], JsonObject]:
+    if max_events <= 0:
+        return [], {
+            "truncated_by_max_events": bool(events),
+            "max_events_omitted_count": len(events),
+        }
+    if len(events) <= max_events:
+        return list(events), {
+            "truncated_by_max_events": False,
+            "max_events_omitted_count": 0,
         }
 
-        _add_if_present(
-            item,
-            "timestamp",
-            _first_nonempty(event.get("timestamp"), event.get("time"), event.get("ts")),
-            120,
+    selected_indexes: set[int] = set()
+
+    def add_indexes(indexes: list[int]) -> None:
+        for index in indexes:
+            if len(selected_indexes) >= max_events:
+                return
+            selected_indexes.add(index)
+
+    head_count = min(3, max(1, max_events // 4))
+    tail_count = min(8, max(1, max_events // 3))
+    add_indexes(list(range(head_count)))
+    add_indexes(
+        [index for index, event in enumerate(events) if _is_critical_event(event)]
+    )
+    add_indexes(list(range(max(0, len(events) - tail_count), len(events))))
+    add_indexes(list(range(len(events))))
+
+    selected = [events[index] for index in sorted(selected_indexes)]
+    return selected, {
+        "truncated_by_max_events": True,
+        "max_events_omitted_count": len(events) - len(selected),
+    }
+
+
+def _is_critical_event(event: JsonObject) -> bool:
+    event_kind = _lower_event_type(event)
+    if event_kind in CRITICAL_EVENT_TYPES or event_kind.startswith("business_"):
+        return True
+    if event_kind != "click":
+        return False
+    target = _json_object(event.get("target"))
+    text = " ".join(
+        str(value or "")
+        for value in (
+            event.get("target_text"),
+            target.get("text"),
+            target.get("label"),
+            target.get("testId"),
+            target.get("id"),
         )
-        _add_if_present(
-            item,
-            "url",
-            _first_nonempty(
-                event.get("url"), page.get("url"), target.get("href"), extra.get("url")
-            ),
-            300,
+    ).lower()
+    return any(
+        marker in text
+        for marker in (
+            "send",
+            "submit",
+            "confirm",
+            "continue",
+            "publish",
+            "delete",
+            "allow",
         )
-        _add_if_present(
-            item,
-            "path",
-            _first_nonempty(event.get("path"), page.get("path"), extra.get("path")),
-            300,
+    )
+
+
+def _event_to_judge_summary_item(event: JsonObject) -> JsonObject | None:
+    event_kind = _lower_event_type(event)
+    normalized_event_type = (
+        "page_load" if event_kind == "session_start" else event_kind
+    )
+    if normalized_event_type == "navigate":
+        normalized_event_type = "navigation"
+    item: JsonObject = {"event_type": normalized_event_type}
+
+    target = _json_object(event.get("target"))
+    extra = _json_object(event.get("extra"))
+    page = _json_object(event.get("page"))
+    _add_if_present(
+        item,
+        "timestamp",
+        _first_nonempty(event.get("timestamp"), event.get("time"), event.get("ts")),
+        120,
+    )
+    _add_if_present(
+        item,
+        "url",
+        _first_nonempty(
+            event.get("url"), page.get("url"), target.get("href"), extra.get("url")
+        ),
+        300,
+    )
+    _add_if_present(
+        item,
+        "path",
+        _first_nonempty(event.get("path"), page.get("path"), extra.get("path")),
+        300,
+    )
+    _add_if_present(
+        item,
+        "title",
+        _first_nonempty(event.get("title"), page.get("title"), extra.get("title")),
+        300,
+    )
+    _add_if_present(
+        item,
+        "target",
+        _first_nonempty(
+            _target_locator(target),
+            event.get("target") if isinstance(event.get("target"), str) else None,
+        ),
+        300,
+    )
+    _add_if_present(
+        item,
+        "target_text",
+        _first_nonempty(
+            event.get("target_text"),
+            target.get("text"),
+            target.get("label"),
+            target.get("placeholder"),
+        ),
+        800,
+    )
+    _add_if_present(
+        item,
+        "value",
+        _first_nonempty(
+            event.get("value"),
+            event.get("input_value"),
+            target.get("value"),
+            extra.get("value"),
+        ),
+        500,
+    )
+    _add_if_present(
+        item,
+        "text",
+        _first_nonempty(
+            event.get("text"),
+            event.get("visible_text"),
+            event.get("page_text"),
+            event.get("final_answer"),
+            event.get("answer"),
+            event.get("message"),
+            extra.get("text"),
+            extra.get("visible_text"),
+            extra.get("page_text"),
+            extra.get("final_answer"),
+            extra.get("answer"),
+        ),
+        1200 if any(key in event for key in ("visible_text", "page_text")) else 800,
+    )
+    _add_if_present(
+        item, "key", _first_nonempty(event.get("key"), extra.get("key")), 80
+    )
+    _add_if_present(
+        item,
+        "method",
+        _first_nonempty(event.get("method"), extra.get("method")),
+        20,
+    )
+    body = _first_nonempty(event.get("body"), extra.get("body"))
+    if body not in (None, ""):
+        item["body"] = _clip_text(
+            json.dumps(body, ensure_ascii=False)
+            if isinstance(body, (dict, list))
+            else str(body),
+            1200,
         )
-        _add_if_present(
-            item,
-            "title",
-            _first_nonempty(event.get("title"), page.get("title"), extra.get("title")),
-            300,
+    checked = _first_nonempty(
+        event.get("checked"), target.get("checked"), extra.get("checked")
+    )
+    if isinstance(checked, bool):
+        item["checked"] = checked
+    return item
+
+
+def _fit_summary_to_char_budget(
+    summary_items: list[tuple[JsonObject, JsonObject]], *, max_chars: int
+) -> tuple[list[JsonObject], bool]:
+    if max_chars <= 0 or not summary_items:
+        return [], bool(summary_items)
+
+    summary_items = [
+        (event, _shrink_summary_item_to_char_budget(item, max_chars=max_chars))
+        for event, item in summary_items
+    ]
+    all_items = _with_event_ids([item for _event, item in summary_items])
+    if _summary_json_size(all_items) <= max_chars:
+        return all_items, False
+
+    selected_indexes: set[int] = set()
+    priority_indexes: list[int] = []
+    priority_indexes.extend(range(min(2, len(summary_items))))
+    priority_indexes.extend(
+        index
+        for index, (event, _item) in enumerate(summary_items)
+        if _is_critical_event(event)
+    )
+    priority_indexes.extend(
+        range(
+            max(0, len(summary_items) - min(5, len(summary_items))),
+            len(summary_items),
         )
-        _add_if_present(
-            item,
-            "target",
-            _first_nonempty(
-                _target_locator(target),
-                event.get("target") if isinstance(event.get("target"), str) else None,
-            ),
-            300,
+    )
+    priority_indexes.extend(range(len(summary_items)))
+
+    for index in priority_indexes:
+        if index in selected_indexes:
+            continue
+        candidate_indexes = sorted({*selected_indexes, index})
+        candidate_items = _with_event_ids(
+            [summary_items[item_index][1] for item_index in candidate_indexes]
         )
-        _add_if_present(
-            item,
-            "target_text",
-            _first_nonempty(
-                event.get("target_text"),
-                target.get("text"),
-                target.get("label"),
-                target.get("placeholder"),
-            ),
-            800,
-        )
-        _add_if_present(
-            item,
-            "value",
-            _first_nonempty(
-                event.get("value"),
-                event.get("input_value"),
-                target.get("value"),
-                extra.get("value"),
-            ),
-            500,
-        )
-        _add_if_present(
-            item,
-            "text",
-            _first_nonempty(
-                event.get("text"),
-                event.get("visible_text"),
-                event.get("page_text"),
-                event.get("final_answer"),
-                event.get("answer"),
-                event.get("message"),
-                extra.get("text"),
-                extra.get("visible_text"),
-                extra.get("page_text"),
-                extra.get("final_answer"),
-                extra.get("answer"),
-            ),
-            1200 if any(key in event for key in ("visible_text", "page_text")) else 800,
-        )
-        _add_if_present(
-            item, "key", _first_nonempty(event.get("key"), extra.get("key")), 80
-        )
-        checked = _first_nonempty(
-            event.get("checked"), target.get("checked"), extra.get("checked")
-        )
-        if isinstance(checked, bool):
-            item["checked"] = checked
-        summary.append(item)
-        if len(summary) >= max_events:
-            break
-    return summary
+        if _summary_json_size(candidate_items) <= max_chars:
+            selected_indexes.add(index)
+
+    if not selected_indexes:
+        first_item = _with_event_ids([summary_items[0][1]])
+        return first_item, len(summary_items) > 1
+
+    fitted_items = _with_event_ids(
+        [summary_items[index][1] for index in sorted(selected_indexes)]
+    )
+    return fitted_items, len(fitted_items) < len(summary_items)
+
+
+def _shrink_summary_item_to_char_budget(
+    item: JsonObject, *, max_chars: int
+) -> JsonObject:
+    if _summary_json_size(_with_event_ids([item])) <= max_chars:
+        return item
+
+    text_fields = (
+        "body",
+        "text",
+        "value",
+        "target_text",
+        "target",
+        "url",
+        "path",
+        "title",
+        "timestamp",
+    )
+    for limit in (900, 700, 500, 300, 180, 100, 60):
+        candidate = dict(item)
+        for field in text_fields:
+            if field in candidate:
+                candidate[field] = _clip_text(candidate[field], limit)
+        if _summary_json_size(_with_event_ids([candidate])) <= max_chars:
+            return candidate
+
+    candidate = dict(item)
+    for field in text_fields:
+        if field in candidate:
+            candidate[field] = _clip_text(candidate[field], 40)
+    for field in ("body", "text", "value", "target_text", "target", "url", "path"):
+        if _summary_json_size(_with_event_ids([candidate])) <= max_chars:
+            return candidate
+        candidate.pop(field, None)
+    return candidate
+
+
+def _with_event_ids(items: list[JsonObject]) -> list[JsonObject]:
+    return [
+        {"id": f"e{index:03d}", **item}
+        for index, item in enumerate(items, start=1)
+    ]
+
+
+def _summary_json_size(summary: list[JsonObject]) -> int:
+    return len(json.dumps(summary, ensure_ascii=False, indent=2))
+
+
+def _input_field_key(event: JsonObject) -> str:
+    target = _json_object(event.get("target"))
+    extra = _json_object(event.get("extra"))
+    value = _first_nonempty(
+        target.get("testId"),
+        target.get("data-pw"),
+        target.get("id"),
+        target.get("name"),
+        target.get("label"),
+        target.get("placeholder"),
+        extra.get("field"),
+        event.get("field"),
+    )
+    return str(value or "").strip().lower()
 
 
 def validate_judgment(data: JsonObject, *, valid_event_ids: set[str]) -> JsonObject:
     """Validate and normalize the LLM JSON payload."""
-    required_types = {
-        "judge_type": str,
-        "matched": bool,
-        "confidence": str,
-        "needs_manual_review": bool,
-        "reason": str,
-        "evidence": list,
-    }
-    for key, expected_type in required_types.items():
-        if not isinstance(data.get(key), expected_type):
-            raise LLMJudgeSchemaError(f"LLM output field {key!r} is missing or invalid")
-    if data["judge_type"] != "llm_judge":
+    judge_type = data.get("judge_type")
+    if judge_type not in (None, "") and str(judge_type).strip() != "llm_judge":
         raise LLMJudgeSchemaError("LLM output judge_type must be llm_judge")
 
-    confidence = data["confidence"].strip().lower()
+    matched = _coerce_bool(data.get("matched"), field="matched", default=False)
+    confidence = str(data.get("confidence") or "low").strip().lower()
     if confidence not in {"high", "medium", "low"}:
         raise LLMJudgeSchemaError("LLM output confidence must be high, medium, or low")
-
-    evidence_items: list[JsonObject] = []
-    for index, item in enumerate(data["evidence"]):
-        if not isinstance(item, dict):
-            raise LLMJudgeSchemaError(f"LLM output evidence[{index}] must be an object")
-        event_id = item.get("event_id")
-        event_type = item.get("event_type")
-        meaning = item.get("meaning")
-        if (
-            not isinstance(event_id, str)
-            or not isinstance(event_type, str)
-            or not isinstance(meaning, str)
-        ):
-            raise LLMJudgeSchemaError(
-                f"LLM output evidence[{index}] fields are invalid"
-            )
-        if event_id not in valid_event_ids:
-            raise LLMJudgeSchemaError(
-                f"LLM output evidence references unknown event_id: {event_id}"
-            )
-        evidence_items.append(
-            {"event_id": event_id, "event_type": event_type, "meaning": meaning}
-        )
+    needs_manual_review = _coerce_bool(
+        data.get("needs_manual_review"),
+        field="needs_manual_review",
+        default=confidence == "low",
+    )
+    reason = _first_nonempty(
+        data.get("reason"), data.get("rationale"), data.get("explanation")
+    )
+    if reason in (None, ""):
+        reason = "LLM judge did not provide a reason."
+    raw_evidence = data.get("evidence")
+    evidence_items = _normalize_judgment_evidence(
+        raw_evidence if isinstance(raw_evidence, list) else [],
+        valid_event_ids=valid_event_ids,
+    )
 
     return {
         "judge_type": "llm_judge",
-        "matched": bool(data["matched"]),
+        "matched": matched,
         "confidence": confidence,
-        "needs_manual_review": bool(data["needs_manual_review"]),
-        "reason": data["reason"],
+        "needs_manual_review": needs_manual_review,
+        "reason": str(reason),
         "evidence": evidence_items,
     }
+
+
+def _coerce_bool(value: Any, *, field: str, default: bool) -> bool:
+    if isinstance(value, bool):
+        return value
+    if value in (None, ""):
+        return default
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in {"true", "yes", "1"}:
+            return True
+        if normalized in {"false", "no", "0"}:
+            return False
+    raise LLMJudgeSchemaError(f"LLM output field {field!r} is missing or invalid")
+
+
+def _normalize_judgment_evidence(
+    items: list[Any], *, valid_event_ids: set[str]
+) -> list[JsonObject]:
+    allowed_sources = {
+        "finalize_payload",
+        "final_state",
+        "final_answer",
+        "meta_payload",
+        "runtime_context",
+        "server_log",
+        "server_logs",
+    }
+    evidence_items: list[JsonObject] = []
+    for index, item in enumerate(items):
+        if not isinstance(item, dict):
+            raise LLMJudgeSchemaError(
+                f"LLM output evidence[{index}] must be an object"
+            )
+        event_id = _first_nonempty(item.get("event_id"), item.get("id"))
+        event_type = _first_nonempty(item.get("event_type"), item.get("type"))
+        source = str(_first_nonempty(item.get("source"), item.get("artifact")) or "")
+        meaning = _first_nonempty(
+            item.get("meaning"), item.get("reason"), item.get("description")
+        )
+        if meaning in (None, ""):
+            meaning = "Referenced evidence."
+
+        normalized_id = str(event_id or source or "").strip()
+        normalized_source = source.strip()
+        if normalized_id in valid_event_ids:
+            evidence_items.append(
+                {
+                    "event_id": normalized_id,
+                    "event_type": str(event_type or "event"),
+                    "meaning": str(meaning),
+                }
+            )
+            continue
+        if normalized_id in allowed_sources or normalized_source in allowed_sources:
+            source_id = (
+                normalized_id if normalized_id in allowed_sources else normalized_source
+            )
+            evidence_items.append(
+                {
+                    "event_id": source_id,
+                    "event_type": str(event_type or source_id),
+                    "meaning": str(meaning),
+                }
+            )
+            continue
+        if valid_event_ids:
+            raise LLMJudgeSchemaError(
+                f"LLM output evidence references unknown event_id: {normalized_id}"
+            )
+    return evidence_items
 
 
 def _post_chat_completion(judge_input: JsonObject) -> JsonObject:

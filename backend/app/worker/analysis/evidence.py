@@ -17,6 +17,8 @@ class EvidenceBundle:
     events: list[JsonObject]
     finalize_payload: JsonObject
     meta_payload: JsonObject
+    runtime_context_payload: JsonObject
+    server_logs: list[JsonObject]
     evidence: list[EvidenceItem]
     warnings: list[str]
     errors: list[str]
@@ -36,9 +38,20 @@ def build_evidence_bundle(
     meta_payload = _load_json(
         run_dir / "meta.json", warnings=warnings, errors=errors, required=False
     )
+    runtime_context_payload = _load_json(
+        run_dir / "runtime_context.json",
+        warnings=warnings,
+        errors=errors,
+        required=False,
+    )
+    server_logs = _load_fresh_server_logs(run_dir, warnings=warnings, errors=errors)
     evidence = [
         _event_to_evidence_item(index, event) for index, event in enumerate(events)
     ]
+    evidence.extend(
+        _server_log_to_evidence_item(index, record)
+        for index, record in enumerate(server_logs)
+    )
     if finalize_payload:
         evidence.append(
             EvidenceItem(
@@ -51,6 +64,8 @@ def build_evidence_bundle(
         events=events,
         finalize_payload=finalize_payload,
         meta_payload=meta_payload,
+        runtime_context_payload=runtime_context_payload,
+        server_logs=server_logs,
         evidence=evidence,
         warnings=warnings,
         errors=errors,
@@ -111,6 +126,19 @@ def _event_to_evidence_item(index: int, event: JsonObject) -> EvidenceItem:
     )
 
 
+def _server_log_to_evidence_item(index: int, record: JsonObject) -> EvidenceItem:
+    source = str(record.get("source") or "text_server/saved_logs")
+    log_type = str(record.get("log_type") or "unknown")
+    count = len(record.get("records") or [])
+    return EvidenceItem(
+        source=source,
+        index=index,
+        event_type="server_log",
+        value=record.get("records"),
+        summary=f"server_log type={log_type}, records={count}",
+    )
+
+
 def _load_events(
     path: Path, *, warnings: list[str], errors: list[str]
 ) -> list[JsonObject]:
@@ -155,3 +183,62 @@ def _load_json(
         errors.append(f"{path.name}: expected JSON object")
         return {}
     return payload
+
+
+def _load_fresh_server_logs(
+    run_dir: Path, *, warnings: list[str], errors: list[str]
+) -> list[JsonObject]:
+    """Load text_server logs written after the runtime workspace was prepared."""
+    try:
+        project_root = run_dir.parents[2]
+    except IndexError:
+        return []
+    if not project_root.exists():
+        return []
+
+    try:
+        min_mtime = run_dir.stat().st_mtime - 1.0
+    except OSError:
+        min_mtime = 0.0
+
+    records: list[JsonObject] = []
+    for path in sorted(project_root.glob("**/text_server/saved_logs/*")):
+        if not path.is_file():
+            continue
+        try:
+            if path.stat().st_mtime < min_mtime:
+                continue
+            parsed = _parse_server_log(path)
+        except OSError as exc:
+            warnings.append(f"{path.name}: could not read server log: {exc}")
+            continue
+        except ValueError as exc:
+            errors.append(f"{path.name}: invalid server log: {exc}")
+            continue
+        records.append(parsed)
+    return records
+
+
+def _parse_server_log(path: Path) -> JsonObject:
+    text = path.read_text(encoding="utf-8")
+    log_type = path.name.split("_behaviorID=", 1)[0]
+    if path.suffix.lower() == ".json":
+        payload = json.loads(text) if text.strip() else []
+        if isinstance(payload, list):
+            records = payload
+        elif isinstance(payload, dict):
+            records = [payload]
+        else:
+            raise ValueError("expected JSON object or array")
+        return {
+            "source": path.as_posix(),
+            "log_type": log_type,
+            "records": [record for record in records if isinstance(record, dict)],
+        }
+
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    return {
+        "source": path.as_posix(),
+        "log_type": log_type,
+        "records": [{"text": line} for line in lines],
+    }

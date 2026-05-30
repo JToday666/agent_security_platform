@@ -461,6 +461,8 @@
     }
   }
 
+  installLegacyTransportCompat(window.__PROBE_CONFIG__);
+
   function createRuntime(config) {
     const url = new URL(window.location.href);
     const probeConfig =
@@ -836,6 +838,96 @@
       } catch (error) {
         return false;
       }
+    };
+
+    runtime.isProbeEndpoint = function (urlValue) {
+      if (!urlValue) {
+        return false;
+      }
+      try {
+        const parsed = new URL(urlValue, window.location.href);
+        return parsed.pathname.indexOf("/__probe__/") === 0;
+      } catch (error) {
+        return false;
+      }
+    };
+
+    runtime.captureNetworkBody = function (body) {
+      if (body === undefined || body === null) {
+        return null;
+      }
+      if (typeof body === "string") {
+        const trimmed = body.trim();
+        if (!trimmed) {
+          return "";
+        }
+        try {
+          return JSON.parse(trimmed);
+        } catch (error) {
+          return trimmed.slice(0, 4000);
+        }
+      }
+      if (body instanceof URLSearchParams) {
+        return body.toString().slice(0, 4000);
+      }
+      if (body instanceof FormData) {
+        const result = {};
+        body.forEach((value, key) => {
+          result[key] =
+            typeof value === "string" ? value.slice(0, 1000) : "[file]";
+        });
+        return result;
+      }
+      return Object.prototype.toString.call(body);
+    };
+
+    runtime.installNetworkRecorder = function () {
+      if (window.__OBSERVABLE_NETWORK_RECORDER_INSTALLED) {
+        return;
+      }
+      window.__OBSERVABLE_NETWORK_RECORDER_INSTALLED = true;
+      const originalFetch = window.fetch ? window.fetch.bind(window) : null;
+      if (!originalFetch) {
+        return;
+      }
+      window.fetch = function (input, init) {
+        const rawUrl =
+          typeof input === "string" ? input : input && input.url ? input.url : "";
+        const method =
+          (init && init.method) ||
+          (input && input.method) ||
+          "GET";
+        const body = init && "body" in init ? init.body : input && input.body;
+        if (rawUrl && !runtime.isProbeEndpoint(rawUrl)) {
+          runtime.queueEvent("network_request", document.body, {
+            url: rawUrl,
+            method: String(method || "GET").toUpperCase(),
+            body: runtime.captureNetworkBody(body),
+          });
+        }
+        return originalFetch(input, init)
+          .then((response) => {
+            if (rawUrl && !runtime.isProbeEndpoint(rawUrl)) {
+              runtime.queueEvent("network_response", document.body, {
+                url: rawUrl,
+                method: String(method || "GET").toUpperCase(),
+                status: response.status,
+                ok: response.ok,
+              });
+            }
+            return response;
+          })
+          .catch((error) => {
+            if (rawUrl && !runtime.isProbeEndpoint(rawUrl)) {
+              runtime.queueEvent("network_error", document.body, {
+                url: rawUrl,
+                method: String(method || "GET").toUpperCase(),
+                error: String(error),
+              });
+            }
+            throw error;
+          });
+      };
     };
 
     runtime.markInternalNavigation = function () {
@@ -1271,6 +1363,7 @@
           childList: true,
           subtree: true,
         });
+        runtime.installNetworkRecorder();
         runtime.installRecorderListeners();
         await runtime.loadTask();
         runtime.updateState({});

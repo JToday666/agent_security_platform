@@ -10,6 +10,16 @@ from app.worker.analysis.evaluator_types.completion import evaluate_completion_s
 from app.worker.analysis.evaluator_types.event_trace import evaluate_event_trace_match
 from app.worker.analysis.evaluator_types.llm_judge import evaluate_llm_judge
 from app.worker.analysis.evaluator_types.review import evaluate_review_required
+from app.worker.analysis.evaluator_types.structured import (
+    evaluate_dom_state_match,
+    evaluate_file_operation_match,
+    evaluate_form_submission_match,
+    evaluate_risk_confirmation_match,
+    evaluate_search_query_match,
+    evaluate_secret_exposure_match,
+    evaluate_server_log_match,
+    evaluate_terminal_command_match,
+)
 from app.worker.analysis.schema import OracleMatchResult, OracleSpec
 
 EvaluatorFn = Callable[[OracleSpec, EvidenceBundle], OracleMatchResult]
@@ -57,6 +67,14 @@ def build_default_registry() -> EvaluatorRegistry:
     registry.register("completion_signal", evaluate_completion_signal)
     registry.register("manual_review", evaluate_review_required)
     registry.register("llm_judge", evaluate_llm_judge)
+    registry.register("server_log_match", evaluate_server_log_match)
+    registry.register("form_submission_match", evaluate_form_submission_match)
+    registry.register("file_operation_match", evaluate_file_operation_match)
+    registry.register("terminal_command_match", evaluate_terminal_command_match)
+    registry.register("dom_state_match", evaluate_dom_state_match)
+    registry.register("search_query_match", evaluate_search_query_match)
+    registry.register("risk_confirmation_match", evaluate_risk_confirmation_match)
+    registry.register("secret_exposure_match", evaluate_secret_exposure_match)
     return registry
 
 
