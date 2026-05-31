@@ -8,12 +8,20 @@
 
 ### 1.1 页面文件
 
-| 文件                              | 职责                                        |
-| --------------------------------- | ------------------------------------------- |
-| `pages/HomePage.vue`              | 首页，展示平台入口、Hero 动效、分割入口与产品介绍内容 |
-| `pages/ContactPage.vue`           | 联系方式页面，按诉求展示联系路径            |
-| `pages/NotFoundPage.vue`          | 404 页面                                    |
-| `components/HomeWorkflowStep.vue` | 首页流程卡片，展示四步引导                  |
+| 文件                                    | 职责                                                             |
+| --------------------------------------- | ---------------------------------------------------------------- |
+| `pages/HomePage.vue`                    | 首页容器，编排 Hero 动效、分割入口、介绍分区、滚动观察与排行榜预览数据 |
+| `pages/ContactPage.vue`                 | 联系方式页面，按诉求展示联系路径                                 |
+| `pages/NotFoundPage.vue`                | 404 页面                                                         |
+| `components/HomeHeroSection.vue`        | 首页 Hero 区和主操作入口                                         |
+| `components/HomeSectionJump.vue`        | 首页分割跳转入口                                                 |
+| `components/HomeSectionContent.vue`     | 首页产品介绍分区内容分发                                         |
+| `components/HomeAegisStatement.vue`     | AEGIS 品牌说明区                                                 |
+| `components/HomeLeaderboardPreview.vue` | 首页可信评测区排行榜预览                                      |
+| `components/HomeWorkflowStep.vue`       | 首页流程卡片，展示四步引导                                       |
+| `model/home-page-content.ts`            | 首页分区、流程卡片与入口配置的派生入口                         |
+| `model/home-page-scroll.ts`             | 首页分区跳转滚动位置计算                                         |
+| `model/home-page-types.ts`              | 首页分区、跳转入口和流程卡片类型                                 |
 
 ### 1.2 HomePage 的重点逻辑
 
@@ -22,10 +30,10 @@
 - 根据 `isLogin` 决定按钮跳向“提交评测 / 查看记录”还是“登录 / 联系我们”
 - 通过 `userStore.openLoginDialog()` 直接唤起登录弹窗
 - 用打字机效果逐步呈现标题和两行副标题
-- 通过居中高亮的分割入口滚动到快速上手、平台能力、评测闭环、可信评测和资源入口
+- 通过居中高亮的分割入口滚动到快速上手、平台能力、评测闭环、可信评测、AEGIS 和开始体验
 - 用 `IntersectionObserver` 控制首页介绍分区入场动画
 - 通过 i18n 资源维护首页所有用户可见介绍文案
-- 产品介绍区采用独立内容结构：快速上手流程、平台能力网格、评测闭环面板、可信评测追溯和资源入口
+- 读取排行榜当前快照，并把可信评测区的预览状态传给独立内容组件
 
 首页当前不再承担：
 
@@ -54,11 +62,14 @@
 | ----------------------------------------- | --------------------------------------- |
 | `pages/LeaderboardPage.vue`               | 排行榜页面容器，加载当前榜单并拼装组件  |
 | `api/leaderboard-api.ts`                  | 请求 `/leaderboards/current` 并适配字段 |
-| `components/LeaderboardChampionPanel.vue` | 第一名重点展示区                        |
+| `components/LeaderboardChampionPanel.vue` | 当前排序第一行重点展示区                |
 | `components/LeaderboardScoreSummary.vue`  | 当前榜单分数摘要                        |
 | `components/LeaderboardTable.vue`         | 排行榜表格和表头排序                    |
 | `composables/useLeaderboardPage.ts`       | 加载、刷新与错误状态                    |
+| `lib/leaderboard-page-state.ts`           | 排行榜错误状态标题与消息派生            |
 | `lib/leaderboard-view.ts`                 | 排序、分数格式化和奖牌色调              |
+| `mock/leaderboard-fixtures.ts`            | 排行榜本地 Mock 快照                    |
+| `types/leaderboard-types.ts`              | 排行榜快照和条目类型                    |
 
 ### 2.1 LeaderboardPage 的数据与视图
 
@@ -94,7 +105,7 @@ GET /leaderboards/current
 
 默认按照综合分降序排序。风险分默认按升序排序。置信度只展示，不作为排序项。
 
-前三名使用独立奖牌色调：金牌、银牌、铜牌分别对应 `gold / silver / bronze`，其余名次使用基础色调。当前第一名会在 `LeaderboardChampionPanel.vue` 中居中展示综合分、安全能力、高难分和风险分。
+前三名使用独立奖牌色调：金牌、银牌、铜牌分别对应 `gold / silver / bronze`，其余名次使用基础色调。当前排序下第一行会在 `LeaderboardChampionPanel.vue` 中居中展示当前排序指标。
 
 ## 3. 共享 UI 的定位
 
@@ -113,13 +124,15 @@ GET /leaderboards/current
 | 文件                     | 职责                                                      |
 | ------------------------ | --------------------------------------------------------- |
 | `branding/AppIcon.vue`   | 基于 `lucide-vue-next` 的统一图标入口，按语义维护可用图标 |
+| `branding/app-icon-registry.ts` | 应用语义图标与 lucide 图标名称映射                 |
 | `branding/BrandLogo.vue` | 品牌 Logo 组件，使用轻量矢量 Logo 资源                    |
+| `branding/BrandGithubIcon.vue` | GitHub 品牌图标组件                                 |
+| `branding/BrandXIcon.vue` | X 品牌图标组件                                           |
 
 ### 3.3 display
 
 | 文件                     | 职责                             |
 | ------------------------ | -------------------------------- |
-| `display/MetricStat.vue` | 指标摘要卡                       |
 | `display/StatusTag.vue`  | 评测状态标签，结合状态规则做展示 |
 | `display/UiTag.vue`      | 基础标签组件                     |
 

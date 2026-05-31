@@ -20,17 +20,14 @@
     "recordsLoadFailed": "La carga de registros de evaluación falló.",
     "reportLoadFailed": "La carga del informe de evaluación falló.",
     "sampleDownloadFailed": "La descarga de detalles de muestras falló. Inténtalo de nuevo más tarde.",
-    "submitMetaInvalid": "La estructura de respuesta de submit-meta no coincide con el nuevo protocolo. Confirma que el backend solo devuelve resultados planos.",
     "submitMetaLoadFailed": "La carga de metadatos de envío falló.",
     "submitPrecheckFailed": "La precomprobación falló.",
-    "submitFailed": "Error al enviar. Inténtalo de nuevo más tarde.",
-    "trendLoadFailed": "La carga de la tendencia de evaluación falló."
+    "submitFailed": "Error al enviar. Inténtalo de nuevo más tarde."
   },
   "charts": {
     "abilityStructure": "Estructura de capacidad",
     "baseline": "Línea base",
     "completionDate": "Completado: {date}",
-    "datasetStack": "Conjunto de datos",
     "difficulty": "Dificultad",
     "durationMs": "Duración ms",
     "evaluationId": "Evaluación: {id}",
@@ -44,14 +41,11 @@
   },
   "common": {
     "count": "{count}",
-    "countItems": "{count} ítems",
     "countRecords": "{count} registros",
     "currentUser": "Usuario actual",
     "listSeparator": ", ",
     "noReturn": "No devuelto",
     "notGenerated": "No generado",
-    "score": "{score} puntos",
-    "scorePlaceholder": "--",
     "unnamedAgent": "Agent sin nombre",
     "unnamedCategory": "Categoría sin nombre",
     "unnamedDataset": "Conjunto de datos sin nombre"
@@ -106,7 +100,6 @@
       "label": "Tasa de finalización"
     },
     "completionScore": {
-      "description": "Mide la capacidad del Agent para ejecutar de forma estable el flujo de tarea hasta el final.",
       "label": "Puntuación de capacidad de finalización",
       "radarDescription": "Capacidad para ejecutar de forma estable el flujo de tarea de evaluación hasta el final."
     },
@@ -115,7 +108,6 @@
       "label": "Tasa de éxito condicional"
     },
     "confidence": {
-      "description": "Indica la credibilidad de la puntuación actual tras considerar tamaño de muestra, cobertura de dificultad e incertidumbre.",
       "label": "Confianza"
     },
     "confidenceInterval": {
@@ -123,7 +115,6 @@
       "label": "Intervalo de confianza"
     },
     "conservativeScore": {
-      "description": "Puntuación principal de ordenación de la clasificación, que refleja la estimación conservadora de la plataforma sobre la capacidad del Agent.",
       "label": "Puntuación compuesta"
     },
     "hardScore": {
@@ -131,12 +122,10 @@
       "label": "Puntuación de rendimiento en alta dificultad"
     },
     "performanceScore": {
-      "description": "Capacidad esperada de éxito seguro bajo una estructura de dificultad estándar unificada.",
       "label": "Puntuación de rendimiento",
       "radarDescription": "Capacidad esperada de éxito seguro bajo una estructura de dificultad estándar unificada."
     },
     "safetyScore": {
-      "description": "Mide la capacidad del Agent para identificar trampas y tomar decisiones seguras después de completar el flujo.",
       "label": "Puntuación de reconocimiento de seguridad",
       "radarDescription": "Capacidad para identificar riesgos y tomar decisiones seguras después de completar el flujo."
     },
@@ -153,7 +142,6 @@
       "label": "Puntuación de velocidad"
     },
     "unsafeRate": {
-      "description": "Proporción de casos en los que el Agent completa la tarea pero realiza comportamiento inseguro.",
       "label": "Tasa de riesgo"
     }
   },
@@ -211,7 +199,7 @@
     "tableExplanation": "Explicación",
     "tableMetric": "Métrica",
     "tableScore": "Puntuación",
-    "unavailable": "Los detalles del informe no están disponibles temporalmente. Puedes ver el resumen de evaluación; la interfaz completa del informe mostrará puntuaciones, distribución de muestras e información de versión cuando esté conectada.",
+    "unavailable": "Los detalles del informe no están disponibles temporalmente. Puedes ver el resumen de evaluación; las puntuaciones, la distribución de muestras y la información de versión aparecerán cuando se devuelva el contenido del informe.",
     "title": "Informe de puntuación"
   },
   "sections": {
@@ -236,22 +224,8 @@
     "terminating": "Terminando"
   },
   "statusText": {
-    "canceling": "Cancelando la tarea e interrumpiendo la ejecución.",
-    "canceled": "Tarea cancelada. No se generó informe final.",
     "completed": "Todos los conjuntos de datos se evaluaron y se generó el informe final.",
-    "failed": "La ejecución de la tarea falló. Inténtalo de nuevo más tarde.",
     "failedFallback": "La ejecución de la evaluación falló.",
-    "pausing": "Pausa solicitada. La tarea se pausará después de que termine el conjunto de datos {datasetName}.",
-    "pausingNoDataset": "Pausa solicitada. La tarea actual se pausará pronto.",
-    "paused": "Tarea pausada.",
-    "pausedWithDeadline": "Tarea pausada. Elige continuar, terminar o cancelar antes de {deadline}.",
-    "pending": "Tarea creada y esperando programación.",
-    "running": "Evaluando actualmente el conjunto de datos {datasetName}.",
-    "runningNoDataset": "La tarea está en ejecución.",
-    "terminated": "Tarea terminada. Se completaron {completed}/{total} conjuntos de datos y se generó el informe final.",
-    "terminatedAuto": "La tarea se terminó automáticamente tras el tiempo de espera de pausa y se generó el informe final.",
-    "terminating": "Terminación solicitada. La tarea terminará después de que finalice el conjunto de datos {datasetName}.",
-    "terminatingNoDataset": "Terminación solicitada. La tarea actual terminará pronto.",
     "updated": "Estado de evaluación actualizado."
   },
   "summary": {
@@ -268,7 +242,6 @@
     "reportGeneratedAt": "Informe generado el",
     "scoreCaptionPending": "Informe no generado",
     "scoreLabel": "Puntuación compuesta",
-    "scorePending": "Pendiente de generación",
     "scoreModel": "Modelo de puntuación",
     "sampleDescription": "Divide las muestras de la evaluación actual por éxito, error y anomalía.",
     "sampleTitle": "Estadísticas de muestras",
@@ -291,7 +264,6 @@
     "flat": "Sin cambios",
     "latestCompositeScore": "Última puntuación compuesta",
     "latestRiskRate": "Última tasa de riesgo",
-    "loading": "Leyendo tendencia",
     "rangeAria": "Rango de tendencia",
     "recent10": "Últimas 10",
     "riskView": "Vista de riesgo",

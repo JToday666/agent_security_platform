@@ -1,11 +1,8 @@
 import type {
   EvaluationDetail,
-  EvaluationFinalizationReason,
   EvaluationProgress,
   EvaluationRecord,
-  EvaluationReport,
   EvaluationReportPayload,
-  EvaluationStatus,
 } from "@/shared/types/agent-types";
 import {
   resolvePublicDatasetName,
@@ -14,13 +11,6 @@ import {
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import type {
   ResolvedEvaluationState,
-  StoredEvaluationRecord,
-} from "./evaluation-service-shared";
-import {
-  clampPercent,
-  getDatasetCount,
-  MOCK_DATASET_DURATION_MS,
-  MOCK_PENDING_DELAY_MS,
 } from "./evaluation-service-shared";
 import { buildEvaluationControls } from "@/modules/evaluation/model/evaluation-controls";
 
@@ -87,69 +77,6 @@ export const sanitizeEvaluationDetail = (
         runningDatasetName,
       ),
     },
-  };
-};
-
-const buildReport = (record: {
-  finalReportAvailable: boolean;
-  reportGeneratedAt: string | null;
-  score: number | null;
-  completedDatasetCount: number;
-  datasetIds: string[];
-}): EvaluationReport | null => {
-  if (!record.finalReportAvailable || record.score === null) {
-    return null;
-  }
-
-  const totalDatasetCount = getDatasetCount(record);
-  const completedDatasetCount = Math.min(
-    record.completedDatasetCount,
-    totalDatasetCount,
-  );
-  const safeScore = record.score;
-
-  return {
-    reportStatus: "available",
-    summary: {
-      totalSamples: totalDatasetCount * 120,
-      completedSamples: completedDatasetCount * 120,
-      taskCompletedCount: completedDatasetCount,
-      harmDetectedCount: Math.max(
-        0,
-        Math.round((100 - safeScore) * completedDatasetCount),
-      ),
-      failedCount: Math.max(0, totalDatasetCount - completedDatasetCount),
-      byRiskCategory: record.datasetIds.map((datasetId, index) => ({
-        categoryId: datasetId,
-        name: resolvePublicDatasetName(datasetId),
-        totalSamples: 120,
-        taskCompletedCount: index < completedDatasetCount ? 1 : 0,
-        harmDetectedCount:
-          index < completedDatasetCount
-            ? Math.max(0, Math.round((100 - safeScore) / 8))
-            : 0,
-      })),
-      byRiskLevel: [1, 2, 3].map((level) => ({
-        level,
-        totalSamples: totalDatasetCount * 40,
-        harmDetectedCount: Math.max(
-          0,
-          Math.round(((4 - level) * (100 - safeScore)) / 6),
-        ),
-      })),
-      byAttackLevel: [1, 2, 3].map((level) => ({
-        level,
-        totalSamples: totalDatasetCount * 40,
-        harmDetectedCount: Math.max(
-          0,
-          Math.round((level * (100 - safeScore)) / 7),
-        ),
-      })),
-    },
-    reportUri: null,
-    generatedAt: record.reportGeneratedAt ?? new Date().toISOString(),
-    warnings: [],
-    metrics: [],
   };
 };
 
@@ -380,174 +307,6 @@ export const buildMockReportPayload = (
       difficultyVersion: "dv_2026q2_v1",
       scoreModelVersion: "score_v1",
       benchmarkVersion: "bm_v1",
-    },
-  };
-};
-
-const buildStatusText = (
-  status: EvaluationStatus,
-  progress: Pick<
-    EvaluationProgress,
-    | "runningDatasetName"
-    | "completedDatasetCount"
-    | "totalDatasetCount"
-    | "pauseDeadlineAt"
-  >,
-  reason: EvaluationFinalizationReason | null,
-): string => {
-  switch (status) {
-    case "queued":
-    case "pending":
-      return translateRuntimeMessage("evaluation.statusText.pending");
-    case "running":
-      return progress.runningDatasetName
-        ? translateRuntimeMessage("evaluation.statusText.running", {
-            datasetName: progress.runningDatasetName,
-          })
-        : translateRuntimeMessage("evaluation.statusText.runningNoDataset");
-    case "pausing":
-      return progress.runningDatasetName
-        ? translateRuntimeMessage("evaluation.statusText.pausing", {
-            datasetName: progress.runningDatasetName,
-          })
-        : translateRuntimeMessage("evaluation.statusText.pausingNoDataset");
-    case "paused":
-      return progress.pauseDeadlineAt
-        ? translateRuntimeMessage("evaluation.statusText.pausedWithDeadline", {
-            deadline: progress.pauseDeadlineAt,
-          })
-        : translateRuntimeMessage("evaluation.statusText.paused");
-    case "terminating":
-      return progress.runningDatasetName
-        ? translateRuntimeMessage("evaluation.statusText.terminating", {
-            datasetName: progress.runningDatasetName,
-          })
-        : translateRuntimeMessage("evaluation.statusText.terminatingNoDataset");
-    case "canceling":
-      return translateRuntimeMessage("evaluation.statusText.canceling");
-    case "completed":
-      return translateRuntimeMessage("evaluation.statusText.completed");
-    case "terminated":
-      return reason === "auto_terminated_after_pause_timeout"
-        ? translateRuntimeMessage("evaluation.statusText.terminatedAuto")
-        : translateRuntimeMessage("evaluation.statusText.terminated", {
-            completed: progress.completedDatasetCount,
-            total: progress.totalDatasetCount,
-          });
-    case "canceled":
-      return translateRuntimeMessage("evaluation.statusText.canceled");
-    case "failed":
-      return translateRuntimeMessage("evaluation.statusText.failed");
-  }
-};
-
-const buildProgress = (
-  record: StoredEvaluationRecord,
-  status: EvaluationStatus,
-  now: number,
-): EvaluationProgress => {
-  const totalDatasetCount = getDatasetCount(record);
-  const completedDatasetCount = Math.min(
-    record.completedDatasetCount,
-    totalDatasetCount,
-  );
-  const phaseElapsed = Math.max(
-    0,
-    now - new Date(record.phaseStartedAt).getTime(),
-  );
-  const runningDatasetId =
-    status === "running" || status === "pausing" || status === "terminating"
-      ? (record.datasetIds[completedDatasetCount] ?? null)
-      : null;
-  const runningDatasetName = runningDatasetId
-    ? resolvePublicDatasetName(
-        runningDatasetId,
-        record.datasetNames[completedDatasetCount],
-      )
-    : null;
-
-  let percent = Math.round((completedDatasetCount / totalDatasetCount) * 100);
-  if (status === "pending") {
-    percent = clampPercent((phaseElapsed / MOCK_PENDING_DELAY_MS) * 8);
-  } else if (
-    status === "running" ||
-    status === "pausing" ||
-    status === "terminating"
-  ) {
-    const partial = Math.min(phaseElapsed / MOCK_DATASET_DURATION_MS, 0.98);
-    percent = clampPercent(
-      ((completedDatasetCount + partial) / totalDatasetCount) * 100,
-    );
-  } else if (status === "completed") {
-    percent = 100;
-  } else if (status === "canceled" || status === "failed") {
-    percent = clampPercent((completedDatasetCount / totalDatasetCount) * 100);
-  }
-
-  const progressBase = {
-    percent,
-    totalDatasetCount,
-    completedDatasetCount,
-    runningDatasetId,
-    runningDatasetName,
-    pauseDeadlineAt: status === "paused" ? record.pauseDeadlineAt : null,
-  };
-
-  return {
-    ...progressBase,
-    statusText: buildStatusText(
-      status,
-      progressBase,
-      record.finalizationReason,
-    ),
-  };
-};
-
-export const buildResolvedStateFromStored = (
-  record: StoredEvaluationRecord,
-  now = Date.now(),
-): ResolvedEvaluationState => {
-  const progress = buildProgress(record, record.status, now);
-  const controls = buildEvaluationControls(record.status, record.pauseUsed);
-  const report = buildReport(record);
-  const totalDatasetCount = getDatasetCount(record);
-  const sampleSummary = buildSampleSummary(
-    record.score,
-    totalDatasetCount * 20,
-  );
-
-  return {
-    evaluationId: record.evaluationId,
-    agentName: record.agentName,
-    description: record.description,
-    createdAt: record.createdAt,
-    updatedAt: record.updatedAt,
-    status: record.status,
-    publicToLeaderboard: record.publicToLeaderboard,
-    leaderboardDisplayMode: record.leaderboardDisplayMode,
-    datasetIds: record.datasetIds,
-    datasetNames: resolvePublicDatasetNames(
-      record.datasetIds,
-      record.datasetNames,
-    ),
-    submitMethod: record.submitMethod,
-    score: record.score,
-    ownerName: record.ownerName,
-    parameters: record.parameters,
-    progressPercent: progress.percent,
-    finalReportAvailable: record.finalReportAvailable,
-    finalizationReason: record.finalizationReason,
-    progress,
-    controls,
-    report,
-    sampleSummary,
-    representativeSamples: buildRepresentativeSamples(
-      record.evaluationId,
-      resolvePublicDatasetNames(record.datasetIds, record.datasetNames),
-      sampleSummary,
-    ),
-    downloads: {
-      sampleDetailsUrl: null,
     },
   };
 };

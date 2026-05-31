@@ -20,6 +20,8 @@ README 只维护当前状态、启动验证入口、核心约束和文档索引�
 - `/api/v1/evaluations/{evaluationId}/score/recalculate`
 - `/api/v1/difficulty/*`
 - `/api/v1/leaderboards/*`
+- `/api/v1/ops/workers`
+- `/runtime/tasks/{sample_execution_id}/*`
 
 当前已具备的后端基础：
 
@@ -125,11 +127,11 @@ uv run pytest tests/api tests/modules tests/worker tests/scripts -q
 uv run pytest --cov=app --cov=scripts --cov-report=term-missing
 ```
 
-后端国际化运行时定向验证：
+平台与业务模块定向验证：
 
 ```bash
 uv run pytest tests/modules/platform/test_i18n.py tests/modules/platform/test_exception_handlers.py tests/api/test_contracts.py -q
-uv run pytest tests/modules/agents/test_service.py tests/modules/auth/test_service.py tests/modules/user/test_service.py tests/modules/evaluations/test_validation.py tests/modules/evaluations/test_mappers.py tests/modules/evaluations/test_service.py tests/modules/scoring/test_service.py tests/modules/difficulty/test_service.py tests/modules/leaderboards/test_service.py tests/modules/datasets/test_service.py tests/modules/datasets/test_metadata_registry.py -q
+uv run pytest tests/modules/agents tests/modules/evaluations tests/modules/scoring tests/modules/datasets tests/modules/runtime_gateway -q
 ```
 
 数据库连通性检查：

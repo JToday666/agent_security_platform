@@ -58,18 +58,6 @@ button {
   }
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
-
 :where(.fade-enter-active, .fade-leave-active) {
   transition: opacity var(--duration-base) var(--ease-standard);
 }
@@ -84,16 +72,6 @@ button {
 
 :where(.scale-enter-from) {
   transform: scale(0.92);
-}
-
-:where(.loader) {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.28);
-  border-radius: var(--radius-circle);
-  border-top-color: var(--color-white);
-  animation: spin var(--duration-fade-in) linear infinite;
 }
 
 :where(.public-layout, .user-layout) {

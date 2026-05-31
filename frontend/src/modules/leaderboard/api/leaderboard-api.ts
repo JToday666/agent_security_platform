@@ -1,5 +1,5 @@
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
-import { ApiConfig } from "@/shared/api/Config";
+import { ApiConfig } from "@/shared/api/config";
 import request from "@/shared/api/http-client";
 import type {
   LeaderboardEntry,

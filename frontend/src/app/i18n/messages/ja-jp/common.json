@@ -4,7 +4,6 @@
     "logoAlt": "Agent セキュリティ評価プラットフォームのロゴ"
   },
   "actions": {
-    "add": "追加",
     "browseDataset": "データセットを見る",
     "cancel": "キャンセル",
     "close": "閉じる",

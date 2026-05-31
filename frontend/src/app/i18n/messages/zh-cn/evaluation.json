@@ -20,17 +20,14 @@
     "recordsLoadFailed": "评测记录加载失败。",
     "reportLoadFailed": "评测报告加载失败。",
     "sampleDownloadFailed": "样本明细下载失败，请稍后重试。",
-    "submitMetaInvalid": "submit-meta 响应结构不符合新协议，请确认后端仅返回扁平结果。",
     "submitMetaLoadFailed": "提交元数据加载失败。",
     "submitPrecheckFailed": "预检查失败。",
-    "submitFailed": "提交失败，请稍后重试。",
-    "trendLoadFailed": "评测趋势加载失败。"
+    "submitFailed": "提交失败，请稍后重试。"
   },
   "charts": {
     "abilityStructure": "能力结构",
     "baseline": "基线",
     "completionDate": "完成：{date}",
-    "datasetStack": "数据集",
     "difficulty": "难度",
     "durationMs": "耗时 ms",
     "evaluationId": "评测：{id}",
@@ -44,14 +41,11 @@
   },
   "common": {
     "count": "{count} 个",
-    "countItems": "{count} 项",
     "countRecords": "{count} 条",
     "currentUser": "当前用户",
     "listSeparator": "、",
     "noReturn": "未返回",
     "notGenerated": "未生成",
-    "score": "{score} 分",
-    "scorePlaceholder": "--",
     "unnamedAgent": "未命名智能体",
     "unnamedCategory": "未命名分类",
     "unnamedDataset": "未命名数据集"
@@ -106,7 +100,6 @@
       "label": "完成率"
     },
     "completionScore": {
-      "description": "表示 Agent 把任务流程稳定跑完的能力。",
       "label": "完成能力分",
       "radarDescription": "把评测任务流程稳定跑完的能力。"
     },
@@ -115,7 +108,6 @@
       "label": "条件成功率"
     },
     "confidence": {
-      "description": "表示当前分数受样本量、难度覆盖和不确定性影响后的可信程度。",
       "label": "置信度"
     },
     "confidenceInterval": {
@@ -123,7 +115,6 @@
       "label": "置信区间"
     },
     "conservativeScore": {
-      "description": "排行榜主排序分，体现平台对 Agent 能力的保守估计。",
       "label": "综合分"
     },
     "hardScore": {
@@ -131,12 +122,10 @@
       "label": "高难表现分"
     },
     "performanceScore": {
-      "description": "在统一标准难度结构下的预期安全成功能力。",
       "label": "表现分",
       "radarDescription": "统一标准难度结构下的预期安全成功能力。"
     },
     "safetyScore": {
-      "description": "表示 Agent 完成流程后识别陷阱并安全决策的能力。",
       "label": "安全识别分",
       "radarDescription": "完成流程后识别风险并做出安全决策的能力。"
     },
@@ -153,7 +142,6 @@
       "label": "速度分"
     },
     "unsafeRate": {
-      "description": "表示 Agent 跑完任务但做出不安全行为的比例。",
       "label": "风险率"
     }
   },
@@ -211,7 +199,7 @@
     "tableExplanation": "解释",
     "tableMetric": "指标",
     "tableScore": "分数",
-    "unavailable": "报告详情暂不可用。当前可查看评测摘要，完整报告接口接入后将展示评分、样本分布和版本信息。",
+    "unavailable": "报告详情暂不可用。当前可查看评测摘要；报告内容返回后将展示评分、样本分布和版本信息。",
     "title": "评分报告"
   },
   "sections": {
@@ -236,22 +224,8 @@
     "terminating": "终止中"
   },
   "statusText": {
-    "canceling": "正在取消任务并中断执行。",
-    "canceled": "任务已取消，未生成最终报告。",
     "completed": "所有数据集已评测完成，已生成最终报告。",
-    "failed": "任务执行失败，请稍后重试。",
     "failedFallback": "评测执行失败。",
-    "pausing": "已收到暂停请求，当前数据集 {datasetName} 完成后将暂停。",
-    "pausingNoDataset": "已收到暂停请求，当前任务即将暂停。",
-    "paused": "任务已暂停。",
-    "pausedWithDeadline": "任务已暂停，请在 {deadline} 前选择继续、终止或取消。",
-    "pending": "任务已创建，正在等待调度。",
-    "running": "当前正在评测数据集 {datasetName}。",
-    "runningNoDataset": "任务正在执行中。",
-    "terminated": "任务已结束，已完成 {completed}/{total} 个数据集并生成最终报告。",
-    "terminatedAuto": "任务在暂停超时后自动终止，已生成最终报告。",
-    "terminating": "已收到终止请求，当前数据集 {datasetName} 完成后将结束任务。",
-    "terminatingNoDataset": "已收到终止请求，当前任务即将结束。",
     "updated": "评测状态已更新。"
   },
   "summary": {
@@ -268,7 +242,6 @@
     "reportGeneratedAt": "报告生成时间",
     "scoreCaptionPending": "报告未生成",
     "scoreLabel": "综合分",
-    "scorePending": "待生成",
     "scoreModel": "评分模型",
     "sampleDescription": "按成功、失败和异常拆分当前评测样本。",
     "sampleTitle": "样本统计",
@@ -291,7 +264,6 @@
     "flat": "持平",
     "latestCompositeScore": "最新综合分",
     "latestRiskRate": "最新风险率",
-    "loading": "正在读取趋势",
     "rangeAria": "趋势范围",
     "recent10": "最近 10 次",
     "riskView": "风险视图",

@@ -18,13 +18,6 @@ export interface DatasetCatalogFilterOption {
   category?: DatasetCategory;
 }
 
-export interface DatasetCatalogSummary {
-  categoryCount: number;
-  datasetCount: number;
-  sampleCount: number;
-  updatedAt: string | null;
-}
-
 const normalizeSearch = (value: string): string => value.trim().toLowerCase();
 
 const normalizeTimestamp = (value?: string | null): number => {

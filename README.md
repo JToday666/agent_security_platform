@@ -18,7 +18,7 @@ Agent Security Platform 是面向 Agent API 的安全测试平台仓库，包含
 | ----------- | ------------------------------------------------------------------------------------------------------- |
 | `frontend/` | Vue + TypeScript 前端工程，包含页面、状态组合、共享组件体系、国际化资源、局部前端 Mock 和前端文档。 |
 | `backend/`  | FastAPI 后端、数据库模型、业务模块、worker、迁移和后端测试。                                            |
-| `share/`    | 前后端接口契约、国际化总策略和补充说明。                                                                |
+| `share/`    | 前后端接口契约、国际化收口说明和补充说明。                                                              |
 | `docs/`     | 项目级设计说明、任务资料和参考文档。                                                                    |
 | `README.md` | 仓库入口、运行方式和文档入口。                                                                          |
 
@@ -140,11 +140,11 @@ cd backend
 uv run pytest -q
 ```
 
-真实 HTTP 冒烟需要后端 API 和数据库处于可用状态：
+完整本地真实链路验证需要后端 API、scheduler/sample worker 和数据库处于可用状态：
 
 ```bash
 cd backend
-uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
+uv run python scripts/qa/e2e_local_run.py --cleanup-created-records --poll-timeout 180
 ```
 
 ## 文档入口
@@ -153,13 +153,15 @@ uv run python scripts/http_smoke_check.py --base-url http://127.0.0.1:8000
 - [前端文档地图](./frontend/docs/01-总览/文档地图.md)
 - [前端架构说明](./frontend/docs/01-总览/前端架构说明.md)
 - [前端国际化架构说明](./frontend/docs/02-架构/国际化架构说明.md)
-- [国际化工程指导方案](./share/i18n方案.md)
+- [国际化收口说明](./share/i18n方案.md)
 - [排行榜接口说明](./share/leaderboard接口.md)
 - [关键链路说明](./frontend/docs/04-流程/关键链路说明.md)
 - [backend/README.md](./backend/README.md)
 - [后端文档地图](./backend/docs/01-总览/文档地图.md)
 - [后端架构说明](./backend/docs/01-总览/后端架构说明.md)
 - [API 接口协议总表](./share/API接口协议.md)
+- [用户接口补充说明](./share/user接口.md)
+- [数据集接口补充说明](./share/database接口.md)
 - [Agent 接口补充说明](./share/agent接口.md)
 - [提交接口补充说明](./share/submit接口.md)
 - [报告接口补充说明](./share/report接口.md)

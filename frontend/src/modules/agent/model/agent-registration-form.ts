@@ -428,12 +428,3 @@ export const createCustomRequestField = (): AgentCustomRequestField => ({
 export const clearAgentCancelRequestBody = (form: AgentRegisterForm) => {
   form.connection.cancelRequestBody = null;
 };
-
-export const selectDefaultTemplate = (
-  templates: AgentTemplate[],
-): AgentTemplate | null =>
-  [...templates].sort(
-    (left, right) =>
-      Number(right.recommended) - Number(left.recommended) ||
-      left.sortOrder - right.sortOrder,
-  )[0] ?? null;
