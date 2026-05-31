@@ -18,16 +18,3 @@ export const formatDateTime = (
   new Intl.DateTimeFormat(resolveLocale(locale), options).format(
     value instanceof Date ? value : new Date(value),
   );
-
-export const formatPercent = (
-  value: number,
-  locale?: SupportedLocale,
-): string =>
-  formatNumber(
-    value,
-    {
-      maximumFractionDigits: 1,
-      style: "percent",
-    },
-    locale,
-  );

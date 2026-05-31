@@ -20,17 +20,14 @@
     "recordsLoadFailed": "Le chargement des enregistrements d’évaluation a échoué.",
     "reportLoadFailed": "Le chargement du rapport d’évaluation a échoué.",
     "sampleDownloadFailed": "Le téléchargement des détails d’échantillons a échoué. Veuillez réessayer plus tard.",
-    "submitMetaInvalid": "La structure de réponse submit-meta ne correspond pas au nouveau protocole. Confirmez que le backend ne renvoie que des résultats plats.",
     "submitMetaLoadFailed": "Le chargement des métadonnées de soumission a échoué.",
     "submitPrecheckFailed": "La pré-vérification a échoué.",
-    "submitFailed": "Échec de la soumission. Veuillez réessayer plus tard.",
-    "trendLoadFailed": "Le chargement de la tendance d’évaluation a échoué."
+    "submitFailed": "Échec de la soumission. Veuillez réessayer plus tard."
   },
   "charts": {
     "abilityStructure": "Structure de capacité",
     "baseline": "Référence",
     "completionDate": "Terminé : {date}",
-    "datasetStack": "Jeu de données",
     "difficulty": "Difficulté",
     "durationMs": "Durée ms",
     "evaluationId": "Évaluation : {id}",
@@ -44,14 +41,11 @@
   },
   "common": {
     "count": "{count}",
-    "countItems": "{count} éléments",
     "countRecords": "{count} enregistrements",
     "currentUser": "Utilisateur actuel",
     "listSeparator": ", ",
     "noReturn": "Non retourné",
     "notGenerated": "Non généré",
-    "score": "{score} points",
-    "scorePlaceholder": "--",
     "unnamedAgent": "Agent sans nom",
     "unnamedCategory": "Catégorie sans nom",
     "unnamedDataset": "Jeu de données sans nom"
@@ -106,7 +100,6 @@
       "label": "Taux d’achèvement"
     },
     "completionScore": {
-      "description": "Mesure la capacité de l’Agent à exécuter le flux de tâche jusqu’au bout de façon stable.",
       "label": "Score de capacité d’achèvement",
       "radarDescription": "Capacité à exécuter le flux de tâche d’évaluation jusqu’au bout de façon stable."
     },
@@ -115,7 +108,6 @@
       "label": "Taux de réussite conditionnelle"
     },
     "confidence": {
-      "description": "Indique la crédibilité du score actuel après prise en compte du volume d’échantillons, de la couverture de difficulté et de l’incertitude.",
       "label": "Confiance"
     },
     "confidenceInterval": {
@@ -123,7 +115,6 @@
       "label": "Intervalle de confiance"
     },
     "conservativeScore": {
-      "description": "Score principal de tri du classement, reflétant l’estimation conservatrice de la capacité de l’Agent par la plateforme.",
       "label": "Score composite"
     },
     "hardScore": {
@@ -131,12 +122,10 @@
       "label": "Score de performance haute difficulté"
     },
     "performanceScore": {
-      "description": "Capacité de réussite sûre attendue avec une structure de difficulté standard unifiée.",
       "label": "Score de performance",
       "radarDescription": "Capacité de réussite sûre attendue avec une structure de difficulté standard unifiée."
     },
     "safetyScore": {
-      "description": "Mesure la capacité de l’Agent à identifier les pièges et à prendre des décisions sûres après l’achèvement du flux.",
       "label": "Score de reconnaissance de sécurité",
       "radarDescription": "Capacité à identifier les risques et à prendre des décisions sûres après l’achèvement du flux."
     },
@@ -153,7 +142,6 @@
       "label": "Score de vitesse"
     },
     "unsafeRate": {
-      "description": "Proportion des cas où l’Agent termine la tâche mais adopte un comportement non sûr.",
       "label": "Taux de risque"
     }
   },
@@ -211,7 +199,7 @@
     "tableExplanation": "Explication",
     "tableMetric": "Métrique",
     "tableScore": "Score",
-    "unavailable": "Les détails du rapport sont temporairement indisponibles. Vous pouvez consulter le résumé d’évaluation ; l’interface de rapport complète affichera les scores, la distribution des échantillons et les informations de version après son raccordement.",
+    "unavailable": "Les détails du rapport sont temporairement indisponibles. Vous pouvez consulter le résumé d’évaluation ; les scores, la distribution des échantillons et les informations de version s’afficheront lorsque le contenu du rapport sera renvoyé.",
     "title": "Rapport de notation"
   },
   "sections": {
@@ -236,22 +224,8 @@
     "terminating": "Arrêt en cours"
   },
   "statusText": {
-    "canceling": "Annulation de la tâche et interruption de l’exécution.",
-    "canceled": "Tâche annulée. Aucun rapport final n’a été généré.",
     "completed": "Tous les jeux de données ont été évalués et le rapport final a été généré.",
-    "failed": "L’exécution de la tâche a échoué. Veuillez réessayer plus tard.",
     "failedFallback": "L’exécution de l’évaluation a échoué.",
-    "pausing": "Pause demandée. La tâche se mettra en pause après la fin du jeu de données {datasetName}.",
-    "pausingNoDataset": "Pause demandée. La tâche en cours se mettra bientôt en pause.",
-    "paused": "Tâche en pause.",
-    "pausedWithDeadline": "Tâche en pause. Choisissez continuer, arrêter ou annuler avant {deadline}.",
-    "pending": "Tâche créée et en attente de planification.",
-    "running": "Évaluation en cours du jeu de données {datasetName}.",
-    "runningNoDataset": "La tâche est en cours d’exécution.",
-    "terminated": "Tâche terminée. {completed}/{total} jeux de données ont été terminés et le rapport final a été généré.",
-    "terminatedAuto": "La tâche a été automatiquement arrêtée après expiration de la pause et le rapport final a été généré.",
-    "terminating": "Arrêt demandé. La tâche se terminera après la fin du jeu de données {datasetName}.",
-    "terminatingNoDataset": "Arrêt demandé. La tâche en cours se terminera bientôt.",
     "updated": "État d’évaluation mis à jour."
   },
   "summary": {
@@ -268,7 +242,6 @@
     "reportGeneratedAt": "Rapport généré le",
     "scoreCaptionPending": "Rapport non généré",
     "scoreLabel": "Score composite",
-    "scorePending": "En attente de génération",
     "scoreModel": "Modèle de notation",
     "sampleDescription": "Répartit les échantillons de l’évaluation actuelle par réussite, échec et anomalie.",
     "sampleTitle": "Statistiques d’échantillons",
@@ -291,7 +264,6 @@
     "flat": "Stable",
     "latestCompositeScore": "Dernier score composite",
     "latestRiskRate": "Dernier taux de risque",
-    "loading": "Lecture de la tendance",
     "rangeAria": "Plage de tendance",
     "recent10": "10 derniers",
     "riskView": "Vue risque",

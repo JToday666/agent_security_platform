@@ -8,12 +8,10 @@ import type {
   EvaluationScoreMetricKey,
 } from "@/shared/types/agent-types";
 
-export interface MetricDefinition {
+type MetricDefinitionBase = {
   key: EvaluationScoreMetricKey;
-  label: string;
-  description: string;
   unit?: "%";
-}
+};
 
 export type EvaluationTone =
   | "primary"
@@ -22,7 +20,7 @@ export type EvaluationTone =
   | "danger"
   | "neutral";
 
-const METRIC_DEFINITION_BASE: Array<Pick<MetricDefinition, "key" | "unit">> = [
+const METRIC_DEFINITION_BASE: MetricDefinitionBase[] = [
   {
     key: "conservativeScore",
   },
@@ -50,15 +48,6 @@ const METRIC_DEFINITION_BASE: Array<Pick<MetricDefinition, "key" | "unit">> = [
   },
 ];
 
-export const getMetricDefinitions = (
-  t: AppTranslator = translateRuntimeMessage,
-): MetricDefinition[] =>
-  METRIC_DEFINITION_BASE.map((definition) => ({
-    ...definition,
-    label: t(`evaluation.metrics.${definition.key}.label`),
-    description: t(`evaluation.metrics.${definition.key}.description`),
-  }));
-
 export const METRIC_COLORS: Record<EvaluationScoreMetricKey, string> = {
   conservativeScore: "#2563eb",
   performanceScore: "#0f766e",
@@ -74,17 +63,6 @@ export const OUTCOME_COLORS: Record<EvaluationSampleOutcome, string> = {
   success: "#16a34a",
   failed: "#dc2626",
   error: "#f59e0b",
-};
-
-export const METRIC_TONES: Record<EvaluationScoreMetricKey, EvaluationTone> = {
-  conservativeScore: "primary",
-  performanceScore: "success",
-  confidence: "primary",
-  completionScore: "success",
-  safetyScore: "success",
-  hardScore: "warning",
-  unsafeRate: "danger",
-  timeScore: "primary",
 };
 
 export const getMetricLabel = (

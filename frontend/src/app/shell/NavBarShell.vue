@@ -3,7 +3,7 @@
     class="navbar"
     :class="[
       `navbar--${shellContext}`,
-      { hidden: !isVisible && !mobileMenuOpen },
+      { 'navbar--hidden': !isVisible && !mobileMenuOpen },
     ]"
   >
     <DesktopNavBar
@@ -87,7 +87,7 @@ const {
     box-shadow var(--duration-base) var(--ease-standard);
 }
 
-.navbar.hidden {
+.navbar--hidden {
   transform: translateY(-100%);
 }
 

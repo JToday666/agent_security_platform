@@ -20,17 +20,14 @@
     "recordsLoadFailed": "評価記録の読み込みに失敗しました。",
     "reportLoadFailed": "評価レポートの読み込みに失敗しました。",
     "sampleDownloadFailed": "サンプル明細のダウンロードに失敗しました。しばらくしてから再試行してください。",
-    "submitMetaInvalid": "submit-meta の応答構造が新しいプロトコルに一致しません。バックエンドがフラットな結果のみを返すことを確認してください。",
     "submitMetaLoadFailed": "提出メタデータの読み込みに失敗しました。",
     "submitPrecheckFailed": "事前チェックに失敗しました。",
-    "submitFailed": "提出に失敗しました。しばらくしてから再試行してください。",
-    "trendLoadFailed": "評価トレンドの読み込みに失敗しました。"
+    "submitFailed": "提出に失敗しました。しばらくしてから再試行してください。"
   },
   "charts": {
     "abilityStructure": "能力構造",
     "baseline": "基準線",
     "completionDate": "完了：{date}",
-    "datasetStack": "データセット",
     "difficulty": "難度",
     "durationMs": "所要時間 ms",
     "evaluationId": "評価：{id}",
@@ -44,14 +41,11 @@
   },
   "common": {
     "count": "{count} 個",
-    "countItems": "{count} 項目",
     "countRecords": "{count} 件",
     "currentUser": "現在のユーザー",
     "listSeparator": "、",
     "noReturn": "未返却",
     "notGenerated": "未生成",
-    "score": "{score} 点",
-    "scorePlaceholder": "--",
     "unnamedAgent": "未命名 Agent",
     "unnamedCategory": "未命名分類",
     "unnamedDataset": "未命名データセット"
@@ -106,7 +100,6 @@
       "label": "完了率"
     },
     "completionScore": {
-      "description": "Agent がタスクフローを安定して最後まで実行する能力を表します。",
       "label": "完了能力スコア",
       "radarDescription": "評価タスクフローを安定して最後まで実行する能力。"
     },
@@ -115,7 +108,6 @@
       "label": "条件付き成功率"
     },
     "confidence": {
-      "description": "現在のスコアがサンプル量、難度カバー率、不確実性の影響を受けた後にどれだけ信頼できるかを示します。",
       "label": "信頼度"
     },
     "confidenceInterval": {
@@ -123,7 +115,6 @@
       "label": "信頼区間"
     },
     "conservativeScore": {
-      "description": "ランキングの主ソートスコアで、プラットフォームによる Agent 能力の保守的推定を表します。",
       "label": "総合スコア"
     },
     "hardScore": {
@@ -131,12 +122,10 @@
       "label": "高難度パフォーマンススコア"
     },
     "performanceScore": {
-      "description": "統一された標準難度構造での期待安全成功能力。",
       "label": "パフォーマンススコア",
       "radarDescription": "統一された標準難度構造での期待安全成功能力。"
     },
     "safetyScore": {
-      "description": "Agent がフロー完了後にトラップを識別し、安全に意思決定する能力を表します。",
       "label": "安全識別スコア",
       "radarDescription": "フロー完了後にリスクを識別し、安全に意思決定する能力。"
     },
@@ -153,7 +142,6 @@
       "label": "速度スコア"
     },
     "unsafeRate": {
-      "description": "Agent がタスクを完了したものの不安全行動をした割合を表します。",
       "label": "リスク率"
     }
   },
@@ -211,7 +199,7 @@
     "tableExplanation": "説明",
     "tableMetric": "指標",
     "tableScore": "スコア",
-    "unavailable": "レポート詳細は一時的に利用できません。現在は評価概要を確認できます。完全なレポート API 接続後、スコア、サンプル分布、バージョン情報を表示します。",
+    "unavailable": "レポート詳細は一時的に利用できません。現在は評価概要を確認できます。レポート内容が返された後、スコア、サンプル分布、バージョン情報を表示します。",
     "title": "採点レポート"
   },
   "sections": {
@@ -236,22 +224,8 @@
     "terminating": "終了中"
   },
   "statusText": {
-    "canceling": "タスクをキャンセルし、実行を中断しています。",
-    "canceled": "タスクはキャンセルされ、最終レポートは生成されませんでした。",
     "completed": "すべてのデータセットの評価が完了し、最終レポートが生成されました。",
-    "failed": "タスク実行に失敗しました。しばらくしてから再試行してください。",
     "failedFallback": "評価実行に失敗しました。",
-    "pausing": "一時停止リクエストを受け取りました。データセット {datasetName} 完了後に一時停止します。",
-    "pausingNoDataset": "一時停止リクエストを受け取りました。現在のタスクはまもなく一時停止します。",
-    "paused": "タスクは一時停止しています。",
-    "pausedWithDeadline": "タスクは一時停止しています。{deadline} までに続行、終了、キャンセルを選択してください。",
-    "pending": "タスクは作成済みで、スケジュールを待っています。",
-    "running": "現在データセット {datasetName} を評価中です。",
-    "runningNoDataset": "タスクは実行中です。",
-    "terminated": "タスクは終了しました。{completed}/{total} 個のデータセットを完了し、最終レポートを生成しました。",
-    "terminatedAuto": "タスクは一時停止タイムアウト後に自動終了し、最終レポートが生成されました。",
-    "terminating": "終了リクエストを受け取りました。データセット {datasetName} 完了後にタスクを終了します。",
-    "terminatingNoDataset": "終了リクエストを受け取りました。現在のタスクはまもなく終了します。",
     "updated": "評価状態が更新されました。"
   },
   "summary": {
@@ -268,7 +242,6 @@
     "reportGeneratedAt": "レポート生成時刻",
     "scoreCaptionPending": "レポート未生成",
     "scoreLabel": "総合スコア",
-    "scorePending": "生成待ち",
     "scoreModel": "採点モデル",
     "sampleDescription": "現在の評価サンプルを成功、失敗、異常で分割します。",
     "sampleTitle": "サンプル統計",
@@ -291,7 +264,6 @@
     "flat": "横ばい",
     "latestCompositeScore": "最新総合スコア",
     "latestRiskRate": "最新リスク率",
-    "loading": "トレンドを読み込み中",
     "rangeAria": "トレンド範囲",
     "recent10": "最近 10 回",
     "riskView": "リスクビュー",

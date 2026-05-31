@@ -182,28 +182,10 @@ export const getFinalizationReasonLabel = (
   }
 };
 
-export const getEvaluationStatusTone = (
-  status: EvaluationStatus,
-): EvaluationStatusTone => getEvaluationStatusMetadata(status).tone;
-
 export const shouldPollEvaluation = (status: EvaluationStatus): boolean =>
   getEvaluationStatusMetadata(status).pollable;
 
 export const shouldExpectEvaluationReport = (status: EvaluationStatus): boolean =>
   status === "completed" || status === "terminated" || status === "failed";
-
-export const hasVisibleScore = (
-  score: number | null,
-  finalReportAvailable: boolean,
-): boolean => finalReportAvailable && typeof score === "number";
-
-export const formatEvaluationScore = (
-  score: number | null,
-  finalReportAvailable: boolean,
-  t: AppTranslator = translateRuntimeMessage,
-): string =>
-  hasVisibleScore(score, finalReportAvailable)
-    ? t("evaluation.common.score", { score })
-    : t("evaluation.summary.scorePending");
 
 export const hasAvailableActions = hasAvailableEvaluationActions;

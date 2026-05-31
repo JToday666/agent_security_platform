@@ -4,7 +4,6 @@
     "logoAlt": "Logotipo de la plataforma de evaluación de seguridad de Agents"
   },
   "actions": {
-    "add": "Añadir",
     "browseDataset": "Explorar conjuntos de datos",
     "cancel": "Cancelar",
     "close": "Cerrar",

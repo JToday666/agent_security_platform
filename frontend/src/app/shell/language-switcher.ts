@@ -12,10 +12,3 @@ export const LANGUAGE_OPTIONS: LanguageOption[] = [
   { locale: "es-ES", nativeLabel: "Español" },
   { locale: "ja-JP", nativeLabel: "日本語" },
 ];
-
-export const getLanguageOption = (locale: SupportedLocale): LanguageOption =>
-  LANGUAGE_OPTIONS.find((option) => option.locale === locale) ??
-  LANGUAGE_OPTIONS[0];
-
-export const getNativeLanguageLabel = (locale: SupportedLocale): string =>
-  getLanguageOption(locale).nativeLabel;

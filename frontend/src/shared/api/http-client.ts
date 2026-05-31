@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
-import { ApiConfig } from "@/shared/api/Config";
+import { ApiConfig } from "@/shared/api/config";
 import {
   extractErrorMessage,
   normalizeValidationErrors,

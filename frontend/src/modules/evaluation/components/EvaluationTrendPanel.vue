@@ -305,10 +305,6 @@ const trendSummary = computed(() => buildTrendSummary(trend.value, view.value, t
   color: var(--color-text-subtle);
 }
 
-.trend-panel__state--error {
-  color: #b91c1c;
-}
-
 @media (max-width: 900px) {
   .trend-panel__head,
   .trend-panel__controls {

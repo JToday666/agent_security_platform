@@ -460,12 +460,6 @@ const handleLogoutConfirm = () => {
   font-weight: 700;
 }
 
-.avatar-placeholder {
-  width: 2rem;
-  height: 2rem;
-  color: #94a3b8;
-}
-
 .avatar-copy {
   display: flex;
   flex-direction: column;

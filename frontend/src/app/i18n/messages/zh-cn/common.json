@@ -4,7 +4,6 @@
     "logoAlt": "智能体安全评测平台标志"
   },
   "actions": {
-    "add": "添加",
     "browseDataset": "浏览数据集",
     "cancel": "取消",
     "close": "关闭",

@@ -91,9 +91,3 @@ export const getAgentSubmitDisabledReason = (
 
   return t("agent.display.disabledReasons.archived");
 };
-
-export const canVerifyAgent = (status: AgentStatus): boolean =>
-  status === "draft" || status === "active" || status === "invalid";
-
-export const canArchiveAgent = (status: AgentStatus): boolean =>
-  status === "draft" || status === "active" || status === "invalid";

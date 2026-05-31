@@ -135,8 +135,8 @@ import type { AppIconName } from "@/shared/ui/branding/app-icon-registry";
 const CONTACT_EMAIL = "u202312421@hust.edu.com";
 const CONTACT_PHONE_TEXT = "+86 13886038599";
 const CONTACT_PHONE_NUMBER = "+8613886038599";
-const GITHUB_URL = "https://github.com/JToday666/agent_security_platform";
-const X_URL = "https://x.com/agent_security_demo";
+const GITHUB_URL = "https://github.com/";
+const X_URL = "https://x.com";
 
 type ContactTone = "email" | "phone" | "address" | "social";
 type ContactPathTone = "integration" | "datasets" | "collaboration" | "social";
