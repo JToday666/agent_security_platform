@@ -4,17 +4,22 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 import httpx
 
 from app.models.benchmark_run import TestRun
 from app.modules.agents.evidence import AgentInvocationEvidenceRecorder, redact_value
-from app.modules.agents.invocation import AgentInvocationCanceled, AgentInvocationClient
+from app.modules.agents.invocation import (
+    AgentInvocationCanceled,
+    AgentInvocationClient,
+    AgentInvocationError,
+)
 from app.platform.config import settings
 from app.platform.credentials import FileCredentialStore
 from app.platform.db.session import AsyncSessionLocal
@@ -25,6 +30,8 @@ from app.worker.runtime.exceptions import (
 )
 from app.worker.runtime.preparation import PreparedRuntime, SampleRuntimeTarget
 from app.worker.runtime.process import runtime_base_url
+
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)
@@ -42,6 +49,8 @@ def infer_page_type(entry_path: str) -> str:
     """根据入口路径推断页面类型，供 synthetic 调度补充元信息。"""
     lowered = entry_path.lower()
     for page_type in (
+        "api_keys",
+        "github",
         "email",
         "whatsapp",
         "instagram",
@@ -73,6 +82,21 @@ def browser_entry_path(prepared: PreparedRuntime, sample: SampleRuntimeTarget) -
     return "/" + "/".join(pieces)
 
 
+def recording_browser_entry_url(prepared: PreparedRuntime) -> str:
+    """Return the direct browser URL with recorder query parameters attached."""
+    parsed = urlparse(prepared.entry_url)
+    if not parsed.scheme or not parsed.netloc:
+        return prepared.entry_url
+    query = dict(parse_qsl(parsed.query, keep_blank_values=True))
+    origin = f"{parsed.scheme}://{parsed.netloc}"
+    query.setdefault("run_id", prepared.environment_ref)
+    query.setdefault("api_base", f"{origin}/api")
+    query.setdefault("mode", "record")
+    return urlunparse(
+        parsed._replace(query=urlencode(query, doseq=True))
+    )
+
+
 def write_dispatch_context(
     prepared: PreparedRuntime, sample: SampleRuntimeTarget, mode: str
 ) -> Path:
@@ -84,6 +108,7 @@ def write_dispatch_context(
                 "mode": mode,
                 "sampleId": sample.sample_id,
                 "entryUrl": prepared.entry_url,
+                "browserEntryUrl": recording_browser_entry_url(prepared),
                 "publicEntryUrl": prepared.public_entry_url,
                 "instanceId": prepared.environment_ref,
                 "probeBaseUrl": runtime_base_url(prepared),
@@ -266,13 +291,16 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
                 settings.credential_storage_dir, settings.SECRET_KEY
             ).load(str(credential_ref))
 
+        public_entry_url = (
+            prepared.public_entry_url_with_token
+            or prepared.public_entry_url
+            or prepared.entry_url
+        )
         platform_values = {
             "task": sample.user_goal,
-            "entryUrl": (
-                prepared.public_entry_url_with_token
-                or prepared.public_entry_url
-                or prepared.entry_url
-            ),
+            "entryUrl": public_entry_url,
+            "publicEntryUrl": public_entry_url,
+            "browserEntryUrl": recording_browser_entry_url(prepared),
             "timeoutSeconds": timeout_seconds,
             "sampleId": sample.sample_id,
             "evaluationId": config.get("evaluationId"),
@@ -308,6 +336,41 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
                 ),
             )
             raise RuntimeDispatchCanceled(str(exc)) from exc
+        except AgentInvocationError as exc:
+            if (prepared.run_dir / "finalize.json").exists():
+                LOGGER.warning(
+                    "external_agent.dispatch_preserved_runtime_finalize",
+                    extra={
+                        "event": "external_agent.dispatch_preserved_runtime_finalize",
+                        "sampleId": sample.sample_id,
+                        "environmentRef": prepared.environment_ref,
+                    },
+                )
+                return DispatchResult(
+                    mode=self.mode,
+                    finalized=True,
+                    compile_result={},
+                    replay_result={},
+                    dispatch_context_path=dispatch_context_path,
+                )
+            close_result = await self._close_runtime(
+                prepared,
+                sample,
+                SimpleNamespace(
+                    passed=False,
+                    status=exc.error_class,
+                    external_run_id=exc.details.get("externalRunId"),
+                    final_answer=None,
+                    error_message=str(exc),
+                ),
+            )
+            return DispatchResult(
+                mode=self.mode,
+                finalized=True,
+                compile_result=close_result.get("compileResult") or {},
+                replay_result=close_result.get("replayResult") or {},
+                dispatch_context_path=dispatch_context_path,
+            )
 
         close_result = await self._close_runtime(prepared, sample, result)
         return DispatchResult(
@@ -326,14 +389,16 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
             if result.passed
             else "external_agent_failed"
         )
+        entry_path = browser_entry_path(prepared, sample)
+        page_type = infer_page_type(entry_path)
         close_payload = {
             "instanceId": prepared.environment_ref,
             "token": prepared.probe_token,
             "reason": done_reason,
             "meta": {
                 "sampleId": sample.sample_id,
-                "entryPath": browser_entry_path(prepared, sample),
-                "pageType": infer_page_type(browser_entry_path(prepared, sample)),
+                "entryPath": entry_path,
+                "pageType": page_type,
                 "dispatchMode": self.mode,
             },
             "finalize": {
@@ -341,6 +406,9 @@ class ExternalAgentApiDispatchAdapter(BaseDispatchAdapter):
                 "doneReason": done_reason,
                 "finalState": {
                     "sampleId": sample.sample_id,
+                    "entryPath": entry_path,
+                    "currentPath": entry_path,
+                    "pageType": page_type,
                     "externalRunId": result.external_run_id,
                     "status": result.status,
                     "passed": result.passed,

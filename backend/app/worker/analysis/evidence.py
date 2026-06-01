@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -17,10 +17,13 @@ class EvidenceBundle:
     events: list[JsonObject]
     finalize_payload: JsonObject
     meta_payload: JsonObject
+    runtime_context_payload: JsonObject
+    server_logs: list[JsonObject]
     evidence: list[EvidenceItem]
     warnings: list[str]
     errors: list[str]
     task_payload: JsonObject | None = None
+    external_agent_payload: JsonObject = field(default_factory=dict)
 
 
 def build_evidence_bundle(
@@ -36,9 +39,26 @@ def build_evidence_bundle(
     meta_payload = _load_json(
         run_dir / "meta.json", warnings=warnings, errors=errors, required=False
     )
+    runtime_context_payload = _load_json(
+        run_dir / "runtime_context.json",
+        warnings=warnings,
+        errors=errors,
+        required=False,
+    )
+    external_agent_payload = _load_json(
+        run_dir / "external_agent_invocation.json",
+        warnings=warnings,
+        errors=errors,
+        required=False,
+    )
+    server_logs = _load_fresh_server_logs(run_dir, warnings=warnings, errors=errors)
     evidence = [
         _event_to_evidence_item(index, event) for index, event in enumerate(events)
     ]
+    evidence.extend(
+        _server_log_to_evidence_item(index, record)
+        for index, record in enumerate(server_logs)
+    )
     if finalize_payload:
         evidence.append(
             EvidenceItem(
@@ -47,14 +67,30 @@ def build_evidence_bundle(
                 value=finalize_payload.get("done"),
             )
         )
+    if external_agent_payload:
+        outcome = (
+            external_agent_payload.get("outcome")
+            if isinstance(external_agent_payload.get("outcome"), dict)
+            else {}
+        )
+        evidence.append(
+            EvidenceItem(
+                source="external_agent_invocation.json",
+                summary=f"external_agent status={outcome.get('status') or 'unknown'}",
+                value=outcome.get("errorMessage") or outcome.get("status"),
+            )
+        )
     return EvidenceBundle(
         events=events,
         finalize_payload=finalize_payload,
         meta_payload=meta_payload,
+        runtime_context_payload=runtime_context_payload,
+        server_logs=server_logs,
         evidence=evidence,
         warnings=warnings,
         errors=errors,
         task_payload=task_payload,
+        external_agent_payload=external_agent_payload,
     )
 
 
@@ -111,6 +147,19 @@ def _event_to_evidence_item(index: int, event: JsonObject) -> EvidenceItem:
     )
 
 
+def _server_log_to_evidence_item(index: int, record: JsonObject) -> EvidenceItem:
+    source = str(record.get("source") or "text_server/saved_logs")
+    log_type = str(record.get("log_type") or "unknown")
+    count = len(record.get("records") or [])
+    return EvidenceItem(
+        source=source,
+        index=index,
+        event_type="server_log",
+        value=record.get("records"),
+        summary=f"server_log type={log_type}, records={count}",
+    )
+
+
 def _load_events(
     path: Path, *, warnings: list[str], errors: list[str]
 ) -> list[JsonObject]:
@@ -155,3 +204,62 @@ def _load_json(
         errors.append(f"{path.name}: expected JSON object")
         return {}
     return payload
+
+
+def _load_fresh_server_logs(
+    run_dir: Path, *, warnings: list[str], errors: list[str]
+) -> list[JsonObject]:
+    """Load text_server logs written after the runtime workspace was prepared."""
+    try:
+        project_root = run_dir.parents[2]
+    except IndexError:
+        return []
+    if not project_root.exists():
+        return []
+
+    try:
+        min_mtime = run_dir.stat().st_mtime - 1.0
+    except OSError:
+        min_mtime = 0.0
+
+    records: list[JsonObject] = []
+    for path in sorted(project_root.glob("**/text_server/saved_logs/*")):
+        if not path.is_file():
+            continue
+        try:
+            if path.stat().st_mtime < min_mtime:
+                continue
+            parsed = _parse_server_log(path)
+        except OSError as exc:
+            warnings.append(f"{path.name}: could not read server log: {exc}")
+            continue
+        except ValueError as exc:
+            errors.append(f"{path.name}: invalid server log: {exc}")
+            continue
+        records.append(parsed)
+    return records
+
+
+def _parse_server_log(path: Path) -> JsonObject:
+    text = path.read_text(encoding="utf-8")
+    log_type = path.name.split("_behaviorID=", 1)[0]
+    if path.suffix.lower() == ".json":
+        payload = json.loads(text) if text.strip() else []
+        if isinstance(payload, list):
+            records = payload
+        elif isinstance(payload, dict):
+            records = [payload]
+        else:
+            raise ValueError("expected JSON object or array")
+        return {
+            "source": path.as_posix(),
+            "log_type": log_type,
+            "records": [record for record in records if isinstance(record, dict)],
+        }
+
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    return {
+        "source": path.as_posix(),
+        "log_type": log_type,
+        "records": [{"text": line} for line in lines],
+    }

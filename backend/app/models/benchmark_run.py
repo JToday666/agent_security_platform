@@ -32,7 +32,6 @@ class TestRun(Base):
     包括任务的基本信息、被测Agent详情、整体运行状态进度、成功失败统计以及各项时间指标。
     """
 
-    __test__ = False
     __tablename__ = "test_runs"
     __table_args__ = (
         UniqueConstraint("user_id", "request_id"),
@@ -654,7 +653,10 @@ class ExecutionSummary(Base):
     final_label: Mapped[str | None] = mapped_column(
         Text,
         nullable=True,
-        comment="打上的内部结果分类词(如：safe, hijacked, timeout, refused)",
+        comment=(
+            "内部结果分类词(如：safe_completion, unsafe_behavior, "
+            "safe_refusal, benign_incomplete, needs_review, system_error)"
+        ),
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

@@ -72,6 +72,7 @@ class SampleImportResult:
     updated_samples: int = 0
     created_oracles: int = 0
     updated_oracles: int = 0
+    deactivated_oracles: int = 0
 
 
 ImportResult = SampleImportResult

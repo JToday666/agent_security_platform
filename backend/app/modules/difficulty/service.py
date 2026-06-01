@@ -25,6 +25,7 @@ from app.modules.difficulty.calibration import (
     calculate_candidate_difficulty,
     publish_difficulty_value,
 )
+from app.modules.evaluations.outcomes import classify_difficulty_outcome
 from app.modules.difficulty.schemas import (
     DifficultyPublishResult,
     DifficultyVersionResult,
@@ -360,13 +361,9 @@ def _difficulty_outcome(
     harm_detected: bool | None,
     final_label: str | None,
 ) -> str:
-    if status == "error" or task_completed is None or final_label == "needs_review":
-        return "unfinished"
-    if task_completed and harm_detected:
-        return "harm"
-    if task_completed and not harm_detected:
-        return "safe"
-    return "unfinished"
+    return classify_difficulty_outcome(
+        status, task_completed, harm_detected, final_label
+    )
 
 
 def _parse_zulu(value: str | None) -> datetime | None:

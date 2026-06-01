@@ -461,6 +461,8 @@
     }
   }
 
+  installLegacyTransportCompat(window.__PROBE_CONFIG__);
+
   function createRuntime(config) {
     const url = new URL(window.location.href);
     const probeConfig =
@@ -549,13 +551,13 @@
       const pill = document.createElement("div");
       pill.id = "observable-status-pill";
       pill.style.cssText =
-        "position:fixed;top:14px;right:14px;z-index:2147483647;background:#0f172a;color:#fff;padding:8px 12px;border-radius:999px;font:12px/1.2 Arial,sans-serif;box-shadow:0 8px 24px rgba(15,23,42,.28);max-width:360px;";
+        "position:fixed;top:14px;right:14px;z-index:2147483647;background:#0f172a;color:#fff;padding:8px 12px;border-radius:999px;font:12px/1.2 Arial,sans-serif;box-shadow:0 8px 24px rgba(15,23,42,.28);max-width:360px;pointer-events:none;";
       document.body.appendChild(pill);
 
       const banner = document.createElement("div");
       banner.id = "observable-status-banner";
       banner.style.cssText =
-        "display:none;position:fixed;left:50%;top:72px;transform:translateX(-50%);z-index:2147483646;min-width:320px;max-width:760px;background:#ecfeff;color:#0f172a;border:1px solid #67e8f9;border-radius:14px;padding:14px 18px;box-shadow:0 12px 28px rgba(15,23,42,.18);font:14px/1.45 Arial,sans-serif;";
+        "display:none;position:fixed;left:50%;top:72px;transform:translateX(-50%);z-index:2147483646;min-width:320px;max-width:760px;background:#ecfeff;color:#0f172a;border:1px solid #67e8f9;border-radius:14px;padding:14px 18px;box-shadow:0 12px 28px rgba(15,23,42,.18);font:14px/1.45 Arial,sans-serif;pointer-events:none;";
       banner.innerHTML =
         '<div id="observable-status-banner-title" style="font-weight:700;margin-bottom:4px;">Recorder active</div><div id="observable-status-banner-meta"></div>';
       document.body.appendChild(banner);
@@ -838,7 +840,112 @@
       }
     };
 
+    runtime.isProbeEndpoint = function (urlValue) {
+      if (!urlValue) {
+        return false;
+      }
+      try {
+        const parsed = new URL(urlValue, window.location.href);
+        return parsed.pathname.indexOf("/__probe__/") === 0;
+      } catch (error) {
+        return false;
+      }
+    };
+
+    runtime.captureNetworkBody = function (body) {
+      if (body === undefined || body === null) {
+        return null;
+      }
+      if (typeof body === "string") {
+        const trimmed = body.trim();
+        if (!trimmed) {
+          return "";
+        }
+        try {
+          return JSON.parse(trimmed);
+        } catch (error) {
+          return trimmed.slice(0, 4000);
+        }
+      }
+      if (body instanceof URLSearchParams) {
+        return body.toString().slice(0, 4000);
+      }
+      if (body instanceof FormData) {
+        const result = {};
+        body.forEach((value, key) => {
+          result[key] =
+            typeof value === "string" ? value.slice(0, 1000) : "[file]";
+        });
+        return result;
+      }
+      return Object.prototype.toString.call(body);
+    };
+
+    runtime.installNetworkRecorder = function () {
+      if (window.__OBSERVABLE_NETWORK_RECORDER_INSTALLED) {
+        return;
+      }
+      window.__OBSERVABLE_NETWORK_RECORDER_INSTALLED = true;
+      const originalFetch = window.fetch ? window.fetch.bind(window) : null;
+      if (!originalFetch) {
+        return;
+      }
+      window.fetch = function (input, init) {
+        const rawUrl =
+          typeof input === "string" ? input : input && input.url ? input.url : "";
+        const method =
+          (init && init.method) ||
+          (input && input.method) ||
+          "GET";
+        const body = init && "body" in init ? init.body : input && input.body;
+        if (rawUrl && !runtime.isProbeEndpoint(rawUrl)) {
+          runtime.queueEvent("network_request", document.body, {
+            url: rawUrl,
+            method: String(method || "GET").toUpperCase(),
+            body: runtime.captureNetworkBody(body),
+          });
+        }
+        return originalFetch(input, init)
+          .then((response) => {
+            if (rawUrl && !runtime.isProbeEndpoint(rawUrl)) {
+              runtime.queueEvent("network_response", document.body, {
+                url: rawUrl,
+                method: String(method || "GET").toUpperCase(),
+                status: response.status,
+                ok: response.ok,
+              });
+            }
+            return response;
+          })
+          .catch((error) => {
+            if (rawUrl && !runtime.isProbeEndpoint(rawUrl)) {
+              runtime.queueEvent("network_error", document.body, {
+                url: rawUrl,
+                method: String(method || "GET").toUpperCase(),
+                error: String(error),
+              });
+            }
+            throw error;
+          });
+      };
+    };
+
     runtime.markInternalNavigation = function () {
+      runtime.internalNavigationPending = true;
+      try {
+        sessionStorage.setItem(navigationFlagKey, "1");
+        window.setTimeout(() => {
+          try {
+            runtime.internalNavigationPending = false;
+            if (sessionStorage.getItem(navigationFlagKey) === "1") {
+              sessionStorage.removeItem(navigationFlagKey);
+            }
+          } catch (error) {}
+        }, 2000);
+      } catch (error) {}
+    };
+
+    runtime.preserveInternalNavigationFlag = function () {
       runtime.internalNavigationPending = true;
       try {
         sessionStorage.setItem(navigationFlagKey, "1");
@@ -940,6 +1047,7 @@
       }
       const isInternalNavigation = runtime.consumeInternalNavigationFlag();
       if (isInternalNavigation) {
+        runtime.preserveInternalNavigationFlag();
         if (runtime.events.length) {
           runtime.sendEventsBeacon(
             runtime.events.splice(0, runtime.events.length),
@@ -1271,6 +1379,7 @@
           childList: true,
           subtree: true,
         });
+        runtime.installNetworkRecorder();
         runtime.installRecorderListeners();
         await runtime.loadTask();
         runtime.updateState({});

@@ -288,7 +288,7 @@ def build_agent_payload(
             "auth": auth,
             "platformInputMapping": {
                 "task": "prompt",
-                "entryUrl": "url",
+                "browserEntryUrl": "url",
                 "maxSteps": "max_steps",
             },
             "taskRenderMode": "goal_only",

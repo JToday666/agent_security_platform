@@ -25,6 +25,7 @@ from app.worker.execution_persistence import (
     mark_execution_state,
     mark_execution_system_error,
     persist_execution_artifacts_only,
+    persist_raw_runtime_result,
     persist_runtime_result,
 )
 from app.worker.runtime import (
@@ -123,6 +124,7 @@ async def execute_sample(
     dispatch_config: dict[str, object] | None = None,
     timeout_seconds: int | None = None,
     claim_token: str | None = None,
+    persist_evaluation: bool = True,
 ) -> None:
     """Execute one sample through runtime launch, dispatch, verification and persistence."""
     execution_id = job.execution_id
@@ -204,16 +206,27 @@ async def execute_sample(
             )
             _validate_dispatch_results(prepared, dispatch_result.finalized)
 
-            await persist_runtime_result(
-                execution_id,
-                run_id,
-                dataset_id,
-                prepared=prepared,
-                summary=None,
-                success=True,
-                final_status="done",
-                claim_token=claim_token,
-            )
+            if persist_evaluation:
+                await persist_runtime_result(
+                    execution_id,
+                    run_id,
+                    dataset_id,
+                    prepared=prepared,
+                    summary=None,
+                    success=True,
+                    final_status="done",
+                    claim_token=claim_token,
+                )
+            else:
+                await persist_raw_runtime_result(
+                    execution_id,
+                    run_id,
+                    dataset_id,
+                    prepared=prepared,
+                    success=True,
+                    final_status="done",
+                    claim_token=claim_token,
+                )
             await _record_execution_event(
                 run_id=run_id,
                 execution_id=execution_id,
@@ -226,16 +239,28 @@ async def execute_sample(
             with contextlib.suppress(Exception):
                 await close_runtime_session(execution_id, status="closed")
         except RuntimeDispatchTimeout:
-            await persist_runtime_result(
-                execution_id,
-                run_id,
-                dataset_id,
-                prepared=prepared,
-                summary=_summary_for_timeout(),
-                success=True,
-                final_status="done",
-                claim_token=claim_token,
-            )
+            if persist_evaluation:
+                await persist_runtime_result(
+                    execution_id,
+                    run_id,
+                    dataset_id,
+                    prepared=prepared,
+                    summary=_summary_for_timeout(),
+                    success=True,
+                    final_status="done",
+                    claim_token=claim_token,
+                )
+            else:
+                await persist_raw_runtime_result(
+                    execution_id,
+                    run_id,
+                    dataset_id,
+                    prepared=prepared,
+                    success=True,
+                    final_status="done",
+                    error_message="runtime dispatch timed out",
+                    claim_token=claim_token,
+                )
             await _record_execution_event(
                 run_id=run_id,
                 execution_id=execution_id,
@@ -248,17 +273,29 @@ async def execute_sample(
             with contextlib.suppress(Exception):
                 await close_runtime_session(execution_id, status="expired")
         except RuntimeDispatchCanceled as exc:
-            await persist_runtime_result(
-                execution_id,
-                run_id,
-                dataset_id,
-                prepared=prepared,
-                summary=_summary_for_cancel(),
-                success=False,
-                final_status="canceled",
-                error_message=str(exc),
-                claim_token=claim_token,
-            )
+            if persist_evaluation:
+                await persist_runtime_result(
+                    execution_id,
+                    run_id,
+                    dataset_id,
+                    prepared=prepared,
+                    summary=_summary_for_cancel(),
+                    success=False,
+                    final_status="canceled",
+                    error_message=str(exc),
+                    claim_token=claim_token,
+                )
+            else:
+                await persist_raw_runtime_result(
+                    execution_id,
+                    run_id,
+                    dataset_id,
+                    prepared=prepared,
+                    success=False,
+                    final_status="canceled",
+                    error_message=str(exc),
+                    claim_token=claim_token,
+                )
             await _record_execution_event(
                 run_id=run_id,
                 execution_id=execution_id,

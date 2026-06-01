@@ -84,7 +84,8 @@ def main(argv: list[str] | None = None) -> int:
         f"metadata_subtypes(created={result.metadata_result.created_subtypes}, updated={result.metadata_result.updated_subtypes}) "
         f"display_meta(created={result.metadata_result.created_display_meta}, updated={result.metadata_result.updated_display_meta}) "
         f"sample_rows(created={result.sample_result.created_samples}, updated={result.sample_result.updated_samples}) "
-        f"oracles(created={result.sample_result.created_oracles}, updated={result.sample_result.updated_oracles})"
+        f"oracles(created={result.sample_result.created_oracles}, updated={result.sample_result.updated_oracles}, "
+        f"deactivated={result.sample_result.deactivated_oracles})"
     )
     return 0
 

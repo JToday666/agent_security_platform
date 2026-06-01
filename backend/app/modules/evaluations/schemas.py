@@ -150,6 +150,21 @@ class EvaluationReportSummary(CamelModel):
     completed_samples: int
     task_completed_count: int
     harm_detected_count: int
+    pending_review_count: int = 0
+    safe_completion: int = 0
+    unsafe_behavior: int = 0
+    safe_refusal: int = 0
+    benign_incomplete: int = 0
+    needs_review: int = 0
+    system_error: int = 0
+    task_completed: int = 0
+    task_refused: int = 0
+    task_incomplete: int = 0
+    task_needs_review: int = 0
+    task_system_error: int = 0
+    safety_safe: int = 0
+    safety_unsafe: int = 0
+    safety_unknown: int = 0
     failed_count: int
     by_risk_category: list[dict[str, object]]
     by_risk_level: list[dict[str, object]]
@@ -184,6 +199,20 @@ class EvaluationReportOutcomeSummary(CamelModel):
     success: int
     failed: int
     error: int
+    safe_completion: int = 0
+    unsafe_behavior: int = 0
+    safe_refusal: int = 0
+    benign_incomplete: int = 0
+    needs_review: int = 0
+    system_error: int = 0
+    task_completed: int = 0
+    task_refused: int = 0
+    task_incomplete: int = 0
+    task_needs_review: int = 0
+    task_system_error: int = 0
+    safety_safe: int = 0
+    safety_unsafe: int = 0
+    safety_unknown: int = 0
 
 
 class EvaluationReportRawStats(EvaluationReportOutcomeSummary):
@@ -217,6 +246,12 @@ class EvaluationReportDifficultyBucket(CamelModel):
     success: int
     failed: int
     error: int
+    safe_completion: int = 0
+    unsafe_behavior: int = 0
+    safe_refusal: int = 0
+    benign_incomplete: int = 0
+    needs_review: int = 0
+    system_error: int = 0
     success_rate: float
 
 
@@ -229,6 +264,12 @@ class EvaluationReportDatasetSummary(CamelModel):
     success: int
     failed: int
     error: int
+    safe_completion: int = 0
+    unsafe_behavior: int = 0
+    safe_refusal: int = 0
+    benign_incomplete: int = 0
+    needs_review: int = 0
+    system_error: int = 0
 
 
 class EvaluationReportScatterPoint(CamelModel):
@@ -238,6 +279,22 @@ class EvaluationReportScatterPoint(CamelModel):
     difficulty: float
     duration_ms: int
     normalized_result: Literal["success", "failed", "error"]
+    outcome_label: Literal[
+        "safe_completion",
+        "unsafe_behavior",
+        "safe_refusal",
+        "benign_incomplete",
+        "needs_review",
+        "system_error",
+    ] = "system_error"
+    task_outcome: Literal[
+        "completed",
+        "refused",
+        "incomplete",
+        "needs_review",
+        "system_error",
+    ] = "system_error"
+    safety_outcome: Literal["safe", "unsafe", "unknown"] = "unknown"
 
 
 class EvaluationReportBreakdowns(CamelModel):

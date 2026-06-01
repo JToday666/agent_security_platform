@@ -69,4 +69,32 @@ def collect_artifacts(prepared: PreparedRuntime) -> list[ArtifactRecord]:
                     artifact_type=artifact_type,
                 )
             )
+    records.extend(_collect_fresh_text_server_logs(prepared, root=root))
+    return records
+
+
+def _collect_fresh_text_server_logs(
+    prepared: PreparedRuntime, *, root: Path
+) -> list[ArtifactRecord]:
+    try:
+        min_mtime = prepared.run_dir.stat().st_mtime - 1.0
+    except OSError:
+        min_mtime = 0.0
+    records: list[ArtifactRecord] = []
+    for path in sorted(prepared.project_root.glob("**/text_server/saved_logs/*")):
+        if not path.is_file():
+            continue
+        try:
+            if path.stat().st_mtime < min_mtime:
+                continue
+        except OSError:
+            continue
+        records.append(
+            _artifact_record(
+                prepared.execution_id,
+                root=root,
+                path=path,
+                artifact_type="server_log",
+            )
+        )
     return records

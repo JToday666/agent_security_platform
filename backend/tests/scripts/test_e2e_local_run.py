@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+from argparse import Namespace
 from io import StringIO
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
@@ -27,6 +28,14 @@ from tests.helpers.scripts import load_module_from_path
 def e2e_module(backend_root: Path):
     return load_module_from_path(
         "e2e_local_run_under_test", backend_root / "scripts" / "qa" / "e2e_local_run.py"
+    )
+
+
+@pytest.fixture(scope="module")
+def skyvern_direct_module(backend_root: Path):
+    return load_module_from_path(
+        "run_skyvern_sample_once_under_test",
+        backend_root / "scripts" / "qa" / "run_skyvern_sample_once.py",
     )
 
 
@@ -84,7 +93,7 @@ def test_agent_payload_can_target_local_skyvern_api(e2e_module) -> None:
     assert payload["auth"] == {"type": "none", "config": {}}
     assert payload["platformInputMapping"] == {
         "task": "prompt",
-        "entryUrl": "url",
+        "browserEntryUrl": "url",
         "maxSteps": "max_steps",
     }
     assert payload["customRequestBody"] == {"engine": "skyvern-2.0"}
@@ -101,7 +110,63 @@ def test_agent_payload_can_target_local_skyvern_api(e2e_module) -> None:
         "terminated",
         "canceled",
     ]
-    assert payload["successStatuses"] == ["completed"]
+
+
+def test_skyvern_direct_runner_targets_browser_reachable_entry_url(
+    skyvern_direct_module,
+) -> None:
+    snapshot = skyvern_direct_module.build_skyvern_snapshot(
+        Namespace(
+            skyvern_base_url="http://127.0.0.1:18100",
+            poll_interval_seconds=2.0,
+            poll_timeout_seconds=900,
+        )
+    )
+
+    assert snapshot["platformInputMapping"] == {
+        "task": "prompt",
+        "browserEntryUrl": "url",
+        "maxSteps": "max_steps",
+    }
+    assert snapshot["successStatuses"] == ["completed"]
+
+
+def test_skyvern_direct_runner_allows_engine_and_task_render_mode(
+    skyvern_direct_module,
+) -> None:
+    snapshot = skyvern_direct_module.build_skyvern_snapshot(
+        Namespace(
+            skyvern_base_url="http://127.0.0.1:18100",
+            poll_interval_seconds=1.0,
+            poll_timeout_seconds=600,
+            skyvern_engine="skyvern-1.0",
+            task_render_mode="goal_with_entry_url",
+        )
+    )
+
+    assert snapshot["taskRenderMode"] == "goal_with_entry_url"
+    assert snapshot["customRequestBody"] == {"engine": "skyvern-1.0"}
+
+
+def test_skyvern_direct_runner_disables_retry_for_one_shot_runs(
+    skyvern_direct_module,
+) -> None:
+    config = skyvern_direct_module.build_execution_config(
+        frozen_agent_snapshot={"agentId": "agt_local"},
+        evaluation_id="eval_local",
+        max_steps=20,
+    )
+
+    assert config["parameters"] == {"retryEnabled": False}
+
+    run_config = skyvern_direct_module.build_run_execution_config(
+        frozen_agent_snapshot={"agentId": "agt_local"},
+        evaluation_id=None,
+        max_steps=20,
+    )
+
+    assert run_config["dispatch"]["mode"] == "external_agent_api"
+    assert run_config["parameters"] == {"retryEnabled": False}
 
 
 def test_skyvern_agent_payload_supports_optional_api_key(e2e_module) -> None:

@@ -18,8 +18,18 @@ from app.models.benchmark_run import (
     SampleExecution,
     TestRun,
 )
-from app.modules.evaluations.state_rules import TERMINAL_STATUSES, apply_pause_timeout
 from app.modules.difficulty.service import update_sample_difficulty_stats_for_run
+from app.modules.evaluations.outcomes import (
+    classify_safety_outcome,
+    classify_task_outcome,
+    normalize_final_label,
+    outcome_label_count_key,
+    safety_outcome_count_key,
+    task_outcome_count_key,
+    zero_outcome_axis_counts,
+    zero_outcome_label_counts,
+)
+from app.modules.evaluations.state_rules import TERMINAL_STATUSES, apply_pause_timeout
 from app.modules.scoring.service import calculate_and_store_evaluation_score
 from app.platform.observability import (
     SampleExecutionEventType,
@@ -272,6 +282,7 @@ async def build_report_summary(db: AsyncSession, run_id: int) -> dict[str, objec
                 RiskCategory.name,
                 BenchmarkSample.risk_level,
                 BenchmarkSample.attack_level,
+                SampleExecution.status,
                 ExecutionSummary.task_completed,
                 ExecutionSummary.harm_detected,
                 ExecutionSummary.final_label,
@@ -296,18 +307,31 @@ async def build_report_summary(db: AsyncSession, run_id: int) -> dict[str, objec
     )
     task_completed_count = 0
     harm_detected_count = 0
-
-    pending_review_count = 0
+    label_counts = zero_outcome_label_counts()
+    axis_counts = zero_outcome_axis_counts()
 
     for (
         category_code,
         category_name,
         risk_level,
         attack_level,
+        execution_status,
         task_completed,
         harm_detected,
         final_label,
     ) in summary_rows:
+        outcome_label = normalize_final_label(
+            execution_status, task_completed, harm_detected, final_label
+        )
+        task_outcome = classify_task_outcome(
+            execution_status, task_completed, harm_detected, final_label
+        )
+        safety_outcome = classify_safety_outcome(
+            execution_status, task_completed, harm_detected, final_label
+        )
+        label_count_key = outcome_label_count_key(outcome_label)
+        task_count_key = task_outcome_count_key(task_outcome)
+        safety_count_key = safety_outcome_count_key(safety_outcome)
         category_stats = by_category.setdefault(
             category_code,
             {
@@ -316,30 +340,51 @@ async def build_report_summary(db: AsyncSession, run_id: int) -> dict[str, objec
                 "totalSamples": 0,
                 "taskCompletedCount": 0,
                 "harmDetectedCount": 0,
+                **zero_outcome_label_counts(),
+                **zero_outcome_axis_counts(),
             },
         )
         category_stats["totalSamples"] += 1
         category_stats["taskCompletedCount"] += int(task_completed)
         category_stats["harmDetectedCount"] += int(harm_detected)
+        category_stats[label_count_key] += 1
+        category_stats[task_count_key] += 1
+        category_stats[safety_count_key] += 1
 
         by_risk_level[risk_level]["level"] = risk_level
         by_risk_level[risk_level]["totalSamples"] += 1
         by_risk_level[risk_level]["harmDetectedCount"] += int(harm_detected)
+        by_risk_level[risk_level].setdefault(label_count_key, 0)
+        by_risk_level[risk_level][label_count_key] += 1
+        by_risk_level[risk_level].setdefault(task_count_key, 0)
+        by_risk_level[risk_level][task_count_key] += 1
+        by_risk_level[risk_level].setdefault(safety_count_key, 0)
+        by_risk_level[risk_level][safety_count_key] += 1
 
         by_attack_level[attack_level]["level"] = attack_level
         by_attack_level[attack_level]["totalSamples"] += 1
         by_attack_level[attack_level]["harmDetectedCount"] += int(harm_detected)
+        by_attack_level[attack_level].setdefault(label_count_key, 0)
+        by_attack_level[attack_level][label_count_key] += 1
+        by_attack_level[attack_level].setdefault(task_count_key, 0)
+        by_attack_level[attack_level][task_count_key] += 1
+        by_attack_level[attack_level].setdefault(safety_count_key, 0)
+        by_attack_level[attack_level][safety_count_key] += 1
 
         task_completed_count += int(task_completed)
         harm_detected_count += int(harm_detected)
-        pending_review_count += int(final_label == "needs_review")
+        label_counts[label_count_key] += 1
+        axis_counts[task_count_key] += 1
+        axis_counts[safety_count_key] += 1
 
     return {
         "totalSamples": run.total_samples if run is not None else 0,
         "completedSamples": run.completed_samples if run is not None else 0,
         "taskCompletedCount": task_completed_count,
         "harmDetectedCount": harm_detected_count,
-        "pendingReviewCount": pending_review_count,
+        "pendingReviewCount": label_counts["needsReview"],
+        **label_counts,
+        **axis_counts,
         "failedCount": run.failed_count if run is not None else 0,
         "byRiskCategory": list(by_category.values()),
         "byRiskLevel": list(by_risk_level.values()),

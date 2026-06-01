@@ -347,6 +347,111 @@ async def persist_runtime_result(
         await db.commit()
 
 
+async def persist_raw_runtime_result(
+    execution_id: int,
+    run_id: int,
+    dataset_id: int,
+    *,
+    prepared,
+    success: bool,
+    final_status: str,
+    error_message: str | None = None,
+    claim_token: str | None = None,
+) -> None:
+    """Persist raw runtime artifacts without invoking evaluators or summaries."""
+    finished_at = now_utc()
+
+    async with AsyncSessionLocal() as db:
+        execution = await db.get(SampleExecution, execution_id)
+        if (
+            execution is None
+            or execution.status in {"done", "error", "canceled"}
+            or _claim_token_mismatch(execution, claim_token)
+        ):
+            return
+
+        await db.execute(
+            delete(ExecutionArtifact).where(
+                ExecutionArtifact.sample_execution_id == execution_id
+            )
+        )
+        await db.execute(
+            delete(ExecutionSummary).where(
+                ExecutionSummary.sample_execution_id == execution_id
+            )
+        )
+        await db.execute(
+            delete(OracleResult).where(OracleResult.sample_execution_id == execution_id)
+        )
+
+        artifacts = await asyncio.to_thread(collect_artifacts, prepared)
+        artifacts = [
+            artifact
+            for artifact in artifacts
+            if artifact.artifact_type != "analysis_result"
+        ]
+        artifacts = await asyncio.to_thread(
+            _archive_artifacts,
+            run_id=run_id,
+            execution_id=execution_id,
+            prepared=prepared,
+            artifacts=artifacts,
+        )
+
+        for artifact in artifacts:
+            db.add(
+                ExecutionArtifact(
+                    sample_execution_id=execution_id,
+                    artifact_type=artifact.artifact_type,
+                    storage_uri=artifact.storage_uri,
+                    artifact_metadata=artifact.metadata,
+                )
+            )
+        await record_sample_execution_event(
+            db,
+            run_id=run_id,
+            sample_execution_id=execution_id,
+            event_type=SampleExecutionEventType.ARTIFACT_PERSISTED,
+            status="persisted",
+            message="Raw execution artifacts persisted",
+            payload={
+                "artifactCount": len(artifacts),
+                "artifactTypes": sorted({artifact.artifact_type for artifact in artifacts}),
+                "evaluationSkipped": True,
+            },
+        )
+
+        execution.status = final_status
+        execution.finished_at = finished_at
+        execution.updated_at = finished_at
+        execution.error_message = error_message
+        execution.claimed_by = None
+        execution.claimed_at = None
+        execution.claim_heartbeat_at = None
+        execution.claim_token = None
+        execution.lease_expires_at = None
+
+        await db.execute(
+            update(TestRun)
+            .where(TestRun.id == run_id)
+            .values(
+                completed_samples=TestRun.completed_samples + 1,
+                success_count=TestRun.success_count + (1 if success else 0),
+                failed_count=TestRun.failed_count + (0 if success else 1),
+                updated_at=finished_at,
+            )
+        )
+        await db.execute(
+            update(RunDataset)
+            .where(RunDataset.id == dataset_id)
+            .values(
+                completed_samples=RunDataset.completed_samples + 1,
+                updated_at=finished_at,
+            )
+        )
+        await db.commit()
+
+
 async def persist_execution_artifacts_only(
     execution_id: int,
     *,

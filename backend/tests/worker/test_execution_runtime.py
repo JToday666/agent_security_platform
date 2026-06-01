@@ -5,10 +5,12 @@ import json
 import textwrap
 from pathlib import Path
 from types import SimpleNamespace
+from urllib.parse import parse_qs, urlparse
 from unittest.mock import patch
 
 import pytest
 
+from app.modules.agents.invocation import AgentInvocationError
 from app.worker.runtime import (
     collect_artifacts,
     launch_runtime,
@@ -16,6 +18,7 @@ from app.worker.runtime import (
     resolve_dispatch_adapter,
     stop_runtime,
 )
+from app.worker.runtime.dispatch import infer_page_type
 from app.worker import execution
 from app.worker.runtime import preparation as runtime_preparation
 from app.worker.runtime.ports import allocate_tcp_port
@@ -95,6 +98,11 @@ def test_resolve_browser_entry_host_falls_back_to_runner_host() -> None:
         ),
     ):
         assert execution._resolve_browser_entry_host() == "127.0.0.1"
+
+
+def test_infer_page_type_recognizes_github_and_api_key_pages() -> None:
+    assert infer_page_type("/Browser-art_A5_10/github/pr.html") == "github"
+    assert infer_page_type("api_keys/index.html") == "api_keys"
 
 
 @pytest.mark.asyncio
@@ -257,12 +265,29 @@ async def test_external_agent_api_dispatch_closes_runtime_after_agent_success(
 
     class FakeInvocationClient:
         async def invoke(
-            self, *, agent_snapshot, credential_payload, platform_values, evidence_recorder=None
+            self,
+            *,
+            agent_snapshot,
+            credential_payload,
+            platform_values,
+            evidence_recorder=None,
         ):
             assert agent_snapshot["agentId"] == "agt_external"
             assert credential_payload == {}
             assert platform_values["task"] == "open the page"
             assert platform_values["entryUrl"] == prepared.public_entry_url_with_token
+            assert platform_values["publicEntryUrl"] == prepared.public_entry_url_with_token
+            browser_entry_url = str(platform_values["browserEntryUrl"])
+            parsed_browser_entry = urlparse(browser_entry_url)
+            assert parsed_browser_entry.scheme == "http"
+            assert parsed_browser_entry.netloc
+            assert parsed_browser_entry.path == "/Sample_1/site/index.html"
+            browser_entry_query = parse_qs(parsed_browser_entry.query)
+            assert browser_entry_query["run_id"] == [prepared.environment_ref]
+            assert browser_entry_query["mode"] == ["record"]
+            assert browser_entry_query["api_base"] == [
+                f"{parsed_browser_entry.scheme}://{parsed_browser_entry.netloc}/api"
+            ]
             assert evidence_recorder is not None
             evidence_recorder.path.write_text(
                 json.dumps(
@@ -318,6 +343,9 @@ async def test_external_agent_api_dispatch_closes_runtime_after_agent_success(
     assert finalize_payload["done_reason"] == "external_agent_completed"
     assert finalize_payload["final_state"]["external_run_id"] == "mock_run_202"
     assert finalize_payload["final_state"]["status"] == "completed"
+    assert finalize_payload["final_state"]["entry_path"] == "/Sample_1/site/index.html"
+    assert finalize_payload["final_state"]["current_path"] == "/Sample_1/site/index.html"
+    assert finalize_payload["final_state"]["page_type"] == "generic"
     evidence = json.loads(
         (prepared.run_dir / "external_agent_invocation.json").read_text(encoding="utf-8")
     )
@@ -453,6 +481,102 @@ async def test_execute_sample_creates_public_runtime_session_before_dispatch(
 
 
 @pytest.mark.asyncio
+async def test_execute_sample_can_skip_evaluator_persistence_for_gold_runs(
+    tmp_path: Path, monkeypatch
+) -> None:
+    sample = SampleRuntimeTarget(
+        sample_db_id=1,
+        sample_id="Sample_1",
+        sample_name="Sample_1",
+        resource_path="Example_Subtype/Sample_1",
+        entry_path="site/index.html",
+        user_goal="open the page",
+    )
+    job = execution.SampleJob(execution_id=304, sample=sample)
+    prepared = SimpleNamespace(
+        execution_id=304,
+        entry_url="http://127.0.0.1:18080/Sample_1/site/index.html",
+        public_entry_url=None,
+        public_entry_url_with_token=None,
+        environment_ref="rt_304_test",
+        work_dir=tmp_path / "work",
+        run_dir=tmp_path / "run",
+    )
+    events: list[str] = []
+
+    async def fake_mark_dispatching(*args, **kwargs):
+        return True
+
+    async def fake_launch_runtime(runtime):
+        return SimpleNamespace(prepared=runtime)
+
+    async def fake_ready(*args, **kwargs):
+        return None
+
+    async def fake_create_runtime_session(*, prepared, run_id, timeout_seconds):
+        prepared.public_entry_url = "https://platform.example.com/runtime/tasks/304/"
+        prepared.public_entry_url_with_token = f"{prepared.public_entry_url}?token=tk"
+
+    class FakeAdapter:
+        async def dispatch(self, prepared, sample, timeout_seconds, dispatch_config=None):
+            prepared.run_dir.mkdir(parents=True, exist_ok=True)
+            (prepared.run_dir / "finalize.json").write_text("{}", encoding="utf-8")
+            return SimpleNamespace(
+                finalized=True,
+                compile_result={},
+                replay_result={},
+                dispatch_context_path=tmp_path / "dispatch_context.json",
+            )
+
+    async def fake_evaluated_persist(*args, **kwargs):
+        events.append("evaluated-persist")
+
+    async def fake_raw_persist(*args, **kwargs):
+        events.append("raw-persist")
+
+    async def fake_mark_state(*args, **kwargs):
+        return None
+
+    async def fake_close_runtime_session(*args, **kwargs):
+        return None
+
+    async def fake_stop_runtime(*args, **kwargs):
+        return None
+
+    async def fake_record_event(*args, **kwargs):
+        return None
+
+    monkeypatch.setattr(execution, "mark_execution_dispatching", fake_mark_dispatching)
+    monkeypatch.setattr(execution, "prepare_runtime_workspace", lambda *args: prepared)
+    monkeypatch.setattr(execution, "launch_runtime", fake_launch_runtime)
+    monkeypatch.setattr(execution, "mark_execution_runtime_ready", fake_ready)
+    monkeypatch.setattr(execution, "create_runtime_session", fake_create_runtime_session, raising=False)
+    monkeypatch.setattr(execution, "resolve_dispatch_adapter", lambda mode: FakeAdapter())
+    monkeypatch.setattr(execution, "mark_execution_state", fake_mark_state)
+    monkeypatch.setattr(execution, "persist_runtime_result", fake_evaluated_persist)
+    monkeypatch.setattr(execution, "persist_raw_runtime_result", fake_raw_persist)
+    monkeypatch.setattr(execution, "close_runtime_session", fake_close_runtime_session, raising=False)
+    monkeypatch.setattr(execution, "stop_runtime", fake_stop_runtime)
+    monkeypatch.setattr(
+        execution,
+        "record_sample_execution_event_once",
+        fake_record_event,
+        raising=False,
+    )
+
+    await execution.execute_sample(
+        77,
+        88,
+        job,
+        dispatch_mode="external_agent_api",
+        timeout_seconds=30,
+        persist_evaluation=False,
+    )
+
+    assert events == ["raw-persist"]
+
+
+@pytest.mark.asyncio
 async def test_external_agent_api_dispatch_closes_runtime_after_agent_terminal_failure(
     tmp_path: Path,
 ) -> None:
@@ -541,3 +665,205 @@ async def test_external_agent_api_dispatch_closes_runtime_after_agent_terminal_f
     assert finalize_payload["final_state"]["status"] == "terminated"
     assert finalize_payload["final_state"]["passed"] is False
     assert finalize_payload["final_state"]["error_message"] == "agent terminated"
+
+
+@pytest.mark.asyncio
+async def test_external_agent_api_dispatch_preserves_existing_finalize_after_poll_timeout(
+    tmp_path: Path,
+) -> None:
+    data_root = tmp_path / "data"
+    subtype_root = data_root / "Example_Subtype"
+    sample_root = subtype_root / "Sample_1"
+    (sample_root / "site").mkdir(parents=True, exist_ok=True)
+    (sample_root / "site" / "index.html").write_text(
+        "<!doctype html><html><head><title>Runtime Test</title></head><body>ok</body></html>",
+        encoding="utf-8",
+    )
+
+    runtime_root = subtype_root / "agent_runtime"
+    runtime_root.mkdir(parents=True, exist_ok=True)
+    (runtime_root / "compiler.py").write_text(
+        'print("{}")\n',
+        encoding="utf-8",
+    )
+    (runtime_root / "replay.py").write_text(
+        'print("{}")\n',
+        encoding="utf-8",
+    )
+
+    sample = SampleRuntimeTarget(
+        sample_db_id=1,
+        sample_id="Sample_1",
+        sample_name="Sample_1",
+        resource_path="Example_Subtype/Sample_1",
+        entry_path="site/index.html",
+        user_goal="open the page",
+    )
+
+    with patch.object(runtime_preparation, "DATA_ROOT", data_root):
+        prepared = await asyncio.to_thread(
+            prepare_runtime_workspace,
+            sample,
+            204,
+            tmp_path / "runtime-workdir",
+            "127.0.0.1",
+            allocate_tcp_port("127.0.0.1"),
+            build_environment_ref(204),
+            build_probe_token(),
+        )
+    finalize_payload = {
+        "done": True,
+        "done_reason": "completion_oracle",
+        "finalize_source": "completion_oracle",
+        "final_state": {"completion_signal": "contact_form_submit_click_inline"},
+    }
+    (prepared.run_dir / "finalize.json").write_text(
+        json.dumps(finalize_payload), encoding="utf-8"
+    )
+
+    class TimeoutInvocationClient:
+        async def invoke(
+            self,
+            *,
+            agent_snapshot,
+            credential_payload,
+            platform_values,
+            evidence_recorder=None,
+        ):
+            raise AgentInvocationError(
+                "外部 Agent 轮询超时。",
+                error_class="poll_timeout",
+                details={"externalRunId": "mock_run_timeout"},
+            )
+
+    with patch(
+        "app.worker.runtime.dispatch.AgentInvocationClient",
+        return_value=TimeoutInvocationClient(),
+    ):
+        result = await resolve_dispatch_adapter("external_agent_api").dispatch(
+            prepared,
+            sample,
+            timeout_seconds=10,
+            dispatch_config={
+                "evaluationId": "eval_external",
+                "maxSteps": 12,
+                "frozenAgentSnapshot": {
+                    "agentId": "agt_external",
+                    "auth": {"type": "none"},
+                },
+            },
+        )
+
+    assert result.finalized is True
+    assert json.loads((prepared.run_dir / "finalize.json").read_text()) == finalize_payload
+
+@pytest.mark.asyncio
+async def test_external_agent_api_dispatch_closes_runtime_after_poll_timeout(
+    tmp_path: Path,
+) -> None:
+    data_root = tmp_path / "data"
+    subtype_root = data_root / "Example_Subtype"
+    sample_root = subtype_root / "Sample_1"
+    (sample_root / "site").mkdir(parents=True, exist_ok=True)
+    (sample_root / "site" / "index.html").write_text(
+        "<!doctype html><html><head><title>Runtime Test</title></head><body>ok</body></html>",
+        encoding="utf-8",
+    )
+
+    runtime_root = subtype_root / "agent_runtime"
+    runtime_root.mkdir(parents=True, exist_ok=True)
+    (runtime_root / "compiler.py").write_text(
+        'print("{}")\n',
+        encoding="utf-8",
+    )
+    (runtime_root / "replay.py").write_text(
+        'print("{}")\n',
+        encoding="utf-8",
+    )
+
+    sample = SampleRuntimeTarget(
+        sample_db_id=1,
+        sample_id="Sample_1",
+        sample_name="Sample_1",
+        resource_path="Example_Subtype/Sample_1",
+        entry_path="site/index.html",
+        user_goal="open the page",
+    )
+
+    with patch.object(runtime_preparation, "DATA_ROOT", data_root):
+        prepared = await asyncio.to_thread(
+            prepare_runtime_workspace,
+            sample,
+            205,
+            tmp_path / "runtime-workdir",
+            "127.0.0.1",
+            allocate_tcp_port("127.0.0.1"),
+            build_environment_ref(205),
+            build_probe_token(),
+        )
+
+    class TimeoutInvocationClient:
+        async def invoke(
+            self,
+            *,
+            agent_snapshot,
+            credential_payload,
+            platform_values,
+            evidence_recorder=None,
+        ):
+            raise AgentInvocationError(
+                "外部 Agent 轮询超时。",
+                error_class="poll_timeout",
+                details={"externalRunId": "mock_run_timeout"},
+            )
+
+    async def fake_close_runtime(self, prepared_runtime, sample_target, result):
+        assert result.passed is False
+        assert result.status == "poll_timeout"
+        assert result.external_run_id == "mock_run_timeout"
+        finalize_payload = {
+            "done": True,
+            "done_reason": "external_agent_failed",
+            "finalize_source": "external_agent_api",
+            "final_state": {
+                "sampleId": sample_target.sample_id,
+                "externalRunId": result.external_run_id,
+                "status": result.status,
+                "passed": result.passed,
+                "errorMessage": result.error_message,
+            },
+        }
+        (prepared_runtime.run_dir / "finalize.json").write_text(
+            json.dumps(finalize_payload),
+            encoding="utf-8",
+        )
+        return {"compileResult": {}, "replayResult": {}}
+
+    with (
+        patch(
+            "app.worker.runtime.dispatch.AgentInvocationClient",
+            return_value=TimeoutInvocationClient(),
+        ),
+        patch(
+            "app.worker.runtime.dispatch.ExternalAgentApiDispatchAdapter._close_runtime",
+            fake_close_runtime,
+        ),
+    ):
+        result = await resolve_dispatch_adapter("external_agent_api").dispatch(
+            prepared,
+            sample,
+            timeout_seconds=10,
+            dispatch_config={
+                "evaluationId": "eval_external",
+                "maxSteps": 12,
+                "frozenAgentSnapshot": {
+                    "agentId": "agt_external",
+                    "auth": {"type": "none"},
+                },
+            },
+        )
+
+    assert result.finalized is True
+    finalize_payload = json.loads((prepared.run_dir / "finalize.json").read_text())
+    assert finalize_payload["done_reason"] == "external_agent_failed"
+    assert finalize_payload["final_state"]["status"] == "poll_timeout"
