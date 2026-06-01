@@ -3,14 +3,11 @@ import {
   formatMetricValue,
   formatNumber,
   formatRatioValue,
-  getMetricDefinitions,
   getMetricLabel,
-  METRIC_TONES,
   normalizeRatio,
   resolveRiskTone,
   resolveToneByScore,
   type EvaluationTone,
-  type MetricDefinition,
 } from "@/modules/evaluation/lib/evaluation-report-core";
 import {
   type AppTranslator,
@@ -20,11 +17,6 @@ import type { EvaluationReportPayload } from "@/shared/types/agent-types";
 
 export { getMetricLabel };
 export type { EvaluationTone };
-
-export interface EvaluationMetricRow extends MetricDefinition {
-  value: string;
-  tone: EvaluationTone;
-}
 
 export interface EvaluationRadarMetricRow {
   key: string;
@@ -52,16 +44,6 @@ export interface EvaluationConfidenceSummary {
   value: string;
   caption: string;
 }
-
-export const buildMetricRows = (
-  report: EvaluationReportPayload,
-  t: AppTranslator = translateRuntimeMessage,
-): EvaluationMetricRow[] =>
-  getMetricDefinitions(t).map((definition) => ({
-    ...definition,
-    value: formatMetricValue(definition.key, report.scores[definition.key]),
-    tone: METRIC_TONES[definition.key],
-  }));
 
 export const buildRadarMetricRows = (
   report: EvaluationReportPayload,

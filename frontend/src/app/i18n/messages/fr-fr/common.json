@@ -4,7 +4,6 @@
     "logoAlt": "Logo de la plateforme d’évaluation de la sécurité des Agents"
   },
   "actions": {
-    "add": "Ajouter",
     "browseDataset": "Parcourir les jeux de données",
     "cancel": "Annuler",
     "close": "Fermer",

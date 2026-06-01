@@ -1,4 +1,4 @@
-import { ApiConfig } from "@/shared/api/Config";
+import { ApiConfig } from "@/shared/api/config";
 
 export const isAbsoluteHttpUrl = (value: string): boolean =>
   /^https?:\/\//i.test(value);

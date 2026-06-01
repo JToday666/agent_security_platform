@@ -9,10 +9,6 @@
   gap: var(--grid-gap, 1rem);
 }
 
-.hidden {
-  display: none !important;
-}
-
 @media (max-width: 768px) {
   .grid-auto-fit {
     grid-template-columns: 1fr;

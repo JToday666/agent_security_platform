@@ -57,9 +57,6 @@ export const buildAgentRegisterStepDefinitions = (
     description: t(`agent.register.wizard.${id}.description`),
   }));
 
-export const AGENT_REGISTER_STEP_DEFINITIONS: AgentRegisterStep[] =
-  buildAgentRegisterStepDefinitions();
-
 export const buildAgentRegisterSteps = (
   {
     templateRequiresCustomFields,
@@ -105,26 +102,6 @@ export const shouldShowAgentRegisterPreview = (
   stepId === "inputMapping" ||
   stepId === "outputMapping" ||
   stepId === "customFields";
-
-export const canEnterAgentRegisterStep = (
-  targetStep: AgentRegisterStepId,
-  steps: AgentRegisterStep[],
-  completedSteps: AgentRegisterStepId[],
-): boolean => {
-  const targetIndex = steps.findIndex((step) => step.id === targetStep);
-  if (targetIndex < 0) {
-    return false;
-  }
-
-  const completedStepSet = new Set(completedSteps);
-  const firstIncompleteIndex = steps.findIndex(
-    (step) => !completedStepSet.has(step.id),
-  );
-  const maxAllowedIndex =
-    firstIncompleteIndex === -1 ? steps.length - 1 : firstIncompleteIndex;
-
-  return targetIndex <= maxAllowedIndex;
-};
 
 export const validateAgentRegisterStep = (
   stepId: AgentRegisterStepId,

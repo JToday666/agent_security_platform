@@ -4,7 +4,6 @@
     "logoAlt": "Agent Security Evaluation Platform logo"
   },
   "actions": {
-    "add": "Add",
     "browseDataset": "Browse Datasets",
     "cancel": "Cancel",
     "close": "Close",

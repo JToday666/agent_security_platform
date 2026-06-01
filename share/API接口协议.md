@@ -4,29 +4,29 @@
 
 Base URL：
 
-`text
+```text
 /api/v1
-`
+```
 
 成功响应：
 
-`json
+```json
 {
   "code": 0,
   "message": "success",
   "data": {}
 }
-`
+```
 
 失败响应：
 
-`json
+```json
 {
   "code": 40002,
   "message": "字段校验失败。",
   "data": null
 }
-`
+```
 
 错误码：
 

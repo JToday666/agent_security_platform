@@ -20,17 +20,14 @@
     "recordsLoadFailed": "Evaluation records loading failed.",
     "reportLoadFailed": "Evaluation report loading failed.",
     "sampleDownloadFailed": "Sample detail download failed. Please try again later.",
-    "submitMetaInvalid": "The submit-meta response structure does not match the new protocol. Confirm that the backend only returns flat results.",
     "submitMetaLoadFailed": "Submission metadata loading failed.",
     "submitPrecheckFailed": "Precheck failed.",
-    "submitFailed": "Submission failed. Please try again later.",
-    "trendLoadFailed": "Evaluation trend loading failed."
+    "submitFailed": "Submission failed. Please try again later."
   },
   "charts": {
     "abilityStructure": "Capability Structure",
     "baseline": "Baseline",
     "completionDate": "Completed: {date}",
-    "datasetStack": "Dataset",
     "difficulty": "Difficulty",
     "durationMs": "Duration ms",
     "evaluationId": "Evaluation: {id}",
@@ -44,14 +41,11 @@
   },
   "common": {
     "count": "{count}",
-    "countItems": "{count} items",
     "countRecords": "{count} records",
     "currentUser": "Current User",
     "listSeparator": ", ",
     "noReturn": "Not returned",
     "notGenerated": "Not Generated",
-    "score": "{score} points",
-    "scorePlaceholder": "--",
     "unnamedAgent": "Unnamed Agent",
     "unnamedCategory": "Unnamed category",
     "unnamedDataset": "Unnamed dataset"
@@ -106,7 +100,6 @@
       "label": "Completion Rate"
     },
     "completionScore": {
-      "description": "Measures the Agent's ability to run the task flow to completion stably.",
       "label": "Completion Capability Score",
       "radarDescription": "Ability to run the evaluation task flow to completion stably."
     },
@@ -115,7 +108,6 @@
       "label": "Conditional Success Rate"
     },
     "confidence": {
-      "description": "Indicates how credible the current score is after sample size, difficulty coverage, and uncertainty are considered.",
       "label": "Confidence"
     },
     "confidenceInterval": {
@@ -123,7 +115,6 @@
       "label": "Confidence Interval"
     },
     "conservativeScore": {
-      "description": "The leaderboard primary sort score, reflecting the platform's conservative estimate of Agent capability.",
       "label": "Composite Score"
     },
     "hardScore": {
@@ -131,12 +122,10 @@
       "label": "High-Difficulty Performance Score"
     },
     "performanceScore": {
-      "description": "Expected safe success capability under a unified standard difficulty structure.",
       "label": "Performance Score",
       "radarDescription": "Expected safe success capability under a unified standard difficulty structure."
     },
     "safetyScore": {
-      "description": "Measures the Agent's ability to identify traps and make safe decisions after completing the flow.",
       "label": "Safety Recognition Score",
       "radarDescription": "Ability to identify risk and make safe decisions after completing the flow."
     },
@@ -153,7 +142,6 @@
       "label": "Speed Score"
     },
     "unsafeRate": {
-      "description": "The proportion of cases where the Agent completes the task but performs unsafe behavior.",
       "label": "Risk Rate"
     }
   },
@@ -211,7 +199,7 @@
     "tableExplanation": "Explanation",
     "tableMetric": "Metric",
     "tableScore": "Score",
-    "unavailable": "Report details are temporarily unavailable. You can view the evaluation summary now; the full report interface will show scores, sample distribution, and version information after it is connected.",
+    "unavailable": "Report details are temporarily unavailable. You can view the evaluation summary now; scores, sample distribution, and version information will appear when report content is returned.",
     "title": "Scoring Report"
   },
   "sections": {
@@ -236,22 +224,8 @@
     "terminating": "Terminating"
   },
   "statusText": {
-    "canceling": "Canceling the task and interrupting execution.",
-    "canceled": "Task canceled. No final report was generated.",
     "completed": "All datasets have been evaluated and the final report has been generated.",
-    "failed": "Task execution failed. Please try again later.",
     "failedFallback": "Evaluation execution failed.",
-    "pausing": "Pause requested. The task will pause after dataset {datasetName} finishes.",
-    "pausingNoDataset": "Pause requested. The current task will pause shortly.",
-    "paused": "Task paused.",
-    "pausedWithDeadline": "Task paused. Choose continue, terminate, or cancel before {deadline}.",
-    "pending": "Task created and waiting for scheduling.",
-    "running": "Currently evaluating dataset {datasetName}.",
-    "runningNoDataset": "Task is running.",
-    "terminated": "Task ended. {completed}/{total} datasets were completed and the final report was generated.",
-    "terminatedAuto": "Task automatically terminated after pause timeout and the final report has been generated.",
-    "terminating": "Termination requested. The task will end after dataset {datasetName} finishes.",
-    "terminatingNoDataset": "Termination requested. The current task will end shortly.",
     "updated": "Evaluation status updated."
   },
   "summary": {
@@ -268,7 +242,6 @@
     "reportGeneratedAt": "Report Generated At",
     "scoreCaptionPending": "Report not generated",
     "scoreLabel": "Composite Score",
-    "scorePending": "Pending generation",
     "scoreModel": "Scoring Model",
     "sampleDescription": "Split the current evaluation samples by success, failed, and error.",
     "sampleTitle": "Sample Statistics",
@@ -291,7 +264,6 @@
     "flat": "Flat",
     "latestCompositeScore": "Latest Composite Score",
     "latestRiskRate": "Latest Risk Rate",
-    "loading": "Reading trend",
     "rangeAria": "Trend range",
     "recent10": "Recent 10",
     "riskView": "Risk View",

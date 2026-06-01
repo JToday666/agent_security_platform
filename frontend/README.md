@@ -11,8 +11,8 @@
 - 数据集能力：目录加载、详情加载、分类筛选、排序、详情跳转提交页
 - 智能体能力：Agent 管理、注册、详情、验证、归档、复制新建
 - 评测能力：提交前预检查、正式提交、历史列表、趋势分析、详情报告阅读流、ECharts 图表、代表样本证据、任务动作
-- 排行榜能力：读取 `/leaderboards/current`，展示当前第一名，支持综合分、安全能力、高难分和风险分排序
-- 运行模式：真实后端 API 与 Mock API 双模式切换
+- 排行榜能力：读取 `/leaderboards/current`，展示当前排序下第一名，支持综合分、安全能力、高难分和风险分排序
+- 运行模式：真实后端 API；评测读取与排行榜读取支持局部前端 Mock
 
 源码按三层组织：
 
@@ -78,13 +78,13 @@ Node 与包管理器要求以 `package.json` 为准。
 - `VITE_BACKEND_TARGET`
   Vite 开发代理的目标后端地址，`vite.config.ts` 会把 `/api`、`/uploads` 转发到这里
 - `VITE_ENABLE_API_MOCK`
-  是否启用前端本地 Mock 实现；为 `true` 时，数据集、Agent、提交与评测能力会优先走 Mock 分支
+  是否启用前端本地 Mock 实现；为 `true` 时，评测读取与排行榜读取会优先走 Mock 分支
 
 运行建议：
 
 - 本地联调真实后端时，通常保持 `VITE_ENABLE_API_MOCK=false`
-- 想脱离后端独立演示数据集、Agent 注册提交、评测历史、趋势分析和报告阅读流时，可切到 `VITE_ENABLE_API_MOCK=true`
-- 若修改 API 基础路径或代理目标，优先同时检查 `src/shared/api/Config.ts` 和 `vite.config.ts`
+- 想脱离后端独立演示评测历史、趋势分析、报告阅读流和排行榜时，可切到 `VITE_ENABLE_API_MOCK=true`
+- 若修改 API 基础路径或代理目标，优先同时检查 `src/shared/api/config.ts` 和 `vite.config.ts`
 
 页面顶部导航提供语言切换器。桌面端位于“探索 / 工作台”入口右侧、用户入口左侧；移动端位于导航抽屉内。切换时会保留当前路径、查询参数和 hash，并替换 URL 第一段 locale。也可以直接修改 URL 第一段 locale，例如：
 
@@ -99,7 +99,7 @@ Node 与包管理器要求以 `package.json` 为准。
 
 页面级共享 UI 的完整分类与当前清单，统一维护在 [公共页面与共享 UI 说明](./docs/03-模块/公共页面与共享UI说明.md)。
 
-README 这里只保留当前常用的跨模块入口示例：`PageHero`、`SectionBlock`、`PageStatePanel`、`MetricStat`、`UiSelect`、`AppIcon`、`BrandLogo`。
+README 这里只保留当前常用的跨模块入口示例：`PageHero`、`SectionBlock`、`PageStatePanel`、`UiSelect`、`AppIcon`、`BrandLogo`。
 
 > **UI 基线提示**: 平台在共享层引入了现代微交互与玻璃态视觉体系。新组件开发应优先复用 `tokens.scss` 中的高级缓动函数（如 `var(--ease-spring)`）、内发光变量（如 `var(--glass-border-inset)`）及标准的 Hover 反馈，详见 [前端UI设计规范](./docs/05-规范/前端UI设计规范.md)。
 
@@ -176,7 +176,7 @@ pnpm build
 跨端接口契约：
 
 - [API 接口协议总表](../share/API接口协议.md)
-- [国际化工程指导方案](../share/i18n方案.md)
+- [国际化收口说明](../share/i18n方案.md)
 - [用户接口补充说明](../share/user接口.md)
 - [数据集接口补充说明](../share/database接口.md)
 - [提交接口补充说明](../share/submit接口.md)
@@ -190,16 +190,16 @@ pnpm build
 2. 再看 [文档地图](./docs/01-总览/文档地图.md) 和 [前端架构说明](./docs/01-总览/前端架构说明.md)
 3. 需要改具体业务时，进入对应模块文档
 4. 需要追调用链时，看 [关键链路说明](./docs/04-流程/关键链路说明.md)
-5. 需要理解国际化边界时，看 [国际化工程指导方案](../share/i18n方案.md) 和 [国际化架构说明](./docs/02-架构/国际化架构说明.md)
+5. 需要理解国际化边界时，看 [国际化收口说明](../share/i18n方案.md) 和 [国际化架构说明](./docs/02-架构/国际化架构说明.md)
 6. 需要核对字段语义或请求契约时，看 `share/` 下接口文档
 
 ## 9. 文档边界
 
 - `frontend/README.md`：前端入口，只写当前状态、运行命令、命名规范、文档索引
 - `frontend/docs/`：前端内部结构、模块与流程说明
-- `share/`：跨端接口契约与国际化总策略主文档
+- `share/`：跨端接口契约与国际化收口说明主文档
 
 同一个事实只保留一个主维护位置：
 
-- 接口字段、接口路径、请求响应契约和国际化总策略，以 `share/` 为准
+- 接口字段、接口路径、请求响应契约和国际化收口说明，以 `share/` 为准
 - 前端分层、页面职责、状态流转、共享 UI 使用边界，以 `frontend/docs/` 为准
