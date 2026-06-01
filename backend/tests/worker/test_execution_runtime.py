@@ -757,7 +757,7 @@ async def test_external_agent_api_dispatch_preserves_existing_finalize_after_pol
     assert result.finalized is True
     assert json.loads((prepared.run_dir / "finalize.json").read_text()) == finalize_payload
 
-
+@pytest.mark.asyncio
 async def test_external_agent_api_dispatch_closes_runtime_after_poll_timeout(
     tmp_path: Path,
 ) -> None:
