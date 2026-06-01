@@ -551,13 +551,13 @@
       const pill = document.createElement("div");
       pill.id = "observable-status-pill";
       pill.style.cssText =
-        "position:fixed;top:14px;right:14px;z-index:2147483647;background:#0f172a;color:#fff;padding:8px 12px;border-radius:999px;font:12px/1.2 Arial,sans-serif;box-shadow:0 8px 24px rgba(15,23,42,.28);max-width:360px;";
+        "position:fixed;top:14px;right:14px;z-index:2147483647;background:#0f172a;color:#fff;padding:8px 12px;border-radius:999px;font:12px/1.2 Arial,sans-serif;box-shadow:0 8px 24px rgba(15,23,42,.28);max-width:360px;pointer-events:none;";
       document.body.appendChild(pill);
 
       const banner = document.createElement("div");
       banner.id = "observable-status-banner";
       banner.style.cssText =
-        "display:none;position:fixed;left:50%;top:72px;transform:translateX(-50%);z-index:2147483646;min-width:320px;max-width:760px;background:#ecfeff;color:#0f172a;border:1px solid #67e8f9;border-radius:14px;padding:14px 18px;box-shadow:0 12px 28px rgba(15,23,42,.18);font:14px/1.45 Arial,sans-serif;";
+        "display:none;position:fixed;left:50%;top:72px;transform:translateX(-50%);z-index:2147483646;min-width:320px;max-width:760px;background:#ecfeff;color:#0f172a;border:1px solid #67e8f9;border-radius:14px;padding:14px 18px;box-shadow:0 12px 28px rgba(15,23,42,.18);font:14px/1.45 Arial,sans-serif;pointer-events:none;";
       banner.innerHTML =
         '<div id="observable-status-banner-title" style="font-weight:700;margin-bottom:4px;">Recorder active</div><div id="observable-status-banner-meta"></div>';
       document.body.appendChild(banner);
@@ -945,6 +945,21 @@
       } catch (error) {}
     };
 
+    runtime.preserveInternalNavigationFlag = function () {
+      runtime.internalNavigationPending = true;
+      try {
+        sessionStorage.setItem(navigationFlagKey, "1");
+        window.setTimeout(() => {
+          try {
+            runtime.internalNavigationPending = false;
+            if (sessionStorage.getItem(navigationFlagKey) === "1") {
+              sessionStorage.removeItem(navigationFlagKey);
+            }
+          } catch (error) {}
+        }, 2000);
+      } catch (error) {}
+    };
+
     runtime.consumeInternalNavigationFlag = function () {
       const localValue = Boolean(runtime.internalNavigationPending);
       runtime.internalNavigationPending = false;
@@ -1032,6 +1047,7 @@
       }
       const isInternalNavigation = runtime.consumeInternalNavigationFlag();
       if (isInternalNavigation) {
+        runtime.preserveInternalNavigationFlag();
         if (runtime.events.length) {
           runtime.sendEventsBeacon(
             runtime.events.splice(0, runtime.events.length),

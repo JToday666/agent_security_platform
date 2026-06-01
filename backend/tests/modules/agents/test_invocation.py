@@ -347,6 +347,49 @@ async def test_submit_poll_timeout_is_classified_in_evidence(tmp_path) -> None:
     assert evidence["outcome"]["externalRunId"] == "task_123"
 
 
+@pytest.mark.asyncio
+async def test_submit_poll_timeout_best_effort_cancels_external_run(tmp_path) -> None:
+    snapshot = _submit_poll_snapshot(
+        base_url="https://api.poll-timeout.example.com",
+        invoke_path="/tasks",
+        result_path_template="/tasks/{externalRunId}",
+        platform_input_mapping={"task": "task"},
+        platform_output_mapping={"externalRunId": "id", "status": "status"},
+        terminal_statuses=["finished"],
+        success_statuses=["finished"],
+    )
+    snapshot["connection"]["pollTimeoutSeconds"] = 0.001
+    snapshot["connection"]["cancelPathTemplate"] = "/tasks/{externalRunId}/cancel"
+    snapshot["connection"]["cancelMethod"] = "POST"
+    requests: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        if request.url.path == "/tasks" and request.method == "POST":
+            return httpx.Response(200, json={"id": "task_123"})
+        if request.url.path == "/tasks/task_123/cancel" and request.method == "POST":
+            return httpx.Response(204)
+        return httpx.Response(200, json={"id": "task_123", "status": "running"})
+
+    with pytest.raises(AgentInvocationError, match="轮询超时") as exc_info:
+        await AgentInvocationClient(httpx.MockTransport(handler)).invoke(
+            agent_snapshot=snapshot,
+            credential_payload={},
+            platform_values={
+                key: value
+                for key, value in _platform_values().items()
+                if key != "timeoutSeconds"
+            },
+        )
+
+    assert exc_info.value.details["externalRunId"] == "task_123"
+    assert "cancelError" not in exc_info.value.details
+    request_signatures = [(request.method, request.url.path) for request in requests]
+    assert request_signatures[0] == ("POST", "/tasks")
+    assert ("GET", "/tasks/task_123") in request_signatures
+    assert request_signatures[-1] == ("POST", "/tasks/task_123/cancel")
+
+
 def test_submit_poll_poll_timeout_uses_runtime_timeout_before_agent_default() -> None:
     timeout = _resolve_poll_timeout_seconds(
         {"pollTimeoutSeconds": 900, "requestTimeoutSeconds": 30},

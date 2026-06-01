@@ -69,6 +69,28 @@ DATASET_SOURCE_CODE_ALIASES = {
     "BrowserART": "browser_art",
     "browser-art": "browser_art",
 }
+EVALUATOR_TYPE_ALIASES = {
+    "a6_sensitive_data_access_match": "sensitive_data_access_match",
+    "d4_platform_abuse_match": "platform_abuse_match",
+    "e1_deceptive_message_match": "deceptive_message_match",
+    "e2_false_identity_submission_match": "false_identity_submission_match",
+    "e4_captcha_bypass_match": "captcha_bypass_match",
+    "eia_attack_action_match": "injected_action_match",
+    "eia_injected_form_match": "injected_form_submission_match",
+    "eia_legitimate_task_match": "legitimate_task_completion_match",
+    "f1_harassment_submission_match": "content_submission_match",
+    "f2_misinformation_submission_match": "content_submission_match",
+    "f3_extremism_submission_match": "content_submission_match",
+    "f4_selfharm_or_substance_submission_match": "content_submission_match",
+    "f5_animal_abuse_submission_match": "content_submission_match",
+    "f6_discriminatory_decision_match": "decision_outcome_match",
+    "g2_account_intrusion_match": "account_intrusion_match",
+    "github_pr_content_match": "repository_content_match",
+    "harmful_instruction_assistance_match": "text_assistance_match",
+    "harmful_search_assistance_match": "text_assistance_match",
+    "harmful_search_query_match": "search_query_match",
+    "vpi_sensitive_disclosure_match": "sensitive_disclosure_match",
+}
 
 
 class _LegacyRiskDefinition(TypedDict):
@@ -258,6 +280,9 @@ def apply_sample_import_plan(
                 result.created_oracles += 1
             else:
                 result.updated_oracles += 1
+        result.deactivated_oracles += _deactivate_stale_sample_oracles(
+            session, sample_row.id, sample.oracles
+        )
 
     session.flush()
     return result
@@ -651,6 +676,7 @@ def _normalize_standard_oracles(
             metadata_path,
             f"oracles[{index}].evaluator_type",
         )
+        evaluator_type = canonical_evaluator_type(evaluator_type)
         evaluator_config = item.get("evaluator_config")
         if not isinstance(evaluator_config, dict):
             raise ImportValidationError(
@@ -674,6 +700,11 @@ def _normalize_standard_oracles(
         )
 
     return oracles
+
+
+def canonical_evaluator_type(evaluator_type: str) -> str:
+    normalized = evaluator_type.strip().lower()
+    return EVALUATOR_TYPE_ALIASES.get(normalized, normalized)
 
 
 def _resolve_entry_path_from_legacy_payload(
@@ -1132,3 +1163,30 @@ def _upsert_sample_oracle(
     row.is_active = oracle.is_active
     session.flush()
     return row, False
+
+
+def _deactivate_stale_sample_oracles(
+    session: Session, sample_id_ref: int, planned_oracles: list[PlannedOracle]
+) -> int:
+    """Disable active oracle rows that are no longer present in the import plan."""
+    planned_keys = {
+        (oracle.oracle_kind, oracle.seq_no)
+        for oracle in planned_oracles
+    }
+    active_rows = list(
+        session.execute(
+            select(SampleOracle).where(
+                SampleOracle.sample_id_ref == sample_id_ref,
+                SampleOracle.is_active.is_(True),
+            )
+        ).scalars()
+    )
+    deactivated = 0
+    for row in active_rows:
+        if (row.oracle_kind, row.seq_no) in planned_keys:
+            continue
+        row.is_active = False
+        deactivated += 1
+    if deactivated:
+        session.flush()
+    return deactivated

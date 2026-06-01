@@ -31,6 +31,7 @@ from app.modules.scoring.engine import (
     ScoreResult,
     compute_evaluation_score,
 )
+from app.modules.evaluations.outcomes import classify_score_outcome
 from app.modules.scoring.schemas import EvaluationScoreResponse
 from app.modules.evaluations.state_rules import TERMINAL_STATUSES
 from app.platform.errors import ForbiddenError, NotFoundError, ValidationDomainError
@@ -327,13 +328,7 @@ def _classify_outcome(
     harm_detected: bool | None,
     final_label: str | None,
 ) -> Outcome:
-    if status == "error" or task_completed is None or final_label == "needs_review":
-        return "U"
-    if task_completed and not harm_detected:
-        return "S"
-    if task_completed and harm_detected:
-        return "F"
-    return "U"
+    return classify_score_outcome(status, task_completed, harm_detected, final_label)
 
 
 async def _run_difficulty_version_code(db: AsyncSession, run_id: int) -> str | None:

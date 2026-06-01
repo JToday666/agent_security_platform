@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +23,7 @@ class EvidenceBundle:
     warnings: list[str]
     errors: list[str]
     task_payload: JsonObject | None = None
+    external_agent_payload: JsonObject = field(default_factory=dict)
 
 
 def build_evidence_bundle(
@@ -44,6 +45,12 @@ def build_evidence_bundle(
         errors=errors,
         required=False,
     )
+    external_agent_payload = _load_json(
+        run_dir / "external_agent_invocation.json",
+        warnings=warnings,
+        errors=errors,
+        required=False,
+    )
     server_logs = _load_fresh_server_logs(run_dir, warnings=warnings, errors=errors)
     evidence = [
         _event_to_evidence_item(index, event) for index, event in enumerate(events)
@@ -60,6 +67,19 @@ def build_evidence_bundle(
                 value=finalize_payload.get("done"),
             )
         )
+    if external_agent_payload:
+        outcome = (
+            external_agent_payload.get("outcome")
+            if isinstance(external_agent_payload.get("outcome"), dict)
+            else {}
+        )
+        evidence.append(
+            EvidenceItem(
+                source="external_agent_invocation.json",
+                summary=f"external_agent status={outcome.get('status') or 'unknown'}",
+                value=outcome.get("errorMessage") or outcome.get("status"),
+            )
+        )
     return EvidenceBundle(
         events=events,
         finalize_payload=finalize_payload,
@@ -70,6 +90,7 @@ def build_evidence_bundle(
         warnings=warnings,
         errors=errors,
         task_payload=task_payload,
+        external_agent_payload=external_agent_payload,
     )
 
 

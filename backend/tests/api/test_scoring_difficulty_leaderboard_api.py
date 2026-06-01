@@ -201,11 +201,31 @@ def test_evaluation_report_api_returns_frontend_payload(
         "unsafeRate",
         "timeScore",
     }
+    label_counts = {
+        "safeCompletion": 1,
+        "unsafeBehavior": 0,
+        "safeRefusal": 0,
+        "benignIncomplete": 0,
+        "needsReview": 0,
+        "systemError": 0,
+    }
+    axis_counts = {
+        "taskCompleted": 1,
+        "taskRefused": 0,
+        "taskIncomplete": 0,
+        "taskNeedsReview": 0,
+        "taskSystemError": 0,
+        "safetySafe": 1,
+        "safetyUnsafe": 0,
+        "safetyUnknown": 0,
+    }
     assert payload["rawStats"] == {
         "total": 1,
         "success": 1,
         "failed": 0,
         "error": 0,
+        **label_counts,
+        **axis_counts,
         "completionRate": 1.0,
         "successRate": 1.0,
         "conditionalSuccessRate": 1.0,
@@ -223,11 +243,18 @@ def test_evaluation_report_api_returns_frontend_payload(
         "success": 1,
         "failed": 0,
         "error": 0,
+        **label_counts,
+        **axis_counts,
     }
     assert payload["breakdowns"]["datasetSummaries"][0]["datasetId"] == dataset_code
     assert payload["breakdowns"]["sampleScatterPoints"][0]["sampleId"] == (
         f"{api_db_helper.prefix}_sample"
     )
+    assert payload["breakdowns"]["sampleScatterPoints"][0]["outcomeLabel"] == (
+        "safe_completion"
+    )
+    assert payload["breakdowns"]["sampleScatterPoints"][0]["taskOutcome"] == "completed"
+    assert payload["breakdowns"]["sampleScatterPoints"][0]["safetyOutcome"] == "safe"
     assert payload["versions"] == {
         "difficultyVersion": "legacy_current",
         "scoreModelVersion": "score_v1_5",

@@ -13,7 +13,8 @@ from urllib.parse import urlparse
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Response
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
+from fastapi.responses import JSONResponse, PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 RUN_LOCKS: dict[str, Lock] = {}
@@ -25,6 +26,111 @@ class SafeStaticFiles(StaticFiles):
             return await super().get_response(path, scope)
         except OSError:
             return PlainTextResponse("Not Found", status_code=404)
+
+
+class RuntimeProbeInjectionMiddleware:
+    """Inject probe scripts into HTML GET responses without buffering POST bodies."""
+
+    def __init__(self, app: ASGIApp, *, probe_config: dict[str, Any]) -> None:
+        self.app = app
+        self.probe_config = probe_config
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+
+        method = str(scope.get("method") or "").upper()
+        path = str(scope.get("path") or "")
+        should_consider_injection = method == "GET" and not path.startswith(
+            "/__probe__/"
+        )
+
+        response_start: Message | None = None
+        body_chunks: list[bytes] = []
+        buffering_html = False
+
+        async def send_wrapper(message: Message) -> None:
+            nonlocal response_start, buffering_html
+            if message["type"] == "http.response.start":
+                if should_consider_injection and _is_html_success_response(message):
+                    response_start = dict(message)
+                    buffering_html = True
+                    return
+                updated = dict(message)
+                updated["headers"] = _with_no_cache_headers(
+                    list(message.get("headers", []))
+                )
+                await send(updated)
+                return
+
+            if message["type"] == "http.response.body" and buffering_html:
+                body_chunks.append(message.get("body", b""))
+                if message.get("more_body", False):
+                    return
+                raw_body = b"".join(body_chunks)
+                try:
+                    injected_body = inject_probe_assets(
+                        raw_body.decode("utf-8"), self.probe_config
+                    ).encode("utf-8")
+                except UnicodeDecodeError:
+                    injected_body = raw_body
+                start = response_start or {
+                    "type": "http.response.start",
+                    "status": 200,
+                    "headers": [],
+                }
+                start = dict(start)
+                start["headers"] = _with_no_cache_headers(
+                    list(start.get("headers", [])),
+                    content_length=len(injected_body),
+                )
+                await send(start)
+                await send(
+                    {
+                        "type": "http.response.body",
+                        "body": injected_body,
+                        "more_body": False,
+                    }
+                )
+                return
+
+            await send(message)
+
+        await self.app(scope, receive, send_wrapper)
+
+
+def _is_html_success_response(message: Message) -> bool:
+    status = int(message.get("status") or 0)
+    if status != 200:
+        return False
+    for key, value in message.get("headers", []):
+        if key.lower() == b"content-type" and b"text/html" in value.lower():
+            return True
+    return False
+
+
+def _with_no_cache_headers(
+    headers: list[tuple[bytes, bytes]], *, content_length: int | None = None
+) -> list[tuple[bytes, bytes]]:
+    stripped = {
+        b"cache-control",
+        b"pragma",
+        b"expires",
+    }
+    if content_length is not None:
+        stripped.add(b"content-length")
+    updated = [(key, value) for key, value in headers if key.lower() not in stripped]
+    updated.extend(
+        [
+            (b"cache-control", b"no-store, no-cache, must-revalidate"),
+            (b"pragma", b"no-cache"),
+            (b"expires", b"0"),
+        ]
+    )
+    if content_length is not None:
+        updated.append((b"content-length", str(content_length).encode("ascii")))
+    return updated
 
 
 def success_response(
@@ -368,6 +474,7 @@ def inject_probe_assets(html_text: str, probe_config: dict[str, Any]) -> str:
         f"window.__PROBE_CONFIG__ = {json.dumps(probe_config, ensure_ascii=False, indent=2)};"
         "</script>\n"
         '<script src="/__probe__/probe.js"></script>\n'
+        '<script src="/agent_runtime/web/bootstrap.js"></script>\n'
     )
     lowered = html_text.lower()
     if "</head>" in lowered:
@@ -393,6 +500,14 @@ def ensure_instance(
     return incoming_instance_id, incoming_token
 
 
+def ensure_legacy_api_run(run_id: str, instance_id: str) -> str:
+    """Validate legacy ObservableCore /api/runs/{run_id} calls."""
+    clean_run_id = str(run_id or "").strip()
+    if clean_run_id != instance_id:
+        raise HTTPException(status_code=404, detail="unknown probe instance")
+    return clean_run_id
+
+
 def create_app(
     project_root: Path,
     *,
@@ -413,41 +528,13 @@ def create_app(
     app.add_middleware(
         CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
     )
+    app.add_middleware(RuntimeProbeInjectionMiddleware, probe_config=probe_config)
 
     @app.exception_handler(HTTPException)
     async def handle_http_exception(_: Request, exc: HTTPException) -> JSONResponse:
         return error_response(
             message=str(exc.detail), status_code=exc.status_code, code=exc.status_code
         )
-
-    @app.middleware("http")
-    async def inject_runtime_probe(request: Request, call_next):
-        response = await call_next(request)
-        content_type = response.headers.get("content-type", "")
-        if (
-            request.method == "GET"
-            and response.status_code == 200
-            and "text/html" in content_type
-            and not request.url.path.startswith("/__probe__/")
-        ):
-            body = b""
-            if getattr(response, "body_iterator", None) is not None:
-                async for chunk in response.body_iterator:
-                    body += chunk
-            else:
-                body = getattr(response, "body", b"")
-            headers = dict(response.headers)
-            headers.pop("content-length", None)
-            response = HTMLResponse(
-                content=inject_probe_assets(body.decode("utf-8"), probe_config),
-                status_code=response.status_code,
-                headers=headers,
-            )
-
-        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
-        response.headers["Pragma"] = "no-cache"
-        response.headers["Expires"] = "0"
-        return response
 
     @app.get("/__probe__/health")
     def probe_health() -> JSONResponse:
@@ -632,6 +719,160 @@ def create_app(
                 "replayResult": replay_result,
             }
         )
+
+    @app.post("/api/runs/{run_id}/events")
+    async def legacy_collect_events(run_id: str, request: Request) -> JSONResponse:
+        clean_run_id = ensure_legacy_api_run(run_id, instance_id)
+        payload = parse_payload(await request.body())
+        meta_update = normalize_meta(
+            payload.get("meta") if isinstance(payload.get("meta"), dict) else {}
+        )
+        page_id = str(payload.get("pageId") or payload.get("page_id") or "").strip()
+        navigation_id = str(
+            payload.get("navigationId") or payload.get("navigation_id") or ""
+        ).strip()
+        run_dir = runs_root / clean_run_id
+        run_dir.mkdir(parents=True, exist_ok=True)
+        if is_finalized(run_dir):
+            total_events = int(
+                ensure_json(run_dir / "meta.json", {}).get("total_events", 0)
+            )
+            return JSONResponse(
+                {
+                    "ok": True,
+                    "run_id": clean_run_id,
+                    "batch_events": 0,
+                    "total_events": total_events,
+                    "already_finalized": True,
+                }
+            )
+        accepted_count, total_events = append_events(
+            run_dir,
+            clean_run_id,
+            payload.get("events") or [],
+            page_id=page_id,
+            navigation_id=navigation_id,
+            meta_update=meta_update,
+        )
+        return JSONResponse(
+            {
+                "ok": True,
+                "run_id": clean_run_id,
+                "batch_events": accepted_count,
+                "total_events": total_events,
+            }
+        )
+
+    @app.post("/api/runs/{run_id}/finalize")
+    async def legacy_finalize_run(run_id: str, request: Request) -> JSONResponse:
+        clean_run_id = ensure_legacy_api_run(run_id, instance_id)
+        payload = parse_payload(await request.body())
+        meta_update = normalize_meta(
+            payload.pop("meta", {}) if isinstance(payload.get("meta"), dict) else {}
+        )
+        page_id = str(payload.get("pageId") or payload.get("page_id") or "").strip()
+        navigation_id = str(
+            payload.get("navigationId") or payload.get("navigation_id") or ""
+        ).strip()
+        events = payload.pop("events", []) or []
+        run_dir = runs_root / clean_run_id
+        with run_lock_for(clean_run_id):
+            run_dir.mkdir(parents=True, exist_ok=True)
+            if is_finalized(run_dir):
+                return JSONResponse(
+                    {
+                        "ok": True,
+                        "run_id": clean_run_id,
+                        "already_finalized": True,
+                    }
+                )
+            append_events(
+                run_dir,
+                clean_run_id,
+                events,
+                page_id=page_id,
+                navigation_id=navigation_id,
+                meta_update=meta_update,
+            )
+            finalize_payload = normalize_finalize_payload(payload)
+            compile_result, _replay_result = write_finalize(
+                project_root=project_root,
+                run_dir=run_dir,
+                run_id=clean_run_id,
+                payload=finalize_payload,
+                meta_update=meta_update,
+            )
+        response_payload: dict[str, Any] = {"ok": True, "run_id": clean_run_id}
+        response_payload.update(compile_result)
+        return JSONResponse(response_payload)
+
+    @app.post("/api/runs/{run_id}/close")
+    async def legacy_close_run(run_id: str, request: Request) -> JSONResponse:
+        clean_run_id = ensure_legacy_api_run(run_id, instance_id)
+        payload = parse_payload(await request.body())
+        meta_update = normalize_meta(
+            payload.get("meta") if isinstance(payload.get("meta"), dict) else {}
+        )
+        page_id = str(payload.get("pageId") or payload.get("page_id") or "").strip()
+        navigation_id = str(
+            payload.get("navigationId") or payload.get("navigation_id") or ""
+        ).strip()
+        run_dir = runs_root / clean_run_id
+        with run_lock_for(clean_run_id):
+            run_dir.mkdir(parents=True, exist_ok=True)
+            if is_finalized(run_dir):
+                return JSONResponse(
+                    {
+                        "ok": True,
+                        "run_id": clean_run_id,
+                        "forced": False,
+                        "already_finalized": True,
+                    }
+                )
+            append_events(
+                run_dir,
+                clean_run_id,
+                payload.get("events") or [],
+                page_id=page_id,
+                navigation_id=navigation_id,
+                meta_update=meta_update,
+            )
+            raw_finalize = payload.get("finalize")
+            finalize_input: dict[str, Any] = (
+                raw_finalize if isinstance(raw_finalize, dict) else {}
+            )
+            finalize_payload = normalize_finalize_payload(finalize_input)
+            close_reason = str(
+                payload.get("reason")
+                or finalize_payload.get("done_reason")
+                or "context_close"
+            )
+            finalize_payload.setdefault("done", False)
+            finalize_payload.setdefault("done_reason", close_reason)
+            finalize_payload.setdefault("force_finalize", True)
+            finalize_payload.setdefault("finalize_source", "context_close")
+            finalize_payload.setdefault("run_end_reason", close_reason)
+            finalize_payload.setdefault("page_type", meta_update.get("page_type"))
+            finalize_payload.setdefault("entry_path", meta_update.get("entry_path"))
+            compile_result, _replay_result = write_finalize(
+                project_root=project_root,
+                run_dir=run_dir,
+                run_id=clean_run_id,
+                payload=finalize_payload,
+                meta_update=meta_update,
+            )
+        response_payload: dict[str, Any] = {
+            "ok": True,
+            "run_id": clean_run_id,
+            "forced": True,
+        }
+        response_payload.update(compile_result)
+        return JSONResponse(response_payload)
+
+    @app.get("/api/runs/{run_id}/status")
+    async def legacy_run_status(run_id: str) -> JSONResponse:
+        clean_run_id = ensure_legacy_api_run(run_id, instance_id)
+        return JSONResponse({"ok": True, "run_id": clean_run_id})
 
     app.mount(
         "/", SafeStaticFiles(directory=str(project_root), html=True), name="static-root"

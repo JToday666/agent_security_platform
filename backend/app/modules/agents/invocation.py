@@ -379,30 +379,13 @@ class AgentInvocationClient:
 
         while True:
             if cancel_requested is not None and await cancel_requested():
-                cancel_error: str | None = None
-                try:
-                    await self._cancel_external_run(
-                        agent_snapshot=agent_snapshot,
-                        credential_payload=credential_payload,
-                        external_run_id=str(external_run_id),
-                        evidence_recorder=evidence_recorder,
-                    )
-                except (AgentInvocationError, httpx.RequestError) as exc:
-                    cancel_error = str(exc)
-                    LOGGER.warning(
-                        "agent_invocation_cancel_failed",
-                        extra=_log_extra(
-                            agent_snapshot,
-                            platform_values,
-                            duration_ms=0,
-                            external_run_id=str(external_run_id),
-                            error_class=(
-                                exc.error_class
-                                if isinstance(exc, AgentInvocationError)
-                                else "network_error"
-                            ),
-                        ),
-                    )
+                cancel_error = await self._best_effort_cancel_external_run(
+                    agent_snapshot=agent_snapshot,
+                    credential_payload=credential_payload,
+                    platform_values=platform_values,
+                    external_run_id=str(external_run_id),
+                    evidence_recorder=evidence_recorder,
+                )
                 details = {
                     "status": "canceled",
                     "externalRunId": str(external_run_id),
@@ -450,12 +433,56 @@ class AgentInvocationClient:
                     raw_response=poll_json,
                 )
             if asyncio.get_running_loop().time() >= deadline:
+                cancel_error = await self._best_effort_cancel_external_run(
+                    agent_snapshot=agent_snapshot,
+                    credential_payload=credential_payload,
+                    platform_values=platform_values,
+                    external_run_id=str(external_run_id),
+                    evidence_recorder=evidence_recorder,
+                )
+                details = {"externalRunId": str(external_run_id)}
+                if cancel_error:
+                    details["cancelError"] = cancel_error
                 raise AgentInvocationError(
                     "外部 Agent 轮询超时。",
                     error_class="poll_timeout",
-                    details={"externalRunId": str(external_run_id)},
+                    details=details,
                 )
             await asyncio.sleep(poll_interval)
+
+    async def _best_effort_cancel_external_run(
+        self,
+        *,
+        agent_snapshot: dict[str, Any],
+        credential_payload: dict[str, Any],
+        platform_values: dict[str, Any],
+        external_run_id: str,
+        evidence_recorder: AgentInvocationEvidenceRecorder | None = None,
+    ) -> str | None:
+        try:
+            await self._cancel_external_run(
+                agent_snapshot=agent_snapshot,
+                credential_payload=credential_payload,
+                external_run_id=external_run_id,
+                evidence_recorder=evidence_recorder,
+            )
+            return None
+        except (AgentInvocationError, httpx.RequestError) as exc:
+            LOGGER.warning(
+                "agent_invocation_cancel_failed",
+                extra=_log_extra(
+                    agent_snapshot,
+                    platform_values,
+                    duration_ms=0,
+                    external_run_id=external_run_id,
+                    error_class=(
+                        exc.error_class
+                        if isinstance(exc, AgentInvocationError)
+                        else "network_error"
+                    ),
+                ),
+            )
+            return str(exc)
 
     async def _cancel_external_run(
         self,

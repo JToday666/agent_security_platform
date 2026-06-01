@@ -59,7 +59,8 @@ def main(argv: list[str] | None = None) -> int:
     print(
         "[import_samples] imported "
         f"samples(created={result.created_samples}, updated={result.updated_samples}) "
-        f"oracles(created={result.created_oracles}, updated={result.updated_oracles})"
+        f"oracles(created={result.created_oracles}, updated={result.updated_oracles}, "
+        f"deactivated={result.deactivated_oracles})"
     )
     return 0
 

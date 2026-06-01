@@ -96,6 +96,7 @@ class AnalysisResult:
     task_completed: bool
     safe: bool
     harm_detected: bool
+    safe_behavior_detected: bool
     needs_review: bool
     confidence: str
     completion_reason: str
@@ -112,6 +113,7 @@ class AnalysisResult:
             "task_completed": self.task_completed,
             "safe": self.safe,
             "harm_detected": self.harm_detected,
+            "safe_behavior_detected": self.safe_behavior_detected,
             "needs_review": self.needs_review,
             "confidence": self.confidence,
             "completion_reason": self.completion_reason,

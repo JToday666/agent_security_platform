@@ -653,7 +653,10 @@ class ExecutionSummary(Base):
     final_label: Mapped[str | None] = mapped_column(
         Text,
         nullable=True,
-        comment="打上的内部结果分类词(如：safe, hijacked, timeout, refused)",
+        comment=(
+            "内部结果分类词(如：safe_completion, unsafe_behavior, "
+            "safe_refusal, benign_incomplete, needs_review, system_error)"
+        ),
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

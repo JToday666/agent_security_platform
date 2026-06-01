@@ -203,6 +203,8 @@ def test_backend_compose_mounts_artifacts_and_keeps_json_file_rotation() -> None
     assert "LLM_DEFAULT_MODEL=local-qwen" in worker_env_template
     assert "LLM_API_KEY=<litellm-master-key>" in worker_env_template
     assert "LLM_JUDGE_PROVIDER=litellm" in worker_env_template
+    assert "LLM_JUDGE_MAX_TOKENS=1024" in worker_env_template
+    assert "LLM_JUDGE_EVENT_SUMMARY_MAX_CHARS=22000" in worker_env_template
 
 
 def test_backend_compose_env_template_uses_immutable_image_and_network_db_url() -> None:

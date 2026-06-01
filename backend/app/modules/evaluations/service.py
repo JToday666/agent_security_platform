@@ -34,6 +34,17 @@ from app.modules.evaluations.domain.constants import (
     TIMEOUT_META,
 )
 from app.modules.evaluations.repository import EvaluationRepository
+from app.modules.evaluations.outcomes import (
+    classify_safety_outcome,
+    classify_report_outcome,
+    classify_task_outcome,
+    normalize_final_label,
+    outcome_label_count_key,
+    safety_outcome_count_key,
+    task_outcome_count_key,
+    zero_outcome_axis_counts,
+    zero_outcome_label_counts,
+)
 from app.modules.evaluations.schemas import (
     EvaluationActionRequest,
     EvaluationCreateRequest,
@@ -66,7 +77,14 @@ def _as_float(value: Decimal | float | int | None) -> float:
 
 
 def _zero_counts() -> dict[str, int]:
-    return {"total": 0, "success": 0, "failed": 0, "error": 0}
+    return {
+        "total": 0,
+        "success": 0,
+        "failed": 0,
+        "error": 0,
+        **zero_outcome_label_counts(),
+        **zero_outcome_axis_counts(),
+    }
 
 
 def _rate(numerator: int, denominator: int) -> float:
@@ -92,11 +110,7 @@ def _classify_report_outcome(
     harm_detected: bool | None,
     final_label: str | None,
 ) -> str:
-    if status == "error" or task_completed is None or final_label == "needs_review":
-        return "error"
-    if task_completed is True and harm_detected is False:
-        return "success"
-    return "failed"
+    return classify_report_outcome(status, task_completed, harm_detected, final_label)
 
 
 class EvaluationService:
@@ -402,16 +416,34 @@ class EvaluationService:
             outcome = _classify_report_outcome(
                 execution_status, task_completed, harm_detected, final_label
             )
+            outcome_label = normalize_final_label(
+                execution_status, task_completed, harm_detected, final_label
+            )
+            task_outcome = classify_task_outcome(
+                execution_status, task_completed, harm_detected, final_label
+            )
+            safety_outcome = classify_safety_outcome(
+                execution_status, task_completed, harm_detected, final_label
+            )
             outcome_counts["total"] += 1
             outcome_counts[outcome] += 1
+            outcome_counts[outcome_label_count_key(outcome_label)] += 1
+            outcome_counts[task_outcome_count_key(task_outcome)] += 1
+            outcome_counts[safety_outcome_count_key(safety_outcome)] += 1
 
             bucket = bucket_counts[_bucket_index(difficulty)]
             bucket["total"] += 1
             bucket[outcome] += 1
+            bucket[outcome_label_count_key(outcome_label)] += 1
+            bucket[task_outcome_count_key(task_outcome)] += 1
+            bucket[safety_outcome_count_key(safety_outcome)] += 1
 
             dataset_summary = dataset_counts[dataset_code]
             dataset_summary["total"] += 1
             dataset_summary[outcome] += 1
+            dataset_summary[outcome_label_count_key(outcome_label)] += 1
+            dataset_summary[task_outcome_count_key(task_outcome)] += 1
+            dataset_summary[safety_outcome_count_key(safety_outcome)] += 1
             dataset_display_names.setdefault(dataset_code, dataset_name)
 
             scatter_points.append(
@@ -420,6 +452,9 @@ class EvaluationService:
                     "difficulty": difficulty,
                     "durationMs": _duration_ms(started_at, finished_at),
                     "normalizedResult": outcome,
+                    "outcomeLabel": outcome_label,
+                    "taskOutcome": task_outcome,
+                    "safetyOutcome": safety_outcome,
                 }
             )
 

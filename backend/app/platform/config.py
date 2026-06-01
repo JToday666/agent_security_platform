@@ -93,6 +93,7 @@ class Settings(BaseSettings):
     LLM_JUDGE_MAX_TOKENS: int = 2000
     LLM_JUDGE_TEMPERATURE: float = 0.0
     LLM_JUDGE_MAX_EVENTS: int = 160
+    LLM_JUDGE_EVENT_SUMMARY_MAX_CHARS: int = 22_000
 
     @property
     def DATABASE_URL(self) -> URL:

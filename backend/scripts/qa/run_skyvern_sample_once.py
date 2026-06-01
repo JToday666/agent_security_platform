@@ -50,6 +50,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--poll-interval-seconds", type=float, default=2.0)
     parser.add_argument("--poll-timeout-seconds", type=int, default=900)
     parser.add_argument("--skyvern-api-key-env", default="SKYVERN_API_KEY")
+    parser.add_argument("--skyvern-engine", default="skyvern-2.0")
+    parser.add_argument("--task-render-mode", default="goal_only")
     return parser.parse_args()
 
 
@@ -86,11 +88,13 @@ def build_skyvern_snapshot(
         "auth": auth,
         "platformInputMapping": {
             "task": "prompt",
-            "entryUrl": "url",
+            "browserEntryUrl": "url",
             "maxSteps": "max_steps",
         },
-        "taskRenderMode": "goal_only",
-        "customRequestBody": {"engine": "skyvern-2.0"},
+        "taskRenderMode": str(getattr(args, "task_render_mode", "goal_only")),
+        "customRequestBody": {
+            "engine": str(getattr(args, "skyvern_engine", "skyvern-2.0"))
+        },
         "requestOptions": {
             "structuredOutput": {
                 "supported": True,
@@ -111,6 +115,37 @@ def build_skyvern_snapshot(
             "canceled",
         ],
         "successStatuses": ["completed"],
+    }
+
+
+def build_execution_config(
+    *,
+    frozen_agent_snapshot: dict[str, object],
+    evaluation_id: str | None,
+    max_steps: int,
+) -> dict[str, object]:
+    return {
+        "frozenAgentSnapshot": frozen_agent_snapshot,
+        "evaluationId": evaluation_id,
+        "maxSteps": max_steps,
+        "parameters": {"retryEnabled": False},
+    }
+
+
+def build_run_execution_config(
+    *,
+    frozen_agent_snapshot: dict[str, object],
+    evaluation_id: str | None,
+    max_steps: int,
+) -> dict[str, object]:
+    return {
+        "dispatch": {
+            "mode": "external_agent_api",
+            "frozenAgentSnapshot": frozen_agent_snapshot,
+        },
+        "evaluationId": evaluation_id,
+        "maxSteps": max_steps,
+        "parameters": {"retryEnabled": False},
     }
 
 
@@ -180,14 +215,11 @@ async def create_direct_run(
                 "sampleId": sample.sample_id,
                 "riskSubtype": risk_subtype.code,
             },
-            execution_config={
-                "dispatch": {
-                    "mode": "external_agent_api",
-                    "frozenAgentSnapshot": frozen_agent,
-                },
-                "evaluationId": None,
-                "maxSteps": args.max_steps,
-            },
+            execution_config=build_run_execution_config(
+                frozen_agent_snapshot=frozen_agent,
+                evaluation_id=None,
+                max_steps=args.max_steps,
+            ),
             total_samples=1,
             completed_samples=0,
             success_count=0,
@@ -377,7 +409,10 @@ async def collect_summary(
                 "WORKER_BROWSER_ENTRY_HOST": settings.WORKER_BROWSER_ENTRY_HOST,
                 "WORKER_RUNTIME_LAUNCH_MODE": settings.WORKER_RUNTIME_LAUNCH_MODE,
                 "LLM_JUDGE_PROVIDER": settings.LLM_JUDGE_PROVIDER,
+                "LLM_JUDGE_MODEL": settings.LLM_JUDGE_MODEL,
+                "LLM_JUDGE_BASE_URL": settings.LLM_JUDGE_BASE_URL,
                 "LLM_DEFAULT_MODEL": settings.LLM_DEFAULT_MODEL,
+                "LLM_BASE_URL": settings.LLM_BASE_URL,
             },
         }
 
@@ -390,13 +425,13 @@ async def amain(args: argparse.Namespace) -> int:
         )
         difficulty_snapshot = await snapshot_difficulty_stat(sample_db_id)
         job, public_id = await load_execution_target(execution_id)
-        dispatch_config = {
-            "frozenAgentSnapshot": build_skyvern_snapshot(
+        dispatch_config = build_execution_config(
+            frozen_agent_snapshot=build_skyvern_snapshot(
                 args, credential_ref=credential_ref
             ),
-            "evaluationId": public_id,
-            "maxSteps": args.max_steps,
-        }
+            evaluation_id=public_id,
+            max_steps=args.max_steps,
+        )
         await execute_sample(
             run_id,
             dataset_id,
