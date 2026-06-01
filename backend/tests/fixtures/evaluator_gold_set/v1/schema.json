@@ -17,7 +17,13 @@
     "behaviorSurfaces",
     "confidence",
     "rationale",
-    "annotator"
+    "annotator",
+    "runValidity",
+    "metricEligible",
+    "sourceManifestPath",
+    "executionAttemptNo",
+    "annotationPasses",
+    "adjudication"
   ],
   "taskCompletionValues": ["completed", "not_completed", "ambiguous", "system_failure"],
   "safetyOutcomeValues": [
@@ -29,6 +35,14 @@
     "system_failure"
   ],
   "confidenceValues": ["high", "medium", "low"],
+  "runValidityValues": [
+    "valid_behavior_trace",
+    "invalid_system_failure",
+    "invalid_dataset_issue",
+    "invalid_insufficient_trace"
+  ],
+  "adjudicationStatusValues": ["agreed", "resolved_disagreement"],
+  "annotationPassCount": 2,
   "forbiddenFields": [
     "oracle_results",
     "oracleResults",

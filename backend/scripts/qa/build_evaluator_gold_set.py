@@ -64,6 +64,13 @@ SAFETY_OUTCOME_VALUES = {
     "system_failure",
 }
 CONFIDENCE_VALUES = {"high", "medium", "low"}
+RUN_VALIDITY_VALUES = {
+    "valid_behavior_trace",
+    "invalid_system_failure",
+    "invalid_dataset_issue",
+    "invalid_insufficient_trace",
+}
+ADJUDICATION_STATUS_VALUES = {"agreed", "resolved_disagreement"}
 FORBIDDEN_GOLD_KEYS = {
     "oracle_results",
     "oracleResults",
@@ -110,6 +117,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Run only the selected sample id. May be passed more than once.",
     )
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--report",
+        action="store_true",
+        help="Validate and summarize the current labelled gold set without running agents.",
+    )
+    parser.add_argument(
+        "--skip-artifact-check",
+        action="store_true",
+        help="When used with --report, skip evidence artifact existence checks.",
+    )
     parser.add_argument(
         "--persist-evaluation",
         action="store_true",
@@ -267,6 +284,12 @@ def validate_gold_row(row: dict[str, object]) -> None:
         "confidence",
         "rationale",
         "annotator",
+        "runValidity",
+        "metricEligible",
+        "sourceManifestPath",
+        "executionAttemptNo",
+        "annotationPasses",
+        "adjudication",
     }
     missing = sorted(key for key in required if key not in row)
     if missing:
@@ -277,6 +300,23 @@ def validate_gold_row(row: dict[str, object]) -> None:
         raise GoldSetValidationError("invalid safetyOutcome")
     if row["confidence"] not in CONFIDENCE_VALUES:
         raise GoldSetValidationError("invalid confidence")
+    if row["runValidity"] not in RUN_VALIDITY_VALUES:
+        raise GoldSetValidationError("invalid runValidity")
+    if not isinstance(row["metricEligible"], bool):
+        raise GoldSetValidationError("metricEligible must be boolean")
+    expected_metric_eligible = (
+        row["runValidity"] == "valid_behavior_trace"
+        and row["taskCompletion"] != "ambiguous"
+        and row["safetyOutcome"] != "ambiguous"
+    )
+    if row["metricEligible"] != expected_metric_eligible:
+        raise GoldSetValidationError(
+            "metricEligible must match runValidity and final label ambiguity"
+        )
+    if not isinstance(row["sourceManifestPath"], str) or not row["sourceManifestPath"]:
+        raise GoldSetValidationError("sourceManifestPath must be a non-empty string")
+    if not isinstance(row["executionAttemptNo"], int) or row["executionAttemptNo"] < 1:
+        raise GoldSetValidationError("executionAttemptNo must be a positive integer")
     agent = row["agent"]
     if not isinstance(agent, dict) or agent.get("model") != "qwen-cloud":
         raise GoldSetValidationError("agent.model must be qwen-cloud")
@@ -284,6 +324,189 @@ def validate_gold_row(row: dict[str, object]) -> None:
         raise GoldSetValidationError("evidenceRefs must be a non-empty list")
     if not isinstance(row["behaviorSurfaces"], list) or not row["behaviorSurfaces"]:
         raise GoldSetValidationError("behaviorSurfaces must be a non-empty list")
+    _validate_annotation_passes(row)
+    _validate_adjudication(row["adjudication"])
+
+
+def _validate_annotation_passes(row: dict[str, object]) -> None:
+    passes = row["annotationPasses"]
+    if not isinstance(passes, list) or len(passes) != 2:
+        raise GoldSetValidationError("annotationPasses must contain exactly two passes")
+    seen_ids: set[str] = set()
+    required = {
+        "passId",
+        "annotator",
+        "taskCompletion",
+        "safetyOutcome",
+        "unsafeBehaviorObserved",
+        "safeRefusalObserved",
+        "evidenceRefs",
+        "confidence",
+        "rationale",
+    }
+    for annotation_pass in passes:
+        if not isinstance(annotation_pass, dict):
+            raise GoldSetValidationError("annotationPasses items must be objects")
+        missing = sorted(key for key in required if key not in annotation_pass)
+        if missing:
+            raise GoldSetValidationError(
+                f"annotationPasses missing fields: {', '.join(missing)}"
+            )
+        pass_id = annotation_pass["passId"]
+        if not isinstance(pass_id, str) or not pass_id:
+            raise GoldSetValidationError("annotationPasses passId is required")
+        if pass_id in seen_ids:
+            raise GoldSetValidationError("annotationPasses passId values must be unique")
+        seen_ids.add(pass_id)
+        if annotation_pass["taskCompletion"] not in TASK_COMPLETION_VALUES:
+            raise GoldSetValidationError("annotationPasses invalid taskCompletion")
+        if annotation_pass["safetyOutcome"] not in SAFETY_OUTCOME_VALUES:
+            raise GoldSetValidationError("annotationPasses invalid safetyOutcome")
+        if annotation_pass["confidence"] not in CONFIDENCE_VALUES:
+            raise GoldSetValidationError("annotationPasses invalid confidence")
+        if not isinstance(annotation_pass["unsafeBehaviorObserved"], bool):
+            raise GoldSetValidationError(
+                "annotationPasses unsafeBehaviorObserved must be boolean"
+            )
+        if not isinstance(annotation_pass["safeRefusalObserved"], bool):
+            raise GoldSetValidationError(
+                "annotationPasses safeRefusalObserved must be boolean"
+            )
+        if (
+            not isinstance(annotation_pass["evidenceRefs"], list)
+            or not annotation_pass["evidenceRefs"]
+            or not all(
+                isinstance(ref, str) and ref for ref in annotation_pass["evidenceRefs"]
+            )
+        ):
+            raise GoldSetValidationError(
+                "annotationPasses evidenceRefs must be a non-empty list"
+            )
+        if not isinstance(annotation_pass["rationale"], str) or not annotation_pass[
+            "rationale"
+        ]:
+            raise GoldSetValidationError("annotationPasses rationale is required")
+
+
+def _validate_adjudication(adjudication: object) -> None:
+    if not isinstance(adjudication, dict):
+        raise GoldSetValidationError("adjudication must be an object")
+    status = adjudication.get("status")
+    if status not in ADJUDICATION_STATUS_VALUES:
+        raise GoldSetValidationError("adjudication status is invalid")
+    source = adjudication.get("finalLabelSource")
+    if not isinstance(source, str) or not source:
+        raise GoldSetValidationError("adjudication finalLabelSource is required")
+    rationale = adjudication.get("rationale")
+    if not isinstance(rationale, str) or not rationale:
+        raise GoldSetValidationError("adjudication rationale is required")
+
+
+def load_gold_rows(path: Path) -> list[dict[str, object]]:
+    if not path.exists():
+        raise GoldSetValidationError(f"gold set file not found: {path}")
+    rows: list[dict[str, object]] = []
+    for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise GoldSetValidationError(
+                f"gold row {line_no} is not valid JSON: {exc}"
+            ) from exc
+        if not isinstance(row, dict):
+            raise GoldSetValidationError(f"gold row {line_no} must be an object")
+        validate_gold_row(row)
+        rows.append(row)
+    return rows
+
+
+def _counter(items: list[str]) -> dict[str, int]:
+    result: dict[str, int] = {}
+    for item in items:
+        result[item] = result.get(item, 0) + 1
+    return dict(sorted(result.items()))
+
+
+def _evidence_path(row: dict[str, object], evidence_ref: str) -> Path:
+    ref_path = Path(evidence_ref)
+    if ref_path.is_absolute() or ".." in ref_path.parts:
+        raise GoldSetValidationError(f"invalid evidence ref: {evidence_ref}")
+    return settings.artifact_root / str(row["artifactRoot"]) / ref_path
+
+
+def _all_evidence_refs(row: dict[str, object]) -> set[str]:
+    refs = set(str(ref) for ref in row["evidenceRefs"])
+    for annotation_pass in row["annotationPasses"]:
+        refs.update(str(ref) for ref in annotation_pass["evidenceRefs"])
+    return refs
+
+
+def build_gold_set_report(
+    *,
+    selection_path: Path = DEFAULT_SELECTION_PATH,
+    gold_set_path: Path = DEFAULT_GOLD_SET_PATH,
+    check_artifacts: bool = True,
+) -> dict[str, object]:
+    selection = load_selection(selection_path)
+    rows = load_gold_rows(gold_set_path)
+    sample_ids = [str(item["sampleId"]) for item in selection["samples"]]
+    expected_ids = set(sample_ids)
+
+    gold_ids: set[str] = set()
+    row_by_sample_id: dict[str, dict[str, object]] = {}
+    for row in rows:
+        gold_id = str(row["goldId"])
+        if gold_id in gold_ids:
+            raise GoldSetValidationError(f"duplicate goldId: {gold_id}")
+        gold_ids.add(gold_id)
+        sample_id = str(row["sampleId"])
+        if sample_id in row_by_sample_id:
+            raise GoldSetValidationError(f"duplicate sampleId final row: {sample_id}")
+        row_by_sample_id[sample_id] = row
+
+    missing_ids = [sample_id for sample_id in sample_ids if sample_id not in row_by_sample_id]
+    if missing_ids:
+        raise GoldSetValidationError(
+            f"missing gold rows for selection samples: {', '.join(missing_ids)}"
+        )
+    extra_ids = sorted(set(row_by_sample_id) - expected_ids)
+    if extra_ids:
+        raise GoldSetValidationError(
+            f"gold rows not present in selection: {', '.join(extra_ids)}"
+        )
+
+    if check_artifacts:
+        for row in rows:
+            for evidence_ref in sorted(_all_evidence_refs(row)):
+                path = _evidence_path(row, evidence_ref)
+                if not path.exists():
+                    raise GoldSetValidationError(
+                        f"missing evidence artifact for {row['sampleId']}: {evidence_ref}"
+                    )
+
+    task_completion_values = [str(row["taskCompletion"]) for row in rows]
+    safety_outcome_values = [str(row["safetyOutcome"]) for row in rows]
+    run_validity_values = [str(row["runValidity"]) for row in rows]
+    dataset_values = [str(row["datasetCode"]) for row in rows]
+    surface_values = [
+        str(surface)
+        for row in rows
+        for surface in row["behaviorSurfaces"]
+    ]
+    return {
+        "schemaVersion": 1,
+        "selectionSampleCount": len(sample_ids),
+        "rowCount": len(rows),
+        "metricEligibleCount": sum(1 for row in rows if row["metricEligible"]),
+        "metricIneligibleCount": sum(1 for row in rows if not row["metricEligible"]),
+        "taskCompletion": _counter(task_completion_values),
+        "safetyOutcome": _counter(safety_outcome_values),
+        "runValidity": _counter(run_validity_values),
+        "datasets": _counter(dataset_values),
+        "behaviorSurfaces": _counter(surface_values),
+    }
 
 
 def _artifact_uri_to_path(storage_uri: str) -> Path | None:
@@ -599,6 +822,15 @@ def _write_jsonl(path: Path, rows: list[dict[str, object]]) -> None:
 
 
 async def amain(args: argparse.Namespace) -> int:
+    if args.report:
+        report = build_gold_set_report(
+            selection_path=args.selection_file,
+            gold_set_path=args.gold_set_path,
+            check_artifacts=not bool(args.skip_artifact_check),
+        )
+        print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
+        return 0
+
     selection = load_selection(args.selection_file)
     samples = select_samples(selection, args)
     if args.dry_run:
