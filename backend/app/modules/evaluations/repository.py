@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased
 
 from app.models.agent import Agent
-from app.models.benchmark import BenchmarkSample, RiskSubtype
+from app.models.benchmark import AttackScenario, BenchmarkSample, RiskSubtype
 from app.models.benchmark_run import ExecutionSummary, RunDataset, RunReport, TestRun
 from app.models.benchmark_run import RunSample, SampleExecution
 from app.models.scoring import DifficultyVersion, DifficultyVersionItem, EvaluationScore
@@ -57,11 +57,19 @@ class EvaluationRepository:
         ).scalar_one_or_none()
 
     async def resolve_dataset_selection(
-        self, ordered_dataset_ids: list[str], difficulty: float
+        self,
+        attack_scenario_id: str,
+        ordered_evaluation_item_ids: list[str],
+        difficulty: float,
     ):
-        """解析数据集选择并返回匹配样本。"""
+        """解析单个攻击场景下的评测项选择并返回匹配样本。"""
         dataset_stmt = (
-            select(RiskSubtype.code, RiskSubtype.name)
+            select(
+                RiskSubtype.code,
+                RiskSubtype.name,
+                AttackScenario.name.label("attack_scenario_name"),
+            )
+            .join(AttackScenario, RiskSubtype.attack_scenario_id == AttackScenario.id)
             .join(
                 BenchmarkSample,
                 and_(
@@ -70,25 +78,36 @@ class EvaluationRepository:
                 ),
             )
             .where(
+                AttackScenario.code == attack_scenario_id,
+                AttackScenario.is_active.is_(True),
                 RiskSubtype.is_active.is_(True),
-                RiskSubtype.code.in_(ordered_dataset_ids),
+                RiskSubtype.code.in_(ordered_evaluation_item_ids),
                 public_dataset_code_filter(RiskSubtype.code),
             )
-            .group_by(RiskSubtype.code, RiskSubtype.name)
+            .group_by(RiskSubtype.code, RiskSubtype.name, AttackScenario.name)
         )
         dataset_rows = (await self.db.execute(dataset_stmt)).all()
-        dataset_names = {code: name for code, name in dataset_rows}
+        evaluation_item_names = {code: name for code, name, _scenario in dataset_rows}
+        attack_scenario_name = (
+            str(dataset_rows[0].attack_scenario_name) if dataset_rows else None
+        )
 
         ordering = case(
-            {dataset_id: index for index, dataset_id in enumerate(ordered_dataset_ids)},
+            {
+                evaluation_item_id: index
+                for index, evaluation_item_id in enumerate(ordered_evaluation_item_ids)
+            },
             value=RiskSubtype.code,
         )
         sample_stmt = (
             select(BenchmarkSample, RiskSubtype.code)
             .join(RiskSubtype, BenchmarkSample.risk_subtype_id == RiskSubtype.id)
+            .join(AttackScenario, RiskSubtype.attack_scenario_id == AttackScenario.id)
             .where(
+                AttackScenario.code == attack_scenario_id,
+                AttackScenario.is_active.is_(True),
                 BenchmarkSample.is_active.is_(True),
-                RiskSubtype.code.in_(ordered_dataset_ids),
+                RiskSubtype.code.in_(ordered_evaluation_item_ids),
                 public_dataset_code_filter(RiskSubtype.code),
             )
             .order_by(ordering.asc(), BenchmarkSample.id.asc())
@@ -114,13 +133,32 @@ class EvaluationRepository:
             ordered_samples.append(sample)
 
         return {
-            "dataset_names": dataset_names,
+            "attack_scenario_name": attack_scenario_name,
+            "evaluation_item_names": evaluation_item_names,
             "sample_rows": ordered_samples,
             "matched_counts": {
-                dataset_id: matched_counts.get(dataset_id, 0)
-                for dataset_id in ordered_dataset_ids
+                evaluation_item_id: matched_counts.get(evaluation_item_id, 0)
+                for evaluation_item_id in ordered_evaluation_item_ids
             },
         }
+
+    async def resolve_attack_scenario_for_dataset_codes(
+        self, dataset_codes: list[str]
+    ) -> tuple[str | None, str | None]:
+        """从运行快照中的评测项推断历史评测所属攻击场景。"""
+        if not dataset_codes:
+            return None, None
+        rows = (
+            await self.db.execute(
+                select(AttackScenario.code, AttackScenario.name)
+                .join(RiskSubtype, RiskSubtype.attack_scenario_id == AttackScenario.id)
+                .where(RiskSubtype.code.in_(sorted(set(dataset_codes))))
+                .group_by(AttackScenario.code, AttackScenario.name)
+            )
+        ).all()
+        if len(rows) != 1:
+            return None, None
+        return str(rows[0].code), str(rows[0].name)
 
     async def load_dataset_name_translations(
         self, locale: str, dataset_codes: list[str]

@@ -219,19 +219,19 @@ describe("frontend locale routing", () => {
   });
 
   it("preserves query and hash while canonicalizing locale paths", () => {
-    expect(resolveLocalePath("/fr/dataset?tab=all#top", "zh-CN")).toEqual({
+    expect(resolveLocalePath("/fr/attack-scenarios?tab=all#top", "zh-CN")).toEqual({
       locale: "fr-FR",
-      path: "/fr-FR/dataset?tab=all#top",
+      path: "/fr-FR/attack-scenarios?tab=all#top",
       redirect: true,
     });
-    expect(resolveLocalePath("/de-DE/dataset?tab=all#top", "en-US")).toEqual({
+    expect(resolveLocalePath("/de-DE/attack-scenarios?tab=all#top", "en-US")).toEqual({
       locale: "zh-CN",
-      path: "/zh-CN/dataset?tab=all#top",
+      path: "/zh-CN/attack-scenarios?tab=all#top",
       redirect: true,
     });
-    expect(resolveLocalePath("/dataset?tab=all#top", "en-US")).toEqual({
+    expect(resolveLocalePath("/attack-scenarios?tab=all#top", "en-US")).toEqual({
       locale: "en-US",
-      path: "/en-US/dataset?tab=all#top",
+      path: "/en-US/attack-scenarios?tab=all#top",
       redirect: true,
     });
   });

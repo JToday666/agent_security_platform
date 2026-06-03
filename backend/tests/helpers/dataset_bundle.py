@@ -112,6 +112,18 @@ def write_minimal_registry(registry_root: Path, prefix: str = "") -> None:
         ],
     )
     write_json(
+        registry_root / "registry" / "attack_scenarios.json",
+        [
+            {
+                "code": prefixed("prompt_injection"),
+                "name": "提示注入",
+                "description": "覆盖提示注入攻击。",
+                "sort_order": 1,
+                "is_active": True,
+            }
+        ],
+    )
+    write_json(
         registry_root / "registry" / "risk_categories.json",
         [
             {
@@ -130,6 +142,7 @@ def write_minimal_registry(registry_root: Path, prefix: str = "") -> None:
             {
                 "code": prefixed("A1_identity_leakage"),
                 "category_code": prefixed("confidentiality"),
+                "attack_scenario_code": prefixed("prompt_injection"),
                 "name": "身份信息泄露",
                 "sort_order": 1,
                 "is_active": True,
@@ -231,6 +244,9 @@ def write_repo_like_sample_bundle(sample_root: Path) -> SampleBundleInfo:
                 "attack_delivery_type_code": delivery_code,
                 "risk_category_code": category_code,
                 "risk_subtype_code": subtype_code,
+                "attack_scenario_code": "prompt_injection"
+                if category_code in {"confidentiality", "integrity"}
+                else "model_abuse_and_unauthorized_actions",
                 "risk_level": "medium",
                 "attack_level": "high",
                 "asset_type_code": asset_type_code,

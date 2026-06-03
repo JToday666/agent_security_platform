@@ -14,7 +14,8 @@ export interface SubmitPayloadSnapshot {
   agentId: string;
   parameters: SubmitAgentPayload["parameters"];
   leaderboardDisplayMode: SubmitAgentPayload["leaderboardDisplayMode"];
-  datasetIds: string[];
+  attackScenarioId: string;
+  evaluationItemIds: string[];
 }
 
 export const buildSubmitPayloadSnapshot = (
@@ -25,7 +26,9 @@ export const buildSubmitPayloadSnapshot = (
     return null;
   }
 
-  const datasetIds = Array.from(new Set(form.selectedDatasetIds)).sort();
+  const evaluationItemIds = Array.from(
+    new Set(form.selectedEvaluationItemIds),
+  ).sort();
 
   return {
     submitMethod: form.submitMethod,
@@ -46,7 +49,8 @@ export const buildSubmitPayloadSnapshot = (
     )
       ? form.leaderboardDisplayMode
       : meta.leaderboardDisplayMode.default,
-    datasetIds,
+    attackScenarioId: form.selectedAttackScenarioId,
+    evaluationItemIds,
   };
 };
 
@@ -71,6 +75,7 @@ export const buildSubmitPayloadFromSnapshot = (
       : null,
   parameters: snapshot.parameters,
   leaderboardDisplayMode: snapshot.leaderboardDisplayMode,
-  selectedDatasetIds: snapshot.datasetIds,
+  attackScenarioId: snapshot.attackScenarioId,
+  evaluationItemIds: snapshot.evaluationItemIds,
   requestId,
 });

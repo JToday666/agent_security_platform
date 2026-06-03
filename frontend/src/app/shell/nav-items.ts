@@ -22,10 +22,10 @@ export const buildExploreNavItems = (t: Translate): AppNavItem[] => [
     exact: true,
   },
   {
-    key: "dataset",
-    label: t("layout.nav.dataset"),
-    icon: "app:nav.dataset",
-    to: RouteLocation.datasetList,
+    key: "attack-scenarios",
+    label: t("layout.nav.attackScenarioLibrary"),
+    icon: "app:nav.attackScenarios",
+    to: RouteLocation.attackScenarioLibrary,
   },
   {
     key: "leaderboard",

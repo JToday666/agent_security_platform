@@ -246,7 +246,9 @@ def test_evaluation_report_api_returns_frontend_payload(
         **label_counts,
         **axis_counts,
     }
-    assert payload["breakdowns"]["datasetSummaries"][0]["datasetId"] == dataset_code
+    assert payload["breakdowns"]["evaluationItemSummaries"][0]["evaluationItemId"] == (
+        dataset_code
+    )
     assert payload["breakdowns"]["sampleScatterPoints"][0]["sampleId"] == (
         f"{api_db_helper.prefix}_sample"
     )

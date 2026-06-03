@@ -10,6 +10,8 @@ from sqlalchemy.orm import Session
 
 from app.models.benchmark import (
     AttackDeliveryType,
+    AttackScenario,
+    AttackScenarioRiskDomain,
     DatasetSource,
     RiskCategory,
     RiskSubtype,
@@ -45,9 +47,27 @@ def test_sample_import_deactivates_oracles_removed_from_plan(
     )
     db_session.add(category)
     db_session.flush()
+    scenario = AttackScenario(
+        code=f"{prefix}_scenario",
+        name="scenario",
+        sort_order=1,
+        is_active=True,
+    )
+    db_session.add(scenario)
+    db_session.flush()
+    db_session.add(
+        AttackScenarioRiskDomain(
+            attack_scenario_id=scenario.id,
+            risk_category_id=category.id,
+            sort_order=1,
+            is_active=True,
+        )
+    )
+    db_session.flush()
     db_session.add(
         RiskSubtype(
             category_id=category.id,
+            attack_scenario_id=scenario.id,
             code=sample.risk_subtype_code,
             name="subtype",
             sort_order=1,

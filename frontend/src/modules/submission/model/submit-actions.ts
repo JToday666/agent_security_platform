@@ -39,8 +39,8 @@ export const buildSubmitConfirmMessage = (
     t("submission.confirm.submitMethod", {
       method: payload.submitMethod.toUpperCase(),
     }),
-    t("submission.confirm.datasetCount", {
-      count: payload.selectedDatasetIds.length,
+    t("submission.confirm.evaluationItemCount", {
+      count: payload.evaluationItemIds.length,
     }),
     t("submission.confirm.leaderboardDisplay", {
       mode: leaderboardDisplayLabel,

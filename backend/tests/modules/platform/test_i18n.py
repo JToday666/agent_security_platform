@@ -123,9 +123,11 @@ def test_translate_uses_locale_fallback_and_interpolation() -> None:
     )
     assert (
         translate(
-            "evaluations.status.running_dataset", {"datasetName": "A1"}, locale="en-US"
+            "evaluations.status.running_evaluation_item",
+            {"evaluationItemName": "A1"},
+            locale="en-US",
         )
-        == "Currently evaluating dataset A1."
+        == "Currently evaluating evaluation item A1."
     )
     assert translate("unknown.key", locale="en-US", default="fallback") == "fallback"
 

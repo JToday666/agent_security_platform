@@ -1,0 +1,117 @@
+{
+  "api": {
+    "catalogLoadFailed": "Failed to load the attack scenario library. Try again later.",
+    "detailLoadFailed": "Failed to load evaluation item details. Try again later.",
+    "notFound": "Evaluation item not found."
+  },
+  "fallback": {
+    "media": "Media {index}",
+    "pending": "Pending",
+    "relatedResource": "Related resource {index}",
+    "unnamedAttackScenario": "Unnamed attack scenario",
+    "unnamedEvaluationItem": "Unnamed evaluation item",
+    "unnamedRiskDomain": "Unnamed risk domain"
+  },
+  "filter": {
+    "clearSearch": "Clear search",
+    "searchLabel": "Search",
+    "searchPlaceholder": "Search evaluation item, summary, attack scenario, or risk domain",
+    "sortLabel": "Sort",
+    "sortOptions": {
+      "default": "Default order",
+      "samplesDesc": "Sample count",
+      "updatedDesc": "Recently updated"
+    }
+  },
+  "catalog": {
+    "allCatalog": "All Catalog",
+    "allCatalogDescription": "View evaluation items across every attack scenario.",
+    "attackScenarioFilter": "Attack scenario filter",
+    "riskDomainFilter": "Risk domain filter",
+    "resultUnit": "items",
+    "stats": {
+      "attackScenarios": "Attack scenarios",
+      "evaluationItems": "Evaluation items",
+      "riskDomains": "Risk domains",
+      "samples": "Samples",
+      "updatedAt": "Last updated"
+    }
+  },
+  "labels": {
+    "attackScenario": "Attack scenario",
+    "riskDomain": "Risk domain",
+    "sampleCount": "Samples",
+    "updatedAt": "Last updated"
+  },
+  "media": {
+    "descriptionFallback": "This media helps explain the evaluation item structure and runtime behavior.",
+    "tab": "Media",
+    "unavailable": "Resource unavailable"
+  },
+  "pages": {
+    "catalog": {
+      "description": "Browse evaluation items by attack scenario and risk domain.",
+      "emptyMessage": "Try again later.",
+      "emptyTitle": "No evaluation items available",
+      "loadFailedTitle": "Attack scenario library failed to load",
+      "loadingMessage": "Please wait.",
+      "loadingTitle": "Loading attack scenario library",
+      "noMatchesMessage": "Try another keyword or filter.",
+      "noMatchesTitle": "No matching evaluation items found",
+      "reloadAction": "Reload",
+      "title": "Attack Scenario Library"
+    },
+    "detail": {
+      "backToCatalog": "Back to attack scenario library",
+      "descriptionFallback": "View this evaluation item's description, focus areas, resources, and sample profile.",
+      "detailLoadFailedTitle": "Evaluation item details failed to load",
+      "emptyHighlights": "No focus areas yet.",
+      "emptyScenarios": "No scenarios yet.",
+      "fullDescriptionFallback": "No detailed description yet.",
+      "loadingMessage": "Please wait.",
+      "loadingTitle": "Loading evaluation item details",
+      "loginToEvaluateItem": "Log in to evaluate this item",
+      "mainLabel": "Evaluation item detail content",
+      "notFoundTitle": "Evaluation item not found",
+      "retryAction": "Retry",
+      "sections": {
+        "assets": "Additional materials",
+        "details": "Details",
+        "highlights": "Focus areas",
+        "sampleProfile": "Sample profile",
+        "scenarios": "Scenarios"
+      },
+      "sameRiskTitle": "Same risk domain",
+      "sideActionTitle": "Actions",
+      "sideInfoTitle": "Evaluation item information",
+      "sideLabel": "Evaluation item side panel",
+      "submitWithEvaluationItem": "Start evaluation with this item"
+    }
+  },
+  "profile": {
+    "assetTypeTop": "Asset type top",
+    "deliveryDistribution": "Attack delivery",
+    "description": "Review sample difficulty, attack delivery, and protected assets for this evaluation item.",
+    "difficultyBuckets": "Difficulty buckets",
+    "emptyDistribution": "No distribution data available."
+  },
+  "resources": {
+    "emptyMessage": "This evaluation item has no resources or media to show.",
+    "emptyTitle": "No additional materials",
+    "tab": "Resources",
+    "tabsAria": "Material type",
+    "types": {
+      "demo": "Demo",
+      "docs": "Docs",
+      "download": "Download",
+      "link": "Link"
+    },
+    "view": "View resource"
+  },
+  "subcategory": {
+    "loginToEvaluate": "Log in to evaluate",
+    "noDescription": "No description",
+    "useEvaluationItem": "Use this item",
+    "viewDetails": "View details"
+  }
+}

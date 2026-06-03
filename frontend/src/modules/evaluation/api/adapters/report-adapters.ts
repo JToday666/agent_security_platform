@@ -183,21 +183,31 @@ export const adaptEvaluationReportPayload = (
             };
           })
         : [],
-      datasetSummaries: Array.isArray(breakdowns.datasetSummaries)
-        ? breakdowns.datasetSummaries.map((item) => {
+      datasetSummaries: (
+        Array.isArray(breakdowns.evaluationItemSummaries)
+          ? breakdowns.evaluationItemSummaries
+          : Array.isArray(breakdowns.datasetSummaries)
+            ? breakdowns.datasetSummaries
+            : []
+      ).map((item) => {
             const row = toRecord(item);
+            const datasetId =
+              toStringValue(row.evaluationItemId) ||
+              toStringValue(row.datasetId);
+            const datasetName =
+              toStringValue(row.evaluationItemName) ||
+              toStringValue(row.datasetName) ||
+              translateRuntimeMessage("evaluation.common.unnamedDataset");
+
             return {
-              datasetId: toStringValue(row.datasetId),
-              datasetName:
-                toStringValue(row.datasetName) ||
-                translateRuntimeMessage("evaluation.common.unnamedDataset"),
+              datasetId,
+              datasetName,
               total: Math.max(0, Math.round(toNumberValue(row.total, 0))),
               success: Math.max(0, Math.round(toNumberValue(row.success, 0))),
               failed: Math.max(0, Math.round(toNumberValue(row.failed, 0))),
               error: Math.max(0, Math.round(toNumberValue(row.error, 0))),
             };
-          })
-        : [],
+          }),
       sampleScatterPoints: Array.isArray(breakdowns.sampleScatterPoints)
         ? breakdowns.sampleScatterPoints
             .map((item) => {

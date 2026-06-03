@@ -10,14 +10,10 @@ import {
 } from "@/modules/evaluation/api/evaluation-api";
 import { getAgents } from "@/modules/agent/api/agent-api";
 import { getAgentSubmitDisabledReason } from "@/modules/agent/model/agent-display";
-import {
-  toggleCategoryDatasets as toggleCategoryDatasetsValue,
-  toggleDatasetId,
-} from "@/modules/dataset/lib/dataset-utils";
 import { useSubmitDraftStore } from "@/modules/submission/stores/submitDraftStore";
-import { useSubmitDatasetCatalog } from "./useSubmitDatasetCatalog";
+import { useSubmitAttackScenarioCatalog } from "./useSubmitAttackScenarioCatalog";
 import {
-  MAX_SUBMIT_DATASET_COUNT,
+  MAX_SUBMIT_EVALUATION_ITEM_COUNT,
   normalizeDifficulty,
   normalizeMaxSteps,
   normalizeTimeoutMinutes,
@@ -25,8 +21,8 @@ import {
 } from "@/modules/submission/model/parameter-validator";
 import { filterAvailableSubmitAgents } from "@/modules/submission/model/submit-agent-options";
 import {
-  buildDatasetQuerySignature,
-  resolveDatasetIdsFromQuery,
+  buildEvaluationItemQuerySignature,
+  resolveEvaluationItemIdsFromQuery,
 } from "@/modules/submission/lib/submit-query-utils";
 import {
   buildSubmitConfirmMessage,
@@ -57,9 +53,9 @@ export const useSubmitAgentPage = () => {
   const router = useRouter();
   const { t } = useI18n();
   const submitDraftStore = useSubmitDraftStore();
-  const datasetCatalog = useSubmitDatasetCatalog();
-  const datasetCatalogStatus = datasetCatalog.status;
-  const datasetCatalogErrorMessage = datasetCatalog.errorMessage;
+  const attackScenarioCatalog = useSubmitAttackScenarioCatalog();
+  const attackScenarioCatalogStatus = attackScenarioCatalog.status;
+  const attackScenarioCatalogErrorMessage = attackScenarioCatalog.errorMessage;
 
   const { form, expandedCategoryIds, pendingRequest } =
     storeToRefs(submitDraftStore);
@@ -83,7 +79,7 @@ export const useSubmitAgentPage = () => {
 
   const agents = ref<AgentListItem[]>([]);
   const fieldErrors = ref<SubmitFieldErrors>({});
-  const datasetSelectionNotice = ref("");
+  const evaluationItemSelectionNotice = ref("");
   const agentSelectionNotice = ref("");
   const confirmDialogVisible = ref(false);
   const confirmDialogTitle = ref(t("submission.confirm.submitTitle"));
@@ -91,15 +87,28 @@ export const useSubmitAgentPage = () => {
   const confirmedPayload = ref<SubmitAgentPayload | null>(null);
 
   let activeCatalogController: AbortController | null = null;
-  let appliedDatasetQuerySignature = "";
+  let appliedEvaluationItemQuerySignature = "";
   let appliedAgentQueryValue = "";
 
-  const enabledCategories = computed(
-    () => datasetCatalog.enabledCategories.value,
+  const enabledAttackScenarios = computed(
+    () => attackScenarioCatalog.enabledAttackScenarios.value,
   );
-  const validDatasetIds = computed(() => datasetCatalog.datasetIds.value);
-  const datasetCatalogReady = computed(
-    () => datasetCatalogStatus.value === "ready",
+  const selectedAttackScenario = computed(() =>
+    enabledAttackScenarios.value.find(
+      (scenario) =>
+        scenario.attackScenarioId === form.value?.selectedAttackScenarioId,
+    ) ?? null,
+  );
+  const enabledCategories = computed(
+    () => selectedAttackScenario.value?.riskDomains ?? [],
+  );
+  const validEvaluationItemIds = computed(() =>
+    enabledCategories.value.flatMap((riskDomain) =>
+      riskDomain.evaluationItems.map((item) => item.evaluationItemId),
+    ),
+  );
+  const attackScenarioCatalogReady = computed(
+    () => attackScenarioCatalogStatus.value === "ready",
   );
   const availableAgents = computed(() =>
     filterAvailableSubmitAgents(agents.value),
@@ -125,30 +134,34 @@ export const useSubmitAgentPage = () => {
   const selectedCategoryCount = computed(
     () =>
       enabledCategories.value.filter((category) =>
-        category.subcategories.some((item) =>
-          form.value?.selectedDatasetIds.includes(item.datasetId),
+        category.evaluationItems.some((item) =>
+          form.value?.selectedEvaluationItemIds.includes(
+            item.evaluationItemId,
+          ),
         ),
       ).length,
   );
-  const selectedDatasetNames = computed(() => {
+  const selectedEvaluationItemNames = computed(() => {
     if (!form.value) {
       return [];
     }
 
     const nameById = new Map(
       enabledCategories.value.flatMap((category) =>
-        category.subcategories.map(
-          (dataset) => [dataset.datasetId, dataset.name] as const,
+        category.evaluationItems.map(
+          (item) => [item.evaluationItemId, item.name] as const,
         ),
       ),
     );
 
-    return form.value.selectedDatasetIds
-      .map((datasetId) => nameById.get(datasetId))
+    return form.value.selectedEvaluationItemIds
+      .map((evaluationItemId) => nameById.get(evaluationItemId))
       .filter((name): name is string => Boolean(name));
   });
   const selectionErrorMessage = computed(
-    () => fieldErrors.value.selectedDatasetIds || datasetSelectionNotice.value,
+    () =>
+      fieldErrors.value.selectedEvaluationItemIds ||
+      evaluationItemSelectionNotice.value,
   );
   const agentErrorMessage = computed(
     () =>
@@ -170,63 +183,73 @@ export const useSubmitAgentPage = () => {
     }
   };
 
-  const setSelectedDatasetIds = (value: string[]) => {
+  const setSelectedEvaluationItemIds = (value: string[]) => {
     if (!form.value) {
       return;
     }
 
     const uniqueIds = Array.from(new Set(value));
-    const nextIds = uniqueIds.slice(0, MAX_SUBMIT_DATASET_COUNT);
-    form.value.selectedDatasetIds = nextIds;
+    const nextIds = uniqueIds.slice(0, MAX_SUBMIT_EVALUATION_ITEM_COUNT);
+    form.value.selectedEvaluationItemIds = nextIds;
 
-    datasetSelectionNotice.value =
-      uniqueIds.length > MAX_SUBMIT_DATASET_COUNT
-        ? t("submission.validation.selectedDatasetLimitNotice", {
-            count: MAX_SUBMIT_DATASET_COUNT,
+    evaluationItemSelectionNotice.value =
+      uniqueIds.length > MAX_SUBMIT_EVALUATION_ITEM_COUNT
+        ? t("submission.validation.selectedEvaluationItemLimitNotice", {
+            count: MAX_SUBMIT_EVALUATION_ITEM_COUNT,
           })
         : "";
 
-    if (nextIds.length > 0 && fieldErrors.value.selectedDatasetIds) {
+    if (nextIds.length > 0 && fieldErrors.value.selectedEvaluationItemIds) {
       fieldErrors.value = {
         ...fieldErrors.value,
-        selectedDatasetIds: undefined,
+        selectedEvaluationItemIds: undefined,
       };
     }
   };
 
-  const applyDatasetQuerySelection = () => {
-    if (!form.value || !datasetCatalogReady.value) {
+  const applyEvaluationItemQuerySelection = () => {
+    if (!form.value || !attackScenarioCatalogReady.value) {
       return;
     }
 
-    const queryValue = route.query.datasetIds as
+    const scenarioQueryValue =
+      typeof route.query.attackScenarioId === "string"
+        ? route.query.attackScenarioId.trim()
+        : "";
+    if (scenarioQueryValue) {
+      submitDraftStore.setAttackScenarioId(scenarioQueryValue);
+    }
+
+    const queryValue = route.query.evaluationItemIds as
       | string
       | string[]
       | null
       | undefined;
-    const querySignature = buildDatasetQuerySignature(queryValue);
+    const querySignature = buildEvaluationItemQuerySignature(queryValue);
 
-    if (querySignature === appliedDatasetQuerySignature) {
+    if (querySignature === appliedEvaluationItemQuerySignature) {
       return;
     }
 
-    appliedDatasetQuerySignature = querySignature;
+    appliedEvaluationItemQuerySignature = querySignature;
 
     if (!querySignature) {
       return;
     }
 
-    const resolvedDatasetIds = resolveDatasetIdsFromQuery(
+    const resolvedEvaluationItemIds = resolveEvaluationItemIdsFromQuery(
       queryValue,
-      validDatasetIds.value,
+      validEvaluationItemIds.value,
     );
 
-    if (!resolvedDatasetIds.length) {
-      datasetSelectionNotice.value = t("submission.errors.datasetUnavailable");
+    if (!resolvedEvaluationItemIds.length) {
+      evaluationItemSelectionNotice.value = t(
+        "submission.errors.evaluationItemUnavailable",
+      );
       return;
     }
 
-    setSelectedDatasetIds(resolvedDatasetIds);
+    setSelectedEvaluationItemIds(resolvedEvaluationItemIds);
   };
 
   const applyAgentQuerySelection = () => {
@@ -315,12 +338,12 @@ export const useSubmitAgentPage = () => {
   };
 
   const syncCatalogSelection = () => {
-    if (!datasetCatalog.catalog.value) {
+    if (!attackScenarioCatalog.catalog.value) {
       return;
     }
 
-    submitDraftStore.syncWithCatalog(datasetCatalog.catalog.value.categories);
-    applyDatasetQuerySelection();
+    submitDraftStore.syncWithCatalog(attackScenarioCatalog.catalog.value);
+    applyEvaluationItemQuerySelection();
   };
 
   const loadCatalog = async (force = false) => {
@@ -329,7 +352,7 @@ export const useSubmitAgentPage = () => {
     activeCatalogController = controller;
 
     try {
-      await datasetCatalog.fetchCatalog({
+      await attackScenarioCatalog.fetchCatalog({
         signal: controller.signal,
         force,
       });
@@ -350,10 +373,10 @@ export const useSubmitAgentPage = () => {
   const initializePage = async () => {
     startLoading();
     clearFormErrors();
-    datasetSelectionNotice.value = "";
+    evaluationItemSelectionNotice.value = "";
     confirmDialogVisible.value = false;
     confirmedPayload.value = null;
-    appliedDatasetQuerySignature = "";
+    appliedEvaluationItemQuerySignature = "";
     appliedAgentQueryValue = "";
 
     try {
@@ -370,7 +393,7 @@ export const useSubmitAgentPage = () => {
       }
 
       form.value.parameters = normalizeSubmitDraftParameters(form.value, meta);
-      setSelectedDatasetIds(form.value.selectedDatasetIds);
+      setSelectedEvaluationItemIds(form.value.selectedEvaluationItemIds);
 
       await loadCatalog(true);
       applyAgentQuerySelection();
@@ -381,46 +404,55 @@ export const useSubmitAgentPage = () => {
     }
   };
 
-  const selectAllDatasets = () => {
-    setSelectedDatasetIds(validDatasetIds.value);
+  const selectAllEvaluationItems = () => {
+    setSelectedEvaluationItemIds(validEvaluationItemIds.value);
   };
 
-  const clearAllDatasets = () => {
-    setSelectedDatasetIds([]);
+  const clearAllEvaluationItems = () => {
+    setSelectedEvaluationItemIds([]);
   };
 
-  const toggleCategoryDatasets = (categoryId: string) => {
+  const toggleRiskDomainEvaluationItems = (categoryId: string) => {
     if (!form.value) {
       return;
     }
 
     const category = enabledCategories.value.find(
-      (item) => item.categoryId === categoryId,
+      (item) => item.riskDomainId === categoryId,
     );
     if (!category) {
       return;
     }
 
-    setSelectedDatasetIds(
-      toggleCategoryDatasetsValue(
-        category,
-        form.value.selectedDatasetIds,
-        MAX_SUBMIT_DATASET_COUNT,
-      ),
+    const itemIds = category.evaluationItems.map((item) => item.evaluationItemId);
+    const fullySelected = itemIds.every((item) =>
+      form.value?.selectedEvaluationItemIds.includes(item),
+    );
+    setSelectedEvaluationItemIds(
+      fullySelected
+        ? form.value.selectedEvaluationItemIds.filter(
+            (item) => !itemIds.includes(item),
+          )
+        : Array.from(
+            new Set([...form.value.selectedEvaluationItemIds, ...itemIds]),
+          ).slice(0, MAX_SUBMIT_EVALUATION_ITEM_COUNT),
     );
   };
 
-  const toggleDataset = (datasetId: string) => {
+  const toggleEvaluationItem = (evaluationItemId: string) => {
     if (!form.value) {
       return;
     }
 
-    setSelectedDatasetIds(
-      toggleDatasetId(
-        datasetId,
-        form.value.selectedDatasetIds,
-        MAX_SUBMIT_DATASET_COUNT,
-      ),
+    setSelectedEvaluationItemIds(
+      form.value.selectedEvaluationItemIds.includes(evaluationItemId)
+        ? form.value.selectedEvaluationItemIds.filter(
+            (item) => item !== evaluationItemId,
+          )
+        : [...form.value.selectedEvaluationItemIds, evaluationItemId].slice(
+            0,
+            MAX_SUBMIT_EVALUATION_ITEM_COUNT,
+          ),
     );
   };
 
@@ -432,7 +464,17 @@ export const useSubmitAgentPage = () => {
     submitDraftStore.setExpandedCategoryIds(nextExpanded);
   };
 
-  const retryDatasetCatalog = () => {
+  const setAttackScenarioId = (attackScenarioId: string) => {
+    submitDraftStore.setAttackScenarioId(attackScenarioId);
+    evaluationItemSelectionNotice.value = "";
+    fieldErrors.value = {
+      ...fieldErrors.value,
+      selectedEvaluationItemIds: undefined,
+    };
+    appliedEvaluationItemQuerySignature = "";
+  };
+
+  const retryAttackScenarioCatalog = () => {
     void loadCatalog(true);
   };
 
@@ -443,15 +485,15 @@ export const useSubmitAgentPage = () => {
 
     submitDraftStore.resetDraft(
       submitMeta.value,
-      datasetCatalog.catalog.value?.categories ?? [],
+      attackScenarioCatalog.catalog.value,
     );
     clearFormErrors();
-    datasetSelectionNotice.value = "";
+    evaluationItemSelectionNotice.value = "";
     confirmDialogVisible.value = false;
     confirmedPayload.value = null;
-    appliedDatasetQuerySignature = "";
+    appliedEvaluationItemQuerySignature = "";
     appliedAgentQueryValue = "";
-    applyDatasetQuerySelection();
+    applyEvaluationItemQuerySelection();
     applyAgentQuerySelection();
   };
 
@@ -467,13 +509,13 @@ export const useSubmitAgentPage = () => {
       return;
     }
 
-    if (datasetCatalogStatus.value === "empty") {
-      submitError.value = t("submission.errors.noDataset");
+    if (attackScenarioCatalogStatus.value === "empty") {
+      submitError.value = t("submission.errors.noEvaluationItems");
       return;
     }
 
-    if (!datasetCatalogReady.value) {
-      submitError.value = t("submission.errors.datasetCatalogPending");
+    if (!attackScenarioCatalogReady.value) {
+      submitError.value = t("submission.errors.catalogPending");
       return;
     }
 
@@ -484,7 +526,7 @@ export const useSubmitAgentPage = () => {
       const validation = validateSubmitPayload(
         payload,
         submitMeta.value,
-        validDatasetIds.value,
+        validEvaluationItemIds.value,
         activeAgentIds.value,
         t,
       );
@@ -538,7 +580,7 @@ export const useSubmitAgentPage = () => {
   };
 
   const canSubmit = computed(() => {
-    if (!form.value || !submitMeta.value || !datasetCatalogReady.value) {
+    if (!form.value || !submitMeta.value || !attackScenarioCatalogReady.value) {
       return false;
     }
 
@@ -550,7 +592,7 @@ export const useSubmitAgentPage = () => {
     return validateSubmitPayload(
       payload,
       submitMeta.value,
-      validDatasetIds.value,
+      validEvaluationItemIds.value,
       activeAgentIds.value,
       t,
     ).valid;
@@ -627,16 +669,16 @@ export const useSubmitAgentPage = () => {
   );
 
   watch(
-    () => form.value?.selectedDatasetIds,
+    () => form.value?.selectedEvaluationItemIds,
     (value) => {
       if (!value) {
         return;
       }
 
-      if (value.length > 0 && fieldErrors.value.selectedDatasetIds) {
+      if (value.length > 0 && fieldErrors.value.selectedEvaluationItemIds) {
         fieldErrors.value = {
           ...fieldErrors.value,
-          selectedDatasetIds: undefined,
+          selectedEvaluationItemIds: undefined,
         };
       }
     },
@@ -646,10 +688,10 @@ export const useSubmitAgentPage = () => {
   );
 
   watch(
-    () => route.query.datasetIds,
+    () => [route.query.attackScenarioId, route.query.evaluationItemIds],
     () => {
       if (!pageLoading.value) {
-        applyDatasetQuerySelection();
+        applyEvaluationItemQuerySelection();
       }
     },
   );
@@ -685,11 +727,13 @@ export const useSubmitAgentPage = () => {
     selectedAgentSubmitDisabledReason,
     agentErrorMessage,
     expandedCategoryIds,
-    datasetCatalogStatus,
-    datasetCatalogErrorMessage,
+    attackScenarioCatalogStatus,
+    attackScenarioCatalogErrorMessage,
+    enabledAttackScenarios,
+    selectedAttackScenario,
     enabledCategories,
     selectedCategoryCount,
-    selectedDatasetNames,
+    selectedEvaluationItemNames,
     selectionErrorMessage,
     confirmDialogVisible,
     confirmDialogTitle,
@@ -697,15 +741,16 @@ export const useSubmitAgentPage = () => {
     canSubmit,
     setSubmitMethod: submitDraftStore.setSubmitMethod,
     setAgentId: submitDraftStore.setAgentId,
+    setAttackScenarioId,
     initializePage,
     handleSubmit,
     confirmSubmit,
-    selectAllDatasets,
-    clearAllDatasets,
-    toggleCategoryDatasets,
-    toggleDataset,
+    selectAllEvaluationItems,
+    clearAllEvaluationItems,
+    toggleRiskDomainEvaluationItems,
+    toggleEvaluationItem,
     toggleExpandedCategory,
-    retryDatasetCatalog,
+    retryAttackScenarioCatalog,
     resetDraft,
   };
 };

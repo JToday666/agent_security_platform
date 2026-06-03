@@ -19,17 +19,21 @@ export const publicRoutes: RouteRecordRaw[] = [
         component: () => import("@/modules/public/pages/HomePage.vue"),
       },
       {
-        path: "dataset",
-        name: ROUTE_NAME.DATASET_LIST,
+        path: "attack-scenarios",
+        name: ROUTE_NAME.ATTACK_SCENARIO_LIBRARY,
         component: () =>
-          import("@/modules/dataset/pages/DatasetCatalogPage.vue"),
+          import(
+            "@/modules/attack-scenario-library/pages/AttackScenarioCatalogPage.vue"
+          ),
         meta: { restoreSessionScroll: true },
       },
       {
-        path: "dataset/:datasetId",
-        name: ROUTE_NAME.DATASET_DETAIL,
+        path: "attack-scenarios/evaluation-items/:evaluationItemId",
+        name: ROUTE_NAME.EVALUATION_ITEM_DETAIL,
         component: () =>
-          import("@/modules/dataset/pages/DatasetDetailPage.vue"),
+          import(
+            "@/modules/attack-scenario-library/pages/EvaluationItemDetailPage.vue"
+          ),
         meta: { restoreSessionScroll: true },
       },
       {

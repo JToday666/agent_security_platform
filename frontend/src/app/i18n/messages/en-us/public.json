@@ -13,15 +13,15 @@
     },
     "workflow": {
       "browse": {
-        "title": "Browse Datasets",
-        "description": "View dataset descriptions, samples, and resources by risk domain.",
-        "action": "View Catalog"
+        "title": "Browse Attack Scenario Library",
+        "description": "Confirm the evaluation scope by attack scenario, risk domain, and evaluation item.",
+        "action": "View Library"
       },
       "submit": {
         "title": "Create Evaluation",
         "description": "Enter Agent information and select the evaluation scope.",
         "actionAuthed": "Start Submission",
-        "actionGuest": "Browse Datasets First"
+        "actionGuest": "Browse Library First"
       },
       "track": {
         "title": "Track Progress",
@@ -40,11 +40,11 @@
       "capabilities": {
         "kicker": "Platform Capabilities",
         "title": "Cover the key stages before, during, and after evaluation",
-        "description": "The platform organizes evaluation around datasets, Agent registration, run tracking, report review, and leaderboard comparison.",
+        "description": "The platform organizes evaluation around the attack scenario library, Agent registration, run tracking, report review, and leaderboard comparison.",
         "items": {
-          "datasets": {
-            "title": "Risk Dataset Catalog",
-            "description": "Review dataset descriptions, samples, and resources by risk domain before choosing the evaluation scope."
+          "attackScenarioLibrary": {
+            "title": "Attack Scenario Library",
+            "description": "Review scope descriptions by attack scenario, risk domain, and evaluation item before choosing coverage."
           },
           "evaluation": {
             "title": "Agent Registration and Submission",
@@ -63,11 +63,11 @@
       "loop": {
         "kicker": "Evaluation Loop",
         "title": "Build a complete path from scope selection to evidence review",
-        "description": "Users can start with datasets, then submit, track execution, review results, and publish to the public ranking.",
+        "description": "Users can start with attack scenarios and evaluation items, then submit, track execution, review results, and publish to the public ranking.",
         "items": {
           "scope": {
             "title": "Set the Evaluation Scope",
-            "description": "Choose datasets and parameters first, including risk domains, difficulty, timeout, and max steps."
+            "description": "Choose an attack scenario, evaluation items, and parameters first, including risk domains, difficulty, timeout, and max steps."
           },
           "submit": {
             "title": "Submit and Track Tasks",
@@ -86,7 +86,7 @@
         "items": {
           "standard": {
             "title": "Standardized Inputs",
-            "description": "Datasets, parameters, and field mappings are validated before submission to reduce invalid tasks."
+            "description": "Attack scenarios, evaluation items, parameters, and field mappings are validated before submission to reduce invalid tasks."
           },
           "privacy": {
             "title": "Anonymous Display Option",
@@ -121,11 +121,11 @@
       "experience": {
         "kicker": "Start Now",
         "title": "Enter common workflows directly",
-        "description": "Choose datasets, submit an evaluation, open the leaderboard, or contact the platform team based on the current task.",
+        "description": "Choose the attack scenario library, submit an evaluation, open the leaderboard, or contact the platform team based on the current task.",
         "items": {
           "catalog": {
-            "title": "View Datasets",
-            "description": "Browse available evaluation datasets and risk-domain descriptions."
+            "title": "View Attack Scenario Library",
+            "description": "Browse available attack scenarios, risk domains, and evaluation item descriptions."
           },
           "submit": {
             "title": "Submit Evaluation",
@@ -145,7 +145,7 @@
   },
   "contact": {
     "title": "Contact Us",
-    "description": "The platform team handles evaluation access, dataset support, and collaboration inquiries.",
+    "description": "The platform team handles evaluation access, attack scenario library support, and collaboration inquiries.",
     "logoAlt": "Agent Security Evaluation Platform mark",
     "email": "Email",
     "phone": "Phone",
@@ -155,7 +155,7 @@
     "primary": {
       "kicker": "Official Contact",
       "title": "Contact the Platform Team",
-      "description": "Evaluation access, dataset support, collaboration inquiries, and public resource maintenance are handled by the platform team.",
+      "description": "Evaluation access, attack scenario library support, collaboration inquiries, and public resource maintenance are handled by the platform team.",
       "emailAction": "Email Team",
       "phoneAction": "Call Team"
     },
@@ -166,10 +166,10 @@
           "description": "Ask about Agent integration, submission preparation, template choice, and evaluation flow.",
           "action": "Ask by Email"
         },
-        "datasets": {
-          "title": "Datasets and Scope",
-          "description": "Review available datasets and risk-domain descriptions before confirming the evaluation scope.",
-          "action": "View Datasets"
+        "attackScenarioLibrary": {
+          "title": "Attack Scenario Library and Scope",
+          "description": "Review available attack scenarios, risk domains, and evaluation items before confirming the evaluation scope.",
+          "action": "View Library"
         },
         "collaboration": {
           "title": "Collaboration",
@@ -189,7 +189,7 @@
     "title": "Page Not Found",
     "description": "This address is not available. Use navigation or the entries below.",
     "sectionTitle": "Available Entries",
-    "sectionDescription": "Return home or start again from the evaluation catalog.",
-    "datasetAction": "View Evaluation Catalog"
+    "sectionDescription": "Return home or start again from the attack scenario library.",
+    "attackScenarioLibraryAction": "View Attack Scenario Library"
   }
 }

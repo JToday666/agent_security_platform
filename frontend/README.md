@@ -6,9 +6,9 @@
 
 当前前端覆盖以下能力：
 
-- 公共页面：首页、数据集目录、数据集详情、排行榜、联系页、404
+- 公共页面：首页、攻击场景库、评测项详情、排行榜、联系页、404
 - 账号能力：登录、注册、登录态恢复、个人资料与头像上传
-- 数据集能力：目录加载、详情加载、分类筛选、排序、详情跳转提交页
+- 攻击场景库能力：目录加载、评测项详情加载、攻击场景与风险域筛选、排序、详情跳转提交页
 - 智能体能力：Agent 管理、注册、详情、验证、归档、复制新建
 - 评测能力：提交前预检查、正式提交、历史列表、趋势分析、详情报告阅读流、ECharts 图表、代表样本证据、任务动作
 - 排行榜能力：读取 `/leaderboards/current`，展示当前排序下第一名，支持综合分、安全能力、高难分和风险分排序
@@ -17,7 +17,7 @@
 源码按三层组织：
 
 - `src/app/`：应用壳层，负责启动、路由、布局、导航、国际化入口、全局样式
-- `src/modules/`：业务模块层，按 `account / agent / dataset / evaluation / leaderboard / public / submission` 分域
+- `src/modules/`：业务模块层，按 `account / agent / attack-scenario-library / evaluation / leaderboard / public / submission` 分域
 - `src/shared/`：共享基础设施，收口 API 基础封装、类型、工具与共享 UI
 
 更细的内部说明在 `frontend/docs/`，跨端接口契约主维护在 `share/`。
@@ -89,11 +89,11 @@ Node 与包管理器要求以 `package.json` 为准。
 页面顶部导航提供语言切换器。桌面端位于“探索 / 工作台”入口右侧、用户入口左侧；移动端位于导航抽屉内。切换时会保留当前路径、查询参数和 hash，并替换 URL 第一段 locale。也可以直接修改 URL 第一段 locale，例如：
 
 ```text
-/zh-CN/dataset -> /en-US/dataset
+/zh-CN/attack-scenarios -> /en-US/attack-scenarios
 /zh-CN/user/agents -> /ja-JP/user/agents
 ```
 
-支持的 URL locale 为 `zh-CN`、`en-US`、`fr-FR`、`es-ES`、`ja-JP`。无 locale 的入口会自动补全为首选语言，例如 `/dataset` 会跳转到 `/{preferredLocale}/dataset`。
+支持的 URL locale 为 `zh-CN`、`en-US`、`fr-FR`、`es-ES`、`ja-JP`。无 locale 的入口会自动补全为首选语言，例如 `/attack-scenarios` 会跳转到 `/{preferredLocale}/attack-scenarios`。
 
 ## 5. 当前共享 UI 基线
 
@@ -144,7 +144,7 @@ pnpm build
 | Vue 组件（`components / views / pages`） | `PascalCase` | `UserProfile.vue`    |
 | Composables                              | `camelCase`  | `useAuth.ts`         |
 | Pinia store 模块                         | `camelCase`  | `userStore.ts`       |
-| 路由文件                                 | `kebab-case` | `dataset-routes.ts`  |
+| 路由文件                                 | `kebab-case` | `public-routes.ts`   |
 | API 文件                                 | `kebab-case` | `leaderboard-api.ts` |
 | 工具函数                                 | `kebab-case` | `format-date.ts`     |
 | 自定义指令                               | `kebab-case` | `v-permission.ts`    |
@@ -164,7 +164,7 @@ pnpm build
 - [路由布局与导航说明](./docs/02-架构/路由布局与导航说明.md)
 - [国际化架构说明](./docs/02-架构/国际化架构说明.md)
 - [账号与鉴权模块说明](./docs/03-模块/账号与鉴权模块说明.md)
-- [数据集模块说明](./docs/03-模块/数据集模块说明.md)
+- [攻击场景库模块说明](./docs/03-模块/攻击场景库模块说明.md)
 - [智能体模块说明](./docs/03-模块/智能体模块说明.md)
 - [提交评测模块说明](./docs/03-模块/提交评测模块说明.md)
 - [评测模块说明](./docs/03-模块/评测模块说明.md)
@@ -178,7 +178,7 @@ pnpm build
 - [API 接口协议总表](../share/API接口协议.md)
 - [国际化收口说明](../share/i18n方案.md)
 - [用户接口补充说明](../share/user接口.md)
-- [数据集接口补充说明](../share/database接口.md)
+- [攻击场景库接口补充说明](../share/attack-scenario-library接口.md)
 - [提交接口补充说明](../share/submit接口.md)
 - [Agent 接口补充说明](../share/agent接口.md)
 - [报告接口补充说明](../share/report接口.md)

@@ -13,15 +13,15 @@
     },
     "workflow": {
       "browse": {
-        "title": "Explorar conjuntos de datos",
-        "description": "Consulta descripciones, muestras y recursos por dominio de riesgo.",
-        "action": "Ver catálogo"
+        "title": "Explorar biblioteca de escenarios de ataque",
+        "description": "Confirma el alcance por escenario de ataque, dominio de riesgo y elemento de evaluación.",
+        "action": "Ver biblioteca"
       },
       "submit": {
         "title": "Crear evaluación",
         "description": "Introduce información del Agent y selecciona el alcance de evaluación.",
         "actionAuthed": "Comenzar envío",
-        "actionGuest": "Ver conjuntos primero"
+        "actionGuest": "Ver biblioteca primero"
       },
       "track": {
         "title": "Seguir progreso",
@@ -40,11 +40,11 @@
       "capabilities": {
         "kicker": "Capacidades de la plataforma",
         "title": "Cubrir las etapas clave antes, durante y después de la evaluación",
-        "description": "La plataforma organiza la evaluación alrededor de conjuntos de datos, registro de Agent, seguimiento, informes y comparación en clasificación.",
+        "description": "La plataforma organiza la evaluación alrededor de la biblioteca de escenarios de ataque, registro de Agent, seguimiento, informes y comparación en clasificación.",
         "items": {
-          "datasets": {
-            "title": "Catálogo de conjuntos de riesgo",
-            "description": "Revisa descripciones, muestras y recursos por dominio de riesgo antes de elegir el alcance de evaluación."
+          "attackScenarioLibrary": {
+            "title": "Biblioteca de escenarios de ataque",
+            "description": "Revisa descripciones por escenario de ataque, dominio de riesgo y elemento de evaluación antes de elegir la cobertura."
           },
           "evaluation": {
             "title": "Registro y envío de Agent",
@@ -63,11 +63,11 @@
       "loop": {
         "kicker": "Ciclo de evaluación",
         "title": "Crear un recorrido completo del alcance a la evidencia",
-        "description": "Los usuarios pueden empezar por conjuntos de datos, enviar, seguir la ejecución, revisar resultados y publicar en la clasificación.",
+        "description": "Los usuarios pueden empezar por escenarios de ataque y elementos de evaluación, enviar, seguir la ejecución, revisar resultados y publicar en la clasificación.",
         "items": {
           "scope": {
             "title": "Definir el alcance",
-            "description": "Elige primero conjuntos y parámetros, incluidos dominios de riesgo, dificultad, tiempo límite y pasos máximos."
+            "description": "Elige primero un escenario de ataque, elementos de evaluación y parámetros, incluidos dominios de riesgo, dificultad, tiempo límite y pasos máximos."
           },
           "submit": {
             "title": "Enviar y seguir tareas",
@@ -86,7 +86,7 @@
         "items": {
           "standard": {
             "title": "Entradas estandarizadas",
-            "description": "Los conjuntos, parámetros y mapeos de campos se validan antes del envío para reducir tareas no válidas."
+            "description": "Los escenarios de ataque, elementos de evaluación, parámetros y mapeos de campos se validan antes del envío para reducir tareas no válidas."
           },
           "privacy": {
             "title": "Opción de visualización anónima",
@@ -121,11 +121,11 @@
       "experience": {
         "kicker": "Empezar ahora",
         "title": "Entrar directamente en flujos comunes",
-        "description": "Elige conjuntos, envía una evaluación, abre la clasificación o contacta con el equipo según la tarea actual.",
+        "description": "Elige la biblioteca de escenarios de ataque, envía una evaluación, abre la clasificación o contacta con el equipo según la tarea actual.",
         "items": {
           "catalog": {
-            "title": "Ver conjuntos",
-            "description": "Explora conjuntos de evaluación disponibles y descripciones de dominios de riesgo."
+            "title": "Ver biblioteca de escenarios de ataque",
+            "description": "Explora escenarios de ataque, dominios de riesgo y descripciones de elementos de evaluación disponibles."
           },
           "submit": {
             "title": "Enviar evaluación",
@@ -145,7 +145,7 @@
   },
   "contact": {
     "title": "Contactar",
-    "description": "El equipo de la plataforma atiende acceso a evaluaciones, soporte de conjuntos y consultas de colaboración.",
+    "description": "El equipo de la plataforma atiende acceso a evaluaciones, soporte de la biblioteca de escenarios de ataque y consultas de colaboración.",
     "logoAlt": "Marca de la plataforma de evaluación de seguridad de Agents",
     "email": "Correo",
     "phone": "Teléfono",
@@ -155,7 +155,7 @@
     "primary": {
       "kicker": "Contacto oficial",
       "title": "Contactar con el equipo de la plataforma",
-      "description": "Acceso a evaluaciones, soporte de conjuntos, colaboración y mantenimiento de recursos públicos quedan a cargo del equipo de la plataforma.",
+      "description": "Acceso a evaluaciones, soporte de la biblioteca de escenarios de ataque, colaboración y mantenimiento de recursos públicos quedan a cargo del equipo de la plataforma.",
       "emailAction": "Escribir al equipo",
       "phoneAction": "Llamar al equipo"
     },
@@ -166,10 +166,10 @@
           "description": "Consulta sobre integración de Agent, preparación del envío, elección de plantilla y flujo de evaluación.",
           "action": "Consultar por correo"
         },
-        "datasets": {
-          "title": "Conjuntos y alcance",
-          "description": "Revisa los conjuntos disponibles y las descripciones de riesgos antes de confirmar el alcance.",
-          "action": "Ver conjuntos"
+        "attackScenarioLibrary": {
+          "title": "Biblioteca de escenarios de ataque y alcance",
+          "description": "Revisa escenarios de ataque, dominios de riesgo y elementos de evaluación antes de confirmar el alcance.",
+          "action": "Ver biblioteca"
         },
         "collaboration": {
           "title": "Colaboración",
@@ -189,7 +189,7 @@
     "title": "Página no encontrada",
     "description": "Esta dirección no está disponible. Usa la navegación o las entradas siguientes.",
     "sectionTitle": "Entradas disponibles",
-    "sectionDescription": "Vuelve al inicio o empieza de nuevo desde el catálogo de evaluación.",
-    "datasetAction": "Ver catálogo"
+    "sectionDescription": "Vuelve al inicio o empieza de nuevo desde la biblioteca de escenarios de ataque.",
+    "attackScenarioLibraryAction": "Ver biblioteca de escenarios de ataque"
   }
 }

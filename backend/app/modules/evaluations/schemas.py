@@ -31,7 +31,8 @@ class EvaluationCreateRequest(CamelModel):
     request_id: str
     submit_method: Literal["api"]
     agent_id: str
-    dataset_ids: list[str]
+    attack_scenario_id: str
+    evaluation_item_ids: list[str]
     parameters: EvaluationSubmitParameters
     public_to_leaderboard: bool = True
     leaderboard_display_mode: Literal["public", "anonymous"] = "public"
@@ -111,8 +112,10 @@ class EvaluationListItem(CamelModel):
     finalization_reason: str | None = None
     public_to_leaderboard: bool
     leaderboard_display_mode: str
-    dataset_ids: list[str]
-    dataset_names: list[str]
+    attack_scenario_id: str | None = None
+    attack_scenario_name: str | None = None
+    evaluation_item_ids: list[str]
+    evaluation_item_names: list[str]
     submit_method: str
     score: float | None = None
     owner_name: str
@@ -123,12 +126,12 @@ class EvaluationProgress(CamelModel):
     """评测任务进度信息。"""
 
     percent: int
-    total_dataset_count: int
-    completed_dataset_count: int
+    total_evaluation_item_count: int
+    completed_evaluation_item_count: int
     total_sample_count: int
     completed_sample_count: int
-    running_dataset_id: str | None = None
-    running_dataset_name: str | None = None
+    running_evaluation_item_id: str | None = None
+    running_evaluation_item_name: str | None = None
     pause_deadline_at: str | None = None
     status_text: str
 
@@ -255,11 +258,11 @@ class EvaluationReportDifficultyBucket(CamelModel):
     success_rate: float
 
 
-class EvaluationReportDatasetSummary(CamelModel):
-    """按数据集统计的样本结果。"""
+class EvaluationReportEvaluationItemSummary(CamelModel):
+    """按评测项统计的样本结果。"""
 
-    dataset_id: str
-    dataset_name: str
+    evaluation_item_id: str
+    evaluation_item_name: str
     total: int
     success: int
     failed: int
@@ -302,7 +305,7 @@ class EvaluationReportBreakdowns(CamelModel):
 
     outcome_summary: EvaluationReportOutcomeSummary
     difficulty_buckets: list[EvaluationReportDifficultyBucket]
-    dataset_summaries: list[EvaluationReportDatasetSummary]
+    evaluation_item_summaries: list[EvaluationReportEvaluationItemSummary]
     sample_scatter_points: list[EvaluationReportScatterPoint]
 
 
@@ -318,6 +321,8 @@ class EvaluationReportPayload(CamelModel):
     """前端完整报告页响应体。"""
 
     evaluation_id: str
+    attack_scenario_id: str | None = None
+    attack_scenario_name: str | None = None
     status: str
     generated_at: str
     scores: EvaluationReportScores
@@ -342,8 +347,10 @@ class EvaluationDetail(CamelModel):
     score: float | None = None
     public_to_leaderboard: bool
     leaderboard_display_mode: str
-    dataset_ids: list[str]
-    dataset_names: list[str]
+    attack_scenario_id: str | None = None
+    attack_scenario_name: str | None = None
+    evaluation_item_ids: list[str]
+    evaluation_item_names: list[str]
     submit_method: str
     owner_name: str
     parameters: EvaluationParameters

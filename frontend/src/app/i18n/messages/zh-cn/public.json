@@ -13,15 +13,15 @@
     },
     "workflow": {
       "browse": {
-        "title": "浏览数据集",
-        "description": "按风险域查看数据集说明、样例和资源。",
-        "action": "查看目录"
+        "title": "浏览攻击场景库",
+        "description": "按攻击场景、风险域和评测项确认评测范围。",
+        "action": "查看场景库"
       },
       "submit": {
         "title": "创建评测任务",
         "description": "填写智能体信息并选择本次评测范围。",
         "actionAuthed": "开始提交",
-        "actionGuest": "先浏览数据集"
+        "actionGuest": "先浏览场景库"
       },
       "track": {
         "title": "跟踪任务进度",
@@ -40,11 +40,11 @@
       "capabilities": {
         "kicker": "平台能力",
         "title": "覆盖评测前、中、后的关键环节",
-        "description": "平台围绕数据集、Agent 注册、运行跟踪、报告阅读和排行榜对比组织评测流程。",
+        "description": "平台围绕攻击场景库、Agent 注册、运行跟踪、报告阅读和排行榜对比组织评测流程。",
         "items": {
-          "datasets": {
-            "title": "风险数据集目录",
-            "description": "按风险域查看数据集说明、样例和资源，先明确本次评测覆盖范围。"
+          "attackScenarioLibrary": {
+            "title": "攻击场景库",
+            "description": "按攻击场景、风险域和评测项查看范围说明，先明确本次评测覆盖内容。"
           },
           "evaluation": {
             "title": "Agent 注册与提交",
@@ -63,11 +63,11 @@
       "loop": {
         "kicker": "评测闭环",
         "title": "从评测范围到证据复核形成完整路径",
-        "description": "用户可以从数据集选择开始，完成提交、执行跟踪、结果复核和公开展示。",
+        "description": "用户可以从攻击场景和评测项选择开始，完成提交、执行跟踪、结果复核和公开展示。",
         "items": {
           "scope": {
             "title": "确定评测范围",
-            "description": "先选择数据集与参数，明确风险域、难度、超时和最大步数。"
+            "description": "先选择攻击场景、评测项与参数，明确风险域、难度、超时和最大步数。"
           },
           "submit": {
             "title": "提交并跟踪任务",
@@ -86,7 +86,7 @@
         "items": {
           "standard": {
             "title": "标准化输入",
-            "description": "数据集、参数和字段映射在提交前完成校验，减少无效任务。"
+            "description": "攻击场景、评测项、参数和字段映射在提交前完成校验，减少无效任务。"
           },
           "privacy": {
             "title": "匿名展示选项",
@@ -121,11 +121,11 @@
       "experience": {
         "kicker": "开始体验",
         "title": "直接进入常用工作流",
-        "description": "根据当前任务选择数据集、提交评测、查看排行榜或联系平台团队。",
+        "description": "根据当前任务选择攻击场景库、提交评测、查看排行榜或联系平台团队。",
         "items": {
           "catalog": {
-            "title": "查看数据集",
-            "description": "浏览当前可用评测数据集和风险域说明。"
+            "title": "查看攻击场景库",
+            "description": "浏览当前可用攻击场景、风险域和评测项说明。"
           },
           "submit": {
             "title": "提交评测",
@@ -145,7 +145,7 @@
   },
   "contact": {
     "title": "联系我们",
-    "description": "平台团队受理评测接入、数据集支持与合作对接。",
+    "description": "平台团队受理评测接入、攻击场景库支持与合作对接。",
     "logoAlt": "智能体安全评测平台标识",
     "email": "邮箱",
     "phone": "电话",
@@ -155,7 +155,7 @@
     "primary": {
       "kicker": "官方联络",
       "title": "联系平台团队",
-      "description": "评测接入、数据集支持、合作对接与公开资源维护由平台团队统一受理。",
+      "description": "评测接入、攻击场景库支持、合作对接与公开资源维护由平台团队统一受理。",
       "emailAction": "邮件联系",
       "phoneAction": "电话联系"
     },
@@ -166,10 +166,10 @@
           "description": "咨询 Agent 接入、提交准备、模板选择和评测流程相关问题。",
           "action": "邮件咨询"
         },
-        "datasets": {
-          "title": "数据集与评测范围",
-          "description": "先查看已有数据集和风险域说明，确认本次评测覆盖范围。",
-          "action": "查看数据集"
+        "attackScenarioLibrary": {
+          "title": "攻击场景库与评测范围",
+          "description": "先查看已有攻击场景、风险域和评测项说明，确认本次评测覆盖范围。",
+          "action": "查看场景库"
         },
         "collaboration": {
           "title": "合作咨询",
@@ -189,7 +189,7 @@
     "title": "页面未找到",
     "description": "当前地址暂不可访问，请从导航或下方入口重新进入。",
     "sectionTitle": "可用入口",
-    "sectionDescription": "您可以返回首页，或从评测目录重新开始浏览。",
-    "datasetAction": "查看评测目录"
+    "sectionDescription": "您可以返回首页，或从攻击场景库重新开始浏览。",
+    "attackScenarioLibraryAction": "查看攻击场景库"
   }
 }

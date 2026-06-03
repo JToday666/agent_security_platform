@@ -42,6 +42,7 @@ def main(argv: list[str] | None = None) -> int:
     bundle = load_metadata_bundle(args.registry_root.resolve())
     print(
         "[import_metadata] validated "
+        f"scenarios={len(bundle.attack_scenarios)} "
         f"sources={len(bundle.dataset_sources)} "
         f"delivery_types={len(bundle.attack_delivery_types)} "
         f"asset_types={len(bundle.asset_types)} "
@@ -58,6 +59,8 @@ def main(argv: list[str] | None = None) -> int:
 
     print(
         "[import_metadata] imported "
+        f"scenarios(created={result.created_attack_scenarios}, updated={result.updated_attack_scenarios}) "
+        f"scenario_risk_domains(created={result.created_scenario_risk_domains}, updated={result.updated_scenario_risk_domains}) "
         f"sources(created={result.created_sources}, updated={result.updated_sources}) "
         f"delivery_types(created={result.created_delivery_types}, updated={result.updated_delivery_types}) "
         f"asset_types(created={result.created_asset_types}, updated={result.updated_asset_types}) "

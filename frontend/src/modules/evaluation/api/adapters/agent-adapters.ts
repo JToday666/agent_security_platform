@@ -14,7 +14,7 @@ import { normalizeApiAssetUrl } from "@/shared/api/api-runtime";
 import {
   resolvePublicDatasetName,
   resolvePublicDatasetNames,
-} from "@/modules/dataset/lib/dataset-display-utils";
+} from "@/modules/attack-scenario-library/lib/evaluation-item-display-utils";
 import {
   normalizeEvaluationDownloads,
   normalizeEvaluationSampleSummary,
@@ -343,23 +343,35 @@ const normalizeProgress = (
 ): EvaluationProgress => {
   const candidate =
     value && typeof value === "object" ? (value as UnknownRecord) : {};
-  const runningDatasetId = toOptionalString(candidate.runningDatasetId);
+  const runningDatasetId =
+    toOptionalString(candidate.runningEvaluationItemId) ??
+    toOptionalString(candidate.runningDatasetId);
+  const runningDatasetNameValue =
+    toOptionalString(candidate.runningEvaluationItemName) ??
+    toOptionalString(candidate.runningDatasetName);
   const runningDatasetName = runningDatasetId
-    ? resolvePublicDatasetName(
-        runningDatasetId,
-        toOptionalString(candidate.runningDatasetName),
-      )
-    : toOptionalString(candidate.runningDatasetName);
+    ? resolvePublicDatasetName(runningDatasetId, runningDatasetNameValue)
+    : runningDatasetNameValue;
 
   return {
     percent: clampPercent(candidate.percent),
     totalDatasetCount: Math.max(
       0,
-      Math.round(toNumberValue(candidate.totalDatasetCount, datasetIds.length)),
+      Math.round(
+        toNumberValue(
+          candidate.totalEvaluationItemCount,
+          toNumberValue(candidate.totalDatasetCount, datasetIds.length),
+        ),
+      ),
     ),
     completedDatasetCount: Math.max(
       0,
-      Math.round(toNumberValue(candidate.completedDatasetCount, 0)),
+      Math.round(
+        toNumberValue(
+          candidate.completedEvaluationItemCount,
+          toNumberValue(candidate.completedDatasetCount, 0),
+        ),
+      ),
     ),
     totalSampleCount:
       candidate.totalSampleCount == null
@@ -386,12 +398,21 @@ const normalizeProgress = (
 export const adaptEvaluationRecord = (value: unknown): EvaluationRecord => {
   const candidate =
     value && typeof value === "object" ? (value as UnknownRecord) : {};
-  const datasetIds = toStringArray(candidate.datasetIds);
+  const evaluationItemIds = toStringArray(candidate.evaluationItemIds);
+  const datasetIds =
+    evaluationItemIds.length > 0
+      ? evaluationItemIds
+      : toStringArray(candidate.datasetIds);
+  const evaluationItemNames = Array.isArray(candidate.evaluationItemNames)
+    ? toStringArray(candidate.evaluationItemNames)
+    : [];
   const datasetNames = resolvePublicDatasetNames(
     datasetIds,
-    Array.isArray(candidate.datasetNames)
-      ? toStringArray(candidate.datasetNames)
-      : [],
+    evaluationItemNames.length > 0
+      ? evaluationItemNames
+      : Array.isArray(candidate.datasetNames)
+        ? toStringArray(candidate.datasetNames)
+        : [],
   );
 
   return {
@@ -414,6 +435,8 @@ export const adaptEvaluationRecord = (value: unknown): EvaluationRecord => {
       candidate.leaderboardDisplayMode,
       "public",
     ),
+    attackScenarioId: toOptionalString(candidate.attackScenarioId),
+    attackScenarioName: toOptionalString(candidate.attackScenarioName),
     datasetIds,
     datasetNames,
     submitMethod:

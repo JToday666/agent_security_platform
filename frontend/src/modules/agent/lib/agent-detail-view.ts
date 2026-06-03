@@ -3,7 +3,7 @@ import {
   type AppTranslator,
 } from "@/app/i18n/runtime-translator";
 import { getInvokeModeLabel } from "@/modules/agent/model/agent-display";
-import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
+import { formatDateTimeLabel } from "@/modules/attack-scenario-library/lib/attack-scenario-library-utils";
 import type {
   AgentAuthType,
   AgentDetail,

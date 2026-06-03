@@ -22,6 +22,8 @@ const createDetail = (
   finalizationReason: "completed",
   publicToLeaderboard: true,
   leaderboardDisplayMode: "public",
+  attackScenarioId: "prompt_injection",
+  attackScenarioName: "Prompt Injection",
   datasetIds: ["A1_identity_leakage"],
   datasetNames: ["Identity Leakage"],
   submitMethod: "api",

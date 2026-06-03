@@ -58,11 +58,11 @@
       :message="t('leaderboard.empty.message')"
     >
       <UiButton
-        :to="RouteLocation.datasetList"
+        :to="RouteLocation.attackScenarioLibrary"
         variant="primary"
-        leading-icon="app:action.browseDataset"
+        leading-icon="app:action.browseAttackScenarioLibrary"
       >
-        {{ t("common.actions.browseDataset") }}
+        {{ t("common.actions.browseAttackScenarioLibrary") }}
       </UiButton>
     </PageStatePanel>
   </div>

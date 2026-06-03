@@ -48,7 +48,7 @@
     "notGenerated": "未生成",
     "unnamedAgent": "未命名智能体",
     "unnamedCategory": "未命名分类",
-    "unnamedDataset": "未命名数据集"
+    "unnamedDataset": "未命名评测项"
   },
   "detail": {
     "description": "查看任务状态、评分报告和样本证据。",
@@ -60,9 +60,9 @@
   "dialogs": {
     "cancelMessage": "取消会立即中断当前任务，并且不会生成最终报告。",
     "cancelTitle": "取消任务",
-    "pauseMessage": "暂停会在当前数据集执行完成后生效，每个任务最多只允许暂停一次。",
+    "pauseMessage": "暂停会在当前评测项执行完成后生效，每个任务最多只允许暂停一次。",
     "pauseTitle": "暂停任务",
-    "terminateMessage": "终止会在当前数据集执行完成后结束剩余队列，并生成最终报告。",
+    "terminateMessage": "终止会在当前评测项执行完成后结束剩余队列，并生成最终报告。",
     "terminateTitle": "终止任务"
   },
   "evidence": {
@@ -78,7 +78,7 @@
   "filter": {
     "description": "按关键词、任务状态、榜单状态和提交方式筛选记录。",
     "methodAll": "全部方式",
-    "placeholder": "按智能体名称或数据集搜索",
+    "placeholder": "按智能体名称或评测项搜索",
     "search": "搜索",
     "status": "状态",
     "statusAll": "全部状态",
@@ -152,7 +152,7 @@
   },
   "records": {
     "createdAt": "创建于 {time}",
-    "datasetPrefix": "数据集：{datasets}",
+    "datasetPrefix": "评测项：{datasets}",
     "description": "查阅任务流追踪，支持跨层级精准过滤及详情透视。",
     "emptyMessage": "创建第一条评测任务后，这里会显示进度和结果。",
     "emptyTitle": "还没有评测记录",
@@ -165,8 +165,8 @@
   },
   "report": {
     "abilitySection": "能力结构",
-    "datasetInsightEmpty": "暂无数据集结果。",
-    "datasetInsightTitle": "数据集结果",
+    "datasetInsightEmpty": "暂无评测项结果。",
+    "datasetInsightTitle": "评测项结果",
     "difficultyInsightEmpty": "暂无难度桶数据。",
     "difficultyInsightTitle": "难度桶",
     "difficultyOutcomeCaption": "成功率 {rate}。成功 {success} 个，失败 {failed} 个，异常 {error} 个。",
@@ -203,9 +203,9 @@
     "title": "评分报告"
   },
   "sections": {
-    "basicDescription": "提交、数据集和运行参数。",
+    "basicDescription": "提交、评测项和运行参数。",
     "basicTitle": "基础信息",
-    "dataset": "数据集",
+    "dataset": "评测项",
     "report": "报告信息",
     "runParameters": "运行参数",
     "submit": "提交信息"
@@ -224,7 +224,7 @@
     "terminating": "终止中"
   },
   "statusText": {
-    "completed": "所有数据集已评测完成，已生成最终报告。",
+    "completed": "所有评测项已评测完成，已生成最终报告。",
     "failedFallback": "评测执行失败。",
     "updated": "评测状态已更新。"
   },
@@ -232,9 +232,9 @@
     "completion": "完成进度",
     "createdAt": "创建时间",
     "currentStatus": "当前状态",
-    "datasetCount": "数据集数量",
+    "datasetCount": "评测项数量",
     "datasetCountValue": "{count} 个",
-    "datasets": "数据集",
+    "datasets": "评测项",
     "difficulty": "难度",
     "finishedAt": "完成时间",
     "leaderboardStatus": "榜单状态",

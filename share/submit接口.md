@@ -58,7 +58,8 @@
   "requestId": "submit_20260523_demo001",
   "submitMethod": "api",
   "agentId": "agt_001",
-  "datasetIds": ["A1_identity_leakage"],
+  "attackScenarioId": "prompt_injection",
+  "evaluationItemIds": ["A1_identity_leakage"],
   "parameters": {
     "difficulty": 0.5,
     "timeoutMinutes": 20,
@@ -111,7 +112,8 @@
   "requestId": "submit_20260523_demo001",
   "submitMethod": "api",
   "agentId": "agt_001",
-  "datasetIds": ["A1_identity_leakage"],
+  "attackScenarioId": "prompt_injection",
+  "evaluationItemIds": ["A1_identity_leakage"],
   "parameters": {
     "difficulty": 0.5,
     "timeoutMinutes": 20,
@@ -164,6 +166,7 @@
 ## 4. 当前约束
 
 - `submitMethod` 目前只支持 `api`
+- 必须提交 `attackScenarioId`，且 `evaluationItemIds` 必须全部属于该攻击场景
 - `publicToLeaderboard=false` 已废弃，后端会直接拒绝
 - `leaderboardDisplayMode` 取值为 `public` 或 `anonymous`
 - `requestId` 用于幂等去重，相同请求体可复用同一任务，不同请求体会触发冲突

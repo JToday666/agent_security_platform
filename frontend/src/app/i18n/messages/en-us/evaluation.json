@@ -48,7 +48,7 @@
     "notGenerated": "Not Generated",
     "unnamedAgent": "Unnamed Agent",
     "unnamedCategory": "Unnamed category",
-    "unnamedDataset": "Unnamed dataset"
+    "unnamedDataset": "Unnamed evaluation item"
   },
   "detail": {
     "description": "View task status, scoring report, and sample evidence.",
@@ -60,9 +60,9 @@
   "dialogs": {
     "cancelMessage": "Canceling immediately interrupts the current task and no final report will be generated.",
     "cancelTitle": "Cancel Task",
-    "pauseMessage": "Pause takes effect after the current dataset finishes. Each task can be paused only once.",
+    "pauseMessage": "Pause takes effect after the current evaluation item finishes. Each task can be paused only once.",
     "pauseTitle": "Pause Task",
-    "terminateMessage": "Termination ends the remaining queue after the current dataset finishes and generates the final report.",
+    "terminateMessage": "Termination ends the remaining queue after the current evaluation item finishes and generates the final report.",
     "terminateTitle": "Terminate Task"
   },
   "evidence": {
@@ -78,7 +78,7 @@
   "filter": {
     "description": "Filter records by keyword, task status, leaderboard status, and submission method.",
     "methodAll": "All Methods",
-    "placeholder": "Search by Agent name or dataset",
+    "placeholder": "Search by Agent name or evaluation item",
     "search": "Search",
     "status": "Status",
     "statusAll": "All Statuses",
@@ -152,7 +152,7 @@
   },
   "records": {
     "createdAt": "Created at {time}",
-    "datasetPrefix": "Datasets: {datasets}",
+    "datasetPrefix": "Evaluation items: {datasets}",
     "description": "Review task flow traces with precise cross-level filtering and detail inspection.",
     "emptyMessage": "After the first evaluation task is created, progress and results will appear here.",
     "emptyTitle": "No Evaluation Records Yet",
@@ -165,8 +165,8 @@
   },
   "report": {
     "abilitySection": "Capability Structure",
-    "datasetInsightEmpty": "No dataset results yet.",
-    "datasetInsightTitle": "Dataset Results",
+    "datasetInsightEmpty": "No evaluation item results yet.",
+    "datasetInsightTitle": "Evaluation Item Results",
     "difficultyInsightEmpty": "No difficulty bucket data yet.",
     "difficultyInsightTitle": "Difficulty Bucket",
     "difficultyOutcomeCaption": "Success Rate {rate}. Success {success}, failed {failed}, error {error}.",
@@ -203,9 +203,9 @@
     "title": "Scoring Report"
   },
   "sections": {
-    "basicDescription": "Submission, datasets, and run parameters.",
+    "basicDescription": "Submission, evaluation items, and run parameters.",
     "basicTitle": "Basic Information",
-    "dataset": "Dataset",
+    "dataset": "Evaluation Item",
     "report": "Report Information",
     "runParameters": "Run Parameters",
     "submit": "Submission Information"
@@ -224,7 +224,7 @@
     "terminating": "Terminating"
   },
   "statusText": {
-    "completed": "All datasets have been evaluated and the final report has been generated.",
+    "completed": "All evaluation items have been evaluated and the final report has been generated.",
     "failedFallback": "Evaluation execution failed.",
     "updated": "Evaluation status updated."
   },
@@ -232,9 +232,9 @@
     "completion": "Completion Progress",
     "createdAt": "Created At",
     "currentStatus": "Current Status",
-    "datasetCount": "Dataset Count",
+    "datasetCount": "Evaluation Item Count",
     "datasetCountValue": "{count}",
-    "datasets": "Dataset",
+    "datasets": "Evaluation Item",
     "difficulty": "Difficulty",
     "finishedAt": "Finished At",
     "leaderboardStatus": "Leaderboard Status",

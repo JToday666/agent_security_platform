@@ -48,7 +48,7 @@
     "notGenerated": "未生成",
     "unnamedAgent": "未命名 Agent",
     "unnamedCategory": "未命名分類",
-    "unnamedDataset": "未命名データセット"
+    "unnamedDataset": "未命名評価項目"
   },
   "detail": {
     "description": "タスク状態、採点レポート、サンプル証拠を確認します。",
@@ -60,9 +60,9 @@
   "dialogs": {
     "cancelMessage": "キャンセルすると現在のタスクを直ちに中断し、最終レポートは生成されません。",
     "cancelTitle": "タスクをキャンセル",
-    "pauseMessage": "一時停止は現在のデータセット実行完了後に有効になります。各タスクで一時停止できるのは 1 回だけです。",
+    "pauseMessage": "一時停止は現在の評価項目実行完了後に有効になります。各タスクで一時停止できるのは 1 回だけです。",
     "pauseTitle": "タスクを一時停止",
-    "terminateMessage": "終了は現在のデータセット完了後に残りキューを終了し、最終レポートを生成します。",
+    "terminateMessage": "終了は現在の評価項目完了後に残りキューを終了し、最終レポートを生成します。",
     "terminateTitle": "タスクを終了"
   },
   "evidence": {
@@ -78,7 +78,7 @@
   "filter": {
     "description": "キーワード、タスク状態、ランキング状態、提出方式で記録を絞り込みます。",
     "methodAll": "すべての方式",
-    "placeholder": "Agent 名称またはデータセットで検索",
+    "placeholder": "Agent 名称または評価項目で検索",
     "search": "検索",
     "status": "状態",
     "statusAll": "すべての状態",
@@ -152,7 +152,7 @@
   },
   "records": {
     "createdAt": "作成：{time}",
-    "datasetPrefix": "データセット：{datasets}",
+    "datasetPrefix": "評価項目：{datasets}",
     "description": "タスクフロー追跡を確認し、階層横断の精密フィルタと詳細透視を利用できます。",
     "emptyMessage": "最初の評価タスクを作成すると、ここに進捗と結果が表示されます。",
     "emptyTitle": "評価記録はまだありません",
@@ -165,8 +165,8 @@
   },
   "report": {
     "abilitySection": "能力構造",
-    "datasetInsightEmpty": "データセット結果はまだありません。",
-    "datasetInsightTitle": "データセット結果",
+    "datasetInsightEmpty": "評価項目結果はまだありません。",
+    "datasetInsightTitle": "評価項目結果",
     "difficultyInsightEmpty": "難度バケットデータはまだありません。",
     "difficultyInsightTitle": "難度バケット",
     "difficultyOutcomeCaption": "成功率 {rate}。成功 {success} 個、失敗 {failed} 個、異常 {error} 個。",
@@ -203,9 +203,9 @@
     "title": "採点レポート"
   },
   "sections": {
-    "basicDescription": "提出、データセット、実行パラメータ。",
+    "basicDescription": "提出、評価項目、実行パラメータ。",
     "basicTitle": "基本情報",
-    "dataset": "データセット",
+    "dataset": "評価項目",
     "report": "レポート情報",
     "runParameters": "実行パラメータ",
     "submit": "提出情報"
@@ -224,7 +224,7 @@
     "terminating": "終了中"
   },
   "statusText": {
-    "completed": "すべてのデータセットの評価が完了し、最終レポートが生成されました。",
+    "completed": "すべての評価項目の評価が完了し、最終レポートが生成されました。",
     "failedFallback": "評価実行に失敗しました。",
     "updated": "評価状態が更新されました。"
   },
@@ -232,9 +232,9 @@
     "completion": "完了進捗",
     "createdAt": "作成時刻",
     "currentStatus": "現在の状態",
-    "datasetCount": "データセット数",
+    "datasetCount": "評価項目数",
     "datasetCountValue": "{count} 個",
-    "datasets": "データセット",
+    "datasets": "評価項目",
     "difficulty": "難度",
     "finishedAt": "完了時刻",
     "leaderboardStatus": "ランキング状態",

@@ -8,6 +8,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.benchmark import (
     AssetType,
     AttackDeliveryType,
+    AttackScenario,
+    AttackScenarioRiskDomain,
     BenchmarkSample,
     RiskCategory,
     RiskSubtype,
@@ -24,22 +26,41 @@ class DatasetRepository:
         self.db = db
 
     async def load_translation_maps(
-        self, locale: str, category_ids: list[int], subtype_ids: list[int]
+        self,
+        locale: str,
+        scenario_ids: list[int],
+        category_ids: list[int],
+        subtype_ids: list[int],
     ) -> dict[str, dict[int, dict[str, Any]]]:
         """返回指定语言的数据集元数据翻译映射。"""
         if not locale:
             return {
+                "scenarios": {},
                 "categories": {},
                 "subtypes": {},
                 "display_meta": {},
             }
 
+        scenario_translations: dict[int, dict[str, Any]] = {}
         category_translations: dict[int, dict[str, Any]] = {}
         subtype_translations: dict[int, dict[str, Any]] = {}
         display_meta_translations: dict[int, dict[str, Any]] = {}
 
+        unique_scenario_ids = sorted(set(scenario_ids))
         unique_category_ids = sorted(set(category_ids))
         unique_subtype_ids = sorted(set(subtype_ids))
+        if unique_scenario_ids:
+            scenario_rows = (
+                await self.db.execute(
+                    select(AttackScenario.id, AttackScenario.translations).where(
+                        AttackScenario.id.in_(unique_scenario_ids)
+                    )
+                )
+            ).all()
+            scenario_translations = _extract_locale_translations(
+                scenario_rows, locale
+            )
+
         if unique_category_ids:
             category_rows = (
                 await self.db.execute(
@@ -75,22 +96,34 @@ class DatasetRepository:
             )
 
         return {
+            "scenarios": scenario_translations,
             "categories": category_translations,
             "subtypes": subtype_translations,
             "display_meta": display_meta_translations,
         }
 
     async def get_catalog_rows(self):
-        """查询目录页所需的分类、子类与样本统计聚合结果。"""
+        """查询攻击场景库目录所需的场景、风险域、评测项与样本统计。"""
         stmt = (
             select(
+                AttackScenario,
                 RiskCategory,
                 RiskSubtype,
                 RiskSubtypeDisplayMeta,
                 func.count(BenchmarkSample.id).label("sample_count"),
                 func.max(BenchmarkSample.updated_at).label("sample_updated_at"),
             )
-            .join(RiskSubtype, RiskSubtype.category_id == RiskCategory.id)
+            .select_from(AttackScenario)
+            .join(RiskSubtype, RiskSubtype.attack_scenario_id == AttackScenario.id)
+            .join(RiskCategory, RiskSubtype.category_id == RiskCategory.id)
+            .join(
+                AttackScenarioRiskDomain,
+                and_(
+                    AttackScenarioRiskDomain.attack_scenario_id == AttackScenario.id,
+                    AttackScenarioRiskDomain.risk_category_id == RiskCategory.id,
+                    AttackScenarioRiskDomain.is_active.is_(True),
+                ),
+            )
             .outerjoin(
                 RiskSubtypeDisplayMeta,
                 RiskSubtypeDisplayMeta.subtype_id == RiskSubtype.id,
@@ -103,14 +136,22 @@ class DatasetRepository:
                 ),
             )
             .where(
+                AttackScenario.is_active.is_(True),
                 RiskCategory.is_active.is_(True),
                 RiskSubtype.is_active.is_(True),
                 public_dataset_code_filter(RiskSubtype.code),
             )
             .group_by(
-                RiskCategory.id, RiskSubtype.id, RiskSubtypeDisplayMeta.subtype_id
+                AttackScenario.id,
+                RiskCategory.id,
+                RiskSubtype.id,
+                RiskSubtypeDisplayMeta.subtype_id,
+                AttackScenarioRiskDomain.sort_order,
             )
             .order_by(
+                AttackScenario.sort_order.asc().nullslast(),
+                AttackScenario.id.asc(),
+                AttackScenarioRiskDomain.sort_order.asc().nullslast(),
                 RiskCategory.sort_order.asc().nullslast(),
                 RiskCategory.id.asc(),
                 RiskSubtype.sort_order.asc().nullslast(),
@@ -119,17 +160,40 @@ class DatasetRepository:
         )
         return (await self.db.execute(stmt)).all()
 
-    async def get_detail_row(self, dataset_id: str):
-        """查询单个数据集详情页所需的聚合信息。"""
+    async def get_attack_scenario_rows(self):
+        """查询攻击场景库中所有启用的攻击场景。"""
+        stmt = (
+            select(AttackScenario)
+            .where(AttackScenario.is_active.is_(True))
+            .order_by(
+                AttackScenario.sort_order.asc().nullslast(),
+                AttackScenario.id.asc(),
+            )
+        )
+        return (await self.db.execute(stmt)).scalars().all()
+
+    async def get_detail_row(self, evaluation_item_id: str):
+        """查询单个评测项详情页所需的聚合信息。"""
         stmt = (
             select(
+                AttackScenario,
                 RiskCategory,
                 RiskSubtype,
                 RiskSubtypeDisplayMeta,
                 func.count(BenchmarkSample.id).label("sample_count"),
                 func.max(BenchmarkSample.updated_at).label("sample_updated_at"),
             )
-            .join(RiskSubtype, RiskSubtype.category_id == RiskCategory.id)
+            .select_from(AttackScenario)
+            .join(RiskSubtype, RiskSubtype.attack_scenario_id == AttackScenario.id)
+            .join(RiskCategory, RiskSubtype.category_id == RiskCategory.id)
+            .join(
+                AttackScenarioRiskDomain,
+                and_(
+                    AttackScenarioRiskDomain.attack_scenario_id == AttackScenario.id,
+                    AttackScenarioRiskDomain.risk_category_id == RiskCategory.id,
+                    AttackScenarioRiskDomain.is_active.is_(True),
+                ),
+            )
             .outerjoin(
                 RiskSubtypeDisplayMeta,
                 RiskSubtypeDisplayMeta.subtype_id == RiskSubtype.id,
@@ -142,19 +206,24 @@ class DatasetRepository:
                 ),
             )
             .where(
+                AttackScenario.is_active.is_(True),
                 RiskCategory.is_active.is_(True),
                 RiskSubtype.is_active.is_(True),
-                RiskSubtype.code == dataset_id,
+                RiskSubtype.code == evaluation_item_id,
                 public_dataset_code_filter(RiskSubtype.code),
             )
             .group_by(
-                RiskCategory.id, RiskSubtype.id, RiskSubtypeDisplayMeta.subtype_id
+                AttackScenario.id,
+                RiskCategory.id,
+                RiskSubtype.id,
+                RiskSubtypeDisplayMeta.subtype_id,
+                AttackScenarioRiskDomain.sort_order,
             )
         )
         return (await self.db.execute(stmt)).one_or_none()
 
-    async def get_detail_sample_rows(self, dataset_id: str):
-        """查询数据集详情聚合摘要所需的样本级字段。"""
+    async def get_detail_sample_rows(self, evaluation_item_id: str):
+        """查询评测项详情聚合摘要所需的样本级字段。"""
         stmt = (
             select(
                 AttackDeliveryType.code.label("delivery_code"),
@@ -173,7 +242,7 @@ class DatasetRepository:
             )
             .outerjoin(AssetType, BenchmarkSample.asset_type_id == AssetType.id)
             .where(
-                RiskSubtype.code == dataset_id,
+                RiskSubtype.code == evaluation_item_id,
                 public_dataset_code_filter(RiskSubtype.code),
                 BenchmarkSample.is_active.is_(True),
             )

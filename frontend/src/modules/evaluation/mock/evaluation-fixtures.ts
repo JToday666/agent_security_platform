@@ -13,6 +13,8 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: true,
     leaderboardDisplayMode: "public",
+    attackScenarioId: "prompt_injection",
+    attackScenarioName: "提示注入",
     datasetIds: [
       "A1_identity_leakage",
       "B3_form_data_modification",
@@ -41,6 +43,8 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: false,
     leaderboardDisplayMode: "public",
+    attackScenarioId: "model_abuse_and_unauthorized_actions",
+    attackScenarioName: "模型滥用与越权行为",
     datasetIds: [
       "C4_security_control_weakening",
       "D1_command_execution",
@@ -69,6 +73,8 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: true,
     leaderboardDisplayMode: "anonymous",
+    attackScenarioId: "model_abuse_and_unauthorized_actions",
+    attackScenarioName: "模型滥用与越权行为",
     datasetIds: [
       "F2_misinformation_and_defamation",
       "F6_discriminatory_decision_making",
@@ -97,6 +103,8 @@ export const referenceEvaluationRecords: EvaluationRecord[] = [
     finalizationReason: "completed",
     publicToLeaderboard: true,
     leaderboardDisplayMode: "public",
+    attackScenarioId: null,
+    attackScenarioName: null,
     datasetIds: [
       "A5_credentials_and_secrets_leakage",
       "D3_privilege_escalation_and_backdoor",

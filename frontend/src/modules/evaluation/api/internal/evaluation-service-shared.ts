@@ -23,6 +23,8 @@ export interface ResolvedEvaluationState {
   status: EvaluationStatus;
   publicToLeaderboard: boolean;
   leaderboardDisplayMode: "public" | "anonymous";
+  attackScenarioId?: string | null;
+  attackScenarioName?: string | null;
   datasetIds: string[];
   datasetNames: string[];
   submitMethod: "api" | "docker";
@@ -73,6 +75,8 @@ export const toEvaluationRecord = (
   finalizationReason: state.finalizationReason,
   publicToLeaderboard: state.publicToLeaderboard,
   leaderboardDisplayMode: state.leaderboardDisplayMode,
+  attackScenarioId: state.attackScenarioId ?? null,
+  attackScenarioName: state.attackScenarioName ?? null,
   datasetIds: state.datasetIds,
   datasetNames: state.datasetNames,
   submitMethod: state.submitMethod,

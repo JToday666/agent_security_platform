@@ -60,7 +60,8 @@ export interface SubmitAgentPayload {
   docker?: SubmitDockerPayload | null;
   parameters: SubmitParameters;
   leaderboardDisplayMode: LeaderboardDisplayMode;
-  selectedDatasetIds: string[];
+  attackScenarioId: string;
+  evaluationItemIds: string[];
   requestId: string;
 }
 
@@ -110,7 +111,7 @@ export interface PendingSubmitRequest {
 export interface SubmitFieldErrors {
   agentId?: string;
   docker?: string;
-  selectedDatasetIds?: string;
+  selectedEvaluationItemIds?: string;
   requestId?: string;
 }
 
@@ -127,6 +128,8 @@ export interface EvaluationRecord {
   finalizationReason: EvaluationFinalizationReason | null;
   publicToLeaderboard: boolean;
   leaderboardDisplayMode: LeaderboardDisplayMode;
+  attackScenarioId: string | null;
+  attackScenarioName: string | null;
   datasetIds: string[];
   datasetNames: string[];
   submitMethod: SubmitMethod;
@@ -335,5 +338,6 @@ export interface SubmitFormState {
   };
   parameters: SubmitParameters;
   leaderboardDisplayMode: LeaderboardDisplayMode;
-  selectedDatasetIds: string[];
+  selectedAttackScenarioId: string;
+  selectedEvaluationItemIds: string[];
 }

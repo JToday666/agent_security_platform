@@ -106,6 +106,53 @@ class AttackDeliveryType(Base):
     )
 
 
+class AttackScenario(Base):
+    """攻击场景字典表，定义攻击场景库的一级目录。"""
+
+    __tablename__ = "attack_scenarios"
+
+    id: Mapped[int] = mapped_column(
+        SmallInteger, primary_key=True, comment="攻击场景主键ID"
+    )
+    code: Mapped[str] = mapped_column(
+        Text, unique=True, index=True, nullable=False, comment="攻击场景唯一编码"
+    )
+    name: Mapped[str] = mapped_column(Text, nullable=False, comment="攻击场景展示名")
+    description: Mapped[str | None] = mapped_column(
+        Text, nullable=True, comment="攻击场景说明"
+    )
+    translations: Mapped[dict[str, dict[str, object]]] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'::jsonb"),
+        comment="按 locale 存储的攻击场景展示字段翻译",
+    )
+    sort_order: Mapped[int | None] = mapped_column(
+        SmallInteger, nullable=True, index=True, comment="攻击场景展示排序"
+    )
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=True,
+        server_default=text("true"),
+        comment="是否启用",
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        comment="创建时间",
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+        comment="更新时间",
+    )
+
+
 class RiskCategory(Base):
     """
     大类安全风险分类表 (Risk Category Model)
@@ -163,6 +210,45 @@ class RiskCategory(Base):
     )
 
 
+class AttackScenarioRiskDomain(Base):
+    """攻击场景与风险域的展示关联表。"""
+
+    __tablename__ = "attack_scenario_risk_domains"
+    __table_args__ = (
+        UniqueConstraint("attack_scenario_id", "risk_category_id"),
+        Index("ix_attack_scenario_risk_domains_category_id", "risk_category_id"),
+    )
+
+    attack_scenario_id: Mapped[int] = mapped_column(
+        SmallInteger,
+        ForeignKey("attack_scenarios.id"),
+        primary_key=True,
+        comment="攻击场景ID",
+    )
+    risk_category_id: Mapped[int] = mapped_column(
+        SmallInteger,
+        ForeignKey("risk_categories.id"),
+        primary_key=True,
+        comment="风险域ID",
+    )
+    sort_order: Mapped[int | None] = mapped_column(
+        SmallInteger, nullable=True, comment="该风险域在场景内的排序"
+    )
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=True,
+        server_default=text("true"),
+        comment="是否启用",
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        comment="创建时间",
+    )
+
+
 class RiskSubtype(Base):
     """
     具体的安全风险子类表 (Risk Subtype Model)
@@ -180,6 +266,13 @@ class RiskSubtype(Base):
         nullable=False,
         index=True,
         comment="归属的一级风险大类ID",
+    )
+    attack_scenario_id: Mapped[int] = mapped_column(
+        SmallInteger,
+        ForeignKey("attack_scenarios.id"),
+        nullable=False,
+        index=True,
+        comment="归属的攻击场景ID",
     )
     code: Mapped[str] = mapped_column(
         Text,

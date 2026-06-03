@@ -11,7 +11,7 @@ if str(_BOOTSTRAP_ROOT) not in sys.path:
     sys.path.insert(0, str(_BOOTSTRAP_ROOT))
 
 from app.modules.datasets.ingestion.pipeline import run_import_pipeline
-from scripts._common import DATASET_METADATA_ROOT
+from app.platform.config import settings
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -22,14 +22,20 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--sample-root",
         type=Path,
-        required=True,
-        help="Root directory containing raw or standard dataset samples.",
+        default=None,
+        help=(
+            "Root directory containing raw or standard dataset samples. "
+            "Defaults to DATASET_ROOT_DIR/settings.dataset_root."
+        ),
     )
     parser.add_argument(
         "--registry-root",
         type=Path,
-        default=DATASET_METADATA_ROOT,
-        help="Root directory for registry/display_meta JSON files.",
+        default=None,
+        help=(
+            "Root directory for registry/display_meta JSON files. "
+            "Defaults to DATASET_METADATA_ROOT_DIR/settings.dataset_metadata_root."
+        ),
     )
     parser.add_argument(
         "--mode",
@@ -51,12 +57,20 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _resolve_roots(args: argparse.Namespace) -> tuple[Path, Path]:
+    """Resolve CLI roots, falling back to configured dataset roots."""
+    sample_root = args.sample_root or settings.dataset_root
+    registry_root = args.registry_root or settings.dataset_metadata_root
+    return sample_root.resolve(), registry_root.resolve()
+
+
 def main(argv: list[str] | None = None) -> int:
     """执行一键导入 pipeline。"""
     args = build_parser().parse_args(argv)
+    sample_root, registry_root = _resolve_roots(args)
     result = run_import_pipeline(
-        sample_root=args.sample_root.resolve(),
-        registry_root=args.registry_root.resolve(),
+        sample_root=sample_root,
+        registry_root=registry_root,
         mode=args.mode,
         dry_run=args.dry_run,
         workspace_dir=args.workspace_dir.resolve() if args.workspace_dir else None,
@@ -69,6 +83,7 @@ def main(argv: list[str] | None = None) -> int:
             f"input_kind={result.input_kind} "
             f"normalized={normalized} "
             f"samples={result.sample_count} "
+            f"metadata_scenarios={len(result.metadata_bundle.attack_scenarios)} "
             f"metadata_sources={len(result.metadata_bundle.dataset_sources)} "
             f"metadata_subtypes={len(result.metadata_bundle.risk_subtypes)}"
         )
@@ -81,6 +96,7 @@ def main(argv: list[str] | None = None) -> int:
         f"input_kind={result.input_kind} "
         f"normalized={normalized} "
         f"samples={result.sample_count} "
+        f"metadata_scenarios(created={result.metadata_result.created_attack_scenarios}, updated={result.metadata_result.updated_attack_scenarios}) "
         f"metadata_subtypes(created={result.metadata_result.created_subtypes}, updated={result.metadata_result.updated_subtypes}) "
         f"display_meta(created={result.metadata_result.created_display_meta}, updated={result.metadata_result.updated_display_meta}) "
         f"sample_rows(created={result.sample_result.created_samples}, updated={result.sample_result.updated_samples}) "

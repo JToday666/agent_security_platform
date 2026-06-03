@@ -1,0 +1,117 @@
+{
+  "api": {
+    "catalogLoadFailed": "No se pudo cargar la biblioteca de escenarios de ataque. Reinténtalo más tarde.",
+    "detailLoadFailed": "No se pudo cargar el detalle del elemento de evaluación. Reinténtalo más tarde.",
+    "notFound": "Elemento de evaluación no encontrado."
+  },
+  "fallback": {
+    "media": "Medio {index}",
+    "pending": "Pendiente",
+    "relatedResource": "Recurso relacionado {index}",
+    "unnamedAttackScenario": "Escenario de ataque sin nombre",
+    "unnamedEvaluationItem": "Elemento de evaluación sin nombre",
+    "unnamedRiskDomain": "Dominio de riesgo sin nombre"
+  },
+  "filter": {
+    "clearSearch": "Borrar búsqueda",
+    "searchLabel": "Buscar",
+    "searchPlaceholder": "Buscar elemento de evaluación, resumen, escenario de ataque o dominio de riesgo",
+    "sortLabel": "Ordenar",
+    "sortOptions": {
+      "default": "Orden predeterminado",
+      "samplesDesc": "Cantidad de muestras",
+      "updatedDesc": "Actualizado recientemente"
+    }
+  },
+  "catalog": {
+    "allCatalog": "Todo el catálogo",
+    "allCatalogDescription": "Ver elementos de evaluación de todos los escenarios de ataque.",
+    "attackScenarioFilter": "Filtro de escenario de ataque",
+    "riskDomainFilter": "Filtro de dominio de riesgo",
+    "resultUnit": "elementos",
+    "stats": {
+      "attackScenarios": "Escenarios de ataque",
+      "evaluationItems": "Elementos de evaluación",
+      "riskDomains": "Dominios de riesgo",
+      "samples": "Muestras",
+      "updatedAt": "Última actualización"
+    }
+  },
+  "labels": {
+    "attackScenario": "Escenario de ataque",
+    "riskDomain": "Dominio de riesgo",
+    "sampleCount": "Muestras",
+    "updatedAt": "Última actualización"
+  },
+  "media": {
+    "descriptionFallback": "Este medio ayuda a explicar la estructura del elemento de evaluación y su comportamiento de ejecución.",
+    "tab": "Medios",
+    "unavailable": "Recurso no disponible"
+  },
+  "pages": {
+    "catalog": {
+      "description": "Explora elementos de evaluación por escenario de ataque y dominio de riesgo.",
+      "emptyMessage": "Reinténtalo más tarde.",
+      "emptyTitle": "No hay elementos de evaluación disponibles",
+      "loadFailedTitle": "No se pudo cargar la biblioteca de escenarios de ataque",
+      "loadingMessage": "Espera un momento.",
+      "loadingTitle": "Cargando biblioteca de escenarios de ataque",
+      "noMatchesMessage": "Prueba otra palabra clave u otro filtro.",
+      "noMatchesTitle": "No hay elementos de evaluación coincidentes",
+      "reloadAction": "Recargar",
+      "title": "Biblioteca de escenarios de ataque"
+    },
+    "detail": {
+      "backToCatalog": "Volver a la biblioteca de escenarios de ataque",
+      "descriptionFallback": "Consulta la descripción, focos, recursos y perfil de muestras de este elemento de evaluación.",
+      "detailLoadFailedTitle": "No se pudo cargar el detalle del elemento de evaluación",
+      "emptyHighlights": "Aún no hay focos.",
+      "emptyScenarios": "Aún no hay escenarios.",
+      "fullDescriptionFallback": "Aún no hay descripción detallada.",
+      "loadingMessage": "Espera un momento.",
+      "loadingTitle": "Cargando detalle del elemento de evaluación",
+      "loginToEvaluateItem": "Inicia sesión para evaluar este elemento",
+      "mainLabel": "Contenido del detalle del elemento de evaluación",
+      "notFoundTitle": "Elemento de evaluación no encontrado",
+      "retryAction": "Reintentar",
+      "sections": {
+        "assets": "Materiales adicionales",
+        "details": "Detalles",
+        "highlights": "Focos",
+        "sampleProfile": "Perfil de muestras",
+        "scenarios": "Escenarios"
+      },
+      "sameRiskTitle": "Mismo dominio de riesgo",
+      "sideActionTitle": "Acciones",
+      "sideInfoTitle": "Información del elemento de evaluación",
+      "sideLabel": "Panel lateral del elemento de evaluación",
+      "submitWithEvaluationItem": "Iniciar evaluación con este elemento"
+    }
+  },
+  "profile": {
+    "assetTypeTop": "Tipos de activo principales",
+    "deliveryDistribution": "Entrega de ataque",
+    "description": "Revisa la dificultad de las muestras, la entrega del ataque y los activos protegidos para este elemento de evaluación.",
+    "difficultyBuckets": "Niveles de dificultad",
+    "emptyDistribution": "No hay datos de distribución disponibles."
+  },
+  "resources": {
+    "emptyMessage": "Este elemento de evaluación no tiene recursos ni medios para mostrar.",
+    "emptyTitle": "Sin materiales adicionales",
+    "tab": "Recursos",
+    "tabsAria": "Tipo de material",
+    "types": {
+      "demo": "Demo",
+      "docs": "Docs",
+      "download": "Descarga",
+      "link": "Enlace"
+    },
+    "view": "Ver recurso"
+  },
+  "subcategory": {
+    "loginToEvaluate": "Inicia sesión para evaluar",
+    "noDescription": "Sin descripción",
+    "useEvaluationItem": "Usar este elemento",
+    "viewDetails": "Ver detalles"
+  }
+}

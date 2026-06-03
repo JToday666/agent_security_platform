@@ -48,7 +48,7 @@
     "notGenerated": "No generado",
     "unnamedAgent": "Agent sin nombre",
     "unnamedCategory": "Categoría sin nombre",
-    "unnamedDataset": "Conjunto de datos sin nombre"
+    "unnamedDataset": "Elemento de evaluación sin nombre"
   },
   "detail": {
     "description": "Ver el estado de la tarea, el informe de puntuación y la evidencia de muestras.",
@@ -60,9 +60,9 @@
   "dialogs": {
     "cancelMessage": "Cancelar interrumpe de inmediato la tarea actual y no se generará informe final.",
     "cancelTitle": "Cancelar tarea",
-    "pauseMessage": "La pausa se aplica después de que termine el conjunto de datos actual. Cada tarea solo puede pausarse una vez.",
+    "pauseMessage": "La pausa se aplica después de que termine el elemento de evaluación actual. Cada tarea solo puede pausarse una vez.",
     "pauseTitle": "Pausar tarea",
-    "terminateMessage": "La terminación finaliza la cola restante después de que termine el conjunto de datos actual y genera el informe final.",
+    "terminateMessage": "La terminación finaliza la cola restante después de que termine el elemento de evaluación actual y genera el informe final.",
     "terminateTitle": "Terminar tarea"
   },
   "evidence": {
@@ -78,7 +78,7 @@
   "filter": {
     "description": "Filtra registros por palabra clave, estado de tarea, estado de clasificación y método de envío.",
     "methodAll": "Todos los métodos",
-    "placeholder": "Buscar por nombre de Agent o conjunto de datos",
+    "placeholder": "Buscar por nombre de Agent o elemento de evaluación",
     "search": "Buscar",
     "status": "Estado",
     "statusAll": "Todos los estados",
@@ -152,7 +152,7 @@
   },
   "records": {
     "createdAt": "Creado el {time}",
-    "datasetPrefix": "Conjuntos de datos: {datasets}",
+    "datasetPrefix": "Elementos de evaluación: {datasets}",
     "description": "Revisa trazas del flujo de tareas con filtrado preciso entre niveles e inspección detallada.",
     "emptyMessage": "Después de crear la primera tarea de evaluación, aquí aparecerán el progreso y los resultados.",
     "emptyTitle": "Aún no hay registros de evaluación",
@@ -165,8 +165,8 @@
   },
   "report": {
     "abilitySection": "Estructura de capacidad",
-    "datasetInsightEmpty": "Aún no hay resultados de conjunto de datos.",
-    "datasetInsightTitle": "Resultados por conjunto de datos",
+    "datasetInsightEmpty": "Aún no hay resultados de elementos de evaluación.",
+    "datasetInsightTitle": "Resultados por elemento de evaluación",
     "difficultyInsightEmpty": "Aún no hay datos de bucket de dificultad.",
     "difficultyInsightTitle": "Bucket de dificultad",
     "difficultyOutcomeCaption": "Tasa de éxito {rate}. Éxito {success}, error {failed}, anomalía {error}.",
@@ -203,9 +203,9 @@
     "title": "Informe de puntuación"
   },
   "sections": {
-    "basicDescription": "Envío, conjuntos de datos y parámetros de ejecución.",
+    "basicDescription": "Envío, elementos de evaluación y parámetros de ejecución.",
     "basicTitle": "Información básica",
-    "dataset": "Conjunto de datos",
+    "dataset": "Elemento de evaluación",
     "report": "Información del informe",
     "runParameters": "Parámetros de ejecución",
     "submit": "Información de envío"
@@ -224,7 +224,7 @@
     "terminating": "Terminando"
   },
   "statusText": {
-    "completed": "Todos los conjuntos de datos se evaluaron y se generó el informe final.",
+    "completed": "Todos los elementos de evaluación se evaluaron y se generó el informe final.",
     "failedFallback": "La ejecución de la evaluación falló.",
     "updated": "Estado de evaluación actualizado."
   },
@@ -232,9 +232,9 @@
     "completion": "Progreso de finalización",
     "createdAt": "Creado el",
     "currentStatus": "Estado actual",
-    "datasetCount": "Número de conjuntos de datos",
+    "datasetCount": "Número de elementos de evaluación",
     "datasetCountValue": "{count}",
-    "datasets": "Conjunto de datos",
+    "datasets": "Elemento de evaluación",
     "difficulty": "Dificultad",
     "finishedAt": "Finalizado el",
     "leaderboardStatus": "Estado de clasificación",

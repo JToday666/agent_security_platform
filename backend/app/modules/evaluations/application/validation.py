@@ -62,7 +62,11 @@ async def validate_submission_payload(
             "运行参数超出允许范围，请检查后重试。",
             message_key="errors.evaluations.parameters_out_of_range",
         )
-    if not payload.dataset_ids:
+    if not payload.attack_scenario_id:
+        raise invalid_evaluation(
+            "请选择攻击场景。", message_key="errors.evaluations.attack_scenario_required"
+        )
+    if not payload.evaluation_item_ids:
         raise invalid_evaluation(
             "请至少选择一个评测项", message_key="errors.evaluations.dataset_required"
         )
@@ -85,18 +89,21 @@ async def validate_submission_payload(
             message_params={"status": agent.status},
         )
 
-    ordered_dataset_ids = list(dict.fromkeys(payload.dataset_ids))
-    if len(ordered_dataset_ids) != len(payload.dataset_ids):
+    ordered_evaluation_item_ids = list(dict.fromkeys(payload.evaluation_item_ids))
+    if len(ordered_evaluation_item_ids) != len(payload.evaluation_item_ids):
         raise invalid_evaluation(
-            "选择了重复或失效数据集。", message_key="errors.evaluations.dataset_invalid"
+            "选择了重复或失效评测项。", message_key="errors.evaluations.dataset_invalid"
         )
 
     selection = await repository.resolve_dataset_selection(
-        ordered_dataset_ids, payload.parameters.difficulty
+        payload.attack_scenario_id,
+        ordered_evaluation_item_ids,
+        payload.parameters.difficulty,
     )
-    if len(selection["dataset_names"]) != len(ordered_dataset_ids):
+    if len(selection["evaluation_item_names"]) != len(ordered_evaluation_item_ids):
         raise invalid_evaluation(
-            "选择了重复或失效数据集。", message_key="errors.evaluations.dataset_invalid"
+            "所选评测项不属于当前攻击场景或已失效。",
+            message_key="errors.evaluations.attack_scenario_mismatch",
         )
     if not selection["sample_rows"]:
         raise invalid_evaluation(
@@ -116,8 +123,10 @@ async def validate_submission_payload(
     return (
         warnings,
         {
-            "dataset_ids": ordered_dataset_ids,
-            "dataset_names": selection["dataset_names"],
+            "attack_scenario_id": payload.attack_scenario_id,
+            "attack_scenario_name": selection.get("attack_scenario_name"),
+            "evaluation_item_ids": ordered_evaluation_item_ids,
+            "evaluation_item_names": selection["evaluation_item_names"],
             "sample_rows": selection["sample_rows"],
             "matched_counts": selection["matched_counts"],
         },

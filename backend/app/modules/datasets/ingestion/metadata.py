@@ -13,6 +13,8 @@ from sqlalchemy.orm import Session
 from app.models.benchmark import (
     AssetType,
     AttackDeliveryType,
+    AttackScenario,
+    AttackScenarioRiskDomain,
     DatasetSource,
     RiskCategory,
     RiskSubtype,
@@ -29,6 +31,7 @@ from app.modules.datasets.ingestion.samples import (
     humanize_code,
 )
 from app.modules.datasets.ingestion.types import (
+    AttackScenarioRecord,
     AssetTypeRecord,
     AttackDeliveryTypeRecord,
     DatasetSourceRecord,
@@ -38,6 +41,170 @@ from app.modules.datasets.ingestion.types import (
     RiskCategoryRecord,
     RiskSubtypeRecord,
 )
+
+DEFAULT_ATTACK_SCENARIOS: tuple[AttackScenarioRecord, ...] = (
+    AttackScenarioRecord(
+        code="prompt_injection",
+        name="提示注入",
+        description="覆盖直接和间接提示注入攻击。",
+        sort_order=1,
+        translations={
+            "en-US": {
+                "name": "Prompt Injection",
+                "description": (
+                    "Covers direct and indirect prompt injection attacks."
+                ),
+            },
+            "fr-FR": {
+                "name": "Injection de prompt",
+                "description": (
+                    "Couvre les attaques d’injection de prompt directes et "
+                    "indirectes."
+                ),
+            },
+            "es-ES": {
+                "name": "Inyección de prompts",
+                "description": (
+                    "Cubre ataques de inyección de prompts directos e "
+                    "indirectos."
+                ),
+            },
+            "ja-JP": {
+                "name": "プロンプトインジェクション",
+                "description": (
+                    "直接・間接のプロンプトインジェクション攻撃を扱う。"
+                ),
+            },
+        },
+    ),
+    AttackScenarioRecord(
+        code="model_abuse_and_unauthorized_actions",
+        name="模型滥用与越权行为",
+        description="覆盖模型滥用、违规生成和越权操作。",
+        sort_order=2,
+        translations={
+            "en-US": {
+                "name": "Model Abuse and Unauthorized Actions",
+                "description": (
+                    "Covers model abuse, disallowed generation, and "
+                    "unauthorized operations."
+                ),
+            },
+            "fr-FR": {
+                "name": "Abus du modèle et actions non autorisées",
+                "description": (
+                    "Couvre l’abus du modèle, les générations interdites et "
+                    "les opérations non autorisées."
+                ),
+            },
+            "es-ES": {
+                "name": "Abuso del modelo y acciones no autorizadas",
+                "description": (
+                    "Cubre abuso del modelo, generación no permitida y "
+                    "operaciones no autorizadas."
+                ),
+            },
+            "ja-JP": {
+                "name": "モデル悪用と無許可行動",
+                "description": (
+                    "モデル悪用、禁止コンテンツ生成、無許可操作を扱う。"
+                ),
+            },
+        },
+    ),
+    AttackScenarioRecord(
+        code="knowledge_base_poisoning",
+        name="知识库投毒",
+        description="覆盖知识库污染与检索误导。",
+        sort_order=3,
+        translations={
+            "en-US": {
+                "name": "Knowledge Base Poisoning",
+                "description": (
+                    "Covers knowledge base contamination and retrieval "
+                    "misdirection."
+                ),
+            },
+            "fr-FR": {
+                "name": "Empoisonnement de la base de connaissances",
+                "description": (
+                    "Couvre la contamination de bases de connaissances et "
+                    "l’orientation trompeuse de la récupération."
+                ),
+            },
+            "es-ES": {
+                "name": "Envenenamiento de la base de conocimiento",
+                "description": (
+                    "Cubre contaminación de bases de conocimiento y desvíos "
+                    "engañosos en la recuperación."
+                ),
+            },
+            "ja-JP": {
+                "name": "ナレッジベース汚染",
+                "description": (
+                    "ナレッジベースの汚染と検索結果の誘導を扱う。"
+                ),
+            },
+        },
+    ),
+    AttackScenarioRecord(
+        code="tool_call_hijacking",
+        name="工具调用劫持",
+        description="覆盖工具调用参数和流程劫持。",
+        sort_order=4,
+        translations={
+            "en-US": {
+                "name": "Tool Call Hijacking",
+                "description": (
+                    "Covers hijacking of tool-call parameters and execution "
+                    "flow."
+                ),
+            },
+            "fr-FR": {
+                "name": "Détournement d’appels d’outils",
+                "description": (
+                    "Couvre le détournement des paramètres d’appel d’outils "
+                    "et du flux d’exécution."
+                ),
+            },
+            "es-ES": {
+                "name": "Secuestro de llamadas a herramientas",
+                "description": (
+                    "Cubre el secuestro de parámetros de llamadas a "
+                    "herramientas y del flujo de ejecución."
+                ),
+            },
+            "ja-JP": {
+                "name": "ツール呼び出しハイジャック",
+                "description": (
+                    "ツール呼び出しパラメータと実行フローの乗っ取りを扱う。"
+                ),
+            },
+        },
+    ),
+)
+
+PROMPT_INJECTION_RISK_DOMAINS = {
+    "confidentiality",
+    "integrity",
+    "availability_and_destructive_harm",
+}
+MODEL_ABUSE_RISK_DOMAINS = {
+    "unauthorized_execution_and_system_control",
+    "fraud_impersonation_and_social_engineering",
+    "content_and_societal_harm",
+    "harmful_search_and_reconnaissance",
+}
+DEFAULT_SCENARIO_BY_RISK_DOMAIN = {
+    **{
+        risk_domain_code: "prompt_injection"
+        for risk_domain_code in PROMPT_INJECTION_RISK_DOMAINS
+    },
+    **{
+        risk_domain_code: "model_abuse_and_unauthorized_actions"
+        for risk_domain_code in MODEL_ABUSE_RISK_DOMAINS
+    },
+}
 
 
 def load_metadata_bundle(registry_root: Path) -> MetadataBundle:
@@ -57,6 +224,10 @@ def load_metadata_bundle(registry_root: Path) -> MetadataBundle:
         asset_types=[
             AssetTypeRecord(**item)
             for item in _load_json_list(root / "registry" / "asset_types.json")
+        ],
+        attack_scenarios=[
+            AttackScenarioRecord(**item)
+            for item in _load_json_list(root / "registry" / "attack_scenarios.json")
         ],
         risk_categories=[
             RiskCategoryRecord(**item)
@@ -108,6 +279,16 @@ def write_metadata_bundle(registry_root: Path, bundle: MetadataBundle) -> None:
         ],
     )
     _write_json(
+        root / "registry" / "attack_scenarios.json",
+        [
+            _record_payload(item)
+            for item in sorted(
+                bundle.attack_scenarios,
+                key=lambda item: ((item.sort_order or 999), item.code),
+            )
+        ],
+    )
+    _write_json(
         root / "registry" / "risk_categories.json",
         [
             _record_payload(item)
@@ -138,6 +319,74 @@ def _record_payload(record) -> dict[str, object]:
     if not payload.get("translations"):
         payload.pop("translations", None)
     return payload
+
+
+def _merge_default_attack_scenarios(
+    records: list[AttackScenarioRecord],
+) -> list[AttackScenarioRecord]:
+    """合并默认四个攻击场景和 registry 中的覆盖项。"""
+    merged = {item.code: item for item in DEFAULT_ATTACK_SCENARIOS}
+    for item in records:
+        default = merged.get(item.code)
+        merged[item.code] = (
+            _merge_attack_scenario_record(default, item) if default else item
+        )
+    return sorted(
+        merged.values(),
+        key=lambda item: ((item.sort_order or 999), item.code),
+    )
+
+
+def _merge_attack_scenario_record(
+    default: AttackScenarioRecord,
+    override: AttackScenarioRecord,
+) -> AttackScenarioRecord:
+    """Merge registry fields while preserving default i18n fallbacks."""
+    return AttackScenarioRecord(
+        code=override.code,
+        name=override.name,
+        description=(
+            override.description
+            if override.description is not None
+            else default.description
+        ),
+        sort_order=(
+            override.sort_order
+            if override.sort_order is not None
+            else default.sort_order
+        ),
+        is_active=override.is_active,
+        translations=_merge_translation_maps(
+            default.translations, override.translations
+        ),
+    )
+
+
+def _merge_translation_maps(
+    default: dict[str, dict[str, object]],
+    override: dict[str, dict[str, object]],
+) -> dict[str, dict[str, object]]:
+    merged = {locale: dict(values) for locale, values in default.items()}
+    for locale, values in override.items():
+        next_values = dict(merged.get(locale, {}))
+        next_values.update(values)
+        merged[locale] = next_values
+    return merged
+
+
+def _resolve_attack_scenario_code(
+    explicit_code: str | None,
+    risk_category_code: str,
+) -> str:
+    """解析评测项归属场景；旧七类风险域允许按默认映射补齐。"""
+    if explicit_code:
+        return explicit_code
+    default_code = DEFAULT_SCENARIO_BY_RISK_DOMAIN.get(risk_category_code)
+    if default_code:
+        return default_code
+    raise ImportValidationError(
+        "risk_subtypes.json: 新评测项必须声明 attack_scenario_code"
+    )
 
 
 def write_display_meta_index(registry_root: Path, bundle: MetadataBundle) -> Path:
@@ -193,6 +442,9 @@ def build_metadata_bundle_from_samples(
     source_by_code = {item.code: item for item in bundle.dataset_sources}
     delivery_by_code = {item.code: item for item in bundle.attack_delivery_types}
     asset_by_code = {item.code: item for item in bundle.asset_types}
+    scenario_by_code = {
+        item.code: item for item in _merge_default_attack_scenarios(bundle.attack_scenarios)
+    }
     category_by_code = {item.code: item for item in bundle.risk_categories}
     subtype_by_code = {item.code: item for item in bundle.risk_subtypes}
     display_meta_by_code = dict(bundle.display_meta_by_code)
@@ -230,6 +482,9 @@ def build_metadata_bundle_from_samples(
             subtype_by_code[sample.risk_subtype_code] = RiskSubtypeRecord(
                 code=sample.risk_subtype_code,
                 category_code=sample.risk_category_code,
+                attack_scenario_code=_resolve_attack_scenario_code(
+                    sample.attack_scenario_code, sample.risk_category_code
+                ),
                 name=sample.risk_subtype_name
                 or default_subtype_name(sample.risk_subtype_code),
                 sort_order=sample.risk_subtype_sort_order
@@ -240,9 +495,17 @@ def build_metadata_bundle_from_samples(
                 subtype_code=sample.risk_subtype_code
             )
 
+    for subtype in subtype_by_code.values():
+        if subtype.attack_scenario_code:
+            continue
+        subtype.attack_scenario_code = _resolve_attack_scenario_code(
+            subtype.attack_scenario_code, subtype.category_code
+        )
+
     return MetadataBundle(
         dataset_sources=list(source_by_code.values()),
         attack_delivery_types=list(delivery_by_code.values()),
+        attack_scenarios=list(scenario_by_code.values()),
         asset_types=list(asset_by_code.values()),
         risk_categories=list(category_by_code.values()),
         risk_subtypes=list(subtype_by_code.values()),
@@ -283,8 +546,30 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
         .all()
     )
     category_code_by_id = {item.id: item.code for item in categories}
+    scenarios = (
+        session.execute(
+            select(AttackScenario).order_by(
+                AttackScenario.sort_order.asc().nullslast(),
+                AttackScenario.code.asc(),
+            )
+        )
+        .scalars()
+        .all()
+    )
+    scenario_code_by_id = {item.id: item.code for item in scenarios}
 
     bundle = MetadataBundle(
+        attack_scenarios=[
+            AttackScenarioRecord(
+                code=item.code,
+                name=item.name,
+                description=item.description,
+                sort_order=item.sort_order,
+                is_active=item.is_active,
+                translations=dict(item.translations or {}),
+            )
+            for item in scenarios
+        ],
         dataset_sources=[
             DatasetSourceRecord(
                 code=item.code,
@@ -337,6 +622,9 @@ def build_metadata_bundle_from_database(session: Session) -> MetadataBundle:
             RiskSubtypeRecord(
                 code=item.code,
                 category_code=category_code_by_id[item.category_id],
+                attack_scenario_code=scenario_code_by_id.get(
+                    item.attack_scenario_id
+                ),
                 name=item.name,
                 sort_order=item.sort_order,
                 is_active=item.is_active,
@@ -372,6 +660,7 @@ def apply_metadata_bundle(
     for table_name in (
         "dataset_sources",
         "attack_delivery_types",
+        "attack_scenarios",
         "asset_types",
         "risk_categories",
         "risk_subtypes",
@@ -380,6 +669,7 @@ def apply_metadata_bundle(
 
     result = MetadataImportResult()
     category_rows: dict[str, RiskCategory] = {}
+    scenario_rows: dict[str, AttackScenario] = {}
     subtype_rows: dict[str, RiskSubtype] = {}
 
     for item in bundle.dataset_sources:
@@ -395,6 +685,14 @@ def apply_metadata_bundle(
             result.created_delivery_types += 1
         else:
             result.updated_delivery_types += 1
+
+    for item in _merge_default_attack_scenarios(bundle.attack_scenarios):
+        row, created = _upsert_attack_scenario(session, item)
+        scenario_rows[item.code] = row
+        if created:
+            result.created_attack_scenarios += 1
+        else:
+            result.updated_attack_scenarios += 1
 
     for item in bundle.asset_types:
         _, created = _upsert_asset_type(session, item)
@@ -417,7 +715,27 @@ def apply_metadata_bundle(
             raise ImportValidationError(
                 f"risk_subtypes.json: category_code={item.category_code} 未定义"
             )
-        row, created = _upsert_risk_subtype(session, item, category.id)
+        attack_scenario_code = _resolve_attack_scenario_code(
+            item.attack_scenario_code, item.category_code
+        )
+        scenario = scenario_rows.get(attack_scenario_code)
+        if scenario is None:
+            raise ImportValidationError(
+                f"risk_subtypes.json: attack_scenario_code={attack_scenario_code} 未定义"
+            )
+        _, domain_created = _upsert_attack_scenario_risk_domain(
+            session,
+            scenario.id,
+            category.id,
+            item.sort_order or category.sort_order,
+        )
+        if domain_created:
+            result.created_scenario_risk_domains += 1
+        else:
+            result.updated_scenario_risk_domains += 1
+        row, created = _upsert_risk_subtype(
+            session, item, category.id, scenario.id
+        )
         subtype_rows[item.code] = row
         if created:
             result.created_subtypes += 1
@@ -498,6 +816,34 @@ def _upsert_attack_delivery_type(
     return row, False
 
 
+def _upsert_attack_scenario(
+    session: Session, record: AttackScenarioRecord
+) -> tuple[AttackScenario, bool]:
+    """按 code 幂等写入攻击场景字典项。"""
+    row = session.execute(
+        select(AttackScenario).where(AttackScenario.code == record.code)
+    ).scalar_one_or_none()
+    if row is None:
+        row = AttackScenario(
+            code=record.code,
+            name=record.name,
+            description=record.description,
+            sort_order=record.sort_order,
+            is_active=record.is_active,
+            translations=dict(record.translations),
+        )
+        session.add(row)
+        session.flush()
+        return row, True
+    row.name = record.name
+    row.description = record.description
+    row.sort_order = record.sort_order
+    row.is_active = record.is_active
+    row.translations = dict(record.translations)
+    session.flush()
+    return row, False
+
+
 def _upsert_asset_type(
     session: Session, record: AssetTypeRecord
 ) -> tuple[AssetType, bool]:
@@ -520,6 +866,35 @@ def _upsert_asset_type(
     row.description = record.description
     row.is_active = record.is_active
     row.translations = dict(record.translations)
+    session.flush()
+    return row, False
+
+
+def _upsert_attack_scenario_risk_domain(
+    session: Session,
+    attack_scenario_id: int,
+    risk_category_id: int,
+    sort_order: int | None,
+) -> tuple[AttackScenarioRiskDomain, bool]:
+    """按攻击场景和风险域幂等写入展示关联。"""
+    row = session.execute(
+        select(AttackScenarioRiskDomain).where(
+            AttackScenarioRiskDomain.attack_scenario_id == attack_scenario_id,
+            AttackScenarioRiskDomain.risk_category_id == risk_category_id,
+        )
+    ).scalar_one_or_none()
+    if row is None:
+        row = AttackScenarioRiskDomain(
+            attack_scenario_id=attack_scenario_id,
+            risk_category_id=risk_category_id,
+            sort_order=sort_order,
+            is_active=True,
+        )
+        session.add(row)
+        session.flush()
+        return row, True
+    row.sort_order = sort_order
+    row.is_active = True
     session.flush()
     return row, False
 
@@ -555,7 +930,10 @@ def _upsert_risk_category(
 
 
 def _upsert_risk_subtype(
-    session: Session, record: RiskSubtypeRecord, category_id: int
+    session: Session,
+    record: RiskSubtypeRecord,
+    category_id: int,
+    attack_scenario_id: int,
 ) -> tuple[RiskSubtype, bool]:
     """按 code 幂等写入风险子类字典项。"""
     row = session.execute(
@@ -564,6 +942,7 @@ def _upsert_risk_subtype(
     if row is None:
         row = RiskSubtype(
             category_id=category_id,
+            attack_scenario_id=attack_scenario_id,
             code=record.code,
             name=record.name,
             sort_order=record.sort_order,
@@ -574,6 +953,7 @@ def _upsert_risk_subtype(
         session.flush()
         return row, True
     row.category_id = category_id
+    row.attack_scenario_id = attack_scenario_id
     row.name = record.name
     row.sort_order = record.sort_order
     row.is_active = record.is_active

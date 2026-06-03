@@ -10,7 +10,7 @@ import type {
   SubmitMetaResponse,
 } from "@/shared/types/agent-types";
 
-export const MAX_SUBMIT_DATASET_COUNT = 100;
+export const MAX_SUBMIT_EVALUATION_ITEM_COUNT = 100;
 const REQUEST_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_-]{7,127}$/;
 
 const countDecimals = (value: number): number => {
@@ -109,7 +109,8 @@ export interface EvaluationCreatePayload {
     command: string;
     env: Record<string, string>;
   };
-  datasetIds: string[];
+  attackScenarioId: string;
+  evaluationItemIds: string[];
   parameters: {
     difficulty: number;
     timeoutMinutes: number;
@@ -130,7 +131,7 @@ export const isValidHttpUrl = (value: string): boolean => {
 export const validateSubmitPayload = (
   payload: SubmitAgentPayload,
   meta: SubmitMetaResponse,
-  validDatasetIds: string[],
+  validEvaluationItemIds: string[],
   activeAgentIds: string[] = [],
   t: AppTranslator = translateRuntimeMessage,
 ): ValidationResult => {
@@ -190,42 +191,49 @@ export const validateSubmitPayload = (
     errors.push(t("submission.validation.maxStepsRange"));
   }
 
-  if (payload.selectedDatasetIds.length === 0) {
-    errors.push(t("submission.validation.selectedDatasetRequired"));
-    fieldErrors.selectedDatasetIds = t(
-      "submission.validation.selectedDatasetRequiredField",
+  if (!payload.attackScenarioId.trim()) {
+    errors.push(t("submission.validation.attackScenarioRequired"));
+    fieldErrors.selectedEvaluationItemIds = t(
+      "submission.validation.attackScenarioRequiredField",
     );
   }
 
-  const uniqueDatasetIds = Array.from(new Set(payload.selectedDatasetIds));
-  if (uniqueDatasetIds.length !== payload.selectedDatasetIds.length) {
-    errors.push(t("submission.validation.datasetDuplicate"));
-    fieldErrors.selectedDatasetIds = t(
-      "submission.validation.datasetDuplicateField",
+  if (payload.evaluationItemIds.length === 0) {
+    errors.push(t("submission.validation.selectedEvaluationItemRequired"));
+    fieldErrors.selectedEvaluationItemIds = t(
+      "submission.validation.selectedEvaluationItemRequiredField",
     );
   }
 
-  if (uniqueDatasetIds.length > MAX_SUBMIT_DATASET_COUNT) {
+  const uniqueEvaluationItemIds = Array.from(new Set(payload.evaluationItemIds));
+  if (uniqueEvaluationItemIds.length !== payload.evaluationItemIds.length) {
+    errors.push(t("submission.validation.evaluationItemDuplicate"));
+    fieldErrors.selectedEvaluationItemIds = t(
+      "submission.validation.evaluationItemDuplicateField",
+    );
+  }
+
+  if (uniqueEvaluationItemIds.length > MAX_SUBMIT_EVALUATION_ITEM_COUNT) {
     errors.push(
-      t("submission.validation.datasetLimit", {
-        count: MAX_SUBMIT_DATASET_COUNT,
+      t("submission.validation.evaluationItemLimit", {
+        count: MAX_SUBMIT_EVALUATION_ITEM_COUNT,
       }),
     );
-    fieldErrors.selectedDatasetIds = t(
-      "submission.validation.datasetLimitField",
-      { count: MAX_SUBMIT_DATASET_COUNT },
+    fieldErrors.selectedEvaluationItemIds = t(
+      "submission.validation.evaluationItemLimitField",
+      { count: MAX_SUBMIT_EVALUATION_ITEM_COUNT },
     );
   }
 
-  const validDatasetIdSet = new Set(validDatasetIds);
-  const hasInvalidDataset = uniqueDatasetIds.some(
-    (item) => !validDatasetIdSet.has(item),
+  const validEvaluationItemIdSet = new Set(validEvaluationItemIds);
+  const hasInvalidEvaluationItem = uniqueEvaluationItemIds.some(
+    (item) => !validEvaluationItemIdSet.has(item),
   );
 
-  if (hasInvalidDataset) {
-    errors.push(t("submission.validation.datasetInvalid"));
-    fieldErrors.selectedDatasetIds = t(
-      "submission.validation.datasetInvalidField",
+  if (hasInvalidEvaluationItem) {
+    errors.push(t("submission.validation.evaluationItemInvalid"));
+    fieldErrors.selectedEvaluationItemIds = t(
+      "submission.validation.evaluationItemInvalidField",
     );
   }
 
@@ -255,7 +263,8 @@ export const buildEvaluationCreatePayload = (
   const basePayload = {
     requestId: payload.requestId,
     submitMethod: payload.submitMethod,
-    datasetIds: payload.selectedDatasetIds,
+    attackScenarioId: payload.attackScenarioId,
+    evaluationItemIds: payload.evaluationItemIds,
     parameters: {
       difficulty: payload.parameters.difficulty,
       timeoutMinutes: payload.parameters.timeoutMinutes,

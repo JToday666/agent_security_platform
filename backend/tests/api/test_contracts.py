@@ -8,8 +8,10 @@ from app.api.v1.api import api_router
 def test_v1_router_registers_business_routes() -> None:
     route_paths = {route.path for route in api_router.routes}
 
-    assert "/v1/datasets/catalog" in route_paths
-    assert "/v1/datasets/{datasetId}" in route_paths
+    assert "/v1/attack-scenarios/catalog" in route_paths
+    assert (
+        "/v1/attack-scenarios/evaluation-items/{evaluationItemId}" in route_paths
+    )
     assert "/v1/agents/templates" in route_paths
     assert "/v1/agents" in route_paths
     assert "/v1/agents/{agentId}" in route_paths

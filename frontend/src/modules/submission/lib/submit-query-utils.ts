@@ -7,21 +7,21 @@ const normalizeCandidateIds = (value: string | string[]): string[] => {
     .filter(Boolean);
 };
 
-export const resolveDatasetIdsFromQuery = (
+export const resolveEvaluationItemIdsFromQuery = (
   value: string | string[] | null | undefined,
-  validDatasetIds: string[],
+  validEvaluationItemIds: string[],
 ): string[] => {
   if (!value) {
     return [];
   }
 
-  const validIdSet = new Set(validDatasetIds);
+  const validIdSet = new Set(validEvaluationItemIds);
   const uniqueIds = Array.from(new Set(normalizeCandidateIds(value)));
 
   return uniqueIds.filter((item) => validIdSet.has(item));
 };
 
-export const buildDatasetQuerySignature = (
+export const buildEvaluationItemQuerySignature = (
   value: string | string[] | null | undefined,
 ): string => {
   if (!value) {

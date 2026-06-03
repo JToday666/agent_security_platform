@@ -19,8 +19,8 @@
         <dd>{{ selectedCategoryCount }}</dd>
       </div>
       <div>
-        <dt>{{ t("submission.summary.selectedDatasets") }}</dt>
-        <dd>{{ selectedDatasetCount }}</dd>
+        <dt>{{ t("submission.summary.selectedEvaluationItems") }}</dt>
+        <dd>{{ selectedEvaluationItemCount }}</dd>
       </div>
     </dl>
 
@@ -48,10 +48,10 @@
     </dl>
 
     <div class="section-head section-head--compact">
-      <h3>{{ t("submission.summary.selectedDatasets") }}</h3>
+      <h3>{{ t("submission.summary.selectedEvaluationItems") }}</h3>
     </div>
 
-    <div v-if="selectedDatasetNames.length" class="dataset-tags">
+    <div v-if="selectedEvaluationItemNames.length" class="evaluation-item-tags">
       <UiTag
         v-for="name in previewNames"
         :key="name"
@@ -64,7 +64,7 @@
         +{{ remainingCount }}
       </UiTag>
     </div>
-    <p v-else class="empty-text">{{ t("submission.summary.datasetEmpty") }}</p>
+    <p v-else class="empty-text">{{ t("submission.summary.evaluationItemEmpty") }}</p>
 
     <div v-if="errorMessage" class="notice-list">
       <InlineNotice tone="danger" :message="errorMessage" />
@@ -103,8 +103,8 @@ const props = withDefaults(
     agentName: string;
     submitMethod: "api" | "docker";
     selectedCategoryCount: number;
-    selectedDatasetCount: number;
-    selectedDatasetNames: string[];
+    selectedEvaluationItemCount: number;
+    selectedEvaluationItemNames: string[];
     difficulty: number;
     timeoutMinutes: number;
     maxSteps: number;
@@ -122,10 +122,10 @@ const { t } = useI18n();
 
 const compactPreviewLimit = 3;
 const previewNames = computed(() =>
-  props.selectedDatasetNames.slice(0, compactPreviewLimit),
+  props.selectedEvaluationItemNames.slice(0, compactPreviewLimit),
 );
 const remainingCount = computed(
-  () => props.selectedDatasetNames.length - previewNames.value.length,
+  () => props.selectedEvaluationItemNames.length - previewNames.value.length,
 );
 const leaderboardDisplayLabel = computed(() =>
   props.leaderboardDisplayMode === "anonymous"
@@ -205,7 +205,7 @@ const leaderboardDisplayLabel = computed(() =>
   font-weight: 700;
 }
 
-.dataset-tags {
+.evaluation-item-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;

@@ -4,7 +4,7 @@
     "logoAlt": "智能体安全评测平台标志"
   },
   "actions": {
-    "browseDataset": "浏览数据集",
+    "browseAttackScenarioLibrary": "浏览攻击场景库",
     "cancel": "取消",
     "close": "关闭",
     "confirm": "确认",

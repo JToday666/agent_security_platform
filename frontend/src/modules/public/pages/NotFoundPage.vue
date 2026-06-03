@@ -16,8 +16,8 @@
         <UiButton :to="RouteLocation.home" variant="secondary">
           {{ t("common.actions.returnHome") }}
         </UiButton>
-        <UiButton :to="RouteLocation.datasetList" variant="primary">
-          {{ t("public.notFound.datasetAction") }}
+        <UiButton :to="RouteLocation.attackScenarioLibrary" variant="primary">
+          {{ t("public.notFound.attackScenarioLibraryAction") }}
         </UiButton>
       </template>
     </SectionBlock>

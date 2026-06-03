@@ -4,7 +4,7 @@
     "logoAlt": "Logo de la plateforme d’évaluation de la sécurité des Agents"
   },
   "actions": {
-    "browseDataset": "Parcourir les jeux de données",
+    "browseAttackScenarioLibrary": "Parcourir la bibliothèque de scénarios d’attaque",
     "cancel": "Annuler",
     "close": "Fermer",
     "confirm": "Confirmer",

@@ -7,17 +7,20 @@ from typing import Any, Awaitable, Callable, cast
 
 from app.modules.datasets.repository import DatasetRepository
 from app.modules.datasets.schemas import (
+    AttackScenarioInfo,
     DatasetCatalogResponse,
-    DatasetCategoryInfo,
     DatasetDetailResponse,
     DatasetDistributionItem,
     DatasetSampleProfile,
+    RiskDomainInfo,
 )
 from app.platform.errors import NotFoundError
 from app.platform.i18n import DEFAULT_LOCALE, get_current_locale, translate
 
 TranslationMap = dict[str, dict[int, dict[str, Any]]]
-TranslationMapLoader = Callable[[str, list[int], list[int]], Awaitable[TranslationMap]]
+TranslationMapLoader = Callable[
+    [str, list[int], list[int], list[int]], Awaitable[TranslationMap]
+]
 
 UNASSIGNED_ASSET_CODE = "__unassigned__"
 UNASSIGNED_ASSET_MESSAGE_KEY = "datasets.sample_profile.asset_unassigned"
@@ -213,31 +216,95 @@ class DatasetService:
         self.repository = repository
 
     async def get_catalog(self) -> DatasetCatalogResponse:
-        """返回前端展示用的数据集目录。"""
+        """返回前端展示用的攻击场景库目录。"""
+        scenario_rows_loader = getattr(self.repository, "get_attack_scenario_rows", None)
+        scenario_rows = (
+            list(await scenario_rows_loader()) if callable(scenario_rows_loader) else []
+        )
         rows = await self.repository.get_catalog_rows()
-        translation_maps = await self._load_translation_maps(rows)
+        translation_maps = await self._load_translation_maps(rows, scenario_rows)
+        scenario_translations = translation_maps["scenarios"]
         category_translations = translation_maps["categories"]
         subtype_translations = translation_maps["subtypes"]
         display_meta_translations = translation_maps["display_meta"]
-        categories: list[dict[str, Any]] = []
-        category_map: dict[int, dict[str, Any]] = {}
+        attack_scenarios: list[dict[str, Any]] = []
+        scenario_map: dict[int, dict[str, Any]] = {}
+        risk_domain_maps: dict[int, dict[int, dict[str, Any]]] = {}
         version_candidates: list[datetime] = []
 
-        for category, subtype, display_meta, sample_count, sample_updated_at in rows:
+        for scenario in scenario_rows:
+            updated_at = latest_datetime(getattr(scenario, "updated_at", None))
+            version_candidates.append(updated_at)
+            scenario_item = {
+                "attackScenarioId": scenario.code,
+                "name": _translated_value(
+                    scenario_translations, scenario.id, "name", scenario.name
+                ),
+                "description": _translated_value(
+                    scenario_translations,
+                    scenario.id,
+                    "description",
+                    scenario.description,
+                ),
+                "sort": scenario.sort_order,
+                "enabled": scenario.is_active,
+                "riskDomainCount": 0,
+                "evaluationItemCount": 0,
+                "sampleCount": 0,
+                "riskDomains": [],
+            }
+            scenario_map[scenario.id] = scenario_item
+            risk_domain_maps[scenario.id] = {}
+            attack_scenarios.append(scenario_item)
+
+        for (
+            scenario,
+            category,
+            subtype,
+            display_meta,
+            sample_count,
+            sample_updated_at,
+        ) in rows:
             if not sample_count:
                 continue
 
             updated_at = latest_datetime(
+                getattr(scenario, "updated_at", None),
                 category.updated_at,
                 getattr(display_meta, "updated_at", None),
                 sample_updated_at,
             )
             version_candidates.append(updated_at)
 
-            category_item = category_map.get(category.id)
-            if category_item is None:
-                category_item = {
-                    "categoryId": category.code,
+            scenario_item = scenario_map.get(scenario.id)
+            if scenario_item is None:
+                scenario_item = {
+                    "attackScenarioId": scenario.code,
+                    "name": _translated_value(
+                        scenario_translations, scenario.id, "name", scenario.name
+                    ),
+                    "description": _translated_value(
+                        scenario_translations,
+                        scenario.id,
+                        "description",
+                        scenario.description,
+                    ),
+                    "sort": scenario.sort_order,
+                    "enabled": scenario.is_active,
+                    "riskDomainCount": 0,
+                    "evaluationItemCount": 0,
+                    "sampleCount": 0,
+                    "riskDomains": [],
+                }
+                scenario_map[scenario.id] = scenario_item
+                risk_domain_maps[scenario.id] = {}
+                attack_scenarios.append(scenario_item)
+
+            risk_domain_map = risk_domain_maps[scenario.id]
+            risk_domain_item = risk_domain_map.get(category.id)
+            if risk_domain_item is None:
+                risk_domain_item = {
+                    "riskDomainId": category.code,
                     "name": _translated_value(
                         category_translations, category.id, "name", category.name
                     ),
@@ -250,17 +317,20 @@ class DatasetService:
                         "description",
                         category.description,
                     ),
-                    "sort": category.sort_order,
+                    "sort": getattr(category, "risk_domain_sort_order", None)
+                    or category.sort_order,
                     "enabled": category.is_active,
-                    "subcategoryCount": 0,
-                    "subcategories": [],
+                    "evaluationItemCount": 0,
+                    "sampleCount": 0,
+                    "evaluationItems": [],
                 }
-                category_map[category.id] = category_item
-                categories.append(category_item)
+                risk_domain_map[category.id] = risk_domain_item
+                scenario_item["riskDomains"].append(risk_domain_item)
+                scenario_item["riskDomainCount"] += 1
 
-            category_item["subcategories"].append(
+            risk_domain_item["evaluationItems"].append(
                 {
-                    "datasetId": subtype.code,
+                    "evaluationItemId": subtype.code,
                     "name": _translated_value(
                         subtype_translations, subtype.id, "name", subtype.name
                     ),
@@ -275,11 +345,14 @@ class DatasetService:
                     "enabled": subtype.is_active,
                 }
             )
-            category_item["subcategoryCount"] += 1
+            risk_domain_item["evaluationItemCount"] += 1
+            risk_domain_item["sampleCount"] += int(sample_count)
+            scenario_item["evaluationItemCount"] += 1
+            scenario_item["sampleCount"] += int(sample_count)
 
         if not version_candidates:
             version_candidates = [
-                row[0].updated_at for row in rows if row[0] is not None
+                row[0].updated_at for row in rows if getattr(row[0], "updated_at", None)
             ]
 
         return DatasetCatalogResponse.model_validate(
@@ -289,28 +362,33 @@ class DatasetService:
                     if version_candidates
                     else datetime.now(timezone.utc)
                 ),
-                "categoryCount": len(categories),
-                "subcategoryCount": sum(
-                    category["subcategoryCount"] for category in categories
+                "attackScenarioCount": len(attack_scenarios),
+                "riskDomainCount": sum(
+                    scenario["riskDomainCount"] for scenario in attack_scenarios
                 ),
-                "categories": categories,
+                "evaluationItemCount": sum(
+                    scenario["evaluationItemCount"] for scenario in attack_scenarios
+                ),
+                "attackScenarios": attack_scenarios,
             }
         )
 
-    async def get_detail(self, dataset_id: str) -> DatasetDetailResponse:
-        """返回单个数据集的详情信息。"""
-        row = await self.repository.get_detail_row(dataset_id)
+    async def get_detail(self, evaluation_item_id: str) -> DatasetDetailResponse:
+        """返回单个评测项的详情信息。"""
+        row = await self.repository.get_detail_row(evaluation_item_id)
         if row is None or not row.sample_count:
             raise NotFoundError(
                 "评测项不存在。", message_key="errors.datasets.not_found"
             )
 
-        category, subtype, display_meta, sample_count, sample_updated_at = row
+        scenario, category, subtype, display_meta, sample_count, sample_updated_at = row
         translation_maps = await self._load_translation_maps([row])
+        scenario_translations = translation_maps["scenarios"]
         category_translations = translation_maps["categories"]
         subtype_translations = translation_maps["subtypes"]
         display_meta_translations = translation_maps["display_meta"]
         updated_at = latest_datetime(
+            getattr(scenario, "updated_at", None),
             category.updated_at,
             getattr(display_meta, "updated_at", None),
             sample_updated_at,
@@ -322,12 +400,24 @@ class DatasetService:
             else []
         )
         return DatasetDetailResponse(
-            dataset_id=subtype.code,
+            evaluation_item_id=subtype.code,
             name=_translated_value(
                 subtype_translations, subtype.id, "name", subtype.name
             ),
-            category=DatasetCategoryInfo(
-                category_id=category.code,
+            attack_scenario=AttackScenarioInfo(
+                attack_scenario_id=scenario.code,
+                name=_translated_value(
+                    scenario_translations, scenario.id, "name", scenario.name
+                ),
+                description=_translated_value(
+                    scenario_translations,
+                    scenario.id,
+                    "description",
+                    scenario.description,
+                ),
+            ),
+            risk_domain=RiskDomainInfo(
+                risk_domain_id=category.code,
                 name=_translated_value(
                     category_translations, category.id, "name", category.name
                 ),
@@ -374,9 +464,10 @@ class DatasetService:
             sample_profile=_build_sample_profile(sample_rows, int(sample_count)),
         )
 
-    async def _load_translation_maps(self, rows) -> TranslationMap:
+    async def _load_translation_maps(self, rows, scenario_rows=None) -> TranslationMap:
         """Load locale-specific metadata translations, if the repository supports them."""
         empty: TranslationMap = {
+            "scenarios": {},
             "categories": {},
             "subtypes": {},
             "display_meta": {},
@@ -385,14 +476,26 @@ class DatasetService:
         loader = getattr(self.repository, "load_translation_maps", None)
         if locale == DEFAULT_LOCALE or not callable(loader):
             return empty
+        scenario_ids: list[int] = []
         category_ids: list[int] = []
         subtype_ids: list[int] = []
-        for category, subtype, _display_meta, _sample_count, _sample_updated_at in rows:
+        for scenario in scenario_rows or []:
+            scenario_ids.append(scenario.id)
+        for (
+            scenario,
+            category,
+            subtype,
+            _display_meta,
+            _sample_count,
+            _sample_updated_at,
+        ) in rows:
+            scenario_ids.append(scenario.id)
             category_ids.append(category.id)
             subtype_ids.append(subtype.id)
         typed_loader = cast(TranslationMapLoader, loader)
         return await typed_loader(
             locale,
+            sorted(set(scenario_ids)),
             sorted(set(category_ids)),
             sorted(set(subtype_ids)),
         )

@@ -5,14 +5,9 @@ import type {
   SubmitFormState,
   SubmitMetaResponse,
 } from "@/shared/types/agent-types";
-import type { DatasetCategory } from "@/shared/types/dataset-types";
+import type { AttackScenarioCatalogResponse } from "@/shared/types/attack-scenario-library-types";
 import {
-  getAllDatasetIds,
-  getEnabledCategories,
-  sanitizeDatasetSelection,
-} from "@/modules/dataset/lib/dataset-utils";
-import {
-  MAX_SUBMIT_DATASET_COUNT,
+  MAX_SUBMIT_EVALUATION_ITEM_COUNT,
   normalizeDifficulty,
   normalizeMaxSteps,
   normalizeTimeoutMinutes,
@@ -31,7 +26,8 @@ const createDefaultForm = (meta: SubmitMetaResponse): SubmitFormState => ({
     maxSteps: meta.maxSteps.default,
   },
   leaderboardDisplayMode: meta.leaderboardDisplayMode.default,
-  selectedDatasetIds: [],
+  selectedAttackScenarioId: "",
+  selectedEvaluationItemIds: [],
 });
 
 const applyMetaDefaults = (
@@ -78,52 +74,43 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     form.value = applyMetaDefaults(form.value, meta);
   };
 
-  const syncWithCatalog = (categories: DatasetCategory[]) => {
+  const syncWithCatalog = (catalog: AttackScenarioCatalogResponse) => {
     if (!form.value) {
       return;
     }
 
-    const availableDatasetIds = getAllDatasetIds(categories);
-    const availableCategoryIdSet = new Set(
-      getEnabledCategories(categories).map((item) => item.categoryId),
+    const scenario = catalog.attackScenarios.find(
+      (item) => item.attackScenarioId === form.value?.selectedAttackScenarioId,
     );
-
-    let nextSelected = sanitizeDatasetSelection(
-      categories,
-      form.value.selectedDatasetIds,
-      true,
-      MAX_SUBMIT_DATASET_COUNT,
+    const availableItemIds = new Set(
+      scenario?.riskDomains.flatMap((riskDomain) =>
+        riskDomain.evaluationItems.map((item) => item.evaluationItemId),
+      ) ?? [],
     );
-
-    if (
-      !hasSyncedCatalog.value &&
-      nextSelected.length === 0 &&
-      availableDatasetIds.length > 0
-    ) {
-      nextSelected = [...availableDatasetIds];
-    }
 
     const nextExpanded = expandedCategoryIds.value.filter((item) =>
-      availableCategoryIdSet.has(item),
+      Boolean(
+        scenario?.riskDomains.some(
+          (riskDomain) => riskDomain.riskDomainId === item,
+        ),
+      ),
     );
 
-    form.value.selectedDatasetIds = nextSelected;
+    form.value.selectedEvaluationItemIds = form.value.selectedEvaluationItemIds
+      .filter((item) => availableItemIds.has(item))
+      .slice(0, MAX_SUBMIT_EVALUATION_ITEM_COUNT);
     expandedCategoryIds.value = nextExpanded;
-
     hasSyncedCatalog.value = true;
   };
 
   const resetDraft = (
     meta: SubmitMetaResponse,
-    categories: DatasetCategory[],
+    _catalog: AttackScenarioCatalogResponse | null,
   ) => {
     form.value = createDefaultForm(meta);
-    form.value.selectedDatasetIds = [
-      ...getAllDatasetIds(categories, MAX_SUBMIT_DATASET_COUNT),
-    ];
     expandedCategoryIds.value = [];
     pendingRequest.value = null;
-    hasSyncedCatalog.value = categories.length > 0;
+    hasSyncedCatalog.value = false;
   };
 
   const setSubmitMethod = (method: "api" | "docker") => {
@@ -146,6 +133,17 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     expandedCategoryIds.value = value;
   };
 
+  const setAttackScenarioId = (attackScenarioId: string) => {
+    if (!form.value || form.value.selectedAttackScenarioId === attackScenarioId) {
+      return;
+    }
+
+    form.value.selectedAttackScenarioId = attackScenarioId;
+    form.value.selectedEvaluationItemIds = [];
+    expandedCategoryIds.value = [];
+    pendingRequest.value = null;
+  };
+
   const setPendingRequest = (value: PendingSubmitRequest | null) => {
     pendingRequest.value = value;
   };
@@ -166,6 +164,7 @@ export const useSubmitDraftStore = defineStore("submitDraft", () => {
     resetDraft,
     setSubmitMethod,
     setAgentId,
+    setAttackScenarioId,
     setExpandedCategoryIds,
     setPendingRequest,
     clearDraftAfterSubmit,
