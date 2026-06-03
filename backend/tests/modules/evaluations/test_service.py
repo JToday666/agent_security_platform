@@ -104,6 +104,11 @@ def make_paused_run(now: datetime) -> SimpleNamespace:
                 "retryEnabled": False,
             }
         },
+        sample_query_snapshot={
+            "attackScenarioId": "prompt_injection",
+            "attackScenarioName": "提示注入",
+            "evaluationItemIds": ["A1_identity_leakage"],
+        },
         total_samples=12,
         completed_samples=7,
     )
@@ -115,6 +120,7 @@ async def test_evaluation_repository_selection_excludes_internal_fixture_codes()
     repository = EvaluationRepository(session)
 
     await repository.resolve_dataset_selection(
+        "prompt_injection",
         ["A1_identity_leakage", "pytest_abcd_dataset"],
         0.5,
     )
@@ -156,7 +162,7 @@ async def test_list_evaluations_does_not_finalize_expired_paused_runs() -> None:
 
 
 @pytest.mark.asyncio
-async def test_list_evaluations_localizes_dataset_names_at_response_time() -> None:
+async def test_list_evaluations_localizes_evaluation_item_names_at_response_time() -> None:
     now = datetime.now(timezone.utc)
     run = make_paused_run(now)
     datasets = [
@@ -180,7 +186,8 @@ async def test_list_evaluations_localizes_dataset_names_at_response_time() -> No
     finally:
         token.reset()
 
-    assert response[0].dataset_names == ["Identity Leakage"]
+    assert response[0].attack_scenario_id == "prompt_injection"
+    assert response[0].evaluation_item_names == ["Identity Leakage"]
 
 
 @pytest.mark.asyncio
@@ -211,7 +218,7 @@ async def test_get_evaluation_detail_does_not_finalize_expired_paused_runs() -> 
 
 
 @pytest.mark.asyncio
-async def test_get_evaluation_detail_localizes_running_dataset_name() -> None:
+async def test_get_evaluation_detail_localizes_running_evaluation_item_name() -> None:
     now = datetime.now(timezone.utc)
     run = make_paused_run(now)
     run.status = "running"
@@ -238,8 +245,9 @@ async def test_get_evaluation_detail_localizes_running_dataset_name() -> None:
     finally:
         token.reset()
 
-    assert response.dataset_names == ["Identity Leakage"]
-    assert response.progress.running_dataset_name == "Identity Leakage"
+    assert response.attack_scenario_id == "prompt_injection"
+    assert response.evaluation_item_names == ["Identity Leakage"]
+    assert response.progress.running_evaluation_item_name == "Identity Leakage"
     assert "Identity Leakage" in response.progress.status_text
     assert response.started_at == to_zulu(now - timedelta(minutes=10))
     assert response.finished_at == to_zulu(now - timedelta(minutes=2))

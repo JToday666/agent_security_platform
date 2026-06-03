@@ -3,6 +3,8 @@
 from .benchmark import (
     AssetType,
     AttackDeliveryType,
+    AttackScenario,
+    AttackScenarioRiskDomain,
     BenchmarkSample,
     DatasetSource,
     RiskCategory,
@@ -42,6 +44,8 @@ __all__ = [
     "AuditLog",
     "AssetType",
     "AttackDeliveryType",
+    "AttackScenario",
+    "AttackScenarioRiskDomain",
     "BenchmarkSample",
     "BenchmarkVersion",
     "BenchmarkVersionItem",

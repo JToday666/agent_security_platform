@@ -1,0 +1,117 @@
+{
+  "api": {
+    "catalogLoadFailed": "Le chargement de la bibliothèque de scénarios d’attaque a échoué. Réessayez plus tard.",
+    "detailLoadFailed": "Le chargement du détail de l’élément d’évaluation a échoué. Réessayez plus tard.",
+    "notFound": "Élément d’évaluation introuvable."
+  },
+  "fallback": {
+    "media": "Média {index}",
+    "pending": "À compléter",
+    "relatedResource": "Ressource associée {index}",
+    "unnamedAttackScenario": "Scénario d’attaque sans nom",
+    "unnamedEvaluationItem": "Élément d’évaluation sans nom",
+    "unnamedRiskDomain": "Domaine de risque sans nom"
+  },
+  "filter": {
+    "clearSearch": "Effacer la recherche",
+    "searchLabel": "Recherche",
+    "searchPlaceholder": "Rechercher un élément d’évaluation, un résumé, un scénario d’attaque ou un domaine de risque",
+    "sortLabel": "Trier",
+    "sortOptions": {
+      "default": "Ordre par défaut",
+      "samplesDesc": "Nombre d’échantillons",
+      "updatedDesc": "Mis à jour récemment"
+    }
+  },
+  "catalog": {
+    "allCatalog": "Tout le catalogue",
+    "allCatalogDescription": "Afficher les éléments d’évaluation de tous les scénarios d’attaque.",
+    "attackScenarioFilter": "Filtre de scénario d’attaque",
+    "riskDomainFilter": "Filtre de domaine de risque",
+    "resultUnit": "éléments",
+    "stats": {
+      "attackScenarios": "Scénarios d’attaque",
+      "evaluationItems": "Éléments d’évaluation",
+      "riskDomains": "Domaines de risque",
+      "samples": "Échantillons",
+      "updatedAt": "Dernière mise à jour"
+    }
+  },
+  "labels": {
+    "attackScenario": "Scénario d’attaque",
+    "riskDomain": "Domaine de risque",
+    "sampleCount": "Échantillons",
+    "updatedAt": "Dernière mise à jour"
+  },
+  "media": {
+    "descriptionFallback": "Ce média aide à comprendre la structure de l’élément d’évaluation et son comportement à l’exécution.",
+    "tab": "Médias",
+    "unavailable": "Ressource indisponible"
+  },
+  "pages": {
+    "catalog": {
+      "description": "Parcourez les éléments d’évaluation par scénario d’attaque et domaine de risque.",
+      "emptyMessage": "Réessayez plus tard.",
+      "emptyTitle": "Aucun élément d’évaluation disponible",
+      "loadFailedTitle": "Le chargement de la bibliothèque de scénarios d’attaque a échoué",
+      "loadingMessage": "Veuillez patienter.",
+      "loadingTitle": "Chargement de la bibliothèque de scénarios d’attaque",
+      "noMatchesMessage": "Essayez un autre mot-clé ou un autre filtre.",
+      "noMatchesTitle": "Aucun élément d’évaluation correspondant",
+      "reloadAction": "Recharger",
+      "title": "Bibliothèque de scénarios d’attaque"
+    },
+    "detail": {
+      "backToCatalog": "Retour à la bibliothèque de scénarios d’attaque",
+      "descriptionFallback": "Consultez la description, les points d’attention, les ressources et le profil d’échantillons de cet élément d’évaluation.",
+      "detailLoadFailedTitle": "Le détail de l’élément d’évaluation n’a pas pu être chargé",
+      "emptyHighlights": "Aucun point d’attention pour le moment.",
+      "emptyScenarios": "Aucun scénario pour le moment.",
+      "fullDescriptionFallback": "Aucune description détaillée pour le moment.",
+      "loadingMessage": "Veuillez patienter.",
+      "loadingTitle": "Chargement du détail de l’élément d’évaluation",
+      "loginToEvaluateItem": "Connectez-vous pour évaluer cet élément",
+      "mainLabel": "Contenu du détail de l’élément d’évaluation",
+      "notFoundTitle": "Élément d’évaluation introuvable",
+      "retryAction": "Réessayer",
+      "sections": {
+        "assets": "Ressources complémentaires",
+        "details": "Détails",
+        "highlights": "Points d’attention",
+        "sampleProfile": "Profil des échantillons",
+        "scenarios": "Scénarios"
+      },
+      "sameRiskTitle": "Même domaine de risque",
+      "sideActionTitle": "Actions",
+      "sideInfoTitle": "Informations sur l’élément d’évaluation",
+      "sideLabel": "Panneau latéral de l’élément d’évaluation",
+      "submitWithEvaluationItem": "Lancer une évaluation avec cet élément"
+    }
+  },
+  "profile": {
+    "assetTypeTop": "Principaux types d’actifs",
+    "deliveryDistribution": "Distribution des attaques",
+    "description": "Consultez la difficulté des échantillons, le mode de livraison de l’attaque et les actifs protégés pour cet élément d’évaluation.",
+    "difficultyBuckets": "Niveaux de difficulté",
+    "emptyDistribution": "Aucune donnée de distribution disponible."
+  },
+  "resources": {
+    "emptyMessage": "Cet élément d’évaluation ne contient aucune ressource ni média à afficher.",
+    "emptyTitle": "Aucune ressource complémentaire",
+    "tab": "Ressources",
+    "tabsAria": "Type de ressource",
+    "types": {
+      "demo": "Démo",
+      "docs": "Docs",
+      "download": "Téléchargement",
+      "link": "Lien"
+    },
+    "view": "Voir la ressource"
+  },
+  "subcategory": {
+    "loginToEvaluate": "Connectez-vous pour évaluer",
+    "noDescription": "Aucune description",
+    "useEvaluationItem": "Utiliser cet élément",
+    "viewDetails": "Voir le détail"
+  }
+}

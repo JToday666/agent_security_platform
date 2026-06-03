@@ -48,7 +48,7 @@
     "notGenerated": "Non généré",
     "unnamedAgent": "Agent sans nom",
     "unnamedCategory": "Catégorie sans nom",
-    "unnamedDataset": "Jeu de données sans nom"
+    "unnamedDataset": "Élément d’évaluation sans nom"
   },
   "detail": {
     "description": "Consulter l’état de la tâche, le rapport de notation et les preuves d’échantillons.",
@@ -60,9 +60,9 @@
   "dialogs": {
     "cancelMessage": "L’annulation interrompt immédiatement la tâche en cours et aucun rapport final ne sera généré.",
     "cancelTitle": "Annuler la tâche",
-    "pauseMessage": "La pause prend effet après la fin du jeu de données en cours. Chaque tâche ne peut être mise en pause qu’une seule fois.",
+    "pauseMessage": "La pause prend effet après la fin de l’élément d’évaluation en cours. Chaque tâche ne peut être mise en pause qu’une seule fois.",
     "pauseTitle": "Mettre la tâche en pause",
-    "terminateMessage": "L’arrêt termine la file restante après la fin du jeu de données en cours et génère le rapport final.",
+    "terminateMessage": "L’arrêt termine la file restante après la fin de l’élément d’évaluation en cours et génère le rapport final.",
     "terminateTitle": "Arrêter la tâche"
   },
   "evidence": {
@@ -78,7 +78,7 @@
   "filter": {
     "description": "Filtrer les enregistrements par mot-clé, état de tâche, état de classement et mode de soumission.",
     "methodAll": "Tous les modes",
-    "placeholder": "Rechercher par nom d’Agent ou jeu de données",
+    "placeholder": "Rechercher par nom d’Agent ou élément d’évaluation",
     "search": "Recherche",
     "status": "Statut",
     "statusAll": "Tous les états",
@@ -152,7 +152,7 @@
   },
   "records": {
     "createdAt": "Créé le {time}",
-    "datasetPrefix": "Jeux de données : {datasets}",
+    "datasetPrefix": "Éléments d’évaluation : {datasets}",
     "description": "Consulter les traces de flux de tâches avec filtrage précis entre niveaux et inspection détaillée.",
     "emptyMessage": "Après la création de la première tâche d’évaluation, sa progression et ses résultats apparaîtront ici.",
     "emptyTitle": "Aucun enregistrement d’évaluation pour le moment",
@@ -165,8 +165,8 @@
   },
   "report": {
     "abilitySection": "Structure de capacité",
-    "datasetInsightEmpty": "Aucun résultat de jeu de données pour le moment.",
-    "datasetInsightTitle": "Résultats par jeu de données",
+    "datasetInsightEmpty": "Aucun résultat d’élément d’évaluation pour le moment.",
+    "datasetInsightTitle": "Résultats par élément d’évaluation",
     "difficultyInsightEmpty": "Aucune donnée de bucket de difficulté pour le moment.",
     "difficultyInsightTitle": "Bucket de difficulté",
     "difficultyOutcomeCaption": "Taux de réussite {rate}. Réussite {success}, échec {failed}, anomalie {error}.",
@@ -203,9 +203,9 @@
     "title": "Rapport de notation"
   },
   "sections": {
-    "basicDescription": "Soumission, jeux de données et paramètres d’exécution.",
+    "basicDescription": "Soumission, éléments d’évaluation et paramètres d’exécution.",
     "basicTitle": "Informations de base",
-    "dataset": "Jeu de données",
+    "dataset": "Élément d’évaluation",
     "report": "Informations du rapport",
     "runParameters": "Paramètres d’exécution",
     "submit": "Informations de soumission"
@@ -224,7 +224,7 @@
     "terminating": "Arrêt en cours"
   },
   "statusText": {
-    "completed": "Tous les jeux de données ont été évalués et le rapport final a été généré.",
+    "completed": "Tous les éléments d’évaluation ont été évalués et le rapport final a été généré.",
     "failedFallback": "L’exécution de l’évaluation a échoué.",
     "updated": "État d’évaluation mis à jour."
   },
@@ -232,9 +232,9 @@
     "completion": "Progression d’achèvement",
     "createdAt": "Créé le",
     "currentStatus": "Statut actuel",
-    "datasetCount": "Nombre de jeux de données",
+    "datasetCount": "Nombre d’éléments d’évaluation",
     "datasetCountValue": "{count}",
-    "datasets": "Jeu de données",
+    "datasets": "Élément d’évaluation",
     "difficulty": "Difficulté",
     "finishedAt": "Terminé le",
     "leaderboardStatus": "État du classement",

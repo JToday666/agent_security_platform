@@ -41,7 +41,8 @@ def build_status_text(status: str, running_dataset_name: str | None) -> str:
         if running_dataset_name is None:
             return translate("evaluations.status.running")
         return translate(
-            "evaluations.status.running_dataset", {"datasetName": running_dataset_name}
+            "evaluations.status.running_evaluation_item",
+            {"evaluationItemName": running_dataset_name},
         )
     if status == "pausing":
         return translate("evaluations.status.pausing")

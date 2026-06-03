@@ -196,10 +196,12 @@ class EvaluationService:
             credential_ref=agent.credential_ref,
             status="pending",
             sample_query_snapshot={
-                "datasetIds": selection["dataset_ids"],
+                "attackScenarioId": selection["attack_scenario_id"],
+                "attackScenarioName": selection["attack_scenario_name"],
+                "evaluationItemIds": selection["evaluation_item_ids"],
                 "difficulty": payload.parameters.difficulty,
                 "matchedSampleCount": len(selection["sample_rows"]),
-                "matchedDatasetCount": len(selection["dataset_ids"]),
+                "matchedEvaluationItemCount": len(selection["evaluation_item_ids"]),
                 "warnings": warnings,
                 "requestBodyHash": fingerprint,
                 "agentId": agent.public_id,
@@ -220,8 +222,8 @@ class EvaluationService:
         try:
             run = await self.repository.create_run_graph(
                 run=run,
-                dataset_ids=selection["dataset_ids"],
-                dataset_names=selection["dataset_names"],
+                dataset_ids=selection["evaluation_item_ids"],
+                dataset_names=selection["evaluation_item_names"],
                 matched_counts=selection["matched_counts"],
                 sample_rows=selection["sample_rows"],
             )
@@ -234,7 +236,8 @@ class EvaluationService:
                 payload={
                     "evaluationId": run.public_id,
                     "agentId": agent.public_id,
-                    "datasetCount": len(selection["dataset_ids"]),
+                    "attackScenarioId": selection["attack_scenario_id"],
+                    "evaluationItemCount": len(selection["evaluation_item_ids"]),
                     "sampleCount": len(selection["sample_rows"]),
                     "submitMethod": run.submit_method,
                 },
@@ -249,7 +252,8 @@ class EvaluationService:
                 result="success",
                 payload={
                     "agentId": agent.public_id,
-                    "datasetCount": len(selection["dataset_ids"]),
+                    "attackScenarioId": selection["attack_scenario_id"],
+                    "evaluationItemCount": len(selection["evaluation_item_ids"]),
                     "sampleCount": len(selection["sample_rows"]),
                     "submitMethod": run.submit_method,
                 },
@@ -309,6 +313,9 @@ class EvaluationService:
             datasets = datasets_by_run.get(run.id, [])
             report = reports_by_run.get(run.id)
             score = scores_by_run.get(run.id)
+            attack_scenario_id, attack_scenario_name = (
+                await self._attack_scenario_for_run(run, datasets)
+            )
             items.append(
                 EvaluationListItem.model_validate(
                     {
@@ -331,8 +338,12 @@ class EvaluationService:
                         "finalizationReason": run.finalization_reason,
                         "publicToLeaderboard": run.public_to_leaderboard,
                         "leaderboardDisplayMode": run.leaderboard_display_mode,
-                        "datasetIds": [dataset.dataset_code for dataset in datasets],
-                        "datasetNames": [
+                        "attackScenarioId": attack_scenario_id,
+                        "attackScenarioName": attack_scenario_name,
+                        "evaluationItemIds": [
+                            dataset.dataset_code for dataset in datasets
+                        ],
+                        "evaluationItemNames": [
                             dataset_names.get(
                                 dataset.dataset_code, dataset.dataset_name
                             )
@@ -384,6 +395,9 @@ class EvaluationService:
 
         datasets = await self.repository.load_run_datasets(run.id)
         dataset_names = await self._localized_dataset_names(datasets)
+        attack_scenario_id, attack_scenario_name = await self._attack_scenario_for_run(
+            run, datasets
+        )
         rows = await self.repository.load_report_execution_rows(run.id)
         dataset_order = {
             dataset.dataset_code: index for index, dataset in enumerate(datasets)
@@ -463,10 +477,12 @@ class EvaluationService:
         generated_at = (
             report.updated_at or report.created_at or run.finished_at or run.updated_at
         )
-        dataset_summaries = [
+        evaluation_item_summaries = [
             {
-                "datasetId": dataset_code,
-                "datasetName": dataset_display_names.get(dataset_code, dataset_code),
+                "evaluationItemId": dataset_code,
+                "evaluationItemName": dataset_display_names.get(
+                    dataset_code, dataset_code
+                ),
                 **counts,
             }
             for dataset_code, counts in sorted(
@@ -481,6 +497,8 @@ class EvaluationService:
         response = EvaluationReportPayload.model_validate(
             {
                 "evaluationId": run.public_id,
+                "attackScenarioId": attack_scenario_id,
+                "attackScenarioName": attack_scenario_name,
                 "status": "ready",
                 "generatedAt": to_zulu(generated_at),
                 "scores": {
@@ -530,7 +548,7 @@ class EvaluationService:
                         }
                         for bucket, counts in zip(DIFFICULTY_BUCKETS, bucket_counts)
                     ],
-                    "datasetSummaries": dataset_summaries,
+                    "evaluationItemSummaries": evaluation_item_summaries,
                     "sampleScatterPoints": scatter_points,
                 },
                 "versions": {
@@ -683,6 +701,9 @@ class EvaluationService:
         running_dataset = next(
             (dataset for dataset in datasets if dataset.status == "running"), None
         )
+        attack_scenario_id, attack_scenario_name = await self._attack_scenario_for_run(
+            run, datasets
+        )
         completed_dataset_count = sum(
             int(dataset.status in TERMINAL_STATUSES) for dataset in datasets
         )
@@ -708,8 +729,10 @@ class EvaluationService:
                 ),
                 "publicToLeaderboard": run.public_to_leaderboard,
                 "leaderboardDisplayMode": run.leaderboard_display_mode,
-                "datasetIds": [dataset.dataset_code for dataset in datasets],
-                "datasetNames": [
+                "attackScenarioId": attack_scenario_id,
+                "attackScenarioName": attack_scenario_name,
+                "evaluationItemIds": [dataset.dataset_code for dataset in datasets],
+                "evaluationItemNames": [
                     dataset_names.get(dataset.dataset_code, dataset.dataset_name)
                     for dataset in datasets
                 ],
@@ -718,16 +741,16 @@ class EvaluationService:
                 "parameters": build_parameters(run),
                 "progress": {
                     "percent": build_progress_percent(run=run, datasets=datasets),
-                    "totalDatasetCount": len(datasets),
-                    "completedDatasetCount": completed_dataset_count,
+                    "totalEvaluationItemCount": len(datasets),
+                    "completedEvaluationItemCount": completed_dataset_count,
                     "totalSampleCount": run.total_samples,
                     "completedSampleCount": run.completed_samples,
-                    "runningDatasetId": (
+                    "runningEvaluationItemId": (
                         None
                         if running_dataset is None
                         else running_dataset.dataset_code
                     ),
-                    "runningDatasetName": (
+                    "runningEvaluationItemName": (
                         None
                         if running_dataset is None
                         else dataset_names.get(
@@ -779,3 +802,18 @@ class EvaluationService:
             if isinstance(translated_name, str) and translated_name:
                 names[dataset_code] = translated_name
         return names
+
+    async def _attack_scenario_for_run(self, run, datasets) -> tuple[str | None, str | None]:
+        """返回评测任务所属攻击场景；旧记录按评测项归属推断。"""
+        snapshot = getattr(run, "sample_query_snapshot", {}) or {}
+        scenario_id = snapshot.get("attackScenarioId")
+        scenario_name = snapshot.get("attackScenarioName")
+        if isinstance(scenario_id, str) and scenario_id:
+            return scenario_id, scenario_name if isinstance(scenario_name, str) else None
+
+        resolver = getattr(
+            self.repository, "resolve_attack_scenario_for_dataset_codes", None
+        )
+        if not callable(resolver):
+            return None, None
+        return await resolver([dataset.dataset_code for dataset in datasets])

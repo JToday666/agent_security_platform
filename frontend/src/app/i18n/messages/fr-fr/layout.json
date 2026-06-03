@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Accueil",
-    "dataset": "Catalogue des jeux de données",
+    "attackScenarioLibrary": "Bibliothèque de scénarios d’attaque",
     "explore": "Explorer",
     "leaderboard": "Classement",
     "contact": "Nous contacter",

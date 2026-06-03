@@ -22,7 +22,7 @@ export const MESSAGE_DOMAINS = [
   "layout",
   "auth",
   "public",
-  "dataset",
+  "attackScenarioLibrary",
   "agent",
   "submission",
   "evaluation",

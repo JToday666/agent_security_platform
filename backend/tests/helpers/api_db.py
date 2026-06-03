@@ -12,6 +12,8 @@ from sqlalchemy.orm import Session
 
 from app.models.benchmark import (
     AttackDeliveryType,
+    AttackScenario,
+    AttackScenarioRiskDomain,
     BenchmarkSample,
     DatasetSource,
     RiskCategory,
@@ -67,34 +69,63 @@ class ApiDbHelper:
             session.refresh(user)
             return user.id, create_access_token(user.id)
 
-    def seed_dataset(self) -> str:
-        dataset_code = f"{self.prefix}_dataset"
+    def seed_dataset(
+        self,
+        *,
+        attack_scenario_code: str = "prompt_injection",
+        item_suffix: str | None = None,
+    ) -> str:
+        item_part = f"_{item_suffix}" if item_suffix else ""
+        dataset_code = f"{self.prefix}{item_part}_dataset"
         with self.session() as session:
+            scenario = session.execute(
+                select(AttackScenario).where(
+                    AttackScenario.code == attack_scenario_code
+                )
+            ).scalar_one_or_none()
+            if scenario is None:
+                scenario = AttackScenario(
+                    code=attack_scenario_code,
+                    name=attack_scenario_code.replace("_", " "),
+                    sort_order=1,
+                    is_active=True,
+                )
+                session.add(scenario)
+                session.flush()
             category = RiskCategory(
-                code=f"{self.prefix}_category",
-                name=f"{self.prefix} 大类",
+                code=f"{self.prefix}{item_part}_category",
+                name=f"{self.prefix}{item_part} 大类",
                 meaning="测试夹具大类",
                 description="真实数据库测试数据",
                 sort_order=1,
                 is_active=True,
             )
             source = DatasetSource(
-                code=f"{self.prefix}_source",
-                name=f"{self.prefix} source",
+                code=f"{self.prefix}{item_part}_source",
+                name=f"{self.prefix}{item_part} source",
                 is_active=True,
             )
             delivery = AttackDeliveryType(
-                code=f"{self.prefix}_delivery",
-                name=f"{self.prefix} delivery",
+                code=f"{self.prefix}{item_part}_delivery",
+                name=f"{self.prefix}{item_part} delivery",
                 is_active=True,
             )
             session.add_all([category, source, delivery])
             session.flush()
+            session.add(
+                AttackScenarioRiskDomain(
+                    attack_scenario_id=scenario.id,
+                    risk_category_id=category.id,
+                    sort_order=1,
+                    is_active=True,
+                )
+            )
 
             subtype = RiskSubtype(
                 category_id=category.id,
+                attack_scenario_id=scenario.id,
                 code=dataset_code,
-                name=f"{self.prefix} 数据集",
+                name=f"{self.prefix}{item_part} 数据集",
                 sort_order=1,
                 is_active=True,
             )
@@ -131,9 +162,9 @@ class ApiDbHelper:
             session.add(
                 BenchmarkSample(
                     dataset_source_id=source.id,
-                    sample_id=f"{self.prefix}_sample",
-                    sample_name=f"{self.prefix} sample",
-                    resource_path=f"{self.prefix}/resource",
+                    sample_id=f"{self.prefix}{item_part}_sample",
+                    sample_name=f"{self.prefix}{item_part} sample",
+                    resource_path=f"{self.prefix}{item_part}/resource",
                     entry_path="index.html",
                     user_goal="完成正常任务",
                     attacker_goal="诱导攻击",
@@ -151,6 +182,52 @@ class ApiDbHelper:
             )
             session.commit()
         return dataset_code
+
+    def seed_agent(self, *, user_id: int) -> str:
+        agent_id = f"agt_{self.prefix}"
+        now = datetime.now(timezone.utc)
+        with self.session() as session:
+            agent = Agent(
+                public_id=agent_id,
+                user_id=user_id,
+                template_id="http_submit_poll_basic",
+                name=f"{self.prefix} agent",
+                description="测试 Agent",
+                invoke_mode="sync_response",
+                max_concurrency=2,
+                status="active",
+                connection={
+                    "baseUrl": "https://agent.example.com",
+                    "invokePath": "/run",
+                    "requestTimeoutSeconds": 30,
+                },
+                auth_type="none",
+                auth_public_config={},
+                credential_ref=None,
+                platform_input_mapping={
+                    "task": "prompt",
+                    "entryUrl": "url",
+                    "sampleId": "case_id",
+                    "evaluationId": "evaluation_id",
+                    "maxSteps": "max_steps",
+                },
+                task_render_mode="goal_only",
+                custom_request_body={},
+                request_options={},
+                platform_output_mapping={
+                    "status": "status",
+                    "finalAnswer": "answer",
+                    "errorMessage": "error",
+                },
+                terminal_statuses=["completed", "failed"],
+                success_statuses=["completed"],
+                verified_at=now,
+                last_verification_passed=True,
+                last_verification={"passed": True, "status": "completed"},
+            )
+            session.add(agent)
+            session.commit()
+        return agent_id
 
     def seed_evaluation_run(
         self, *, user_id: int, dataset_code: str, status: str
@@ -369,6 +446,15 @@ class ApiDbHelper:
                 session.execute(
                     delete(RiskSubtype).where(RiskSubtype.id.in_(subtype_ids))
                 )
+            session.execute(
+                delete(AttackScenarioRiskDomain).where(
+                    AttackScenarioRiskDomain.risk_category_id.in_(
+                        select(RiskCategory.id).where(
+                            RiskCategory.code.like(f"{self.prefix}%")
+                        )
+                    )
+                )
+            )
             session.execute(
                 delete(RiskCategory).where(RiskCategory.code.like(f"{self.prefix}%"))
             )

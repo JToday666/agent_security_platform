@@ -59,7 +59,7 @@ import type { EvaluationRecord } from "@/shared/types/agent-types";
 import { RouteLocation } from "@/app/router/route-names";
 import Button from "@/shared/ui/actions/UiButton.vue";
 import StatusTag from "@/shared/ui/display/StatusTag.vue";
-import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
+import { formatDateTimeLabel } from "@/modules/attack-scenario-library/lib/attack-scenario-library-utils";
 import { getFinalizationReasonLabel } from "@/modules/evaluation/lib/evaluation-status";
 import { getEvaluationLeaderboardStatus } from "@/modules/evaluation/lib/evaluation-record-filters";
 

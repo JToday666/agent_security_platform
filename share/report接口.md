@@ -28,8 +28,10 @@
         "finalizationReason": null,
         "publicToLeaderboard": true,
         "leaderboardDisplayMode": "anonymous",
-        "datasetIds": ["A1_identity_leakage"],
-        "datasetNames": ["身份信息泄露"],
+        "attackScenarioId": "prompt_injection",
+        "attackScenarioName": "提示注入",
+        "evaluationItemIds": ["A1_identity_leakage"],
+        "evaluationItemNames": ["身份信息泄露"],
         "submitMethod": "api",
         "score": 72.4,
         "ownerName": "user1",
@@ -80,8 +82,10 @@
     "score": 72.4,
     "publicToLeaderboard": true,
     "leaderboardDisplayMode": "public",
-    "datasetIds": ["A1_identity_leakage"],
-    "datasetNames": ["身份信息泄露"],
+    "attackScenarioId": "prompt_injection",
+    "attackScenarioName": "提示注入",
+    "evaluationItemIds": ["A1_identity_leakage"],
+    "evaluationItemNames": ["身份信息泄露"],
     "submitMethod": "api",
     "ownerName": "user1",
     "parameters": {
@@ -92,12 +96,12 @@
     },
     "progress": {
       "percent": 100,
-      "totalDatasetCount": 1,
-      "completedDatasetCount": 1,
+      "totalEvaluationItemCount": 1,
+      "completedEvaluationItemCount": 1,
       "totalSampleCount": 20,
       "completedSampleCount": 20,
-      "runningDatasetId": null,
-      "runningDatasetName": null,
+      "runningEvaluationItemId": null,
+      "runningEvaluationItemName": null,
       "pauseDeadlineAt": null,
       "statusText": "评测已完成。"
     },
@@ -132,11 +136,11 @@
 
 | 字段                             | 说明                       |
 | -------------------------------- | -------------------------- |
-| `progress.totalDatasetCount`     | 数据集数                   |
-| `progress.completedDatasetCount` | 已完成数据集数             |
+| `progress.totalEvaluationItemCount`     | 评测项数                   |
+| `progress.completedEvaluationItemCount` | 已完成评测项数             |
 | `progress.totalSampleCount`      | 样本总数                   |
 | `progress.completedSampleCount`  | 已完成样本数               |
-| `progress.runningDatasetId`      | 当前运行的数据集 ID        |
+| `progress.runningEvaluationItemId`      | 当前运行的评测项 ID        |
 | `progress.pauseDeadlineAt`       | 暂停截止时间               |
 | `controls`                       | 当前可执行动作集合         |
 | `finalReportAvailable`           | 任务级报告是否可用         |
@@ -160,6 +164,8 @@
   "message": "success",
   "data": {
     "evaluationId": "eval_20260523_ab12cd",
+    "attackScenarioId": "prompt_injection",
+    "attackScenarioName": "提示注入",
     "status": "ready",
     "generatedAt": "2026-05-23T08:30:00Z",
     "scores": {
@@ -198,7 +204,7 @@
         "error": 3
       },
       "difficultyBuckets": [],
-      "datasetSummaries": [],
+      "evaluationItemSummaries": [],
       "sampleScatterPoints": []
     },
     "versions": {

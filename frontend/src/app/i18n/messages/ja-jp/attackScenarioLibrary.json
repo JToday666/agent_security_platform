@@ -1,0 +1,117 @@
+{
+  "api": {
+    "catalogLoadFailed": "攻撃シナリオライブラリを読み込めませんでした。後でもう一度お試しください。",
+    "detailLoadFailed": "評価項目の詳細を読み込めませんでした。後でもう一度お試しください。",
+    "notFound": "評価項目が見つかりません。"
+  },
+  "fallback": {
+    "media": "メディア {index}",
+    "pending": "未設定",
+    "relatedResource": "関連リソース {index}",
+    "unnamedAttackScenario": "名称未設定の攻撃シナリオ",
+    "unnamedEvaluationItem": "名称未設定の評価項目",
+    "unnamedRiskDomain": "名称未設定のリスク領域"
+  },
+  "filter": {
+    "clearSearch": "検索をクリア",
+    "searchLabel": "検索",
+    "searchPlaceholder": "評価項目、概要、攻撃シナリオ、リスク領域で検索",
+    "sortLabel": "並び替え",
+    "sortOptions": {
+      "default": "既定順",
+      "samplesDesc": "サンプル数",
+      "updatedDesc": "最近更新"
+    }
+  },
+  "catalog": {
+    "allCatalog": "すべてのカタログ",
+    "allCatalogDescription": "すべての攻撃シナリオの評価項目を表示します。",
+    "attackScenarioFilter": "攻撃シナリオフィルター",
+    "riskDomainFilter": "リスク領域フィルター",
+    "resultUnit": "項目",
+    "stats": {
+      "attackScenarios": "攻撃シナリオ",
+      "evaluationItems": "評価項目",
+      "riskDomains": "リスク領域",
+      "samples": "サンプル",
+      "updatedAt": "最終更新"
+    }
+  },
+  "labels": {
+    "attackScenario": "攻撃シナリオ",
+    "riskDomain": "リスク領域",
+    "sampleCount": "サンプル",
+    "updatedAt": "最終更新"
+  },
+  "media": {
+    "descriptionFallback": "このメディアは評価項目の構造と実行時の挙動を理解するためのものです。",
+    "tab": "メディア",
+    "unavailable": "リソースを利用できません"
+  },
+  "pages": {
+    "catalog": {
+      "description": "攻撃シナリオとリスク領域ごとに評価項目を確認します。",
+      "emptyMessage": "後でもう一度お試しください。",
+      "emptyTitle": "利用可能な評価項目はありません",
+      "loadFailedTitle": "攻撃シナリオライブラリを読み込めませんでした",
+      "loadingMessage": "しばらくお待ちください。",
+      "loadingTitle": "攻撃シナリオライブラリを読み込み中",
+      "noMatchesMessage": "別のキーワードまたはフィルターをお試しください。",
+      "noMatchesTitle": "一致する評価項目はありません",
+      "reloadAction": "再読み込み",
+      "title": "攻撃シナリオライブラリ"
+    },
+    "detail": {
+      "backToCatalog": "攻撃シナリオライブラリへ戻る",
+      "descriptionFallback": "この評価項目の説明、重点、リソース、サンプル概要を確認します。",
+      "detailLoadFailedTitle": "評価項目の詳細を読み込めませんでした",
+      "emptyHighlights": "評価重点はまだありません。",
+      "emptyScenarios": "シナリオはまだありません。",
+      "fullDescriptionFallback": "詳細説明はまだありません。",
+      "loadingMessage": "しばらくお待ちください。",
+      "loadingTitle": "評価項目の詳細を読み込み中",
+      "loginToEvaluateItem": "ログインしてこの項目を評価",
+      "mainLabel": "評価項目詳細コンテンツ",
+      "notFoundTitle": "評価項目が見つかりません",
+      "retryAction": "再試行",
+      "sections": {
+        "assets": "追加資料",
+        "details": "詳細",
+        "highlights": "評価重点",
+        "sampleProfile": "サンプル概要",
+        "scenarios": "シナリオ"
+      },
+      "sameRiskTitle": "同じリスク領域",
+      "sideActionTitle": "操作",
+      "sideInfoTitle": "評価項目情報",
+      "sideLabel": "評価項目サイドパネル",
+      "submitWithEvaluationItem": "この項目で評価を開始"
+    }
+  },
+  "profile": {
+    "assetTypeTop": "主な資産タイプ",
+    "deliveryDistribution": "攻撃の配信",
+    "description": "この評価項目のサンプル難度、攻撃配信、保護対象資産を確認します。",
+    "difficultyBuckets": "難度区分",
+    "emptyDistribution": "表示できる分布データはありません。"
+  },
+  "resources": {
+    "emptyMessage": "この評価項目には表示できるリソースやメディアがありません。",
+    "emptyTitle": "追加資料はありません",
+    "tab": "リソース",
+    "tabsAria": "資料タイプ",
+    "types": {
+      "demo": "デモ",
+      "docs": "ドキュメント",
+      "download": "ダウンロード",
+      "link": "リンク"
+    },
+    "view": "リソースを見る"
+  },
+  "subcategory": {
+    "loginToEvaluate": "ログインして評価",
+    "noDescription": "説明はありません",
+    "useEvaluationItem": "この項目を使用",
+    "viewDetails": "詳細を見る"
+  }
+}

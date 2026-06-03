@@ -62,7 +62,7 @@ export const buildWorkflowItems = (
     title: t("public.home.workflow.browse.title"),
     description: t("public.home.workflow.browse.description"),
     actionLabel: t("public.home.workflow.browse.action"),
-    to: RouteLocation.datasetList,
+    to: RouteLocation.attackScenarioLibrary,
   },
   {
     step: 2,
@@ -72,7 +72,7 @@ export const buildWorkflowItems = (
     actionLabel: isLogin
       ? t("public.home.workflow.submit.actionAuthed")
       : t("public.home.workflow.submit.actionGuest"),
-    to: isLogin ? RouteLocation.agentSubmit : RouteLocation.datasetList,
+    to: isLogin ? RouteLocation.agentSubmit : RouteLocation.attackScenarioLibrary,
   },
   {
     step: 3,
@@ -106,11 +106,11 @@ export const buildIntroSections = (
     description: t("public.home.sections.capabilities.description"),
     items: [
       {
-        key: "datasets",
-        icon: "app:home.section.dataset",
-        title: t("public.home.sections.capabilities.items.datasets.title"),
+        key: "attackScenarioLibrary",
+        icon: "app:home.section.attackScenarioLibrary",
+        title: t("public.home.sections.capabilities.items.attackScenarioLibrary.title"),
         description: t(
-          "public.home.sections.capabilities.items.datasets.description",
+          "public.home.sections.capabilities.items.attackScenarioLibrary.description",
         ),
       },
       {
@@ -207,11 +207,11 @@ export const buildIntroSections = (
     items: [
       {
         key: "catalog",
-        icon: "app:home.section.dataset",
+        icon: "app:home.section.attackScenarioLibrary",
         title: t("public.home.sections.experience.items.catalog.title"),
         description: t("public.home.sections.experience.items.catalog.description"),
-        actionLabel: t("common.actions.browseDataset"),
-        to: RouteLocation.datasetList,
+        actionLabel: t("common.actions.browseAttackScenarioLibrary"),
+        to: RouteLocation.attackScenarioLibrary,
       },
       {
         key: "submit",
@@ -221,7 +221,7 @@ export const buildIntroSections = (
         actionLabel: isLogin
           ? t("common.actions.submitEvaluation")
           : t("public.home.workflow.submit.actionGuest"),
-        to: isLogin ? RouteLocation.agentSubmit : RouteLocation.datasetList,
+        to: isLogin ? RouteLocation.agentSubmit : RouteLocation.attackScenarioLibrary,
       },
       {
         key: "leaderboard",

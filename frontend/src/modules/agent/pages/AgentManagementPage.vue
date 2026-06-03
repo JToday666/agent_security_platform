@@ -151,7 +151,7 @@ import {
 import AgentStatusTag from "@/modules/agent/components/AgentStatusTag.vue";
 import { getInvokeModeLabel } from "@/modules/agent/model/agent-display";
 import type { AgentListItem } from "@/shared/types/agent-registry-types";
-import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
+import { formatDateTimeLabel } from "@/modules/attack-scenario-library/lib/attack-scenario-library-utils";
 import { getErrorMessage } from "@/shared/composables/useAsyncState";
 import UiButton from "@/shared/ui/actions/UiButton.vue";
 import UiTag from "@/shared/ui/display/UiTag.vue";

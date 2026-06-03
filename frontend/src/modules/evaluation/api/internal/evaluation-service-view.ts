@@ -7,7 +7,7 @@ import type {
 import {
   resolvePublicDatasetName,
   resolvePublicDatasetNames,
-} from "@/modules/dataset/lib/dataset-display-utils";
+} from "@/modules/attack-scenario-library/lib/evaluation-item-display-utils";
 import { translateRuntimeMessage } from "@/app/i18n/runtime-translator";
 import type {
   ResolvedEvaluationState,

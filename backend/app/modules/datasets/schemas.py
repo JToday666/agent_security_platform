@@ -3,10 +3,10 @@
 from app.platform.schemas import CamelModel
 
 
-class DatasetCatalogItem(CamelModel):
+class EvaluationItemCatalogItem(CamelModel):
     """目录中单个评测项的摘要信息。"""
 
-    dataset_id: str
+    evaluation_item_id: str
     name: str
     short_description: str | None = None
     sample_count: int
@@ -14,32 +14,56 @@ class DatasetCatalogItem(CamelModel):
     enabled: bool
 
 
-class DatasetCatalogCategory(CamelModel):
-    """目录中的风险分类分组。"""
+class RiskDomainCatalogItem(CamelModel):
+    """目录中的风险域分组。"""
 
-    category_id: str
+    risk_domain_id: str
     name: str
     meaning: str | None = None
     description: str | None = None
     sort: int | None = None
     enabled: bool
-    subcategory_count: int
-    subcategories: list[DatasetCatalogItem]
+    evaluation_item_count: int
+    sample_count: int
+    evaluation_items: list[EvaluationItemCatalogItem]
+
+
+class AttackScenarioCatalogItem(CamelModel):
+    """目录中的攻击场景分组。"""
+
+    attack_scenario_id: str
+    name: str
+    description: str | None = None
+    sort: int | None = None
+    enabled: bool
+    risk_domain_count: int
+    evaluation_item_count: int
+    sample_count: int
+    risk_domains: list[RiskDomainCatalogItem]
 
 
 class DatasetCatalogResponse(CamelModel):
-    """数据集目录接口响应体。"""
+    """攻击场景库目录接口响应体。"""
 
     catalog_version: str
-    category_count: int
-    subcategory_count: int
-    categories: list[DatasetCatalogCategory]
+    attack_scenario_count: int
+    risk_domain_count: int
+    evaluation_item_count: int
+    attack_scenarios: list[AttackScenarioCatalogItem]
 
 
-class DatasetCategoryInfo(CamelModel):
-    """数据集详情中的分类信息。"""
+class AttackScenarioInfo(CamelModel):
+    """评测项详情中的攻击场景信息。"""
 
-    category_id: str
+    attack_scenario_id: str
+    name: str
+    description: str | None = None
+
+
+class RiskDomainInfo(CamelModel):
+    """评测项详情中的风险域信息。"""
+
+    risk_domain_id: str
     name: str
     meaning: str | None = None
 
@@ -62,11 +86,12 @@ class DatasetSampleProfile(CamelModel):
 
 
 class DatasetDetailResponse(CamelModel):
-    """数据集详情接口响应体。"""
+    """评测项详情接口响应体。"""
 
-    dataset_id: str
+    evaluation_item_id: str
     name: str
-    category: DatasetCategoryInfo
+    attack_scenario: AttackScenarioInfo
+    risk_domain: RiskDomainInfo
     short_description: str | None = None
     full_description: str | None = None
     sample_count: int

@@ -18,12 +18,12 @@
 
       <div class="hero-actions">
         <UiButton
-          :to="RouteLocation.datasetList"
+          :to="RouteLocation.attackScenarioLibrary"
           variant="primary"
           size="lg"
-          leading-icon="app:action.browseDataset"
+          leading-icon="app:action.browseAttackScenarioLibrary"
         >
-          {{ t("common.actions.browseDataset") }}
+          {{ t("common.actions.browseAttackScenarioLibrary") }}
         </UiButton>
         <UiButton
           v-if="isLogin"

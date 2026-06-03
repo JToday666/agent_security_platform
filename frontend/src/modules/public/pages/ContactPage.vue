@@ -139,7 +139,7 @@ const GITHUB_URL = "https://github.com/";
 const X_URL = "https://x.com";
 
 type ContactTone = "email" | "phone" | "address" | "social";
-type ContactPathTone = "integration" | "datasets" | "collaboration" | "social";
+type ContactPathTone = "integration" | "attackScenarioLibrary" | "collaboration" | "social";
 
 interface ContactSocialLink {
   name: string;
@@ -261,14 +261,14 @@ const contactPaths = computed<ContactPath[]>(() => [
     href: emailHref,
   },
   {
-    key: "datasets",
+    key: "attackScenarioLibrary",
     kind: "route",
-    icon: "app:home.section.dataset",
-    tone: "datasets",
-    title: t("public.contact.paths.items.datasets.title"),
-    description: t("public.contact.paths.items.datasets.description"),
-    actionLabel: t("public.contact.paths.items.datasets.action"),
-    to: RouteLocation.datasetList,
+    icon: "app:home.section.attackScenarioLibrary",
+    tone: "attackScenarioLibrary",
+    title: t("public.contact.paths.items.attackScenarioLibrary.title"),
+    description: t("public.contact.paths.items.attackScenarioLibrary.description"),
+    actionLabel: t("public.contact.paths.items.attackScenarioLibrary.action"),
+    to: RouteLocation.attackScenarioLibrary,
   },
   {
     key: "collaboration",
@@ -435,7 +435,7 @@ const contactPaths = computed<ContactPath[]>(() => [
 }
 
 .contact-channel--phone,
-.contact-path-item--datasets {
+.contact-path-item--attackScenarioLibrary {
   --contact-tone-bg: rgba(204, 251, 241, 0.58);
   --contact-tone-border: rgba(13, 148, 136, 0.18);
   --contact-tone-color: #0f766e;

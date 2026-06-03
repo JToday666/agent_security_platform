@@ -38,6 +38,7 @@ class PlannedSample:
     risk_subtype_code: str
     risk_subtype_name: str
     risk_subtype_sort_order: int | None
+    attack_scenario_code: str | None
     asset_type_code: str | None
     asset_type_name: str | None
     user_goal: str
@@ -112,6 +113,18 @@ class AssetTypeRecord:
 
 
 @dataclass(slots=True)
+class AttackScenarioRecord:
+    """描述 registry 中的攻击场景字典项。"""
+
+    code: str
+    name: str
+    description: str | None = None
+    sort_order: int | None = None
+    is_active: bool = True
+    translations: dict[str, dict[str, object]] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
 class RiskCategoryRecord:
     """描述 registry 中的风险大类字典项。"""
 
@@ -131,6 +144,7 @@ class RiskSubtypeRecord:
     code: str
     category_code: str
     name: str
+    attack_scenario_code: str | None = None
     sort_order: int | None = None
     is_active: bool = True
     translations: dict[str, dict[str, object]] = field(default_factory=dict)
@@ -156,6 +170,7 @@ class MetadataBundle:
 
     dataset_sources: list[DatasetSourceRecord] = field(default_factory=list)
     attack_delivery_types: list[AttackDeliveryTypeRecord] = field(default_factory=list)
+    attack_scenarios: list[AttackScenarioRecord] = field(default_factory=list)
     asset_types: list[AssetTypeRecord] = field(default_factory=list)
     risk_categories: list[RiskCategoryRecord] = field(default_factory=list)
     risk_subtypes: list[RiskSubtypeRecord] = field(default_factory=list)
@@ -170,6 +185,10 @@ class MetadataImportResult:
     updated_sources: int = 0
     created_delivery_types: int = 0
     updated_delivery_types: int = 0
+    created_attack_scenarios: int = 0
+    updated_attack_scenarios: int = 0
+    created_scenario_risk_domains: int = 0
+    updated_scenario_risk_domains: int = 0
     created_asset_types: int = 0
     updated_asset_types: int = 0
     created_categories: int = 0

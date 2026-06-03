@@ -1,0 +1,117 @@
+{
+  "api": {
+    "catalogLoadFailed": "攻击场景库加载失败，请稍后重试。",
+    "detailLoadFailed": "评测项详情加载失败，请稍后重试。",
+    "notFound": "未找到对应评测项。"
+  },
+  "fallback": {
+    "media": "媒体 {index}",
+    "pending": "待补充",
+    "relatedResource": "相关资源 {index}",
+    "unnamedAttackScenario": "未命名攻击场景",
+    "unnamedEvaluationItem": "未命名评测项",
+    "unnamedRiskDomain": "未命名风险域"
+  },
+  "filter": {
+    "clearSearch": "清空搜索",
+    "searchLabel": "搜索",
+    "searchPlaceholder": "搜索评测项名称、摘要、攻击场景或风险域",
+    "sortLabel": "排序",
+    "sortOptions": {
+      "default": "默认顺序",
+      "samplesDesc": "样本数",
+      "updatedDesc": "最近更新"
+    }
+  },
+  "catalog": {
+    "allCatalog": "全部数据集",
+    "allCatalogDescription": "查看所有攻击场景下的评测项。",
+    "attackScenarioFilter": "攻击场景筛选",
+    "riskDomainFilter": "风险域筛选",
+    "resultUnit": "个评测项",
+    "stats": {
+      "attackScenarios": "攻击场景",
+      "evaluationItems": "评测项",
+      "riskDomains": "风险域",
+      "samples": "样本总量",
+      "updatedAt": "最近更新"
+    }
+  },
+  "labels": {
+    "attackScenario": "攻击场景",
+    "riskDomain": "风险域",
+    "sampleCount": "样本数",
+    "updatedAt": "最近更新"
+  },
+  "media": {
+    "descriptionFallback": "该媒体用于辅助理解评测项结构与运行效果。",
+    "tab": "媒体",
+    "unavailable": "资源暂不可用"
+  },
+  "pages": {
+    "catalog": {
+      "description": "按攻击场景和风险域浏览评测项。",
+      "emptyMessage": "请稍后重试。",
+      "emptyTitle": "当前暂无可用评测项",
+      "loadFailedTitle": "攻击场景库加载失败",
+      "loadingMessage": "请稍候。",
+      "loadingTitle": "正在加载攻击场景库",
+      "noMatchesMessage": "请尝试更换关键词或切换筛选条件。",
+      "noMatchesTitle": "没有找到匹配的评测项",
+      "reloadAction": "重新加载",
+      "title": "攻击场景库"
+    },
+    "detail": {
+      "backToCatalog": "返回攻击场景库",
+      "descriptionFallback": "查看该评测项的说明、重点、资源与样本聚合信息。",
+      "detailLoadFailedTitle": "评测项详情加载失败",
+      "emptyHighlights": "暂无评测重点。",
+      "emptyScenarios": "暂无典型场景。",
+      "fullDescriptionFallback": "暂无详细说明。",
+      "loadingMessage": "请稍候。",
+      "loadingTitle": "正在加载评测项详情",
+      "loginToEvaluateItem": "登录后评测此评测项",
+      "mainLabel": "评测项详情正文",
+      "notFoundTitle": "评测项不存在",
+      "retryAction": "重试",
+      "sections": {
+        "assets": "附加材料",
+        "details": "详细说明",
+        "highlights": "评测重点",
+        "sampleProfile": "样本聚合摘要",
+        "scenarios": "典型场景"
+      },
+      "sameRiskTitle": "同风险域评测项",
+      "sideActionTitle": "操作",
+      "sideInfoTitle": "评测项信息",
+      "sideLabel": "评测项侧栏信息",
+      "submitWithEvaluationItem": "使用此评测项发起评测"
+    }
+  },
+  "profile": {
+    "assetTypeTop": "资产类型 Top",
+    "deliveryDistribution": "攻击投递方式",
+    "description": "快速了解这个评测项的样本难度、攻击呈现方式和主要保护资产。",
+    "difficultyBuckets": "难度区间",
+    "emptyDistribution": "暂无可展示的分布数据。"
+  },
+  "resources": {
+    "emptyMessage": "当前评测项暂无可展示的资源或媒体。",
+    "emptyTitle": "暂无附加材料",
+    "tab": "资源",
+    "tabsAria": "材料类型",
+    "types": {
+      "demo": "演示",
+      "docs": "文档",
+      "download": "下载",
+      "link": "链接"
+    },
+    "view": "查看资源"
+  },
+  "subcategory": {
+    "loginToEvaluate": "登录后评测",
+    "noDescription": "暂无说明",
+    "useEvaluationItem": "使用此评测项",
+    "viewDetails": "查看详情"
+  }
+}

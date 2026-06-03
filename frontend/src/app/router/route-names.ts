@@ -3,8 +3,8 @@ import { DEFAULT_LOCALE, normalizeLocale } from "@/app/i18n";
 // 统一维护路由名称与命名路由跳转对象，避免页面内散落硬编码路径。
 export const ROUTE_NAME = {
   HOME_PAGE: "HomePage",
-  DATASET_LIST: "DatasetList",
-  DATASET_DETAIL: "DatasetDetail",
+  ATTACK_SCENARIO_LIBRARY: "AttackScenarioLibrary",
+  EVALUATION_ITEM_DETAIL: "EvaluationItemDetail",
   LEADERBOARD_PAGE: "LeaderboardPage",
   CONTACT_PAGE: "ContactPage",
   NOT_FOUND: "NotFoundPage",
@@ -57,12 +57,12 @@ export const RouteLocation = {
     return namedRoute(ROUTE_NAME.HOME_PAGE);
   },
 
-  get datasetList() {
-    return namedRoute(ROUTE_NAME.DATASET_LIST);
+  get attackScenarioLibrary() {
+    return namedRoute(ROUTE_NAME.ATTACK_SCENARIO_LIBRARY);
   },
 
-  datasetDetail: (datasetId: string) =>
-    namedRoute(ROUTE_NAME.DATASET_DETAIL, { datasetId }),
+  evaluationItemDetail: (evaluationItemId: string) =>
+    namedRoute(ROUTE_NAME.EVALUATION_ITEM_DETAIL, { evaluationItemId }),
 
   get leaderboard() {
     return namedRoute(ROUTE_NAME.LEADERBOARD_PAGE);

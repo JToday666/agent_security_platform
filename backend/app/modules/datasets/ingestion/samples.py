@@ -421,6 +421,7 @@ def _normalize_legacy_sample(metadata_path: Path, sample_root: Path) -> PlannedS
         risk_subtype_code=subtype_definition["code"],
         risk_subtype_name=subtype_definition["name"],
         risk_subtype_sort_order=subtype_definition["sort_order"],
+        attack_scenario_code=_optional_text(payload.get("attack_scenario_code")),
         asset_type_code=asset_type_code,
         asset_type_name=asset_type_name,
         user_goal=user_goal,
@@ -527,6 +528,7 @@ def _normalize_standard_sample(metadata_path: Path, sample_root: Path) -> Planne
             "risk_subtype_sort_order",
         )
         or default_subtype_sort_order(risk_subtype_code),
+        attack_scenario_code=_optional_text(payload.get("attack_scenario_code")),
         asset_type_code=asset_type_code,
         asset_type_name=(
             _optional_text(payload.get("asset_type_name"))

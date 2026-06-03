@@ -67,6 +67,37 @@ describe("evaluation detail adapters", () => {
     expect(record.score).toBe(87.6);
   });
 
+  it("maps attack scenario and evaluation item fields returned by the backend", () => {
+    const record = adaptEvaluationRecord({
+      evaluationId: "eval_1",
+      agentName: "demo",
+      createdAt: "2026-05-24T10:00:00Z",
+      updatedAt: "2026-05-24T10:05:00Z",
+      status: "completed",
+      progressPercent: 100,
+      finalReportAvailable: true,
+      publicToLeaderboard: true,
+      leaderboardDisplayMode: "public",
+      attackScenarioId: "prompt_injection",
+      attackScenarioName: "Prompt Injection",
+      evaluationItemIds: ["A1_identity_leakage"],
+      evaluationItemNames: ["Identity Leakage"],
+      submitMethod: "api",
+      score: 87.6,
+      ownerName: "owner",
+      parameters: {
+        difficulty: 0.5,
+        timeoutMinutes: 15,
+        maxSteps: 30,
+      },
+    });
+
+    expect(record.attackScenarioId).toBe("prompt_injection");
+    expect(record.attackScenarioName).toBe("Prompt Injection");
+    expect(record.datasetIds).toEqual(["A1_identity_leakage"]);
+    expect(record.datasetNames).toEqual(["Identity Leakage"]);
+  });
+
   it("adapts backend runtime timestamps and sample counts", () => {
     const detail = adaptEvaluationDetail({
       evaluationId: "eval_1",
@@ -92,16 +123,20 @@ describe("evaluation detail adapters", () => {
       },
       progress: {
         percent: 100,
-        totalDatasetCount: 1,
-        completedDatasetCount: 1,
+        totalEvaluationItemCount: 1,
+        completedEvaluationItemCount: 1,
         totalSampleCount: 12,
         completedSampleCount: 12,
+        runningEvaluationItemId: "A1_identity_leakage",
+        runningEvaluationItemName: "Identity Leakage",
         statusText: "评测已完成。",
       },
     });
 
     expect(detail.startedAt).toBe("2026-05-24T10:01:00Z");
     expect(detail.finishedAt).toBe("2026-05-24T10:04:00Z");
+    expect(detail.progress.runningDatasetId).toBe("A1_identity_leakage");
+    expect(detail.progress.runningDatasetName).toBe("Identity Leakage");
     expect(detail.progress.totalSampleCount).toBe(12);
     expect(detail.progress.completedSampleCount).toBe(12);
   });

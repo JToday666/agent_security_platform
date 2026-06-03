@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from uuid import uuid4
 
+import pytest
 from sqlalchemy import select
 
 from app.models.benchmark import (
@@ -13,10 +14,13 @@ from app.models.benchmark import (
     RiskSubtypeDisplayMeta,
 )
 from app.modules.datasets.ingestion.metadata import (
+    _merge_default_attack_scenarios,
     apply_metadata_bundle,
     build_metadata_bundle_from_database,
 )
+from app.modules.datasets.ingestion.errors import ImportValidationError
 from app.modules.datasets.ingestion.types import (
+    AttackScenarioRecord,
     AssetTypeRecord,
     AttackDeliveryTypeRecord,
     DatasetSourceRecord,
@@ -37,6 +41,19 @@ def test_metadata_ingestion_persists_and_exports_localized_display_metadata(
     delivery_code = f"pytest_i18n_delivery_{suffix}"
     asset_code = f"pytest_i18n_asset_{suffix}"
     bundle = MetadataBundle(
+        attack_scenarios=[
+            AttackScenarioRecord(
+                code="prompt_injection",
+                name="提示注入",
+                description="覆盖提示注入攻击。",
+                translations={
+                    "en-US": {
+                        "name": "Prompt Injection",
+                        "description": "Prompt injection attacks.",
+                    }
+                },
+            )
+        ],
         dataset_sources=[
             DatasetSourceRecord(
                 code=source_code,
@@ -95,6 +112,7 @@ def test_metadata_ingestion_persists_and_exports_localized_display_metadata(
             RiskSubtypeRecord(
                 code=subtype_code,
                 category_code=category_code,
+                attack_scenario_code="prompt_injection",
                 name="身份泄露",
                 translations={"en-US": {"name": "Identity Leakage"}},
             )
@@ -163,6 +181,7 @@ def test_metadata_ingestion_persists_and_exports_localized_display_metadata(
     exported_display_meta = exported.display_meta_by_code[subtype_code]
 
     assert result.created_sources == 1
+    assert result.created_attack_scenarios == 1
     assert result.created_delivery_types == 1
     assert result.created_asset_types == 1
     assert result.created_categories == 1
@@ -181,11 +200,75 @@ def test_metadata_ingestion_persists_and_exports_localized_display_metadata(
     assert exported_delivery.translations == delivery.translations
     assert exported_asset.translations == asset.translations
     assert category.translations["en-US"]["name"] == "Confidentiality"
+    assert subtype.attack_scenario_id is not None
     assert subtype.translations["en-US"]["name"] == "Identity Leakage"
     assert (
         display_meta.translations["en-US"]["short_description"]
         == "Short English description."
     )
     assert exported_category.translations == category.translations
+    assert exported.attack_scenarios[0].translations["en-US"]["name"] == (
+        "Prompt Injection"
+    )
     assert exported_subtype.translations == subtype.translations
+    assert exported_subtype.attack_scenario_code == "prompt_injection"
     assert exported_display_meta.translations == display_meta.translations
+
+
+def test_metadata_ingestion_rejects_new_subtype_without_attack_scenario(
+    db_session,
+) -> None:
+    suffix = uuid4().hex[:8]
+    bundle = MetadataBundle(
+        attack_scenarios=[
+            AttackScenarioRecord(
+                code="knowledge_base_poisoning",
+                name="知识库投毒",
+            )
+        ],
+        risk_categories=[
+            RiskCategoryRecord(
+                code=f"pytest_poison_category_{suffix}",
+                name="知识库完整性",
+            )
+        ],
+        risk_subtypes=[
+            RiskSubtypeRecord(
+                code=f"pytest_poison_subtype_{suffix}",
+                category_code=f"pytest_poison_category_{suffix}",
+                name="检索内容投毒",
+            )
+        ],
+    )
+
+    with pytest.raises(ImportValidationError, match="attack_scenario_code"):
+        apply_metadata_bundle(db_session, bundle)
+
+
+def test_metadata_ingestion_preserves_default_attack_scenario_translations() -> None:
+    scenarios = {
+        item.code: item
+        for item in _merge_default_attack_scenarios(
+            [
+                AttackScenarioRecord(
+                    code="prompt_injection",
+                    name="提示注入",
+                    description="覆盖直接和间接提示注入攻击。",
+                    sort_order=1,
+                )
+            ]
+        )
+    }
+
+    assert scenarios["prompt_injection"].translations["en-US"]["name"] == (
+        "Prompt Injection"
+    )
+    assert scenarios["model_abuse_and_unauthorized_actions"].translations["en-US"][
+        "name"
+    ] == "Model Abuse and Unauthorized Actions"
+    assert scenarios["knowledge_base_poisoning"].translations["en-US"]["name"] == (
+        "Knowledge Base Poisoning"
+    )
+    assert scenarios["tool_call_hijacking"].translations["en-US"]["name"] == (
+        "Tool Call Hijacking"
+    )

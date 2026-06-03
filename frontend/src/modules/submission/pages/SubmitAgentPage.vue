@@ -7,11 +7,11 @@
     >
       <template #actions>
         <UiButton
-          :to="RouteLocation.datasetList"
+          :to="RouteLocation.attackScenarioLibrary"
           variant="secondary"
-          leading-icon="app:action.browseDataset"
+          leading-icon="app:action.browseAttackScenarioLibrary"
         >
-          {{ t("common.actions.browseDataset") }}
+          {{ t("common.actions.browseAttackScenarioLibrary") }}
         </UiButton>
       </template>
     </PageHero>
@@ -55,19 +55,23 @@
           :meta="submitMeta"
         />
 
-        <SubmitDatasetPanel
-          :categories="enabledCategories"
-          :selected-dataset-ids="form.selectedDatasetIds"
-          :expanded-category-ids="expandedCategoryIds"
-          :status="datasetCatalogStatus"
-          :error-message="datasetCatalogErrorMessage"
+        <SubmitEvaluationItemPanel
+          :attack-scenarios="enabledAttackScenarios"
+          :selected-attack-scenario="selectedAttackScenario"
+          :selected-attack-scenario-id="form.selectedAttackScenarioId"
+          :risk-domains="enabledCategories"
+          :selected-evaluation-item-ids="form.selectedEvaluationItemIds"
+          :expanded-risk-domain-ids="expandedCategoryIds"
+          :status="attackScenarioCatalogStatus"
+          :error-message="attackScenarioCatalogErrorMessage"
           :selection-error-message="selectionErrorMessage"
-          @select-all="selectAllDatasets"
-          @clear-all="clearAllDatasets"
-          @toggle-category="toggleCategoryDatasets"
-          @toggle-dataset="toggleDataset"
+          @select-all="selectAllEvaluationItems"
+          @clear-all="clearAllEvaluationItems"
+          @toggle-risk-domain="toggleRiskDomainEvaluationItems"
+          @toggle-evaluation-item="toggleEvaluationItem"
           @toggle-expanded="toggleExpandedCategory"
-          @retry="retryDatasetCatalog"
+          @update:attack-scenario-id="setAttackScenarioId"
+          @retry="retryAttackScenarioCatalog"
         />
 
         <section
@@ -90,8 +94,8 @@
           :agent-name="selectedAgent?.name || ''"
           :submit-method="form.submitMethod"
           :selected-category-count="selectedCategoryCount"
-          :selected-dataset-count="form.selectedDatasetIds.length"
-          :selected-dataset-names="selectedDatasetNames"
+          :selected-evaluation-item-count="form.selectedEvaluationItemIds.length"
+          :selected-evaluation-item-names="selectedEvaluationItemNames"
           :difficulty="form.parameters.difficulty"
           :timeout-minutes="form.parameters.timeoutMinutes"
           :max-steps="form.parameters.maxSteps"
@@ -123,7 +127,7 @@ import { RouteLocation } from "@/app/router/route-names";
 import { useSubmitAgentPage } from "@/modules/submission/composables/useSubmitAgentPage";
 import SubmitActionBar from "@/modules/submission/components/SubmitActionBar.vue";
 import SubmitBasicInfoForm from "@/modules/submission/components/SubmitBasicInfoForm.vue";
-import SubmitDatasetPanel from "@/modules/submission/components/SubmitDatasetPanel.vue";
+import SubmitEvaluationItemPanel from "@/modules/submission/components/SubmitEvaluationItemPanel.vue";
 import SubmitMethodSelector from "@/modules/submission/components/SubmitMethodSelector.vue";
 import SubmitParameterControls from "@/modules/submission/components/SubmitParameterControls.vue";
 import type { LeaderboardDisplayMode } from "@/shared/types/agent-types";
@@ -146,11 +150,13 @@ const {
   selectedAgent,
   agentErrorMessage,
   expandedCategoryIds,
-  datasetCatalogStatus,
-  datasetCatalogErrorMessage,
+  attackScenarioCatalogStatus,
+  attackScenarioCatalogErrorMessage,
+  enabledAttackScenarios,
+  selectedAttackScenario,
   enabledCategories,
   selectedCategoryCount,
-  selectedDatasetNames,
+  selectedEvaluationItemNames,
   selectionErrorMessage,
   confirmDialogVisible,
   confirmDialogTitle,
@@ -158,15 +164,16 @@ const {
   canSubmit,
   setSubmitMethod,
   setAgentId,
+  setAttackScenarioId,
   initializePage,
   handleSubmit,
   confirmSubmit,
-  selectAllDatasets,
-  clearAllDatasets,
-  toggleCategoryDatasets,
-  toggleDataset,
+  selectAllEvaluationItems,
+  clearAllEvaluationItems,
+  toggleRiskDomainEvaluationItems,
+  toggleEvaluationItem,
   toggleExpandedCategory,
-  retryDatasetCatalog,
+  retryAttackScenarioCatalog,
   resetDraft,
 } = useSubmitAgentPage();
 

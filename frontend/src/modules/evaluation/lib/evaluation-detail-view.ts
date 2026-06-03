@@ -1,4 +1,4 @@
-import { formatDateTimeLabel } from "@/modules/dataset/lib/dataset-utils";
+import { formatDateTimeLabel } from "@/modules/attack-scenario-library/lib/attack-scenario-library-utils";
 import { getEvaluationLeaderboardStatus } from "@/modules/evaluation/lib/evaluation-record-filters";
 import {
   type AppTranslator,
@@ -258,7 +258,7 @@ export const buildEvaluationDetailGroups = (
   },
   {
     title: t("evaluation.sections.dataset"),
-    icon: "app:dataset.catalog",
+    icon: "app:attackScenarioLibrary.catalog",
     items: [
       {
         label: t("evaluation.summary.datasets"),

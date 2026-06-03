@@ -11,6 +11,8 @@ from sqlalchemy import select
 
 from app.models.benchmark import (
     AttackDeliveryType,
+    AttackScenario,
+    AttackScenarioRiskDomain,
     BenchmarkSample,
     DatasetSource,
     RiskCategory,
@@ -77,12 +79,30 @@ def _seed_sample_level_run(api_db_helper, *, terminal_first: bool = False) -> di
         )
         session.add_all([category, source, delivery])
         session.flush()
+        scenario = AttackScenario(
+            code=f"{api_db_helper.prefix}_sample_sched_scenario",
+            name="sample scheduler scenario",
+            sort_order=1,
+            is_active=True,
+        )
+        session.add(scenario)
+        session.flush()
+        session.add(
+            AttackScenarioRiskDomain(
+                attack_scenario_id=scenario.id,
+                risk_category_id=category.id,
+                sort_order=1,
+                is_active=True,
+            )
+        )
+        session.flush()
 
         subtypes: list[RiskSubtype] = []
         samples: list[BenchmarkSample] = []
         for index in range(2):
             subtype = RiskSubtype(
                 category_id=category.id,
+                attack_scenario_id=scenario.id,
                 code=f"{api_db_helper.prefix}_sample_sched_ds_{index}",
                 name=f"sample scheduler dataset {index}",
                 sort_order=index + 1,

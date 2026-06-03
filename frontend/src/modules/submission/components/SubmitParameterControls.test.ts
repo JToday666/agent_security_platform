@@ -34,7 +34,8 @@ const mountControls = async () => {
       maxSteps: 30,
     },
     leaderboardDisplayMode: "public",
-    selectedDatasetIds: [],
+    selectedAttackScenarioId: "",
+    selectedEvaluationItemIds: [],
   });
   const host = document.createElement("div");
   document.body.appendChild(host);

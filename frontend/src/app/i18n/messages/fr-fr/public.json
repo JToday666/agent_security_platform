@@ -13,15 +13,15 @@
     },
     "workflow": {
       "browse": {
-        "title": "Parcourir les jeux de données",
-        "description": "Consultez les descriptions, exemples et ressources par domaine de risque.",
-        "action": "Voir le catalogue"
+        "title": "Parcourir la bibliothèque de scénarios d’attaque",
+        "description": "Confirmez le périmètre par scénario d’attaque, domaine de risque et élément d’évaluation.",
+        "action": "Voir la bibliothèque"
       },
       "submit": {
         "title": "Créer une évaluation",
         "description": "Renseignez les informations de l'Agent et choisissez le périmètre d'évaluation.",
         "actionAuthed": "Commencer",
-        "actionGuest": "Parcourir d'abord"
+        "actionGuest": "Voir d’abord la bibliothèque"
       },
       "track": {
         "title": "Suivre la progression",
@@ -40,11 +40,11 @@
       "capabilities": {
         "kicker": "Capacités de la plateforme",
         "title": "Couvrir les étapes clés avant, pendant et après l'évaluation",
-        "description": "La plateforme organise l'évaluation autour des jeux de données, de l'enregistrement d'Agent, du suivi d'exécution, des rapports et du classement.",
+        "description": "La plateforme organise l’évaluation autour de la bibliothèque de scénarios d’attaque, de l’enregistrement d’Agent, du suivi d’exécution, des rapports et du classement.",
         "items": {
-          "datasets": {
-            "title": "Catalogue de jeux de données de risque",
-            "description": "Consultez les descriptions, exemples et ressources par domaine de risque avant de choisir le périmètre d'évaluation."
+          "attackScenarioLibrary": {
+            "title": "Bibliothèque de scénarios d’attaque",
+            "description": "Consultez les descriptions de périmètre par scénario d’attaque, domaine de risque et élément d’évaluation avant de choisir la couverture."
           },
           "evaluation": {
             "title": "Enregistrement et soumission d'Agent",
@@ -63,11 +63,11 @@
       "loop": {
         "kicker": "Boucle d'évaluation",
         "title": "Construire un parcours complet du périmètre aux preuves",
-        "description": "Les utilisateurs partent des jeux de données, puis soumettent, suivent l'exécution, révisent les résultats et publient au classement.",
+        "description": "Les utilisateurs partent des scénarios d’attaque et des éléments d’évaluation, puis soumettent, suivent l’exécution, révisent les résultats et publient au classement.",
         "items": {
           "scope": {
             "title": "Définir le périmètre",
-            "description": "Choisissez d'abord les jeux de données et paramètres, dont le domaine de risque, la difficulté, le délai et le nombre maximal d'étapes."
+            "description": "Choisissez d’abord un scénario d’attaque, des éléments d’évaluation et des paramètres, dont le domaine de risque, la difficulté, le délai et le nombre maximal d’étapes."
           },
           "submit": {
             "title": "Soumettre et suivre",
@@ -86,7 +86,7 @@
         "items": {
           "standard": {
             "title": "Entrées standardisées",
-            "description": "Les jeux de données, paramètres et correspondances de champs sont validés avant la soumission afin de réduire les tâches invalides."
+            "description": "Les scénarios d’attaque, éléments d’évaluation, paramètres et correspondances de champs sont validés avant la soumission afin de réduire les tâches invalides."
           },
           "privacy": {
             "title": "Option d'affichage anonyme",
@@ -121,11 +121,11 @@
       "experience": {
         "kicker": "Commencer",
         "title": "Accéder directement aux flux courants",
-        "description": "Choisissez les jeux de données, soumettez une évaluation, ouvrez le classement ou contactez l'équipe selon la tâche en cours.",
+        "description": "Choisissez la bibliothèque de scénarios d’attaque, soumettez une évaluation, ouvrez le classement ou contactez l’équipe selon la tâche en cours.",
         "items": {
           "catalog": {
-            "title": "Voir les jeux de données",
-            "description": "Parcourez les jeux de données d'évaluation disponibles et les descriptions des domaines de risque."
+            "title": "Voir la bibliothèque de scénarios d’attaque",
+            "description": "Parcourez les scénarios d’attaque, domaines de risque et descriptions d’éléments d’évaluation disponibles."
           },
           "submit": {
             "title": "Soumettre une évaluation",
@@ -145,7 +145,7 @@
   },
   "contact": {
     "title": "Nous contacter",
-    "description": "L’équipe de la plateforme traite les demandes d’accès à l’évaluation, de support jeux de données et de collaboration.",
+    "description": "L’équipe de la plateforme traite les demandes d’accès à l’évaluation, de support de la bibliothèque de scénarios d’attaque et de collaboration.",
     "logoAlt": "Marque de la plateforme d'évaluation de sécurité des Agents",
     "email": "E-mail",
     "phone": "Téléphone",
@@ -155,7 +155,7 @@
     "primary": {
       "kicker": "Contact officiel",
       "title": "Contacter l’équipe de la plateforme",
-      "description": "Accès à l’évaluation, support jeux de données, collaboration et maintenance des ressources publiques sont pris en charge par l’équipe de la plateforme.",
+      "description": "Accès à l’évaluation, support de la bibliothèque de scénarios d’attaque, collaboration et maintenance des ressources publiques sont pris en charge par l’équipe de la plateforme.",
       "emailAction": "Écrire à l’équipe",
       "phoneAction": "Appeler l’équipe"
     },
@@ -166,10 +166,10 @@
           "description": "Posez vos questions sur l'intégration d'Agent, la préparation, le choix de modèle et le flux d'évaluation.",
           "action": "Demander par e-mail"
         },
-        "datasets": {
-          "title": "Jeux de données et périmètre",
-          "description": "Consultez les jeux disponibles et les domaines de risque avant de confirmer le périmètre.",
-          "action": "Voir les données"
+        "attackScenarioLibrary": {
+          "title": "Bibliothèque de scénarios d’attaque et périmètre",
+          "description": "Consultez les scénarios d’attaque, domaines de risque et éléments d’évaluation avant de confirmer le périmètre.",
+          "action": "Voir la bibliothèque"
         },
         "collaboration": {
           "title": "Collaboration",
@@ -189,7 +189,7 @@
     "title": "Page introuvable",
     "description": "Cette adresse n'est pas disponible. Utilisez la navigation ou les entrées ci-dessous.",
     "sectionTitle": "Entrées disponibles",
-    "sectionDescription": "Retournez à l'accueil ou recommencez depuis le catalogue d'évaluation.",
-    "datasetAction": "Voir le catalogue"
+    "sectionDescription": "Retournez à l’accueil ou recommencez depuis la bibliothèque de scénarios d’attaque.",
+    "attackScenarioLibraryAction": "Voir la bibliothèque de scénarios d’attaque"
   }
 }

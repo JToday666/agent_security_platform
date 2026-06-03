@@ -38,7 +38,7 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
     client, selectable_api_db_helper, monkeypatch, tmp_path: Path
 ) -> None:
     api_db_helper = selectable_api_db_helper
-    dataset_code = api_db_helper.seed_dataset()
+    evaluation_item_id = api_db_helper.seed_dataset()
     user_id, token = api_db_helper.seed_user(
         username=f"{api_db_helper.prefix}_submitter",
         email=f"{api_db_helper.prefix}_submit@example.com",
@@ -156,13 +156,14 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
         payload = {
             "submitMethod": "api",
             "agentId": agent_id,
+            "attackScenarioId": "prompt_injection",
             "parameters": {
                 "difficulty": 0.5,
                 "timeoutMinutes": 20,
                 "maxSteps": 30,
             },
             "leaderboardDisplayMode": "anonymous",
-            "datasetIds": [dataset_code],
+            "evaluationItemIds": [evaluation_item_id],
             "requestId": f"{api_db_helper.prefix}_request_001",
         }
 
@@ -213,12 +214,13 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
         default_payload = {
             "submitMethod": "api",
             "agentId": agent_id,
+            "attackScenarioId": "prompt_injection",
             "parameters": {
                 "difficulty": 0.5,
                 "timeoutMinutes": 20,
                 "maxSteps": 30,
             },
-            "datasetIds": [dataset_code],
+            "evaluationItemIds": [evaluation_item_id],
             "requestId": f"{api_db_helper.prefix}_request_002",
         }
         default_submit_response = client.post(
@@ -274,3 +276,46 @@ def test_agent_and_evaluation_submission_routes_work_against_real_database(
         assert "sk-smoke" not in str([row.payload for row in audit_rows])
     finally:
         shutil.rmtree(credential_dir, ignore_errors=True)
+
+
+@pytest.mark.db
+def test_evaluation_submission_rejects_cross_scenario_items(
+    client, selectable_api_db_helper
+) -> None:
+    api_db_helper = selectable_api_db_helper
+    prompt_item_id = api_db_helper.seed_dataset(
+        attack_scenario_code="prompt_injection",
+        item_suffix="prompt",
+    )
+    abuse_item_id = api_db_helper.seed_dataset(
+        attack_scenario_code="model_abuse_and_unauthorized_actions",
+        item_suffix="abuse",
+    )
+    user_id, token = api_db_helper.seed_user(
+        username=f"{api_db_helper.prefix}_cross_submitter",
+        email=f"{api_db_helper.prefix}_cross_submit@example.com",
+    )
+    agent_id = api_db_helper.seed_agent(user_id=user_id)
+    headers = {"Authorization": f"Bearer {token}"}
+
+    payload = {
+        "requestId": f"{api_db_helper.prefix}_cross_request",
+        "submitMethod": "api",
+        "agentId": agent_id,
+        "attackScenarioId": "prompt_injection",
+        "evaluationItemIds": [prompt_item_id, abuse_item_id],
+        "parameters": {
+            "difficulty": 0.5,
+            "timeoutMinutes": 20,
+            "maxSteps": 30,
+        },
+        "leaderboardDisplayMode": "public",
+    }
+
+    response = client.post(
+        "/api/v1/evaluations/validate", headers=headers, json=payload
+    )
+
+    assert response.status_code == 400
+    assert response.json()["code"] == 40002
+    assert "攻击场景" in response.json()["message"]
